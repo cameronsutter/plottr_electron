@@ -1,9 +1,9 @@
 import semverGt from 'semver/functions/gt'
 import axios from 'axios'
-import { DateTime, Duration } from 'luxon'
+import { DateTime } from 'luxon'
 import { isEqual } from 'lodash'
 
-import { actions, ARRAY_KEYS } from 'pltr/v2'
+import { actions, selectors, ARRAY_KEYS, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 /**
  * auth, database and storage should be thunks that produce instances
@@ -24,6 +24,10 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         userId,
         fileId,
       })
+      .then((response) => ({
+        userId,
+        fileId,
+      }))
       .catch((error) => {
         const status = error && error.response && error.response.status
         log.error(
@@ -85,7 +89,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
 
   const onSnapshot =
     (
-      store,
+      withAction,
       fileId,
       path,
       withData,
@@ -108,7 +112,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       }
       delete data.fileId
       delete data.clientId
-      store.dispatch(
+      withAction(
         patchActions(path)[loadFunctionKey](
           patching,
           withData({ ...usingFromDocRef(documentRef), ...data })
@@ -116,13 +120,19 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       )
     }
 
-  const listenToFile = (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
-    const withIsCloud = (x) => ({ ...x, isCloudFile: true, id: fileId })
+  const listenToFile = (
+    userId,
+    fileId,
+    clientId,
+    withAction,
+    errorHandler = defaultErrorHandler
+  ) => {
+    const withIsCloud = (x) => ({ ...x, isCloudFile: true, id: fileId, path: `plottr://${fileId}` })
     return database()
       .collection('file')
       .doc(fileId)
       .onSnapshot(
-        onSnapshot(store, fileId, 'file', withIsCloud, true, clientId, 'patchFile', (x) => ({
+        onSnapshot(withAction, fileId, 'file', withIsCloud, true, clientId, 'patchFile', (x) => ({
           id: x.id,
         })),
         errorHandler
@@ -131,32 +141,32 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
 
   const listenForObjectAtPath =
     (path) =>
-    (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
+    (userId, fileId, clientId, withAction, errorHandler = defaultErrorHandler) => {
       const identity = (x) => x
       return database()
         .collection(path)
         .doc(fileId)
-        .onSnapshot(onSnapshot(store, fileId, path, identity, true, clientId), errorHandler)
+        .onSnapshot(onSnapshot(withAction, fileId, path, identity, true, clientId), errorHandler)
     }
 
   const listenForArrayAtPath =
     (path) =>
-    (store, userId, fileId, clientId, errorHandler = defaultErrorHandler) => {
+    (userId, fileId, clientId, withAction, errorHandler = defaultErrorHandler) => {
       const values = (x) => Object.values(x)
       return database()
         .collection(path)
         .doc(fileId)
-        .onSnapshot(onSnapshot(store, fileId, path, values, true, clientId), errorHandler)
+        .onSnapshot(onSnapshot(withAction, fileId, path, values, true, clientId), errorHandler)
     }
 
   const WHEN_BEATS_BECAME_AN_OBJECT = '2021.4.13'
 
   const listenToBeats = (
-    store,
     userId,
     fileId,
     clientId,
     version,
+    withAction,
     errorHandler = defaultErrorHandler
   ) => {
     const transform = semverGt(version, WHEN_BEATS_BECAME_AN_OBJECT)
@@ -165,7 +175,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     return database()
       .collection('beats')
       .doc(fileId)
-      .onSnapshot(onSnapshot(store, fileId, 'beats', transform, true, clientId), errorHandler)
+      .onSnapshot(onSnapshot(withAction, fileId, 'beats', transform, true, clientId), errorHandler)
   }
 
   const listenToCards = listenForArrayAtPath('cards')
@@ -179,38 +189,8 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const listenToNotes = listenForArrayAtPath('notes')
   const listenToPlaces = listenForArrayAtPath('places')
   const listenToTags = listenForArrayAtPath('tags')
-  const listenTohierarchyLevels = listenForObjectAtPath('hierarchyLevels')
+  const listenToHierarchyLevels = listenForObjectAtPath('hierarchyLevels')
   const listenToImages = listenForObjectAtPath('images')
-  const listenToClient = listenForObjectAtPath('client')
-
-  const listen = (
-    store,
-    userId,
-    fileId,
-    clientId,
-    fileVersion,
-    errorHandler = defaultErrorHandler
-  ) => {
-    const unsubscribeFunctions = [
-      listenToFile(store, userId, fileId, clientId, errorHandler),
-      listenToBeats(store, userId, fileId, clientId, fileVersion, errorHandler),
-      listenToCards(store, userId, fileId, clientId, errorHandler),
-      listenToSeries(store, userId, fileId, clientId, errorHandler),
-      listenToBooks(store, userId, fileId, clientId, errorHandler),
-      listenToCategories(store, userId, fileId, clientId, errorHandler),
-      listenToCharacters(store, userId, fileId, clientId, errorHandler),
-      listenToCustomAttributes(store, userId, fileId, clientId, errorHandler),
-      listenToFeatureFlags(store, userId, fileId, clientId, errorHandler),
-      listenToLines(store, userId, fileId, clientId, errorHandler),
-      listenToNotes(store, userId, fileId, clientId, errorHandler),
-      listenToPlaces(store, userId, fileId, clientId, errorHandler),
-      listenToTags(store, userId, fileId, clientId, errorHandler),
-      listenTohierarchyLevels(store, userId, fileId, clientId, errorHandler),
-      listenToImages(store, userId, fileId, clientId, errorHandler),
-      listenToClient(store, userId, fileId, clientId, errorHandler),
-    ]
-    return unsubscribeFunctions
-  }
 
   const onFetched = (fileId, path, withData, clientId) => (documentRef) => {
     const data = documentRef && documentRef.data()
@@ -284,7 +264,6 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const fetchTags = fetchArrayAtPath('tags')
   const fetchhierarchyLevels = fetchObjectAtPath('hierarchyLevels')
   const fetchImages = fetchObjectAtPath('images')
-  const fetchClient = fetchObjectAtPath('client')
 
   const toFirestoreArray = (array) =>
     array.reduce((acc, value, index) => Object.assign(acc, { [index]: value }), {})
@@ -292,13 +271,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const overwriteAllKeys = (fileId, clientId, state) => {
     const requests = []
     Object.keys(state).forEach((key) => {
-      if (
-        key === 'editors' ||
-        key === 'error' ||
-        key === 'permission' ||
-        key === 'ui' ||
-        key === 'project'
-      ) {
+      if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) {
         return
       }
       const payload = ARRAY_KEYS.indexOf(key) !== -1 ? toFirestoreArray(state[key]) : state[key]
@@ -335,7 +308,6 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       fetchTags(userId, fileId, clientId),
       fetchhierarchyLevels(userId, fileId, clientId),
       fetchImages(userId, fileId, clientId),
-      fetchClient(userId, fileId, clientId),
     ])
       .then((results) => {
         const newOpenDate = new Date()
@@ -371,43 +343,37 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const deleteFile = (fileId, userId, clientId) => {
     const setDeleted = (path) => patch(path, fileId, { deleted: true }, clientId)
     const setDeletedfile = () => setDeleted('file')
-    const setDeletedcards = () => setDeleted('cards')
-    const setDeletedseries = () => setDeleted('series')
-    const setDeletedbooks = () => setDeleted('books')
-    const setDeletedcategories = () => setDeleted('categories')
-    const setDeletedcharacters = () => setDeleted('characters')
-    const setDeletedcustomAttributes = () => setDeleted('customAttributes')
-    const setDeletedlines = () => setDeleted('lines')
-    const setDeletednotes = () => setDeleted('notes')
-    const setDeletedplaces = () => setDeleted('places')
-    const setDeletedtags = () => setDeleted('tags')
-    const setDeletedhierarchyLevels = () => setDeleted('hierarchyLevels')
-    const setDeletedimages = () => setDeleted('images')
+    const setDeletedCards = () => setDeleted('cards')
+    const setDeletedSeries = () => setDeleted('series')
+    const setDeletedBooks = () => setDeleted('books')
+    const setDeletedCategories = () => setDeleted('categories')
+    const setDeletedCharacters = () => setDeleted('characters')
+    const setDeletedCustomAttributes = () => setDeleted('customAttributes')
+    const setDeletedLines = () => setDeleted('lines')
+    const setDeletedNotes = () => setDeleted('notes')
+    const setDeletedPlaces = () => setDeleted('places')
+    const setDeletedTags = () => setDeleted('tags')
+    const setDeletedHierarchyLevels = () => setDeleted('hierarchyLevels')
+    const setDeletedImages = () => setDeleted('images')
 
     return setDeletedfile().then((deleteFileResult) =>
       pingAuth(userId, fileId).then((pingAuthResult) =>
         Promise.all([
-          setDeletedcards(),
-          setDeletedseries(),
-          setDeletedbooks(),
-          setDeletedcategories(),
-          setDeletedcharacters(),
-          setDeletedcustomAttributes(),
-          setDeletedlines(),
-          setDeletednotes(),
-          setDeletedplaces(),
-          setDeletedtags(),
-          setDeletedhierarchyLevels(),
-          setDeletedimages(),
+          setDeletedCards(),
+          setDeletedSeries(),
+          setDeletedBooks(),
+          setDeletedCategories(),
+          setDeletedCharacters(),
+          setDeletedCustomAttributes(),
+          setDeletedLines(),
+          setDeletedNotes(),
+          setDeletedPlaces(),
+          setDeletedTags(),
+          setDeletedHierarchyLevels(),
+          setDeletedImages(),
         ]).then((results) => [pingAuthResult, deleteFileResult, ...results])
       )
     )
-  }
-
-  const stopListening = (unsubscribeFunctions) => {
-    unsubscribeFunctions.forEach((fn) => {
-      fn()
-    })
   }
 
   const listenToFiles = (userId, callback, errorHandler = defaultErrorHandler) => {
@@ -418,13 +384,14 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           const authorisedDocuments = []
           authorisationsRef.forEach((authorisation) => {
             const document = database()
-              .collection(`file`)
+              .collection('file')
               .doc(authorisation.id)
               .get()
               .then((file) => ({
                 id: file.id,
                 ...file.data(),
                 ...authorisation.data(),
+                path: `plottr://${file.id}`,
               }))
             authorisedDocuments.push(document)
           })
@@ -463,6 +430,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               id: file.id,
               ...file.data(),
               ...authorisation.data(),
+              path: `plottr://${file.id}`,
             }))
           authorisedDocuments.push(document)
         })
@@ -481,18 +449,20 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     return auth().signOut()
   }
 
-  const mintCookieToken = (user) => {
-    return user.getIdToken().then((idToken) => {
-      // do not remove this comment
-      return fetch(`${BASE_API_URL}/api/mint-token`, {
-        method: 'POST',
-        body: JSON.stringify({ idToken }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+  const mintCookieToken = () => {
+    return currentUser()
+      .getIdToken()
+      .then((idToken) => {
+        // do not remove this comment
+        return fetch(`${BASE_API_URL}/api/mint-token`, {
+          method: 'POST',
+          body: JSON.stringify({ idToken }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
       })
-    })
   }
 
   const onSessionChange = (cb, errorHandler = defaultErrorHandler) => {
@@ -506,14 +476,6 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       cb(user)
       return Promise.resolve(null)
     }, errorHandler)
-  }
-
-  let _firebaseui
-  const firebaseUI = () => {
-    if (_firebaseui) return _firebaseui
-    const firebaseui = require('firebaseui')
-    _firebaseui = new firebaseui.auth.AuthUI(auth())
-    return _firebaseui
   }
 
   const currentUser = () => {
@@ -576,7 +538,8 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           .get()
           .then((documentRef) => {
             const document = documentRef && documentRef.data()
-            const existingShareRecord = document.shareRecords.find(
+            const shareRecords = document.shareRecords || []
+            const existingShareRecord = shareRecords.find(
               (shareRecord) => shareRecord.emailAddress === emailAddress
             )
             if (existingShareRecord) {
@@ -587,7 +550,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               .doc(fileId)
               .set(
                 {
-                  shareRecords: [...document.shareRecords, { emailAddress, permission }],
+                  shareRecords: [...shareRecords, { emailAddress, permission }],
                 },
                 { merge: true }
               )
@@ -597,81 +560,67 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           })
       })
       .catch((error) => {
-        const status = error.response.status
-        log.error('Error sharing document', status, error.response)
-        if (status === 401) return mintCookieToken(currentUser())
+        const message = error?.message
+        const status = error?.response?.status
+        log.error('Error sharing document', message, status, error)
+        if (error?.response?.status === 401) return mintCookieToken(currentUser())
         return Promise.reject(error)
-      })
-  }
-
-  const publishRCEOperations = (fileId, editorId, editorKey, operations) => {
-    const modificationsRef = database().collection(`rce/${fileId}/editors/${editorId}/changes`)
-    const updateEditNumbersJob = operations.length
-      ? database()
-          .doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${editorKey}`)
-          .set(
-            {
-              timeStamp: new Date(),
-              editNumber: operations[operations.length - 1].editNumber,
-              editorKey,
-            },
-            {
-              merge: true,
-            }
-          )
-      : Promise.resolve([])
-    return Promise.all([
-      updateEditNumbersJob,
-      ...operations.map((operation) => {
-        modificationsRef.add(operation)
-      }),
-    ])
-  }
-
-  const catchupEditsSeen = (fileId, editorId, myEditorKey, otherEditorKey, since) => {
-    database()
-      .doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${myEditorKey}`)
-      .update({
-        timeStamp: new Date(),
-        [otherEditorKey]: since,
       })
   }
 
   const releaseRCELock = (fileId, editorId, expectedLock) => {
     const lockReference = database().doc(`rce/${fileId}/editors/${editorId}/locks/current`)
-    return database().runTransaction((transactions) => {
-      return transactions.get(lockReference).then((lock) => {
-        if (!lock.exists) {
-          return Promise.reject(`Lock for file: ${fileId}, and editor: ${editorId} doesn't exist!`)
-        }
-        if (isEqual(lock.data(), expectedLock)) {
-          return transactions.update(lockReference, { clientId: null })
-        }
-        return Promise.resolve('Lock modified by another client or request')
+    return database()
+      .runTransaction((transactions) => {
+        return transactions.get(lockReference).then((lock) => {
+          if (!lock.exists) {
+            return Promise.reject(
+              `Lock for file: ${fileId}, and editor: ${editorId} doesn't exist!`
+            )
+          }
+          if (isEqual(lock.data(), expectedLock)) {
+            return transactions.update(lockReference, { clientId: null })
+          }
+          return Promise.resolve('Lock modified by another client or request')
+        })
       })
-    })
+      .then(() => {
+        return database()
+          .doc(`rce/${fileId}/editors/${editorId}/locks/current`)
+          .get()
+          .then((ref) => {
+            return ref.data()
+          })
+      })
   }
 
   const lockRCE = (fileId, editorId, clientId, expectedLock, emailAddress = '') => {
     const lockReference = database().doc(`rce/${fileId}/editors/${editorId}/locks/current`)
-    return database().runTransaction((transactions) => {
-      return transactions.get(lockReference).then((lock) => {
-        if (!lock.exists) {
-          return lockReference.set({
-            clientId,
-            emailAddress,
-          })
-        }
-        if (isEqual(lock.data(), expectedLock)) {
-          return transactions.set(lockReference, {
-            clientId,
-            emailAddress,
-          })
-        }
+    return database()
+      .runTransaction((transactions) => {
+        return transactions.get(lockReference).then((lock) => {
+          if (!lock.exists) {
+            return lockReference.set({
+              clientId,
+              emailAddress,
+            })
+          }
+          if (isEqual(lock.data(), expectedLock)) {
+            return transactions.set(lockReference, {
+              clientId,
+              emailAddress,
+            })
+          }
 
-        return Promise.resolve('Lock modified by another client or request')
+          return Promise.resolve('Lock modified by another client or request')
+        })
       })
-    })
+      .then(() => {
+        return database()
+          .doc(`rce/${fileId}/editors/${editorId}/locks/current`)
+          .get()
+          .then((ref) => ref.data())
+      })
   }
 
   const listenForRCELock = (fileId, editorId, clientId, cb) => {
@@ -684,63 +633,6 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           return
         }
         cb(data)
-      })
-  }
-
-  const listenForChangesToEditor = (fileId, editorId, cb) => {
-    database()
-      .collection(`rce/${fileId}/editors/${editorId}/editTimestamps`)
-      .onSnapshot((documentsRef) => {
-        const documents = []
-        documentsRef.forEach((document) => {
-          documents.push(document.data())
-        })
-        cb(documents)
-      })
-  }
-
-  const deleteResults = (documentsRef) => {
-    const deleteTasks = []
-    documentsRef.docs.forEach((document) => {
-      deleteTasks.push(document.ref.delete())
-    })
-    return Promise.all(deleteTasks)
-  }
-
-  const deleteChangeSignal = (fileId, editorId, editorKey) => {
-    return database().doc(`rce/${fileId}/editors/${editorId}/editTimestamps/${editorKey}`).delete()
-  }
-
-  const ONE_MINUTE = 60 * 1000
-
-  const deleteOldChanges = (fileId, editorId) => {
-    const aMinuteAgo = DateTime.now().minus(Duration.fromMillis(ONE_MINUTE)).toJSDate()
-
-    return database()
-      .collection(`rce/${fileId}/editors/${editorId}/changes`)
-      .where('created', '<', aMinuteAgo)
-      .get()
-      .then(deleteResults)
-  }
-
-  // Orders the edits by time, then tries to keep edits from the same
-  // editor together while finally ordiring by the number from that
-  // editor.
-  const fetchRCEOperations = (fileId, editorId, since, editorKey, cb) => {
-    database()
-      .collection(`rce/${fileId}/editors/${editorId}/changes`)
-      .where('editorKey', '==', editorKey)
-      .where('editNumber', '>', since)
-      .orderBy('editNumber')
-      .get()
-      .then((documentRef) => {
-        const documents = []
-        if (documentRef) {
-          documentRef.forEach((document) => {
-            documents.push(document.data())
-          })
-        }
-        if (documents.length) cb(documents)
       })
   }
 
@@ -782,7 +674,8 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const saveBackup = (userId, file) => {
     const startOfToday = DateTime.now().startOf('day').toJSDate()
     const lastModified = new Date()
-    const fileId = file.project.selectedFile.id
+    const fileId = selectors.fileIdSelector(file)
+    const fileName = selectors.fileNameSelector(file)
 
     return startOfSessionBackup(userId, file, startOfToday, fileId).then((startOfSession) => {
       // Is there a backup for the start of today?
@@ -801,6 +694,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
                 .doc(`backup/${userId}/files/${documentRef.id}`)
                 .update({
                   ...document,
+                  fileName,
                   storagePath: path,
                   lastModified: new Date(),
                 })
@@ -813,7 +707,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
               storagePath: path,
               startOfSession: false,
               fileId,
-              fileName: file.project.selectedFile.fileName,
+              fileName,
               lastModified: new Date(),
             })
           })
@@ -825,7 +719,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           backupTime: startOfToday,
           fileId,
           storagePath: path,
-          fileName: file.project.selectedFile.fileName,
+          fileName,
           startOfSession: true,
           lastModified: new Date(),
         })
@@ -862,7 +756,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const backupToStorage = (userId, file, date, startOfSession) => {
-    const fileId = file.project.selectedFile.id
+    const fileId = selectors.fileIdSelector(file)
     const filePath = toBackupPath(userId, fileId, date, startOfSession)
     const storageTask = storage()
       .ref()
@@ -975,8 +869,8 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         return response.data.publicURL
       })
       .catch((error) => {
-        const status = error.response.status
-        log.error('Error sharing document', status, error.response)
+        const status = error?.response?.status
+        log.error('Error getting image public url', status, error?.response, error)
         if (status === 401) return mintCookieToken(currentUser())
         return Promise.reject(error)
       })
@@ -986,34 +880,44 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     return string.startsWith('storage://')
   }
 
+  const loginWithEmailAndPassword = (userName, password) => {
+    return auth().signInWithEmailAndPassword(userName, password)
+  }
+
   return {
     editFileName,
-    listen,
+    listenToFile,
+    listenToBeats,
+    listenToCards,
+    listenToSeries,
+    listenToBooks,
+    listenToCategories,
+    listenToCharacters,
+    listenToCustomAttributes,
+    listenToFeatureFlags,
+    listenToLines,
+    listenToNotes,
+    listenToPlaces,
+    listenToTags,
+    listenToHierarchyLevels,
+    listenToImages,
     toFirestoreArray,
     overwriteAllKeys,
     initialFetch,
     deleteFile,
-    stopListening,
     listenToFiles,
     fetchFiles,
     logOut,
     mintCookieToken,
     onSessionChange,
-    firebaseUI,
     currentUser,
     hasUndefinedValue,
     patch,
     overwrite,
     shareDocument,
-    publishRCEOperations,
-    catchupEditsSeen,
     releaseRCELock,
     lockRCE,
     listenForRCELock,
-    listenForChangesToEditor,
-    deleteChangeSignal,
-    deleteOldChanges,
-    fetchRCEOperations,
     saveBackup,
     listenForBackups,
     saveCustomTemplate,
@@ -1026,6 +930,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     backupPublicURL,
     imagePublicURL,
     isStorageURL,
+    loginWithEmailAndPassword,
   }
 }
 

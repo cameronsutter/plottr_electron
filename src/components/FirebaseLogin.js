@@ -1,31 +1,71 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
+import { PropTypes } from 'prop-types'
+import { Button } from 'react-bootstrap'
+
+import { t } from 'plottr_locales'
 
 import { checkDependencies } from './checkDependencies'
 
 const FirebaseLoginConnector = (connector) => {
   const {
     platform: {
-      firebase: { startUI, firebaseUI },
+      login: { loginPopupURL },
     },
   } = connector
-  checkDependencies({ startUI, firebaseUI })
+  checkDependencies({ loginPopupURL })
 
-  const FirebaseLogin = () => {
-    const firebaseLoginComponentRef = useRef(null)
+  const FirebaseLogin = ({ startLoggingIn, loggingIn }) => {
+    const handleLogin = () => {
+      startLoggingIn()
+      window.open(
+        loginPopupURL,
+        'Login',
+        `scrollbars=no,` +
+          `resizable=no,` +
+          `status=no,` +
+          `location=no,` +
+          `toolbar=no,` +
+          `menubar=no,` +
+          `width=700,` +
+          `height=600,` +
+          `left=500,` +
+          `top=200`
+      )
+    }
 
-    useEffect(() => {
-      if (firebaseLoginComponentRef?.current) {
-        const ui = firebaseUI()
-        startUI(ui, '#firebase_login_root')
-      }
-    }, [firebaseLoginComponentRef])
-
-    return <div ref={firebaseLoginComponentRef} id="firebase_login_root" />
+    return (
+      <div>
+        <Button onClick={handleLogin} disabled={loggingIn} bsStyle="success">
+          {t('Click here to log in')}
+        </Button>
+      </div>
+    )
   }
 
-  FirebaseLogin.propTypes = {}
+  FirebaseLogin.propTypes = {
+    loggingIn: PropTypes.bool,
+    startLoggingIn: PropTypes.func.isRequired,
+  }
 
-  return FirebaseLogin
+  const {
+    redux,
+    pltr: { selectors, actions },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect(
+      (state) => ({
+        loggingIn: selectors.isLoggingInSelector(state.present),
+      }),
+      {
+        startLoggingIn: actions.applicationState.startLoggingIn,
+      }
+    )
+  }
+
+  throw new Error('Could not connect FirebaseLogin')
 }
 
 export default FirebaseLoginConnector

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 
 import UnconnectedRichText from '../rce/RichText'
@@ -29,14 +29,17 @@ const CardDescriptionEditorConnector = (connector) => {
     const editorPath = helpers.editors.cardDescriptionEditorPath(cardId)
     checkDependencies({ editorPath })
 
-    const handleDescriptionChange = (newDescription, selection) => {
-      editCardAttributes(
-        cardId,
-        newDescription ? { description: newDescription } : null,
-        editorPath,
-        selection
-      )
-    }
+    const handleDescriptionChange = useCallback(
+      (newDescription, selection) => {
+        editCardAttributes(
+          cardId,
+          newDescription ? { description: newDescription } : null,
+          editorPath,
+          selection
+        )
+      },
+      [cardId, editorPath]
+    )
 
     return (
       <RichText

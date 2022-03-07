@@ -53,7 +53,7 @@ const TimelineWrapperConnector = (connector) => {
     bookId,
     tour,
     tourActions,
-    allCards,
+    cardsExistOnTimeline,
     actions,
     featureFlags,
   }) => {
@@ -247,7 +247,7 @@ const TimelineWrapperConnector = (connector) => {
     // //////////////
 
     const startSaveAsTemplate = () => {
-      if (allCards.length) saveAsTemplate('plotlines')
+      if (cardsExistOnTimeline) saveAsTemplate('plotlines')
 
       return false
     }
@@ -313,7 +313,7 @@ const TimelineWrapperConnector = (connector) => {
             <Dropdown.Menu>
               <MenuItem
                 disabled={
-                  !allCards.length ||
+                  !cardsExistOnTimeline ||
                   templatesDisabled ||
                   helpers.featureFlags.beatHierarchyIsOn(featureFlags)
                 }
@@ -459,7 +459,7 @@ const TimelineWrapperConnector = (connector) => {
   }
 
   TimelineWrapper.propTypes = {
-    allCards: PropTypes.array,
+    cardsExistOnTimeline: PropTypes.bool,
     bookId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
     timelineBundle: PropTypes.object.isRequired,
     featureFlags: PropTypes.object.isRequired,
@@ -480,7 +480,7 @@ const TimelineWrapperConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          allCards: selectors.allCardsSelector(state.present),
+          cardsExistOnTimeline: selectors.cardsExistOnTimelineSelector(state.present),
           bookId: selectors.currentTimelineSelector(state.present),
           timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),

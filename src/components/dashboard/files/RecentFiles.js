@@ -57,6 +57,19 @@ const formatFileName = (fileName, fileBasename, onFirebase, offline) => {
   return offline ? fileName : onFirebase ? fileName : fileBasename.replace('.pltr', '')
 }
 
+const convertFromNanosAndSeconds = (nanosAndSecondsObject) => {
+  if (
+    !nanosAndSecondsObject ||
+    !nanosAndSecondsObject.nanoseconds ||
+    !nanosAndSecondsObject.seconds
+  ) {
+    return null
+  }
+  return new Date(
+    nanosAndSecondsObject.seconds * 1000 + nanosAndSecondsObject.nanoseconds / 1000000
+  )
+}
+
 const RecentFilesConnector = (connector) => {
   const {
     platform: {
@@ -175,9 +188,7 @@ const RecentFilesConnector = (connector) => {
         }
 
         if (fileObj.lastOpened) {
-          return todayIfInvalid(
-            fileObj.lastOpened.toDate ? fileObj.lastOpened.toDate() : new Date(fileObj.lastOpened)
-          )
+          return convertFromNanosAndSeconds(fileObj.lastOpened) || new Date(fileObj.lastOpened)
         }
 
         try {

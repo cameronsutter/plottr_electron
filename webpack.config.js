@@ -174,25 +174,7 @@ const rendererConfig = {
   target: 'electron-renderer',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        reactIcons: {
-          name: 'reactIcons',
-          priority: 10,
-          chunks: 'all',
-          test(module) {
-            return module.resource && module.resource.includes('react-icons')
-          },
-        },
-        commons: {
-          name: 'commons',
-          chunks: 'initial',
-          minChunks: 2,
-        },
-      },
-    },
-  },
+  optimization: { splitChunks: false },
 }
 
 module.exports = [rendererConfig, mainConfig]

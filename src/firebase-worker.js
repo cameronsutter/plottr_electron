@@ -87,6 +87,7 @@ import {
   GET_ID_TOKEN_RESULT_REPLY,
   INITIALISE_WORKER,
   LISTEN_UNSUBSCRIBE,
+  LOG_FROM_WORKER,
 } from './firebase-messages'
 import { machineIdSync } from 'node-machine-id'
 
@@ -306,6 +307,26 @@ export const firebaseWorker = (logger) => {
       case OVERWRITE_ALL_KEYS_REPLY: {
         resolvePromise()
         return
+      }
+      case LOG_FROM_WORKER: {
+        switch (payload.level) {
+          case 'info': {
+            logger.info(...payload.args)
+            break
+          }
+          case 'warn': {
+            logger.warn(...payload.args)
+            break
+          }
+          case 'error': {
+            logger.error(...payload.args)
+            break
+          }
+          default: {
+            logger.info(...payload.args)
+            break
+          }
+        }
       }
     }
   }

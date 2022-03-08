@@ -365,6 +365,9 @@ const platform = {
     saveCustomTemplate,
     uploadExisting,
   },
+  login: {
+    loginPopupURL: '/login-popup.html',
+  },
   storage: {
     isStorageURL,
     resolveToPublicUrl: (storageUrl) => {

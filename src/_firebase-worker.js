@@ -49,7 +49,7 @@ import {
   LISTEN_UNSUBSCRIBE,
   LISTEN_FOR_RCE_LOCK_UNSUBSCRIBE,
 } from './firebase-messages'
-import { logger } from './logger'
+import { logger } from './worker-logger'
 
 const wiredUp = wireUpAPI(logger)
 
@@ -132,7 +132,6 @@ self.onmessage = (event) => {
     case INITIALISE_WORKER: {
       const { clientId } = messagePayload
       self.clientId = clientId
-      setClientId(clientId)
       self.postMessage({
         type: typeToReplyType(INITIALISE_WORKER),
         messageId,

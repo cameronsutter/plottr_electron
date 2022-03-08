@@ -32,6 +32,7 @@ import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
 import { uploadToFirebase } from '../upload-to-firebase'
+import { openFile } from '../connected-components'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -269,7 +270,13 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
   const state = store.getState().present
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
-  uploadToFirebase(emailAddress, userId, json, fileName)
+  uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
+    const fileId = response.data.fileId
+    openFile(`plottr://${fileId}`, fileId, false)
+    store.dispatch(actions.applicationState.finishScrivenerImporter())
+    closeDashboard()
+    return fileId
+  })
 })
 
 ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {

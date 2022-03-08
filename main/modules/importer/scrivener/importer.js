@@ -1,7 +1,6 @@
 import fs from 'fs'
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
-import log from 'electron-log'
 import path from 'path'
 import { cloneDeep } from 'lodash'
 
@@ -507,15 +506,14 @@ function extractStoryLines(
 }
 // Object, Array <any>, Object, Int -> Object { txtContent: {}, rtfContent: {} }
 function mapMatchedFiles(newJson, matchFiles, fileContents, bookId, isSection) {
-  matchFiles.flatMap((file) => {
-    const noRTF = !file.filePath.includes(file.filePath.endsWith('.rtf'))
+  matchFiles.forEach((file) => {
     const isTxt = path.extname(file.filePath) == '.txt'
     const isRTF = path.extname(file.filePath) == '.rtf'
     const matchedFileId =
       (Array.isArray(file.filePath.match(UUIDFolderRegEx))
         ? file.filePath.match(UUIDFolderRegEx)[0]
         : file.filePath.match(UUIDFolderRegEx)) || getVer_2_7_matchName(file.filePath)
-    if (noRTF && !newJson.lines.length) {
+    if (!isRTF && !newJson.lines.length) {
       // TODO: check if rtf on manuscript can contain other rtfs
       // other than the rtf files created by Plottr on `notes.rtf`
       fileContents.rtfContents.lineId = createNewLine(
@@ -613,7 +611,7 @@ function getRTFContents(lines, rtf, matchId, bookId, isSection) {
 }
 
 function generateNotes(currentState, json, bookId, files, isNewFile) {
-  json.map((item) => {
+  json.forEach((item) => {
     const id = item['_attributes']['UUID'] || item['_attributes']['ID']
     const title = item['Title']['_text']
     const matchFiles = getMatchedRelevantFiles(files, id)
@@ -635,7 +633,7 @@ function generateNotes(currentState, json, bookId, files, isNewFile) {
 }
 
 function generatePlaces(currentState, json, bookId, files, isNewFile) {
-  json.map((item) => {
+  json.forEach((item) => {
     const id = item['_attributes']['UUID'] || item['_attributes']['ID']
     const name = item['Title']['_text']
     const matchFiles = getMatchedRelevantFiles(files, id)
@@ -668,7 +666,7 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
 }
 
 function generateCharacters(currentState, json, bookId, files, isNewFile) {
-  json.map((item) => {
+  json.forEach((item) => {
     const id = item['_attributes']['UUID'] || item['_attributes']['ID']
     const name = item['Title']['_text']
     const matchFile = getMatchedRelevantFiles(files, id)
@@ -692,30 +690,6 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
 
       createNewCharacter(currentState.characters, values)
       createCustomCharacterAttributes(currentState, content)
-    }
-  })
-}
-
-function getSectionRelevantFiles(matchFiles, bookId, isNotCharactersJson) {
-  const fileContents = { txtContent: createSlateParagraph(''), rtfContents: [] }
-  return matchFiles.flatMap((file) => {
-    const isTxt = path.extname(file.filePath) == '.txt'
-    const isRTF = path.extname(file.filePath) == '.rtf'
-    if (isNotCharactersJson) {
-      if (file.contents && file.contents.length) {
-        Object.assign(
-          fileContents.rtfContents,
-          file.contents.filter((i, idx) => idx > 0)
-        )
-        return fileContents.rtfContents
-      }
-    } else if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
-      Object.assign(fileContents.txtContent, file.contents)
-      return fileContents.txtContent
-    } else if (isRTF) {
-      const rtfContents = getRTFContents([], file, '', bookId)
-      Object.assign(fileContents.rtfContents, rtfContents)
-      return fileContents.rtfContents
     }
   })
 }

@@ -32,7 +32,6 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
-
 import {
   renameFile,
   saveFile,
@@ -135,6 +134,7 @@ const platform = {
       if (isLoggedIn) {
         store.dispatch(actions.applicationState.startUploadingFileToCloud())
       }
+
       store.dispatch(actions.project.showLoader(true))
       _openExistingFile(!!userId, userId, emailAddress)
         .then(() => {
@@ -221,6 +221,11 @@ const platform = {
     moveItemToTrash,
     createFromSnowflake: (importedPath) => {
       ipcRenderer.send('create-from-snowflake', importedPath)
+    },
+    createFromScrivener: (importedPath) => {
+      const state = store.getState().present
+      const isLoggedIntoPro = selectors.hasProSelector(state)
+      ipcRenderer.send('create-from-scrivener', importedPath, isLoggedIntoPro)
     },
     joinPath: path.join,
     listOfflineFiles,

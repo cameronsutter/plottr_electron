@@ -2,13 +2,16 @@ import path from 'path'
 import fs from 'fs'
 import Store from 'electron-store'
 import log from 'electron-log'
-import { app } from 'electron'
+import { app, ipcMain } from 'electron'
 import { isEqual } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
 
 import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
 import { Importer } from './importer/snowflake/importer'
+import { ScrivenerImporter } from './importer/scrivener/importer'
+
 import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { openProjectWindow } from './windows/projects'
 import { shell } from 'electron'
@@ -358,6 +361,47 @@ async function createFromSnowflake(importedPath) {
   openKnownFile(filePath, fileId)
 }
 
+function createRTFConversionFunction(sender) {
+  return function (rtfString) {
+    return new Promise((resolve, reject) => {
+      const conversionId = uuidv4()
+      sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
+      ipcMain.once(conversionId, (_event, slate) => {
+        resolve(slate)
+      })
+    })
+  }
+}
+
+function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
+  const storyName = path.basename(importedPath, '.scriv')
+  let json = emptyFile(storyName, app.getVersion())
+  json.beats = {
+    series: tree.newTree('id'),
+  }
+  json.lines = []
+  const importedJsonPromise = ScrivenerImporter(
+    importedPath,
+    true,
+    json,
+    createRTFConversionFunction(sender)
+  )
+
+  if (isLoggedIntoPro) {
+    importedJsonPromise.then((importedJson) => {
+      sender.send('create-plottr-cloud-file', importedJson, storyName)
+    })
+    return
+  }
+
+  importedJsonPromise.then((importedJson) => {
+    saveToTempFile(importedJson).then((filePath) => {
+      const fileId = addToKnownFiles(filePath)
+      openKnownFile(filePath, fileId)
+    })
+  })
+}
+
 function openKnownFile(filePath, id, unknown) {
   if (id && !filePath.startsWith('plottr://')) {
     // update lastOpen, but wait a little so the file doesn't move from under their mouse
@@ -438,6 +482,7 @@ export {
   deleteKnownFile,
   createNew,
   createFromSnowflake,
+  createFromScrivener,
   openKnownFile,
   saveOfflineFile,
 }

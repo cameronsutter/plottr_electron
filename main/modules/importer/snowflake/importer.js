@@ -35,6 +35,7 @@ function Importer(path, isNewFile, state) {
   storyLine(currentState, json, bookTitle, bookId, isNewFile)
   synopsis(currentState, json, bookTitle, bookId, isNewFile)
   characters(currentState, json, bookId)
+
   cards(currentState, json, bookId)
 
   return currentState

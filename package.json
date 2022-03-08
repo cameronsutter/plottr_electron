@@ -52,11 +52,13 @@
     "electron-util": "^0.17.2",
     "electron-window-state": "^5.0.3",
     "is-lite": "^0.8.0",
+    "jsdom": "^16.7.0",
     "luxon": "^1.27.0",
     "react-is": "^16.13.1",
     "react-joyride": "^2.3.0",
     "redux-thunk": "^2.3.0",
     "rollbar": "^2.19.4",
+    "rtf.js": "^3.0.7",
     "tiny-invariant": "^1.0.6",
     "tree-changes": "^0.6.1"
   },

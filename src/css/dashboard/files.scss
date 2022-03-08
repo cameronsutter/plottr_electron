@@ -23,6 +23,36 @@
   width: 95%;
   height: 25vh;
   max-height: 30vh;
+
+  .pro-import {
+    padding: 0;
+  }
+
+  .pro-import .dropdown-toggle {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background: transparent !important;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-size: calc(14 * 0.1vw);
+    padding: calc(15 * 0.1vw) calc(11 * 0.1vw);
+
+    svg {
+      font-size: calc(50 * 0.1vw);
+      color: $gray-5;
+        &:hover,
+        &.active {
+          svg {
+            color: $gray-3;
+          }
+        }
+    }
+  }
 }
 
 .dashboard__new-files__wrapper {

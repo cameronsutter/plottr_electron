@@ -371,7 +371,9 @@ const platform = {
     uploadExisting,
   },
   login: {
-    loginPopupURL: '/login-popup.html',
+    launchLoginPopup: () => {
+      ipcRenderer.send('pls-open-login-popup')
+    },
   },
   storage: {
     isStorageURL,

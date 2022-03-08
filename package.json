@@ -13,7 +13,7 @@
   },
   "main": "bin/electron_main.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev electron .",
+    "start": "cross-env NODE_ENV=dev electron --inspect=5858 .",
     "compile": "npm --prefix lib/plottr_components run compile && cross-env NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "npm-run-all --parallel watch:*",
     "watch:plottr": "echo 'do you have fsevents?' && cross-env NODE_ENV=dev node_modules/.bin/webpack",

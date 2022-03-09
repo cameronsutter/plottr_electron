@@ -329,6 +329,21 @@ async function saveToTempFile(json, name) {
   const fileName = name || `${t('Untitled')}${tempId == 1 ? '' : tempId}`
   const tempName = `${fileName}.pltr`
   const filePath = path.join(TEMP_FILES_PATH, tempName)
+  let stats
+  try {
+    stats = await lstat(filePath)
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      const errorMessage = `We couldn't save your file to ${filePath}.`
+      log.error(errorMessage)
+      throw new Error(errorMessage)
+    }
+  }
+  if (stats && stats.isFile(filePath)) {
+    const errorMessage = `File: ${filePath} already exists.`
+    log.error(errorMessage)
+    throw new Error(errorMessage)
+  }
   tempFilesStore.set(`${tempId}`, { filePath })
   await saveFile(filePath, json)
   return filePath
@@ -376,6 +391,7 @@ async function createFromSnowflake(importedPath) {
   const filePath = await saveToTempFile(importedJson)
   const fileId = addToKnownFiles(filePath)
   openKnownFile(filePath, fileId)
+  return true
 }
 
 function createRTFConversionFunction(sender) {
@@ -408,11 +424,11 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
     importedJsonPromise.then((importedJson) => {
       sender.send('create-plottr-cloud-file', importedJson, storyName)
     })
-    return
+    return Promise.resolve()
   }
 
-  importedJsonPromise.then((importedJson) => {
-    saveToTempFile(importedJson).then((filePath) => {
+  return importedJsonPromise.then((importedJson) => {
+    return saveToTempFile(importedJson).then((filePath) => {
       const fileId = addToKnownFiles(filePath)
       openKnownFile(filePath, fileId)
     })

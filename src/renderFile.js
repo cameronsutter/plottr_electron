@@ -6,6 +6,7 @@ import Main from 'containers/Main'
 import Listener from './app/components/listener'
 import Renamer from './app/components/Renamer'
 import SaveAs from './app/components/SaveAs'
+import Error from './app/components/Error'
 
 import { store } from './app/store'
 
@@ -15,6 +16,7 @@ export const renderFile = (root) => {
       <Listener />
       <Renamer />
       <SaveAs />
+      <Error />
       <Main />
     </Provider>,
     root

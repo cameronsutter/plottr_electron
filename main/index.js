@@ -212,16 +212,31 @@ ipcMain.on('add-to-known-files-and-open', (_event, file) => {
   openKnownFile(file, id, false)
 })
 
-ipcMain.on('create-new-file', (_event, template, name) => {
-  createNew(template, name)
+ipcMain.on('create-new-file', (event, template, name) => {
+  createNew(template, name).catch((error) => {
+    event.sender.send('error', {
+      message: error.message,
+      source: 'create-new-file',
+    })
+  })
 })
 
-ipcMain.on('create-from-snowflake', (_event, importedPath) => {
-  createFromSnowflake(importedPath)
+ipcMain.on('create-from-snowflake', (event, importedPath) => {
+  createFromSnowflake(importedPath).catch((error) => {
+    event.sender.send('error', {
+      message: error.message,
+      source: 'create-new-file',
+    })
+  })
 })
 
 ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro) => {
-  createFromScrivener(importedPath, event.sender, isLoggedIntoPro)
+  createFromScrivener(importedPath, event.sender, isLoggedIntoPro).catch((error) => {
+    event.sender.send('error', {
+      message: error.message,
+      source: 'create-new-file',
+    })
+  })
 })
 
 ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {

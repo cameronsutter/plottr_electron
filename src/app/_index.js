@@ -296,6 +296,11 @@ ipcRenderer.on('from-template', () => {
   setTimeout(createFromTemplate, 300)
 })
 
+ipcRenderer.on('error', (event, { message, source }) => {
+  logger.error(`Error reported via IPC from <${source}> with message: ${message}`)
+  store.dispatch(actions.error.saveTempFileError(message))
+})
+
 // TODO: not sure when/whether we should unsubscribe.  Presumably
 // when the window is refreshed/closed?
 //

@@ -101,7 +101,7 @@ const platform = {
     ipcRenderer.send('pls-quit')
   },
   file: {
-    createNew: (template) => {
+    createNew: (template, name) => {
       const state = store.getState()
       const {
         client: { emailAddress, userId, clientId },
@@ -110,7 +110,7 @@ const platform = {
       if (userId) {
         store.dispatch(actions.project.showLoader(true))
         store.dispatch(actions.applicationState.startCreatingCloudFile())
-        newFile(emailAddress, userId, fileList, state, clientId, template, openFile)
+        newFile(emailAddress, userId, fileList, state, clientId, template, openFile, name)
           .then((fileId) => {
             logger.info('Created new file.', fileId)
             store.dispatch(actions.project.showLoader(false))
@@ -122,7 +122,7 @@ const platform = {
             store.dispatch(actions.applicationState.finishCreatingCloudFile())
           })
       } else {
-        ipcRenderer.send('create-new-file', template)
+        ipcRenderer.send('create-new-file', template, name)
       }
     },
     openExistingFile: () => {

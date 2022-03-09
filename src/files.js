@@ -31,6 +31,17 @@ export const newEmptyFile = (fileName, appVersion, currentFile) => {
   }
 }
 
+const newFileName = (fileList, name) => {
+  if (name) {
+    return name
+  }
+
+  const untitledFileList = fileList.filter(({ fileName }) => {
+    return fileName && fileName.match(/Untitled/g)
+  })
+  return t('Untitled') + ` - ${untitledFileList.length}`
+}
+
 export const newFile = (
   emailAddress,
   userId,
@@ -38,14 +49,11 @@ export const newFile = (
   fullState,
   clientId,
   template,
-  openFile
+  openFile,
+  name
 ) => {
-  const untitledFileList = fileList.filter(({ fileName }) => {
-    return fileName && fileName.match(/Untitled/g)
-  })
-  const fileName = t('Untitled') + ` - ${untitledFileList.length}`
+  const fileName = newFileName(fileList, name)
   const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
-
   return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
     const fileId = response.data.fileId
     openFile(`plottr://${fileId}`, fileId, false)

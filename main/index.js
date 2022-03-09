@@ -212,8 +212,8 @@ ipcMain.on('add-to-known-files-and-open', (_event, file) => {
   openKnownFile(file, id, false)
 })
 
-ipcMain.on('create-new-file', (_event, template) => {
-  createNew(template)
+ipcMain.on('create-new-file', (_event, template, name) => {
+  createNew(template, name)
 })
 
 ipcMain.on('create-from-snowflake', (_event, importedPath) => {

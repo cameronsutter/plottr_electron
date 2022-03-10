@@ -221,8 +221,8 @@ ipcMain.on('create-new-file', (event, template, name) => {
   })
 })
 
-ipcMain.on('create-from-snowflake', (event, importedPath) => {
-  createFromSnowflake(importedPath).catch((error) => {
+ipcMain.on('create-from-snowflake', (event, importedPath, isLoggedIntoPro) => {
+  createFromSnowflake(importedPath, event.sender, isLoggedIntoPro).catch((error) => {
     event.sender.send('error', {
       message: error.message,
       source: 'create-new-file',

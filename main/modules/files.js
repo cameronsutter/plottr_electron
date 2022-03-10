@@ -378,7 +378,7 @@ async function createNew(template, name) {
   }
 }
 
-async function createFromSnowflake(importedPath) {
+async function createFromSnowflake(importedPath, sender, isLoggedIntoPro) {
   const storyName = path.basename(importedPath, '.snowXML')
   let json = emptyFile(storyName, app.getVersion())
   // clear beats and lines
@@ -387,6 +387,11 @@ async function createFromSnowflake(importedPath) {
   }
   json.lines = []
   const importedJson = Importer(importedPath, true, json)
+
+  if (isLoggedIntoPro) {
+    sender.send('create-plottr-cloud-file', importedJson, storyName)
+    return Promise.resolve()
+  }
 
   const filePath = await saveToTempFile(importedJson)
   const fileId = addToKnownFiles(filePath)

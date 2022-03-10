@@ -220,7 +220,9 @@ const platform = {
     readFileSync,
     moveItemToTrash,
     createFromSnowflake: (importedPath) => {
-      ipcRenderer.send('create-from-snowflake', importedPath)
+      const state = store.getState().present
+      const isLoggedIntoPro = selectors.hasProSelector(state)
+      ipcRenderer.send('create-from-snowflake', importedPath, isLoggedIntoPro)
     },
     createFromScrivener: (importedPath) => {
       const state = store.getState().present

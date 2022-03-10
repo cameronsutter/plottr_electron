@@ -1,13 +1,14 @@
 import path from 'path'
 import log from 'electron-log'
 import { BrowserWindow } from 'electron'
+import { enable } from '@electron/remote/main'
 
 import { filePrefix } from '../helpers'
 
 export function openLoginPopupWindow() {
   const config = {
-    width: 700,
-    height: 600,
+    width: 360,
+    height: 400,
     fullscreen: false,
     show: false,
     fullscreenable: true,
@@ -19,6 +20,8 @@ export function openLoginPopupWindow() {
     },
   }
   const newWindow = new BrowserWindow(config)
+
+  enable(newWindow.webContents)
 
   newWindow.once('ready-to-show', () => {
     newWindow.show()

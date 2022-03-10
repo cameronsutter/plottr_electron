@@ -182,12 +182,12 @@ const loginPopupConfig = {
   watch: process.env.NODE_ENV === 'dev',
   context: path.resolve(__dirname, 'src'),
   entry: {
-    app: path.resolve('.', 'src', 'app', 'login.js'),
-    css: path.resolve('.', 'src', 'css', 'index'),
+    loginApp: path.resolve('.', 'src', 'app', 'login.js'),
+    loginCSS: path.resolve('.', 'src', 'css', 'index'),
   },
   output: {
     path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
-    filename: 'login.js',
+    filename: '[name].bundle.js',
   },
   module: {
     rules: [

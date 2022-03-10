@@ -1,5 +1,6 @@
 import { groupBy } from 'lodash'
 
+import { helpers } from 'pltr/v2'
 import {
   onSessionChange,
   listenToCustomTemplates as listenToCustomTemplatesFromFirebase,
@@ -145,7 +146,7 @@ export const listenToBackupsChanges = (cb) => {
       if (user) {
         unsubscribeFromBackupsChanges = listenForBackupsFromFirebase(user.uid, (backups) => {
           const grouped = groupBy(backups, (backup) => {
-            const date = backup?.lastModified?.toDate() || new Date()
+            const date = helpers.time.convertFromNanosAndSeconds(backup?.lastModified) || new Date()
             return `${date.getMonth() + 1}_${date.getDate()}_${date.getFullYear()}`
           })
           const backupFolders = []

@@ -436,7 +436,7 @@ self.onmessage = (event) => {
       const { userId } = messagePayload
       const unsubscribe = listenToCustomTemplates(userId, (result) => {
         self.postMessage({
-          type: typeToReplyType(LISTEN_FOR_RCE_LOCK),
+          type: typeToReplyType(LISTEN_TO_CUSTOM_TEMPLATES),
           messageId,
           payload: result,
         })

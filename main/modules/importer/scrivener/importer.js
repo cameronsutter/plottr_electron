@@ -15,6 +15,7 @@ const defaultPlace = initialState.place
 const defaultCharacter = initialState.character
 const defaultCard = initialState.card
 const defaultLine = initialState.line
+const defaultTag = initialState.tag
 
 const { nextId, objectId } = newIds
 const {
@@ -658,10 +659,22 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
         rtfContents: mappedFiles.rtfContents,
         txtContent: createSlateEditor(mappedFiles.txtContent),
       }
-      const content = generateCustomAttribute({ contents: fileContents.rtfContents }, name)
+      const content = generateCustomAttribute(
+        { contents: fileContents.rtfContents },
+        currentState,
+        name
+      )
       const customAttributes = content
         // remove three dots placeholder if key
         .filter((item) => Object.keys(item)[0] != '...')
+        .map((item) => {
+          if (isATag(Object.keys(item)[0])) {
+            const tagIds = generateTagIds(currentState, Object.values(item)[0])
+            return { tags: tagIds }
+          } else {
+            return item
+          }
+        })
         .reduce(
           (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
           {}
@@ -702,12 +715,22 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
     const children = item['Children']
     const matchFile = getMatchedRelevantFiles(files, id)
     if (matchFile && matchFile.length) {
-      const content = generateCustomAttribute(matchFile[0], name)
+      const content = generateCustomAttribute(matchFile[0], currentState, name)
 
-      const characterAttributes = content.reduce(
-        (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
-        {}
-      )
+      const characterAttributes = content
+        .filter((item) => Object.keys(item)[0] != '...')
+        .map((item) => {
+          if (isATag(Object.keys(item)[0])) {
+            const tagIds = generateTagIds(currentState, Object.values(item)[0])
+            return { tags: tagIds }
+          } else {
+            return item
+          }
+        })
+        .reduce(
+          (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
+          {}
+        )
 
       let values = {
         name,
@@ -732,16 +755,21 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
   })
 }
 
-function generateCustomAttribute(fileContents, name) {
+function isATag(objKey) {
+  return objKey.toLowerCase().trim() == 'tags'
+}
+
+function generateCustomAttribute(fileContents, currentState, name) {
   const fileContentsArr = Array.isArray(fileContents.contents)
     ? fileContents.contents
     : [fileContents.contents]
   const flatAttributes = fileContentsArr
     .flatMap((i, idx) => {
       if (i.children && i.children.length) {
-        return i.children.filter(
-          (child, idx) => child.text.toLowerCase().trim() != name.toLowerCase().trim()
-        )
+        return i.children.filter((child, idx) => {
+          const isNameAttr = child.text.toLowerCase().trim() == name.toLowerCase().trim()
+          return !isNameAttr
+        })
       }
     })
     .filter((item) => Object.entries(item).length)
@@ -753,16 +781,38 @@ function generateCustomAttribute(fileContents, name) {
     .filter((item, index) => index % 2 == 0)
 }
 
-function createCustomAttributes(currentState, characterAttributes, section) {
-  if (characterAttributes && characterAttributes.length) {
-    const mappedAttributes = characterAttributes
+function generateTagIds(currentState, stringOfTags) {
+  const splittedTags = stringOfTags.includes(',') ? stringOfTags.split(',') : [stringOfTags]
+  return splittedTags.map((tag) => {
+    return createNewTag(currentState.tags, tag)
+  })
+}
+
+function createNewTag(currentTags, title) {
+  const nextTagId = nextId(currentTags)
+  const cardExist = currentTags.find(
+    (tag) => tag.title.toLowerCase().trim() == title.toLowerCase().trim()
+  )
+  if (!cardExist) {
+    const newTag = Object.assign({}, defaultTag, { id: nextTagId, title })
+    currentTags.push(newTag)
+    return nextTagId
+  }
+  return cardExist.id
+}
+
+function createCustomAttributes(currentState, attributes, section) {
+  if (attributes && attributes.length) {
+    const mappedAttributes = attributes
       .map((attributes) => {
         const newAttr = Object.keys(attributes)[0]
         const attributeExists = currentState.customAttributes[section].find(
           (attr) => attr.name == newAttr
         )
 
-        if (!attributeExists || !currentState.customAttributes[section].length) {
+        const tagAttribute = newAttr.toLowerCase().trim() == 'tags'
+
+        if ((!attributeExists || !currentState.customAttributes[section].length) && !tagAttribute) {
           return { name: newAttr, type: 'text' }
         }
       })

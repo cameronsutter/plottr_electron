@@ -2,7 +2,7 @@ import fs from 'fs'
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
 import path from 'path'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, keys, values } from 'lodash'
 
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 
@@ -495,8 +495,14 @@ function extractStoryLines(
         const cardId = child['_attributes']['UUID'] || child['_attributes']['ID']
         const cardTitle = child['Title']['_text']
 
-        // files same filename prefix with the cards (v2.7)
-        // same filename parent directory (v3)
+        // Scrivener v2_7
+        // card content is same filename, prefix with (number/string) the card ID
+        // e.g. 1234_notes.rtf, 123_synopsis.txt
+
+        // Scrivener 3
+        // card content is same filename of (UUIDFolderRegEx pattern) parent directory,
+        // followed by notes, synopsis or just uuid
+        // e.g. 9A337676-2163-499F-9CBE-A6F4BC300B5B/notes.rtf, 9A337676-2163-499F-9CBE-A6F4BC300B5B/synopsis.txt
         const matchFiles = getMatchedRelevantFiles(relevantFiles, cardId)
         let fileContents = { txtContent: createSlateParagraph(''), rtfContents: { lineId: 1 } }
         if (matchFiles && matchFiles.length) {
@@ -654,12 +660,12 @@ function generateNotes(currentState, json, bookId, files, isNewFile) {
         rtfContents: mappedFiles.rtfContents,
         txtContent: createSlateEditor(mappedFiles.txtContent),
       }
-      const values = {
+      const note = {
         title,
         bookIds: [bookId],
         content: fileContents.rtfContents,
       }
-      createNewNote(currentState.notes, values)
+      createNewNote(currentState.notes, note)
     } else if (children['BinderItem']) {
       const binderItemsArr = Array.isArray(children['BinderItem'])
         ? children['BinderItem']
@@ -693,10 +699,10 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
       )
       const customAttributes = content
         // remove three dots placeholder if key
-        .filter((item) => Object.keys(item)[0] != '...')
+        .filter((item) => keys(item)[0] != '...')
         .map((item) => {
-          const attrKey = Object.keys(item)[0]
-          const attrValue = Object.values(item)[0]
+          const attrKey = keys(item)[0]
+          const attrValue = values(item)[0]
 
           if (isATag(attrKey)) {
             const tagIds = generateTagIds(currentState, attrValue)
@@ -705,22 +711,19 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
             return strippedDefaultAttributes(currentState, 'places', attrKey, attrValue || '')
           }
         })
-        .reduce(
-          (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
-          {}
-        )
+        .reduce((obj, item) => Object.assign(obj, { [keys(item)[0]]: values(item)[0] }), {})
 
-      let values = {
+      let place = {
         name,
         bookIds: [bookId],
       }
       if (content && content.length) {
-        values = {
-          ...values,
+        place = {
+          ...place,
           ...customAttributes,
         }
       }
-      createNewPlace(currentState.places, values)
+      createNewPlace(currentState.places, place)
       createCustomAttributes(currentState, content, 'places')
     } else if (children['BinderItem']) {
       // for the manuscript we assign the parent folder of the card as the line
@@ -748,10 +751,10 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
       const content = generateCustomAttribute(matchFile[0], currentState, name)
 
       const characterAttributes = content
-        .filter((item) => Object.keys(item)[0] != '...')
+        .filter((item) => keys(item)[0] != '...')
         .map((item) => {
-          const attrKey = Object.keys(item)[0]
-          const attrValue = Object.values(item)[0]
+          const attrKey = keys(item)[0]
+          const attrValue = values(item)[0]
 
           if (isATag(attrKey)) {
             const tagIds = generateTagIds(currentState, attrValue)
@@ -760,23 +763,20 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
             return strippedDefaultAttributes(currentState, 'characters', attrKey, attrValue || '')
           }
         })
-        .reduce(
-          (obj, item) => Object.assign(obj, { [Object.keys(item)[0]]: Object.values(item)[0] }),
-          {}
-        )
+        .reduce((obj, item) => Object.assign(obj, { [keys(item)[0]]: values(item)[0] }), {})
 
-      let values = {
+      let character = {
         name,
         bookIds: [bookId],
       }
       if (content && content.length) {
-        values = {
-          ...values,
+        character = {
+          ...character,
           ...characterAttributes,
         }
       }
 
-      createNewCharacter(currentState.characters, values)
+      createNewCharacter(currentState.characters, character)
       createCustomAttributes(currentState, content, 'characters')
     } else if (children['BinderItem']) {
       const binderItemsArr = Array.isArray(children['BinderItem'])
@@ -788,6 +788,7 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
   })
 }
 
+// Object, String, String, String -> Object
 function strippedDefaultAttributes(currentState, section, key, value) {
   const strippedKey = key.toLowerCase().trim()
   if (strippedKey == 'description') {
@@ -812,12 +813,14 @@ function isATag(objKey) {
   return objKey.toLowerCase().trim() == 'tags'
 }
 
+// String -> Bool
 function isNotExcludedAttribute(attribute) {
-  const excludedAttributes = ['tags', 'description', 'notes', 'category']
+  const excludedAttributes = ['tags', 'description', 'notes', 'category', '...']
   const strippedAttribute = attribute.toLowerCase().trim()
   return !excludedAttributes.includes(strippedAttribute)
 }
 
+// Object, Object, String -> [Object]
 function generateCustomAttribute(fileContents, currentState, name) {
   const fileContentsArr = Array.isArray(fileContents.contents)
     ? fileContents.contents
@@ -831,7 +834,7 @@ function generateCustomAttribute(fileContents, currentState, name) {
         })
       }
     })
-    .filter((item) => Object.entries(item).length)
+    .filter(Boolean)
 
   return flatAttributes
     .map((item, index) => ({
@@ -840,6 +843,7 @@ function generateCustomAttribute(fileContents, currentState, name) {
     .filter((item, index) => index % 2 == 0)
 }
 
+// Object, String -> [Any]
 function generateTagIds(currentState, stringOfTags) {
   const splittedTags = stringOfTags.includes(',') ? stringOfTags.split(',') : [stringOfTags]
   return splittedTags.map((tag) => {
@@ -851,15 +855,10 @@ function createCustomAttributes(currentState, attributes, section) {
   if (attributes && attributes.length) {
     const mappedAttributes = attributes
       .map((attributes) => {
-        const newAttr = Object.keys(attributes)[0]
+        const newAttr = keys(attributes)[0]
         const attributeExists = currentState.customAttributes[section].find(
           (attr) => attr.name.toLowerCase().trim() == newAttr.toLowerCase().trim()
         )
-
-        const tagAttribute = newAttr.toLowerCase().trim() == 'tags'
-        const descriptionAttribute = newAttr.toLowerCase().trim() == 'description'
-        const notesAttribute = newAttr.toLowerCase().trim() == 'notes'
-        const categoryAttribute = newAttr.toLowerCase().trim() == 'category'
 
         if (
           (!currentState.customAttributes[section].length || !attributeExists) &&

@@ -812,6 +812,12 @@ function isATag(objKey) {
   return objKey.toLowerCase().trim() == 'tags'
 }
 
+function isNotExcludedAttribute(attribute) {
+  const excludedAttributes = ['tags', 'description', 'notes', 'category']
+  const strippedAttribute = attribute.toLowerCase().trim()
+  return !excludedAttributes.includes(strippedAttribute)
+}
+
 function generateCustomAttribute(fileContents, currentState, name) {
   const fileContentsArr = Array.isArray(fileContents.contents)
     ? fileContents.contents
@@ -857,10 +863,7 @@ function createCustomAttributes(currentState, attributes, section) {
 
         if (
           (!currentState.customAttributes[section].length || !attributeExists) &&
-          !tagAttribute &&
-          !descriptionAttribute &&
-          !notesAttribute &&
-          !categoryAttribute
+          isNotExcludedAttribute(newAttr)
         ) {
           return { name: newAttr, type: 'text' }
         }

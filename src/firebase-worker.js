@@ -117,19 +117,36 @@ export const firebaseWorker = (logger) => {
   const registerCallback = (type, payload, callback) => {
     const messageId = uuidv4()
     callbacks.set(messageId, callback)
-    worker.postMessage({
-      type,
-      messageId,
-      payload,
-    })
-    return () => {
+    const unsubscribe = () => {
       callbacks.delete(messageId)
-      worker.postMessage({
-        type: typeToUnsubscribeType(type),
-        messageId,
-        payload: {},
-      })
+      try {
+        worker.postMessage({
+          type: typeToUnsubscribeType(type),
+          messageId,
+          payload: {},
+        })
+      } catch (error) {
+        logger.error(`Error trying to unsubscribe from ${type} with payload: ${payload}`)
+      }
     }
+    try {
+      worker.postMessage({
+        type,
+        messageId,
+        payload,
+      })
+      return unsubscribe
+    } catch (error) {
+      logger.error(`Error while registering a listener on ${type} with payload: ${payload}`)
+    }
+    const failedUnsubscribe = () => {
+      logger.error(
+        `Trying to unsubscribe from ${type} with payload: ${payload}, but the operation failed in the first place.
+Caller should instead check for the property: 'failedToSubscribe' to check whether we subscribed successfully.`
+      )
+    }
+    failedUnsubscribe.failedToSubscribe = true
+    return failedUnsubscribe
   }
 
   const setStore = (targetStore) => {

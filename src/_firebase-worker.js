@@ -141,11 +141,15 @@ self.onmessage = (event) => {
     case INITIALISE_WORKER: {
       const { clientId } = messagePayload
       self.clientId = clientId
-      self.postMessage({
-        type: typeToReplyType(INITIALISE_WORKER),
-        messageId,
-        payload: {},
-      })
+      try {
+        self.postMessage({
+          type: typeToReplyType(INITIALISE_WORKER),
+          messageId,
+          payload: {},
+        })
+      } catch (error) {
+        logger.error('Error logging error to main process: ', error)
+      }
       return
     }
     case EDIT_FILE_NAME: {
@@ -156,13 +160,17 @@ self.onmessage = (event) => {
     case LISTEN: {
       const { userId, fileId, clientId, fileVersion } = messagePayload
       const replyWithReduxAction = (action) => {
-        self.postMessage({
-          type: typeToReplyType(type),
-          messageId,
-          payload: {
-            action,
-          },
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(type),
+            messageId,
+            payload: {
+              action,
+            },
+          })
+        } catch (error) {
+          logger.error('Error logging error to main process: ', error)
+        }
       }
       const unsubscribeToFile = listenToFile(userId, fileId, clientId, replyWithReduxAction)
       const unsubscribeToBeats = listenToBeats(
@@ -263,11 +271,15 @@ self.onmessage = (event) => {
     case LISTEN_TO_FILES: {
       const { userId } = messagePayload
       const unsubscribe = listenToFiles(userId, (result) => {
-        self.postMessage({
-          type: typeToReplyType(LISTEN_TO_FILES),
-          messageId,
-          payload: result,
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(LISTEN_TO_FILES),
+            messageId,
+            payload: result,
+          })
+        } catch (error) {
+          logger.error('Error replying to LISTEN_TO_FILES: ', error)
+        }
       })
       unsubscribeFunctions.set(messageId, unsubscribe)
       return
@@ -288,30 +300,37 @@ self.onmessage = (event) => {
       return
     }
     case ON_SESSION_CHANGE: {
-      // TODO: I'm not sure that the user can be serialised.
       const unsubscribe = onSessionChange((user) => {
-        self.postMessage({
-          type: typeToReplyType(ON_SESSION_CHANGE),
-          messageId,
-          payload: user && {
-            email: user.email,
-            uid: user.uid,
-          },
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(ON_SESSION_CHANGE),
+            messageId,
+            payload: user && {
+              email: user.email,
+              uid: user.uid,
+            },
+          })
+        } catch (error) {
+          logger.error('Error replying to ON_SESSION_CHANGE: ', error)
+        }
       })
       unsubscribeFunctions.set(messageId, unsubscribe)
       return
     }
     case CURRENT_USER: {
       const user = currentUser()
-      self.postMessage({
-        type: typeToReplyType(CURRENT_USER),
-        messageId,
-        payload: user && {
-          email: user.email,
-          uid: user.uid,
-        },
-      })
+      try {
+        self.postMessage({
+          type: typeToReplyType(CURRENT_USER),
+          messageId,
+          payload: user && {
+            email: user.email,
+            uid: user.uid,
+          },
+        })
+      } catch (error) {
+        logger.error('Error replying to CURRENT_USER: ', error)
+      }
       return
     }
     case PATCH: {
@@ -396,35 +415,47 @@ self.onmessage = (event) => {
           }))
         )
       } else {
-        self.postMessage({
-          type: typeToReplyType(GET_ID_TOKEN_RESULT),
-          messageId,
-          // Shape exists because of how it was historically used by
-          // the app before being refactored to this location.
-          payload: {
-            claims: {},
-          },
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(GET_ID_TOKEN_RESULT),
+            messageId,
+            // Shape exists because of how it was historically used by
+            // the app before being refactored to this location.
+            payload: {
+              claims: {},
+            },
+          })
+        } catch (error) {
+          logger.error('Error replying to GET_ID_TOKEN_RESULT: ', error)
+        }
       }
       return
     }
     case IS_STORAGE_URL: {
       const { string } = messagePayload
-      self.postMessage({
-        type: typeToReplyType(IS_STORAGE_URL),
-        messageId,
-        payload: isStorageURL(string),
-      })
+      try {
+        self.postMessage({
+          type: typeToReplyType(IS_STORAGE_URL),
+          messageId,
+          payload: isStorageURL(string),
+        })
+      } catch (error) {
+        logger.error('Error replying to IS_STORAGE_URL: ', error)
+      }
       return
     }
     case LISTEN_FOR_RCE_LOCK: {
       const { fileId, editorId, clientId } = messagePayload
       const unsubscribe = listenForRCELock(fileId, editorId, clientId, (result) => {
-        self.postMessage({
-          type: typeToReplyType(LISTEN_FOR_RCE_LOCK),
-          messageId,
-          payload: result,
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(LISTEN_FOR_RCE_LOCK),
+            messageId,
+            payload: result,
+          })
+        } catch (error) {
+          logger.error('Error replying to LISTEN_FOR_RCE_LOCK: ', error)
+        }
       })
       unsubscribeFunctions.set(messageId, unsubscribe)
       return
@@ -432,11 +463,15 @@ self.onmessage = (event) => {
     case LISTEN_FOR_BACKUPS: {
       const { userId } = messagePayload
       const unsubscribe = listenForBackups(userId, (result) => {
-        self.postMessage({
-          type: typeToReplyType(LISTEN_FOR_BACKUPS),
-          messageId,
-          payload: result,
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(LISTEN_FOR_BACKUPS),
+            messageId,
+            payload: result,
+          })
+        } catch (error) {
+          logger.error('Error replying to LISTEN_FOR_BACKUPS: ', error)
+        }
       })
       unsubscribeFunctions.set(messageId, unsubscribe)
       return
@@ -444,11 +479,15 @@ self.onmessage = (event) => {
     case LISTEN_TO_CUSTOM_TEMPLATES: {
       const { userId } = messagePayload
       const unsubscribe = listenToCustomTemplates(userId, (result) => {
-        self.postMessage({
-          type: typeToReplyType(LISTEN_TO_CUSTOM_TEMPLATES),
-          messageId,
-          payload: result,
-        })
+        try {
+          self.postMessage({
+            type: typeToReplyType(LISTEN_TO_CUSTOM_TEMPLATES),
+            messageId,
+            payload: result,
+          })
+        } catch (error) {
+          logger.error('Error replying to LISTEN_TO_CUSTOM_TEMPLATES: ', error)
+        }
       })
       unsubscribeFunctions.set(messageId, unsubscribe)
       return

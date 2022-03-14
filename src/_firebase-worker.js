@@ -117,14 +117,23 @@ self.onmessage = (event) => {
         })
       } catch (error) {
         logger.error('Error posting message back', error)
-        self.postMessage({
-          type: errorTypeToReplyType(type),
-          payload: {
-            message: error.message,
-            source: 'reply',
-          },
-          messageId,
-        })
+        try {
+          self.postMessage({
+            type: errorTypeToReplyType(type),
+            payload: {
+              message: error.message,
+              source: 'reply',
+            },
+            messageId,
+          })
+        } catch (secondError) {
+          logger.error(
+            'Error telling the main process about an error.  Second error: ',
+            secondError,
+            '.  First error (the error we tried to tell the main process): ',
+            error
+          )
+        }
       }
     }
 

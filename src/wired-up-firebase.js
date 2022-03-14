@@ -1,8 +1,11 @@
-import { firebaseWorker } from './firebase-worker'
+import { firebaseWorker } from 'plottr_firebase/worker/firebase-worker'
+import { machineIdSync } from 'node-machine-id'
 
 import { logger } from './logger'
 
-const worker = firebaseWorker(logger)
+const mintSessionClientId = machineIdSync
+
+const worker = firebaseWorker(logger, mintSessionClientId)
 
 export const editFileName = worker.editFileName
 export const listen = worker.listen

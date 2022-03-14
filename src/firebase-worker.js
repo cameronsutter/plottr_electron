@@ -138,15 +138,8 @@ export const firebaseWorker = (logger) => {
       return unsubscribe
     } catch (error) {
       logger.error(`Error while registering a listener on ${type} with payload: ${payload}`)
+      throw error
     }
-    const failedUnsubscribe = () => {
-      logger.error(
-        `Trying to unsubscribe from ${type} with payload: ${payload}, but the operation failed in the first place.
-Caller should instead check for the property: 'failedToSubscribe' to check whether we subscribed successfully.`
-      )
-    }
-    failedUnsubscribe.failedToSubscribe = true
-    return failedUnsubscribe
   }
 
   const setStore = (targetStore) => {
@@ -162,22 +155,36 @@ Caller should instead check for the property: 'failedToSubscribe' to check wheth
     if (targetStore) store = targetStore
     const messageId = uuidv4()
     const unsubscribeFunction = () => {
-      worker.postMessage({
-        type: LISTEN_UNSUBSCRIBE,
-        payload: messageId,
-        messageId: messageId,
-      })
+      try {
+        worker.postMessage({
+          type: LISTEN_UNSUBSCRIBE,
+          payload: messageId,
+          messageId: messageId,
+        })
+      } catch (error) {
+        logger.error('Error while trying to unsubscribe from listen with: ', {
+          userId,
+          fileId,
+          clientId,
+          fileVersion,
+        })
+      }
     }
-    worker.postMessage({
-      type: LISTEN,
-      messageId,
-      payload: {
-        userId,
-        fileId,
-        clientId,
-        fileVersion,
-      },
-    })
+    try {
+      worker.postMessage({
+        type: LISTEN,
+        messageId,
+        payload: {
+          userId,
+          fileId,
+          clientId,
+          fileVersion,
+        },
+      })
+    } catch (error) {
+      logger.error('Error trying to listen to file', { userId, fileId, clientId, fileVersion })
+      throw error
+    }
     return unsubscribeFunction
   }
   const overwriteAllKeys = (fileId, clientId, state) => {
@@ -347,11 +354,16 @@ Caller should instead check for the property: 'failedToSubscribe' to check wheth
       }
     }
   }
-  worker.postMessage({
-    type: INITIALISE_WORKER,
-    messageId: uuidv4(),
-    payload: { clientId: sessionClientId() },
-  })
+  try {
+    worker.postMessage({
+      type: INITIALISE_WORKER,
+      messageId: uuidv4(),
+      payload: { clientId: sessionClientId() },
+    })
+  } catch (error) {
+    logger.error('Error initialising worker: ', error)
+    throw error
+  }
 
   return {
     setStore,

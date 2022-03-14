@@ -372,6 +372,11 @@ const platform = {
     saveCustomTemplate,
     uploadExisting,
   },
+  login: {
+    launchLoginPopup: () => {
+      ipcRenderer.send('pls-open-login-popup')
+    },
+  },
   storage: {
     isStorageURL,
     resolveToPublicUrl: (storageUrl) => {

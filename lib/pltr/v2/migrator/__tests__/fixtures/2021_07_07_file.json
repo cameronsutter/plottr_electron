@@ -47,17 +47,13 @@
       "timelineTemplates": [],
       "imageId": null
     },
-    "allIds": [
-      1
-    ]
+    "allIds": [1]
   },
   "beats": {
     "1": {
       "children": {
         "1": [],
-        "null": [
-          1
-        ]
+        "null": [1]
       },
       "heap": {
         "1": null

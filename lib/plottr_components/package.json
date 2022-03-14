@@ -1,6 +1,6 @@
 {
   "name": "plottr_components",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "main": "dist/components/index.js",
   "files": [
@@ -21,9 +21,7 @@
     "sub-compile:utils": "cross-env NODE_ENV=production babel src/utils --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
     "sub-compile:connections": "cross-env NODE_ENV=production babel src/connections --out-dir dist/connections --ignore **/__tests__,**/__fixtures__",
     "sub-compile:sass": "sass src/css/components.scss dist/components/components.css",
-    "sub-compile:fonts": "node bin/copy-files.js",
-    "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "sub-compile:fonts": "node bin/copy-files.js"
   },
   "browserslist": {
     "production": [
@@ -41,12 +39,6 @@
     "@babel/cli": "^7.13.10",
     "@babel/preset-env": "^7.13.10",
     "@babel/preset-react": "^7.12.13",
-    "@storybook/addon-actions": "^6.1.21",
-    "@storybook/addon-essentials": "^6.1.21",
-    "@storybook/addon-links": "^6.1.21",
-    "@storybook/node-logger": "^6.1.21",
-    "@storybook/preset-create-react-app": "^3.1.7",
-    "@storybook/react": "^6.1.21",
     "autoprefixer": "^10.2.6",
     "cross-env": "^7.0.3",
     "dom-parser": "^0.1.6",
@@ -73,7 +65,6 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
-    "fastpriorityqueue": "^0.7.1",
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.1.0",

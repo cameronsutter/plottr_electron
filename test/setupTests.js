@@ -50,6 +50,8 @@ jest.mock('electron', () => ({
   },
 }))
 
+jest.mock('wired-up-firebase', () => ({}))
+
 class MockStore {
   constructor({ name }) {
     this.name = name

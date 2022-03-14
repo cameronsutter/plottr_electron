@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
 import { actions, selectors } from 'pltr/v2'
-import { listen, stopListening, fetchFiles, currentUser, logOut } from 'wired-up-firebase'
+import { listen, fetchFiles, getIdTokenResult, logOut } from 'wired-up-firebase'
 import { t } from 'plottr_locales'
 
 import { store } from '../store'
@@ -36,6 +36,7 @@ const Listener = ({
   withFullFileState,
   isLoggedIn,
   checkedSession,
+  checkingProSubscription,
   setHasPro,
   setUserId,
   setEmailAddress,
@@ -43,7 +44,7 @@ const Listener = ({
   startLoadingALicenseType,
   finishLoadingALicenseType,
 }) => {
-  const [unsubscribeFunctions, setUnsubscribeFunctions] = useState([])
+  const [unsubscribeFunction, setUnsubscribeFunction] = useState(null)
 
   const wasOffline = useRef(isOffline)
 
@@ -98,17 +99,17 @@ const Listener = ({
     }
 
     if (fileLoaded) {
-      setUnsubscribeFunctions(
-        listen(store, userId, selectedFile.id, clientId, selectedFile.version)
-      )
+      setUnsubscribeFunction(listen(store, userId, selectedFile.id, clientId, selectedFile.version))
       setPermission(selectedFile.permission)
     } else {
       setFileLoaded()
     }
 
     return () => {
-      stopListening(unsubscribeFunctions)
-      setUnsubscribeFunctions([])
+      if (unsubscribeFunction) {
+        unsubscribeFunction()
+        setUnsubscribeFunction(null)
+      }
     }
   }, [
     offlineModeIsEnabled,
@@ -122,11 +123,11 @@ const Listener = ({
   ])
 
   useEffect(() => {
-    if (isOffline && unsubscribeFunctions.length) {
-      stopListening(unsubscribeFunctions)
-      setUnsubscribeFunctions([])
+    if (isOffline && unsubscribeFunction) {
+      unsubscribeFunction()
+      setUnsubscribeFunction(null)
     }
-  }, [isOffline, unsubscribeFunctions])
+  }, [isOffline, unsubscribeFunction])
 
   useEffect(() => {
     // It's not valid to change a window with an falsy name or set our
@@ -164,40 +165,38 @@ const Listener = ({
   }
 
   useEffect(() => {
-    if (checkedSession && isLoggedIn && !hasPro) {
+    if (checkedSession && isLoggedIn && !hasPro && !checkingProSubscription) {
       startLoadingALicenseType('proSubscription')
-      currentUser()
-        ?.getIdTokenResult()
-        .then((token) => {
-          if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
-            handleCheckPro(
-              userId,
-              emailAddress,
-              token.claims.lifeTime || token.claims.admin,
-              token.claims.admin
-            )(true, { expiration: 'lifetime', admin: true })
-          } else {
-            if (emailAddress) {
-              licenseServerAPIs
-                .checkForPro(
+      getIdTokenResult().then((token) => {
+        if (token.claims.beta || token.claims.admin || token.claims.lifetime) {
+          handleCheckPro(
+            userId,
+            emailAddress,
+            token.claims.lifeTime || token.claims.admin,
+            token.claims.admin
+          )(true, { expiration: 'lifetime', admin: true })
+        } else {
+          if (emailAddress) {
+            licenseServerAPIs
+              .checkForPro(
+                emailAddress,
+                handleCheckPro(
+                  userId,
                   emailAddress,
-                  handleCheckPro(
-                    userId,
-                    emailAddress,
-                    token.claims.lifeTime || token.claims.admin,
-                    token.claims.admin
-                  )
+                  token.claims.lifeTime || token.claims.admin,
+                  token.claims.admin
                 )
-                .catch((error) => {
-                  // TODO: maybe retry?
-                  logger.error('Failed to check for pro', error)
-                  finishLoadingALicenseType('proSubscription')
-                })
-            }
+              )
+              .catch((error) => {
+                // TODO: maybe retry?
+                logger.error('Failed to check for pro', error)
+                finishLoadingALicenseType('proSubscription')
+              })
           }
-        })
+        }
+      })
     }
-  }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro])
+  }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro, checkingProSubscription])
 
   return null
 }
@@ -220,6 +219,7 @@ Listener.propTypes = {
   isLoggedIn: PropTypes.bool,
   checkedSession: PropTypes.bool,
   offlineModeIsEnabled: PropTypes.bool,
+  checkingProSubscription: PropTypes.bool,
   setHasPro: PropTypes.func.isRequired,
   setUserId: PropTypes.func.isRequired,
   setEmailAddress: PropTypes.func.isRequired,
@@ -246,6 +246,7 @@ export default connect(
     isLoggedIn: selectors.isLoggedInSelector(state.present),
     checkedSession: selectors.sessionCheckedSelector(state.present),
     offlineModeIsEnabled: selectors.offlineModeEnabledSelector(state.present),
+    checkingProSubscription: selectors.checkingProSubscriptionSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,

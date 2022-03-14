@@ -1,48 +1,41 @@
-import { wireUpAPI, startUI as startUIFromFirebase } from 'plottr_firebase'
+import { firebaseWorker } from './firebase-worker'
 
 import { logger } from './logger'
 
-export const startUI = startUIFromFirebase
+const worker = firebaseWorker(logger)
 
-const wiredUp = wireUpAPI(logger)
+export const editFileName = worker.editFileName
+export const listen = worker.listen
+export const overwriteAllKeys = worker.overwriteAllKeys
+export const initialFetch = worker.initialFetch
+export const deleteFile = worker.deleteFile
+export const listenToFiles = worker.listenToFiles
+export const fetchFiles = worker.fetchFiles
+export const logOut = worker.logOut
+export const mintCookieToken = worker.mintCookieToken
+export const onSessionChange = worker.onSessionChange
+export const currentUser = worker.currentUser
+export const patch = worker.patch
+export const overwrite = worker.overwrite
+export const shareDocument = worker.shareDocument
+export const releaseRCELock = worker.releaseRCELock
+export const lockRCE = worker.lockRCE
+export const listenForRCELock = worker.listenForRCELock
+export const saveBackup = worker.saveBackup
+export const listenForBackups = worker.listenForBackups
+export const saveCustomTemplate = worker.saveCustomTemplate
+export const listenToCustomTemplates = worker.listenToCustomTemplates
+export const editCustomTemplate = worker.editCustomTemplate
+export const deleteCustomTemplate = worker.deleteCustomTemplate
+export const saveImageToStorageBlob = worker.saveImageToStorageBlob
+export const saveImageToStorageFromURL = worker.saveImageToStorageFromURL
+export const backupPublicURL = worker.backupPublicURL
+export const imagePublicURL = worker.imagePublicURL
+export const isStorageURL = worker.isStorageURL
+export const loginWithEmailAndPassword = worker.loginWithEmailAndPassword
+export const getIdTokenResult = worker.getIdTokenResult
+export const isInitialised = worker.isInitialised
 
-export const editFileName = wiredUp.editFileName
-export const listen = wiredUp.listen
-export const withFileId = wiredUp.withFileId
-export const toFirestoreArray = wiredUp.toFirestoreArray
-export const overwriteAllKeys = wiredUp.overwriteAllKeys
-export const initialFetch = wiredUp.initialFetch
-export const deleteFile = wiredUp.deleteFile
-export const stopListening = wiredUp.stopListening
-export const listenToFiles = wiredUp.listenToFiles
-export const fetchFiles = wiredUp.fetchFiles
-export const logOut = wiredUp.logOut
-export const mintCookieToken = wiredUp.mintCookieToken
-export const onSessionChange = wiredUp.onSessionChange
-export const firebaseUI = wiredUp.firebaseUI
-export const currentUser = wiredUp.currentUser
-export const hasUndefinedValue = wiredUp.hasUndefinedValue
-export const patch = wiredUp.patch
-export const overwrite = wiredUp.overwrite
-export const shareDocument = wiredUp.shareDocument
-export const publishRCEOperations = wiredUp.publishRCEOperations
-export const catchupEditsSeen = wiredUp.catchupEditsSeen
-export const releaseRCELock = wiredUp.releaseRCELock
-export const lockRCE = wiredUp.lockRCE
-export const listenForRCELock = wiredUp.listenForRCELock
-export const listenForChangesToEditor = wiredUp.listenForChangesToEditor
-export const deleteChangeSignal = wiredUp.deleteChangeSignal
-export const deleteOldChanges = wiredUp.deleteOldChanges
-export const fetchRCEOperations = wiredUp.fetchRCEOperations
-export const saveBackup = wiredUp.saveBackup
-export const listenForBackups = wiredUp.listenForBackups
-export const saveCustomTemplate = wiredUp.saveCustomTemplate
-export const allTemplateUrlsForUser = wiredUp.allTemplateUrlsForUser
-export const listenToCustomTemplates = wiredUp.listenToCustomTemplates
-export const editCustomTemplate = wiredUp.editCustomTemplate
-export const deleteCustomTemplate = wiredUp.deleteCustomTemplate
-export const saveImageToStorageBlob = wiredUp.saveImageToStorageBlob
-export const saveImageToStorageFromURL = wiredUp.saveImageToStorageFromURL
-export const backupPublicURL = wiredUp.backupPublicURL
-export const imagePublicURL = wiredUp.imagePublicURL
-export const isStorageURL = wiredUp.isStorageURL
+// Duplicated utility functions
+export const toFirestoreArray = (array) =>
+  array.reduce((acc, value, index) => Object.assign(acc, { [index]: value }), {})

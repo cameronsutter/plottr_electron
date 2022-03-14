@@ -2,7 +2,7 @@ import rp from 'request-promise-native'
 import log from 'electron-log'
 import { machineIdSync } from 'node-machine-id'
 
-import { currentUser } from 'wired-up-firebase'
+import { getIdTokenResult } from 'wired-up-firebase'
 
 import setupRollbar from '../common/utils/rollbar'
 import { fileSystemAPIs } from './'
@@ -114,8 +114,7 @@ export function checkForPro(email, callback) {
         log.info(info.product_id, info.status, info.expiration)
         callback(true, info)
       } else {
-        currentUser()
-          ?.getIdTokenResult()
+        getIdTokenResult()
           .then((token) => {
             if (token?.claims?.beta || token?.claims?.admin || token?.claims?.lifetime) {
               callback(true)

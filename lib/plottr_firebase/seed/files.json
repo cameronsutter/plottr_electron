@@ -5,10 +5,7 @@
       "loaded": true,
       "dirty": true,
       "version": "2021.8.19",
-      "appliedMigrations": [
-        "m2021_6_9",
-        "m2021_8_1"
-      ],
+      "appliedMigrations": ["m2021_6_9", "m2021_8_1"],
       "initialVersion": "2021.5.19"
     },
     "ui": {
@@ -95,11 +92,7 @@
         "timelineTemplates": [],
         "imageId": null
       },
-      "allIds": [
-        1,
-        2,
-        3
-      ]
+      "allIds": [1, 2, 3]
     },
     "beats": {
       "1": {
@@ -114,18 +107,7 @@
           "9": [],
           "10": [],
           "11": [],
-          "null": [
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11
-          ]
+          "null": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         },
         "heap": {
           "2": null,
@@ -264,18 +246,7 @@
           "20": [],
           "21": [],
           "22": [],
-          "null": [
-            13,
-            14,
-            15,
-            16,
-            17,
-            18,
-            19,
-            20,
-            21,
-            22
-          ]
+          "null": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
         },
         "heap": {
           "13": null,
@@ -405,9 +376,7 @@
       "3": {
         "children": {
           "12": [],
-          "null": [
-            12
-          ]
+          "null": [12]
         },
         "heap": {
           "12": null
@@ -431,11 +400,7 @@
           "1": [],
           "23": [],
           "24": [],
-          "null": [
-            24,
-            23,
-            1
-          ]
+          "null": [24, 23, 1]
         },
         "heap": {
           "1": null,
@@ -572,13 +537,8 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          5
-        ],
+        "tags": [2, 8],
+        "characters": [5],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -603,16 +563,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 8],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -636,13 +589,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          2
-        ],
+        "tags": [4, 14],
+        "characters": [2],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -667,13 +615,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          4
-        ],
+        "tags": [4, 14],
+        "characters": [4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -698,13 +641,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [4, 14],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -729,16 +667,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -762,12 +693,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          5
-        ],
+        "tags": [2],
+        "characters": [5],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -792,18 +719,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          7,
-          14
-        ],
-        "characters": [
-          2,
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 7, 14],
+        "characters": [2, 5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -827,16 +745,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -860,18 +771,9 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          3,
-          4,
-          2
-        ],
-        "places": [
-          1
-        ],
+        "tags": [4, 14],
+        "characters": [3, 4, 2],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -895,10 +797,7 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          7
-        ],
+        "tags": [3, 7],
         "characters": [],
         "places": [],
         "templates": [],
@@ -924,15 +823,9 @@
             ]
           }
         ],
-        "tags": [
-          3
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [3],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -956,16 +849,9 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [3, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -989,16 +875,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          14
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 14],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1022,16 +901,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1055,16 +927,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1095,17 +960,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          14
-        ],
-        "characters": [
-          2,
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 14],
+        "characters": [2, 5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1129,12 +986,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          4
-        ],
+        "tags": [2],
+        "characters": [4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1159,12 +1012,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [2],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1196,17 +1045,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5,
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5, 3],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1237,17 +1078,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5,
-          4
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 13],
+        "characters": [5, 4],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1271,12 +1104,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [2],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1301,18 +1130,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1,
-          3,
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [1, 3, 2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1336,16 +1156,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          7
-        ],
-        "characters": [
-          2
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 7],
+        "characters": [2],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1369,16 +1182,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          4
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 8],
+        "characters": [4],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1402,16 +1208,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 8],
+        "characters": [3],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1449,14 +1248,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          2,
-          3,
-          4
-        ],
+        "tags": [2],
+        "characters": [2, 3, 4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1481,19 +1274,9 @@
             ]
           }
         ],
-        "tags": [
-          1,
-          14
-        ],
-        "characters": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "places": [
-          4
-        ],
+        "tags": [1, 14],
+        "characters": [1, 2, 3, 4],
+        "places": [4],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1517,16 +1300,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 8],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1550,16 +1326,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1583,18 +1352,9 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          3,
-          4,
-          2
-        ],
-        "places": [
-          1
-        ],
+        "tags": [4, 14],
+        "characters": [3, 4, 2],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1618,16 +1378,9 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [3, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1658,17 +1411,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          14
-        ],
-        "characters": [
-          2,
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 14],
+        "characters": [2, 5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1699,17 +1444,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5,
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5, 3],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1740,17 +1477,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5,
-          4
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 13],
+        "characters": [5, 4],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1774,18 +1503,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1,
-          3,
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [1, 3, 2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1823,14 +1543,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          2,
-          3,
-          4
-        ],
+        "tags": [2],
+        "characters": [2, 3, 4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1855,19 +1569,9 @@
             ]
           }
         ],
-        "tags": [
-          1,
-          14
-        ],
-        "characters": [
-          1,
-          2,
-          3,
-          4
-        ],
-        "places": [
-          4
-        ],
+        "tags": [1, 14],
+        "characters": [1, 2, 3, 4],
+        "places": [4],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1891,13 +1595,8 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          5
-        ],
+        "tags": [2, 8],
+        "characters": [5],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1922,16 +1621,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 13],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -1955,12 +1647,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          5
-        ],
+        "tags": [2],
+        "characters": [5],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -1985,15 +1673,9 @@
             ]
           }
         ],
-        "tags": [
-          3
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [3],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2017,16 +1699,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          14
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 14],
+        "characters": [5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2050,16 +1725,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2083,16 +1751,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          13
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 13],
+        "characters": [5],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2116,13 +1777,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [4, 14],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2147,12 +1803,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [2],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2177,12 +1829,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          3
-        ],
+        "tags": [2],
+        "characters": [3],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2207,16 +1855,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [2, 8],
+        "characters": [3],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2240,13 +1881,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          4
-        ],
+        "tags": [4, 14],
+        "characters": [4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2271,12 +1907,8 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
-        "characters": [
-          4
-        ],
+        "tags": [2],
+        "characters": [4],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2301,16 +1933,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          8
-        ],
-        "characters": [
-          4
-        ],
-        "places": [
-          3
-        ],
+        "tags": [2, 8],
+        "characters": [4],
+        "places": [3],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2334,13 +1959,8 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          14
-        ],
-        "characters": [
-          2
-        ],
+        "tags": [4, 14],
+        "characters": [2],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -2365,18 +1985,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          7,
-          14
-        ],
-        "characters": [
-          2,
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 7, 14],
+        "characters": [2, 5],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2400,10 +2011,7 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          7
-        ],
+        "tags": [3, 7],
         "characters": [],
         "places": [],
         "templates": [],
@@ -2429,16 +2037,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          7
-        ],
-        "characters": [
-          2
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 7],
+        "characters": [2],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -2524,20 +2125,8 @@
           }
         ],
         "color": null,
-        "cards": [
-          1,
-          5,
-          2,
-          23,
-          28
-        ],
-        "noteIds": [
-          3,
-          5,
-          7,
-          6,
-          8
-        ],
+        "cards": [1, 5, 2, 23, 28],
+        "noteIds": [3, 5, 7, 6, 8],
         "templates": [],
         "tags": [],
         "categoryId": "1",
@@ -2565,20 +2154,8 @@
           }
         ],
         "color": null,
-        "cards": [
-          1,
-          3,
-          2,
-          26,
-          7,
-          11
-        ],
-        "noteIds": [
-          3,
-          5,
-          6,
-          8
-        ],
+        "cards": [1, 3, 2, 26, 7, 11],
+        "noteIds": [3, 5, 6, 8],
         "templates": [],
         "tags": [],
         "categoryId": "2",
@@ -2606,19 +2183,8 @@
           }
         ],
         "color": null,
-        "cards": [
-          1,
-          4,
-          2,
-          27,
-          12
-        ],
-        "noteIds": [
-          3,
-          5,
-          6,
-          8
-        ],
+        "cards": [1, 4, 2, 27, 12],
+        "noteIds": [3, 5, 6, 8],
         "templates": [],
         "tags": [],
         "categoryId": "2",
@@ -2646,28 +2212,8 @@
           }
         ],
         "color": null,
-        "cards": [
-          6,
-          24,
-          14,
-          23,
-          25,
-          15,
-          16,
-          30,
-          18,
-          9,
-          10,
-          13,
-          29
-        ],
-        "noteIds": [
-          2,
-          4,
-          5,
-          7,
-          8
-        ],
+        "cards": [6, 24, 14, 23, 25, 15, 16, 30, 18, 9, 10, 13, 29],
+        "noteIds": [2, 4, 5, 7, 8],
         "templates": [],
         "tags": [],
         "categoryId": "1",
@@ -2898,16 +2444,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          14
-        ],
+        "tags": [2, 14],
         "characters": [],
-        "places": [
-          1,
-          3,
-          2
-        ],
+        "places": [1, 3, 2],
         "lastEdited": 1591680974323,
         "templates": [],
         "imageId": null,
@@ -2925,16 +2464,8 @@
             ]
           }
         ],
-        "tags": [
-          17
-        ],
-        "characters": [
-          1,
-          2,
-          3,
-          4,
-          5
-        ],
+        "tags": [17],
+        "characters": [1, 2, 3, 4, 5],
         "places": [],
         "lastEdited": 1591737236628,
         "templates": [],
@@ -2967,16 +2498,8 @@
             ]
           }
         ],
-        "tags": [
-          7,
-          8,
-          4
-        ],
-        "characters": [
-          2,
-          3,
-          4
-        ],
+        "tags": [7, 8, 4],
+        "characters": [2, 3, 4],
         "places": [],
         "lastEdited": 1591683464131,
         "templates": [],
@@ -2995,16 +2518,9 @@
             ]
           }
         ],
-        "tags": [
-          4,
-          15
-        ],
-        "characters": [
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [4, 15],
+        "characters": [5],
+        "places": [1],
         "lastEdited": 1614204472136,
         "templates": [],
         "imageId": "6",
@@ -3022,15 +2538,8 @@
             ]
           }
         ],
-        "tags": [
-          15
-        ],
-        "characters": [
-          2,
-          3,
-          4,
-          5
-        ],
+        "tags": [15],
+        "characters": [2, 3, 4, 5],
         "places": [],
         "lastEdited": 1591737229316,
         "templates": [],
@@ -3049,14 +2558,8 @@
             ]
           }
         ],
-        "tags": [
-          18
-        ],
-        "characters": [
-          3,
-          4,
-          2
-        ],
+        "tags": [18],
+        "characters": [3, 4, 2],
         "places": [],
         "lastEdited": 1591737619359,
         "templates": [],
@@ -3075,19 +2578,9 @@
             ]
           }
         ],
-        "tags": [
-          5,
-          18,
-          14,
-          13
-        ],
-        "characters": [
-          2,
-          5
-        ],
-        "places": [
-          1
-        ],
+        "tags": [5, 18, 14, 13],
+        "characters": [2, 5],
+        "places": [1],
         "lastEdited": 1591737991752,
         "templates": [],
         "imageId": null,
@@ -3119,18 +2612,8 @@
             ]
           }
         ],
-        "tags": [
-          13,
-          8,
-          7,
-          14
-        ],
-        "characters": [
-          2,
-          3,
-          4,
-          5
-        ],
+        "tags": [13, 8, 7, 14],
+        "characters": [2, 3, 4, 5],
         "places": [],
         "lastEdited": 1614204496316,
         "templates": [],
@@ -3153,21 +2636,8 @@
           }
         ],
         "color": null,
-        "cards": [
-          6,
-          5,
-          23,
-          25,
-          13,
-          29,
-          17,
-          22,
-          21
-        ],
-        "noteIds": [
-          4,
-          7
-        ],
+        "cards": [6, 5, 23, 25, 13, 29, 17, 22, 21],
+        "noteIds": [4, 7],
         "templates": [],
         "tags": [],
         "imageId": "9",
@@ -3193,10 +2663,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          6,
-          3
-        ],
+        "cards": [6, 3],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3222,10 +2689,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          6,
-          4
-        ],
+        "cards": [6, 4],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3482,9 +2946,7 @@
         "templates": [],
         "imageId": "7"
       },
-      "allIds": [
-        1
-      ]
+      "allIds": [1]
     },
     "characters": [
       {
@@ -3501,16 +2963,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          1,
-          2,
-          6,
-          7,
-          3,
-          4,
-          5,
-          11
-        ],
+        "cards": [1, 2, 6, 7, 3, 4, 5, 11],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3533,11 +2986,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          3,
-          4,
-          11
-        ],
+        "cards": [3, 4, 11],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3560,11 +3009,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          3,
-          4,
-          11
-        ],
+        "cards": [3, 4, 11],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3587,11 +3032,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          3,
-          4,
-          11
-        ],
+        "cards": [3, 4, 11],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -3664,19 +3105,9 @@
             ]
           }
         ],
-        "tags": [
-          7,
-          1
-        ],
-        "characters": [
-          2,
-          1,
-          4,
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [7, 1],
+        "characters": [2, 1, 4, 3],
+        "places": [2],
         "templates": [],
         "imageId": null
       },
@@ -3699,10 +3130,7 @@
             ]
           }
         ],
-        "tags": [
-          6,
-          1
-        ],
+        "tags": [6, 1],
         "characters": [],
         "places": [],
         "templates": [],
@@ -3727,10 +3155,7 @@
             ]
           }
         ],
-        "tags": [
-          8,
-          1
-        ],
+        "tags": [8, 1],
         "characters": [],
         "places": [],
         "templates": [],
@@ -3786,14 +3211,9 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          7
-        ],
+        "tags": [3, 7],
         "characters": [],
-        "places": [
-          2
-        ],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -3849,16 +3269,9 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          6
-        ],
-        "characters": [
-          1
-        ],
-        "places": [
-          2
-        ],
+        "tags": [3, 6],
+        "characters": [1],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -3899,13 +3312,8 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          8
-        ],
-        "characters": [
-          1
-        ],
+        "tags": [3, 8],
+        "characters": [1],
         "places": [],
         "templates": [],
         "imageId": null,
@@ -3930,17 +3338,9 @@
             ]
           }
         ],
-        "tags": [
-          1,
-          4
-        ],
-        "characters": [
-          1
-        ],
-        "places": [
-          2,
-          1
-        ],
+        "tags": [1, 4],
+        "characters": [1],
+        "places": [2, 1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -3964,18 +3364,9 @@
             ]
           }
         ],
-        "tags": [
-          1
-        ],
-        "characters": [
-          1,
-          2,
-          4,
-          3
-        ],
-        "places": [
-          2
-        ],
+        "tags": [1],
+        "characters": [1, 2, 4, 3],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -3999,18 +3390,9 @@
             ]
           }
         ],
-        "tags": [
-          1
-        ],
-        "characters": [
-          1,
-          4,
-          3,
-          2
-        ],
-        "places": [
-          2
-        ],
+        "tags": [1],
+        "characters": [1, 4, 3, 2],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -4034,16 +3416,9 @@
             ]
           }
         ],
-        "tags": [
-          3,
-          8
-        ],
-        "characters": [
-          1
-        ],
-        "places": [
-          2
-        ],
+        "tags": [3, 8],
+        "characters": [1],
+        "places": [2],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -4067,16 +3442,9 @@
             ]
           }
         ],
-        "tags": [
-          2,
-          5
-        ],
-        "characters": [
-          1
-        ],
-        "places": [
-          1
-        ],
+        "tags": [2, 5],
+        "characters": [1],
+        "places": [1],
         "templates": [],
         "imageId": null,
         "positionWithinLine": 0,
@@ -4145,10 +3513,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          1,
-          5
-        ],
+        "cards": [1, 5],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -4169,15 +3534,7 @@
           }
         ],
         "color": null,
-        "cards": [
-          7,
-          2,
-          8,
-          3,
-          4,
-          5,
-          11
-        ],
+        "cards": [7, 2, 8, 3, 4, 5, 11],
         "noteIds": [],
         "templates": [],
         "tags": [],
@@ -4278,9 +3635,7 @@
             ]
           }
         ],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "characters": [],
         "places": [],
         "lastEdited": 1597213167350,
@@ -4314,9 +3669,7 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
+        "tags": [2],
         "characters": [],
         "places": [],
         "lastEdited": 1597183091866,
@@ -4357,9 +3710,7 @@
             ]
           }
         ],
-        "tags": [
-          1
-        ],
+        "tags": [1],
         "characters": [],
         "places": [],
         "lastEdited": 1597186957639,
@@ -4393,9 +3744,7 @@
             ]
           }
         ],
-        "tags": [
-          3
-        ],
+        "tags": [3],
         "characters": [],
         "places": [],
         "lastEdited": 1597186607532,
@@ -4437,9 +3786,7 @@
             ]
           }
         ],
-        "tags": [
-          5
-        ],
+        "tags": [5],
         "characters": [],
         "places": [],
         "lastEdited": 1597183102925,
@@ -4540,10 +3887,7 @@
       "loaded": true,
       "dirty": true,
       "version": "2021.8.19",
-      "appliedMigrations": [
-        "m2021_6_9",
-        "m2021_8_1"
-      ],
+      "appliedMigrations": ["m2021_6_9", "m2021_8_1"],
       "initialVersion": "2021.5.17-beta"
     },
     "ui": {
@@ -4661,15 +4005,7 @@
         "timelineTemplates": [],
         "imageId": null
       },
-      "allIds": [
-        1,
-        7,
-        2,
-        3,
-        4,
-        5,
-        6
-      ]
+      "allIds": [1, 7, 2, 3, 4, 5, 6]
     },
     "beats": {
       "1": {
@@ -4736,67 +4072,9 @@
           "81": [],
           "82": [],
           "null": [
-            22,
-            23,
-            24,
-            25,
-            26,
-            27,
-            28,
-            29,
-            30,
-            31,
-            32,
-            33,
-            34,
-            35,
-            36,
-            37,
-            38,
-            39,
-            40,
-            41,
-            42,
-            43,
-            44,
-            45,
-            46,
-            47,
-            48,
-            49,
-            50,
-            51,
-            52,
-            53,
-            54,
-            55,
-            56,
-            57,
-            58,
-            59,
-            60,
-            61,
-            62,
-            63,
-            64,
-            65,
-            66,
-            67,
-            68,
-            69,
-            70,
-            71,
-            72,
-            73,
-            74,
-            75,
-            76,
-            77,
-            78,
-            79,
-            80,
-            81,
-            82
+            22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43,
+            44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
+            66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82
           ]
         },
         "heap": {
@@ -5541,11 +4819,7 @@
           "15": [],
           "16": [],
           "17": [],
-          "null": [
-            15,
-            16,
-            17
-          ]
+          "null": [15, 16, 17]
         },
         "heap": {
           "15": null,
@@ -5594,12 +4868,7 @@
           "12": [],
           "13": [],
           "14": [],
-          "null": [
-            11,
-            12,
-            13,
-            14
-          ]
+          "null": [11, 12, 13, 14]
         },
         "heap": {
           "11": null,
@@ -5660,12 +4929,7 @@
           "7": [],
           "8": [],
           "18": [],
-          "null": [
-            6,
-            7,
-            8,
-            18
-          ]
+          "null": [6, 7, 8, 18]
         },
         "heap": {
           "6": null,
@@ -5724,10 +4988,7 @@
         "children": {
           "9": [],
           "19": [],
-          "null": [
-            9,
-            19
-          ]
+          "null": [9, 19]
         },
         "heap": {
           "9": null,
@@ -5768,9 +5029,7 @@
       "7": {
         "children": {
           "21": [],
-          "null": [
-            21
-          ]
+          "null": [21]
         },
         "heap": {
           "21": null
@@ -5796,13 +5055,7 @@
           "3": [],
           "4": [],
           "5": [],
-          "null": [
-            5,
-            4,
-            3,
-            2,
-            1
-          ]
+          "null": [5, 4, 3, 2, 1]
         },
         "heap": {
           "1": null,
@@ -6212,12 +5465,7 @@
         "id": 310,
         "lineId": 1,
         "places": [],
-        "tags": [
-          18,
-          6,
-          8,
-          11
-        ],
+        "tags": [18, 6, 8, 11],
         "title": "Netherfield Park is let at last!",
         "templates": [],
         "imageId": null,
@@ -6245,12 +5493,7 @@
         "id": 300,
         "lineId": 2,
         "places": [],
-        "tags": [
-          18,
-          6,
-          8,
-          11
-        ],
+        "tags": [18, 6, 8, 11],
         "title": "Scene 2",
         "templates": [],
         "imageId": null,
@@ -6264,9 +5507,7 @@
         "positionInBeat": 0
       },
       {
-        "characters": [
-          0
-        ],
+        "characters": [0],
         "description": [
           {
             "type": "paragraph",
@@ -6280,12 +5521,7 @@
         "id": 301,
         "lineId": 1,
         "places": [],
-        "tags": [
-          18,
-          6,
-          8,
-          11
-        ],
+        "tags": [18, 6, 8, 11],
         "title": "Scene 3",
         "templates": [],
         "imageId": null,
@@ -6313,12 +5549,7 @@
         "id": 302,
         "lineId": 1,
         "places": [],
-        "tags": [
-          18,
-          6,
-          8,
-          11
-        ],
+        "tags": [18, 6, 8, 11],
         "title": "Scene 4",
         "templates": [],
         "imageId": null,
@@ -6346,9 +5577,7 @@
         "id": 1,
         "lineId": 8,
         "places": [],
-        "tags": [
-          3
-        ],
+        "tags": [3],
         "title": "Mr Bennet meets Mr Bingley",
         "templates": [],
         "imageId": null,
@@ -6450,9 +5679,7 @@
         "id": 2,
         "lineId": 1,
         "places": [],
-        "tags": [
-          5
-        ],
+        "tags": [5],
         "title": "Mr Bennet meets Mr Bingley",
         "templates": [],
         "imageId": null,
@@ -6481,9 +5708,7 @@
         "id": 3,
         "lineId": 2,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "Bennets meet Bingleys at a ball",
         "templates": [],
         "imageId": null,
@@ -6511,10 +5736,7 @@
         "id": 4,
         "lineId": 7,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mrs Bennet instructs Mr Bennet",
         "templates": [],
         "imageId": null,
@@ -6542,9 +5764,7 @@
         "id": 5,
         "lineId": 5,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "Mr Bingley dances every dance.",
         "templates": [],
         "imageId": null,
@@ -6580,10 +5800,7 @@
         "id": 6,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          9
-        ],
+        "tags": [1, 9],
         "title": "Mr Darcy dances just two dances.",
         "templates": [],
         "imageId": null,
@@ -6757,10 +5974,7 @@
         ],
         "id": 7,
         "places": [],
-        "tags": [
-          6,
-          7
-        ],
+        "tags": [6, 7],
         "title": "Lizzy overhears Mr Darcy",
         "templates": [],
         "lineId": 2,
@@ -6788,10 +6002,7 @@
         ],
         "id": 305,
         "places": [],
-        "tags": [
-          6,
-          7
-        ],
+        "tags": [6, 7],
         "title": "Scene 2",
         "templates": [],
         "lineId": 2,
@@ -6819,10 +6030,7 @@
         ],
         "id": 306,
         "places": [],
-        "tags": [
-          6,
-          7
-        ],
+        "tags": [6, 7],
         "title": "Scene 3",
         "templates": [],
         "lineId": 2,
@@ -6850,10 +6058,7 @@
         ],
         "id": 307,
         "places": [],
-        "tags": [
-          6,
-          7
-        ],
+        "tags": [6, 7],
         "title": "Scene 4",
         "templates": [],
         "lineId": 2,
@@ -6881,10 +6086,7 @@
         "id": 8,
         "lineId": 4,
         "places": [],
-        "tags": [
-          0,
-          9
-        ],
+        "tags": [0, 9],
         "title": "Jane dances with Mr Bingley - twice!",
         "templates": [],
         "imageId": null,
@@ -6911,10 +6113,7 @@
         "id": 9,
         "lineId": 1,
         "places": [],
-        "tags": [
-          9,
-          15
-        ],
+        "tags": [9, 15],
         "title": "Lizzy and Jane talk about the ball",
         "templates": [],
         "imageId": null,
@@ -6943,10 +6142,7 @@
         "id": 10,
         "lineId": 1,
         "places": [],
-        "tags": [
-          15,
-          9
-        ],
+        "tags": [15, 9],
         "title": "The Bennets and Lucases meet",
         "templates": [],
         "imageId": null,
@@ -6973,9 +6169,7 @@
         "id": 11,
         "lineId": 1,
         "places": [],
-        "tags": [
-          10
-        ],
+        "tags": [10],
         "title": "A large party is assembled",
         "templates": [],
         "imageId": null,
@@ -7003,10 +6197,7 @@
         "id": 12,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          0
-        ],
+        "tags": [1, 0],
         "title": "Darcy is interested in Elizabeth",
         "templates": [],
         "imageId": null,
@@ -7034,10 +6225,7 @@
         "id": 13,
         "lineId": 4,
         "places": [],
-        "tags": [
-          0,
-          16
-        ],
+        "tags": [0, 16],
         "title": "Jane spends time with the Bingleys",
         "templates": [],
         "imageId": null,
@@ -7064,9 +6252,7 @@
         "id": 14,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "A militia arrives; Jane goes to Bingley",
         "templates": [],
         "imageId": null,
@@ -7094,10 +6280,7 @@
         "id": 15,
         "lineId": 7,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mrs Bennet has a plan.",
         "templates": [],
         "imageId": null,
@@ -7125,9 +6308,7 @@
         "id": 16,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Jane falls ill.",
         "templates": [],
         "imageId": null,
@@ -7154,9 +6335,7 @@
         "id": 17,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia is occupied with the officers.",
         "templates": [],
         "imageId": null,
@@ -7239,10 +6418,7 @@
         "id": 20,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          1
-        ],
+        "tags": [2, 1],
         "title": "Lizzy bickers with Darcy",
         "templates": [],
         "imageId": null,
@@ -7269,9 +6445,7 @@
         "id": 21,
         "lineId": 1,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet goes to Netherfield",
         "templates": [],
         "imageId": null,
@@ -7299,10 +6473,7 @@
         "id": 22,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          7
-        ],
+        "tags": [8, 7],
         "title": "Mrs Bennet makes a fool of herself",
         "templates": [],
         "imageId": null,
@@ -7330,10 +6501,7 @@
         "id": 23,
         "lineId": 6,
         "places": [],
-        "tags": [
-          9,
-          8
-        ],
+        "tags": [9, 8],
         "title": "Lydia asks for a ball at Netherfield",
         "templates": [],
         "imageId": null,
@@ -7360,9 +6528,7 @@
         "id": 24,
         "lineId": 5,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "Bingley agrees to have a ball",
         "templates": [],
         "imageId": null,
@@ -7416,10 +6582,7 @@
         "id": 26,
         "lineId": 3,
         "places": [],
-        "tags": [
-          7,
-          1
-        ],
+        "tags": [7, 1],
         "title": "Darcy clashes with Mrs Bennet",
         "templates": [],
         "imageId": null,
@@ -7447,9 +6610,7 @@
         "id": 27,
         "lineId": 2,
         "places": [],
-        "tags": [
-          7
-        ],
+        "tags": [7],
         "title": "Lizzy is embarrassed",
         "templates": [],
         "imageId": null,
@@ -7504,9 +6665,7 @@
         "id": 29,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2
-        ],
+        "tags": [2],
         "title": "Lizzy assumes the worst of Darcy",
         "templates": [],
         "imageId": null,
@@ -7534,10 +6693,7 @@
         "id": 30,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          0
-        ],
+        "tags": [1, 0],
         "title": "Darcy is interested in Lizzy, but prideful",
         "templates": [],
         "imageId": null,
@@ -7565,9 +6721,7 @@
         "id": 31,
         "lineId": 9,
         "places": [],
-        "tags": [
-          7
-        ],
+        "tags": [7],
         "title": "Miss Bingley fights Darcy's new interest",
         "templates": [],
         "imageId": null,
@@ -7594,9 +6748,7 @@
         "id": 32,
         "lineId": 9,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Miss Bingley befriends Jane",
         "templates": [],
         "imageId": null,
@@ -7679,10 +6831,7 @@
         "id": 35,
         "lineId": 9,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Miss Bingley works for Darcy's attention",
         "templates": [],
         "imageId": null,
@@ -7710,9 +6859,7 @@
         "id": 36,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1
-        ],
+        "tags": [1],
         "title": "Darcy worries his interest is too clear",
         "templates": [],
         "imageId": null,
@@ -7740,10 +6887,7 @@
         "id": 37,
         "lineId": 2,
         "places": [],
-        "tags": [
-          1,
-          2
-        ],
+        "tags": [1, 2],
         "title": "Lizzy is certain Darcy dislikes her",
         "templates": [],
         "imageId": null,
@@ -7771,10 +6915,7 @@
         "id": 38,
         "lineId": 9,
         "places": [],
-        "tags": [
-          16,
-          8
-        ],
+        "tags": [16, 8],
         "title": "Miss Bingley is happy they're going",
         "templates": [],
         "imageId": null,
@@ -7829,9 +6970,7 @@
         "id": 40,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1
-        ],
+        "tags": [1],
         "title": "Darcy ignores Lizzy",
         "templates": [],
         "imageId": null,
@@ -7858,10 +6997,7 @@
         "id": 41,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          17
-        ],
+        "tags": [2, 17],
         "title": "Lizzy is thrilled to go home",
         "templates": [],
         "imageId": null,
@@ -7889,9 +7025,7 @@
         "id": 42,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet tries to make them stay",
         "templates": [],
         "imageId": null,
@@ -7918,9 +7052,7 @@
         "id": 43,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet is happy to have them home",
         "templates": [],
         "imageId": null,
@@ -7975,10 +7107,7 @@
         "id": 45,
         "lineId": 10,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mr Collins writes and arrives",
         "templates": [],
         "imageId": null,
@@ -8005,9 +7134,7 @@
         "id": 46,
         "lineId": 8,
         "places": [],
-        "tags": [
-          3
-        ],
+        "tags": [3],
         "title": "Mr Bennet receives Mr Collins' letter",
         "templates": [],
         "imageId": null,
@@ -8035,11 +7162,7 @@
         "id": 47,
         "lineId": 7,
         "places": [],
-        "tags": [
-          3,
-          8,
-          7
-        ],
+        "tags": [3, 8, 7],
         "title": "Mrs Bennet dislikes Mr Collins",
         "templates": [],
         "imageId": null,
@@ -8094,10 +7217,7 @@
         "id": 49,
         "lineId": 8,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mr Bennet amuses himself",
         "templates": [],
         "imageId": null,
@@ -8125,10 +7245,7 @@
         "id": 50,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8,
-          3
-        ],
+        "tags": [8, 3],
         "title": "Mr Collins establishes himself",
         "templates": [],
         "imageId": null,
@@ -8156,10 +7273,7 @@
         "id": 51,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8,
-          3
-        ],
+        "tags": [8, 3],
         "title": "Lydia offends Mr Collins",
         "templates": [],
         "imageId": null,
@@ -8187,10 +7301,7 @@
         "id": 52,
         "lineId": 11,
         "places": [],
-        "tags": [
-          0,
-          4
-        ],
+        "tags": [0, 4],
         "title": "Mr Wickham meets the Bennets",
         "templates": [],
         "imageId": null,
@@ -8218,9 +7329,7 @@
         "id": 53,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Darcy sees Wickham and reddens",
         "templates": [],
         "imageId": null,
@@ -8248,9 +7357,7 @@
         "id": 54,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Bingley goes to see Jane",
         "templates": [],
         "imageId": null,
@@ -8277,9 +7384,7 @@
         "id": 55,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia inspires everyone to town",
         "templates": [],
         "imageId": null,
@@ -8307,9 +7412,7 @@
         "id": 56,
         "lineId": 10,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Collins accompanies",
         "templates": [],
         "imageId": null,
@@ -8337,10 +7440,7 @@
         "id": 57,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4,
-          17
-        ],
+        "tags": [4, 17],
         "title": "The Bennets go to Meryton",
         "templates": [],
         "imageId": null,
@@ -8395,10 +7495,7 @@
         "id": 59,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          0
-        ],
+        "tags": [2, 0],
         "title": "Lizzy is interested in Wickham",
         "templates": [],
         "imageId": null,
@@ -8426,9 +7523,7 @@
         "id": 60,
         "lineId": 1,
         "places": [],
-        "tags": [
-          10
-        ],
+        "tags": [10],
         "title": "Dinner at the Phillips'",
         "templates": [],
         "imageId": null,
@@ -8456,10 +7551,7 @@
         "id": 61,
         "lineId": 10,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mr Collins meets a good listener",
         "templates": [],
         "imageId": null,
@@ -8486,9 +7578,7 @@
         "id": 62,
         "lineId": 1,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "Invitation to a ball at Netherfield",
         "templates": [],
         "imageId": null,
@@ -8516,9 +7606,7 @@
         "id": 63,
         "lineId": 4,
         "places": [],
-        "tags": [
-          15
-        ],
+        "tags": [15],
         "title": "Jane can't believe Wickham's story",
         "templates": [],
         "imageId": null,
@@ -8546,9 +7634,7 @@
         "id": 64,
         "lineId": 10,
         "places": [],
-        "tags": [
-          3
-        ],
+        "tags": [3],
         "title": "Mr Collins pursues Lizzy",
         "templates": [],
         "imageId": null,
@@ -8575,11 +7661,7 @@
         "id": 65,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          7,
-          9
-        ],
+        "tags": [8, 7, 9],
         "title": "Mrs Bennet sees the ball as for Jane",
         "templates": [],
         "imageId": null,
@@ -8607,10 +7689,7 @@
         "id": 66,
         "lineId": 2,
         "places": [],
-        "tags": [
-          8,
-          9
-        ],
+        "tags": [8, 9],
         "title": "Lizzy does not like Mr Collins",
         "templates": [],
         "imageId": null,
@@ -8637,9 +7716,7 @@
         "id": 67,
         "lineId": 1,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "The ball at Netherfield",
         "templates": [],
         "imageId": null,
@@ -8667,10 +7744,7 @@
         "id": 68,
         "lineId": 11,
         "places": [],
-        "tags": [
-          4,
-          9
-        ],
+        "tags": [4, 9],
         "title": "Wickham does not attend",
         "templates": [],
         "imageId": null,
@@ -8698,11 +7772,7 @@
         "id": 69,
         "lineId": 9,
         "places": [],
-        "tags": [
-          4,
-          8,
-          9
-        ],
+        "tags": [4, 8, 9],
         "title": "Miss Bingley defends Darcy",
         "templates": [],
         "imageId": null,
@@ -8730,9 +7800,7 @@
         "id": 70,
         "lineId": 4,
         "places": [],
-        "tags": [
-          9
-        ],
+        "tags": [9],
         "title": "Jane dances with Bingley, and asks...",
         "templates": [],
         "imageId": null,
@@ -8760,11 +7828,7 @@
         "id": 71,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          4,
-          9
-        ],
+        "tags": [1, 4, 9],
         "title": "Darcy dances with Lizzy",
         "templates": [],
         "imageId": null,
@@ -8791,10 +7855,7 @@
         "id": 72,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0,
-          9
-        ],
+        "tags": [0, 9],
         "title": "Bingley dances with Jane",
         "templates": [],
         "imageId": null,
@@ -8822,11 +7883,7 @@
         "id": 73,
         "lineId": 10,
         "places": [],
-        "tags": [
-          7,
-          8,
-          9
-        ],
+        "tags": [7, 8, 9],
         "title": "Collins introduces himself to Darcy",
         "templates": [],
         "imageId": null,
@@ -8854,11 +7911,7 @@
         "id": 74,
         "lineId": 7,
         "places": [],
-        "tags": [
-          7,
-          13,
-          9
-        ],
+        "tags": [7, 13, 9],
         "title": "Mrs Bennet speaks rashly of Jane",
         "templates": [],
         "imageId": null,
@@ -8886,12 +7939,7 @@
         "id": 75,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          7,
-          4,
-          9
-        ],
+        "tags": [2, 7, 4, 9],
         "title": "Lizzy has an eventful evening",
         "templates": [],
         "imageId": null,
@@ -8918,10 +7966,7 @@
         "id": 76,
         "lineId": 1,
         "places": [],
-        "tags": [
-          8,
-          5
-        ],
+        "tags": [8, 5],
         "title": "Mr Collins proposes to Lizzy",
         "templates": [],
         "imageId": null,
@@ -8948,11 +7993,7 @@
         "id": 77,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8,
-          5,
-          3
-        ],
+        "tags": [8, 5, 3],
         "title": "Mr Collins proposes to Lizzy",
         "templates": [],
         "imageId": null,
@@ -8980,11 +8021,7 @@
         "id": 78,
         "lineId": 2,
         "places": [],
-        "tags": [
-          14,
-          4,
-          6
-        ],
+        "tags": [14, 4, 6],
         "title": "Lizzy refuses Mr Collins' proposal",
         "templates": [],
         "imageId": null,
@@ -9012,11 +8049,7 @@
         "id": 79,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          13,
-          17
-        ],
+        "tags": [8, 13, 17],
         "title": "Mrs Bennet supports proposing",
         "templates": [],
         "imageId": null,
@@ -9043,12 +8076,7 @@
         "id": 80,
         "lineId": 7,
         "places": [],
-        "tags": [
-          13,
-          4,
-          5,
-          8
-        ],
+        "tags": [13, 4, 5, 8],
         "title": "Mrs Bennet tries to persuade Lizzy",
         "templates": [],
         "imageId": null,
@@ -9075,9 +8103,7 @@
         "id": 81,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet opposes the match",
         "templates": [],
         "imageId": null,
@@ -9104,12 +8130,7 @@
         "id": 82,
         "lineId": 10,
         "places": [],
-        "tags": [
-          3,
-          5,
-          4,
-          8
-        ],
+        "tags": [3, 5, 4, 8],
         "title": "Mr Collins has doubts",
         "templates": [],
         "imageId": null,
@@ -9136,11 +8157,7 @@
         "id": 83,
         "lineId": 2,
         "places": [],
-        "tags": [
-          14,
-          4,
-          1
-        ],
+        "tags": [14, 4, 1],
         "title": "Lizzy remains steadfast",
         "templates": [],
         "imageId": null,
@@ -9167,10 +8184,7 @@
         "id": 84,
         "lineId": 12,
         "places": [],
-        "tags": [
-          4,
-          16
-        ],
+        "tags": [4, 16],
         "title": "Miss Lucas arrives to the news",
         "templates": [],
         "imageId": null,
@@ -9197,9 +8211,7 @@
         "id": 85,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "The proposal is discussed",
         "templates": [],
         "imageId": null,
@@ -9226,9 +8238,7 @@
         "id": 86,
         "lineId": 12,
         "places": [],
-        "tags": [
-          5
-        ],
+        "tags": [5],
         "title": "Miss Lucas receives Mr Collins' attention",
         "templates": [],
         "imageId": null,
@@ -9256,9 +8266,7 @@
         "id": 87,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mr Collins moves his interest",
         "templates": [],
         "imageId": null,
@@ -9286,9 +8294,7 @@
         "id": 88,
         "lineId": 11,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Wickham meets the Bennets in town",
         "templates": [],
         "imageId": null,
@@ -9316,9 +8322,7 @@
         "id": 89,
         "lineId": 9,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Miss Bingley tells Jane they left",
         "templates": [],
         "imageId": null,
@@ -9345,9 +8349,7 @@
         "id": 90,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Jane is heartbroken, but not angry",
         "templates": [],
         "imageId": null,
@@ -9375,10 +8377,7 @@
         "id": 91,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          17
-        ],
+        "tags": [4, 17],
         "title": "Lizzy is furious with Miss Bingley",
         "templates": [],
         "imageId": null,
@@ -9405,9 +8404,7 @@
         "id": 92,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "The Bingleys (and Darcy) leave",
         "templates": [],
         "imageId": null,
@@ -9434,10 +8431,7 @@
         "id": 93,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          4
-        ],
+        "tags": [8, 4],
         "title": "Mrs Bennet bemoans their exit",
         "templates": [],
         "imageId": null,
@@ -9464,9 +8458,7 @@
         "id": 94,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Mr Collins and Miss Lucas are engaged",
         "templates": [],
         "imageId": null,
@@ -9494,10 +8486,7 @@
         "id": 95,
         "lineId": 12,
         "places": [],
-        "tags": [
-          5,
-          13
-        ],
+        "tags": [5, 13],
         "title": "Miss Lucas accepts Mr Collins",
         "templates": [],
         "imageId": null,
@@ -9524,9 +8513,7 @@
         "id": 96,
         "lineId": 10,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Mr Collins proposes to Miss Lucas",
         "templates": [],
         "imageId": null,
@@ -9553,9 +8540,7 @@
         "id": 97,
         "lineId": 2,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Lizzy is upset and surprised",
         "templates": [],
         "imageId": null,
@@ -9582,9 +8567,7 @@
         "id": 98,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "The Bennets learn of the engagement",
         "templates": [],
         "imageId": null,
@@ -9611,9 +8594,7 @@
         "id": 99,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Jane worries Bingley is truly gone",
         "templates": [],
         "imageId": null,
@@ -9640,10 +8621,7 @@
         "id": 100,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          15
-        ],
+        "tags": [17, 15],
         "title": "Lizzy joins Jane's worries",
         "templates": [],
         "imageId": null,
@@ -9670,10 +8648,7 @@
         "id": 101,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8,
-          4
-        ],
+        "tags": [8, 4],
         "title": "Mr Collins visits for his engagement",
         "templates": [],
         "imageId": null,
@@ -9700,11 +8675,7 @@
         "id": 102,
         "lineId": 7,
         "places": [],
-        "tags": [
-          7,
-          4,
-          8
-        ],
+        "tags": [7, 4, 8],
         "title": "Mrs Bennet is angered",
         "templates": [],
         "imageId": null,
@@ -9731,10 +8702,7 @@
         "id": 103,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17,
-          15
-        ],
+        "tags": [17, 15],
         "title": "Jane and Lizzy speak",
         "templates": [],
         "imageId": null,
@@ -9762,10 +8730,7 @@
         "id": 104,
         "lineId": 9,
         "places": [],
-        "tags": [
-          4,
-          8
-        ],
+        "tags": [4, 8],
         "title": "Miss Bingley writes Jane",
         "templates": [],
         "imageId": null,
@@ -9792,9 +8757,7 @@
         "id": 105,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Jane is heartbroken",
         "templates": [],
         "imageId": null,
@@ -9822,11 +8785,7 @@
         "id": 106,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17,
-          13,
-          3
-        ],
+        "tags": [17, 13, 3],
         "title": "Mr Bennet jokes about Wickham and Lizzy",
         "templates": [],
         "imageId": null,
@@ -9854,10 +8813,7 @@
         "id": 107,
         "lineId": 11,
         "places": [],
-        "tags": [
-          16,
-          0
-        ],
+        "tags": [16, 0],
         "title": "Wickham is a friend to the Bennets",
         "templates": [],
         "imageId": null,
@@ -9885,11 +8841,7 @@
         "id": 108,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          16,
-          15
-        ],
+        "tags": [17, 16, 15],
         "title": "Lizzy hates near everyone but Jane",
         "templates": [],
         "imageId": null,
@@ -9917,10 +8869,7 @@
         "id": 109,
         "lineId": 1,
         "places": [],
-        "tags": [
-          16,
-          17
-        ],
+        "tags": [16, 17],
         "title": "The Gardiners come to visit",
         "templates": [],
         "imageId": null,
@@ -9948,9 +8897,7 @@
         "id": 110,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Jane is invited to London",
         "templates": [],
         "imageId": null,
@@ -9978,9 +8925,7 @@
         "id": 111,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Lizzy's interest in Wickham is clear",
         "templates": [],
         "imageId": null,
@@ -10007,9 +8952,7 @@
         "id": 112,
         "lineId": 7,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mrs Bennet is happy to host them",
         "templates": [],
         "imageId": null,
@@ -10036,10 +8979,7 @@
         "id": 113,
         "lineId": 10,
         "places": [],
-        "tags": [
-          5,
-          11
-        ],
+        "tags": [5, 11],
         "title": "Mr Collins returns to await his bride",
         "templates": [],
         "imageId": null,
@@ -10066,10 +9006,7 @@
         "id": 114,
         "lineId": 1,
         "places": [],
-        "tags": [
-          13,
-          11
-        ],
+        "tags": [13, 11],
         "title": "Collins' marriage takes place",
         "templates": [],
         "imageId": null,
@@ -10097,11 +9034,7 @@
         "id": 115,
         "lineId": 2,
         "places": [],
-        "tags": [
-          13,
-          7,
-          15
-        ],
+        "tags": [13, 7, 15],
         "title": "Lizzy is advised against Wickham",
         "templates": [],
         "imageId": null,
@@ -10128,10 +9061,7 @@
         "id": 116,
         "lineId": 10,
         "places": [],
-        "tags": [
-          13,
-          11
-        ],
+        "tags": [13, 11],
         "title": "Mr Collins is married",
         "templates": [],
         "imageId": null,
@@ -10159,11 +9089,7 @@
         "id": 117,
         "lineId": 12,
         "places": [],
-        "tags": [
-          13,
-          16,
-          11
-        ],
+        "tags": [13, 16, 11],
         "title": "Charlotte is married",
         "templates": [],
         "imageId": null,
@@ -10191,10 +9117,7 @@
         "id": 118,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4,
-          16
-        ],
+        "tags": [4, 16],
         "title": "Jane is snubbed by Miss Bingley",
         "templates": [],
         "imageId": null,
@@ -10222,12 +9145,7 @@
         "id": 119,
         "lineId": 11,
         "places": [],
-        "tags": [
-          7,
-          6,
-          4,
-          13
-        ],
+        "tags": [7, 6, 4, 13],
         "title": "Wickham moves his interest elsewhere",
         "templates": [],
         "imageId": null,
@@ -10254,10 +9172,7 @@
         "id": 120,
         "lineId": 9,
         "places": [],
-        "tags": [
-          4,
-          7
-        ],
+        "tags": [4, 7],
         "title": "Miss Bingley snubs Jane",
         "templates": [],
         "imageId": null,
@@ -10284,10 +9199,7 @@
         "id": 121,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8,
-          4
-        ],
+        "tags": [8, 4],
         "title": "Lydia is angrier with Wickham than Lizzy",
         "templates": [],
         "imageId": null,
@@ -10314,9 +9226,7 @@
         "id": 122,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy goes to London",
         "templates": [],
         "imageId": null,
@@ -10343,10 +9253,7 @@
         "id": 123,
         "lineId": 11,
         "places": [],
-        "tags": [
-          5,
-          4
-        ],
+        "tags": [5, 4],
         "title": "Wickham sees Lizzy off kindly",
         "templates": [],
         "imageId": null,
@@ -10374,9 +9281,7 @@
         "id": 124,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy stops in London",
         "templates": [],
         "imageId": null,
@@ -10403,9 +9308,7 @@
         "id": 125,
         "lineId": 1,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Lizzy visits Miss Lucas in Hunsford",
         "templates": [],
         "imageId": null,
@@ -10432,9 +9335,7 @@
         "id": 126,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mr Collins gives the group a tour",
         "templates": [],
         "imageId": null,
@@ -10461,9 +9362,7 @@
         "id": 127,
         "lineId": 12,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Charlotte is happy to see Lizzy",
         "templates": [],
         "imageId": null,
@@ -10491,11 +9390,7 @@
         "id": 128,
         "lineId": 2,
         "places": [],
-        "tags": [
-          8,
-          4,
-          2
-        ],
+        "tags": [8, 4, 2],
         "title": "Lizzy is amused",
         "templates": [],
         "imageId": null,
@@ -10522,13 +9417,7 @@
         "id": 129,
         "lineId": 1,
         "places": [],
-        "tags": [
-          12,
-          13,
-          8,
-          5,
-          10
-        ],
+        "tags": [12, 13, 8, 5, 10],
         "title": "The group goes to Rosings",
         "templates": [],
         "imageId": null,
@@ -10556,10 +9445,7 @@
         "id": 130,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          13
-        ],
+        "tags": [4, 13],
         "title": "Lizzy butts heads with Lady Catherine",
         "templates": [],
         "imageId": null,
@@ -10586,11 +9472,7 @@
         "id": 131,
         "lineId": 1,
         "places": [],
-        "tags": [
-          16,
-          4,
-          13
-        ],
+        "tags": [16, 4, 13],
         "title": "Lizzy remains at Hunsford",
         "templates": [],
         "imageId": null,
@@ -10617,10 +9499,7 @@
         "id": 132,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4,
-          1
-        ],
+        "tags": [4, 1],
         "title": "Darcy comes to Rosings",
         "templates": [],
         "imageId": null,
@@ -10648,10 +9527,7 @@
         "id": 133,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          2
-        ],
+        "tags": [4, 2],
         "title": "Lizzy asks about Jane",
         "templates": [],
         "imageId": null,
@@ -10678,13 +9554,7 @@
         "id": 134,
         "lineId": 1,
         "places": [],
-        "tags": [
-          10,
-          16,
-          4,
-          13,
-          12
-        ],
+        "tags": [10, 16, 4, 13, 12],
         "title": "Rosings again, with Darcy and Colonel",
         "templates": [],
         "imageId": null,
@@ -10712,11 +9582,7 @@
         "id": 135,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          16,
-          13
-        ],
+        "tags": [2, 16, 13],
         "title": "Lizzy and the Colonel get along",
         "templates": [],
         "imageId": null,
@@ -10744,10 +9610,7 @@
         "id": 136,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          15
-        ],
+        "tags": [1, 15],
         "title": "Darcy confesses his awkwardness",
         "templates": [],
         "imageId": null,
@@ -10774,10 +9637,7 @@
         "id": 137,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          16
-        ],
+        "tags": [0, 16],
         "title": "Frequent visits from Darcy and Colonel",
         "templates": [],
         "imageId": null,
@@ -10805,10 +9665,7 @@
         "id": 138,
         "lineId": 3,
         "places": [],
-        "tags": [
-          0,
-          1
-        ],
+        "tags": [0, 1],
         "title": "Darcy visits quite often",
         "templates": [],
         "imageId": null,
@@ -10836,11 +9693,7 @@
         "id": 139,
         "lineId": 12,
         "places": [],
-        "tags": [
-          15,
-          16,
-          0
-        ],
+        "tags": [15, 16, 0],
         "title": "Charlotte tells Lizzy Darcy's in love",
         "templates": [],
         "imageId": null,
@@ -10867,9 +9720,7 @@
         "id": 140,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2
-        ],
+        "tags": [2],
         "title": "Lizzy does not believe Charlotte",
         "templates": [],
         "imageId": null,
@@ -10896,11 +9747,7 @@
         "id": 141,
         "lineId": 1,
         "places": [],
-        "tags": [
-          2,
-          4,
-          16
-        ],
+        "tags": [2, 4, 16],
         "title": "The Colonel drops a bombshell",
         "templates": [],
         "imageId": null,
@@ -10927,9 +9774,7 @@
         "id": 142,
         "lineId": 3,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Darcy meets Lizzy on her walks",
         "templates": [],
         "imageId": null,
@@ -10956,14 +9801,8 @@
         ],
         "id": 143,
         "lineId": 2,
-        "places": [
-          3
-        ],
-        "tags": [
-          2,
-          16,
-          17
-        ],
+        "places": [3],
+        "tags": [2, 16, 17],
         "title": "Lizzy hears the Colonel's story",
         "templates": [],
         "imageId": null,
@@ -10990,12 +9829,7 @@
         "id": 144,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          1,
-          2,
-          11
-        ],
+        "tags": [0, 1, 2, 11],
         "title": "Darcy proposes",
         "templates": [],
         "imageId": null,
@@ -11023,11 +9857,7 @@
         "id": 145,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1,
-          11,
-          0
-        ],
+        "tags": [1, 11, 0],
         "title": "Darcy proposes to Lizzy, rudely",
         "templates": [],
         "imageId": null,
@@ -11055,13 +9885,7 @@
         "id": 146,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          4,
-          17,
-          11,
-          14
-        ],
+        "tags": [2, 4, 17, 11, 14],
         "title": "Lizzy rejects the proposal",
         "templates": [],
         "imageId": null,
@@ -11088,11 +9912,7 @@
         "id": 147,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4,
-          6,
-          15
-        ],
+        "tags": [4, 6, 15],
         "title": "Darcy writes a letter",
         "templates": [],
         "imageId": null,
@@ -11119,9 +9939,7 @@
         "id": 148,
         "lineId": 2,
         "places": [],
-        "tags": [
-          15
-        ],
+        "tags": [15],
         "title": "Lizzy receives Darcy's letter",
         "templates": [],
         "imageId": null,
@@ -11149,13 +9967,7 @@
         "id": 149,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4,
-          6,
-          1,
-          15,
-          16
-        ],
+        "tags": [4, 6, 1, 15, 16],
         "title": "Darcy explains himself",
         "templates": [],
         "imageId": null,
@@ -11182,10 +9994,7 @@
         "id": 150,
         "lineId": 1,
         "places": [],
-        "tags": [
-          14,
-          4
-        ],
+        "tags": [14, 4],
         "title": "Lizzy reacts to the letter",
         "templates": [],
         "imageId": null,
@@ -11213,11 +10022,7 @@
         "id": 151,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          14,
-          4
-        ],
+        "tags": [2, 14, 4],
         "title": "Lizzy realizes her prejudice",
         "templates": [],
         "imageId": null,
@@ -11298,9 +10103,7 @@
         "id": 154,
         "lineId": 13,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "The Colonel accompanies Darcy",
         "templates": [],
         "imageId": null,
@@ -11327,9 +10130,7 @@
         "id": 155,
         "lineId": 13,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "The Colonel admires Lizzy",
         "templates": [],
         "imageId": null,
@@ -11356,10 +10157,7 @@
         "id": 156,
         "lineId": 13,
         "places": [],
-        "tags": [
-          16,
-          0
-        ],
+        "tags": [16, 0],
         "title": "The Colonel visits often",
         "templates": [],
         "imageId": null,
@@ -11387,11 +10185,7 @@
         "id": 157,
         "lineId": 13,
         "places": [],
-        "tags": [
-          4,
-          16,
-          15
-        ],
+        "tags": [4, 16, 15],
         "title": "The Colonel tells Lizzy about Darcy",
         "templates": [],
         "imageId": null,
@@ -11446,10 +10240,7 @@
         "id": 159,
         "lineId": 2,
         "places": [],
-        "tags": [
-          7,
-          17
-        ],
+        "tags": [7, 17],
         "title": "Lizzy worries about her family",
         "templates": [],
         "imageId": null,
@@ -11503,10 +10294,7 @@
         "id": 161,
         "lineId": 10,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Mr Collins sends her off verbosely",
         "templates": [],
         "imageId": null,
@@ -11533,9 +10321,7 @@
         "id": 162,
         "lineId": 12,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Charlotte sadly sees her off",
         "templates": [],
         "imageId": null,
@@ -11562,9 +10348,7 @@
         "id": 163,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Jane joins Lizzy on her journey",
         "templates": [],
         "imageId": null,
@@ -11591,9 +10375,7 @@
         "id": 164,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy heads for home",
         "templates": [],
         "imageId": null,
@@ -11620,9 +10402,7 @@
         "id": 165,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Jane and Lizzy are back at Longbourn",
         "templates": [],
         "imageId": null,
@@ -11650,10 +10430,7 @@
         "id": 166,
         "lineId": 11,
         "places": [],
-        "tags": [
-          6,
-          13
-        ],
+        "tags": [6, 13],
         "title": "Wickham is no longer attached",
         "templates": [],
         "imageId": null,
@@ -11680,9 +10457,7 @@
         "id": 167,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy arrives at home",
         "templates": [],
         "imageId": null,
@@ -11709,9 +10484,7 @@
         "id": 168,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Jane arrives at home",
         "templates": [],
         "imageId": null,
@@ -11739,10 +10512,7 @@
         "id": 169,
         "lineId": 6,
         "places": [],
-        "tags": [
-          7,
-          8
-        ],
+        "tags": [7, 8],
         "title": "Lydia catches them up on gossip",
         "templates": [],
         "imageId": null,
@@ -11770,11 +10540,7 @@
         "id": 170,
         "lineId": 7,
         "places": [],
-        "tags": [
-          17,
-          7,
-          8
-        ],
+        "tags": [17, 7, 8],
         "title": "Mrs Bennet tries to sway Mr Bennet",
         "templates": [],
         "imageId": null,
@@ -11801,9 +10567,7 @@
         "id": 171,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet is happy to have Lizzy home",
         "templates": [],
         "imageId": null,
@@ -11830,11 +10594,7 @@
         "id": 172,
         "lineId": 1,
         "places": [],
-        "tags": [
-          15,
-          17,
-          11
-        ],
+        "tags": [15, 17, 11],
         "title": "Lizzy tells Jane about the proposal",
         "templates": [],
         "imageId": null,
@@ -11862,10 +10622,7 @@
         "id": 173,
         "lineId": 2,
         "places": [],
-        "tags": [
-          15,
-          11
-        ],
+        "tags": [15, 11],
         "title": "Lizzy tells Jane half the story",
         "templates": [],
         "imageId": null,
@@ -11892,10 +10649,7 @@
         "id": 174,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4,
-          15
-        ],
+        "tags": [4, 15],
         "title": "Jane is saddened by the story",
         "templates": [],
         "imageId": null,
@@ -11923,10 +10677,7 @@
         "id": 175,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          4
-        ],
+        "tags": [8, 4],
         "title": "Mrs Bennet asks Lizzy about Jane",
         "templates": [],
         "imageId": null,
@@ -11953,9 +10704,7 @@
         "id": 176,
         "lineId": 1,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia receives a invitation",
         "templates": [],
         "imageId": null,
@@ -11983,11 +10732,7 @@
         "id": 177,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          17,
-          7
-        ],
+        "tags": [4, 17, 7],
         "title": "Lizzy takes Darcy's letter into account",
         "templates": [],
         "imageId": null,
@@ -12014,10 +10759,7 @@
         "id": 178,
         "lineId": 8,
         "places": [],
-        "tags": [
-          8,
-          17
-        ],
+        "tags": [8, 17],
         "title": "Mr Bennet doesn't take Lizzy seriously",
         "templates": [],
         "imageId": null,
@@ -12045,9 +10787,7 @@
         "id": 179,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia is invited to go to Brighton",
         "templates": [],
         "imageId": null,
@@ -12074,9 +10814,7 @@
         "id": 180,
         "lineId": 11,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Wickham leaves and bids Lizzy adieu",
         "templates": [],
         "imageId": null,
@@ -12103,9 +10841,7 @@
         "id": 181,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia goes to Brighton",
         "templates": [],
         "imageId": null,
@@ -12133,10 +10869,7 @@
         "id": 182,
         "lineId": 2,
         "places": [],
-        "tags": [
-          7,
-          17
-        ],
+        "tags": [7, 17],
         "title": "Lizzy leaves with the Gardiners",
         "templates": [],
         "imageId": null,
@@ -12164,9 +10897,7 @@
         "id": 183,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy departs on her pleasure tour",
         "templates": [],
         "imageId": null,
@@ -12194,10 +10925,7 @@
         "id": 184,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17,
-          4
-        ],
+        "tags": [17, 4],
         "title": "The group goes to Pemberley",
         "templates": [],
         "imageId": null,
@@ -12225,10 +10953,7 @@
         "id": 185,
         "lineId": 2,
         "places": [],
-        "tags": [
-          2,
-          14
-        ],
+        "tags": [2, 14],
         "title": "Lizzy takes a tour of Pemberley",
         "templates": [],
         "imageId": null,
@@ -12256,9 +10981,7 @@
         "id": 186,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Darcy arrives at his home",
         "templates": [],
         "imageId": null,
@@ -12285,10 +11008,7 @@
         "id": 187,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          16
-        ],
+        "tags": [0, 16],
         "title": "Mr and Miss Darcy and Bingley call",
         "templates": [],
         "imageId": null,
@@ -12316,9 +11036,7 @@
         "id": 188,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Bingley still has feelings for Jane",
         "templates": [],
         "imageId": null,
@@ -12346,9 +11064,7 @@
         "id": 189,
         "lineId": 3,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Darcy is clearly in love with Lizzy",
         "templates": [],
         "imageId": null,
@@ -12376,12 +11092,7 @@
         "id": 190,
         "lineId": 2,
         "places": [],
-        "tags": [
-          14,
-          0,
-          17,
-          16
-        ],
+        "tags": [14, 0, 17, 16],
         "title": "Lizzy is very happy",
         "templates": [],
         "imageId": null,
@@ -12436,11 +11147,7 @@
         "id": 192,
         "lineId": 9,
         "places": [],
-        "tags": [
-          8,
-          7,
-          4
-        ],
+        "tags": [8, 7, 4],
         "title": "Miss Bingley speaks ill of Lizzy",
         "templates": [],
         "imageId": null,
@@ -12468,10 +11175,7 @@
         "id": 193,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4,
-          0
-        ],
+        "tags": [4, 0],
         "title": "Darcy defends Lizzy against Miss Bingley",
         "templates": [],
         "imageId": null,
@@ -12499,11 +11203,7 @@
         "id": 194,
         "lineId": 2,
         "places": [],
-        "tags": [
-          8,
-          4,
-          0
-        ],
+        "tags": [8, 4, 0],
         "title": "Lizzy holds her own",
         "templates": [],
         "imageId": null,
@@ -12530,14 +11230,7 @@
         "id": 195,
         "lineId": 1,
         "places": [],
-        "tags": [
-          7,
-          6,
-          4,
-          8,
-          13,
-          17
-        ],
+        "tags": [7, 6, 4, 8, 13, 17],
         "title": "Lydia has run off with Wickham",
         "templates": [],
         "imageId": null,
@@ -12565,11 +11258,7 @@
         "id": 196,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17,
-          15,
-          6
-        ],
+        "tags": [17, 15, 6],
         "title": "Jane writes a woeful letter telling Lizzy",
         "templates": [],
         "imageId": null,
@@ -12597,11 +11286,7 @@
         "id": 197,
         "lineId": 6,
         "places": [],
-        "tags": [
-          7,
-          6,
-          8
-        ],
+        "tags": [7, 6, 8],
         "title": "Lydia runs away with Wickham",
         "templates": [],
         "imageId": null,
@@ -12629,10 +11314,7 @@
         "id": 198,
         "lineId": 11,
         "places": [],
-        "tags": [
-          6,
-          7
-        ],
+        "tags": [6, 7],
         "title": "Wickham runs off with Lydia",
         "templates": [],
         "imageId": null,
@@ -12659,9 +11341,7 @@
         "id": 199,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet thinks the worst",
         "templates": [],
         "imageId": null,
@@ -12688,10 +11368,7 @@
         "id": 200,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          17
-        ],
+        "tags": [8, 17],
         "title": "Mrs Bennet falls ill with worry",
         "templates": [],
         "imageId": null,
@@ -12719,10 +11396,7 @@
         "id": 201,
         "lineId": 3,
         "places": [],
-        "tags": [
-          15,
-          6
-        ],
+        "tags": [15, 6],
         "title": "Darcy is told the story",
         "templates": [],
         "imageId": null,
@@ -12750,10 +11424,7 @@
         "id": 202,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          6
-        ],
+        "tags": [17, 6],
         "title": "Lizzy leaves for Longbourn",
         "templates": [],
         "imageId": null,
@@ -12780,9 +11451,7 @@
         "id": 203,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Lizzy arrives home",
         "templates": [],
         "imageId": null,
@@ -12810,9 +11479,7 @@
         "id": 204,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet has gone to London",
         "templates": [],
         "imageId": null,
@@ -12839,10 +11506,7 @@
         "id": 205,
         "lineId": 7,
         "places": [],
-        "tags": [
-          4,
-          8
-        ],
+        "tags": [4, 8],
         "title": "Mrs Bennet is in hysterics",
         "templates": [],
         "imageId": null,
@@ -12870,12 +11534,7 @@
         "id": 206,
         "lineId": 2,
         "places": [],
-        "tags": [
-          8,
-          4,
-          7,
-          17
-        ],
+        "tags": [8, 4, 7, 17],
         "title": "Lizzy is horrified",
         "templates": [],
         "imageId": null,
@@ -12903,12 +11562,7 @@
         "id": 207,
         "lineId": 4,
         "places": [],
-        "tags": [
-          8,
-          17,
-          15,
-          11
-        ],
+        "tags": [8, 17, 15, 11],
         "title": "Jane reads Lizzy Lydia's letter",
         "templates": [],
         "imageId": null,
@@ -12936,11 +11590,7 @@
         "id": 208,
         "lineId": 10,
         "places": [],
-        "tags": [
-          13,
-          17,
-          8
-        ],
+        "tags": [13, 17, 8],
         "title": "Mr Collins writes to Mr Bennet",
         "templates": [],
         "imageId": null,
@@ -12968,11 +11618,7 @@
         "id": 209,
         "lineId": 8,
         "places": [],
-        "tags": [
-          3,
-          17,
-          14
-        ],
+        "tags": [3, 17, 14],
         "title": "Mr Bennet returns to Longbourn",
         "templates": [],
         "imageId": null,
@@ -13000,10 +11646,7 @@
         "id": 210,
         "lineId": 8,
         "places": [],
-        "tags": [
-          12,
-          17
-        ],
+        "tags": [12, 17],
         "title": "Mr Bennet receives a letter",
         "templates": [],
         "imageId": null,
@@ -13030,9 +11673,7 @@
         "id": 211,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet is overjoyed",
         "templates": [],
         "imageId": null,
@@ -13059,11 +11700,7 @@
         "id": 212,
         "lineId": 6,
         "places": [],
-        "tags": [
-          6,
-          4,
-          11
-        ],
+        "tags": [6, 4, 11],
         "title": "Lydia will be married",
         "templates": [],
         "imageId": null,
@@ -13090,9 +11727,7 @@
         "id": 213,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "The Bennets wait for news",
         "templates": [],
         "imageId": null,
@@ -13119,11 +11754,7 @@
         "id": 214,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17,
-          11,
-          6
-        ],
+        "tags": [17, 11, 6],
         "title": "The Bennets receive news",
         "templates": [],
         "imageId": null,
@@ -13150,10 +11781,7 @@
         "id": 215,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17,
-          4
-        ],
+        "tags": [17, 4],
         "title": "Mr Bennet remains furious",
         "templates": [],
         "imageId": null,
@@ -13180,9 +11808,7 @@
         "id": 216,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet begins making plans",
         "templates": [],
         "imageId": null,
@@ -13210,11 +11836,7 @@
         "id": 217,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          14,
-          0
-        ],
+        "tags": [4, 14, 0],
         "title": "Lizzy mourns her chance with Darcy",
         "templates": [],
         "imageId": null,
@@ -13242,12 +11864,7 @@
         "id": 218,
         "lineId": 11,
         "places": [],
-        "tags": [
-          4,
-          5,
-          6,
-          7
-        ],
+        "tags": [4, 5, 6, 7],
         "title": "Wickham will quit the militia",
         "templates": [],
         "imageId": null,
@@ -13274,9 +11891,7 @@
         "id": 219,
         "lineId": 1,
         "places": [],
-        "tags": [
-          11
-        ],
+        "tags": [11],
         "title": "The situation is settled",
         "templates": [],
         "imageId": null,
@@ -13304,10 +11919,7 @@
         "id": 220,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17,
-          5
-        ],
+        "tags": [17, 5],
         "title": "Jane and Lizzy sway Mr Bennet",
         "templates": [],
         "imageId": null,
@@ -13334,10 +11946,7 @@
         "id": 221,
         "lineId": 1,
         "places": [],
-        "tags": [
-          7,
-          17
-        ],
+        "tags": [7, 17],
         "title": "Lydia and Wickham arrive at Longbourn",
         "templates": [],
         "imageId": null,
@@ -13364,10 +11973,7 @@
         "id": 222,
         "lineId": 11,
         "places": [],
-        "tags": [
-          11,
-          4
-        ],
+        "tags": [11, 4],
         "title": "Wickham will marry Lydia",
         "templates": [],
         "imageId": null,
@@ -13395,9 +12001,7 @@
         "id": 223,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Lydia is very smug and unembarrassed",
         "templates": [],
         "imageId": null,
@@ -13425,9 +12029,7 @@
         "id": 224,
         "lineId": 11,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Wickham is unembarrassed",
         "templates": [],
         "imageId": null,
@@ -13454,9 +12056,7 @@
         "id": 225,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet is as proud as Lydia",
         "templates": [],
         "imageId": null,
@@ -13484,12 +12084,7 @@
         "id": 226,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0,
-          5,
-          15,
-          17
-        ],
+        "tags": [0, 5, 15, 17],
         "title": "Lizzy hears of Darcy's role",
         "templates": [],
         "imageId": null,
@@ -13516,10 +12111,7 @@
         "id": 227,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          5
-        ],
+        "tags": [0, 5],
         "title": "Darcy's role is revealed",
         "templates": [],
         "imageId": null,
@@ -13547,10 +12139,7 @@
         "id": 228,
         "lineId": 3,
         "places": [],
-        "tags": [
-          5,
-          0
-        ],
+        "tags": [5, 0],
         "title": "Darcy had saved the day!",
         "templates": [],
         "imageId": null,
@@ -13578,11 +12167,7 @@
         "id": 229,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0,
-          14,
-          15
-        ],
+        "tags": [0, 14, 15],
         "title": "Lizzy receives her aunt's letter",
         "templates": [],
         "imageId": null,
@@ -13610,10 +12195,7 @@
         "id": 230,
         "lineId": 11,
         "places": [],
-        "tags": [
-          8,
-          7
-        ],
+        "tags": [8, 7],
         "title": "Wickham approaches Lizzy",
         "templates": [],
         "imageId": null,
@@ -13640,10 +12222,7 @@
         "id": 231,
         "lineId": 1,
         "places": [],
-        "tags": [
-          17,
-          0
-        ],
+        "tags": [17, 0],
         "title": "Lydia leaves and Bingley returns",
         "templates": [],
         "imageId": null,
@@ -13671,10 +12250,7 @@
         "id": 232,
         "lineId": 6,
         "places": [],
-        "tags": [
-          8,
-          7
-        ],
+        "tags": [8, 7],
         "title": "Lydia takes leave uncaringly",
         "templates": [],
         "imageId": null,
@@ -13702,10 +12278,7 @@
         "id": 233,
         "lineId": 11,
         "places": [],
-        "tags": [
-          3,
-          8
-        ],
+        "tags": [3, 8],
         "title": "Wickham gives a charming goodbye",
         "templates": [],
         "imageId": null,
@@ -13732,9 +12305,7 @@
         "id": 234,
         "lineId": 8,
         "places": [],
-        "tags": [
-          5
-        ],
+        "tags": [5],
         "title": "Mr Bennet refuses to call on Bingley",
         "templates": [],
         "imageId": null,
@@ -13762,9 +12333,7 @@
         "id": 235,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "title": "Mrs Bennet resolves to invite Bingley",
         "templates": [],
         "imageId": null,
@@ -13791,9 +12360,7 @@
         "id": 236,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Bingley calls on the Bennets",
         "templates": [],
         "imageId": null,
@@ -13820,11 +12387,7 @@
         "id": 237,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4,
-          0,
-          1
-        ],
+        "tags": [4, 0, 1],
         "title": "Darcy joins Bingley in visiting",
         "templates": [],
         "imageId": null,
@@ -13852,10 +12415,7 @@
         "id": 238,
         "lineId": 2,
         "places": [],
-        "tags": [
-          4,
-          0
-        ],
+        "tags": [4, 0],
         "title": "Lizzy is in agony",
         "templates": [],
         "imageId": null,
@@ -13883,9 +12443,7 @@
         "id": 239,
         "lineId": 4,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Jane tries to hide her feelings",
         "templates": [],
         "imageId": null,
@@ -13912,9 +12470,7 @@
         "id": 240,
         "lineId": 1,
         "places": [],
-        "tags": [
-          10
-        ],
+        "tags": [10],
         "title": "A party at Longbourn",
         "templates": [],
         "imageId": null,
@@ -13942,9 +12498,7 @@
         "id": 241,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Bingley seems as fond of Jane as ever",
         "templates": [],
         "imageId": null,
@@ -13972,11 +12526,7 @@
         "id": 242,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0,
-          14,
-          10
-        ],
+        "tags": [0, 14, 10],
         "title": "Lizzy hopes Darcy will speak to her",
         "templates": [],
         "imageId": null,
@@ -14004,10 +12554,7 @@
         "id": 243,
         "lineId": 4,
         "places": [],
-        "tags": [
-          0,
-          10
-        ],
+        "tags": [0, 10],
         "title": "Jane is quite happy",
         "templates": [],
         "imageId": null,
@@ -14034,9 +12581,7 @@
         "id": 244,
         "lineId": 3,
         "places": [],
-        "tags": [
-          1
-        ],
+        "tags": [1],
         "title": "Darcy speaks very little to anyone.",
         "templates": [],
         "imageId": null,
@@ -14063,10 +12608,7 @@
         "id": 245,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          10
-        ],
+        "tags": [8, 10],
         "title": "Mrs Bennet hosts a large dinner",
         "templates": [],
         "imageId": null,
@@ -14093,10 +12635,7 @@
         "id": 246,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          11
-        ],
+        "tags": [0, 11],
         "title": "Bingley and Jane are engaged",
         "templates": [],
         "imageId": null,
@@ -14124,10 +12663,7 @@
         "id": 247,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0,
-          11
-        ],
+        "tags": [0, 11],
         "title": "Bingley proposes to Jane",
         "templates": [],
         "imageId": null,
@@ -14154,10 +12690,7 @@
         "id": 248,
         "lineId": 4,
         "places": [],
-        "tags": [
-          11,
-          0
-        ],
+        "tags": [11, 0],
         "title": "Jane is the happiest anyone has been",
         "templates": [],
         "imageId": null,
@@ -14185,11 +12718,7 @@
         "id": 249,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          13,
-          11
-        ],
+        "tags": [8, 13, 11],
         "title": "Mrs Bennet schemes repeatedly",
         "templates": [],
         "imageId": null,
@@ -14217,10 +12746,7 @@
         "id": 250,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          16
-        ],
+        "tags": [17, 16],
         "title": "Lizzy is overjoyed for her sister",
         "templates": [],
         "imageId": null,
@@ -14247,9 +12773,7 @@
         "id": 251,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet is happy for Jane",
         "templates": [],
         "imageId": null,
@@ -14276,13 +12800,7 @@
         "id": 252,
         "lineId": 1,
         "places": [],
-        "tags": [
-          12,
-          13,
-          4,
-          6,
-          7
-        ],
+        "tags": [12, 13, 4, 6, 7],
         "title": "Lady Catherine visits Longbourn",
         "templates": [],
         "imageId": null,
@@ -14310,13 +12828,7 @@
         "id": 253,
         "lineId": 2,
         "places": [],
-        "tags": [
-          14,
-          12,
-          13,
-          4,
-          5
-        ],
+        "tags": [14, 12, 13, 4, 5],
         "title": "Lizzy is confronted and holds strong",
         "templates": [],
         "imageId": null,
@@ -14344,14 +12856,7 @@
         "id": 254,
         "lineId": 10,
         "places": [],
-        "tags": [
-          8,
-          3,
-          13,
-          4,
-          5,
-          6
-        ],
+        "tags": [8, 3, 13, 4, 5, 6],
         "title": "Mr Collins warns Mr Bennet by letter",
         "templates": [],
         "imageId": null,
@@ -14378,11 +12883,7 @@
         "id": 255,
         "lineId": 1,
         "places": [],
-        "tags": [
-          8,
-          3,
-          4
-        ],
+        "tags": [8, 3, 4],
         "title": "Mr Bennet receives a letter",
         "templates": [],
         "imageId": null,
@@ -14410,10 +12911,7 @@
         "id": 256,
         "lineId": 2,
         "places": [],
-        "tags": [
-          14,
-          17
-        ],
+        "tags": [14, 17],
         "title": "Lizzy cannot be amused",
         "templates": [],
         "imageId": null,
@@ -14441,13 +12939,7 @@
         "id": 257,
         "lineId": 8,
         "places": [],
-        "tags": [
-          8,
-          3,
-          13,
-          15,
-          17
-        ],
+        "tags": [8, 3, 13, 15, 17],
         "title": "Mr Bennet reads the letter to Lizzy",
         "templates": [],
         "imageId": null,
@@ -14475,14 +12967,7 @@
         "id": 258,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          1,
-          2,
-          11,
-          14,
-          4
-        ],
+        "tags": [0, 1, 2, 11, 14, 4],
         "title": "Lizzy and Darcy are engaged",
         "templates": [],
         "imageId": null,
@@ -14509,10 +12994,7 @@
         "id": 259,
         "lineId": 5,
         "places": [],
-        "tags": [
-          0,
-          16
-        ],
+        "tags": [0, 16],
         "title": "Bingley visits with Darcy",
         "templates": [],
         "imageId": null,
@@ -14539,9 +13021,7 @@
         "id": 260,
         "lineId": 4,
         "places": [],
-        "tags": [
-          0
-        ],
+        "tags": [0],
         "title": "Jane and Bingley go for a walk",
         "templates": [],
         "imageId": null,
@@ -14569,12 +13049,7 @@
         "id": 261,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0,
-          14,
-          2,
-          11
-        ],
+        "tags": [0, 14, 2, 11],
         "title": "Lizzy confesses her new feelings",
         "templates": [],
         "imageId": null,
@@ -14601,11 +13076,7 @@
         "id": 262,
         "lineId": 3,
         "places": [],
-        "tags": [
-          0,
-          14,
-          11
-        ],
+        "tags": [0, 14, 11],
         "title": "Darcy proposes",
         "templates": [],
         "imageId": null,
@@ -14632,11 +13103,7 @@
         "id": 263,
         "lineId": 1,
         "places": [],
-        "tags": [
-          4,
-          11,
-          17
-        ],
+        "tags": [4, 11, 17],
         "title": "The Bennets hear of the engagement",
         "templates": [],
         "imageId": null,
@@ -14664,11 +13131,7 @@
         "id": 264,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17,
-          11,
-          5
-        ],
+        "tags": [17, 11, 5],
         "title": "Mr Bennet gives his permission ",
         "templates": [],
         "imageId": null,
@@ -14696,12 +13159,7 @@
         "id": 265,
         "lineId": 7,
         "places": [],
-        "tags": [
-          8,
-          13,
-          12,
-          17
-        ],
+        "tags": [8, 13, 12, 17],
         "title": "Mrs Bennet gives her permission",
         "templates": [],
         "imageId": null,
@@ -14728,11 +13186,7 @@
         "id": 266,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          4,
-          15
-        ],
+        "tags": [17, 4, 15],
         "title": "Lizzy tells her parents",
         "templates": [],
         "imageId": null,
@@ -14759,10 +13213,7 @@
         "id": 267,
         "lineId": 3,
         "places": [],
-        "tags": [
-          4,
-          5
-        ],
+        "tags": [4, 5],
         "title": "Darcy asks for Mr Bennet's permission",
         "templates": [],
         "imageId": null,
@@ -14789,11 +13240,7 @@
         "id": 268,
         "lineId": 4,
         "places": [],
-        "tags": [
-          4,
-          15,
-          17
-        ],
+        "tags": [4, 15, 17],
         "title": "Jane is surprised but happy",
         "templates": [],
         "imageId": null,
@@ -14820,9 +13267,7 @@
         "id": 269,
         "lineId": 5,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Bingley is thrilled at the news",
         "templates": [],
         "imageId": null,
@@ -14849,11 +13294,7 @@
         "id": 270,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          11,
-          5
-        ],
+        "tags": [0, 11, 5],
         "title": "The engagement is settled",
         "templates": [],
         "imageId": null,
@@ -14880,10 +13321,7 @@
         "id": 271,
         "lineId": 2,
         "places": [],
-        "tags": [
-          17,
-          11
-        ],
+        "tags": [17, 11],
         "title": "Lizzy writes to the Gardiners",
         "templates": [],
         "imageId": null,
@@ -14910,13 +13348,7 @@
         "id": 272,
         "lineId": 3,
         "places": [],
-        "tags": [
-          17,
-          13,
-          12,
-          5,
-          11
-        ],
+        "tags": [17, 13, 12, 5, 11],
         "title": "Darcy writes to Lady Catherine",
         "templates": [],
         "imageId": null,
@@ -14943,11 +13375,7 @@
         "id": 273,
         "lineId": 8,
         "places": [],
-        "tags": [
-          3,
-          8,
-          17
-        ],
+        "tags": [3, 8, 17],
         "title": "Mr Bennet writes to Mr Collins",
         "templates": [],
         "imageId": null,
@@ -14975,10 +13403,7 @@
         "id": 274,
         "lineId": 9,
         "places": [],
-        "tags": [
-          8,
-          4
-        ],
+        "tags": [8, 4],
         "title": "Miss Bingley writes to Jane",
         "templates": [],
         "imageId": null,
@@ -15006,9 +13431,7 @@
         "id": 275,
         "lineId": 12,
         "places": [],
-        "tags": [
-          16
-        ],
+        "tags": [16],
         "title": "Miss Lucas comes to Longbourn",
         "templates": [],
         "imageId": null,
@@ -15036,12 +13459,7 @@
         "id": 276,
         "lineId": 1,
         "places": [],
-        "tags": [
-          0,
-          16,
-          17,
-          11
-        ],
+        "tags": [0, 16, 17, 11],
         "title": "And they all live happily ever after!",
         "templates": [],
         "imageId": null,
@@ -15068,10 +13486,7 @@
         "id": 277,
         "lineId": 7,
         "places": [],
-        "tags": [
-          13,
-          17
-        ],
+        "tags": [13, 17],
         "title": "Mrs Bennet sees her daughters married",
         "templates": [],
         "imageId": null,
@@ -15098,9 +13513,7 @@
         "id": 278,
         "lineId": 8,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Mr Bennet calls often at Pemberley",
         "templates": [],
         "imageId": null,
@@ -15127,10 +13540,7 @@
         "id": 279,
         "lineId": 5,
         "places": [],
-        "tags": [
-          16,
-          12
-        ],
+        "tags": [16, 12],
         "title": "Bingley buys an estate near Darcy's",
         "templates": [],
         "imageId": null,
@@ -15157,9 +13567,7 @@
         "id": 280,
         "lineId": 4,
         "places": [],
-        "tags": [
-          17
-        ],
+        "tags": [17],
         "title": "Jane and Lizzy are but 30 miles apart",
         "templates": [],
         "imageId": null,
@@ -15187,10 +13595,7 @@
         "id": 281,
         "lineId": 6,
         "places": [],
-        "tags": [
-          13,
-          8
-        ],
+        "tags": [13, 8],
         "title": "Lydia hopes for money from Lizzy",
         "templates": [],
         "imageId": null,
@@ -15217,10 +13622,7 @@
         "id": 282,
         "lineId": 11,
         "places": [],
-        "tags": [
-          8,
-          12
-        ],
+        "tags": [8, 12],
         "title": "Wickham hopes for money from Darcy",
         "templates": [],
         "imageId": null,
@@ -15247,10 +13649,7 @@
         "id": 283,
         "lineId": 9,
         "places": [],
-        "tags": [
-          14,
-          8
-        ],
+        "tags": [14, 8],
         "title": "Miss Bingley makes amends",
         "templates": [],
         "imageId": null,
@@ -15277,10 +13676,7 @@
         "id": 284,
         "lineId": 2,
         "places": [],
-        "tags": [
-          0,
-          3
-        ],
+        "tags": [0, 3],
         "title": "Lizzy, in love, continues to tease",
         "templates": [],
         "imageId": null,
@@ -15307,10 +13703,7 @@
         "id": 285,
         "lineId": 3,
         "places": [],
-        "tags": [
-          0,
-          1
-        ],
+        "tags": [0, 1],
         "title": "Darcy is happier and forgiving",
         "templates": [],
         "imageId": null,
@@ -15397,14 +13790,10 @@
             ]
           }
         ],
-        "tags": [
-          2
-        ],
+        "tags": [2],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "age": [
           {
             "children": [
@@ -15458,9 +13847,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -15486,9 +13873,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15665,9 +14050,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -15692,9 +14075,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15719,9 +14100,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15746,9 +14125,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15773,9 +14150,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15800,9 +14175,7 @@
         "categoryId": "2",
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15861,9 +14234,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -15888,9 +14259,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -15915,9 +14284,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "paragraph": [
           {
             "children": [
@@ -15951,9 +14318,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -15978,9 +14343,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -16005,9 +14368,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -16030,13 +14391,9 @@
         ],
         "templates": [],
         "categoryId": "2",
-        "tags": [
-          8
-        ],
+        "tags": [8],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "age": [
           {
             "children": [
@@ -16070,9 +14427,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -16097,9 +14452,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "No"
       },
       {
@@ -16124,9 +14477,7 @@
         "categoryId": null,
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "In possession of fortune": "Yes"
       },
       {
@@ -16141,11 +14492,7 @@
                 "text": ""
               }
             ],
-            "at": [
-              1,
-              0,
-              0
-            ]
+            "at": [1, 0, 0]
           }
         ],
         "color": null,
@@ -16508,13 +14855,8 @@
         ],
         "id": 0,
         "lastEdited": 1584643300774,
-        "places": [
-          1
-        ],
-        "tags": [
-          17,
-          12
-        ],
+        "places": [1],
+        "tags": [17, 12],
         "title": "ENTAIL - definition and meaning",
         "templates": [],
         "imageId": null,
@@ -16542,20 +14884,14 @@
         "id": 1,
         "lastEdited": 1593793540270,
         "places": [],
-        "tags": [
-          9,
-          7
-        ],
+        "tags": [9, 7],
         "title": "BALLS & DANCES - etiquette",
         "templates": [],
         "imageId": "4",
         "bookIds": []
       },
       {
-        "characters": [
-          1,
-          7
-        ],
+        "characters": [1, 7],
         "content": [
           {
             "type": "paragraph",
@@ -16577,9 +14913,7 @@
         "id": 2,
         "lastEdited": 1593006568126,
         "places": [],
-        "tags": [
-          4
-        ],
+        "tags": [4],
         "title": "Darcy & Wickham",
         "templates": [],
         "imageId": null,
@@ -16604,9 +14938,7 @@
         "id": 3,
         "lastEdited": 1593006560958,
         "places": [],
-        "tags": [
-          1
-        ],
+        "tags": [1],
         "title": "Notes on pride",
         "templates": [],
         "imageId": null,
@@ -16631,9 +14963,7 @@
         "id": 4,
         "lastEdited": 1595856807418,
         "places": [],
-        "tags": [
-          2
-        ],
+        "tags": [2],
         "title": "Notes on prejudice",
         "templates": [],
         "imageId": null,
@@ -16875,9 +15205,7 @@
         "tags": [],
         "templates": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "county": "",
         "owner": "Bingley"
       },
@@ -16901,9 +15229,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ]
+        "bookIds": [1]
       },
       {
         "cards": [],
@@ -16925,9 +15251,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ]
+        "bookIds": [1]
       },
       {
         "cards": [],
@@ -16949,9 +15273,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ]
+        "bookIds": [1]
       },
       {
         "cards": [],
@@ -16973,9 +15295,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ]
+        "bookIds": [1]
       },
       {
         "cards": [],
@@ -16997,9 +15317,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "county": "London",
         "owner": ""
       },
@@ -17023,9 +15341,7 @@
         "templates": [],
         "tags": [],
         "imageId": null,
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "county": "",
         "owner": ""
       },
@@ -17047,13 +15363,9 @@
           }
         ],
         "templates": [],
-        "tags": [
-          6
-        ],
+        "tags": [6],
         "imageId": "4",
-        "bookIds": [
-          1
-        ],
+        "bookIds": [1],
         "county": "",
         "owner": "",
         "thing": ""

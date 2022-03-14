@@ -1,6 +1,6 @@
 {
   "name": "plottr_firebase",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Bindings to store and manage files on Firebase from Plottr",
   "main": "src/index.js",
   "repository": "https://github.com/Plotinator/plottr_firebase",

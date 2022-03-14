@@ -27,6 +27,7 @@ import { gracefullyQuit } from './modules/utils'
 import { addToKnown, addToKnownFiles } from './modules/known_files'
 import { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy } from './modules/feature_flags'
 import { reloadAllWindows } from './modules/windows'
+import { openLoginPopupWindow } from './modules/windows/login'
 import { broadcastToAllWindows } from './modules/broadcast'
 import {
   openKnownFile,
@@ -348,4 +349,8 @@ ipcMain.on('show-item-in-folder', (_event, fileName) => {
 
 ipcMain.on('pls-set-my-file-path', (event, filePath) => {
   setFilePathForWindowWithId(event.sender.id, filePath)
+})
+
+ipcMain.on('pls-open-login-popup', () => {
+  openLoginPopupWindow()
 })

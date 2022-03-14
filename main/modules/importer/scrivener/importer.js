@@ -16,6 +16,7 @@ const defaultCharacter = initialState.character
 const defaultCard = initialState.card
 const defaultLine = initialState.line
 const defaultTag = initialState.tag
+const defaultCategory = initialState.category
 
 const { nextId, objectId } = newIds
 const {
@@ -302,6 +303,32 @@ function createNewBeat(currentState, values, bookId) {
     ...currentState.beats,
     [bookId]: tree.addNode('id')(beatTree, null, node),
   }
+}
+
+function createNewCategory(currentCategories, name) {
+  const nextCategoryId = nextId(currentCategories)
+  const categoryExist = currentCategories.find(
+    (category) => category.name.toLowerCase().trim() == name.toLowerCase().trim()
+  )
+  if (!categoryExist) {
+    const newCategory = Object.assign({}, defaultCategory, { id: nextCategoryId, name })
+    currentCategories.push(newCategory)
+    return nextCategoryId
+  }
+  return categoryExist.id
+}
+
+function createNewTag(currentTags, title) {
+  const nextTagId = nextId(currentTags)
+  const tagExist = currentTags.find(
+    (tag) => tag.title.toLowerCase().trim() == title.toLowerCase().trim()
+  )
+  if (!tagExist) {
+    const newTag = Object.assign({}, defaultTag, { id: nextTagId, title })
+    currentTags.push(newTag)
+    return nextTagId
+  }
+  return tagExist.id
 }
 
 function createSlateParagraph(value) {
@@ -668,11 +695,14 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
         // remove three dots placeholder if key
         .filter((item) => Object.keys(item)[0] != '...')
         .map((item) => {
-          if (isATag(Object.keys(item)[0])) {
-            const tagIds = generateTagIds(currentState, Object.values(item)[0])
+          const attrKey = Object.keys(item)[0]
+          const attrValue = Object.values(item)[0]
+
+          if (isATag(attrKey)) {
+            const tagIds = generateTagIds(currentState, attrValue)
             return { tags: tagIds }
           } else {
-            return item
+            return strippedDefaultAttributes(currentState, 'places', attrKey, attrValue || '')
           }
         })
         .reduce(
@@ -720,11 +750,14 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
       const characterAttributes = content
         .filter((item) => Object.keys(item)[0] != '...')
         .map((item) => {
-          if (isATag(Object.keys(item)[0])) {
-            const tagIds = generateTagIds(currentState, Object.values(item)[0])
+          const attrKey = Object.keys(item)[0]
+          const attrValue = Object.values(item)[0]
+
+          if (isATag(attrKey)) {
+            const tagIds = generateTagIds(currentState, attrValue)
             return { tags: tagIds }
           } else {
-            return item
+            return strippedDefaultAttributes(currentState, 'characters', attrKey, attrValue || '')
           }
         })
         .reduce(
@@ -753,6 +786,26 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
       generateCharacters(currentState, binderItemsArr, bookId, files)
     }
   })
+}
+
+function strippedDefaultAttributes(currentState, section, key, value) {
+  const strippedKey = key.toLowerCase().trim()
+  if (strippedKey == 'description') {
+    return {
+      description: value,
+    }
+  } else if (strippedKey == 'notes') {
+    return {
+      notes: value,
+    }
+  } else if (strippedKey == 'category') {
+    return {
+      categoryId: createNewCategory(currentState.categories[section], value),
+    }
+  }
+  return {
+    [key]: value,
+  }
 }
 
 function isATag(objKey) {
@@ -788,31 +841,27 @@ function generateTagIds(currentState, stringOfTags) {
   })
 }
 
-function createNewTag(currentTags, title) {
-  const nextTagId = nextId(currentTags)
-  const cardExist = currentTags.find(
-    (tag) => tag.title.toLowerCase().trim() == title.toLowerCase().trim()
-  )
-  if (!cardExist) {
-    const newTag = Object.assign({}, defaultTag, { id: nextTagId, title })
-    currentTags.push(newTag)
-    return nextTagId
-  }
-  return cardExist.id
-}
-
 function createCustomAttributes(currentState, attributes, section) {
   if (attributes && attributes.length) {
     const mappedAttributes = attributes
       .map((attributes) => {
         const newAttr = Object.keys(attributes)[0]
         const attributeExists = currentState.customAttributes[section].find(
-          (attr) => attr.name == newAttr
+          (attr) => attr.name.toLowerCase().trim() == newAttr.toLowerCase().trim()
         )
 
         const tagAttribute = newAttr.toLowerCase().trim() == 'tags'
+        const descriptionAttribute = newAttr.toLowerCase().trim() == 'description'
+        const notesAttribute = newAttr.toLowerCase().trim() == 'notes'
+        const categoryAttribute = newAttr.toLowerCase().trim() == 'category'
 
-        if ((!attributeExists || !currentState.customAttributes[section].length) && !tagAttribute) {
+        if (
+          (!currentState.customAttributes[section].length || !attributeExists) &&
+          !tagAttribute &&
+          !descriptionAttribute &&
+          !notesAttribute &&
+          !categoryAttribute
+        ) {
           return { name: newAttr, type: 'text' }
         }
       })

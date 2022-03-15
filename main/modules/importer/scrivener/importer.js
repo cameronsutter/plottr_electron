@@ -698,6 +698,10 @@ function generatePlaces(currentState, json, bookId, files, isNewFile) {
         name
       )
       const customAttributes = content
+        // ASSUMPTION: items from `generateCustomAttribute` are single-key objects with a name
+        // that corresponds to an entity's property
+        // and a value which corresponds to that property's value.
+
         // remove three dots placeholder if key
         .filter((item) => keys(item)[0] != '...')
         .map((item) => {
@@ -751,6 +755,11 @@ function generateCharacters(currentState, json, bookId, files, isNewFile) {
       const content = generateCustomAttribute(matchFile[0], currentState, name)
 
       const characterAttributes = content
+        // ASSUMPTION: items from `generateCustomAttribute` are single-key objects with a name
+        // that corresponds to an entity's property
+        // and a value which corresponds to that property's value.
+
+        // remove three dots placeholder if key
         .filter((item) => keys(item)[0] != '...')
         .map((item) => {
           const attrKey = keys(item)[0]

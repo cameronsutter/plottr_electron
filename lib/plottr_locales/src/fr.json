@@ -1112,6 +1112,9 @@
   "GET A LICENSE": {
     "message": "GET A LICENSE"
   },
+  "Get a License": {
+    "message": "Get a License"
+  },
   "GET STARTED!": {
     "message": "GET STARTED!"
   },
@@ -1352,8 +1355,8 @@
   "Please choose a plotline": {
     "message": "Please choose a plotline"
   },
-  "Please contact me with any questions at support@plottr.com": {
-    "message": "Please contact me with any questions at support@plottr.com"
+  "Please contact us with any questions at support@plottr.com": {
+    "message": "Please contact us with any questions at support@plottr.com"
   },
   "Please select a valid Plottr file": {
     "message": "Please select a valid Plottr file"

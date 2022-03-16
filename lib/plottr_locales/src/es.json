@@ -506,7 +506,7 @@
   "Places list": {
     "message": "Lista de escenarios"
   },
-  "Please contact me with any questions at support@plottr.com": {
+  "Please contact us with any questions at support@plottr.com": {
     "message": "Por favor, envía tus preguntas a support@plottr.com"
   },
   "Please verify your license": {
@@ -1270,6 +1270,9 @@
   },
   "GET A LICENSE": {
     "message": "OBTENER UNA LICENCIA"
+  },
+  "Get a License": {
+    "message": "Obtener una Licencia"
   },
   "GET STARTED!": {
     "message": "¡COMENZAR!"

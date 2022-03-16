@@ -557,6 +557,9 @@
 	"GET A LICENSE": {
 		"message": "EINE LIZENZ ERHALTEN"
 	},
+        "Get a License": {
+		"message": "Eine lizenz Erhalten"
+	},
 	"GET STARTED!": {
 		"message": "LOSLEGEN!"
 	},
@@ -893,7 +896,7 @@
 	"Please choose a plotline": {
 		"message": "Plotline wählen"
 	},
-	"Please contact me with any questions at support@plottr.com": {
+	"Please contact us with any questions at support@plottr.com": {
 		"message": "Bitte kontaktieren Sie mich bei Fragen unter support@plottr.com"
 	},
 	"Please select a valid Plottr file": {

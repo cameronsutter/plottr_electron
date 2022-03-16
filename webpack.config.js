@@ -82,6 +82,9 @@ const mainConfig = {
   resolve: {
     extensions: ['.js', '.json'],
     modules: ['node_modules', 'main'],
+    alias: {
+      plottr_locales: path.resolve('./node_modules/plottr_locales'),
+    },
   },
   target: 'electron-main',
   plugins: [...plugins, duplicateDependencyChecker, mainCircularDependencyChecker],
@@ -169,6 +172,7 @@ const rendererConfig = {
       'react-dom': path.resolve('./node_modules/react-dom'),
       'react-redux': path.resolve('./node_modules/react-redux'),
       redux: path.resolve('./node_modules/redux'),
+      plottr_locales: path.resolve('./node_modules/plottr_locales'),
     },
   },
   target: 'electron-renderer',
@@ -238,6 +242,7 @@ const loginPopupConfig = {
       'react-dom': path.resolve('./node_modules/react-dom'),
       'react-redux': path.resolve('./node_modules/react-redux'),
       redux: path.resolve('./node_modules/redux'),
+      plottr_locales: path.resolve('./node_modules/plottr_locales'),
     },
   },
   target: 'electron-renderer',

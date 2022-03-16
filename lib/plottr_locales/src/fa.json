@@ -1,4 +1,16 @@
 {
+  "Start with Template": {
+    "message": "با قالب شروع کنید"
+  },
+  "scenes": {
+    "message": "صحنهها"
+  },
+  "Tag Categories": {
+    "message": "دستهبندیهایبرچسبها"
+  },
+  "Choose what categories you want to put your tags into": {
+    "message": "انتخاب کنید که میخواهید برچسبهایتان را در چه دستهبندیهاییقرار دهید"
+  },
   "(If not, please email support@plottr.com)": {
     "message": "(در غير اين صورت، لطفاً به support@plottr.com ايميل بزنيد)"
   },
@@ -47,6 +59,30 @@
   "Add": {
     "message": "افزودن"
   },
+  "General": {
+    "message": "پیشرفته"
+  },
+  "Title Page": {
+    "message": "صفحه عنوان"
+  },
+  "Tags / Characters / Places": {
+    "message": "برچسبها / شخصیتها / مکانها"
+  },
+  "Templates": {
+    "message": "قالبها"
+  },
+  "Main plot": {
+    "message": "طرح اصلی"
+  },
+  "Character Image": {
+    "message": "تصویر شخصیت"
+  },
+  "Save these settings across projects?": {
+    "message": "این تنظیمات در همه پروژهها ذخیره شود؟"
+  },
+  "Advanced...": {
+    "message": "یشرفته"
+  },
   "Advanced Export Options": {
     "message": "گزينه هاي پيشرفته صدور"
   },
@@ -57,7 +93,7 @@
     "message": "همه"
   },
   "App Version: {version}": {
-    "message": "نسخه برنامه: { نسخه }"
+    "message": "نسخه برنامه: {version}"
   },
   "Are you sure you want to clear everything in this timeline?": {
     "message": "واقعاً مي خواهيد همه چيز را در اين تايم لاين پاک کنيد؟"
@@ -123,7 +159,7 @@
     "message": "عنوان {number} خط سير"
   },
   "Beat {number}": {
-    "message": "خط سير { شماره }"
+    "message": "خط سير {number}"
   },
   "Beat": {
     "message": "خط سير"
@@ -198,7 +234,7 @@
     "message": "عنوان {number} فصل"
   },
   "Chapter {number}": {
-    "message": "فصل {شماره}"
+    "message": "فصل {number}"
   },
   "Chapter": {
     "message": "فصل"
@@ -219,12 +255,15 @@
     "message": "شخصيت"
   },
   "Character: {name}": {
-    "message": "شخصيت: { نام }"
+    "message": "شخصيت: {name}"
   },
   "Characters list": {
     "message": "فهرست شخصيت‌ها"
   },
   "Characters": {
+    "message": "شخصيت‌ها"
+  },
+  "characters": {
     "message": "شخصيت‌ها"
   },
   "Check for Updates": {
@@ -240,13 +279,13 @@
     "message": "انتخاب تصوير"
   },
   "Choose an {platform} mobile subscription": {
-    "message": "انتخاب يک {پلتفرم} اشتراک موبايل"
+    "message": "انتخاب يک {platform} اشتراک موبايل"
   },
   "Choose what categories you want to put your characters into": {
     "message": "انتخاب کنيد شخصيت خود را در چه دسته‌بندي‌هايي مي‌خواهيد قرار دهيد"
   },
   "Choose what you want to track about your { type }": {
-    "message": "انتخاب کنيد چه چيز را مي خواهيد درباره { نوع } خود ردگيري کنيد"
+    "message": "انتخاب کنيد چه چيز را مي خواهيد درباره {type} خود ردگيري کنيد"
   },
   "Choose where to save this file on your computer": {
     "message": "انتخاب کنيد اين فايل در کجاي کامپيوترتان ذخيره شود"
@@ -557,6 +596,9 @@
   "GET A LICENSE": {
     "message": "يک مجوز بگيريد"
   },
+  "Get a License": {
+    "message": "يک مجوز بگيريد"
+  },
   "GET STARTED!": {
     "message": "شروع کنيد!"
   },
@@ -692,6 +734,45 @@
   "MS Word": {
     "message": "MS Word"
   },
+  "Clear Timeline": {
+    "message": "پاک کردن خط زمان"
+  },
+  "Guided tours": {
+    "message": "تورهایهدایتشده"
+  },
+  "Act structure": {
+    "message": "ساختار پرده"
+  },
+  "none": {
+    "message": "یچکدام"
+  },
+  "dashed": {
+    "message": "خطچین"
+  },
+  "solid": {
+    "message": "یکدست"
+  },
+  "dotted": {
+    "message": "نقطهچین"
+  },
+  "Background Color": {
+    "message": "رنگ پسزمینه"
+  },
+  "Border Style": {
+    "message": "سبک حاشیه"
+  },
+  "Border Color": {
+    "message": "رنگ حاشیه"
+  },
+  "Text Size": {
+    "message": "اندازه متن"
+  },
+  "Text Color": {
+    "message": "رنگ متن"
+  },
+  "Chapter": {
+    "message": "فصل"
+  },
   "Main Plot": {
     "message": "طرح اصلي"
   },
@@ -789,7 +870,7 @@
     "message": "يادداشت"
   },
   "Note: {title}": {
-    "message": "يادداشت: { عنوان }"
+    "message": "يادداشت: {title}"
   },
   "Notes are filtered": {
     "message": "يادداشت‌ها فيلتر شده‌اند"
@@ -823,6 +904,9 @@
   },
   "Open Existing": {
     "message": "باز کردن موجود"
+  },
+  "Open Existing File": {
+    "message": "باز کردن فایل موجود"
   },
   "Open a Plottr Document": {
     "message": "باز کردن يک سند پلاتر"
@@ -890,7 +974,7 @@
   "Please choose a plotline": {
     "message": "لطفً یک خط طری انتخاب کنید"
   },
-  "Please contact me with any questions at support@plottr.com": {
+  "Please contact us with any questions at support@plottr.com": {
     "message": "لطفاً هر سوالی دارید با نشانی زیر با من تماس بگیرید support@plottr.com"
   },
   "Please select a valid Plottr file": {
@@ -1295,8 +1379,17 @@
   "Undo": {
     "message": "لغو انجام"
   },
+  "auto": {
+    "message": "خودکار"
+  },
+  "Remove template": {
+    "message": "حذف قالب"
+  },
   "Untitled": {
-    "message": "بی‌نام"
+    "message": "بدون عنوان"
+  },
+  "untitled": {
+    "message": "بدون عنوان"
   },
   "Update Automatically": {
     "message": "به‌روزرسانی خودکار"
@@ -1454,6 +1547,9 @@
   "[image]": {
     "message": "[تصویر]"
   },
+  "[Blank]": {
+    "message": "[خالی]"
+  },
   "a lot of scenes moved around": {
     "message": "صحنه‌های زیادی جابجا شدند"
   },
@@ -1548,16 +1644,16 @@
     "message": "{ شمارش، جمع\n    یک {1 برچسب پیوست شده}\n  دیگر {# برچسب پیوست شده}\n}"
   },
   "{amount} Lifetime": {
-    "message": "${مقدار}\nمادام‌العمر"
+    "message": "${amount}\nمادام‌العمر"
   },
   "{amount} Monthly": {
-    "message": "${مقدار}\nماهانه"
+    "message": "${amount}\nماهانه"
   },
   "{amount} Weekly": {
-    "message": "${مقدار}\nهفتگی"
+    "message": "${amount}\nهفتگی"
   },
   "{amount} Yearly": {
-    "message": "${مقدار}\nسالانه"
+    "message": "${amount}\nسالانه"
   },
   "{date, date, long}": {
     "message": "{ تاریخ، تاریخ، طولانی }"
@@ -1572,13 +1668,13 @@
     "message": "{ تعداد روزها، جمع،\n     =0 {# روز باقیمانده}\n    یک {# روز باقیمانده}\n  دیگر {# روز باقیمانده}\n}"
   },
   "{num} Scenes": {
-    "message": "{ تعداد } صحنه"
+    "message": "{num} صحنه"
   },
   "{val, number, percent}": {
     "message": "{ مقدار، عدد، درصد }"
   },
   "{wordCount,number} words": {
-    "message": "{ تعداد کلمات، شماره } کلمه"
+    "message": "{wordCount, number} کلمه"
   },
   "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
     "message": "(در غیر این صورت، با من به نشانی زیر @ <a>support@plottr.com</a> یا @StoryPlottr در Twitter تماس بگیرید)"
@@ -1639,6 +1735,12 @@
   },
   "Do you want to delete this card: { title }?": {
     "message": "مایلید این کارت را حذف کنید: { title }?"
+  },
+  "+ Add Template": {
+    "message": "افزودن قالب"
+  },
+  "DELETE": {
+    "message": "حذف"
   },
   "Do you want to delete this character: { character }?": {
     "message": "آیا مایلید این شخصیت را حذف کنید؟: { character }"
@@ -1705,6 +1807,12 @@
   },
   "Minimize": {
     "message": "کوچک‌سازی"
+  },
+  "Zoom": {
+    "message": "بزرگنمایی"
+  },
+  "Close": {
+    "message": "بستن"
   },
   "My awesome story": {
     "message": "داستان عالی من"

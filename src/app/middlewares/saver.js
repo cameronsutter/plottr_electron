@@ -19,7 +19,12 @@ const saver = (store) => (next) => (action) => {
   // save and backup
   const isOffline = selectors.isOfflineSelector(state)
   const fileName = selectors.fileNameSelector(state)
-  if (selectors.isCloudFileSelector(state) && !isOffline) {
+  const offlineModeEnabled = selectors.offlineModeEnabledSelector(state)
+  // If we're working on a cloud file, are offline and offline mode
+  // isn't enabled, don't save the file.
+  if (selectors.isCloudFileSelector(state) && isOffline && !offlineModeEnabled) {
+    return result
+  } else if (selectors.isCloudFileSelector(state) && !isOffline) {
     const fileId = selectors.fileIdSelector(state)
     saveFile(fileId, state, isOffline)
   } else if (fileName !== '') {

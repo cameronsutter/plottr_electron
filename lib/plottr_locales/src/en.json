@@ -2347,5 +2347,29 @@
   },
   "plottr.com/beta": {
     "message": "plottr.com/beta"
+  },
+  "How to turn on Act Structure":{
+    "message": "How to turn on Act Structure"
+  },
+  "On the top right corner of the app, click the 'Dashboard' button.": {
+    "message": "On the top right corner of the app, click the 'Dashboard' button."
+  },
+  "From the 'Dashboard', click 'Settings' from the side menu.": {
+    "message": "From the 'Dashboard', click 'Settings' from the side menu."
+  },
+  "On the 'Settings' modal, click on the 'Beta tab.": {
+    "message": "On the 'Settings' modal, click on the 'Beta' tab."
+  },
+  "Finally, toggle the switch to turn on/off Act Structure.": {
+    "message": "Finally, toggle the switch to turn on/off Act Structure."
+  },
+  "Import": {
+    "message": "Import"
+  },
+  "Woohoo! Scene card moved to": {
+    "message": "Woohoo! Scene card moved to"
+  },
+  "Woohoo! Scene card duplicated": {
+    "message": "Woohoo! Scene card duplicated"
   }
 }

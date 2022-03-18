@@ -1972,5 +1972,8 @@
   },
   "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
     "message": "{\n      count, plural,\n        one {1 tarjeta}\n        other {# tarjetas}\n    }"
+  },
+  "Import": {
+    "message": "Importar"
   }
 }

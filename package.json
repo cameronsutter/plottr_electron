@@ -106,6 +106,7 @@
     "pagedown": "^1.1.0",
     "plottr_components": "file:./lib/plottr_components",
     "plottr_firebase": "file:./lib/plottr_firebase",
+    "plottr_import_export": "file:./lib/plottr_import_export",
     "plottr_locales": "file:./lib/plottr_locales",
     "plottr_world": "file:./lib/plottr_world",
     "pltr": "file:./lib/pltr",

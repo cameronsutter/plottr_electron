@@ -111,10 +111,10 @@ const EditOrDisplayConnector = (connector) => {
         case 'select':
           return (
             <div className="acts-modal__levels-table-cell">
-              <DropdownButton id={`dropdown-${id}`} bsSize="small" title={value.toLowerCase()}>
+              <DropdownButton id={`dropdown-${id}`} bsSize="small" title={t(value.toLowerCase())}>
                 {options.map((option) => (
                   <MenuItem key={option} eventKey={option} onSelect={(key) => setValue(key)}>
-                    {option.toLowerCase()}
+                    {t(option.toLowerCase())}
                   </MenuItem>
                 ))}
               </DropdownButton>

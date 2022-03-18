@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'react-proptypes'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
 import {
   Glyphicon,
   Button,
@@ -205,7 +205,7 @@ const BeatTitleCellConnector = (connector) => {
       return (
         <DeleteConfirmModal
           name={beatTitle}
-          customText={warningMessage && i18n(warningMessage)}
+          customText={warningMessage && t(warningMessage)}
           onDelete={this.deleteBeat}
           onCancel={this.cancelDelete}
         />
@@ -220,8 +220,8 @@ const BeatTitleCellConnector = (connector) => {
           isOpen={true}
           type="text"
           getValue={this.finalizeEdit}
-          defaultValue={this.props.beat.title}
-          title={i18n('Edit {beatName}', { beatName: this.props.beatTitle })}
+          defaultValue={t(this.props.beat.title)}
+          title={t('Edit {beatName}', { beatName: t(this.props.beatTitle) })}
           cancel={() => this.setState({ editing: false, hovering: null })}
         />
       )

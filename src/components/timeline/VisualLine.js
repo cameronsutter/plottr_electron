@@ -10,22 +10,22 @@ const {
 const measurements = {
   horizontal: {
     medium: {
-      first: 85,
-      last: 161,
+      first: 0,
+      last: 0,
     },
     large: {
-      first: 155,
-      last: 10,
+      first: 0,
+      last: 50,
     },
   },
   vertical: {
     medium: {
-      first: 35,
-      last: 35,
+      first: 0,
+      last: 50,
     },
     large: {
-      first: 200,
-      last: 10,
+      first: 0,
+      last: 0,
     },
   },
 }
@@ -35,6 +35,8 @@ const getMargins = (orientation, isMedium) => {
   const entry = measurements[orientation][sizeKey]
   return entry.first + entry.last
 }
+
+const nop = () => {}
 
 export default function VisualLine({ color, orientation, isMedium, tableLength }) {
   const [margins, setMargins] = useState(getMargins(orientation, isMedium))
@@ -54,30 +56,29 @@ export default function VisualLine({ color, orientation, isMedium, tableLength }
         setAnimationStarted(true)
       }
     }
-  }, [tableLength, margins, maxLength])
+  }, [tableLength, margins, maxLength, setAnimationStarted, animationStarted])
 
   useEffect(() => {
-    if (!animationStarted) return
-    if (!maxLength) return
+    if (!animationStarted) return nop
+    if (!maxLength) return nop
+
+    let nextLength = currentLength + 100
+    if (nextLength > maxLength) nextLength = maxLength
 
     const id = setInterval(() => {
-      setCurrentLength((currentLength) => {
-        let nextLength = currentLength + 100
-        if (nextLength > maxLength) nextLength = maxLength
-        return nextLength
-      })
+      setCurrentLength(nextLength)
     }, 10)
     setId(id)
 
     return () => clearInterval(id)
-  }, [animationStarted])
+  }, [animationStarted, currentLength, maxLength, setId, setCurrentLength])
 
   useEffect(() => {
     if (currentLength == maxLength) {
       clearInterval(intervalId)
       setAnimationStarted(false)
     }
-  }, [currentLength])
+  }, [currentLength, maxLength, intervalId, setAnimationStarted])
 
   if (!currentLength) return null
 

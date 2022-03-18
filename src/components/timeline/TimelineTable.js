@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { findDOMNode } from 'react-dom'
 import cx from 'classnames'
 import { Row } from 'react-sticky-table'
 import UnconnectedCardCell from './CardCell'
@@ -20,6 +19,39 @@ const {
   lists: { reorderList },
 } = helpers
 
+const CELL_SIZES = {
+  small: {
+    vertical: {
+      start: 0,
+      length: 0,
+    },
+    horizontal: {
+      start: 0,
+      length: 0,
+    },
+  },
+  medium: {
+    vertical: {
+      start: 40,
+      length: 108.69,
+    },
+    horizontal: {
+      start: 27,
+      length: 90,
+    },
+  },
+  large: {
+    vertical: {
+      start: 40,
+      length: 108.69,
+    },
+    horizontal: {
+      start: 27,
+      length: 202,
+    },
+  },
+}
+
 const TimelineTableConnector = (connector) => {
   const CardCell = UnconnectedCardCell(connector)
   const BlankCard = UnconnectedBlankCard(connector)
@@ -36,16 +68,13 @@ const TimelineTableConnector = (connector) => {
     }
 
     setLength = () => {
-      const { tableRef, orientation, isSmall } = this.props
+      const { tableRef, orientation, isMedium, isSmall } = this.props
       if (isSmall) return
 
-      /* eslint-disable-next-line react/no-find-dom-node */
-      const table = findDOMNode(tableRef)
-      if (!table) return
-      let newLength = table.scrollWidth
-      if (orientation != 'horizontal') {
-        newLength = table.scrollHeight
-      }
+      if (!tableRef) return
+      const size = isSmall ? 'small' : isMedium ? 'medium' : 'large'
+      const { start, length } = CELL_SIZES[size][orientation]
+      let newLength = this.props.beats.length * length + start
       if (this.state.tableLength != newLength) {
         this.setState({ tableLength: newLength })
       }

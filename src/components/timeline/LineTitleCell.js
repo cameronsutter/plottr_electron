@@ -279,7 +279,7 @@ const LineTitleCellConnector = (connector) => {
 
     renderTitle() {
       const { darkMode } = this.props
-      if (!this.state.editing) return truncateTitle(this.props.line.title, 50)
+      if (!this.state.editing) return truncateTitle(t(this.props.line.title), 50)
       return (
         <FormGroup>
           <ControlLabel className={cx({ darkmode: darkMode })}>{t('Plotline name')}</ControlLabel>

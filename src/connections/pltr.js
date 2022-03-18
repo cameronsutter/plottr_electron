@@ -129,6 +129,7 @@ const pltrTypeSpecs = {
     readFileSync: PropTypes.func.isRequired,
     moveItemToTrash: PropTypes.func.isRequired,
     createFromSnowflake: PropTypes.func.isRequired,
+    // createFromScivener: PropTypes.func.isRequired,
     joinPath: PropTypes.func.isRequired,
     listOfflineFiles: PropTypes.func.isRequired,
   }),
@@ -214,7 +215,7 @@ const pltrTypeSpecs = {
     uploadExisting: PropTypes.func.isRequired,
   }),
   login: PropTypes.shape({
-    loginPopupURL: PropTypes.string.isRequired,
+    launchLoginPopup: PropTypes.func.isRequired,
   }),
   storage: PropTypes.shape({
     isStorageURL: PropTypes.func.isRequired,

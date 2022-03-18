@@ -140,15 +140,8 @@ const CustomAttrFilterListConnector = (connector) => {
 
     render() {
       const CAlists = this.props.customAttributes.map(this.renderList)
-      const {
-        showCharacters,
-        showPlaces,
-        showNoteCategory,
-        showCategory,
-        showBook,
-        isSeries,
-        showColor,
-      } = this.props
+      const { showCharacters, showPlaces, showNoteCategory, showCategory, showBook, showColor } =
+        this.props
       const orEmpty = (value) => (value ? value : [])
 
       const cardColors = this.props.items.map((item) => (!item.color ? null : item.color))
@@ -157,7 +150,7 @@ const CustomAttrFilterListConnector = (connector) => {
 
       return (
         <div className="filter-list flex">
-          {(showBook || isSeries) && (
+          {showBook && (
             <BookFilterList
               updateItems={this.updateFilter}
               filteredItems={[...orEmpty(this.state.filteredItems.book)]}
@@ -217,7 +210,6 @@ const CustomAttrFilterListConnector = (connector) => {
     showCharacters: PropTypes.bool.isRequired,
     showPlaces: PropTypes.bool.isRequired,
     showBook: PropTypes.bool.isRequired,
-    isSeries: PropTypes.bool,
     showColor: PropTypes.bool,
   }
 
@@ -225,11 +217,11 @@ const CustomAttrFilterListConnector = (connector) => {
     redux,
     pltr: {
       actions,
-      selectors: { sortedTagsSelector, isSeriesSelector },
+      selectors: { sortedTagsSelector },
     },
   } = connector
 
-  checkDependencies({ redux, actions, sortedTagsSelector, isSeriesSelector })
+  checkDependencies({ redux, actions, sortedTagsSelector })
 
   if (redux) {
     const { connect, bindActionCreators } = redux
@@ -279,7 +271,6 @@ const CustomAttrFilterListConnector = (connector) => {
         showCategory: type === 'characters',
         showNoteCategory: type === 'notes',
         showBook: type === 'notes' || type === 'characters' || type === 'places',
-        isSeries: isSeriesSelector(state.present),
       }
     }
 

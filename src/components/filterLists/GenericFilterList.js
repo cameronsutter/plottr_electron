@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { Glyphicon } from 'react-bootstrap'
 
+import { t } from 'plottr_locales'
+
 export default class GenericFilterList extends Component {
   filterItem = (id) => {
     var filteredItems = this.props.filteredItems
@@ -44,7 +46,7 @@ export default class GenericFilterList extends Component {
     }
     return (
       <li key={item.id} onMouseDown={() => this.filterItem(item.id)}>
-        <Glyphicon glyph={checked} /> {item[attr]}
+        <Glyphicon glyph={checked} /> {t(item[attr])}
       </li>
     )
   }
@@ -54,7 +56,7 @@ export default class GenericFilterList extends Component {
     return (
       <div>
         <p onClick={() => this.filterList(items)}>
-          <em>{title}</em>
+          <em>{t(title)}</em>
         </p>
         {this.renderFilterList(items, displayAttribute)}
       </div>

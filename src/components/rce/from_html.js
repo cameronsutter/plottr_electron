@@ -79,7 +79,7 @@ export function deserialize(el) {
     case 'A':
       return jsx('element', { type: 'link', url: el.getAttribute('href') }, children)
     default:
-      if (children.length === 0) return el.textContent
+      if (children && children.length === 0) return el.textContent
       return children
   }
 }

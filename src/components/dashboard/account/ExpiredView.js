@@ -60,7 +60,7 @@ const ExpiredViewConnector = (connector) => {
           )}
           <h2>{t('Your free trial has expired')} 😭</h2>
           {renderChoices()}
-          <p>{t('Please contact me with any questions at support@plottr.com')}</p>
+          <p>{t('Please contact us with any questions at support@plottr.com')}</p>
         </div>
       )
     } else if (view === 'verify') {

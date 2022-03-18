@@ -130,7 +130,6 @@ const EditSeriesConnector = (connector) => {
   }
 
   EditSeries.propTypes = {
-    ui: PropTypes.object.isRequired,
     series: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
   }
@@ -148,7 +147,6 @@ const EditSeriesConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          ui: state.present.ui,
           series: state.present.series,
         }
       },

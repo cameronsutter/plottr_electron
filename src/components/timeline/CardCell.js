@@ -235,9 +235,10 @@ const CardCellConnector = (connector) => {
     }
 
     renderBody() {
-      const { cards, ui, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } = this.props
+      const { cards, orientation, isVisible, color, lineIsExpanded, beatIsExpanded, isMedium } =
+        this.props
       const numOfCards = cards.length
-      const vertical = ui.orientation == 'vertical'
+      const vertical = orientation == 'vertical'
 
       if (beatIsExpanded && (lineIsExpanded || numOfCards == 1)) {
         const cellKlass = cx('card__cell', {
@@ -314,7 +315,7 @@ const CardCellConnector = (connector) => {
       if (this.state.inDropZone != nextState.inDropZone) return true
       if (this.state.hovering != nextState.hovering) return true
       if (this.props.color != nextProps.color) return true
-      if (this.props.ui.timeline.size != nextProps.ui.timeline.size) return true
+      if (this.props.timelineSize != nextProps.timelineSize) return true
       if (this.props.cards != nextProps.cards) return true
       if (this.props.lineIsExpanded != nextProps.lineIsExpanded) return true
 
@@ -329,7 +330,8 @@ const CardCellConnector = (connector) => {
     color: PropTypes.string.isRequired,
     linePosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     beatPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    ui: PropTypes.object.isRequired,
+    timelineSize: PropTypes.string.isRequired,
+    orientation: PropTypes.string.isRequired,
     beatIsExpanded: PropTypes.bool,
     lineIsExpanded: PropTypes.bool.isRequired,
     isVisible: PropTypes.bool.isRequired,
@@ -352,7 +354,8 @@ const CardCellConnector = (connector) => {
         const visibleCards = selectors.visibleCardsSelector(state.present)
         const visible = ownProps.cards.some((c) => visibleCards[c.id])
         return {
-          ui: state.present.ui,
+          timelineSize: selectors.timelineSizeSelector(state.present),
+          orientation: selectors.orientationSelector(state.present),
           lineIsExpanded: selectors.lineIsExpandedSelector(state.present)[ownProps.lineId],
           isVisible: visible,
           isSmall: selectors.isSmallSelector(state.present),

@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { IoIosBrowsers, IoIosDocument } from 'react-icons/io'
-import { FaRegSnowflake } from 'react-icons/fa'
+import { BiImport } from 'react-icons/bi'
 import { VscCloudUpload } from 'react-icons/vsc'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
-import { Col, Grid, Row } from 'react-bootstrap'
+import { Col, Dropdown, Grid, MenuItem, Row } from 'react-bootstrap'
+
+import InputModal from '../../dialogs/InputModal'
 
 import { checkDependencies } from '../../checkDependencies'
 
@@ -21,7 +23,9 @@ const NewFilesConnector = (connector) => {
   } = connector
   checkDependencies({ createNew, openExistingFile, dialog, log, mpq, os })
 
-  const NewFiles = ({ activeView, toggleView, doImport }) => {
+  const NewFiles = ({ activeView, toggleView, doSnowflakeImport, doScrivenerImport }) => {
+    const [namingFile, setNamingFile] = useState(false)
+
     const wrapFunc = (type, func) => {
       return () => {
         mpq.push(`btn_${type}`)
@@ -34,7 +38,7 @@ const NewFilesConnector = (connector) => {
       }
     }
 
-    const createNewProj = wrapFunc('create_new', () => createNew(null))
+    const createNewProj = wrapFunc('create_new', () => setNamingFile(true))
     const fromExisting = wrapFunc('open_existing', openExistingFile)
 
     useEffect(() => {
@@ -48,56 +52,88 @@ const NewFilesConnector = (connector) => {
       }
     }, [])
 
+    const handleNameInput = useCallback(
+      (value) => {
+        setNamingFile(false)
+        createNew(null, value)
+      },
+      [setNamingFile]
+    )
+    const cancelNameInput = useCallback(() => {
+      setNamingFile(false)
+    }, [setNamingFile])
+
+    const NameFile = () => {
+      if (!namingFile) return null
+
+      return (
+        <InputModal
+          title={t('Name')}
+          getValue={handleNameInput}
+          cancel={cancelNameInput}
+          isOpen={true}
+          type="text"
+        />
+      )
+    }
+
     return (
-      <Grid fluid className="dashboard__new-files">
-        <Row>
-          <Col xs={3}>
-            <div className="dashboard__new-files__item icon" onClick={createNewProj}>
-              <IoIosDocument />
-              <div>{t('Create Blank Project')}</div>
-            </div>
-          </Col>
-          <Col xs={3}>
-            <div
-              className={cx('dashboard__new-files__item icon', {
-                active: activeView == 'templates',
-              })}
-              onClick={() => toggleView('templates')}
-            >
-              <IoIosBrowsers />
-              <div>{t('Create From Template')}</div>
-            </div>
-          </Col>
-          <Col xs={3}>
-            <div className="dashboard__new-files__item icon" onClick={fromExisting}>
-              <VscCloudUpload />
-              <div>
-                {os() == 'unknown' ? t('Upload Existing Project') : t('Open Existing File')}
+      <>
+        <NameFile />
+        <Grid fluid className="dashboard__new-files">
+          <Row>
+            <Col xs={3}>
+              <div className="dashboard__new-files__item icon" onClick={createNewProj}>
+                <IoIosDocument />
+                <div>{t('Create Blank Project')}</div>
               </div>
-            </div>
-          </Col>
-          {os() == 'unknown' ? null : (
+            </Col>
             <Col xs={3}>
               <div
                 className={cx('dashboard__new-files__item icon', {
-                  active: activeView == 'import',
+                  active: activeView == 'templates',
                 })}
-                onClick={doImport}
+                onClick={() => toggleView('templates')}
               >
-                <FaRegSnowflake />
-                <div>{t('Import Snowflake Pro')}</div>
+                <IoIosBrowsers />
+                <div>{t('Create From Template')}</div>
               </div>
             </Col>
-          )}
-        </Row>
-      </Grid>
+            <Col xs={3}>
+              <div className="dashboard__new-files__item icon" onClick={fromExisting}>
+                <VscCloudUpload />
+                <div>
+                  {os() == 'unknown' ? t('Upload Existing Project') : t('Open Existing File')}
+                </div>
+              </div>
+            </Col>
+            <Col xs={3}>
+              <Dropdown
+                className={cx('dashboard__new-files__item icon pro-import', {
+                  active: activeView == 'import',
+                })}
+              >
+                <Dropdown.Toggle noCaret>
+                  <BiImport />
+                  <div>{t('Import')}</div>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <MenuItem onSelect={doSnowflakeImport}>{t('Snowflake Pro')}</MenuItem>
+                  <MenuItem onSelect={doScrivenerImport}>{t('Scrivener Project')}</MenuItem>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Col>
+          </Row>
+        </Grid>
+      </>
     )
   }
 
   NewFiles.propTypes = {
     activeView: PropTypes.string,
     toggleView: PropTypes.func,
-    doImport: PropTypes.func,
+    doSnowflakeImport: PropTypes.func,
+    doScrivenerImport: PropTypes.func,
   }
 
   return NewFiles

@@ -65,7 +65,7 @@ const UnconnectedOutlineOptions = (connector) => {
               disabled={!options.export || !options.sceneCards || !options.plotlineInTitle}
               attr="filter"
             >
-              <span>{line.title}</span>
+              <span>{t(line.title)}</span>
             </FilterCheckOption>
           </li>
         )

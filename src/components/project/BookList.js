@@ -176,7 +176,6 @@ const BookListConnector = (connector) => {
     }
 
     static propTypes = {
-      ui: PropTypes.object.isRequired,
       books: PropTypes.object.isRequired,
       lines: PropTypes.array.isRequired,
       cards: PropTypes.array.isRequired,
@@ -198,7 +197,6 @@ const BookListConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          ui: state.present.ui,
           books: state.present.books,
           lines: state.present.lines,
           cards: state.present.cards,

@@ -11,6 +11,7 @@ import {
   Tabs,
   Tab,
 } from 'react-bootstrap'
+import { FiCopy } from 'react-icons/fi'
 import { t } from 'plottr_locales'
 import cx from 'classnames'
 import tinycolor from 'tinycolor2'
@@ -81,7 +82,7 @@ const CardDialogConnector = (connector) => {
     const titleInputRef = useRef()
     const colorButtonRef = React.createRef()
 
-    const { templates, id, bookId, title, color } = cardMetaData
+    const { templates, id, title, color } = cardMetaData
 
     useEffect(() => {
       window.SCROLLWITHKEYS = false
@@ -104,6 +105,11 @@ const CardDialogConnector = (connector) => {
     const handleDelete = (e) => {
       e.stopPropagation()
       setDeleting(true)
+    }
+
+    const duplicateCard = (e) => {
+      e.stopPropagation()
+      actions.duplicateCard(id)
     }
 
     const beginRemoveTemplate = (templateId) => {
@@ -209,13 +215,12 @@ const CardDialogConnector = (connector) => {
       return lines.find((l) => l.id == lineId)
     }
 
-    const getBookTitle = () => {
-      const book = books[bookId]
-      if (book) {
-        return book.title || t('Untitled')
-      } else {
-        return t('Choose...')
+    const currentTimelineBookTitle = () => {
+      const title = currentTimeline === 'series' ? 'Series' : books[currentTimeline].title
+      if (title.length > 20) {
+        return title.slice(0, 20) + '...'
       }
+      return title
     }
 
     const selectTab = (key) => {
@@ -369,10 +374,10 @@ const CardDialogConnector = (connector) => {
       })
     }
 
-    const renderBooks = () => {
+    const renderBooks = (onSelect = changeBook) => {
       return books.allIds.map((id) => {
         return (
-          <MenuItem key={id} onSelect={() => changeBook(id)}>
+          <MenuItem key={id} onSelect={() => onSelect(id)}>
             {books[id].title || t('Untitled')}
           </MenuItem>
         )
@@ -383,8 +388,13 @@ const CardDialogConnector = (connector) => {
       return (
         <ButtonToolbar className="card-dialog__button-bar">
           <Button onClick={saveAndClose}>{t('Close')}</Button>
-          <Button className="card-dialog__delete" onClick={handleDelete}>
-            {t('Delete')}
+          <Button className="card-dialog__duplicate" onClick={duplicateCard}>
+            <FiCopy />
+            {' ' + t('Duplicate')}
+          </Button>
+          <Button onClick={handleDelete}>
+            <Glyphicon glyph="trash" />
+            {' ' + t('Delete')}
           </Button>
         </ButtonToolbar>
       )
@@ -405,15 +415,11 @@ const CardDialogConnector = (connector) => {
       )
     }
 
-    const renderBookDropdown = () => {
-      let bookButton = null
-      if (bookId) {
-        const handler = () => {
-          uiActions.changeCurrentTimeline(bookId)
-          closeDialog()
-        }
-        bookButton = <Button onClick={handler}>{t('View Timeline')}</Button>
-      }
+    const moveCard = (bookId) => {
+      actions.moveCardToBook(bookId, cardId)
+    }
+
+    const renderChangeBookDropdown = () => {
       return (
         <div className="card-dialog__dropdown-wrapper" style={{ marginBottom: '5px' }}>
           <label className="card-dialog__details-label" htmlFor="select-book">
@@ -421,12 +427,11 @@ const CardDialogConnector = (connector) => {
             <DropdownButton
               id="select-book"
               className="card-dialog__select-line"
-              title={getBookTitle()}
+              title={currentTimelineBookTitle()}
             >
-              {renderBooks()}
+              {renderBooks(moveCard)}
             </DropdownButton>
           </label>
-          {bookButton}
         </div>
       )
     }
@@ -436,11 +441,6 @@ const CardDialogConnector = (connector) => {
       const beatDropdownID = 'select-beat'
 
       let labelText = t('Chapter')
-      let bookDropDown = null
-      if (isSeries) {
-        labelText = t('Beat')
-        bookDropDown = renderBookDropdown()
-      }
       const darkened = color || color === null ? tinycolor(color).darken().toHslString() : null
       const borderColor = color || color === null ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 
@@ -448,7 +448,7 @@ const CardDialogConnector = (connector) => {
 
       return (
         <div className="card-dialog__left-side">
-          {bookDropDown}
+          {renderChangeBookDropdown()}
           <div className="card-dialog__dropdown-wrapper">
             <label className="card-dialog__details-label" htmlFor={lineDropdownID}>
               {t('Plotline')}:

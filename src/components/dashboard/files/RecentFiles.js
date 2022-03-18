@@ -8,6 +8,7 @@ import { StickyTable, Row, Cell } from 'react-sticky-table'
 import cx from 'classnames'
 
 import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
 
 import MissingIndicator from './MissingIndicator'
 import UnconnectedFileActions from './FileActions'
@@ -57,19 +58,6 @@ const formatFileName = (fileName, fileBasename, onFirebase, offline) => {
   return offline ? fileName : onFirebase ? fileName : fileBasename.replace('.pltr', '')
 }
 
-const convertFromNanosAndSeconds = (nanosAndSecondsObject) => {
-  if (
-    !nanosAndSecondsObject ||
-    !nanosAndSecondsObject.nanoseconds ||
-    !nanosAndSecondsObject.seconds
-  ) {
-    return null
-  }
-  return new Date(
-    nanosAndSecondsObject.seconds * 1000 + nanosAndSecondsObject.nanoseconds / 1000000
-  )
-}
-
 const RecentFilesConnector = (connector) => {
   const {
     platform: {
@@ -105,6 +93,7 @@ const RecentFilesConnector = (connector) => {
     loadingFileList,
     shouldBeInPro,
     offlineModeEnabled,
+    isOnWeb,
   }) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [onlineSortedIds, onlineFilesById] = sortedKnownFiles
@@ -188,7 +177,10 @@ const RecentFilesConnector = (connector) => {
         }
 
         if (fileObj.lastOpened) {
-          return convertFromNanosAndSeconds(fileObj.lastOpened) || new Date(fileObj.lastOpened)
+          return (
+            helpers.time.convertFromNanosAndSeconds(fileObj.lastOpened) ||
+            new Date(fileObj.lastOpened)
+          )
         }
 
         try {
@@ -244,7 +236,7 @@ const RecentFilesConnector = (connector) => {
         return (
           <Row
             key={idx}
-            onDoubleClick={() => openFile(f.isCloudFile ? f.id : f.path, id)}
+            onDoubleClick={() => openFile(isOnWeb ? f.id : f.path, id)}
             onClick={() => selectFile(selected ? null : id)}
             className={cx({ selected: selected })}
           >
@@ -322,6 +314,7 @@ const RecentFilesConnector = (connector) => {
     loadingFileList: PropTypes.bool,
     shouldBeInPro: PropTypes.bool,
     offlineModeEnabled: PropTypes.bool,
+    isOnWeb: PropTypes.bool,
   }
 
   const {
@@ -340,6 +333,7 @@ const RecentFilesConnector = (connector) => {
       loadingFileList: selectors.fileListIsLoadingSelector(state.present),
       shouldBeInPro: selectors.shouldBeInProSelector(state.present),
       offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
+      isOnWeb: selectors.isOnWebSelector(state.present),
     }))(RecentFiles)
   }
 

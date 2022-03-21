@@ -557,7 +557,7 @@
 	"GET A LICENSE": {
 		"message": "EINE LIZENZ ERHALTEN"
 	},
-        "Get a License": {
+	"Get a License": {
 		"message": "Eine lizenz Erhalten"
 	},
 	"GET STARTED!": {
@@ -1979,31 +1979,34 @@
 	"selected": {
 		"message": "ausgewählt"
 	},
-        "Text Color": {
-                "message": "Schriftfarbe"
-        },
-        "Text Size": {
-                "message": "Schriftgröße"
-        },
-        "Border Color": {
-                "message": "Rahmenfarbe"
-        },
-        "Border Style": {
-                "message": "Rahmenstil"
-        },
-        "Background Color": {
-                "message": "Hintergrundfarbe"
-        },
-        "None": {
-                "message": "kein Rahmen"
-        },
-        "Dotted": {
-                "message": "Punkte"
-        },
-        "Dashed": {
-                "message": "Striche"
-        },
-        "Solid": {
-                "message": "Durchgezogen"
-        }
+	"Text Color": {
+		"message": "Schriftfarbe"
+	},
+	"Text Size": {
+		"message": "Schriftgröße"
+	},
+	"Border Color": {
+		"message": "Rahmenfarbe"
+	},
+	"Border Style": {
+		"message": "Rahmenstil"
+	},
+	"Background Color": {
+		"message": "Hintergrundfarbe"
+	},
+	"None": {
+		"message": "kein Rahmen"
+	},
+	"Dotted": {
+		"message": "Punkte"
+	},
+	"Dashed": {
+		"message": "Striche"
+	},
+	"Solid": {
+		"message": "Durchgezogen"
+	},
+	"Import": {
+		"message": "Importieren"
+	}
 }

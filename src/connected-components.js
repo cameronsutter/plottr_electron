@@ -69,7 +69,8 @@ import {
   sortAndSearch,
 } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
-import notifyUser from './notifyUser'
+import { notifyUser } from './notifyUser'
+import { exportSaveDialog } from './export-save-dialog'
 
 const win = getCurrentWindow()
 const version = app.getVersion()
@@ -336,6 +337,7 @@ const platform = {
     export_config,
     saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
     notifyUser,
+    exportSaveDialog,
   },
   moveFromTemp: () => {
     const win = getCurrentWindow()

@@ -32,6 +32,8 @@ import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
 import { uploadToFirebase } from '../upload-to-firebase'
 import { openFile } from '../connected-components'
+import { notifyUser } from '../notifyUser'
+import { exportSaveDialog } from '../export-save-dialog'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -95,6 +97,10 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     type,
     exportConfig[type],
     isWindows(),
+    notifyUser,
+    logger,
+    exportSaveDialog,
+    MPQ,
     (error, success) => {
       if (error) {
         logger.error(error)

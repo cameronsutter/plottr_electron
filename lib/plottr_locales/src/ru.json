@@ -1978,5 +1978,8 @@
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
+  },
+  "Import": {
+    "message": "Импортировать"
   }
 }

@@ -2083,5 +2083,8 @@
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "{\n      شمارش، جمع\n        یک {1 کارت}\n        دیگر {# کارت}\n    }"
+  },
+  "Import": {
+    "message": "وارد کردن"
   }
 }

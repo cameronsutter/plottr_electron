@@ -70,6 +70,17 @@
   position: relative;
 }
 
+.scene-card-update-toast {
+  position: fixed;
+  bottom: 20px !important;
+  right: 20px !important;
+  max-width: 100%;
+  z-index: 1000 !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+
 ////////////////////
 // small timeline //
 ////////////////////

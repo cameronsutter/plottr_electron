@@ -5,6 +5,9 @@
   "(Logout)": {
     "message": "(╯°□°）╯︵ (ʇnoƃo⅂)"
   },
+  "********": {
+    "message": "(╯°□°）╯︵ ********"
+  },
   "A verification code was sent to:": {
     "message": "(╯°□°）╯︵ :oʇ ʇuǝs sɐʍ ǝpoɔ uoıʇɐɔıɟıɹǝʌ ∀"
   },
@@ -43,6 +46,12 @@
   },
   "Add new scenes or chapters here": {
     "message": "(╯°□°）╯︵ ǝɹǝɥ sɹǝʇdɐɥɔ ɹo sǝuǝɔs ʍǝu pp∀"
+  },
+  "Add Scene": {
+    "message": "(╯°□°）╯︵ ǝuǝɔS pp∀"
+  },
+  "Add Another Scene": {
+    "message": "(╯°□°）╯︵ ǝuǝɔS ɹǝɥʇou∀ pp∀"
   },
   "Add": {
     "message": "(╯°□°）╯︵ pp∀"
@@ -293,6 +302,9 @@
   "Content": {
     "message": "(╯°□°）╯︵ ʇuǝʇuoↃ"
   },
+  "Congratulations": {
+    "message": "(╯°□°）╯︵ suoıʇɐʃnʇɐɹƃuoↃ"
+  },
   "Copy": {
     "message": "(╯°□°）╯︵ ʎdoↃ"
   },
@@ -353,6 +365,12 @@
   "Days of Backup": {
     "message": "(╯°□°）╯︵ dnʞɔɐ၁2 ɟo sʎɐ◖"
   },
+  "Delete Book": {
+    "message": "(╯°□°）╯︵ ʞoo၁2 ǝʇǝʃǝ◖"
+  },
+  "Delete Book {name}?": {
+    "message": "(╯°□°）╯︵ ¿„{ǝɯɐu}„ ʞoo၁2 ǝʇǝʃǝ◖"
+  },
   "Number of Backups": {
     "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ɟo ɹǝqɯnᴎ"
   },
@@ -367,6 +385,9 @@
   },
   "Delete Chapter": {
     "message": "(╯°□°）╯︵ ɹǝʇdɐɥↃ ǝʇǝʃǝ◖"
+  },
+  "Delete Chapter?": {
+    "message": "(╯°□°）╯︵ ¿ɹǝʇdɐɥↃ ǝʇǝʃǝ◖"
   },
   "Delete Character": {
     "message": "(╯°□°）╯︵ ɹǝʇɔɐɹɐɥↃ ǝʇǝʃǝ◖"
@@ -407,6 +428,9 @@
   "Do you want to remove this image? It will NOT be deleted from your computer": {
     "message": "(╯°□°）╯︵ ɹǝʇndɯoɔ ɹnoʎ ɯoɹɟ pǝʇǝʃǝp ǝq ⊥Oᴎ ʃʃıʍ ʇI ¿ǝƃɐɯı sıɥʇ ǝʌoɯǝɹ oʇ ʇuɐʍ noʎ o◖"
   },
+  "Do you want to delete tag {name}?": {
+    "message": "(╯°□°）╯︵ ¿„{ǝɯɐu}„ ƃɐʇ ǝʇǝʃǝp oʇ ʇuɐʍ noʎ o◖"
+  },
   "Documentation": {
     "message": "(╯°□°）╯︵ uoıʇɐʇuǝɯnɔo◖"
   },
@@ -446,20 +470,23 @@
   "Edit": {
     "message": "(╯°□°）╯︵ ʇıpƎ"
   },
+  "Editor is currently locked by {name}.": {
+    "message": "(╯°□°）╯︵ ˙{ǝɯɐu} ʎq pǝʞɔoʃ ʎʃʇuǝɹɹnɔ sı ɹoʇıpƎ"
+  },
   "Email": {
     "message": "(╯°□°）╯︵ ʃıɐɯƎ"
   },
   "Email:": {
     "message": "(╯°□°）╯︵ :ʃıɐɯƎ"
   },
+  "example@domain.com": {
+    "message": "(╯°□°）╯︵ ɯoɔ˙uıɐɯop@ǝʃdɯɐxǝ"
+  },
   "End": {
     "message": "(╯°□°）╯︵ puƎ"
   },
   "Ends After": {
     "message": "(╯°□°）╯︵ ɹǝʇɟ∀ spuƎ"
-  },
-  "Enter Chapter's name or enter": {
-    "message": "(╯°□°）╯︵ ˙ƃuıɯɐu oʇnɐ ɹoɟ (sǝʇonb ʇnoɥʇıʍ)\n „oʇnɐ„ ɹǝʇuǝ ɹo ǝɯɐu s,ɹǝʇdɐɥↃ ɹǝʇuƎ"
   },
   "Enter Custom Attribute Title": {
     "message": "(╯°□°）╯︵ ǝʃʇı⊥ ǝʇnqıɹʇʇ∀ ɯoʇsnↃ ɹǝʇuƎ"
@@ -469,6 +496,9 @@
   },
   "Enter a new name for {chapter}": {
     "message": "(╯°□°）╯︵ „{ɹǝʇdɐɥɔ}„ ɹoɟ ǝɯɐu ʍǝu ɐ ɹǝʇuƎ"
+  },
+  "Enter Chapter's name or enter": {
+    "message": "(╯°□°）╯︵ ˙ƃuıɯɐu oʇnɐ ɹoɟ (sǝʇonb ʇnoɥʇıʍ)\n „oʇnɐ„ ɹǝʇuǝ ɹo ǝɯɐu s,ɹǝʇdɐɥↃ ɹǝʇuƎ"
   },
   "Enter some text...": {
     "message": "(╯°□°）╯︵ ˙˙˙ʇxǝʇ ǝɯos ɹǝʇuƎ"
@@ -496,6 +526,9 @@
   },
   "Error sending email! Check your email and Try again.": {
     "message": "(╯°□°）╯︵ ˙uıɐƃɐ ʎɹ⊥ puɐ ʃıɐɯǝ ɹnoʎ ʞɔǝɥↃ ¡ʃıɐɯǝ ƃuıpuǝs ɹoɹɹƎ"
+  },
+  "Error sharing file": {
+    "message": "(╯°□°）╯︵ ǝʃıɟ ƃuıɹɐɥs ɹoɹɹƎ"
   },
   "Error: {error}": {
     "message": "(╯°□°）╯︵ { ɹoɹɹǝ } :ɹoɹɹƎ"
@@ -554,6 +587,12 @@
   "Free Trial": {
     "message": "(╯°□°）╯︵ ʃɐıɹ⊥ ǝǝɹℲ"
   },
+  "From File": {
+    "message": "(╯°□°）╯︵ ǝʃıℲ ɯoɹℲ"
+  },
+  "From Template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥ ɯoɹℲ"
+  },
   "GET A LICENSE": {
     "message": "(╯°□°）╯︵ ƎSᴎƎↃI⅂ ∀ ⊥Ǝ⅁"
   },
@@ -590,6 +629,9 @@
   "Help": {
     "message": "(╯°□°）╯︵ dʃǝH"
   },
+  "Hey, check out my Plottr project \"{project}\"": {
+    "message": "(╯°□°）╯︵ „{ʇɔǝɾoɹd}„ ʇɔǝɾoɹd ɹʇʇoʃԀ ʎɯ ʇno ʞɔǝɥɔ 'ʎǝH"
+  },
   "Hide Others": {
     "message": "(╯°□°）╯︵ sɹǝɥʇO ǝpıH"
   },
@@ -601,6 +643,9 @@
   },
   "Hmmmm. It looks like that's not a valid license key": {
     "message": "(╯°□°）╯︵ ʎǝʞ ǝsuǝɔıʃ pıʃɐʌ ɐ ʇou s,,ʇɐɥʇ ǝʞıʃ sʞooʃ ʇI ˙ɯɯɯɯH"
+  },
+  "Hold On!": {
+    "message": "(╯°□°）╯︵ ¡uO pʃoH"
   },
   "I have a license key": {
     "message": "(╯°□°）╯︵ ʎǝʞ ǝsuǝɔıʃ ɐ ǝʌɐɥ I"
@@ -653,6 +698,9 @@
   "Keep your character sheets here": {
     "message": "(╯°□°）╯︵ ǝɹǝɥ sʇǝǝɥs ɹǝʇɔɐɹɐɥɔ ɹnoʎ dǝǝ⋊"
   },
+  "Log Out": {
+    "message": "(╯°□°）╯︵ ʇnO ƃo⅂"
+  },
   "LOGOUT": {
     "message": "(╯°□°）╯︵ ⊥∩O⅁O⅂"
   },
@@ -670,6 +718,9 @@
   },
   "Let's verify your license.": {
     "message": "(╯°□°）╯︵ ˙ǝsuǝɔıʃ ɹnoʎ ʎɟıɹǝʌ s,ʇǝ⅂"
+  },
+  "Let's get you started": {
+    "message": "(╯°□°）╯︵ pǝʇɹɐʇs noʎ ʇǝƃ s,ʇǝ⅂"
   },
   "Levels of hierarchy": {
     "message": "(╯°□°）╯︵ ʎɥɔɹɐɹǝıɥ ɟo sʃǝʌǝ⅂"
@@ -697,6 +748,9 @@
   },
   "Main": {
     "message": "(╯°□°）╯︵ uıɐW"
+  },
+  "Manage the Categories you wish to place your characters in.": {
+    "message": "(╯°□°）╯︵ ˙uı sɹǝʇɔɐɹɐɥɔ ɹnoʎ ǝɔɐʃd oʇ ɥsıʍ noʎ sǝıɹoƃǝʇɐↃ ǝɥʇ ǝƃɐuɐW"
   },
   "Manually Sorted": {
     "message": "(╯°□°）╯︵ pǝʇɹoS ʎʃʃɐnuɐW"
@@ -761,6 +815,9 @@
   "No Characters": {
     "message": "(╯°□°）╯︵ sɹǝʇɔɐɹɐɥↃ oᴎ"
   },
+  "No Documents Found": {
+    "message": "(╯°□°）╯︵ punoℲ sʇuǝɯnɔo◖ oᴎ"
+  },
   "No actions to undo": {
     "message": "(╯°□°）╯︵ opun oʇ suoıʇɔɐ oᴎ"
   },
@@ -778,6 +835,9 @@
   },
   "Not Receiving Updates": {
     "message": "(╯°□°）╯︵ sǝʇɐpd∩ ƃuıʌıǝɔǝᴚ ʇoᴎ"
+  },
+  "NOT NOW": {
+    "message": "(╯°□°）╯︵ MOᴎ ⊥Oᴎ"
   },
   "Note Details": {
     "message": "(╯°□°）╯︵ sʃıɐʇǝ◖ ǝʇoᴎ"
@@ -891,13 +951,16 @@
     "message": "(╯°□°）╯︵ ǝuıʃʇoʃd ɐ ǝsooɥɔ ǝsɐǝʃԀ"
   },
   "Please contact us with any questions at support@plottr.com": {
-    "message": "(╯°□°）╯︵ ɯoɔ˙ɹʇʇoʃd@ʇɹoddns ʇɐ suoıʇsǝnb ʎuɐ ɥʇıʍ ǝɯ ʇɔɐʇuoɔ ǝsɐǝʃԀ"
+    "message": "(╯°□°）╯︵ ɯoɔ˙ɹʇʇoʃd@ʇɹoddns ʇɐ suoıʇsǝnb ʎuɐ ɥʇıʍ sn ʇɔɐʇuoɔ ǝsɐǝʃԀ"
   },
   "Please select a valid Plottr file": {
     "message": "(╯°□°）╯︵ ˙ǝʃıɟ ɹʇʇoʃԀ pıʃɐʌ ɐ ʇɔǝʃǝs ǝsɐǝʃԀ"
   },
   "Please verify your license": {
     "message": "(╯°□°）╯︵ ǝsuǝɔıʃ ɹnoʎ ʎɟıɹǝʌ ǝsɐǝʃԀ"
+  },
+  "Please verify your license in {time}": {
+    "message": "(╯°□°）╯︵ {ǝɯıʇ} uı ǝsuǝɔıʃ ɹnoʎ ʎɟıɹǝʌ ǝsɐǝʃԀ"
   },
   "Plotline Details": {
     "message": "(╯°□°）╯︵ sʃıɐʇǝ◖ ǝuıʃʇoʃԀ"
@@ -941,6 +1004,12 @@
   "Plottr": {
     "message": "(╯°□°）╯︵ ɹʇʇoʃԀ"
   },
+  "PLOTTR PRO": {
+    "message": "(╯°□°）╯︵ OᴚԀ ᴚ⊥⊥O⅂Ԁ"
+  },
+  "PLOTTR CLASSIC": {
+    "message": "(╯°□°）╯︵ ↃISS∀⅂Ↄ ᴚ⊥⊥O⅂Ԁ"
+  },
   "Preferences": {
     "message": "(╯°□°）╯︵ sǝɔuǝɹǝɟǝɹԀ"
   },
@@ -961,6 +1030,9 @@
   },
   "Purchase Email": {
     "message": "(╯°□°）╯︵ ʃıɐɯƎ ǝsɐɥɔɹnԀ"
+  },
+  "Purchase Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ǝsɐɥɔɹnԀ"
   },
   "Purples": {
     "message": "(╯°□°）╯︵ sǝʃdɹnԀ"
@@ -1043,6 +1115,9 @@
   "Save as Template": {
     "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥ sɐ ǝʌɐS"
   },
+  "Save as\nTemplate": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥\nsɐ ǝʌɐS"
+  },
   "Save as": {
     "message": "(╯°□°）╯︵ sɐ ǝʌɐS"
   },
@@ -1099,6 +1174,15 @@
   },
   "See the outline here": {
     "message": "(╯°□°）╯︵ ǝɹǝɥ ǝuıʃʇno ǝɥʇ ǝǝS"
+  },
+  "See More": {
+    "message": "(╯°□°）╯︵ ǝɹoW ǝǝS"
+  },
+  "See Less": {
+    "message": "(╯°□°）╯︵ ssǝ⅂ ǝǝS"
+  },
+  "See that was painless": {
+    "message": "(╯°□°）╯︵ ssǝʃuıɐd sɐʍ ʇɐɥʇ ǝǝS"
   },
   "Select All": {
     "message": "(╯°□°）╯︵ ʃʃ∀ ʇɔǝʃǝS"
@@ -1169,6 +1253,9 @@
   "Source Link": {
     "message": "(╯°□°）╯︵ ʞuı⅂ ǝɔɹnoS"
   },
+  "Start": {
+    "message": "(╯°□°）╯︵ ⊥ᴚ∀⊥S"
+  },
   "Start Mobile Subscription": {
     "message": "(╯°□°）╯︵ uoıʇdıɹɔsqnS ǝʃıqoW ʇɹɐʇS"
   },
@@ -1180,6 +1267,18 @@
   },
   "Starter Templates": {
     "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝ⊥ ɹǝʇɹɐʇS"
+  },
+  "Start Plottr Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ɹʇʇoʃԀ ʇɹɐʇS"
+  },
+  "Plottr Pro Wizard": {
+    "message": "(╯°□°）╯︵ pɹɐzıM oɹԀ ɹʇʇoʃԀ"
+  },
+  "START PLOTTING": {
+    "message": "(╯°□°）╯︵ ⅁ᴎI⊥⊥O⅂Ԁ ⊥ᴚ∀⊥S"
+  },
+  "Step {number}": {
+    "message": "(╯°□°）╯︵ {ɹǝqɯnu} dǝʇS"
   },
   "Story line": {
     "message": "(╯°□°）╯︵ ǝuıʃ ʎɹoʇS"
@@ -1226,6 +1325,12 @@
   "Template Saved": {
     "message": "(╯°□°）╯︵ pǝʌɐS ǝʇɐʃdɯǝ⊥"
   },
+  "Template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥"
+  },
+  "Templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝ⊥"
+  },
   "Terms of Service": {
     "message": "(╯°□°）╯︵ ǝɔıʌɹǝS ɟo sɯɹǝ⊥"
   },
@@ -1250,6 +1355,12 @@
   "There was an error doing that. Try again": {
     "message": "(╯°□°）╯︵ uıɐƃɐ ʎɹ⊥ ˙ʇɐɥʇ ƃuıop ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
   },
+  "There was an error while sharing your file. Try Again.": {
+    "message": "(╯°□°）╯︵ ˙uıɐƃ∀ ʎɹ⊥ ˙ǝʃıɟ ɹnoʎ ƃuıɹɐɥs ǝʃıɥʍ ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
+  },
+  "There was an error trying to sign you in. Ensure you password and email are correct.": {
+    "message": "(╯°□°）╯︵ ˙ʇɔǝɹɹoɔ ǝɹɐ ʃıɐɯǝ puɐ pɹoʍssɐd noʎ ǝɹnsuƎ ˙uı noʎ uƃıs oʇ ƃuıʎɹʇ ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
+  },
   "This is a plotline": {
     "message": "(╯°□°）╯︵ ǝuıʃʇoʃd ɐ sı sıɥ⊥"
   },
@@ -1258,6 +1369,15 @@
   },
   "This will send you an email with a code": {
     "message": "(╯°□°）╯︵ ǝpoɔ ɐ ɥʇıʍ ʃıɐɯǝ uɐ noʎ puǝs ʃʃıʍ sıɥ⊥"
+  },
+  "This will be quick and painless.": {
+    "message": "(╯°□°）╯︵ ˙ssǝʃuıɐd puɐ ʞɔınb ǝq ʃʃıʍ sıɥ⊥"
+  },
+  "There are only ": {
+    "message": "(╯°□°）╯︵  ʎʃuo ǝɹɐ ǝɹǝɥ⊥"
+  },
+  "{number} steps:": {
+    "message": "(╯°□°）╯︵ :sdǝʇs {ɹǝqɯnu}"
   },
   "Timeline is filtered": {
     "message": "(╯°□°）╯︵ pǝɹǝʇʃıɟ sı ǝuıʃǝɯı⊥"
@@ -1276,6 +1396,9 @@
   },
   "Try that again": {
     "message": "(╯°□°）╯︵ uıɐƃɐ ʇɐɥʇ ʎɹ⊥"
+  },
+  "Try Plottr Pro today for a seamless cloud experience like you have never imagined.": {
+    "message": "(╯°□°）╯︵ ˙pǝuıƃɐɯı ɹǝʌǝu ǝʌɐɥ noʎ ǝʞıʃ ǝɔuǝıɹǝdxǝ pnoʃɔ ssǝʃɯɐǝs ɐ ɹoɟ ʎɐpoʇ oɹԀ ɹʇʇoʃԀ ʎɹ⊥"
   },
   "Tutorials": {
     "message": "(╯°□°）╯︵ sʃɐıɹoʇn⊥"
@@ -1298,6 +1421,9 @@
   "Untitled": {
     "message": "(╯°□°）╯︵ pǝʃʇıʇu∩"
   },
+  "Unknown": {
+    "message": "(╯°□°）╯︵ uʍouʞu∩"
+  },
   "Update Automatically": {
     "message": "(╯°□°）╯︵ ʎʃʃɐɔıʇɐɯoʇn∀ ǝʇɐpd∩"
   },
@@ -1313,14 +1439,38 @@
   "Upload Files": {
     "message": "(╯°□°）╯︵ sǝʃıℲ pɐoʃd∩"
   },
+  "Upload projects and templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝʇ puɐ sʇɔǝɾoɹd pɐoʃd∩"
+  },
+  "Uploading projects and templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝʇ puɐ sʇɔǝɾoɹd ƃuıpɐoʃd∩"
+  },
+  "UPLOADING...": {
+    "message": "(╯°□°）╯︵ ˙˙˙⅁ᴎI◖∀O⅂Ԁ∩"
+  },
+  "Upload Projects": {
+    "message": "(╯°□°）╯︵ sʇɔǝɾoɹԀ pɐoʃd∩"
+  },
   "Use Template": {
     "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥ ǝs∩"
+  },
+  "Use Book\nTemplate": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥\nʞoo၁2 ǝs∩"
+  },
+  "Use Scene\nTemplate": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥\nǝuǝɔS ǝs∩"
   },
   "Use a different email": {
     "message": "(╯°□°）╯︵ ʃıɐɯǝ ʇuǝɹǝɟɟıp ɐ ǝs∩"
   },
   "Use this to remove your license on this device": {
     "message": "(╯°□°）╯︵ ǝɔıʌǝp sıɥʇ uo ǝsuǝɔıʃ ɹnoʎ ǝʌoɯǝɹ oʇ sıɥʇ ǝs∩"
+  },
+  "Use License Code Login": {
+    "message": "(╯°□°）╯︵ uıƃo⅂ ǝpoↃ ǝsuǝɔı⅂ ǝs∩"
+  },
+  "Use Plottr Pro Login": {
+    "message": "(╯°□°）╯︵ uıƃo⅂ oɹԀ ɹʇʇoʃԀ ǝs∩"
   },
   "VERIFY CODE": {
     "message": "(╯°□°）╯︵ Ǝ◖OↃ ⅄ℲIᴚƎᴧ"
@@ -1409,11 +1559,20 @@
   "You can have 5 more days to try Plottr": {
     "message": "(╯°□°）╯︵ ɹʇʇoʃԀ ʎɹʇ oʇ sʎɐp ǝɹoɯ 5 ǝʌɐɥ uɐɔ no⅄"
   },
+  "You cannot delete the last chapter.": {
+    "message": "(╯°□°）╯︵ ˙ɹǝʇdɐɥɔ ʇsɐʃ ǝɥʇ ǝʇǝʃǝp ʇouuɐɔ no⅄"
+  },
+  "You cannot delete the last plotline.": {
+    "message": "(╯°□°）╯︵ ˙ǝuıʃʇoʃd ʇsɐʃ ǝɥʇ ǝʇǝʃǝp ʇouuɐɔ no⅄"
+  },
   "You have unsaved changes": {
     "message": "(╯°□°）╯︵ ¿ǝʌɐs oʇ ʇuɐʍ noʎ o◖\n˙sǝƃuɐɥɔ pǝʌɐsun ǝʌɐɥ no⅄"
   },
   "You may create a new project": {
     "message": "(╯°□°）╯︵ uıƃǝq oʇ ǝʃıɟ ʇɔǝɾoɹd ɐ ʇɔǝʃǝs ɹo\nʇɔǝɾoɹd ʍǝu ɐ ǝʇɐǝɹɔ ʎɐɯ no⅄"
+  },
+  "You need to have an active Plottr Pro account to continue": {
+    "message": "(╯°□°）╯︵ ǝnuıʇuoɔ oʇ ʇunoɔɔɐ oɹԀ ɹʇʇoʃԀ ǝʌıʇɔɐ uɐ ǝʌɐɥ oʇ pǝǝu no⅄"
   },
   "Your email didn't verify. Try again or try another email.": {
     "message": "(╯°□°）╯︵ ˙ʃıɐɯǝ ɹǝɥʇouɐ ʎɹʇ ɹo uıɐƃɐ ʎɹ⊥\n˙ʎɟıɹǝʌ ʇ,upıp ʃıɐɯǝ ɹno⅄"
@@ -1447,6 +1606,9 @@
   },
   "Your template has been saved and is ready to use": {
     "message": "(╯°□°）╯︵ ǝsn oʇ ʎpɐǝɹ sı puɐ pǝʌɐs uǝǝq sɐɥ ǝʇɐʃdɯǝʇ ɹno⅄"
+  },
+  "Your next great plot begins with Plottr.": {
+    "message": "(╯°□°）╯︵ ˙ɹʇʇoʃԀ ɥʇıʍ suıƃǝq ʇoʃd ʇɐǝɹƃ ʇxǝu ɹno⅄"
   },
   "Zoom": {
     "message": "(╯°□°）╯︵ ɯooZ"
@@ -1486,6 +1648,9 @@
   },
   "but don't worry!": {
     "message": "(╯°□°）╯︵ ¡ʎɹɹoʍ ʇ,,uop ʇnq"
+  },
+  "Character's Categories": {
+    "message": "(╯°□°）╯︵ sǝıɹoƃǝʇɐↃ s,ɹǝʇɔɐɹɐɥↃ"
   },
   "custom character attribute": {
     "message": "(╯°□°）╯︵ ǝʇnqıɹʇʇɐ ɹǝʇɔɐɹɐɥɔ ɯoʇsnɔ"
@@ -2153,9 +2318,6 @@
   "Tags / Characters / Places": {
     "message": "(╯°□°）╯︵ sǝɔɐʃԀ / sɹǝʇɔɐɹɐɥↃ / sƃɐ⊥"
   },
-  "Templates": {
-    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝ⊥"
-  },
   "Text Color": {
     "message": "(╯°□°）╯︵ ɹoʃoↃ ʇxǝ⊥"
   },
@@ -2185,5 +2347,29 @@
   },
   "plottr.com/beta": {
     "message": "(╯°□°）╯︵ ɐʇǝq/ɯoɔ˙ɹʇʇoʃd"
+  },
+  "How to turn on Act Structure": {
+    "message": "(╯°□°）╯︵ ǝɹnʇɔnɹʇS ʇɔ∀ uo uɹnʇ oʇ ʍoH"
+  },
+  "On the top right corner of the app, click the 'Dashboard' button.": {
+    "message": "(╯°□°）╯︵ ˙uoʇʇnq ,pɹɐoqɥsɐ◖, ǝɥʇ ʞɔıʃɔ 'ddɐ ǝɥʇ ɟo ɹǝuɹoɔ ʇɥƃıɹ doʇ ǝɥʇ uO"
+  },
+  "From the 'Dashboard', click 'Settings' from the side menu.": {
+    "message": "(╯°□°）╯︵ ˙nuǝɯ ǝpıs ǝɥʇ ɯoɹɟ ,sƃuıʇʇǝS, ʞɔıʃɔ ',pɹɐoqɥsɐ◖, ǝɥʇ ɯoɹℲ"
+  },
+  "On the 'Settings' modal, click on the 'Beta tab.": {
+    "message": "(╯°□°）╯︵ ˙qɐʇ ,ɐʇǝ၁2, ǝɥʇ uo ʞɔıʃɔ 'ʃɐpoɯ ,sƃuıʇʇǝS, ǝɥʇ uO"
+  },
+  "Finally, toggle the switch to turn on/off Act Structure.": {
+    "message": "(╯°□°）╯︵ ˙ǝɹnʇɔnɹʇS ʇɔ∀ ɟɟo/uo uɹnʇ oʇ ɥɔʇıʍs ǝɥʇ ǝʃƃƃoʇ 'ʎʃʃɐuıℲ"
+  },
+  "Import": {
+    "message": "(╯°□°）╯︵ ʇɹodɯI"
+  },
+  "Woohoo! Scene card moved to": {
+    "message": "(╯°□°）╯︵ oʇ pǝʌoɯ pɹɐɔ ǝuǝɔS ¡ooɥooM"
+  },
+  "Woohoo! Scene card duplicated": {
+    "message": "(╯°□°）╯︵ pǝʇɐɔıʃdnp pɹɐɔ ǝuǝɔS ¡ooɥooM"
   }
 }

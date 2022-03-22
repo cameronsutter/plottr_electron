@@ -325,7 +325,10 @@ function editKnownFilePath(oldPath, newPath) {
 }
 
 async function saveToTempFile(json, name) {
-  const tempId = tempFilesStore.size + 1
+  const maxKey = Object.keys(tempFilesStore.store)
+    .map((x) => parseInt(x))
+    .reduce((acc, next) => Math.max(next, acc))
+  const tempId = maxKey + 1
   const fileName = name || `${t('Untitled')}${tempId == 1 ? '' : tempId}`
   const tempName = `${fileName}.pltr`
   const filePath = path.join(TEMP_FILES_PATH, tempName)

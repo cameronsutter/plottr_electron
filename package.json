@@ -2,7 +2,7 @@
   "name": "plottr_import_export",
   "version": "0.0.1",
   "description": "Functions, dependencies etc to import and export between Plottr and supported formats",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +23,7 @@
   "homepage": "https://github.com/Plotinator/plottr_import_export#readme",
   "dependencies": {
     "plottr_locales": "file:../plottr_locales",
-    "pltr": "file:./lib/pltr",
+    "pltr": "file:../pltr",
     "xml-js": "^1.6.11",
     "jsrtf": "0.0.3",
     "lodash": "^4.17.19",

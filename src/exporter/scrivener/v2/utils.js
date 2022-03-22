@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash'
-import { shell } from 'electron'
+import { unlinkSync } from 'fs'
 import { t as i18n } from 'plottr_locales'
 import binderItem from './binderItem.json'
 import bareScrivx from './bare_scrivx.json'
@@ -205,7 +205,7 @@ export function isPropertyEmpty(property) {
 }
 
 export function remove(exportPath) {
-  shell.trashItem(exportPath)
+  unlinkSync(exportPath)
 }
 
 // This function will create a copy of the bare_scrivx.json to start

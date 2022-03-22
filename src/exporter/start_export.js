@@ -1,41 +1,45 @@
-import { getCurrentWindow, dialog } from '@electron/remote'
-import { t } from 'plottr_locales'
-import MPQ from '../common/utils/MPQ'
 import ScrivenerExporter from './scrivener/v2/exporter'
 import WordExporter from './word/exporter'
 
-const win = getCurrentWindow()
-
-export default function askToExport(defaultPath, fullState, type, options, isWindows, cb) {
-  let label = t('Where would you like to save the export?')
-  let filters = []
-  switch (type) {
-    case 'word':
-      filters = [{ name: t('MS Word'), extensions: ['docx'] }]
-      break
-    case 'scrivener':
-      filters = [{ name: t('Scrivener Project'), extensions: ['scriv'] }]
-      break
-  }
-  const fileName = dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
+export default function askToExport(
+  defaultPath,
+  fullState,
+  type,
+  options,
+  isWindows,
+  notifyUser,
+  logger,
+  saveDialog,
+  mpq,
+  cb
+) {
+  const fileName = saveDialog ? saveDialog(defaultPath, type) : defaultPath
   if (fileName) {
-    MPQ.push('Export', { export_type: type, options: options })
+    mpq.push('Export', { export_type: type, options: options })
 
     try {
       switch (type) {
         case 'scrivener':
-          ScrivenerExporter(fullState, fileName, options, isWindows)
+          ScrivenerExporter(fullState, fileName, options, isWindows, notifyUser, logger)
+          cb(null, true)
           break
         case 'word':
         default:
-          WordExporter(fullState, fileName, options)
-          break
+          WordExporter(fullState, fileName, options, notifyUser)
+            .then((filePath) => {
+              cb(null, filePath)
+            })
+            .catch((error) => {
+              logger.error('error', error)
+              cb(error, false)
+            })
+          return
       }
-      cb(null, true)
     } catch (error) {
+      logger.error('Failed to export', error)
       cb(error, false)
     }
   } else {
-    cb(null, false)
+    cb(new Error('No file name'), false)
   }
 }

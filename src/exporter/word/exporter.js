@@ -1,7 +1,6 @@
 import { Document, Packer, Paragraph, AlignmentType, HeadingLevel } from 'docx'
 import fs from 'fs'
 import { t as t } from 'plottr_locales'
-import { notifyUser } from '../notifier'
 import { helpers } from 'pltr/v2'
 import exportOutline from './exporters/outline'
 import exportCharacters from './exporters/characters'
@@ -12,7 +11,7 @@ const {
   books: { isSeries },
 } = helpers
 
-export default function Exporter(data, fileName, options) {
+export default function Exporter(data, fileName, options, notifyUser) {
   let doc = new Document()
   const names = namesMapping(data)
   const bookId = data.ui.currentTimeline
@@ -24,11 +23,13 @@ export default function Exporter(data, fileName, options) {
   if (options.notes.export) doc.addSection(exportNotes(data, names, doc, options))
 
   // finish - save to file
-  Packer.toBuffer(doc).then((buffer) => {
+  return Packer.toBuffer(doc).then((buffer) => {
     const filePath = fileName.includes('.docx') ? fileName : `${fileName}.docx`
     fs.writeFileSync(filePath, buffer)
 
     notifyUser(filePath, 'word')
+
+    return filePath
   })
 }
 

@@ -1,5 +1,6 @@
 import Store from 'electron-store'
-import export_config from '../exporter/default_config'
+import { exportConfig as export_config } from 'plottr_import_export'
+
 import defaultSettings from '../../shared/default_settings'
 import {
   TRIAL_INFO_PATH,

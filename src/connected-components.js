@@ -3,11 +3,12 @@ import { getCurrentWindow, app, dialog } from '@electron/remote'
 import * as remote from '@electron/remote'
 import path from 'path'
 import { ActionCreators } from 'redux-undo'
-import { connections } from 'plottr_components'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
 
+import { connections } from 'plottr_components'
+import { askToExport, exportConfig as export_config } from 'plottr_import_export'
 import { actions, selectors } from 'pltr/v2'
 import {
   publishRCEOperations,
@@ -32,6 +33,7 @@ import {
   lockRCE,
   releaseRCELock,
 } from 'wired-up-firebase'
+
 import {
   renameFile,
   saveFile,
@@ -52,9 +54,6 @@ import { store } from './app/store'
 import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
 import { USER } from './file-system/stores'
 
-import askToExport from './exporter/start_export'
-import export_config from './exporter/default_config'
-
 import extractImages from './common/extract_images'
 import { resizeImage } from './common/resizeImage'
 
@@ -70,6 +69,8 @@ import {
   sortAndSearch,
 } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
+import { notifyUser } from './notifyUser'
+import { exportSaveDialog } from './export-save-dialog'
 
 const win = getCurrentWindow()
 const version = app.getVersion()
@@ -335,6 +336,8 @@ const platform = {
     askToExport,
     export_config,
     saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
+    notifyUser,
+    exportSaveDialog,
   },
   moveFromTemp: () => {
     const win = getCurrentWindow()

@@ -129,14 +129,28 @@ i.e. develop `plottr_electron` as though it doesn't contain any subtrees, and pu
 
 ## Working Out-Of-Tree
 
-You can also work on the firebase out-of-tree (i.e. checked out to a folder other than `plottr_electron/lib`) as long as the other Plottr libraries are checked out as sibling folders of this library.
-i.e. you can checkout `pltr`, `plottr_locales` and `plottr_components` and `plottr_firebase` to an arbitrary folder on your computer and work with them like they're individual git repositories.
+You can also work on the firebase library out-of-tree (i.e. checked out to a folder other than `plottr_electron/lib`) as long as the other Plottr libraries are checked out as sibling folders of this library.
+i.e. you can checkout `pltr`, `plottr_locales`, `plottr_components`, `plottr_firebase` and `plottr_import_export` to an arbitrary folder on your computer and work with them like they're individual git repositories.
+
+# The `plottr_import_export` Library
+
+The [import export repo](https://github.com/Plotinator/plottr_import_export) is a library of functions for importing and exporting between Plottr files and supported types.
+
+## Working with the library
+
+You change the `plottr_firebase` library the same way you would work with `plottr_locales` or `pltr`.
+i.e. develop `plottr_electron` as though it doesn't contain any subtrees, and push the changes to Github using the subtree commands in the [Readme](https://github.com/cameronsutter/plottr_electron#readme).
+
+## Working Out-Of-Tree
+
+You can also work on the import export library out-of-tree (i.e. checked out to a folder other than `plottr_electron/lib`) as long as the other Plottr libraries are checked out as sibling folders of this library.
+i.e. you can checkout `pltr`, `plottr_locales`, `plottr_components`, `plottr_firebase` and `plottr_import_export` to an arbitrary folder on your computer and work with them like they're individual git repositories.
 
 ## Usage
 
-To use `plottr_firebase`, simply call one of the functions exposed by the library.  It's been designed to have zero overhead for setup at the expense of some things being hard-wired (such as configuration).
+To use `plottr_import_export`, simply call one of the functions exposed by the library.
 
-For more detail on what the library provides, please refer to its documentation at: `lib/plottr_firebase/README.md`.
+For more detail on what the library provides, please refer to its documentation at: `lib/plottr_import_export/README.md`.
 
 # Features
 

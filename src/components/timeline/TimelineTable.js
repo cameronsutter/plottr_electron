@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { t } from 'plottr_locales'
 import { Row } from 'react-sticky-table'
 import UnconnectedCardCell from './CardCell'
 import UnconnectedBlankCard from './BlankCard'
@@ -86,6 +87,14 @@ const TimelineTableConnector = (connector) => {
 
     componentDidUpdate() {
       this.setLength()
+
+      const { visible } = this.props.toast
+
+      if (visible) {
+        setTimeout(() => {
+          this.handleCloseToast()
+        }, 5000)
+      }
     }
 
     handleReorderBeats = (droppedPositionId, originalPositionId) => {
@@ -302,6 +311,50 @@ const TimelineTableConnector = (connector) => {
       }
     }
 
+    handleCloseToast = () => {
+      this.props.notificationActions.showToastNotification(false)
+    }
+
+    getToastMessage = (cardAction, newBookId) => {
+      if (cardAction == 'move' && newBookId) {
+        const { books, actions } = this.props
+        const bookTitle = this.bookTitle(books[newBookId])
+
+        // if card is moved to another book, create the book link
+        return (
+          <div className="toast-message-with-anchor">
+            {t('Woohoo! Scene card moved to')}
+            <a href="#" onClick={() => actions.changeCurrentTimeline(newBookId)}>
+              {` ${bookTitle}`}
+            </a>
+          </div>
+        )
+      } else {
+        return t('Woohoo! Scene card duplicated')
+      }
+    }
+
+    renderToastMessage = () => {
+      const { toast } = this.props
+      return (
+        <div
+          className={cx(
+            'update-notifier scene-card-update-toast alert alert-info alert-dismissible'
+          )}
+          role="alert"
+        >
+          {this.getToastMessage(toast.cardAction, toast.newBookId)}
+          <button className="close" onClick={() => this.handleCloseToast()}>
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      )
+    }
+
+    bookTitle = (book) => {
+      return book.title || t('Untitled')
+    }
+
     renderHorizontalCards(line, beatMap, beatMapKeys) {
       const { beats, cardMap, isLarge, isMedium, beatHasChildrenMap } = this.props
       return beatMapKeys.flatMap((beatPosition) => {
@@ -377,7 +430,8 @@ const TimelineTableConnector = (connector) => {
     }
 
     render() {
-      const { darkMode, orientation, isSmall } = this.props
+      const { darkMode, orientation, isSmall, toast } = this.props
+
       if (isSmall) {
         return (
           <div
@@ -389,11 +443,16 @@ const TimelineTableConnector = (connector) => {
             <table className="table-header-rotated">
               <TopRow />
               <tbody>{this.renderRows()}</tbody>
+              {toast.visible ? this.renderToastMessage() : null}
             </table>
           </div>
         )
       } else {
-        return [<TopRow key="top-row" />, this.renderRows()]
+        return [
+          <TopRow key="top-row" />,
+          toast.visible ? this.renderToastMessage() : null,
+          this.renderRows(),
+        ]
       }
     }
   }
@@ -418,6 +477,9 @@ const TimelineTableConnector = (connector) => {
     lineActions: PropTypes.object,
     cardActions: PropTypes.object,
     beatActions: PropTypes.object,
+    books: PropTypes.object.isRequired,
+    toast: PropTypes.object,
+    notificationActions: PropTypes.object,
   }
 
   const {
@@ -433,6 +495,7 @@ const TimelineTableConnector = (connector) => {
       (state) => {
         return {
           beats: selectors.visibleSortedBeatsByBookSelector(state.present),
+          books: state.present.books,
           booksBeats: selectors.beatsByBookSelector(state.present),
           beatHasChildrenMap: selectors.beatHasChildrenSelector(state.present),
           beatMapping: selectors.sparceBeatMap(state.present),
@@ -446,6 +509,7 @@ const TimelineTableConnector = (connector) => {
           isSmall: selectors.isSmallSelector(state.present),
           isMedium: selectors.isMediumSelector(state.present),
           isLarge: selectors.isLargeSelector(state.present),
+          toast: selectors.toastNotificationSelector(state.present),
         }
       },
       (dispatch) => {
@@ -454,6 +518,7 @@ const TimelineTableConnector = (connector) => {
           lineActions: bindActionCreators(actions.line, dispatch),
           cardActions: bindActionCreators(actions.card, dispatch),
           beatActions: bindActionCreators(actions.beat, dispatch),
+          notificationActions: bindActionCreators(actions.notifications, dispatch),
         }
       }
     )(TimelineTable)

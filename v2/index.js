@@ -27,6 +27,7 @@ import * as settingsActions from './actions/settings'
 import * as backupsActions from './actions/backups'
 import * as applicationStateActions from './actions/applicationState'
 import * as imageCacheActions from './actions/imageCache'
+import * as notificationActions from './actions/notifications'
 
 import * as ActionTypes from './constants/ActionTypes'
 import * as LoadActions from './constants/loadActions'
@@ -43,6 +44,7 @@ import * as hierarchyHelpers from './helpers/hierarchy'
 import * as featureFlagHelpers from './helpers/featureFlags'
 import * as colorHelpers from './helpers/colors'
 import * as editorHelpers from './helpers/editors'
+import * as timeHelpers from './helpers/time'
 
 import * as template from './template'
 
@@ -78,10 +80,11 @@ import * as settingsSelectors from './selectors/settings'
 import * as backupsSelectors from './selectors/backups'
 import * as applicationStateSelectors from './selectors/applicationState'
 import * as imageCacheSelectors from './selectors/imageCache'
+import * as notificationSelector from './selectors/notifications'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
-import { SYSTEM_REDUCER_KEYS } from './reducers/systemReducers'
+import { SYSTEM_REDUCER_KEYS, removeSystemKeys } from './reducers/systemReducers'
 import customAttributesReducer from './reducers/customAttributes'
 import linesReducer from './reducers/lines'
 import beatsReducer from './reducers/beats'
@@ -110,6 +113,7 @@ import settingsReducer from './reducers/settings'
 import backupsReducer from './reducers/backups'
 import applicationStateReducer from './reducers/applicationState'
 import imageCacheReducer from './reducers/imageCache'
+import notificationsReducer from './reducers/notifications'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
@@ -157,6 +161,7 @@ const reducers = {
   backups: backupsReducer,
   applicationState: applicationStateReducer,
   imageCache: imageCacheReducer,
+  notifications: notificationsReducer,
 }
 
 const selectors = {
@@ -190,6 +195,7 @@ const selectors = {
   ...backupsSelectors,
   ...applicationStateSelectors,
   ...imageCacheSelectors,
+  ...notificationSelector,
 }
 
 const actions = {
@@ -222,6 +228,7 @@ const actions = {
   backups: backupsActions,
   applicationState: applicationStateActions,
   imageCache: imageCacheActions,
+  notifications: notificationActions,
 }
 
 const helpers = {
@@ -235,6 +242,7 @@ const helpers = {
   featureFlags: featureFlagHelpers,
   colors: colorHelpers,
   editors: editorHelpers,
+  time: timeHelpers,
 }
 
 const slate = {
@@ -259,6 +267,7 @@ export {
   rootReducer,
   mainReducer,
   SYSTEM_REDUCER_KEYS,
+  removeSystemKeys,
   reducers,
   selectors,
   initialState,

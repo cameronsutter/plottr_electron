@@ -10,6 +10,7 @@ import { beatTitle, beatOneIsPrologue } from '../helpers/beats'
 import { findNode, children, depth, reduce } from '../reducers/tree'
 import { sortedHierarchyLevels } from './hierarchy'
 import { beatHierarchyIsOn } from './featureFlags'
+export const bookIdSelector = (state, bookId) => bookId
 
 export const allBeatsSelector = (state) => state.beats
 export const beatIdSelector = (state, beatId) => beatId
@@ -21,6 +22,16 @@ export const beatsByBookSelector = createSelector(
   currentTimelineSelector,
   (beats, bookId) => {
     return beats[bookId]
+  }
+)
+
+export const firstVisibleBeatForBookSelector = createSelector(
+  allBeatsSelector,
+  bookIdSelector,
+  beatHierarchyIsOn,
+  (beats, bookId, beatHierarchyIsOn) => {
+    const firstVisibleBeat = visibleBeatsByPosition(beats[bookId], beatHierarchyIsOn)[0]
+    return firstVisibleBeat
   }
 )
 

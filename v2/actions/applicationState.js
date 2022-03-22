@@ -17,6 +17,8 @@ import {
   START_CHECKING_SESSION,
   START_CREATING_CLOUD_FILE,
   START_DELETING_FILE,
+  START_IMPORTING_SCRIVENER,
+  FINISH_IMPORTING_SCRIVENER,
   START_LOADING_A_LICENSE_TYPE,
   START_LOADING_A_SETTINGS_TYPE,
   START_LOADING_FILE,
@@ -127,4 +129,13 @@ export const finishProOnboarding = () => ({
 })
 export const startProOnboardingFromRoot = () => ({
   type: START_ONBOARDING_FROM_ROOT,
+})
+
+// Import
+export const startScrivenerImporter = () => ({
+  type: START_IMPORTING_SCRIVENER,
+})
+
+export const finishScrivenerImporter = () => ({
+  type: FINISH_IMPORTING_SCRIVENER,
 })

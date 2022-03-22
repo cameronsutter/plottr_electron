@@ -32,6 +32,11 @@ export const fileListIsLoadingSelector = createSelector(
   ({ loadingFileList }) => loadingFileList
 )
 
+export const importingNewProjectSelector = createSelector(
+  projectStateSelector,
+  ({ isImportingNewProject }) => isImportingNewProject
+)
+
 export const applicationSettingsSelector = createSelector(
   applicationStateSelector,
   ({ settings }) => settings
@@ -102,6 +107,10 @@ export const sessionCheckedSelector = createSelector(
 export const checkingSessionSelector = createSelector(
   sessionStateSelector,
   ({ checkingSession }) => checkingSession
+)
+export const isLoggingInSelector = createSelector(
+  sessionStateSelector,
+  ({ loggingIn }) => loggingIn
 )
 
 export const licenseStateSelector = createSelector(
@@ -212,6 +221,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
   manipulatingAFileSelector,
   applicationSettingsAreLoadedSelector,
   checkingSessionOrNeedToCheckSessionSelector,
+  importingNewProjectSelector,
   isLoggedInSelector,
   shouldBeInProSelector,
   checkedProSubscriptionSelector,
@@ -223,6 +233,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
     manipulatingAFile,
     applicationSettingsAreLoaded,
     checkingSessionOrNeedToCheckSession,
+    isImportingNewProject,
     isLoggedIn,
     shouldBeInPro,
     checkedProSubscription,
@@ -235,6 +246,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
       manipulatingAFile ||
       !applicationSettingsAreLoaded ||
       checkingSessionOrNeedToCheckSession ||
+      isImportingNewProject ||
       (isLoggedIn && shouldBeInPro && !checkedProSubscription) ||
       // TODO: Web doesn't have trials or licenses to load.
       !checkedLicense ||

@@ -29,6 +29,7 @@ import settings from './settings'
 import backups from './backups'
 import applicationState from './applicationState'
 import imageCache from './imageCache'
+import notifications from './notifications'
 
 // normally it would make more sense to alphabetize them
 // but for customer service, it helps a lot to have them in a specific order
@@ -65,6 +66,7 @@ const mainReducer = (dataRepairers) =>
     backups,
     applicationState,
     imageCache,
+    notifications,
   })
 
 export default mainReducer

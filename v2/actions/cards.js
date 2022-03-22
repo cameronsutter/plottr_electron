@@ -19,6 +19,8 @@ import {
   EDIT_CARD_TEMPLATE_ATTRIBUTE,
   ADD_TEMPLATE_TO_CARD,
   REMOVE_TEMPLATE_FROM_CARD,
+  DUPLICATE_CARD,
+  MOVE_CARD_TO_BOOK,
 } from '../constants/ActionTypes'
 import { editorMetadataIfPresent } from '../helpers/editors'
 
@@ -131,4 +133,14 @@ export function removeTemplateFromCard(id, templateId) {
 
 export function load(patching, cards) {
   return { type: LOAD_CARDS, patching, cards }
+}
+
+export function duplicateCard(id) {
+  return { type: DUPLICATE_CARD, id }
+}
+
+export function moveCardToBook(bookId, cardId) {
+  // NOTE: we rely on the root reducer to compute the destination beat
+  // and line ids.
+  return { type: MOVE_CARD_TO_BOOK, bookId, cardId }
 }

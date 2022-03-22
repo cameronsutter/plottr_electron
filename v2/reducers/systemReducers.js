@@ -11,6 +11,7 @@ import {
   BACKUP_ACTIONS,
   APPLICATION_STATE_ACTIONS,
   IMAGE_CACHE_ACTIONS,
+  NOTIFICATION_ACTIONS,
 } from '../constants/ActionTypes'
 
 export const SYSTEM_REDUCER_KEYS = [
@@ -26,6 +27,7 @@ export const SYSTEM_REDUCER_KEYS = [
   'backups',
   'applicationState',
   'imageCache',
+  'notifications',
 ]
 export const SYSTEM_REDUCER_ACTION_TYPES = ERROR_ACTIONS.concat(PERMISSION_ACTIONS)
   .concat(PROJECT_ACTIONS)
@@ -38,3 +40,13 @@ export const SYSTEM_REDUCER_ACTION_TYPES = ERROR_ACTIONS.concat(PERMISSION_ACTIO
   .concat(BACKUP_ACTIONS)
   .concat(APPLICATION_STATE_ACTIONS)
   .concat(IMAGE_CACHE_ACTIONS)
+  .concat(NOTIFICATION_ACTIONS)
+
+export const removeSystemKeys = (jsonData) => {
+  const withoutSystemKeys = {}
+  Object.keys(jsonData).map((key) => {
+    if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
+    withoutSystemKeys[key] = jsonData[key]
+  })
+  return withoutSystemKeys
+}

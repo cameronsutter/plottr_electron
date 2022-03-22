@@ -35,6 +35,8 @@ import {
   ADD_TEMPLATE_TO_CARD,
   REMOVE_TEMPLATE_FROM_CARD,
   ADD_BOOK_FROM_TEMPLATE,
+  DUPLICATE_CARD,
+  MOVE_CARD_TO_BOOK,
 } from '../constants/ActionTypes'
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
@@ -393,6 +395,64 @@ const cards =
 
       case LOAD_CARDS:
         return action.cards
+
+      case DUPLICATE_CARD: {
+        const existingCard = state.find(({ id }) => id === action.id)
+
+        // NOP if the card doesn't exist.
+        if (!existingCard) return state
+
+        const newId = nextId(state)
+        const highestPositionInLine = state.reduce((highestPositionInLine, nextCard) => {
+          if (nextCard.beatId !== existingCard.beatId) {
+            return Math.max(highestPositionInLine, nextCard.positionWithinLine)
+          }
+
+          return highestPositionInLine
+        })
+
+        return [
+          ...state,
+          { ...existingCard, id: newId, positionWithinLine: highestPositionInLine + 1 },
+        ]
+      }
+
+      // NOTE: it's undefined behaviour to supply a destinationBeatId
+      // and destinationLineId that don't correspond to actual beats
+      // and lines that intersect in a book.
+      case MOVE_CARD_TO_BOOK: {
+        const { destinationBeatId, destinationLineId, cardId } = action
+
+        // NOP if we're supplied with falsy destinations
+        if (!destinationBeatId || !destinationLineId) {
+          return state
+        }
+
+        const existingCard = state.find(({ id }) => id === cardId)
+
+        // NOP if the card doesn't exist.
+        if (!existingCard) {
+          return state
+        }
+
+        const highestPositionInLine = state.reduce((highestPositionInLine, nextCard) => {
+          if (nextCard.beatId !== existingCard.beatId) {
+            return Math.max(highestPositionInLine, nextCard.positionWithinLine)
+          }
+
+          return highestPositionInLine
+        })
+
+        return [
+          ...state.filter(({ id }) => cardId !== id),
+          {
+            ...existingCard,
+            beatId: destinationBeatId,
+            lineId: destinationLineId,
+            positionWithinLine: highestPositionInLine + 1,
+          },
+        ]
+      }
 
       default:
         return state || INITIAL_STATE

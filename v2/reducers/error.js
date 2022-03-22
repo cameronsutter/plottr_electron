@@ -1,4 +1,10 @@
-import { CLEAR_ERROR, PERMISSION_ERROR, GENERAL_ERROR } from '../constants/ActionTypes'
+import {
+  CLEAR_ERROR,
+  PERMISSION_ERROR,
+  GENERAL_ERROR,
+  IMPORT_ERROR,
+  SAVE_TEMP_FILE_ERROR,
+} from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
   error: null,
@@ -25,6 +31,17 @@ const errorReducer =
 
       case CLEAR_ERROR:
         return INITIAL_STATE
+
+      case IMPORT_ERROR:
+        return {
+          error: action.error,
+        }
+
+      case SAVE_TEMP_FILE_ERROR: {
+        return {
+          error: action.error,
+        }
+      }
 
       default:
         return state

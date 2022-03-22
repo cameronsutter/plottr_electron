@@ -44,11 +44,9 @@ const Navigation = ({
     if (!isInTrialMode) return null
 
     return (
-      <Navbar.Form pullRight style={{ marginRight: '15px' }}>
-        <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
-          <FaKey /> {t('Get a License')}
-        </Button>
-      </Navbar.Form>
+      <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
+        <FaKey /> {t('Get a License')}
+      </Button>
     )
   }
 
@@ -91,12 +89,12 @@ const Navigation = ({
             </NavItem>
           ) : null}
         </Nav>
-        <Beamer inNavigation />
-        <TrialLinks />
         <Navbar.Form pullRight className="dashboard__navbar-form">
+          <TrialLinks />
           <Button onClick={openDashboard}>
             <FaRegUser /> {t('Dashboard')}
           </Button>
+          <Beamer inNavigation />
         </Navbar.Form>
       </Navbar>
     </>

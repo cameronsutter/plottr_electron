@@ -1,5 +1,5 @@
 import Store from 'electron-store'
-import { exportConfig as export_config } from 'plottr_import_export'
+import export_config from 'plottr_import_export/src/exporter/default_config'
 
 import defaultSettings from '../../shared/default_settings'
 import {

@@ -8,7 +8,8 @@ import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
 
 import { connections } from 'plottr_components'
-import { askToExport, exportConfig as export_config } from 'plottr_import_export'
+import { askToExport } from 'plottr_import_export'
+import export_config from 'plottr_import_export/src/exporter/default_config'
 import { actions, selectors } from 'pltr/v2'
 import {
   publishRCEOperations,

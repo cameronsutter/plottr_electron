@@ -37,11 +37,12 @@ const database = () => {
   if (_database) return _database
   _database = firebase.firestore()
   _database.settings({ ignoreUndefinedProperties: true }, { merge: true })
-  if (
-    process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
-  ) {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
     try {
+      console.log(
+        'Using database local emulator for environment: ',
+        process.env.NEXT_PUBLIC_NODE_ENV
+      )
       _database.useEmulator('plottr.local', 8081)
       _database.settings(
         { ignoreUndefinedProperties: true, host: 'plottr.local:8081', ssl: true },
@@ -59,10 +60,8 @@ const auth = () => {
   if (_auth) return _auth
   _auth = firebase.auth()
   _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-  if (
-    process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
-  ) {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
+    console.log('Using auth local emulator for environment: ', process.env.NEXT_PUBLIC_NODE_ENV)
     _auth.useEmulator('https://plottr.local:9100')
   }
   return _auth
@@ -71,10 +70,8 @@ const auth = () => {
 let _storage = null
 const storage = () => {
   if (_storage) return _storage
-  if (
-    process.env.NEXT_PUBLIC_NODE_ENV === 'development' ||
-    (typeof window !== 'undefined' && window && window.location.hostname === 'plottr.local')
-  ) {
+  if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
+    console.log('Using storage local emulator for environment: ', process.env.NEXT_PUBLIC_NODE_ENV)
     _storage = firebase.storage()
     _storage.useEmulator('localhost', 9200)
     _storage._delegate.host = 'https://plottr.local:9200'
@@ -118,7 +115,7 @@ export const wireUpAPI = (logger) => {
     // For env vars to be read from Next config (on the web) we need to
     // prefix them with 'NEXT_PUBLIC'
     process.env.NEXT_PUBLIC_API_BASE_DOMAIN || process.env.API_BASE_DOMAIN,
-    process.env.NODE_ENV === 'development',
+    process.env.NEXT_PUBLIC_NODE_ENV === 'development',
     logger,
     isElectron
   )

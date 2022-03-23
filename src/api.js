@@ -271,7 +271,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const overwriteAllKeys = (fileId, clientId, state) => {
     const requests = []
     Object.keys(state).forEach((key) => {
-      if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) {
+      if (SYSTEM_REDUCER_KEYS.indexOf(key) !== -1) {
         return
       }
       const payload = ARRAY_KEYS.indexOf(key) !== -1 ? toFirestoreArray(state[key]) : state[key]
@@ -350,6 +350,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     const setDeletedCharacters = () => setDeleted('characters')
     const setDeletedCustomAttributes = () => setDeleted('customAttributes')
     const setDeletedLines = () => setDeleted('lines')
+    const setDeletedBeats = () => setDeleted('beats')
     const setDeletedNotes = () => setDeleted('notes')
     const setDeletedPlaces = () => setDeleted('places')
     const setDeletedTags = () => setDeleted('tags')
@@ -366,6 +367,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           setDeletedCharacters(),
           setDeletedCustomAttributes(),
           setDeletedLines(),
+          setDeletedBeats(),
           setDeletedNotes(),
           setDeletedPlaces(),
           setDeletedTags(),
@@ -869,8 +871,8 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         return response.data.publicURL
       })
       .catch((error) => {
-        const status = error?.response?.status
-        log.error('Error getting image public url', status, error?.response, error)
+        const status = error && error.response && error.response.status
+        log.error('Error getting image public url', status, error && error.response, error)
         if (status === 401) return mintCookieToken(currentUser())
         return Promise.reject(error)
       })

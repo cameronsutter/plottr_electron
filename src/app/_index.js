@@ -278,10 +278,16 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
   uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
     const fileId = response.data.fileId
     openFile(`plottr://${fileId}`, fileId, false)
+    // Fixme: this could have been called to create from a snowflake
+    // file too(!)
     store.dispatch(actions.applicationState.finishScrivenerImporter())
     closeDashboard()
     return fileId
   })
+})
+
+ipcRenderer.on('finish-creating-local-scrivener-imported-file', () => {
+  store.dispatch(actions.applicationState.finishScrivenerImporter())
 })
 
 ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {

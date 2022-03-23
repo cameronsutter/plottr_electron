@@ -439,6 +439,7 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
     return saveToTempFile(importedJson).then((filePath) => {
       const fileId = addToKnownFiles(filePath)
       openKnownFile(filePath, fileId)
+      sender.send('finish-creating-local-scrivener-imported-file')
     })
   })
 }

@@ -348,7 +348,7 @@ ipcMain.on('show-item-in-folder', (_event, fileName) => {
 })
 
 ipcMain.on('pls-set-my-file-path', (event, filePath) => {
-  setFilePathForWindowWithId(event.sender.id, filePath)
+  setFilePathForWindowWithId(event.sender.getOwnerBrowserWindow().id, filePath)
 })
 
 ipcMain.on('pls-open-login-popup', () => {

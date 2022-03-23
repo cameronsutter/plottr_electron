@@ -74,18 +74,11 @@ const Listener = ({
   }, [selectedFile, userId])
 
   useEffect(() => {
-    if (
-      !offlineModeIsEnabled ||
-      !userId ||
-      !clientId ||
-      !selectedFile ||
-      !selectedFile.id ||
-      isOffline
-    ) {
+    if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
       return () => {}
     }
 
-    if (wasOffline.current) {
+    if (offlineModeIsEnabled && wasOffline.current) {
       logger.info(
         `Resuming online with file: ${selectedFile.id}, user: ${userId} and clientId: ${clientId}`
       )
@@ -94,20 +87,23 @@ const Listener = ({
       return () => {}
     }
 
-    if (resuming) {
+    if (offlineModeIsEnabled && resuming) {
       return () => {}
     }
 
+    let unsubscribeFunction = null
     if (fileLoaded) {
-      setUnsubscribeFunction(listen(store, userId, selectedFile.id, clientId, selectedFile.version))
+      setUnsubscribeFunction({
+        unsubscribe: listen(store, userId, selectedFile.id, clientId, selectedFile.version),
+      })
       setPermission(selectedFile.permission)
     } else {
       setFileLoaded()
     }
 
     return () => {
-      if (unsubscribeFunction) {
-        unsubscribeFunction()
+      if (unsubscribeFunction && unsubscribeFunction.unsubscribe) {
+        unsubscribeFunction.unsubscribe()
         setUnsubscribeFunction(null)
       }
     }
@@ -123,8 +119,8 @@ const Listener = ({
   ])
 
   useEffect(() => {
-    if (isOffline && unsubscribeFunction) {
-      unsubscribeFunction()
+    if (isOffline && unsubscribeFunction && unsubscribeFunction.unsubscribe) {
+      unsubscribeFunction.unsubscribe()
       setUnsubscribeFunction(null)
     }
   }, [isOffline, unsubscribeFunction])

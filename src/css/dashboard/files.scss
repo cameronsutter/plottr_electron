@@ -24,11 +24,17 @@
   height: 25vh;
   max-height: 30vh;
 
-  .pro-import {
+  .import-file {
     padding: 0;
   }
 
-  .pro-import .dropdown-toggle {
+  .import-file.dropdown {
+    ul {
+      width: 100%;
+    }
+  }
+
+  .import-file .dropdown-toggle {
     width: 100%;
     border: none;
     box-shadow: none;

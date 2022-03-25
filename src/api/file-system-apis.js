@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { lstatSync, mkdirSync } from 'fs'
 import path from 'path'
 import { ipcRenderer } from 'electron'
 import { sortBy } from 'lodash'
@@ -7,7 +7,6 @@ import {
   licenseStore,
   trialStore,
   knownFilesStore,
-  knownFilesPath,
   templatesStore,
   customTemplatesStore,
   manifestStore,
@@ -149,12 +148,27 @@ const withFromFileSystem = (backupFolder) => ({
   fromFileSystem: true,
 })
 
+const backupDirExists = () => {
+  try {
+    const stats = lstatSync(backupBasePath())
+    return stats.isDirectory()
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error
+    }
+    return false
+  }
+}
+
 let _currentBackups = []
 export const listenToBackupsChanges = (cb) => {
   let watcher = () => {}
   readBackupsDirectory((initialBackups) => {
     _currentBackups = initialBackups
     cb(initialBackups)
+    if (!backupDirExists()) {
+      mkdirSync(backupBasePath())
+    }
     watcher = fs.watch(backupBasePath(), (event, fileName) => {
       // Do we care about event and fileName?
       //
@@ -179,6 +193,12 @@ export const currentBackups = () => {
 }
 function readBackupsDirectory(cb) {
   fs.readdir(backupBasePath(), (err, directories) => {
+    if (err) {
+      logger.error('Error reading backup directory.', err)
+      cb([])
+      return
+    }
+
     const filteredDirs = directories.filter((d) => {
       return d[0] != '.' && !d.includes('.pltr')
     })

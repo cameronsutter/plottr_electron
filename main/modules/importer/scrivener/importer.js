@@ -149,11 +149,7 @@ const getSection = (sections, sectionName) => {
 }
 
 function withStoryLineIfItExists(manuscript, json, bookTitle, bookId, isNewFile, files) {
-  if (
-    manuscript['Children'] &&
-    manuscript['Children']['BinderItem'] &&
-    manuscript['Children']['BinderItem'].length
-  ) {
+  if (manuscript['Children'] && manuscript['Children']['BinderItem']) {
     return extractStoryLines(json, manuscript, bookTitle, bookId, isNewFile, files)
   } else {
     return json
@@ -378,33 +374,53 @@ function extractStoryLines(
   relevantFiles,
   currentLineId
 ) {
-  const chapters = storyLineNode['Children']['BinderItem']
+  const chapters = Array.isArray(storyLineNode['Children']['BinderItem'])
+    ? storyLineNode['Children']['BinderItem']
+    : [storyLineNode['Children']['BinderItem']]
   let lineId = currentLineId || 1
+
+  const hasChapterFolder = chapters.find((chapter) => chapter['_attributes']['Type'] == 'Folder')
 
   const withNewBeats = chapters.reduce((acc, chapter, beatKey) => {
     const id = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
-    const title = chapter['Title']['_text']
+    const title = hasChapterFolder ? chapter['Title']['_text'] : 'Beat 1'
     const position = beatKey
-    const newBeats = createNewBeat(acc, { id, title, position }, bookId)
+
+    // Don't create more than 1 beat if `hasChapterFolder` is false
+    const newBeats =
+      hasChapterFolder || !beatKey ? createNewBeat(acc, { id, title, position }, bookId) : null
+    if (newBeats) {
+      return {
+        ...acc,
+        beats: newBeats,
+      }
+    }
     return {
       ...acc,
-      beats: newBeats,
     }
   }, json)
 
   const withNewCardsAndNewBeats = chapters
     .filter((chapter) => {
-      return chapter['_attributes']['Type'] == 'Folder'
+      if (hasChapterFolder) {
+        return chapter['_attributes']['Type'] == 'Folder'
+      } else {
+        // Data here will be used as card data
+        return chapter['_attributes']['Type'] == 'Text'
+      }
     })
     .reduce((acc, chapter, beatKey) => {
       const beatId = chapter['_attributes']['UUID'] || chapter['_attributes']['ID']
-      const chaptersArray = Array.isArray(chapter['Children']['BinderItem'])
-        ? chapter['Children']['BinderItem']
-        : [chapter['Children']['BinderItem']]
-      const beatChildrenWithStoryLines = chaptersArray.filter((child) => {
-        return child['_attributes']['Type'] == 'Folder'
-      })
-      // if has 1 child, json parser converted it an object
+
+      const chaptersArray =
+        hasChapterFolder && Array.isArray(chapter['Children']['BinderItem'])
+          ? chapter['Children']['BinderItem']
+          : !!hasChapterFolder && [chapter['Children']['BinderItem']]
+      const beatChildrenWithStoryLines = hasChapterFolder
+        ? chaptersArray.filter((child) => {
+            return child['_attributes']['Type'] == 'Folder'
+          })
+        : []
 
       const withChildStoryLinesAdded = beatChildrenWithStoryLines.reduce(
         (newJsonWithBeats, child, nextLinePosition) => {
@@ -483,9 +499,14 @@ function extractStoryLines(
         acc
       )
 
-      const beatChildrenWithoutStoryLines = chaptersArray.filter((child) => {
-        return child['_attributes']['Type'] == 'Text' && child['Title']['_text']
-      })
+      const beatChildrenWithoutStoryLines = hasChapterFolder
+        ? chaptersArray.filter((child) => {
+            return child['_attributes']['Type'] == 'Text' && child['Title']['_text']
+          })
+        : // if `hasChapterFolder` is false, treat all children as card
+          chapters.filter((child) => {
+            return child['_attributes']['Type'] == 'Text'
+          })
 
       const beatChildrenWithoutStoryLinesArr = Array.isArray(beatChildrenWithoutStoryLines)
         ? beatChildrenWithoutStoryLines
@@ -560,6 +581,23 @@ function mapMatchedFiles(newJson, matchFiles, fileContents, bookId, isSection) {
       fileContents.rtfContents.lineId = 1
     }
     if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
+      const synopsisContent = file.contents.children.map((content) => {
+        // Remove description label in synopsis.txt
+        content['text'] = content.text.startsWith('Description\r\n\r\n')
+          ? content.text.replace(/^Description\r\n\r\n/, '')
+          : content.text.startsWith('Description\r\n\r')
+          ? content.text.replace(/^Description\r\n\r/, '')
+          : content.text.startsWith('Description\n\n')
+          ? content.text.replace(/^Description\n\n/, '')
+          : content.text.startsWith('Description\r\n')
+          ? content.text.replace(/^Description\r\n/, '')
+          : content.text.text
+          ? ''
+          : content.text
+
+        return content
+      })
+      file.contents.children = synopsisContent
       Object.assign(fileContents.txtContent, file.contents)
     }
     if (isRTF) {
@@ -615,7 +653,9 @@ function getRTFContents(lines, rtf, matchId, bookId, isSection) {
           if (childContent.text) {
             if (childContent.text.includes('Plotline: ')) {
               const lineTitle = childContent.text.split('Plotline: ').pop()
-              const existingPlotline = lines.find((line) => line.title == lineTitle)
+              const existingPlotline = lines.find(
+                (line) => line.title.toLowerCase().trim() == lineTitle.toLowerCase().trim()
+              )
               if (!existingPlotline) {
                 createNewLine(
                   lines,

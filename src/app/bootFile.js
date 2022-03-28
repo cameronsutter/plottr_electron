@@ -210,13 +210,26 @@ const afterLoading = (json) => {
   logger.info(`Loaded file ${json.file.fileName}.`)
 }
 
-const bootWithUser = (fileId) => (user) => {
+const makeFlagsConsistent = (beatHierarchy) => (json) => {
+  const withDispatch = dispatchingToStore(store.dispatch)
+  makeFlagConsistent(
+    json,
+    beatHierarchy,
+    featureFlags.BEAT_HIERARCHY_FLAG,
+    withDispatch(actions.featureFlags.setBeatHierarchy),
+    withDispatch(actions.featureFlags.unsetBeatHierarchy)
+  )
+  return json
+}
+
+const bootWithUser = (fileId, beatHierarchy) => (user) => {
   const userId = user.uid
   const email = user.email
   return initialFetch(userId, fileId, clientId, app.getVersion())
     .then((fetchedFile) => {
       return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
         .then(migrate(fetchedFile, fileId))
+        .then(makeFlagsConsistent(beatHierarchy))
         .then(afterLoading)
     })
     .catch((error) => {
@@ -236,7 +249,7 @@ const handleErrorBootingFile = (fileId) => (error) => {
   return Promise.reject(error)
 }
 
-function bootCloudFile(filePath) {
+function bootCloudFile(filePath, beatHierarchy) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
     return handleNoFileId(fileId, filePath)
@@ -244,7 +257,7 @@ function bootCloudFile(filePath) {
 
   return waitForUser()
     .then(handleEroneousUserStates(filePath))
-    .then(bootWithUser(fileId))
+    .then(bootWithUser(fileId, beatHierarchy))
     .catch(handleErrorBootingFile(fileId))
 }
 
@@ -320,7 +333,9 @@ export function bootFile(filePath, options, numOpenFiles) {
   try {
     store.dispatch(actions.applicationState.startLoadingFile())
     return (
-      isCloudFile ? bootCloudFile(filePath) : bootLocalFile(filePath, numOpenFiles, beatHierarchy)
+      isCloudFile
+        ? bootCloudFile(filePath, beatHierarchy)
+        : bootLocalFile(filePath, numOpenFiles, beatHierarchy)
     )
       .then(() => {
         store.dispatch(actions.applicationState.finishLoadingFile())

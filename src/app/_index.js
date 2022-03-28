@@ -2,6 +2,7 @@ import path from 'path'
 import { store } from 'store'
 import { ipcRenderer } from 'electron'
 import { dialog, getCurrentWindow } from '@electron/remote'
+import { rm } from 'fs'
 import electron from 'electron'
 
 import { actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
@@ -101,6 +102,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     logger,
     exportSaveDialog,
     MPQ,
+    rm,
     (error, success) => {
       if (error) {
         logger.error(error)

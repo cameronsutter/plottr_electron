@@ -354,3 +354,13 @@ ipcMain.on('pls-set-my-file-path', (event, filePath) => {
 ipcMain.on('pls-open-login-popup', () => {
   openLoginPopupWindow()
 })
+
+ipcMain.on('rm-rf', (event, path, messageId) => {
+  try {
+    fs.rmdirSync(path, { recursive: true })
+    event.sender.send(`rm-rf-reply-${messageId}`, null)
+  } catch (error) {
+    console.error('Error deleting a file via rm-rf-sync: ', path, error)
+    event.sender.send(`rm-rf-reply-${messageId}`, error.message || `Error deleting ${path}`)
+  }
+})

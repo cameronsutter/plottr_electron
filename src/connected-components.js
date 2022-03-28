@@ -6,6 +6,7 @@ import { ActionCreators } from 'redux-undo'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
+import { v4 as uuid } from 'uuid'
 
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'
@@ -77,6 +78,21 @@ const win = getCurrentWindow()
 const version = app.getVersion()
 
 const moveItemToTrash = shell.trashItem
+
+const rmRF = (path, ...args) => {
+  return new Promise((resolve, reject) => {
+    const messageId = uuid()
+    function listener(event, errorMessage) {
+      if (errorMessage) {
+        reject(new Error(errorMessage))
+      } else {
+        resolve(true)
+      }
+    }
+    ipcRenderer.once(`rm-rf-reply-${messageId}`, listener)
+    ipcRenderer.send('rm-rf', path, messageId)
+  })
+}
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)
@@ -220,6 +236,7 @@ const platform = {
     removeFromKnownFiles,
     saveFile,
     readFileSync,
+    rmRF,
     moveItemToTrash,
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present

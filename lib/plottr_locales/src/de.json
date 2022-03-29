@@ -2008,5 +2008,8 @@
 	},
 	"Import": {
 		"message": "Importieren"
-	}
+	},
+	"Enter title": {
+    "message": "Titel eingeben"
+  }
 }

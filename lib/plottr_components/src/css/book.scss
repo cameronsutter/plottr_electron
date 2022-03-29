@@ -308,6 +308,8 @@
   flex-direction: column;
   justify-content: space-evenly;
 
+  word-break: break-all;
+  overflow: hidden;
   // background: linear-gradient(45deg,  #DAD5DC 0%, #f2ebf4 100%);
   background: linear-gradient(45deg, $gray-7 0%, $gray-8 100%);
   // background-color: #bcccdc;

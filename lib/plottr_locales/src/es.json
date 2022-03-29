@@ -1975,5 +1975,8 @@
   },
   "Import": {
     "message": "Importar"
+  },
+  "Enter title": {
+    "message": "Introduce el título"
   }
 }

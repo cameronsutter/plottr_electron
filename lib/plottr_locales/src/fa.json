@@ -2086,5 +2086,8 @@
   },
   "Import": {
     "message": "وارد کردن"
+  },
+  "Enter title": {
+    "message": "عنوان را وارد کنید"
   }
 }

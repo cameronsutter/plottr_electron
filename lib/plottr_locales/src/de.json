@@ -2011,5 +2011,8 @@
 	},
 	"Enter title": {
     "message": "Titel eingeben"
-  }
+  },
+	"Duplicate": {
+		"message": "Vervielfältigen"
+	}
 }

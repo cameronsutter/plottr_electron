@@ -1978,5 +1978,8 @@
   },
   "Enter title": {
     "message": "Introduce el título"
+  },
+  "Duplicate": {
+    "message": "Duplicado"
   }
 }

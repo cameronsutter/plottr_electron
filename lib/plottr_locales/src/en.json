@@ -2374,5 +2374,8 @@
   },
   "Enter title": {
     "message": "Enter title"
+  },
+  "Duplicate":{
+    "message": "Duplicate"
   }
 }

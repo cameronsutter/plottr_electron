@@ -79,7 +79,7 @@ const version = app.getVersion()
 
 const moveItemToTrash = shell.trashItem
 
-const rmRF = (path, ...args) => {
+export const rmRF = (path, ...args) => {
   return new Promise((resolve, reject) => {
     const messageId = uuid()
     function listener(event, errorMessage) {

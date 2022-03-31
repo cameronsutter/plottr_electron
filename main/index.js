@@ -360,7 +360,7 @@ ipcMain.on('rm-rf', (event, path, messageId) => {
     fs.rmdirSync(path, { recursive: true })
     event.sender.send(`rm-rf-reply-${messageId}`, null)
   } catch (error) {
-    console.error('Error deleting a file via rm-rf: ', path, error)
+    log.error('Error deleting a file via rm-rf: ', path, error)
     event.sender.send(`rm-rf-reply-${messageId}`, error.message || `Error deleting ${path}`)
   }
 })

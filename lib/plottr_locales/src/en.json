@@ -2371,5 +2371,11 @@
   },
   "Woohoo! Scene card duplicated": {
     "message": "Woohoo! Scene card duplicated"
+  },
+  "Enter title": {
+    "message": "Enter title"
+  },
+  "Duplicate":{
+    "message": "Duplicate"
   }
 }

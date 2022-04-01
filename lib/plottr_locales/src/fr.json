@@ -2191,5 +2191,11 @@
   },
   "Import": {
     "message": "Importer"
+  },
+  "Enter title": {
+    "message": "Entrez le titre"
+  },
+  "Duplicate": {
+    "message": "Dupliquer"
   }
 }

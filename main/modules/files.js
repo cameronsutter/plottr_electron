@@ -9,8 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { t } from 'plottr_locales'
 
 import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
-import { Importer } from './importer/snowflake/importer'
-import { ScrivenerImporter } from './importer/scrivener/importer'
+import { importFromSnowflake, importFromScrivener } from 'plottr_import_export'
 
 import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { openProjectWindow } from './windows/projects'
@@ -389,7 +388,7 @@ async function createFromSnowflake(importedPath, sender, isLoggedIntoPro) {
     series: tree.newTree('id'),
   }
   json.lines = []
-  const importedJson = Importer(importedPath, true, json)
+  const importedJson = importFromSnowflake(importedPath, true, json)
 
   if (isLoggedIntoPro) {
     sender.send('create-plottr-cloud-file', importedJson, storyName)
@@ -421,7 +420,7 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
     series: tree.newTree('id'),
   }
   json.lines = []
-  const importedJsonPromise = ScrivenerImporter(
+  const importedJsonPromise = importFromScrivener(
     importedPath,
     true,
     json,

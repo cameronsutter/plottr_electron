@@ -1981,5 +1981,11 @@
   },
   "Import": {
     "message": "Импортировать"
+  },
+  "Enter title": {
+    "message": "Введите заголовок"
+  },
+  "Duplicate":{
+    "message": "копия"
   }
 }

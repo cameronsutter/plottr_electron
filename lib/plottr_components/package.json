@@ -51,7 +51,7 @@
     "plottr_check-prop-types": "file:../plottr_check-prop-types",
     "plottr_locales": "file:../plottr_locales",
     "pltr": "file:../pltr",
-    "react-bootstrap": "^0.32.4",
+    "react-bootstrap": "^2.2.2",
     "react-icons": "^3.11.0",
     "react-image-file-resizer": "^0.4.7",
     "react-modal": "^3.8.1",

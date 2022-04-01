@@ -114,7 +114,7 @@
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.0.0",
-    "react-bootstrap": "^0.32.4",
+    "react-bootstrap": "^2.2.2",
     "react-dom": "^16.8.6",
     "react-floater": "^0.7.2",
     "react-icons": "^3.11.0",

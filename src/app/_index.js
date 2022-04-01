@@ -8,7 +8,8 @@ import { actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
 import { setupI18n, t } from 'plottr_locales'
-import { askToExport, exportConfig } from 'plottr_import_export'
+import { askToExport } from 'plottr_import_export'
+import exportConfig from 'plottr_import_export/src/exporter/default_config'
 import world from 'world-api'
 
 import MPQ from '../common/utils/MPQ'
@@ -31,15 +32,18 @@ import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
 import { uploadToFirebase } from '../upload-to-firebase'
-import { openFile } from '../connected-components'
+import { openFile, rmRF } from 'connected-components'
 import { notifyUser } from '../notifyUser'
 import { exportSaveDialog } from '../export-save-dialog'
+import { instrumentLongRunningTasks } from './longRunning'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
+
+instrumentLongRunningTasks()
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
 const rollbar = setupRollbar('app.html')
@@ -101,6 +105,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     logger,
     exportSaveDialog,
     MPQ,
+    rmRF,
     (error, success) => {
       if (error) {
         logger.error(error)

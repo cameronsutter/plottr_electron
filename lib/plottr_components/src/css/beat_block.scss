@@ -139,6 +139,15 @@ $medium_width: 80px;
   }
 }
 
+.beat-list__insert-child {
+  display: flex;
+  align-items: center;
+  margin-top: -27px;
+  transition: all 0.4s $cubic;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 // .beat-list__interstitial-controls {
 //   display: flex;
 //   flex-direction: row;

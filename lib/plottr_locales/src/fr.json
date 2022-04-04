@@ -705,7 +705,7 @@
     "message": "S''il-vous-plait confirmez votre licence."
   },
   "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
-    "message": "Plottr n''a pas pu enregistrer de sauvegarde. Votre fichier n''a pas encore été modifié. Ne vous inquietez pas. Tentez de quitter Plottr et de redémarrer."                         
+    "message": "Plottr n''a pas pu enregistrer de sauvegarde. Votre fichier n''a pas encore été modifié. Ne vous inquietez pas. Tentez de quitter Plottr et de redémarrer."
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr a eu un problème. Tentez d'ouvrir Plottr à nouveau."
@@ -719,7 +719,7 @@
   "Plottr updated your file without a problem. Don't forget to save your file.": {
     "message": "Plottr a mis votre ficihier à jour sans problème. N''oubliez pas d''enregistrer votre fichier."
   },
-  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {                  
+  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
     "message": "Plotrr a bien réussi à vérifier votre licence mais il y a eu une erreur pour l''enregistrer. Tentons de le faire à nouveau."
   },
   "Problem saving backup": {
@@ -1007,7 +1007,7 @@
   "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
     "message": "{ count, plural,\n    one {1 lieu lié}\n  other {# lieux liés}\n}"
   },
-  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {                                               
+  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
     "message": "{ count, plural,\n    one {1 étiquette liée}\n  other {# étiquettes liées}\n}"
   },
   "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
@@ -2024,7 +2024,7 @@
   "{date, date, monthDay}": {
     "message": "{date, date, monthDay}"
   },
-  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {                                                                
+  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
     "message": "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }"
   },
   "{num} Scenes": {

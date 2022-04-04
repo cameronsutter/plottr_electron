@@ -362,11 +362,13 @@ const platform = {
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   },
   showItemInFolder: (fileName) => {
-    if (!isStorageURL(fileName)) {
-      ipcRenderer.send('show-item-in-folder', fileName)
-    } else {
-      backupPublicURL(fileName).then((url) => ipcRenderer.send('download-file-and-show', url))
-    }
+    isStorageURL(fileName).then((storageURL) => {
+      if (!storageURL) {
+        ipcRenderer.send('show-item-in-folder', fileName)
+      } else {
+        backupPublicURL(fileName).then((url) => ipcRenderer.send('download-file-and-show', url))
+      }
+    })
   },
   tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,

@@ -1,3 +1,5 @@
+import { logger } from '../logger'
+
 const handleLongTask = (entry) => {
   logger.warn(`Detected long task: ${JSON.stringify(entry)}`)
 }

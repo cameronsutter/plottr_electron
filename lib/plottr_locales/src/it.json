@@ -1,0 +1,2006 @@
+{
+  "(If not, please email support@plottr.com)": {
+    "message": "(In caso contrario, inviare un'e-mail a support@plottr.com)"
+  },
+  "(Logout)": {
+    "message": "(Disconnettersi)"
+  },
+  "A verification code was sent to:": {
+    "message": "Un codice di verifica è stato inviato a:"
+  },
+  "About Plottr": {
+    "message": "A proposito di Plottr"
+  },
+  "Access to all the features": {
+    "message": "Accesso a tutte le funzionalità"
+  },
+  "Account Information": {
+    "message": "Informazioni account"
+  },
+  "Account": {
+    "message": "Account"
+  },
+  "Actions": {
+    "message": "Azioni"
+  },
+  "Activate License": {
+    "message": "Attiva licenza"
+  },
+  "Add Chapter": {
+    "message": "Aggiungi capitolo"
+  },
+  "Add attribute": {
+    "message": "Aggiungi attributo"
+  },
+  "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
+    "message": "Aggiungi le schede alla sequenza temporale in modo da poter scrivere note riguardo le tue scene. Fai clic sulla scheda per aggiungere ulteriori dettagli"
+  },
+  "Add category": {
+    "message": "Aggiungi categoria"
+  },
+  "Add more plotlines here": {
+    "message": "Aggiungi altre trame qui"
+  },
+  "Add new scenes or chapters here": {
+    "message": "Aggiungi nuove scene o capitoli qui"
+  },
+  "Add": {
+    "message": "Aggiungi"
+  },
+  "Advanced Export Options": {
+    "message": "Opzioni di esportazione avanzate"
+  },
+  "After": {
+    "message": "Dopo"
+  },
+  "All": {
+    "message": "Tutto"
+  },
+  "App Version: {version}": {
+    "message": "Versione app: {version}"
+  },
+  "Are you sure you want to clear everything in this timeline?": {
+    "message": "Sei sicuro di voler cancellare tutto in questa sequenza temporale?"
+  },
+  "Are you sure you want to delete { thing }?": {
+    "message": "Sei sicuro di voler eliminare { thing }?"
+  },
+  "Are you sure you want to delete {name}?": {
+    "message": "Sei sicuro di voler eliminare \"{ name }\"?"
+  },
+  "Are you sure you want to remove your license?": {
+    "message": "Sei sicuro di voler cancellare la tua licenza?"
+  },
+  "Are you sure?  (Removing levels may delete scene cards!)": {
+    "message": "Sei sicuro? (La rimozione dei livelli potrebbe eliminare le schede delle scene!)"
+  },
+  "Attach Books": {
+    "message": "Allega libri"
+  },
+  "Attach Characters": {
+    "message": "Allega personaggi"
+  },
+  "Attach Places": {
+    "message": "Allega luoghi"
+  },
+  "Attach Tags": {
+    "message": "Allega etichette"
+  },
+  "Attributes": {
+    "message": "Attributi"
+  },
+  "Auto-save": {
+    "message": "Salvataggio automatico"
+  },
+  "Auto-saving failed": {
+    "message": "Salvataggio automatico non riuscito"
+  },
+  "Auto-saving worked": {
+    "message": "Salvataggio automatico effettuato"
+  },
+  "Automatically save daily backups": {
+    "message": "Salva automaticamente backup giornalieri"
+  },
+  "Awesome choice!": {
+    "message": "Ottima scelta!"
+  },
+  "Back": {
+    "message": "Indietro"
+  },
+  "Backup Location": {
+    "message": "Posizione del backup"
+  },
+  "Backups older than this will be erased": {
+    "message": "I backup precedenti verranno cancellati"
+  },
+  "Backups": {
+    "message": "Backup"
+  },
+  "Beat 1": {
+    "message": "Beat 1"
+  },
+  "Beat {number} title": {
+    "message": "Titolo Beat {number}"
+  },
+  "Beat {number}": {
+    "message": "Beat {number}"
+  },
+  "Beat": {
+    "message": "Beat"
+  },
+  "Before": {
+    "message": "Prima"
+  },
+  "Beginning": {
+    "message": "Inizio"
+  },
+  "Blues": {
+    "message": "Blu"
+  },
+  "Book #": {
+    "message": "Libro #"
+  },
+  "Book Details": {
+    "message": "Dettagli del libro"
+  },
+  "Book": {
+    "message": "Libro"
+  },
+  "Books": {
+    "message": "Libri"
+  },
+  "Browns": {
+    "message": "Marroni"
+  },
+  "Buy Full Version": {
+    "message": "Compra la versione completa"
+  },
+  "By default, use auto-save for projects": {
+    "message": "Usa sempre il salvataggio automatico per i progetti"
+  },
+  "By starting a mobile subscription, you agree to Plottr's": {
+    "message": "Avviando un abbonamento mobile, accetti i nostri"
+  },
+  "CHECK EMAIL": {
+    "message": "CONTROLLA LA TUA EMAIL"
+  },
+  "CHECKING...": {
+    "message": "CONTROLLO..."
+  },
+  "CODE": {
+    "message": "CODICE"
+  },
+  "CREATE NEW PROJECT": {
+    "message": "CREA NUOVO PROGETTO"
+  },
+  "CREATE PROJECT": {
+    "message": "CREA PROGETTO"
+  },
+  "Can I have a few more days?": {
+    "message": "Posso avere qualche giorno in più?"
+  },
+  "Cancel": {
+    "message": "Annulla"
+  },
+  "Card": {
+    "message": "Carta"
+  },
+  "Categories": {
+    "message": "Categorie"
+  },
+  "Category": {
+    "message": "Categoria"
+  },
+  "Changelog": {
+    "message": "Registro delle modifiche"
+  },
+  "Chapter {number} title": {
+    "message": "Titolo del capitolo {number}"
+  },
+  "Chapter {number}": {
+    "message": "Capitolo {number}"
+  },
+  "Chapter": {
+    "message": "Capitolo"
+  },
+  "Chapters": {
+    "message": "Capitoli"
+  },
+  "Character Categories": {
+    "message": "Categorie di personaggi"
+  },
+  "Character Thumbnail": {
+    "message": "Anteprima del personaggio"
+  },
+  "Character list is filtered": {
+    "message": "L'elenco dei personaggi è filtrato"
+  },
+  "Character": {
+    "message": "Personaggio"
+  },
+  "Character: {name}": {
+    "message": "Personaggio: {name}"
+  },
+  "Characters list": {
+    "message": "Elenco dei personaggi"
+  },
+  "Characters": {
+    "message": "Personaggi"
+  },
+  "Check for Updates": {
+    "message": "Controlla gli aggiornamenti"
+  },
+  "Check": {
+    "message": "Dai un'occhiata"
+  },
+  "Choose Color": {
+    "message": "Scegli colore"
+  },
+  "Choose an image": {
+    "message": "Scegli un'immagine"
+  },
+  "Choose an {platform} mobile subscription": {
+    "message": "Scegli un abbonamento mobile a {platform}"
+  },
+  "Choose what categories you want to put your characters into": {
+    "message": "Scegli in quali categorie vuoi inserire i tuoi personaggi"
+  },
+  "Choose what you want to track about your { type }": {
+    "message": "Scegli cosa vuoi monitorare sul tuo { type }"
+  },
+  "Choose where to save this file on your computer": {
+    "message": "Scegli dove salvare questo file sul tuo computer"
+  },
+  "Choose your Snowflake Pro file": {
+    "message": "Scegli il tuo file Snowflake Pro"
+  },
+  "Choose": {
+    "message": "Scegli"
+  },
+  "Choose...": {
+    "message": "Scegli..."
+  },
+  "Clear": {
+    "message": "Chiaro"
+  },
+  "Click on a color below or type it in": {
+    "message": "Clicca su un colore qui sotto o digitalo"
+  },
+  "Click to Install": {
+    "message": "Clicca per installare"
+  },
+  "Close": {
+    "message": "Vicino"
+  },
+  "Collapse": {
+    "message": "Crollo"
+  },
+  "Color Picker": {
+    "message": "Scelta colore"
+  },
+  "Color": {
+    "message": "Colore"
+  },
+  "Coming Soon!": {
+    "message": "Prossimamente!"
+  },
+  "Configuration Options": {
+    "message": "Opzioni di configurazione"
+  },
+  "Configure": {
+    "message": "Configura"
+  },
+  "Content": {
+    "message": "Contenuto"
+  },
+  "Copy": {
+    "message": "Copia"
+  },
+  "Create Blank Project": {
+    "message": "Crea Progetto Vuoto"
+  },
+  "Create From Template": {
+    "message": "Crea da Modello"
+  },
+  "Create Report": {
+    "message": "Crea report"
+  },
+  "Create a New Plottr Document": {
+    "message": "Crea un nuovo documento Plottr"
+  },
+  "Create an Error Report": {
+    "message": "Crea un Report di Errore"
+  },
+  "Create unlimited project files": {
+    "message": "Crea file di progetto illimitati"
+  },
+  "Create": {
+    "message": "Crea"
+  },
+  "Created By": {
+    "message": "Creato da"
+  },
+  "Current Color": {
+    "message": "Colore attuale"
+  },
+  "Custom Attributes for { type }": {
+    "message": "Attributi personalizzati per { type }"
+  },
+  "Custom Attributes": {
+    "message": "Attributi personalizzati"
+  },
+  "Custom Template": {
+    "message": "Modello personalizzato"
+  },
+  "Custom Templates": {
+    "message": "Modelli personalizzati"
+  },
+  "Cut": {
+    "message": "Taglia"
+  },
+  "Delete": {
+    "message": "Elimina"
+  },
+  "Dark Mode": {
+    "message": "Modalità scura"
+  },
+  "Dashboard": {
+    "message": "Pannello di controllo"
+  },
+  "Days Left": {
+    "message": "Giorni rimasti"
+  },
+  "Days of Backup": {
+    "message": "Giorni di backup"
+  },
+  "Number of Backups": {
+    "message": "Numero di backup"
+  },
+  "Never Delete Backups": {
+    "message": "Non eliminare mai i backup"
+  },
+  "Default Colors": {
+    "message": "Colori predefiniti"
+  },
+  "Delete Chapter {name}?": {
+    "message": "Eliminare il capitolo \"{name}\"?"
+  },
+  "Delete Chapter": {
+    "message": "Elimina capitolo"
+  },
+  "Delete Character": {
+    "message": "Elimina carattere"
+  },
+  "Delete Plotline {name}?": {
+    "message": "Elimina la trama \"{name}\"?"
+  },
+  "Delete Plotline": {
+    "message": "Elimina trama"
+  },
+  "Delete Scene {name}?": {
+    "message": "Elimina la scena \"{name}\"?"
+  },
+  "Delete Scene": {
+    "message": "Elimina scena"
+  },
+  "Delete Tag": {
+    "message": "Elimina etichetta"
+  },
+  "Delete {title} Tag?": {
+    "message": "Eliminare l’etichetta \"{title}\"?"
+  },
+  "Demos": {
+    "message": "Demo"
+  },
+  "Describe the scene": {
+    "message": "Descrivi la scena"
+  },
+  "Description": {
+    "message": "Descrizione"
+  },
+  "Details": {
+    "message": "Particolari"
+  },
+  "Device ID": {
+    "message": "ID del dispositivo"
+  },
+  "Do you want to remove this image? It will NOT be deleted from your computer": {
+    "message": "Vuoi rimuovere questa immagine? NON verrà cancellata dal tuo computer"
+  },
+  "Documentation": {
+    "message": "Documentazione"
+  },
+  "Don't have a license? Go to our website to learn more": {
+    "message": "Non hai una licenza? Vai al nostro sito per saperne di più"
+  },
+  "Don't have a license?": {
+    "message": "Non hai una licenza?"
+  },
+  "Don't worry, all your work is saved in plottr_trial.pltr in your Documents folder": {
+    "message": "Non preoccuparti, tutto il tuo lavoro viene salvato in plottr_trial.pltr nella cartella Documenti"
+  },
+  "Don't worry, all your work is saved in your files": {
+    "message": "Non preoccuparti, tutto il tuo lavoro viene salvato nei tuoi file"
+  },
+  "Done": {
+    "message": "Fatto"
+  },
+  "Download Complete 🎉 (version {version})": {
+    "message": "Download completo 🎉 (versione {version})"
+  },
+  "Download Now!": {
+    "message": "Scarica ora!"
+  },
+  "Download updates automatically": {
+    "message": "Scarica gli aggiornamenti automaticamente"
+  },
+  "Downloading version {version}": {
+    "message": "Download della versione {version}"
+  },
+  "Drop a File Here": {
+    "message": "Trascina un file qui"
+  },
+  "Edit Plotline": {
+    "message": "Modifica trama"
+  },
+  "Edit": {
+    "message": "Modifica"
+  },
+  "Email": {
+    "message": "Email"
+  },
+  "Email:": {
+    "message": "Email:"
+  },
+  "End": {
+    "message": "Fine"
+  },
+  "Ends After": {
+    "message": "Finisce dopo"
+  },
+  "Enter Chapter's name or enter": {
+    "message": "Inserisci il nome del capitolo o inserisci \"auto\" \n(senza virgolette) per la denominazione automatica."
+  },
+  "Enter Custom Attribute Title": {
+    "message": "Immettere il titolo dell'attributo personalizzato"
+  },
+  "Enter a Customer Service Code": {
+    "message": "Inserisci un codice del servizio clienti"
+  },
+  "Enter a new name for {chapter}": {
+    "message": "Inserisci un nuovo nome per \"{chapter}\""
+  },
+  "Enter some text...": {
+    "message": "Inserisci del testo..."
+  },
+  "Enter the URL of the link:": {
+    "message": "Inserisci l'URL del collegamento:"
+  },
+  "Enter the name of your project": {
+    "message": "Inserisci il nome del tuo progetto"
+  },
+  "Enter your verification code to activate this device": {
+    "message": "Inserisci il tuo codice di verifica per attivare questo dispositivo"
+  },
+  "Enter your verification code": {
+    "message": "Inserisci il tuo codice di verifica"
+  },
+  "Error Creating Error Report": {
+    "message": "Errore durante la creazione del rapporto di errore"
+  },
+  "Error Report created": {
+    "message": "Rapporto di errore creato"
+  },
+  "Error reading file": {
+    "message": "Errore durante la lettura del file"
+  },
+  "Error sending email! Check your email and Try again.": {
+    "message": "Errore nell'invio dell'email! Controlla la tua email e riprova."
+  },
+  "Error: {error}": {
+    "message": "Errore: {error}"
+  },
+  "Exit Without Saving": {
+    "message": "Esci senza salvare"
+  },
+  "Expand": {
+    "message": "Espandi"
+  },
+  "Expires": {
+    "message": "Scade"
+  },
+  "Export": {
+    "message": "Esporta"
+  },
+  "FAQ": {
+    "message": "FAQ"
+  },
+  "Facebook Group": {
+    "message": "Gruppo Facebook"
+  },
+  "Fictional Devices LLC": {
+    "message": "Dispositivi immaginari LLC"
+  },
+  "File Exported": {
+    "message": "File esportato"
+  },
+  "File can't be found. Did it move?": {
+    "message": "Impossibile trovare il file. L’hai spostato?"
+  },
+  "File": {
+    "message": "File"
+  },
+  "Files": {
+    "message": "File"
+  },
+  "Filter by Plotline": {
+    "message": "Filtra per trama"
+  },
+  "Filter": {
+    "message": "Filtra"
+  },
+  "Flip": {
+    "message": "Inverti"
+  },
+  "Folder where backups are stored": {
+    "message": "Cartella in cui sono archiviati i backup"
+  },
+  "Force Dark Mode": {
+    "message": "Forza la modalità scura"
+  },
+  "Free Trial Information": {
+    "message": "Informazioni sulla prova gratuita"
+  },
+  "Free Trial": {
+    "message": "Prova gratuita"
+  },
+  "GET A LICENSE": {
+    "message": "OTTIENI UNA LICENZA"
+  },
+  "GET STARTED!": {
+    "message": "INIZIA!"
+  },
+  "Genre": {
+    "message": "Genere"
+  },
+  "Get access to all your projects": {
+    "message": "Accedi a tutti i tuoi progetti"
+  },
+  "Give Feedback": {
+    "message": "Dacci un feedback"
+  },
+  "Give this tag a name": {
+    "message": "Assegna un nome a questa etichetta"
+  },
+  "Give your scene a title": {
+    "message": "Dai un titolo alla tua scena"
+  },
+  "Go Back": {
+    "message": "Torna indietro"
+  },
+  "Go to our website to learn more:": {
+    "message": "Vai al nostro sito per saperne di più:"
+  },
+  "Grays": {
+    "message": "Grigi"
+  },
+  "Greens": {
+    "message": "Verdi"
+  },
+  "Help": {
+    "message": "Aiuto"
+  },
+  "Hide Others": {
+    "message": "Nascondi gli altri"
+  },
+  "Hide Plottr": {
+    "message": "Nascondi Plottr"
+  },
+  "Hierarchy Configuration": {
+    "message": "Configurazione della gerarchia"
+  },
+  "Hmmmm. It looks like that's not a valid license key": {
+    "message": "Oh! Sembra che questa non sia una licenza valida"
+  },
+  "I have a license key": {
+    "message": "Ho una chiave di licenza"
+  },
+  "I want to buy the full version!": {
+    "message": "Voglio acquistare la versione completa!"
+  },
+  "I want to start the free trial": {
+    "message": "Voglio iniziare la prova gratuita"
+  },
+  "If you keep seeing this problem, email us at support@plottr.com": {
+    "message": "Se continua a presentarsi questo problema, inviaci un'email all'indirizzo support@plottr.com"
+  },
+  "Image Details": {
+    "message": "Dettagli immagine"
+  },
+  "Image Gallery": {
+    "message": "Galleria immagini"
+  },
+  "Images": {
+    "message": "Immagini"
+  },
+  "Import Snowflake Pro": {
+    "message": "Importa Snowflake Pro"
+  },
+  "Insert Chapter and a Card": {
+    "message": "Inserisci il capitolo e una scheda"
+  },
+  "Insert Chapter": {
+    "message": "Inserisci capitolo"
+  },
+  "Insert from URL": {
+    "message": "Inserisci da URL"
+  },
+  "It looks like you have Plottr on the max number of computers already": {
+    "message": "Sembra che tu abbia già Plottr sul numero massimo di computer"
+  },
+  "It looks like you have Plottr on the max number of devices already": {
+    "message": "Sembra che tu abbia già Plottr sul numero massimo di dispositivi"
+  },
+  "It looks like you're not online. You don't always have to be online to user Plottr, but it can't verify your license offline": {
+    "message": "Sembra che tu non sia online. Non devi essere sempre online per usare Plottr, ma non possiamo verificare la tua licenza se sei offline"
+  },
+  "Keep all your notes here (brainstorming, world-building, etc.)": {
+    "message": "Conserva qui tutti i tuoi appunti (brainstorming, costruzione di mondi, ecc.)"
+  },
+  "Keep info about your locations here": {
+    "message": "Conserva le informazioni sulle tue posizioni qui"
+  },
+  "Keep your character sheets here": {
+    "message": "Tieni qui le tue schede personaggio"
+  },
+  "LOGOUT": {
+    "message": "DISCONNETTI"
+  },
+  "LOOK OUT!": {
+    "message": "ATTENZIONE!"
+  },
+  "Language": {
+    "message": "Lingua"
+  },
+  "Last opened by you": {
+    "message": "Ultima apertura"
+  },
+  "Learn": {
+    "message": "Impara"
+  },
+  "Let's verify your license.": {
+    "message": "Verifichiamo la tua licenza."
+  },
+  "Levels of hierarchy": {
+    "message": "Livelli di gerarchia"
+  },
+  "License Key": {
+    "message": "Chiave di licenza"
+  },
+  "License Verified. Plottr will start momentarily. Thanks for being patient!": {
+    "message": "Licenza verificata. Plottr sarà attivo a breve. Grazie per la pazienza!"
+  },
+  "License": {
+    "message": "Licenza"
+  },
+  "Links": {
+    "message": "Collegamenti"
+  },
+  "Long Synopsis": {
+    "message": "Sinossi lunga"
+  },
+  "MS Word": {
+    "message": "MS Word"
+  },
+  "Main Plot": {
+    "message": "Trama principale"
+  },
+  "Main": {
+    "message": "Principale"
+  },
+  "Manually Sorted": {
+    "message": "Ordinato manualmente"
+  },
+  "Manuscript": {
+    "message": "Manoscritto"
+  },
+  "Menu": {
+    "message": "Menù"
+  },
+  "Middle": {
+    "message": "Mezzo"
+  },
+  "My Character Template": {
+    "message": "Il mio modello di personaggio"
+  },
+  "My Scene Template": {
+    "message": "Il mio modello di scena"
+  },
+  "My Templates": {
+    "message": "I miei modelli"
+  },
+  "My Timeline Template": {
+    "message": "Il mio modello di sequenza temporale"
+  },
+  "Name": {
+    "message": "Nome"
+  },
+  "Never": {
+    "message": "Mai"
+  },
+  "New Attribute": {
+    "message": "Nuovo attributo"
+  },
+  "New Book": {
+    "message": "Nuovo libro"
+  },
+  "New Character": {
+    "message": "Nuovo personaggio"
+  },
+  "New Custom Attribute Title": {
+    "message": "Nuovo titolo attributo personalizzato"
+  },
+  "New Note": {
+    "message": "Nuova nota"
+  },
+  "New Place": {
+    "message": "Nuovo luogo"
+  },
+  "New Plotline": {
+    "message": "Nuova trama"
+  },
+  "New Project": {
+    "message": "Nuovo progetto"
+  },
+  "New Tag": {
+    "message": "Nuova etichetta"
+  },
+  "New": {
+    "message": "Nuovo"
+  },
+  "No Characters": {
+    "message": "Nessun personaggio"
+  },
+  "No actions to undo": {
+    "message": "Nessuna azione da annullare"
+  },
+  "No color": {
+    "message": "Nessun colore"
+  },
+  "No": {
+    "message": "No"
+  },
+  "No, Discard": {
+    "message": "No, cancella"
+  },
+  "None to choose": {
+    "message": "Nessuno da scegliere"
+  },
+  "Not Receiving Updates": {
+    "message": "Non si ricevono aggiornamenti"
+  },
+  "Note Details": {
+    "message": "Nota dettagli"
+  },
+  "Note Image": {
+    "message": "Nota immagine"
+  },
+  "Note": {
+    "message": "Nota"
+  },
+  "Note: {title}": {
+    "message": "Nota: { title }"
+  },
+  "Notes are filtered": {
+    "message": "Le note sono filtrate"
+  },
+  "Notes": {
+    "message": "Notei"
+  },
+  "Now lets get you writing your next great plot!": {
+    "message": "Inizia a scrivere\n la tua prossima fantastica trama!"
+  },
+  "Number of Days of Rolling Backups to Keep": {
+    "message": "Numero di giorni di backup in rotazione da conservare"
+  },
+  "OK": {
+    "message": "Ok"
+  },
+  "OVERWRITE": {
+    "message": "SOVRASCRIVI"
+  },
+  "Once You Plot, the Fun Don't Stop": {
+    "message": "Una gran trama il successo richiama!"
+  },
+  "One Paragraph Summary": {
+    "message": "Riassunto di un paragrafo"
+  },
+  "One Sentence Summary": {
+    "message": "Riassunto di una frase"
+  },
+  "Open Dashboard": {
+    "message": "Apri pannello di controllo"
+  },
+  "Open Existing": {
+    "message": "Apri esistente"
+  },
+  "Open a Plottr Document": {
+    "message": "Apri un documento Plottr"
+  },
+  "Open one of your most recent projects": {
+    "message": "Apri uno dei tuoi progetti più recenti"
+  },
+  "Open": {
+    "message": "Apri"
+  },
+  "Or hover here to insert between scenes": {
+    "message": "Oppure passa il mouse qui per inserire tra le scene"
+  },
+  "Oranges": {
+    "message": "Arance"
+  },
+  "Other": {
+    "message": "Altro"
+  },
+  "Outline is filtered": {
+    "message": "Il profilo è filtrato"
+  },
+  "Outline": {
+    "message": "Profilo"
+  },
+  "Override your computer's setting and always use dark mode": {
+    "message": "Ignora le impostazioni del tuo computer e usa sempre la modalità scura"
+  },
+  "Paragraph": {
+    "message": "Paragrafo"
+  },
+  "Paragraph?": {
+    "message": "Paragrafo?"
+  },
+  "Paste and Match Style": {
+    "message": "Incolla e abbina lo stile"
+  },
+  "Paste": {
+    "message": "Incolla"
+  },
+  "Pick a color": {
+    "message": "Scegli un colore"
+  },
+  "Place Details": {
+    "message": "Dettagli del luogo"
+  },
+  "Place Image": {
+    "message": "Posiziona immagine"
+  },
+  "Place list is filtered": {
+    "message": "L'elenco dei luoghi è filtrato"
+  },
+  "Place": {
+    "message": "Luogo"
+  },
+  "Place: {name}": {
+    "message": "Luogo: { name }"
+  },
+  "Places list": {
+    "message": "Elenco dei luoghi"
+  },
+  "Places": {
+    "message": "Luoghi"
+  },
+  "Please choose a plotline": {
+    "message": "Scegli una trama"
+  },
+  "Please contact me with any questions at support@plottr.com": {
+    "message": "Per qualsiasi domanda contattami all'indirizzo support@plottr.com"
+  },
+  "Please select a valid Plottr file": {
+    "message": "Seleziona un file Plottr valido."
+  },
+  "Please verify your license": {
+    "message": "Verifica la tua licenza"
+  },
+  "Plotline Details": {
+    "message": "Dettagli della trama"
+  },
+  "Plotline Title:": {
+    "message": "Titolo della trama:"
+  },
+  "Plotline name": {
+    "message": "Nome della trama"
+  },
+  "Plotline": {
+    "message": "Trama"
+  },
+  "Plotline: {title}": {
+    "message": "Trama: { title }"
+  },
+  "Plotlines": {
+    "message": "Trama"
+  },
+  "Plottr Mobile Monthly": {
+    "message": "Plottr Mobile mensile"
+  },
+  "Plottr Mobile Yearly": {
+    "message": "Plottr Mobile annuale"
+  },
+  "Plottr Mobile": {
+    "message": "Plottr Mobile"
+  },
+  "Plottr Support": {
+    "message": "Supporto Plottr"
+  },
+  "Plottr created a file named {fileName} in your Documents folder": {
+    "message": "Plottr ha creato un file chiamato { fileName } nella cartella Documenti"
+  },
+  "Plottr project file": {
+    "message": "File di progetto Plottr"
+  },
+  "Plottr ran into a problem. Try opening Plottr again.": {
+    "message": "Plottr ha avuto un problema. Prova ad aprire nuovamente Plottr."
+  },
+  "Plottr": {
+    "message": "Plottr"
+  },
+  "Preferences": {
+    "message": "Preferenze"
+  },
+  "Premise": {
+    "message": "Premessa"
+  },
+  "Privacy Policy": {
+    "message": "politica sulla riservatezza"
+  },
+  "Project Templates": {
+    "message": "Modelli di progetto"
+  },
+  "Project": {
+    "message": "Progetto"
+  },
+  "Prologue": {
+    "message": "Prologo"
+  },
+  "Purchase Email": {
+    "message": "Acquista e-mail"
+  },
+  "Purples": {
+    "message": "Viola"
+  },
+  "Quit": {
+    "message": "Esci"
+  },
+  "RESEND EMAIL": {
+    "message": "REINVIA EMAIL"
+  },
+  "RESENDING...": {
+    "message": "INVIANDO..."
+  },
+  "Recent Projects": {
+    "message": "Progetti recenti"
+  },
+  "Redo": {
+    "message": "Rifare"
+  },
+  "Reds": {
+    "message": "Rossi"
+  },
+  "Reload from File": {
+    "message": "Ricarica da file"
+  },
+  "Reload": {
+    "message": "Ricarica"
+  },
+  "Remove License": {
+    "message": "Rimuovi licenza"
+  },
+  "Remove from this list": {
+    "message": "Rimuovi da questa lista"
+  },
+  "Remove image": {
+    "message": "Rimuovi immagine"
+  },
+  "Remove": {
+    "message": "Rimuovi"
+  },
+  "Rename Chapter": {
+    "message": "Rinomina capitolo"
+  },
+  "Rename": {
+    "message": "Rinomina"
+  },
+  "Report a Problem": {
+    "message": "Segnala un problema"
+  },
+  "Request a Feature": {
+    "message": "Richiedi una caratteristica"
+  },
+  "Restore Purchase": {
+    "message": "Ripristina acquisto"
+  },
+  "Roadmap": {
+    "message": "Piano d’azione"
+  },
+  "SELECT A PROJECT FILE": {
+    "message": "SELEZIONA UN FILE DI PROGETTO"
+  },
+  "SELECT": {
+    "message": "SELEZIONA"
+  },
+  "Save Backups": {
+    "message": "Salva backup"
+  },
+  "Save Changes?": {
+    "message": "Salvare le modifiche?"
+  },
+  "Save Chapter": {
+    "message": "Salva capitolo"
+  },
+  "Save File": {
+    "message": "Salvare il file"
+  },
+  "Save Plotline": {
+    "message": "Salva trama"
+  },
+  "Save as Template": {
+    "message": "Salva come modello"
+  },
+  "Save as": {
+    "message": "Salva come"
+  },
+  "Save before closing?": {
+    "message": "Salvare prima della chiusura?"
+  },
+  "Save": {
+    "message": "Salva"
+  },
+  "Saved": {
+    "message": "Salvato"
+  },
+  "Saving failed": {
+    "message": "Salvataggio fallito"
+  },
+  "Saving worked this time 🎉": {
+    "message": "Salvataggio effettuato con successo 🎉"
+  },
+  "Saving your file didn't work. Check where it's stored.": {
+    "message": "Il salvataggio del file non ha avuto successo. Controlla dove è archiviato."
+  },
+  "Saving your file didn't work. Try again.": {
+    "message": "Il salvataggio del file non ha avuto successo. Riprova."
+  },
+  "Scene Cards": {
+    "message": "Schede di scena"
+  },
+  "Scene Details": {
+    "message": "Dettagli della scena"
+  },
+  "Scene Title": {
+    "message": "Titolo della scena"
+  },
+  "Scene {num}": {
+    "message": "Scena {num}"
+  },
+  "Scene": {
+    "message": "Scena"
+  },
+  "Scrivener Project": {
+    "message": "Progetto Scrivener"
+  },
+  "Scrivener": {
+    "message": "Scrivener"
+  },
+  "Scroll": {
+    "message": "Scorri"
+  },
+  "Search": {
+    "message": "Cerca"
+  },
+  "See What's New": {
+    "message": "Vedi Novità"
+  },
+  "See the outline here": {
+    "message": "Vedi lo schema qui"
+  },
+  "Select All": {
+    "message": "Seleziona tutto"
+  },
+  "Select a Category": {
+    "message": "Seleziona una categoria"
+  },
+  "Select a Chapter": {
+    "message": "Seleziona un capitolo"
+  },
+  "Select a File": {
+    "message": "Seleziona un file"
+  },
+  "Select a Plotline": {
+    "message": "Seleziona una trama"
+  },
+  "Series Outline": {
+    "message": "Schema di serie"
+  },
+  "Series View": {
+    "message": "Vista serie"
+  },
+  "Series": {
+    "message": "Serie"
+  },
+  "Session Start": {
+    "message": "Inizio sessione"
+  },
+  "Settings": {
+    "message": "Impostazioni"
+  },
+  "Short Description": {
+    "message": "Breve descrizione"
+  },
+  "Short Synopsis": {
+    "message": "Breve sinossi"
+  },
+  "Show All": {
+    "message": "Mostra tutto"
+  },
+  "Show in File Explorer": {
+    "message": "Mostra in Esplora file"
+  },
+  "Show in Finder": {
+    "message": "Mostra nel Finder"
+  },
+  "Since this is your first time using Plottr, I'll give you a guided tour if you like.": {
+    "message": "Dato che questa è la prima volta che usi Plottr, ti farò una visita guidata se lo desideri."
+  },
+  "Size: large": {
+    "message": "Dimensione: grande"
+  },
+  "Size: medium": {
+    "message": "Dimensione: media"
+  },
+  "Size: small": {
+    "message": "Dimensione: piccola"
+  },
+  "Something went wrong,": {
+    "message": "Qualcosa è andato storto,"
+  },
+  "Something went wrong.": {
+    "message": "Qualcosa è andato storto."
+  },
+  "Sort": {
+    "message": "Ordinare"
+  },
+  "Source Link": {
+    "message": "Collegamento sorgente"
+  },
+  "Start Mobile Subscription": {
+    "message": "Avvia l'abbonamento mobile"
+  },
+  "Start my Free Trial": {
+    "message": "Iniziare prova gratuita"
+  },
+  "Started On": {
+    "message": "Iniziato"
+  },
+  "Starter Templates": {
+    "message": "Modelli di partenza"
+  },
+  "Story line": {
+    "message": "Trama"
+  },
+  "Story name": {
+    "message": "Nome della storia"
+  },
+  "Submit": {
+    "message": "Invia"
+  },
+  "Subscription Restored!": {
+    "message": "Abbonamento ripristinato!"
+  },
+  "Subtitle": {
+    "message": "Sottotitolo"
+  },
+  "Success!": {
+    "message": "Successo!"
+  },
+  "Supporting": {
+    "message": "Supporto"
+  },
+  "Tag Details": {
+    "message": "Dettagli etichetta"
+  },
+  "Tag Name": {
+    "message": "Nome etichetta"
+  },
+  "Tag": {
+    "message": "Etichetta"
+  },
+  "Tags can be used for organization": {
+    "message": "Le etichette possono essere utilizzate per l'organizzazione"
+  },
+  "Tags list": {
+    "message": "Elenco etichette"
+  },
+  "Tags": {
+    "message": "Etichette"
+  },
+  "Take Screenshot": {
+    "message": "Fai uno screenshot"
+  },
+  "Template Saved": {
+    "message": "Modello salvato"
+  },
+  "Terms of Service": {
+    "message": "Termini di servizio"
+  },
+  "Text Error": {
+    "message": "Errore di testo"
+  },
+  "Thanks for trying Plottr": {
+    "message": "Grazie per aver provato Plottr"
+  },
+  "That code was invalid. Try again.": {
+    "message": "Quel codice non era valido. Riprova."
+  },
+  "That email didn't verify. Try again or try another email.": {
+    "message": "L'email non è stata verificata. Riprova o prova con un'altra email."
+  },
+  "Theme": {
+    "message": "Tema"
+  },
+  "There was an error activating your license key on this device": {
+    "message": "Si è verificato un errore durante l'attivazione della chiave di licenza su questo dispositivo"
+  },
+  "There was an error doing that. Try again": {
+    "message": "Si è verificato un errore durante l'operazione. Riprova"
+  },
+  "This is a plotline": {
+    "message": "Questa è una trama"
+  },
+  "This is a scene or chapter. You can change its name by clicking on it": {
+    "message": "Questa è una scena o un capitolo. Puoi cambiarne il nome cliccandoci sopra"
+  },
+  "This will send you an email with a code": {
+    "message": "Questo ti invierà un'e-mail con un codice"
+  },
+  "Timeline is filtered": {
+    "message": "La sequenza temporale è filtrata"
+  },
+  "Timeline": {
+    "message": "Sequenza temporale"
+  },
+  "Title": {
+    "message": "Titolo"
+  },
+  "Toggle navigation": {
+    "message": "Attiva/disattiva la navigazione"
+  },
+  "Trash": {
+    "message": "Cestino"
+  },
+  "Try that again": {
+    "message": "Provalo di nuovo"
+  },
+  "Tutorials": {
+    "message": "Tutorial"
+  },
+  "Type": {
+    "message": "Tipo"
+  },
+  "UH-OH!": {
+    "message": "OH OH!"
+  },
+  "URL": {
+    "message": "URL"
+  },
+  "Uncategorized": {
+    "message": "Non categorizzato"
+  },
+  "Undo": {
+    "message": "Annulla"
+  },
+  "Untitled": {
+    "message": "Senza titolo"
+  },
+  "Update Automatically": {
+    "message": "Aggiorna automaticamente"
+  },
+  "Update Available 🎉 (version {version})": {
+    "message": "Aggiornamento disponibile 🎉 (versione {version})"
+  },
+  "Update failed. Try again": {
+    "message": "Aggiornamento non riuscito. Riprova"
+  },
+  "Updates": {
+    "message": "Aggiornamenti"
+  },
+  "Upload Files": {
+    "message": "Caricare file"
+  },
+  "Use Template": {
+    "message": "Usa modello"
+  },
+  "Use a different email": {
+    "message": "Usa un'e-mail diversa"
+  },
+  "Use this to remove your license on this device": {
+    "message": "Usalo per rimuovere la tua licenza su questo dispositivo"
+  },
+  "VERIFY CODE": {
+    "message": "VERIFICA IL CODICE"
+  },
+  "VERIFYING...": {
+    "message": "VERIFICA..."
+  },
+  "Verify": {
+    "message": "Verifica"
+  },
+  "Verifying with email: {email}": {
+    "message": "Verifica con email: { email }"
+  },
+  "Version": {
+    "message": "Versione"
+  },
+  "View Error": {
+    "message": "Visualizza errore"
+  },
+  "View Timeline": {
+    "message": "Visualizza sequenza temporale"
+  },
+  "View": {
+    "message": "Visualizza"
+  },
+  "We found your user session but...": {
+    "message": "Abbiamo trovato la tua sessione utente ma la tua licenza è scaduta o è inattiva. Acquista una nuova licenza o un abbonamento mobile per continuare."
+  },
+  "We had a problem creating a new project": {
+    "message": "Abbiamo avuto un problema durante la creazione di un nuovo progetto. Assicurati che Plottr disponga delle autorizzazioni corrette e di disporre di spazio di archiviazione sufficiente."
+  },
+  "We had a problem processing your file": {
+    "message": "Si è verificato un problema durante l'elaborazione del tuo file. Assicurati che Plottr disponga delle autorizzazioni corrette e riprova."
+  },
+  "We will email you a verification code.": {
+    "message": "Ti invieremo un codice di verifica via email."
+  },
+  "Welcome to Plottr!": {
+    "message": "Benvenuto su Plottr!"
+  },
+  "Welcome to Plottr": {
+    "message": "Benvenuto su Plottr"
+  },
+  "Welcome to": {
+    "message": "Benvenuto su"
+  },
+  "What would you like to do?": {
+    "message": "Cosa ti piacerebbe fare?"
+  },
+  "Where would you like to save the export?": {
+    "message": "Dove vuoi salvare l'esportazione?"
+  },
+  "Where would you like to save this copy?": {
+    "message": "Dove vuoi salvare questa copia?"
+  },
+  "Where would you like to save this file?": {
+    "message": "Dove vuoi salvare questo file?"
+  },
+  "Whites": {
+    "message": "Bianchi"
+  },
+  "Window": {
+    "message": "Finestra"
+  },
+  "Word Document": {
+    "message": "Documento Word"
+  },
+  "Yes, Delete": {
+    "message": "Sì, elimina"
+  },
+  "Yes, Save": {
+    "message": "Sì, salva"
+  },
+  "You already have a file named {file}": {
+    "message": "Hai già un file chiamato \n{file}.\n. Vuoi sovrascrivere?"
+  },
+  "You can change its name or color by hovering over it (disabled for the tour)": {
+    "message": "Puoi cambiarne il nome o il colore passandoci sopra (disabilitato per il tour)"
+  },
+  "You can create an error report and report the problem to us at: ": {
+    "message": "Puoi creare un report di errore e segnalarci il problema all'indirizzo:"
+  },
+  "You can export everything to a Word document": {
+    "message": "Puoi esportare tutto in un documento Word"
+  },
+  "You can have 5 more days to try Plottr": {
+    "message": "Puoi avere altri 5 giorni per provare Plottr"
+  },
+  "You have unsaved changes": {
+    "message": "Hai modifiche non salvate.\nVuoi salvare?"
+  },
+  "You may create a new project": {
+    "message": "Puoi creare un nuovo progetto o selezionare un file di progetto per iniziare"
+  },
+  "Your email didn't verify. Try again or try another email.": {
+    "message": "La tua email non è stata verificata.\nRiprova o prova con un'altra email."
+  },
+  "Your selected license failed verification. Try another one.": {
+    "message": "La verifica della licenza selezionata non è riuscita. Provane un'altra."
+  },
+  "You should have received a license key after your purchase.": {
+    "message": "Dovresti aver ricevuto una chiave di licenza dopo l'acquisto."
+  },
+  "You should have received an email with a code": {
+    "message": "Dovresti aver ricevuto un'email con un codice"
+  },
+  "You'll have 30 days": {
+    "message": "Avrai 30 giorni"
+  },
+  "You're on the latest version": {
+    "message": "Sei sull'ultima versione"
+  },
+  "Your Backups": {
+    "message": "I tuoi backup"
+  },
+  "Your Plottr file was exported to a .docx file": {
+    "message": "Il tuo file Plottr è stato esportato in un file .docx"
+  },
+  "Your Plottr file was exported to a Scrivener project package": {
+    "message": "Il tuo file Plottr è stato esportato in un pacchetto di progetto Scrivener"
+  },
+  "Your free trial has expired": {
+    "message": "Il tuo periodo di prova è scaduto"
+  },
+  "Your template has been saved and is ready to use": {
+    "message": "Il tuo modello è stato salvato ed è pronto per l'uso"
+  },
+  "Zoom": {
+    "message": "Ingrandisci"
+  },
+  "[image]": {
+    "message": "[Immagine]"
+  },
+  "a lot of scenes moved around": {
+    "message": "molte scene si sono spostate"
+  },
+  "a lot of story lines moved around": {
+    "message": "molte trame si sono spostate"
+  },
+  "and": {
+    "message": "e"
+  },
+  "attach character {characterName} to card {cardName}": {
+    "message": "allega personaggio { characterName } alla carta { cardName }"
+  },
+  "attach character {characterName} to note {noteName}": {
+    "message": "allega personaggio { characterName} alla nota { noteName }"
+  },
+  "attach place {placeName} to card {cardName}": {
+    "message": "allega luogo { placeName } alla carta { cardName }"
+  },
+  "attach place {placeName} to note {noteName}": {
+    "message": "allega luogo { placeName } alla nota { noteName }"
+  },
+  "attach tag {tagName} to card {cardName}": {
+    "message": "allega tetichetta { tagName } alla carta { cardName }"
+  },
+  "attach tag {tagName} to note {noteName}": {
+    "message": "allega etichetta { tagName } alla nota { noteName }"
+  },
+  "blank": {
+    "message": "vuoto"
+  },
+  "but don't worry!": {
+    "message": "ma non preoccuparti!"
+  },
+  "custom character attribute": {
+    "message": "attributo personaggio personalizzato"
+  },
+  "custom place attribute": {
+    "message": "attributo luogo personalizzato"
+  },
+  "hex code or name": {
+    "message": "codice esadecimale o nome"
+  },
+  "new card": {
+    "message": "nuova carta"
+  },
+  "new scene": {
+    "message": "nuova scena"
+  },
+  "new storyline": {
+    "message": "nuova trama"
+  },
+  "no more to add": {
+    "message": "non c'è altro da aggiungere"
+  },
+  "or": {
+    "message": "o"
+  },
+  "remove character {characterName} from card {cardName}": {
+    "message": "rimuovi personaggio { characterName} dalla carta { cardName }"
+  },
+  "remove character {characterName} from note {noteName}": {
+    "message": "rimuovi personaggio { characterName} dalla nota { noteName }"
+  },
+  "remove place {placeName} from card {cardName}": {
+    "message": "rimuovi luogo { placeName } dalla carta { cardName }"
+  },
+  "remove place {placeName} from note {noteName}": {
+    "message": "rimuovi luogo { placeName } dalla nota { noteName }"
+  },
+  "remove tag {tagName} from card {cardName}": {
+    "message": "rimuovi etichetta { tagName } dalla carta { cardName }"
+  },
+  "remove tag {tagName} from note {noteName}": {
+    "message": "rimuovi etichetta { tagName } dalla nota { noteName }"
+  },
+  "that best suits your style and needs.": {
+    "message": "che meglio si adatta al tuo stile e alle tue esigenze."
+  },
+  "to activate this device.": {
+    "message": "per attivare questo dispositivo."
+  },
+  "with an iOS mobile subscription!": {
+    "message": "con un abbonamento mobile iOS!"
+  },
+  "{\n count, plural,\n one {1 character attached}\n other {# characters attached}\n        }": {
+    "message": "{\n count, plural,\n one {1 personaggio allegato}\n other {# personaggi allegati}\n }"
+  },
+  "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
+    "message": "{\n          count, plural,\n          one {1 luogo allegato}\n  other {# luoghi allegati}\n }"
+  },
+  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
+    "message": "{\n          count, plural,\n          one {1 etichetta allegata}\n  other {# etichette allegate}\n }"
+  },
+  "{amount} Lifetime": {
+    "message": "${amount} Illimitato"
+  },
+  "{amount} Monthly": {
+    "message": "${amount} Mensile"
+  },
+  "{amount} Weekly": {
+    "message": "${amount} Settimanale"
+  },
+  "{amount} Yearly": {
+    "message": "${amount} Annuale"
+  },
+  "{date, date, long}": {
+    "message": "{date, date, long}"
+  },
+  "{date, date, medium}": {
+    "message": "{date, date, medium}"
+  },
+  "{date, date, monthDay}": {
+    "message": "{date, date, monthDay}"
+  },
+  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
+    "message": "{ numOfDays, plural, \n = 0 {# giorni rimanenti}\n one {# giorno rimanente}\n others{# giorni rimanenti}\n}"
+  },
+  "{num} Scenes": {
+    "message": "{ num } Scene"
+  },
+  "{val, number, percent}": {
+    "message": "{ val, number, percent}"
+  },
+  "{wordCount,number} words": {
+    "message": "{wordCount,number} parole"
+  },
+  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
+    "message": "(In caso contrario, contattami @ <a>support@plottr.com</a> o @StoryPlottr su Twitter)"
+  },
+  "Add attributes": {
+    "message": "Aggiungi attributi"
+  },
+  "Attached to": {
+    "message": "Allegato a"
+  },
+  "Bring All to Front": {
+    "message": "Porta tutto in primo piano"
+  },
+  "Buy the Full Version": {
+    "message": "Acquista la versione completa"
+  },
+  "Card Title": {
+    "message": "Titolo della carta"
+  },
+  "character": {
+    "message": "personaggio"
+  },
+  "Choose color": {
+    "message": "Scegli il colore"
+  },
+  "Choose what you want to track about your characters": {
+    "message": "Scegli cosa vuoi monitorare dei tuoi personaggi"
+  },
+  "Choose what you want to track about your places": {
+    "message": "Scegli cosa vuoi monitorare sui tuoi luoghi"
+  },
+  "Click here to get the full version": {
+    "message": "Clicca qui per ottenere la versione completa"
+  },
+  "Contact": {
+    "message": "Contatto"
+  },
+  "Crafted in the Mountains of Utah by": {
+    "message": "Realizzato nelle montagne dello Utah da"
+  },
+  "Create a new file": {
+    "message": "Crea un nuovo file"
+  },
+  "Creates a report to send me": {
+    "message": "Crea un report da inviarmi"
+  },
+  "Creating your file didn't work. Let's try again.": {
+    "message": "La creazione del file non ha funzionato. Proviamo di nuovo."
+  },
+  "Credits": {
+    "message": "Crediti"
+  },
+  "Custom Attributes for Characters": {
+    "message": "Attributi personalizzati per i personaggi"
+  },
+  "Custom Attributes for Places": {
+    "message": "Attributi personalizzati per i luoghi"
+  },
+  "Do you want to delete this card: { title }?": {
+    "message": "Vuoi eliminare questa carta: { title }?"
+  },
+  "Do you want to delete this character: { character }?": {
+    "message": "Vuoi eliminare questo personaggio: { character}?"
+  },
+  "Do you want to delete this note: { title }?": {
+    "message": "Vuoi eliminare questa nota: { title }?"
+  },
+  "Do you want to delete this place: { name }?": {
+    "message": "Vuoi eliminare questo luogo: { first name }?"
+  },
+  "Do you want to delete this scene: { title }?": {
+    "message": "Vuoi eliminare questa scena: { title }?"
+  },
+  "Do you want to delete this story line: { title }?": {
+    "message": "Vuoi eliminare questa trama: { title }?"
+  },
+  "Do you want to delete this tag: { title }?": {
+    "message": "Vuoi eliminare questa etichetta: { title }?"
+  },
+  "Enter License": {
+    "message": "Inserisci licenza"
+  },
+  "Filter by story line": {
+    "message": "Filtra per trama"
+  },
+  "Fit": {
+    "message": "Adatta"
+  },
+  "Format with markdown!": {
+    "message": "Formatta con riduzione!"
+  },
+  "Forums": {
+    "message": "Forum"
+  },
+  "Give feedback": {
+    "message": "Dacci un feedback"
+  },
+  "If you keep seeing this problem, email me at support@plottr.com": {
+    "message": "Se continui a vedere questo problema, inviami un'email a support@plottr.com"
+  },
+  "It looks like you have Plottr on 5 computers already": {
+    "message": "Sembra che tu abbia già Plottr su 5 computer"
+  },
+  "It looks like you have an older file version. This could make things work funky or not at all. May Plottr update it for you?": {
+    "message": "Sembra che tu abbia una versione del file precedente. Questo potrebbe causare problemi nel funzionamento. Vuoi farlo aggiornare da Plottr?"
+  },
+  "It looks like your file was saved with a newer version of Plottr than you're using now. That could cause problems. Try updating Plottr and starting it again.": {
+    "message": "Sembra che il tuo file sia stato salvato con una versione più recente di Plottr di quella che stai utilizzando ora. Ciò potrebbe causare problemi. Prova ad aggiornare Plottr e ad avviarlo di nuovo."
+  },
+  "It will save a backup first which will be saved to the same folder as this file": {
+    "message": "Salverà prima un backup nella stessa cartella di questo file"
+  },
+  "License verification failed": {
+    "message": "Verifica della licenza non riuscita"
+  },
+  "License verified! You're all set.": {
+    "message": "Licenza verificata! Sei a posto."
+  },
+  "Line": {
+    "message": "Trama"
+  },
+  "Loading...": {
+    "message": "Caricamento in corso..."
+  },
+  "Minimize": {
+    "message": "Minimizza"
+  },
+  "My awesome story": {
+    "message": "La mia fantastica storia"
+  },
+  "Nope. Plottr tried again. But it didn't work. Plottr will ask you next time it opens, but you're verified. Enjoy": {
+    "message": "No. Plottr ha riprovato. Ma non ha funzionato. Plottr te lo richiederà la prossima volta che lo apri, ma il tuo account è verificato: divertiti!"
+  },
+  "Now let's get to the good stuff": {
+    "message": "Ora veniamo alla parte migliore"
+  },
+  "Open the Tour": {
+    "message": "Apri il Tour"
+  },
+  "Or feel free to contact me with any questions": {
+    "message": "Oppure sentiti libero di contattarmi per qualsiasi domanda"
+  },
+  "place": {
+    "message": "luogo"
+  },
+  "Please upload the file named plottr_error_report.txt in your Documents folder": {
+    "message": "Carica il file denominato plottr_error_report.txt nella cartella Documenti"
+  },
+  "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
+    "message": "Plottr non ha potuto salvare un backup. Non ha ancora toccato il tuo file, quindi non preoccuparti. Prova a uscire da Plottr e ad avviarlo di nuovo."
+  },
+  "Plottr saved a backup just in case and now on with the show (To use the backup, remove '.backup' from the file name)": {
+    "message": "Plottr ha salvato un backup per ogni evenienza e ora continuiamo (per utilizzare il backup, rimuovere '.backup' dal nome del file)"
+  },
+  "Plottr tried saving a backup just in case, but it didn't work. Try quitting Plottr and starting it again.": {
+    "message": "Plottr ha provato a salvare un backup per ogni evenienza, ma non ha funzionato. Prova a uscire da Plottr e ad avviarlo di nuovo."
+  },
+  "Plottr updated your file without a problem. Don't forget to save your file.": {
+    "message": "Plottr ha aggiornato il tuo file senza problemi. Non dimenticare di salvare il tuo file."
+  },
+  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
+    "message": "Plottr ha verificato la tua chiave di licenza con successo, ma si è verificato un errore durante il salvataggio. Proviamo ancora una volta"
+  },
+  "Problem saving backup": {
+    "message": "Problema durante il salvataggio del backup"
+  },
+  "Report a problem": {
+    "message": "Segnala un problema"
+  },
+  "Request a feature": {
+    "message": "Richiedi"
+  },
+  "Reset": {
+    "message": "Ripristina"
+  },
+  "Save & Close": {
+    "message": "Salva e chiudi"
+  },
+  "Scene 1": {
+    "message": "Scena 1"
+  },
+  "Scene {number}": {
+    "message": "Scena {number}"
+  },
+  "Scene {number} name": {
+    "message": "Nome della scena {number}"
+  },
+  "Story line name": {
+    "message": "Nome della trama"
+  },
+  "TRIAL Version": {
+    "message": "Versione di prova"
+  },
+  "Try again by clicking in the menu: Plottr > Verify License...": {
+    "message": "Riprova cliccando nel menu: Plottr > Verifica licenza..."
+  },
+  "Update Plottr": {
+    "message": "Aggiorna Plottr"
+  },
+  "Upload the file Plottr just exported": {
+    "message": "Carica il file Plottr appena esportato"
+  },
+  "Use the code \"freetrial\" to get the secret discount": {
+    "message": "Usa il codice \"freetrial\" per ottenere lo sconto segreto"
+  },
+  "Verifying your license. Please wait...": {
+    "message": "Verifica della tua licenza. Attendi, prego..."
+  },
+  "Where would you like to start your new file?": {
+    "message": "Dove vorresti avviare il tuo nuovo file?"
+  },
+  "Would you like to open an existing file or start a new file?": {
+    "message": "Vuoi aprire un file esistente o crearne uno nuovo?"
+  },
+  "Would you like to save before exiting?": {
+    "message": "Vuoi salvare prima di uscire?"
+  },
+  "You should have received a license key from Gumroad.": {
+    "message": "Dovresti aver ricevuto una chiave di licenza da Gumroad."
+  },
+  "Your free trial has expired!": {
+    "message": "Il tuo periodo di prova è scaduto!"
+  },
+  "a new card": {
+    "message": "una nuova carta"
+  },
+  "description": {
+    "message": "descrizione"
+  },
+  "learn how": {
+    "message": "impara di più"
+  },
+  "name": {
+    "message": "nome"
+  },
+  "New Card": {
+    "message": "Nuova carta"
+  },
+  "new character": {
+    "message": "nuovo personaggio"
+  },
+  "new note": {
+    "message": "nuova nota"
+  },
+  "new place": {
+    "message": "nuovo luogo"
+  },
+  "new tag": {
+    "message": "nuova etichetta"
+  },
+  "no, just exit": {
+    "message": "no, esci e basta"
+  },
+  "no, open the file as-is": {
+    "message": "no, apri il file così com'è"
+  },
+  "ok": {
+    "message": "ok"
+  },
+  "story line": {
+    "message": "trama"
+  },
+  "tag name": {
+    "message": "nome etichetta"
+  },
+  "title": {
+    "message": "titolo"
+  },
+  "yes, save!": {
+    "message": "sì, salva!"
+  },
+  "yes, update the file": {
+    "message": "si, aggiorna il file"
+  },
+  "{\n      count, plural,\n        one {1 card}\n        other {# card}\n    }": {
+    "message": "{\n count, plurale,\n one {1 carta}\n other {# carte}\n  }"
+  },
+  "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
+    "message": "{\n count, plural, \n one{1 nota}\n other {# note}\n   }"
+  },
+  "{days} days remaining": {
+    "message": "{days} giorni rimanenti"
+  },
+  "Are you sure you want to delete {template}?": {
+    "message": "Sei sicuro di voler eliminare {template}?"
+  },
+  "Character Custom Attributes": {
+    "message": "Attributi personalizzati del personaggio"
+  },
+  "Check for updates": {
+    "message": "Controlla gli aggiornamenti"
+  },
+  "Checking for updates": {
+    "message": "Verifica aggiornamenti"
+  },
+  "Choose an image below or upload a new one": {
+    "message": "Scegli un'immagine qui sotto o caricane una nuova"
+  },
+  "Could not display license key. Try again": {
+    "message": "Impossibile visualizzare la chiave di licenza. Riprova"
+  },
+  "Crafted in the Mountains of Utah": {
+    "message": "Realizzato nelle montagne dello Utah"
+  },
+  "Create an error report": {
+    "message": "Crea un report di errore"
+  },
+  "Create unlimited story files": {
+    "message": "Crea file di storie illimitati"
+  },
+  "Do you want to delete this book: { book }?": {
+    "message": "Vuoi eliminare questo libro: { book }?"
+  },
+  "Do you want to delete this chapter: { title }?": {
+    "message": "Vuoi eliminare questo capitolo: { title }?"
+  },
+  "Download Now": {
+    "message": "Scarica ora"
+  },
+  "Downloading ({percent}%)": {
+    "message": "Scaricando ({percent}%)"
+  },
+  "Enter a customer service code": {
+    "message": "Inserisci un codice del servizio clienti"
+  },
+  "Enter your code": {
+    "message": "Inserisci il tuo codice"
+  },
+  "Error": {
+    "message": "Errore"
+  },
+  "Extending your trial didn't work. Let's try again.": {
+    "message": "L'estensione del periodo di prova non ha funzionato. Proviamo di nuovo."
+  },
+  "Facebook Support Group": {
+    "message": "Gruppo di supporto Facebook"
+  },
+  "Here is your license key": {
+    "message": "Ecco la tua chiave di licenza"
+  },
+  "New File": {
+    "message": "Nuovo file"
+  },
+  "New from Template": {
+    "message": "Nuovo da modello"
+  },
+  "No updates available": {
+    "message": "Nessun aggiornamento disponibile"
+  },
+  "Open File": {
+    "message": "Apri file"
+  },
+  "Plottr Trial": {
+    "message": "Prova Plottr"
+  },
+  "Plottr created a file named plottr_error_report.txt in your Documents folder": {
+    "message": "Plottr ha creato un file chiamato plottr_error_report.txt nella cartella Documenti"
+  },
+  "Quit and Install": {
+    "message": "Esci e installa"
+  },
+  "See the Changelog": {
+    "message": "Vedi il Registro delle modifiche"
+  },
+  "This is your Device ID": {
+    "message": "Questo è il tuo ID dispositivo"
+  },
+  "Try that again, but if it keeps happening, use the help menu to create an error report and report the problem.": {
+    "message": "Riprova, ma se continua a succedere, usa la sezione “aiuto” per creare un rapporto di errore e segnalare il problema."
+  },
+  "Update Ready": {
+    "message": "Aggiornamento pronto"
+  },
+  "Update available!": {
+    "message": "Aggiornamento disponibile!"
+  },
+  "Upload a new image": {
+    "message": "Carica una nuova immagine"
+  },
+  "View Device ID": {
+    "message": "Visualizza ID dispositivo"
+  },
+  "View License Key": {
+    "message": "Visualizza la chiave di licenza"
+  },
+  "View the Tour": {
+    "message": "Visualizza il Tour"
+  },
+  "paragraph": {
+    "message": "paragrafo"
+  },
+  "selected": {
+    "message": "selezionato"
+  },
+  "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
+    "message": "{\n count, plural, \n one{1 carta}\n others {# carte}\n}"
+  },
+  "Text Color": {
+    "message": "Colore testo"
+  },
+  "Text Size": {
+    "message": "Dimensione testo"
+  },
+  "Border Color": {
+    "message": "Colore bordo"
+  },
+  "Border Style": {
+    "message": "Stile bordo"
+  },
+  "Background Color": {
+    "message": "Colore sfondo"
+  },
+  "None": {
+    "message": "Nessuno"
+  },
+  "Dotted": {
+    "message": "Punteggiato"
+  },
+  "Dashed": {
+    "message": "Tratteggiato"
+  },
+  "Solid": {
+    "message": "Lineare"
+  }
+}

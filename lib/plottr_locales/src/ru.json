@@ -1856,7 +1856,7 @@
   "yes, update the file": {
     "message": "да, обновить файл"
   },
-  "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
+  "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
   },
   "{\n      count, plural,\n        one {1 note}\n        other {# notes}\n    }": {
@@ -1975,9 +1975,6 @@
   },
   "selected": {
     "message": "выбрано"
-  },
-  "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
-    "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
   },
   "Import": {
     "message": "Импортировать"

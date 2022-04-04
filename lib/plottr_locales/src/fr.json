@@ -1,4 +1,376 @@
 {
+  "Sharing": {
+    "message": "partage"
+  },
+  "Send Invite": {
+    "message": "Envoyer une invitation"
+  },
+  "Email Address": {
+    "message": "Adresse e-mail"
+  },
+  "Permissions": {
+    "message": "Autorisations"
+  },
+  "Permission": {
+    "message": "Autorisations"
+  },
+  "Projects": {
+    "message": "Projets"
+  },
+  "Account": {
+    "message": "Compte"
+  },
+  "Start with Template": {
+    "message": "Commencer avec un modèle"
+  },
+  "Books": {
+    "message": "Livres"
+  },
+  "Series": {
+    "message": "Séries"
+  },
+  "Premise": {
+    "message": "Prémisse"
+  },
+  "Theme": {
+    "message": "Thème"
+  },
+  "Download": {
+    "message": "Télécharger"
+  },
+  "Series View": {
+    "message": "Vue série"
+  },
+  "Project": {
+    "message": "Projet"
+  },
+  "Notes": {
+    "message": "Remarques"
+  },
+  "Last opened by you": {
+    "message": "Dernière ouverture par vous"
+  },
+  "Recent Projects": {
+    "message": "Les projets récents"
+  },
+  "Create Blank Project": {
+    "message": "Créer un projet vierge"
+  },
+  "Create From Template": {
+    "message": "Créer à partir d'un modèle"
+  },
+  "Upload Existing Project": {
+    "message": "Télécharger un projet existant"
+  },
+  "Import from Snowflake Pro": {
+    "message": "Importer depuis Snowflake Pro"
+  },
+  "Search": {
+    "message": "Chercher"
+  },
+  "Changelog": {
+    "message": "journal des modifications"
+  },
+  "See What’s New": {
+    "message": "Regardez ce qu'il y a de nouveau"
+  },
+  "Created By": {
+    "message": "Créé par"
+  },
+  "Your Backups": {
+    "message": "Vos sauvegardes"
+  },
+  "Settings": {
+    "message": "Réglages"
+  },
+  "Backups": {
+    "message": "Sauvegardes"
+  },
+  "About": {
+    "message": "Sur"
+  },
+  "General": {
+    "message": "Général"
+  },
+  "Dashboard": {
+    "message": "Tableau de bord"
+  },
+  "Beta": {
+    "message": "Bêta"
+  },
+  "Appearance: Dark/Light": {
+    "message": "Apparence : sombre/clair"
+  },
+  "System": {
+    "message": "Système"
+  },
+  "Dark": {
+    "message": "Foncé"
+  },
+  "Light": {
+    "message": "lumière"
+  },
+  "Language": {
+    "message": "Langue"
+  },
+  "Always Open Dashboard First": {
+    "message": "Toujours ouvrir le tableau de bord en premier"
+  },
+  "Plottr opens your most recent project at start": {
+    "message": "Plottr ouvre votre projet le plus récent au démarrage"
+  },
+  "When Plottr opens, the first thing you'll see is the dashboard": {
+    "message": "Lorsque Plottr s'ouvre, la première chose que vous verrez est le tableau de bord"
+  },
+  "Save Backups": {
+    "message": "Enregistrer les sauvegardes"
+  },
+  "Automatically save daily backups": {
+    "message": "Enregistrer automatiquement les sauvegardes quotidiennes"
+  },
+  "Act Structure": {
+    "message": "Structure de l'acte"
+  },
+  "Organize your scene cards into Chapters and Acts": {
+    "message": "Organisez vos cartes de scène en chapitres et actes"
+  },
+  "To give feedback on this feature, please visit:": {
+    "message": "Pour donner votre avis sur cette fonctionnalité, veuillez visiter :"
+  },
+  "Beta Information": {
+    "message": "Informations bêta"
+  },
+  "Beta Email": {
+    "message": "Courriel bêta"
+  },
+  "Status": {
+    "message": "Statut"
+  },
+  "Not Active": {
+    "message": "Pas actif"
+  },
+  "Active": {
+    "message": "Actif"
+  },
+  "Pro Subscription": {
+    "message": "Abonnement Pro"
+  },
+  "Purchase Email": {
+    "message": "Courriel d'achat"
+  },
+  "Admin": {
+    "message": "Administrateur"
+  },
+  "Never": {
+    "message": "Jamais"
+  },
+  "Remove Pro on this Device": {
+    "message": "Supprimer Pro sur cet appareil"
+  },
+  "Use this if you logged into Pro by accident": {
+    "message": "Utilisez ceci si vous vous êtes connecté à Pro par accident"
+  },
+  "Chapter": {
+    "message": "Chapitre"
+  },
+  "Default Colors": {
+    "message": "Couleurs par défaut"
+  },
+  "Are you sure you want to delete {plotline}?": {
+    "message": "Etes-vous sûr que vous voulez supprimer {plotline}?"
+  },
+  "Delete": {
+    "message": "Supprimer"
+  },
+  "Are you sure you want to delete {chapter #}?": {
+    "message": "Etes-vous sûr que vous voulez supprimer {chapter #}?"
+  },
+  "Plotline name": {
+    "message": "Nom du tracé"
+  },
+  "Colors": {
+    "message": "Couleurs"
+  },
+  "Custom Attributes For Scenes": {
+    "message": "Attributs personnalisés pour les scènes"
+  },
+  "Choose what you want to track about your scenes": {
+    "message": "Choisissez ce que vous voulez suivre dans vos scènes"
+  },
+  "Add attribute": {
+    "message": "Ajouter un attribut"
+  },
+  "Save as Template": {
+    "message": "Enregistrer en tant que modèle"
+  },
+  "Edit New Plotline": {
+    "message": "Modifier un nouveau tracé"
+  },
+  "Export": {
+    "message": "Exportation"
+  },
+  "Timeline Settings": {
+    "message": "Paramètres de la chronologie"
+  },
+  "Text Color": {
+    "message": "Couleur du texte"
+  },
+  "Text Size": {
+    "message": "Taille du texte"
+  },
+  "Border Color": {
+    "message": "Couleur de la bordure"
+  },
+  "Border Style": {
+    "message": "Style de bordure"
+  },
+  "Background Color": {
+    "message": "Couleur de l'arrière plan"
+  },
+  "None": {
+    "message": "Rien"
+  },
+  "Dashed": {
+    "message": "En pointillé"
+  },
+  "Solid": {
+    "message": "Solide"
+  },
+  "Dotted": {
+    "message": "Pointé"
+  },
+  "Clear Timeline": {
+    "message": "Effacer la chronologie"
+  },
+  "Scene Title": {
+    "message": "Titre de la scène"
+  },
+  "Use Template": {
+    "message": "Utilise le modèle"
+  },
+  "Plotline": {
+    "message": "Intrigue"
+  },
+  "Color": {
+    "message": "Couleur"
+  },
+  "+ Add Template": {
+    "message": "+ Ajouter un modèle"
+  },
+  "Enter some text…": {
+    "message": "Saisissez du texte…"
+  },
+  "Subtitle": {
+    "message": "Sous-titre"
+  },
+  "Configure": {
+    "message": "Configurer"
+  },
+  "Starter Templates": {
+    "message": "Modèles de démarrage"
+  },
+  "Filter by Plotline": {
+    "message": "Filtrer par tracé"
+  },
+  "Title": {
+    "message": "Titre"
+  },
+  "Uncategorized": {
+    "message": "Non classé"
+  },
+  "New Note": {
+    "message": "Nouvelle remarque"
+  },
+  "Category": {
+    "message": "Catégorie"
+  },
+  "Note Image": {
+    "message": "Remarque Image"
+  },
+  "Choose an image": {
+    "message": "Choisissez une image"
+  },
+  "Image Gallery": {
+    "message": "Galerie d'images"
+  },
+  "Upload Files": {
+    "message": "Télécharger des fichiers"
+  },
+  "Insert from URL": {
+    "message": "Insérer à partir de l'URL"
+  },
+  "Drop a File Here": {
+    "message": "Déposez un fichier ici"
+  },
+  "Select a File": {
+    "message": "Sélectionner un fichier"
+  },
+  "Enter the URL of the link:": {
+    "message": "Saisissez l'URL du lien :"
+  },
+  "Note Categories": {
+    "message": "Catégories de notes"
+  },
+  "Choose what categories you want to put your notes into": {
+    "message": "Choisissez les catégories dans lesquelles vous souhaitez mettre vos notes"
+  },
+  "Add category": {
+    "message": "Ajouter une catégorie"
+  },
+  "Main": {
+    "message": "Principal"
+  },
+  "Categories": {
+    "message": "Catégories"
+  },
+  "last edited": {
+    "message": "dernière édition"
+  },
+  "New Character": {
+    "message": "Nouveau personnage"
+  },
+  "Character Thumbnail": {
+    "message": "Vignette de personnage"
+  },
+  "Custom Attributes For Characters": {
+    "message": "Attributs personnalisés pour les caractères"
+  },
+  "Choose what you want to track about your characters": {
+    "message": "Choisissez ce que vous voulez suivre à propos de vos personnages"
+  },
+  "text": {
+    "message": "texte"
+  },
+  "paragraph": {
+    "message": "paragraphe"
+  },
+  "Character Categories": {
+    "message": "Catégories de personnages"
+  },
+  "Choose what categories you want to put your characters into": {
+    "message": "Choisissez dans quelles catégories vous voulez mettre vos personnages"
+  },
+  "Supporting": {
+    "message": "Justificatif"
+  },
+  "Other": {
+    "message": "Autre"
+  },
+  "Place Image": {
+    "message": "Placer l'image"
+  },
+  "New Place": {
+    "message": "Nouveau lieu"
+  },
+  "Custom Attributes For Places": {
+    "message": "Attributs personnalisés pour les lieux"
+  },
+  "Choose what you want to track about your places": {
+    "message": "Choisissez ce que vous souhaitez suivre à propos de vos lieux"
+  },
+  "Tag Name": {
+    "message": "Nom de la balise"
+  },
   "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
     "message": "(Si ce n''est pas le cas merci de m''écrire à me @ <a>support@plottr.com</a> ou @StoryPlottr on Twitter)"
   },
@@ -74,12 +446,6 @@
   "Choose color": {
     "message": "Choisir une couleur"
   },
-  "Choose what you want to track about your characters": {
-    "message": "Choisir ce que vous voulez suivre chez vos personnages"
-  },
-  "Choose what you want to track about your places": {
-    "message": "Choisir ce que vous voulez suivre dans vos lieux"
-  },
   "Click here to get the full version": {
     "message": "Cliquer ici pour obtenir la version intégrale."
   },
@@ -131,9 +497,6 @@
   "Dark Mode": {
     "message": "Mode Noir"
   },
-  "Delete": {
-    "message": "Effacer"
-  },
   "Description": {
     "message": "Description"
   },
@@ -169,9 +532,6 @@
   },
   "Enter License": {
     "message": "Entrer le numéro de licence"
-  },
-  "Export": {
-    "message": "Export"
   },
   "FAQ": {
     "message": "Questions fréquentes"
@@ -293,9 +653,6 @@
   "Note": {
     "message": "Note"
   },
-  "Notes": {
-    "message": "Notes"
-  },
   "Notes are filtered": {
     "message": "Liste des notes triée"
   },
@@ -348,7 +705,7 @@
     "message": "S''il-vous-plait confirmez votre licence."
   },
   "Plottr couldn't save a backup. It hasn't touched your file yet, so don't worry. Try quitting Plottr and starting it again.": {
-    "message": "Plottr n''a pas pu enregistrer de sauvegarde. Votre fichier n''a pas encore été modifié. Ne vous inquietez pas. Tentez de quitter Plottr et de redémarrer."
+    "message": "Plottr n''a pas pu enregistrer de sauvegarde. Votre fichier n''a pas encore été modifié. Ne vous inquietez pas. Tentez de quitter Plottr et de redémarrer."                         
   },
   "Plottr ran into a problem. Try opening Plottr again.": {
     "message": "Plottr a eu un problème. Tentez d'ouvrir Plottr à nouveau."
@@ -362,7 +719,7 @@
   "Plottr updated your file without a problem. Don't forget to save your file.": {
     "message": "Plottr a mis votre ficihier à jour sans problème. N''oubliez pas d''enregistrer votre fichier."
   },
-  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {
+  "Plottr verified your license key successfully, but there was an error saving that. Let's try one more time": {                  
     "message": "Plotrr a bien réussi à vérifier votre licence mais il y a eu une erreur pour l''enregistrer. Tentons de le faire à nouveau."
   },
   "Problem saving backup": {
@@ -466,9 +823,6 @@
   },
   "Timeline is filtered": {
     "message": "Chronologie triée"
-  },
-  "Title": {
-    "message": "Titre"
   },
   "Toggle navigation": {
     "message": "Basculer"
@@ -653,7 +1007,7 @@
   "{\n          count, plural,\n          one {1 place attached}\n          other {# places attached}\n        }": {
     "message": "{ count, plural,\n    one {1 lieu lié}\n  other {# lieux liés}\n}"
   },
-  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {
+  "{\n          count, plural,\n          one {1 tag attached}\n          other {# tags attached}\n        }": {                                               
     "message": "{ count, plural,\n    one {1 étiquette liée}\n  other {# étiquettes liées}\n}"
   },
   "{\n      count, plural,\n        one {1 carte}\n        other {# cartes}\n    }": {
@@ -680,23 +1034,14 @@
   "Account Information": {
     "message": "Account Information"
   },
-  "Account": {
-    "message": "Account"
-  },
   "Activate License": {
     "message": "Activate License"
   },
   "Add Chapter": {
     "message": "Add Chapter"
   },
-  "Add attribute": {
-    "message": "Add attribute"
-  },
   "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details": {
     "message": "Add cards to the timeline so you can write notes about your scenes. Click on the card to add more details"
-  },
-  "Add category": {
-    "message": "Add category"
   },
   "Add more plotlines here": {
     "message": "Add more plotlines here"
@@ -746,9 +1091,6 @@
   "Auto-saving worked": {
     "message": "Auto-saving worked"
   },
-  "Automatically save daily backups": {
-    "message": "Automatically save daily backups"
-  },
   "Awesome choice!": {
     "message": "Awesome choice!"
   },
@@ -760,9 +1102,6 @@
   },
   "Backups older than this will be erased": {
     "message": "Backups older than this will be erased"
-  },
-  "Backups": {
-    "message": "Backups"
   },
   "Beat 1": {
     "message": "Beat 1"
@@ -784,9 +1123,6 @@
   },
   "Book": {
     "message": "Book"
-  },
-  "Books": {
-    "message": "Books"
   },
   "By default, use auto-save for projects": {
     "message": "By default, use auto-save for projects"
@@ -812,32 +1148,14 @@
   "Can I have a few more days?": {
     "message": "Can I have a few more days?"
   },
-  "Categories": {
-    "message": "Categories"
-  },
-  "Category": {
-    "message": "Category"
-  },
-  "Changelog": {
-    "message": "Changelog"
-  },
   "Chapter {number} title": {
     "message": "Chapter {number} title"
   },
   "Chapter {number}": {
     "message": "Chapter {number}"
   },
-  "Chapter": {
-    "message": "Chapter"
-  },
   "Chapters": {
     "message": "Chapters"
-  },
-  "Character Categories": {
-    "message": "Character Categories"
-  },
-  "Character Thumbnail": {
-    "message": "Character Thumbnail"
   },
   "Character: {name}": {
     "message": "Character: {name}"
@@ -851,14 +1169,8 @@
   "Choose Color": {
     "message": "Choose Color"
   },
-  "Choose an image": {
-    "message": "Choose an image"
-  },
   "Choose an {platform} mobile subscription": {
     "message": "Choose an {platform} mobile subscription"
-  },
-  "Choose what categories you want to put your characters into": {
-    "message": "Choose what categories you want to put your characters into"
   },
   "Choose what you want to track about your { type }": {
     "message": "Choose what you want to track about your { type }"
@@ -884,23 +1196,11 @@
   "Color Picker": {
     "message": "Color Picker"
   },
-  "Color": {
-    "message": "Color"
-  },
   "Coming Soon!": {
     "message": "Coming Soon!"
   },
   "Configuration Options": {
     "message": "Configuration Options"
-  },
-  "Configure": {
-    "message": "Configure"
-  },
-  "Create Blank Project": {
-    "message": "Create Blank Project"
-  },
-  "Create From Template": {
-    "message": "Create From Template"
   },
   "Create Report": {
     "message": "Create Report"
@@ -917,9 +1217,6 @@
   "Create": {
     "message": "Create"
   },
-  "Created By": {
-    "message": "Created By"
-  },
   "Custom Attributes for { type }": {
     "message": "Custom Attributes for { type }"
   },
@@ -929,17 +1226,11 @@
   "Custom Templates": {
     "message": "Custom Templates"
   },
-  "Dashboard": {
-    "message": "Dashboard"
-  },
   "Days Left": {
     "message": "Days Left"
   },
   "Days of Backup": {
     "message": "Days of Backup"
-  },
-  "Default Colors": {
-    "message": "Default Colors"
   },
   "Delete Chapter {name}?": {
     "message": "Delete Chapter {name}?"
@@ -1013,9 +1304,6 @@
   "Downloading version {version}": {
     "message": "Downloading version {version}"
   },
-  "Drop a File Here": {
-    "message": "Drop a File Here"
-  },
   "Edit Plotline": {
     "message": "Edit Plotline"
   },
@@ -1042,9 +1330,6 @@
   },
   "Enter some text...": {
     "message": "Enter some text..."
-  },
-  "Enter the URL of the link:": {
-    "message": "Enter the URL of the link:"
   },
   "Enter the name of your project": {
     "message": "Enter the name of your project"
@@ -1093,9 +1378,6 @@
   },
   "Files": {
     "message": "Files"
-  },
-  "Filter by Plotline": {
-    "message": "Filter by Plotline"
   },
   "Folder where backups are stored": {
     "message": "Folder where backups are stored"
@@ -1157,9 +1439,6 @@
   "Image Details": {
     "message": "Image Details"
   },
-  "Image Gallery": {
-    "message": "Image Gallery"
-  },
   "Images": {
     "message": "Images"
   },
@@ -1171,9 +1450,6 @@
   },
   "Insert Chapter": {
     "message": "Insert Chapter"
-  },
-  "Insert from URL": {
-    "message": "Insert from URL"
   },
   "It looks like you have Plottr on the max number of computers already": {
     "message": "It looks like you have Plottr on the max number of computers already"
@@ -1195,12 +1471,6 @@
   },
   "LOOK OUT!": {
     "message": "LOOK OUT!"
-  },
-  "Language": {
-    "message": "Language"
-  },
-  "Last opened by you": {
-    "message": "Last opened by you"
   },
   "Learn": {
     "message": "Learn"
@@ -1226,9 +1496,6 @@
   "MS Word": {
     "message": "MS Word"
   },
-  "Main": {
-    "message": "Main"
-  },
   "Manually Sorted": {
     "message": "Manually Sorted"
   },
@@ -1238,26 +1505,14 @@
   "Menu": {
     "message": "Menu"
   },
-  "Never": {
-    "message": "Never"
-  },
   "New Attribute": {
     "message": "New Attribute"
   },
   "New Book": {
     "message": "New Book"
   },
-  "New Character": {
-    "message": "New Character"
-  },
   "New Custom Attribute Title": {
     "message": "New Custom Attribute Title"
-  },
-  "New Note": {
-    "message": "New Note"
-  },
-  "New Place": {
-    "message": "New Place"
   },
   "New Plotline": {
     "message": "New Plotline"
@@ -1285,9 +1540,6 @@
   },
   "Note Details": {
     "message": "Note Details"
-  },
-  "Note Image": {
-    "message": "Note Image"
   },
   "Note: {title}": {
     "message": "Note: {title}"
@@ -1328,9 +1580,6 @@
   "Or hover here to insert between scenes": {
     "message": "Or hover here to insert between scenes"
   },
-  "Other": {
-    "message": "Other"
-  },
   "Override your computer's setting and always use dark mode": {
     "message": "Override your computer's setting and always use dark mode"
   },
@@ -1345,9 +1594,6 @@
   },
   "Place Details": {
     "message": "Place Details"
-  },
-  "Place Image": {
-    "message": "Place Image"
   },
   "Place: {name}": {
     "message": "Place: {name}"
@@ -1366,12 +1612,6 @@
   },
   "Plotline Title:": {
     "message": "Plotline Title:"
-  },
-  "Plotline name": {
-    "message": "Plotline name"
-  },
-  "Plotline": {
-    "message": "Plotline"
   },
   "Plotline: {title}": {
     "message": "Plotline: {title}"
@@ -1403,32 +1643,20 @@
   "Preferences": {
     "message": "Preferences"
   },
-  "Premise": {
-    "message": "Premise"
-  },
   "Privacy Policy": {
     "message": "Privacy Policy"
   },
   "Project Templates": {
     "message": "Project Templates"
   },
-  "Project": {
-    "message": "Project"
-  },
   "Prologue": {
     "message": "Prologue"
-  },
-  "Purchase Email": {
-    "message": "Purchase Email"
   },
   "RESEND EMAIL": {
     "message": "RESEND EMAIL"
   },
   "RESENDING...": {
     "message": "RESENDING..."
-  },
-  "Recent Projects": {
-    "message": "Recent Projects"
   },
   "Reload from File": {
     "message": "Reload from File"
@@ -1469,9 +1697,6 @@
   "SELECT": {
     "message": "SELECT"
   },
-  "Save Backups": {
-    "message": "Save Backups"
-  },
   "Save Changes?": {
     "message": "Save Changes?"
   },
@@ -1483,9 +1708,6 @@
   },
   "Save Plotline": {
     "message": "Save Plotline"
-  },
-  "Save as Template": {
-    "message": "Save as Template"
   },
   "Save before closing?": {
     "message": "Save before closing?"
@@ -1505,9 +1727,6 @@
   "Scene Details": {
     "message": "Scene Details"
   },
-  "Scene Title": {
-    "message": "Scene Title"
-  },
   "Scene {num}": {
     "message": "Scene {num}"
   },
@@ -1516,9 +1735,6 @@
   },
   "Scrivener": {
     "message": "Scrivener"
-  },
-  "Search": {
-    "message": "Search"
   },
   "See What's New": {
     "message": "See What's New"
@@ -1532,26 +1748,14 @@
   "Select a Chapter": {
     "message": "Select a Chapter"
   },
-  "Select a File": {
-    "message": "Select a File"
-  },
   "Select a Plotline": {
     "message": "Select a Plotline"
   },
   "Series Outline": {
     "message": "Series Outline"
   },
-  "Series View": {
-    "message": "Series View"
-  },
-  "Series": {
-    "message": "Series"
-  },
   "Session Start": {
     "message": "Session Start"
-  },
-  "Settings": {
-    "message": "Settings"
   },
   "Short Synopsis": {
     "message": "Short Synopsis"
@@ -1592,29 +1796,17 @@
   "Started On": {
     "message": "Started On"
   },
-  "Starter Templates": {
-    "message": "Starter Templates"
-  },
   "Submit": {
     "message": "Submit"
   },
   "Subscription Restored!": {
     "message": "Subscription Restored!"
   },
-  "Subtitle": {
-    "message": "Subtitle"
-  },
   "Success!": {
     "message": "Success!"
   },
-  "Supporting": {
-    "message": "Supporting"
-  },
   "Tag Details": {
     "message": "Tag Details"
-  },
-  "Tag Name": {
-    "message": "Tag Name"
   },
   "Tags can be used for organization": {
     "message": "Tags can be used for organization"
@@ -1633,9 +1825,6 @@
   },
   "That email didn't verify. Try again or try another email.": {
     "message": "That email didn't verify. Try again or try another email."
-  },
-  "Theme": {
-    "message": "Theme"
   },
   "There was an error activating your license key on this device": {
     "message": "There was an error activating your license key on this device"
@@ -1670,9 +1859,6 @@
   "URL": {
     "message": "URL"
   },
-  "Uncategorized": {
-    "message": "Uncategorized"
-  },
   "Untitled": {
     "message": "Untitled"
   },
@@ -1687,12 +1873,6 @@
   },
   "Updates": {
     "message": "Updates"
-  },
-  "Upload Files": {
-    "message": "Upload Files"
-  },
-  "Use Template": {
-    "message": "Use Template"
   },
   "Use a different email": {
     "message": "Use a different email"
@@ -1787,9 +1967,6 @@
   "You're on the latest version": {
     "message": "You're on the latest version"
   },
-  "Your Backups": {
-    "message": "Your Backups"
-  },
   "Your Plottr file was exported to a .docx file": {
     "message": "Your Plottr file was exported to a .docx file"
   },
@@ -1847,7 +2024,7 @@
   "{date, date, monthDay}": {
     "message": "{date, date, monthDay}"
   },
-  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {
+  "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }": {                                                                
     "message": "{numOfDays, plural,\n      =0 {# days left}\n      one {# day left}\n      other {# days left}\n    }"
   },
   "{num} Scenes": {
@@ -1964,9 +2141,6 @@
   "View the Tour": {
     "message": "View the Tour"
   },
-  "paragraph": {
-    "message": "paragraph"
-  },
   "selected": {
     "message": "selected"
   },
@@ -1985,17 +2159,11 @@
   "Act": {
     "message": "Act"
   },
-  "Act Structure": {
-    "message": "Act Structure"
-  },
   "Action": {
     "message": "Action"
   },
   "Advanced...": {
     "message": "Advanced..."
-  },
-  "Appearance: Dark/Light": {
-    "message": "Appearance: Dark/Light"
   },
   "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project).": {
     "message": "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project)."
@@ -2006,9 +2174,6 @@
   "Auto-Save": {
     "message": "Auto-Save"
   },
-  "Background Color": {
-    "message": "Background Color"
-  },
   "Backup Options": {
     "message": "Backup Options"
   },
@@ -2017,9 +2182,6 @@
   },
   "Beats": {
     "message": "Beats"
-  },
-  "Beta": {
-    "message": "Beta"
   },
   "Black (default)": {
     "message": "Black (default)"
@@ -2030,29 +2192,17 @@
   "Body": {
     "message": "Body"
   },
-  "Border Color": {
-    "message": "Border Color"
-  },
-  "Border Style": {
-    "message": "Border Style"
-  },
   "Character Image": {
     "message": "Character Image"
   },
   "Character Name": {
     "message": "Character Name"
   },
-  "Choose what categories you want to put your notes into": {
-    "message": "Choose what categories you want to put your notes into"
-  },
   "Choose what categories you want to put your tags into": {
     "message": "Choose what categories you want to put your tags into"
   },
   "Choose your backup location": {
     "message": "Choose your backup location"
-  },
-  "Colors": {
-    "message": "Colors"
   },
   "Comedy": {
     "message": "Comedy"
@@ -2062,9 +2212,6 @@
   },
   "DELETE": {
     "message": "DELETE"
-  },
-  "Dark": {
-    "message": "Dark"
   },
   "Days of Backups": {
     "message": "Days of Backups"
@@ -2081,12 +2228,6 @@
   "Export to:": {
     "message": "Export to:"
   },
-  "General": {
-    "message": "General"
-  },
-  "Get a License": {
-    "message": "Get a License"
-  },
   "Give this file a new name": {
     "message": "Give this file a new name"
   },
@@ -2099,17 +2240,11 @@
   "Levels": {
     "message": "Levels"
   },
-  "Light": {
-    "message": "Light"
-  },
   "Mystery": {
     "message": "Mystery"
   },
   "Never Delete Backups": {
     "message": "Never Delete Backups"
-  },
-  "Note Categories": {
-    "message": "Note Categories"
   },
   "Note Title": {
     "message": "Note Title"
@@ -2119,9 +2254,6 @@
   },
   "Orange (default)": {
     "message": "Orange (default)"
-  },
-  "Organize your scene cards into Chapters and Acts": {
-    "message": "Organize your scene cards into Chapters and Acts"
   },
   "Place Name": {
     "message": "Place Name"
@@ -2147,9 +2279,6 @@
   "Synopsis": {
     "message": "Synopsis"
   },
-  "System": {
-    "message": "System"
-  },
   "Tag Categories": {
     "message": "Tag Categories"
   },
@@ -2159,17 +2288,8 @@
   "Templates": {
     "message": "Templates"
   },
-  "Text Color": {
-    "message": "Text Color"
-  },
-  "Text Size": {
-    "message": "Text Size"
-  },
   "Title Page": {
     "message": "Title Page"
-  },
-  "To give feedback on this feature, please visit:": {
-    "message": "To give feedback on this feature, please visit:"
   },
   "Use Templates": {
     "message": "Use Templates"
@@ -2182,9 +2302,6 @@
   },
   "[Blank]": {
     "message": "[Blank]"
-  },
-  "last edited": {
-    "message": "last edited"
   },
   "plottr.com/beta": {
     "message": "plottr.com/beta"

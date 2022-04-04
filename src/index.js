@@ -11,8 +11,8 @@ const locales = {
 }
 
 const localeNames = {
-  de: 'Deutsch',
   en: 'English',
+  de: 'Deutsch',
   es: 'Español',
   fr: 'Français',
   fa: 'فارسی',

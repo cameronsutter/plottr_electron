@@ -37,32 +37,32 @@ const newDeTranslations = Object.assign({}, deTranslations)
 all_keys.forEach((key) => {
   if (!enKeys.has(key)) {
     newEnTranslations[key] = {
-      message: key,
+      message: key
     }
   }
   if (!frKeys.has(key)) {
     newFrTranslations[key] = {
-      message: key,
+      message: key
     }
   }
   if (!esKeys.has(key)) {
     newEsTranslations[key] = {
-      message: key,
+      message: key
     }
   }
   if (!faKeys.has(key)) {
     newFaTranslations[key] = {
-      message: key,
+      message: key
     }
   }
   if (!ruKeys.has(key)) {
     newRuTranslations[key] = {
-      message: key,
+      message: key
     }
   }
   if (!deKeys.has(key)) {
     newDeTranslations[key] = {
-      message: key,
+      message: key
     }
   }
 })

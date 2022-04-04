@@ -557,6 +557,9 @@
   "GET A LICENSE": {
     "message": "ПОЛУЧИТЬ ЛИЦЕНЗИЮ"
   },
+  "Get a License": {
+    "message": "Получить Лицензию"
+  },
   "GET STARTED!": {
     "message": "НАЧАТЬ!"
   },
@@ -890,7 +893,7 @@
   "Please choose a plotline": {
     "message": "Пожалуйста, выберите сюжетную линию"
   },
-  "Please contact me with any questions at support@plottr.com": {
+  "Please contact us with any questions at support@plottr.com": {
     "message": "Пожалуйста, пишите мне по любым вопросам на адрес support@plottr.com"
   },
   "Please select a valid Plottr file": {
@@ -1975,5 +1978,8 @@
   },
   "{\n      count, plural,\n        one {1 card}\n        other {# cards}\n    }": {
     "message": "{\n      count, plural,\n        one {1 карточка}\n        other {# карточек}\n    }"
+  },
+  "Import": {
+    "message": "Импортировать"
   }
 }

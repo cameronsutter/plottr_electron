@@ -209,32 +209,6 @@
   },
   "cards": [
     {
-      "id": null,
-      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
-      "beatId": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
-      "bookId": null,
-      "positionWithinLine": 0,
-      "positionInBeat": 0,
-      "title": "Test",
-      "description": [
-        {
-          "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "tags": [],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null,
-      "fromTemplateId": null,
-      "color": null
-    },
-    {
       "id": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
       "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
       "beatId": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",

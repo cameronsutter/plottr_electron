@@ -57,7 +57,7 @@
     "message": "Todos"
   },
   "App Version: {version}": {
-    "message": "Versão do aplicativo: {versão}"
+    "message": "Versão do aplicativo: {version}"
   },
   "Are you sure you want to clear everything in this timeline?": {
     "message": "Tem certeza de que deseja remover tudo dessa linha do tempo?"
@@ -120,10 +120,10 @@
     "message": "Vença 1"
   },
   "Beat {number} title": {
-    "message": "Vença {número} título"
+    "message": "Vença {number} título"
   },
   "Beat {number}": {
-    "message": "Vença {número}"
+    "message": "Vença {number}"
   },
   "Beat": {
     "message": "Vença"
@@ -195,10 +195,10 @@
     "message": "Registro"
   },
   "Chapter {number} title": {
-    "message": "Título do capítulo {número}"
+    "message": "Título do capítulo {number}"
   },
   "Chapter {number}": {
-    "message": "Capítulo {número}"
+    "message": "Capítulo {number}"
   },
   "Chapter": {
     "message": "Capítulo"
@@ -930,7 +930,7 @@
     "message": "Suporte Plottr"
   },
   "Plottr created a file named {fileName} in your Documents folder": {
-    "message": "O Plottr criou um arquivo chamado {fileName } em sua pasta Documentos"
+    "message": "O Plottr criou um arquivo chamado {fileName} em sua pasta Documentos"
   },
   "Plottr project file": {
     "message": "arquivo de projeto Plottr"
@@ -1302,7 +1302,7 @@
     "message": "Atualizar automaticamente"
   },
   "Update Available 🎉 (version {version})": {
-    "message": "Atualização disponível 🎉 (versão { versão })"
+    "message": "Atualização disponível 🎉 (versão { version })"
   },
   "Update failed. Try again": {
     "message": " Atualização falhou. Tente novamente."

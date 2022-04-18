@@ -395,7 +395,7 @@ async function createFromSnowflake(importedPath, sender, isLoggedIntoPro) {
     return Promise.resolve()
   }
 
-  const filePath = await saveToTempFile(importedJson)
+  const filePath = await saveToTempFile(importedJson, storyName)
   const fileId = addToKnownFiles(filePath)
   openKnownFile(filePath, fileId)
   return true
@@ -435,7 +435,7 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   }
 
   return importedJsonPromise.then((importedJson) => {
-    return saveToTempFile(importedJson).then((filePath) => {
+    return saveToTempFile(importedJson, storyName).then((filePath) => {
       const fileId = addToKnownFiles(filePath)
       openKnownFile(filePath, fileId)
       sender.send('finish-creating-local-scrivener-imported-file')

@@ -38,8 +38,7 @@ function buildHelpMenu() {
       },
       {
         label: t('Report a Problem'),
-        click: () =>
-          shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Technical%20Support'),
+        click: () => shell.openExternal('https://plottr.com/support'),
       },
       {
         label: t('Create an Error Report'),
@@ -55,8 +54,7 @@ function buildHelpMenu() {
       },
       {
         label: t('Request a Feature'),
-        click: () =>
-          shell.openExternal('https://docs.plottr.com/submit-a-ticket?help=Feature%20Request'),
+        click: () => shell.openExternal('https://plottr.com/support'),
       },
       {
         type: 'separator',

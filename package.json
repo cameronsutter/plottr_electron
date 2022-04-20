@@ -43,7 +43,7 @@
     "axios": "^0.22.0",
     "docx": "^5.5.0",
     "dotenv": "^4.0.0",
-    "dotenv-stringify": "^1.0.0",
+    "dotenv-stringify": "^2.0.6",
     "electron-context-menu": "^2.0.1",
     "electron-log": "^4.3.2",
     "electron-store": "^8.0.1",

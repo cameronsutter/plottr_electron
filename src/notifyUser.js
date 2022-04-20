@@ -1,5 +1,6 @@
 import { t } from 'plottr_locales'
 import { shell } from 'electron'
+import { Notification } from '@electron/remote'
 
 export function notifyUser(exportPath, type) {
   const messageForType = {

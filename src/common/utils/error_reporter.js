@@ -63,13 +63,13 @@ ${JSON.stringify(previousAction)}
 
 function notifyUser(fileName) {
   try {
-    ipcRenderer.send('notify', {
-      title: i18n('Error Report created'),
-      body: i18n('Plottr created a file named {fileName} in your Documents folder', {
+    ipcRenderer.send(
+      'notify',
+      i18n('Error Report created'),
+      i18n('Plottr created a file named {fileName} in your Documents folder', {
         fileName: path.basename(fileName),
-      }),
-      silent: true,
-    })
+      })
+    )
   } catch (error) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work

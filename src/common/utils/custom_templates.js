@@ -28,11 +28,11 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
   }
 
   try {
-    ipcRenderer.send('notify', {
-      title: t('Template Saved'),
-      body: t('Your template has been saved and is ready to use'),
-      silent: true,
-    })
+    ipcRenderer.send(
+      'notify',
+      t('Template Saved'),
+      t('Your template has been saved and is ready to use'),
+    )
   } catch (error) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work

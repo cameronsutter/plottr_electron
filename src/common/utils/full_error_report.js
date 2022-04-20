@@ -82,13 +82,13 @@ ${rendererLogContents}
 
 function notifyUser(fileName) {
   try {
-    ipcRenderer('notify', {
-      title: t('Error Report created'),
-      body: t('Plottr created a file named {fileName} in your Documents folder', {
+    ipcRenderer(
+      'notify',
+      t('Error Report created'),
+      t('Plottr created a file named {fileName} in your Documents folder', {
         fileName: path.basename(fileName),
-      }),
-      silent: true,
-    })
+      })
+    )
   } catch (error) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work

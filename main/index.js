@@ -1,4 +1,4 @@
-import electron, { shell } from 'electron'
+import electron, { shell, Notification } from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
@@ -362,5 +362,22 @@ ipcMain.on('rm-rf', (event, path, messageId) => {
   } catch (error) {
     log.error('Error deleting a file via rm-rf: ', path, error)
     event.sender.send(`rm-rf-reply-${messageId}`, error.message || `Error deleting ${path}`)
+  }
+})
+
+ipcMain.on('notify', (event, title, body) => {
+  try {
+    const notification = new Notification({
+      title,
+      body,
+      silent: true,
+    })
+    notification.show()
+    setTimeout(() => {
+      notification.close()
+    }, 5000)
+  } catch (error) {
+    // ignore
+    // on windows you need something called an Application User Model ID which may not work
   }
 })

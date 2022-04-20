@@ -1,4 +1,5 @@
 import { cloneDeep } from 'lodash'
+import { ipcRenderer } from 'electron'
 import { app } from '@electron/remote'
 
 import { t } from 'plottr_locales'
@@ -27,7 +28,8 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
   }
 
   try {
-    new Notification(t('Template Saved'), {
+    ipcRenderer.send('notify', {
+      title: t('Template Saved'),
       body: t('Your template has been saved and is ready to use'),
       silent: true,
     })

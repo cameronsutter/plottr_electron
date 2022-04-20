@@ -1,4 +1,4 @@
-import { shell } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import { app, dialog } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
@@ -82,7 +82,8 @@ ${rendererLogContents}
 
 function notifyUser(fileName) {
   try {
-    new Notification(t('Error Report created'), {
+    ipcRenderer('notify', {
+      title: t('Error Report created'),
       body: t('Plottr created a file named {fileName} in your Documents folder', {
         fileName: path.basename(fileName),
       }),

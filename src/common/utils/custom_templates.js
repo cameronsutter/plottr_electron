@@ -31,7 +31,7 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
     ipcRenderer.send(
       'notify',
       t('Template Saved'),
-      t('Your template has been saved and is ready to use'),
+      t('Your template has been saved and is ready to use')
     )
   } catch (error) {
     // ignore

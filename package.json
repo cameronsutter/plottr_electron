@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.4.6",
+  "version": "2022.5.18-alpha.1",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",

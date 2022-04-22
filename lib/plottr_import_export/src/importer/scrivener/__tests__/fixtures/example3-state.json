@@ -1,0 +1,133 @@
+{
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    }
+  },
+  "file": {
+    "fileName": "",
+    "loaded": false,
+    "dirty": false,
+    "version": "2022.4.6"
+  },
+  "series": {
+    "name": "example3",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "example3",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "characters": [],
+  "cards": [],
+  "lines": [],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "cards": [],
+    "scenes": [],
+    "lines": [],
+    "notes": []
+  },
+  "places": [],
+  "tags": [],
+  "notes": [],
+  "beats": {
+    "series": {
+      "children": {
+        "null": []
+      },
+      "heap": {},
+      "index": {}
+    }
+  },
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ]
+  },
+  "images": {},
+  "hierarchyLevels": {
+    "0": {
+      "name": "Chapter",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#0b1117",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#0b1117"
+      }
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": false
+  }
+}

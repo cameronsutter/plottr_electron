@@ -50,6 +50,7 @@ import {
   setFilePathForWindowWithId,
 } from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
+import { startServer } from './server'
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -59,6 +60,7 @@ const ENV_FILE_PATH = path.resolve('.env')
 import { config } from 'dotenv'
 config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
+startServer()
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({

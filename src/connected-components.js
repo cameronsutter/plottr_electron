@@ -73,6 +73,7 @@ import {
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
+import { whenClientIsReady } from './socket-client'
 
 const win = getCurrentWindow()
 const version = app.getVersion()
@@ -80,17 +81,8 @@ const version = app.getVersion()
 const moveItemToTrash = shell.trashItem
 
 export const rmRF = (path, ...args) => {
-  return new Promise((resolve, reject) => {
-    const messageId = uuid()
-    function listener(event, errorMessage) {
-      if (errorMessage) {
-        reject(new Error(errorMessage))
-      } else {
-        resolve(true)
-      }
-    }
-    ipcRenderer.once(`rm-rf-reply-${messageId}`, listener)
-    ipcRenderer.send('rm-rf', path, messageId)
+  return whenClientIsReady(({ rmRf }) => {
+    return rmRf(path)
   })
 }
 

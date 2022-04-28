@@ -1,6 +1,7 @@
-import http from 'http'
 import { WebSocketServer } from 'ws'
+import { rm } from 'fs/promises'
 
+import { PING, RM_RF } from './message-types'
 import { logger } from './logger'
 
 const parseArgs = () => {
@@ -15,8 +16,40 @@ const setupListeners = (port) => {
 
   webSocketServer.on('connection', (webSocket) => {
     webSocket.on('message', (message) => {
-      logger.info('Message: ', message)
-      webSocket.send(`Echo back: ${message}`)
+      try {
+        const { type, messageId, payload } = JSON.parse(message)
+        switch (type) {
+          case PING: {
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                payload,
+              })
+            )
+            return
+          }
+          case RM_RF: {
+            logger.info('Deleting: ', payload)
+            rm(payload.path, { recursive: true })
+              .then(() => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    payload: {},
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while deleting ', payload, error)
+              })
+            return
+          }
+        }
+      } catch (error) {
+        logger.error('Failed to handle message: ', message, error)
+      }
     })
   })
 

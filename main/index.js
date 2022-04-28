@@ -22,7 +22,7 @@ import { openProjectWindow } from './modules/windows/projects'
 import { gracefullyQuit } from './modules/utils'
 import { addToKnown } from './modules/known_files'
 import { TEMP_FILES_PATH } from './modules/files'
-import { connect, startServer } from './server'
+import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
 
 ////////////////////////////////
@@ -72,10 +72,7 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      return connect(port)
-    })
-    .then((client) => {
-      listenOnIPCMain(client)
+      listenOnIPCMain(port)
       loadMenu()
 
       const fileLaunchedOn = fileToLoad(process.argv)

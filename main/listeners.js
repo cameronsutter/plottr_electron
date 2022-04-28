@@ -39,7 +39,7 @@ import {
 } from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
-export const listenOnIPCMain = (worker) => {
+export const listenOnIPCMain = (socketWorkerPort) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
     const lastFile = lastOpenedFile()
     const lastFileIsValid =
@@ -56,6 +56,10 @@ export const listenOnIPCMain = (worker) => {
         win.filePath
       )
     }
+  })
+
+  ipcMain.on('pls-tell-me-the-socket-worker-port', (event) => {
+    event.returnValue = socketWorkerPort
   })
 
   ipcMain.on('pls-set-dark-setting', (_event, newValue) => {

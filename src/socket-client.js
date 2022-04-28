@@ -2,7 +2,7 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING } from './messageTypes'
+import { PING } from './socket-server-message-types'
 
 export const connect = (port) => {
   const clientConnection = new WebSocket(`ws://localhost:${port}`)
@@ -53,7 +53,64 @@ export const connect = (port) => {
     sendPromise(PING, {})
   }
 
+  return new Promise((resolve, reject) => {
+    clientConnection.on('open', () => {
+      resolve({
+        ping,
+      })
+    })
+  })
+}
+
+const instance = () => {
+  let client = null
+  let resolvedPromise = null
+  let resolve = null
+  let reject = null
+
+  const createClient = (port) => {
+    connect(port)
+      .then((newClient) => {
+        client = newClient
+        if (resolve) resolve(newClient)
+      })
+      .catch(reject)
+  }
+
+  const checkClient = () => {
+    if (client === null) {
+      throw new Error('Socket server not yet ready.')
+    }
+  }
+
+  const getClient = () => {
+    checkClient()
+    return client
+  }
+
+  const whenClientIsReady = (f) => {
+    if (client) {
+      setTimeout(f, 0)
+      return
+    }
+    if (resolvedPromise) {
+      resolvedPromise.then(f)
+      return
+    }
+    resolvedPromise = new Promise((newResolve, newReject) => {
+      resolve = newResolve
+      reject = newReject
+    })
+    resolvedPromise.then(f)
+  }
+
   return {
-    ping,
+    createClient,
+    getClient,
+    whenClientIsReady,
   }
 }
+
+const { createClient, getClient, whenClientIsReady } = instance()
+
+export { createClient, getClient, whenClientIsReady }

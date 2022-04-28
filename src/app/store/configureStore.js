@@ -1,7 +1,6 @@
 import { isEqual } from 'lodash'
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
-import devToolsEnhancer from 'remote-redux-devtools'
 import { rootReducer, ActionTypes } from 'pltr/v2'
 import saver from '../middlewares/saver'
 import tracker from '../middlewares/tracker'
@@ -53,17 +52,6 @@ export function configureStore(initialState) {
     logger,
     reporter
   )
-  const enhancers =
-    process.env.NODE_ENV === 'production'
-      ? middlewares
-      : compose(
-          middlewares,
-          devToolsEnhancer({
-            hostname: 'localhost',
-            port: 8000,
-            realtime: true,
-          })
-        )
-  const store = createStore(reducer, initialState, enhancers)
+  const store = createStore(reducer, initialState, middlewares)
   return store
 }

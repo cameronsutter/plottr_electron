@@ -130,7 +130,6 @@
     "reactour": "^1.16.0",
     "redux": "^4.1.2",
     "redux-undo": "^1.0.1",
-    "remote-redux-devtools": "^0.5.16",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.9",
     "reselect": "^4.0.0",

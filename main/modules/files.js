@@ -237,7 +237,9 @@ const autoSaver = () => {
 
     const onCloud = selectors.isCloudFileSelector(file)
     const isOffline = selectors.isOfflineSelector(file)
-    const filePath = isOffline ? offlineFilePath(inputFilePath) : inputFilePath
+    const offlineModeEnabled = selectors.offlineModeEnabledSelector(file)
+    const filePath =
+      onCloud && isOffline && offlineModeEnabled ? offlineFilePath(inputFilePath) : inputFilePath
     if (!onCloud || isOffline) {
       try {
         await saveFile(filePath, file)

@@ -1,8 +1,4 @@
-import log from 'electron-log'
+import { startServer } from './init'
+import { connect } from './client'
 
-const START_PORT = 5000
-
-export const startServer = () => {
-  const randomPort = START_PORT + Math.floor(1000 * Math.random())
-  log.info(`Starting socket server on port: ${randomPort}`)
-}
+export { connect, startServer }

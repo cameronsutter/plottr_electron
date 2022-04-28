@@ -59,7 +59,8 @@
     "rollbar": "^2.19.4",
     "rtf.js": "^3.0.7",
     "tiny-invariant": "^1.0.6",
-    "tree-changes": "^0.6.1"
+    "tree-changes": "^0.6.1",
+    "ws": "^8.5.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

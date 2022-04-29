@@ -60,11 +60,11 @@ export const connect = (port) => {
   })
 
   const ping = () => {
-    sendPromise(PING, {})
+    return sendPromise(PING, {})
   }
 
   const rmRf = (path) => {
-    sendPromise(RM_RF, { path })
+    return sendPromise(RM_RF, { path })
   }
 
   return new Promise((resolve, reject) => {
@@ -107,7 +107,12 @@ const instance = () => {
     if (client) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          f(client)
+          const result = f(client)
+          if (typeof result.then === 'function') {
+            result.then(resolve)
+          } else {
+            resolve(result)
+          }
         }, 0)
       })
     }

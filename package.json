@@ -147,7 +147,7 @@
     "xml-js": "^1.6.11"
   },
   "build": {
-    "electronVersion": "10.2.0",
+    "electronVersion": "18.0.4",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "publish": [

@@ -290,7 +290,7 @@ const socketServerConfig = {
       plottr_locales: path.resolve('./node_modules/plottr_locales'),
     },
   },
-  target: 'electron-renderer',
+  target: 'node',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },

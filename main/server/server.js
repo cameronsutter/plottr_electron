@@ -1,5 +1,5 @@
 import { WebSocketServer } from 'ws'
-import { rm } from 'fs/promises'
+import fs from 'fs'
 
 import { PING, RM_RF } from './message-types'
 import { logger } from './logger'
@@ -9,6 +9,8 @@ const parseArgs = () => {
     port: process.argv[2],
   }
 }
+
+const { rm } = fs.promises
 
 const setupListeners = (port) => {
   logger.info(`Starting server on port: ${port}`)

@@ -14,6 +14,12 @@
   }
 }
 
+.dashboard__recent-project {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 .dashboard__template-section {
   margin-bottom: 20px;
 

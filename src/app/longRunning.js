@@ -8,7 +8,7 @@ const handleUnknownPerformanceEntry = (entry) => {
   logger.warn(`Detected unknown performance entry: ${JSON.stringify(entry)}`)
 }
 
-const handlePerformanceEntry = (entry) => {
+const _handlePerformanceEntry = (entry) => {
   switch (entry.entryType) {
     case 'longtask': {
       handleLongTask(entry)

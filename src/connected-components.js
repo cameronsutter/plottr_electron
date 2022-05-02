@@ -6,7 +6,6 @@ import { ActionCreators } from 'redux-undo'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
-import { v4 as uuid } from 'uuid'
 
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'

@@ -3,7 +3,7 @@ import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
 import { PING, RM_RF } from './socket-server-message-types'
-import { logger } from '../main/server/logger'
+import { logger } from './logger'
 
 export const connect = (port) => {
   const clientConnection = new WebSocket(`ws://localhost:${port}`)

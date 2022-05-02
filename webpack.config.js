@@ -251,4 +251,45 @@ const loginPopupConfig = {
   optimization: { splitChunks: false },
 }
 
-module.exports = [rendererConfig, mainConfig, loginPopupConfig]
+const socketServerConfig = {
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+  watch: process.env.NODE_ENV === 'dev',
+  context: path.resolve(__dirname, 'main'),
+  entry: {
+    socketServer: path.resolve('.', 'main', 'server', 'server.js'),
+  },
+  output: {
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: '[name].bundle.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
+    modules: ['main', 'node_modules'],
+    alias: {
+      docx: path.resolve('./node_modules/docx'),
+      plottr_locales: path.resolve('./node_modules/plottr_locales'),
+    },
+  },
+  target: 'node',
+  plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  optimization: { splitChunks: false },
+}
+
+module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig]

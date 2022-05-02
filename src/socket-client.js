@@ -89,7 +89,12 @@ const instance = () => {
         client = newClient
         if (resolve) resolve(newClient)
       })
-      .catch(reject)
+      .catch((error) => {
+        if (error) {
+          logger.error('Failed to connect to web socket server: ', error)
+          reject(error)
+        }
+      })
   }
 
   const checkClient = () => {

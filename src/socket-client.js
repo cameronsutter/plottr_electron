@@ -86,6 +86,7 @@ const instance = () => {
   const createClient = (port) => {
     connect(port)
       .then((newClient) => {
+        if (client) client.close(0, 'New client requested')
         client = newClient
         if (resolve) resolve(newClient)
       })

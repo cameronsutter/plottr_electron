@@ -31,6 +31,7 @@ import { listenOnIPCMain } from './listeners'
 log.info(`--------Init (${app.getVersion()})--------`)
 const ENV_FILE_PATH = path.resolve('.env')
 import { config } from 'dotenv'
+import { broadcastToAllWindows } from './modules/broadcast'
 config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 
@@ -61,8 +62,14 @@ app.userAgentFallback =
 // app boots, it only opens a window corresponding to that event.
 let openedFile = false
 
+let socketWorkerPort = null
+const broadcastPortChange = (port) => {
+  socketWorkerPort = port
+  broadcastToAllWindows('update-worker-port', port)
+}
+
 app.whenReady().then(() => {
-  startServer()
+  startServer(log, broadcastPortChange)
     .then((port) => {
       log.info(`Socket worker started on ${port}`)
       return port
@@ -72,7 +79,8 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      listenOnIPCMain(port)
+      socketWorkerPort = port
+      listenOnIPCMain(() => socketWorkerPort)
       loadMenu()
 
       const fileLaunchedOn = fileToLoad(process.argv)

@@ -322,6 +322,12 @@ ipcRenderer.on('error', (event, { message, source }) => {
   store.dispatch(actions.error.saveTempFileError(message))
 })
 
+ipcRenderer.on('update-worker-port', (_event, newPort) => {
+  const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
+  setPort(socketWorkerPort)
+  createClient(getPort())
+})
+
 // TODO: not sure when/whether we should unsubscribe.  Presumably
 // when the window is refreshed/closed?
 //

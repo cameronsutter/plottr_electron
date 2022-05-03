@@ -1,11 +1,10 @@
 import { fork } from 'child_process'
 import { join } from 'path'
-import log from 'electron-log'
 
 const START_PORT = 8000
 const MAX_ATTEMPTS = 10
 
-export const startServer = () => {
+export const startServer = (log, broadcastPortChange) => {
   let attempts = 0
 
   function attemptAStart() {
@@ -33,6 +32,7 @@ export const startServer = () => {
         if (message === 'ready') {
           log.info('Started socket server!')
           resolve(randomPort)
+          broadcastPortChange(randomPort)
         }
       })
     })

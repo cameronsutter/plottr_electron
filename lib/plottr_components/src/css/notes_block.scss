@@ -31,6 +31,10 @@
   }
 }
 
+.note-list__category-title {
+  word-break: break-all;
+}
+
 .note-list__list {
   .list-group-item {
     padding-right: 4px;

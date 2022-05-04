@@ -31,6 +31,10 @@
   }
 }
 
+.character-list__category-title {
+  word-break: break-all;
+}
+
 .character-list__list {
   .list-group-item {
     padding-right: 4px;

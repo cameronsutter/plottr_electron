@@ -23,6 +23,10 @@
   }
 }
 
+.place-list__category-title {
+  word-break: break-all;
+}
+
 .place-list__list {
   overflow: auto;
   height: calc(100% - 77px);

@@ -23,6 +23,15 @@
   }
 }
 
+.place-list__category-list {
+  overflow: auto;
+  height: calc(100% - 77px);
+  position: relative;
+  h2 {
+    font-size: 17px;
+  }
+}
+
 .place-list__category-title {
   word-break: break-all;
 }

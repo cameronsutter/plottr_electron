@@ -265,6 +265,15 @@
   min-height: 50px;
 }
 
+.card-dialog__book-selector {
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 5px;
+    color: $yellow-5;
+  }
+}
+
 .card-dialog__duplicate {
   margin-right: auto;
 }

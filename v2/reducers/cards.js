@@ -37,6 +37,8 @@ import {
   ADD_BOOK_FROM_TEMPLATE,
   DUPLICATE_CARD,
   MOVE_CARD_TO_BOOK,
+  DUPLICATE_LINE,
+  MOVE_LINE,
 } from '../constants/ActionTypes'
 import { newFileCards } from '../store/newFileState'
 import { card as defaultCard } from '../store/initialState'
@@ -452,6 +454,33 @@ const cards =
             positionWithinLine: highestPositionInLine + 1,
           },
         ]
+      }
+
+      case DUPLICATE_LINE: {
+        const cardsOnLine = state.filter(({ lineId }) => lineId === action.id)
+        const newState = cloneDeep(cardsOnLine)
+          .map((card, index) => ({
+            ...card,
+            lineId: action.newLineId,
+          }))
+          .reduce((acc, nextCard) => {
+            return [{ ...nextCard, id: nextId(acc) }, ...acc]
+          }, state)
+        return newState
+      }
+
+      case MOVE_LINE: {
+        const { cardToBeatIdMapping } = action
+        return state.map((card) => {
+          if (cardToBeatIdMapping[card.id]) {
+            return {
+              ...card,
+              beatId: cardToBeatIdMapping[card.id],
+            }
+          } else {
+            return card
+          }
+        })
       }
 
       default:

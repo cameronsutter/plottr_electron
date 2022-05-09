@@ -21,6 +21,8 @@ import m2021_2_8 from './2021.2.8'
 import m2021_4_13 from './2021.4.13'
 import m2021_6_9 from './2021.6.9'
 import m2021_8_1 from './2021.8.1'
+import m2022_5_17 from './2022.5.17'
+import m2022_5_17_1 from './2022.5.17-1'
 
 export default {
   m0_6,
@@ -46,4 +48,6 @@ export default {
   m2021_4_13,
   m2021_6_9,
   m2021_8_1,
+  m2022_5_17,
+  m2022_5_17_1,
 }

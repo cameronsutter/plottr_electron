@@ -14,6 +14,10 @@ import {
   DELETE_TAG_CATEGORY,
   UPDATE_TAG_CATEGORY,
   REORDER_TAG_CATEGORY,
+  ADD_PLACE_CATEGORY,
+  DELETE_PLACE_CATEGORY,
+  UPDATE_PLACE_CATEGORY,
+  REORDER_PLACE_CATEGORY,
   LOAD_CATEGORIES,
 } from '../constants/ActionTypes'
 import { newFileCategories } from '../store/newFileState'
@@ -67,6 +71,18 @@ const categories =
 
       case REORDER_TAG_CATEGORY:
         return reorderCategory('tags', state, action)
+
+      case ADD_PLACE_CATEGORY:
+        return addCategory('places', state, action)
+
+      case DELETE_PLACE_CATEGORY:
+        return deleteCategory('places', state, action)
+
+      case UPDATE_PLACE_CATEGORY:
+        return updateCategory('places', state, action)
+
+      case REORDER_PLACE_CATEGORY:
+        return reorderCategory('places', state, action)
 
       case LOAD_CATEGORIES:
         return action.categories

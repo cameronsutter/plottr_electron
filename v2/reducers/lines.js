@@ -22,6 +22,8 @@ import {
   LOAD_LINES,
   ADD_BOOK_FROM_TEMPLATE,
   ADD_BOOK,
+  DUPLICATE_LINE,
+  MOVE_LINE,
 } from '../constants/ActionTypes'
 import { line } from '../store/initialState'
 import { newFileLines, newFileSeriesLines } from '../store/newFileState'
@@ -170,6 +172,44 @@ const lines =
           },
           ...linesToKeep,
         ]
+      }
+
+      case DUPLICATE_LINE: {
+        const lineToDuplicate = state.find(({ id }) => id === action.id)
+        // Couldn't find the requested line
+        if (!lineToDuplicate) {
+          return state
+        }
+        const duplicatedLine = {
+          ...cloneDeep(lineToDuplicate),
+          id: action.newLineId,
+          position: action.position,
+        }
+        const linesInBook = state.filter(({ bookId }) => bookId === lineToDuplicate.bookId)
+        const linesInBookWithUpdatedPositions = linesInBook.map((line) => {
+          if (line.position < action.position) {
+            return line
+          } else {
+            return {
+              ...line,
+              position: line.position + 1,
+            }
+          }
+        })
+        const linesNotInBook = state.filter(({ bookId }) => bookId !== lineToDuplicate.bookId)
+        return [...linesInBookWithUpdatedPositions, ...linesNotInBook, duplicatedLine]
+      }
+
+      case MOVE_LINE: {
+        return state.map((line) => {
+          if (line.id === action.id) {
+            return {
+              ...line,
+              bookId: action.destinationBookId,
+            }
+          }
+          return line
+        })
       }
 
       case RESET:

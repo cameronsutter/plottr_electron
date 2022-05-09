@@ -28,6 +28,13 @@ export function convertHTMLString(html) {
 
 export function convertHTMLNodeList(nodeList) {
   return nodeList.map(deserialize).map((content) => {
+    if (content.children && content.isBold) {
+      return {
+        type: 'paragraph',
+        children: [{ text: content.children.toString() }],
+        isBold: true,
+      }
+    }
     return { type: 'paragraph', children: [{ text: content.toString() }] }
   })
 }
@@ -45,6 +52,9 @@ export function deserialize(el) {
   }
 
   const children = Array.from(el.childNodes).map(deserialize).flat()
+  const isBold =
+    el.style.fontWeight &&
+    (el.style.fontWeight.toLowerCase().trim() == 'bold' || el.style.fontWeight >= 700)
 
   switch (el.nodeName) {
     case 'BODY':
@@ -87,6 +97,7 @@ export function deserialize(el) {
       return jsx('element', { type: 'link', url: el.getAttribute('href') }, children)
     default:
       if (children?.length === 0) return el.textContent
+      if (isBold) return { children, isBold }
       return children
   }
 }

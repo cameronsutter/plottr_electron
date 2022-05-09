@@ -25,6 +25,14 @@ export const beatsByBookSelector = createSelector(
   }
 )
 
+export const beatsForAnotherBookSelector = createSelector(
+  bookIdSelector,
+  allBeatsSelector,
+  (bookId, beats) => {
+    return beats[bookId]
+  }
+)
+
 export const firstVisibleBeatForBookSelector = createSelector(
   allBeatsSelector,
   bookIdSelector,
@@ -48,6 +56,17 @@ const visibleBeatsByPosition = (beats, beatHierarchyIsOn) =>
     return beatHierarchyIsOn || currentDepth === maximumDepth
   })
 
+export const visibleBeatPositions = createSelector(
+  beatsByBookSelector,
+  beatHierarchyIsOn,
+  (beats, beatHierarchyIsOn) => {
+    return visibleBeatsByPosition(beats, beatHierarchyIsOn).reduce((acc, beat, index) => {
+      acc[beat.id] = index
+      return acc
+    }, {})
+  }
+)
+
 const visibleBeatsByPositionIgnoringCollapsed = (beats, beatHierarchyIsOn) =>
   beatsByPosition(() => {
     return true
@@ -69,6 +88,11 @@ export const sparceBeatMap = createSelector(
 
 export const sortedBeatsByBookSelector = createSelector(
   beatsByBookSelector,
+  beatsByPosition(() => true)
+)
+
+export const sortedBeatsForAnotherBookSelector = createSelector(
+  beatsForAnotherBookSelector,
   beatsByPosition(() => true)
 )
 

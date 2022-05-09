@@ -45,6 +45,7 @@ import * as featureFlagHelpers from './helpers/featureFlags'
 import * as colorHelpers from './helpers/colors'
 import * as editorHelpers from './helpers/editors'
 import * as timeHelpers from './helpers/time'
+import * as dateHelpers from './helpers/date'
 
 import * as template from './template'
 
@@ -243,6 +244,7 @@ const helpers = {
   colors: colorHelpers,
   editors: editorHelpers,
   time: timeHelpers,
+  date: dateHelpers,
 }
 
 const slate = {

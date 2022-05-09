@@ -119,7 +119,7 @@ const INITIAL_STATE = {
       backupLocation: 'default',
       dark: 'dark',
       numberOfBackups: null,
-      openDashboardFirst: false,
+      openDashboardFirst: true,
       backupType: 'never-delete',
       localBackups: false,
       email: 'test@test.com',

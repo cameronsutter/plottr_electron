@@ -70,9 +70,16 @@ export const ui = {
   timeline: {
     size: 'large',
   },
+  searchTerms: {
+    notes: null,
+    characters: null,
+    places: null,
+    tags: null,
+  },
 }
 
 export const notifications = {
+  message: null,
   toast: {
     cardAction: null,
     newBookId: null,

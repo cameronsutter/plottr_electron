@@ -1,5 +1,6 @@
 import { cloneDeep, difference, first, last } from 'lodash'
 import semverGt from 'semver/functions/gt'
+import semverLte from 'semver/functions/lte'
 import migrationsList from './migrations_list'
 import migrators from './migrations'
 import { toSemver } from './toSemver'
@@ -68,7 +69,9 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
     this.migrations = migrationsList.filter((version) => {
       if (!this.fileVersion) return true
       const initialVersion = this.data.file.initialVersion
-      return semverGt(toSemver(version), initialVersion)
+      return (
+        semverLte(toSemver(version), this.appVersion) && semverGt(toSemver(version), initialVersion)
+      )
     })
     const appliedMigrations = this.data.file.appliedMigrations
     this.migrations = difference(this.migrations, appliedMigrations)

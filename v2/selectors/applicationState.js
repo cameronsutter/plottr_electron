@@ -221,6 +221,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
   manipulatingAFileSelector,
   applicationSettingsAreLoadedSelector,
   checkingSessionOrNeedToCheckSessionSelector,
+  isOnboardingToProSelector,
   importingNewProjectSelector,
   isLoggedInSelector,
   shouldBeInProSelector,
@@ -233,6 +234,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
     manipulatingAFile,
     applicationSettingsAreLoaded,
     checkingSessionOrNeedToCheckSession,
+    isOnboardingToPro,
     isImportingNewProject,
     isLoggedIn,
     shouldBeInPro,
@@ -245,7 +247,7 @@ export const applicationIsBusyAndUninterruptableSelector = createSelector(
       checkingWhatToLoadOrNeedToCheckWhatToLoad ||
       manipulatingAFile ||
       !applicationSettingsAreLoaded ||
-      checkingSessionOrNeedToCheckSession ||
+      (checkingSessionOrNeedToCheckSession && !isOnboardingToPro) ||
       isImportingNewProject ||
       (isLoggedIn && shouldBeInPro && !checkedProSubscription) ||
       // TODO: Web doesn't have trials or licenses to load.

@@ -2,7 +2,7 @@ import { createSelector } from 'reselect'
 import { createSelectorCreator, defaultMemoize } from 'reselect'
 import { isEqual } from 'lodash'
 import { sortBy } from 'lodash'
-import { timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
+import { outlineSearchTermSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
 import { findNode, nodeParent } from '../reducers/tree'
 import { nextId } from '../store/newIds'
 import {
@@ -155,6 +155,29 @@ export const cardMapSelector = createSelector(
     const beatPositions = beatIds.map((x) => x)
     beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
     return cards.reduce(
+      cardReduce('lineId', 'beatId', hierarchyIsOn && collapsedBeats, beatPositions),
+      {}
+    )
+  }
+)
+
+export const outlineSearchedCardMapSelector = createSelector(
+  allCardsSelector,
+  collapsedBeatSelector,
+  sortedBeatsByBookSelector,
+  beatHierarchyIsOn,
+  outlineSearchTermSelector,
+  (cards, collapsedBeats, allSortedBeats, hierarchyIsOn, outlineSearchTerm) => {
+    const beatIds = allSortedBeats.map(({ id }) => id)
+    const beatPositions = beatIds.map((x) => x)
+    beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
+    const lowerCaseSearchTerm = outlineSearchTerm && outlineSearchTerm.toLowerCase()
+    const filteredCards = lowerCaseSearchTerm
+      ? cards.filter(({ title }) => {
+          return title.toLowerCase().match(lowerCaseSearchTerm)
+        })
+      : cards
+    return filteredCards.reduce(
       cardReduce('lineId', 'beatId', hierarchyIsOn && collapsedBeats, beatPositions),
       {}
     )

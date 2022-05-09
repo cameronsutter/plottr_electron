@@ -5,6 +5,7 @@ export const allCategoriesSelector = (state) => state.categories
 export const characterCategoriesSelector = (state) => state.categories.characters
 export const noteCategoriesSelector = (state) => state.categories.notes
 export const tagCategoriesSelector = (state) => state.categories.tags
+export const placeCategoriesSelector = (state) => state.categories.places
 
 export const sortedCharacterCategoriesSelector = createSelector(
   characterCategoriesSelector,
@@ -16,5 +17,9 @@ export const sortedNoteCategoriesSelector = createSelector(noteCategoriesSelecto
 )
 
 export const sortedTagCategoriesSelector = createSelector(tagCategoriesSelector, (categories) =>
+  sortBy(categories, 'position')
+)
+
+export const sortedPlaceCategoriesSelector = createSelector(placeCategoriesSelector, (categories) =>
   sortBy(categories, 'position')
 )

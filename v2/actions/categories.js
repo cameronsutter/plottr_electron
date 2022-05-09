@@ -11,6 +11,10 @@ import {
   DELETE_TAG_CATEGORY,
   UPDATE_TAG_CATEGORY,
   REORDER_TAG_CATEGORY,
+  ADD_PLACE_CATEGORY,
+  DELETE_PLACE_CATEGORY,
+  UPDATE_PLACE_CATEGORY,
+  REORDER_PLACE_CATEGORY,
   LOAD_CATEGORIES,
 } from '../constants/ActionTypes'
 
@@ -96,6 +100,35 @@ export function updateTagCategory(category) {
 export function reorderTagCategory(category, toIndex) {
   return {
     type: REORDER_TAG_CATEGORY,
+    category,
+    toIndex,
+  }
+}
+
+export function addPlaceCategory(name) {
+  return {
+    type: ADD_PLACE_CATEGORY,
+    name,
+  }
+}
+
+export function deletePlaceCategory(category) {
+  return {
+    type: DELETE_PLACE_CATEGORY,
+    category,
+  }
+}
+
+export function updatePlaceCategory(category) {
+  return {
+    type: UPDATE_PLACE_CATEGORY,
+    category,
+  }
+}
+
+export function reorderPlaceCategory(category, toIndex) {
+  return {
+    type: REORDER_PLACE_CATEGORY,
     category,
     toIndex,
   }

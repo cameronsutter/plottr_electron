@@ -1,4 +1,4 @@
-import { SHOW_TOAST_NOTIFICATION } from '../constants/ActionTypes'
+import { DISMISS_MESSAGE, SHOW_MESSAGE, SHOW_TOAST_NOTIFICATION } from '../constants/ActionTypes'
 import { notifications } from '../store/initialState'
 
 const INITIAL_STATE = notifications
@@ -6,7 +6,7 @@ const INITIAL_STATE = notifications
 const notificationsReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SHOW_TOAST_NOTIFICATION: {
-      const { visible, cardAction, newBookId } = action
+      const { visible, cardAction, lineAction, newBookId } = action
 
       return {
         ...state,
@@ -14,7 +14,21 @@ const notificationsReducer = (state = INITIAL_STATE, action) => {
           cardAction,
           newBookId,
           visible,
+          lineAction,
         },
+      }
+    }
+    case SHOW_MESSAGE: {
+      const { message } = action
+      return {
+        ...state,
+        message,
+      }
+    }
+    case DISMISS_MESSAGE: {
+      return {
+        ...state,
+        message: null,
       }
     }
     default:

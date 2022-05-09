@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect'
-import { sortBy } from 'lodash'
-import { placeSortSelector, placeFilterSelector, currentTimelineSelector } from './ui'
+import { sortBy, groupBy } from 'lodash'
+import {
+  placeSortSelector,
+  placeFilterSelector,
+  currentTimelineSelector,
+  placesSearchTermSelector,
+} from './ui'
 import { isSeries } from '../helpers/books'
 
 export const allPlacesSelector = (state) => state.places
@@ -15,6 +20,10 @@ export const singlePlaceSelector = createSelector(allPlacesSelector, selectId, (
 
 export const placesSortedAtoZSelector = createSelector(allPlacesSelector, (places) =>
   sortBy(places, 'name')
+)
+
+export const placesByCategorySelector = createSelector(allPlacesSelector, (places) =>
+  groupBy(places, 'categoryId')
 )
 
 export const placeFilterIsEmptySelector = createSelector(
@@ -67,6 +76,92 @@ export const visibleSortedPlacesSelector = createSelector(
     return sorted
   }
 )
+
+export const visibleSortedPlacesByCategorySelector = createSelector(
+  allPlacesSelector,
+  placesByCategorySelector,
+  placeFilterSelector,
+  placeFilterIsEmptySelector,
+  placeSortSelector,
+  (allPlaces, placesByCategory, filter, filterIsEmpty, sort) => {
+    if (!allPlaces.length) return {}
+
+    let visible = placesByCategory
+    if (!filterIsEmpty) {
+      visible = {}
+      allPlaces.forEach((ch) => {
+        const matches = Object.keys(filter).some((attr) => {
+          return filter[attr].some((val) => {
+            if (attr == 'tag') {
+              return ch.tags.includes(val)
+            }
+            if (attr == 'book') {
+              return ch.bookIds.includes(val)
+            }
+            if (attr == 'category') {
+              return ch.categoryId == val
+            }
+            if (val == '') {
+              if (!ch[attr] || ch[attr] == '') return true
+            } else {
+              if (ch[attr] && ch[attr] == val) return true
+            }
+            return false
+          })
+        })
+        if (matches) {
+          if (visible[ch.categoryId] && visible[ch.categoryId].length) {
+            visible[ch.categoryId].push(ch)
+          } else {
+            visible[ch.categoryId] = [ch]
+          }
+        }
+      })
+    }
+
+    return sortEachCategory(visible, sort)
+  }
+)
+
+export const visibleSortedSearchedPlacesByCategorySelector = createSelector(
+  visibleSortedPlacesByCategorySelector,
+  placesSearchTermSelector,
+  (placeCategories, searchTerm) => {
+    if (!searchTerm) return placeCategories
+
+    const lowSearchTerm = searchTerm.toLowerCase()
+    return Object.entries(placeCategories).reduce((acc, nextCategory) => {
+      const [key, places] = nextCategory
+      const newPlaces = places.filter(({ name }) => {
+        return name.toLowerCase().match(lowSearchTerm)
+      })
+      if (newPlaces.length > 0) {
+        return {
+          ...acc,
+          [key]: newPlaces,
+        }
+      } else {
+        return acc
+      }
+    }, {})
+  }
+)
+
+function sortEachCategory(visibleByCategory, sort) {
+  let sortOperands = sort.split('~')
+  let attrName = sortOperands[0]
+  let direction = sortOperands[1]
+  let sortByOperand = attrName === 'name' ? [attrName, 'id'] : [attrName, 'name']
+
+  Object.keys(visibleByCategory).forEach((k) => {
+    let characters = visibleByCategory[k]
+
+    let sorted = sortBy(characters, sortByOperand)
+    if (direction == 'desc') sorted.reverse()
+    visibleByCategory[k] = sorted
+  })
+  return visibleByCategory
+}
 
 export const placesSortedInBookSelector = createSelector(
   placesSortedAtoZSelector,

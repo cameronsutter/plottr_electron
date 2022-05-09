@@ -27,6 +27,11 @@ import {
   SET_PLACE_SORT,
   SET_TIMELINE_FILTER,
   SET_TIMELINE_SIZE,
+  SET_NOTES_SEARCH_TERM,
+  SET_TAGS_SEARCH_TERM,
+  SET_PLACES_SEARCH_TERM,
+  SET_CHARACTERS_SEARCH_TERM,
+  SET_OUTLINE_SEARCH_TERM,
 } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
@@ -179,6 +184,56 @@ const ui =
           ...state,
           timeline: timeline(state.timeline, action),
         }
+
+      case SET_NOTES_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            notes: action.searchTerm,
+          },
+        }
+      }
+
+      case SET_CHARACTERS_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            characters: action.searchTerm,
+          },
+        }
+      }
+
+      case SET_PLACES_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            places: action.searchTerm,
+          },
+        }
+      }
+
+      case SET_TAGS_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            tags: action.searchTerm,
+          },
+        }
+      }
+
+      case SET_OUTLINE_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            outline: action.searchTerm,
+          },
+        }
+      }
 
       default:
         return state

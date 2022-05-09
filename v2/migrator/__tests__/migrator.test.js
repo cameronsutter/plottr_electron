@@ -43,7 +43,7 @@ describe('migrator', () => {
             resolve(result)
           })
         )
-        expect(data.file.appliedMigrations).toEqual(['m2021_4_13', 'm2021_6_9', 'm2021_8_1'])
+        expect(data.file.appliedMigrations).toEqual(['m2021_4_13', 'm2021_6_9'])
       })
     })
     describe('with an `initialVersion` of 2021.8.1', () => {
@@ -93,7 +93,7 @@ describe('migrator', () => {
             resolve(result)
           })
         )
-        expect(data.file.appliedMigrations).toEqual(['m2021_6_9', 'm2021_8_1'])
+        expect(data.file.appliedMigrations).toEqual(['m2021_6_9'])
       })
     })
     describe('with an `initialVersion` of 2021.2.8', () => {

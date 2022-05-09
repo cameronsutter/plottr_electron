@@ -10,6 +10,8 @@ import {
   EXPAND_LINE,
   COLLAPSE_LINE,
   LOAD_LINES,
+  DUPLICATE_LINE,
+  MOVE_LINE,
 } from '../constants/ActionTypes'
 
 // N.B. if one does not supply a book ID, then it is assumed that the
@@ -56,6 +58,14 @@ export function collapseLine(id) {
   return { type: COLLAPSE_LINE, id }
 }
 
+export function duplicateLine(id, position) {
+  return { type: DUPLICATE_LINE, id, position }
+}
+
 export function load(patching, lines) {
   return { type: LOAD_LINES, patching, lines }
+}
+
+export function moveLine(id, destinationBookId) {
+  return { type: MOVE_LINE, id, destinationBookId }
 }

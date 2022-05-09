@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect'
 import { sortBy, groupBy } from 'lodash'
-import { characterSortSelector, characterFilterSelector, currentTimelineSelector } from './ui'
+import {
+  characterSortSelector,
+  characterFilterSelector,
+  currentTimelineSelector,
+  charactersSearchTermSelector,
+} from './ui'
 import { isSeries } from '../helpers/books'
 
 export const allCharactersSelector = (state) => state.characters
@@ -83,6 +88,30 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
     }
 
     return sortEachCategory(visible, sort)
+  }
+)
+
+export const visibleSortedSearchedCharactersByCategorySelector = createSelector(
+  visibleSortedCharactersByCategorySelector,
+  charactersSearchTermSelector,
+  (noteCategories, searchTerm) => {
+    if (!searchTerm) return noteCategories
+
+    const lowSearchTerm = searchTerm.toLowerCase()
+    return Object.entries(noteCategories).reduce((acc, nextCategory) => {
+      const [key, characters] = nextCategory
+      const newCharacters = characters.filter(({ name }) => {
+        return name.toLowerCase().match(lowSearchTerm)
+      })
+      if (newCharacters.length > 0) {
+        return {
+          ...acc,
+          [key]: newCharacters,
+        }
+      } else {
+        return acc
+      }
+    }, {})
   }
 )
 

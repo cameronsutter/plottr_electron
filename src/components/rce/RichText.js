@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 import { isEqual } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 import UnconnectedRichTextEditor from './RichTextEditor'
 import RichTextViewer from './RichTextViewer'
@@ -37,6 +38,7 @@ const RichTextConnector = (connector) => {
   const defaultSelection = null
 
   const RichText = (props) => {
+    const key = useRef(uuidv4())
     const [lock, setLock] = useState(props.isCloudFile ? null : true)
     const [stealingLock, setStealingLock] = useState(false)
     const [focus, setFocus] = useState(null)
@@ -45,9 +47,9 @@ const RichTextConnector = (connector) => {
     const disabled = lock && lock.clientId && lock.clientId !== props.clientId
     const showEditor = props.editable
 
-    const reset = () => {
+    const reset = useCallback(() => {
       props.onChange(null, defaultSelection)
-    }
+    }, [props.onChange])
 
     const onCloud = props.isLoggedIn && props.isCloudFile
 
@@ -150,6 +152,7 @@ const RichTextConnector = (connector) => {
     if (!disabled && showEditor) {
       body = (
         <RichTextEditor
+          key={key.current}
           id={props.id}
           onBlur={onBlur}
           onFocus={onFocus}

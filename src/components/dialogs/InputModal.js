@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { Form, FormGroup, FormControl, Button, Modal, Col } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, Button, Modal } from 'react-bootstrap'
 import { t as i18n } from 'plottr_locales'
 import getTestIds from '../getTestIds'
 
@@ -27,6 +27,7 @@ export default class InputModal extends Component {
   }
 
   render() {
+    const okText = this.props.customOkButtonText || i18n('OK')
     return (
       <Modal
         show={this.props.isOpen}
@@ -37,7 +38,7 @@ export default class InputModal extends Component {
         <Modal.Body>
           <Form horizontal onSubmit={this.onSubmit}>
             <FormGroup>
-              <Col sm={8}>
+              <div className="input-modal__body-wrapper">
                 <FormControl
                   data-testid={testIds.input}
                   type={this.props.type}
@@ -45,18 +46,19 @@ export default class InputModal extends Component {
                   defaultValue={this.props.defaultValue || ''}
                   onChange={this.handleChange}
                 />
-              </Col>
-              <Col sm={1}></Col>
-              <Col sm={1} style={{ marginRight: '4px' }}>
-                <Button data-testid={testIds.ok} bsStyle="primary" onClick={this.handleOK}>
-                  {i18n('OK')}
-                </Button>
-              </Col>
-              <Col sm={1}>
-                <Button data-testid={testIds.cancel} onClick={this.props.cancel}>
-                  {i18n('Cancel')}
-                </Button>
-              </Col>
+                <div className="input-modal__controls">
+                  <div className="input-modal__controls__control">
+                    <Button data-testid={testIds.ok} bsStyle="primary" onClick={this.handleOK}>
+                      {okText}
+                    </Button>
+                  </div>
+                  <div className="input-modal__controls__control">
+                    <Button data-testid={testIds.cancel} onClick={this.props.cancel}>
+                      {i18n('Cancel')}
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </FormGroup>
           </Form>
         </Modal.Body>
@@ -71,5 +73,6 @@ export default class InputModal extends Component {
     getValue: PropTypes.func.isRequired,
     title: PropTypes.string,
     defaultValue: PropTypes.any,
+    customOkButtonText: PropTypes.string,
   }
 }

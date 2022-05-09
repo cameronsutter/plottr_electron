@@ -20,39 +20,6 @@ const {
   lists: { reorderList },
 } = helpers
 
-const CELL_SIZES = {
-  small: {
-    vertical: {
-      start: 0,
-      length: 0,
-    },
-    horizontal: {
-      start: 0,
-      length: 0,
-    },
-  },
-  medium: {
-    vertical: {
-      start: 40,
-      length: 108.69,
-    },
-    horizontal: {
-      start: 27,
-      length: 90,
-    },
-  },
-  large: {
-    vertical: {
-      start: 40,
-      length: 108.69,
-    },
-    horizontal: {
-      start: 27,
-      length: 202,
-    },
-  },
-}
-
 const TimelineTableConnector = (connector) => {
   const CardCell = UnconnectedCardCell(connector)
   const BlankCard = UnconnectedBlankCard(connector)
@@ -69,24 +36,49 @@ const TimelineTableConnector = (connector) => {
     }
 
     setLength = () => {
-      const { tableRef, orientation, isMedium, isSmall } = this.props
+      const { tableRef, orientation, isSmall, isMedium } = this.props
       if (isSmall) return
 
       if (!tableRef) return
-      const size = isSmall ? 'small' : isMedium ? 'medium' : 'large'
-      const { start, length } = CELL_SIZES[size][orientation]
-      let newLength = this.props.beats.length * length + start
+      let newLength = 0
+      if (orientation === 'horizontal') {
+        const row = tableRef.querySelector('.sticky-table-row')
+        if (row) {
+          newLength = Array.from(row.children)
+            .slice(1, -1) // The first table cell is note above the line
+            .reduce((acc, nextNode) => {
+              return acc + nextNode.clientWidth
+            }, 0)
+        }
+      } else {
+        const row = tableRef.querySelectorAll('.sticky-table-row')
+        if (row) {
+          newLength = Array.from(row)
+            .slice(2, isMedium ? undefined : -1) // The first table cell is note above the line
+            .reduce((acc, nextNode) => {
+              return acc + nextNode.clientHeight
+            }, 0)
+        }
+      }
       if (this.state.tableLength != newLength) {
         this.setState({ tableLength: newLength })
       }
     }
 
     componentDidMount() {
-      this.setLength()
+      // We need to wait a minute to make sure that the DOM size
+      // calculations are done.
+      setTimeout(() => {
+        this.setLength()
+      }, 50)
     }
 
     componentDidUpdate() {
-      this.setLength()
+      // We need to wait a minute to make sure that the DOM size
+      // calculations are done.
+      setTimeout(() => {
+        this.setLength()
+      }, 50)
 
       const { visible } = this.props.toast
 
@@ -152,7 +144,7 @@ const TimelineTableConnector = (connector) => {
 
       const beatMapKeys = Object.keys(beatMapping)
       let howManyCells = 0
-      const renderedLines = lines.map((line) => {
+      const renderedLines = lines.map((line, index) => {
         const lineTitle = (
           <LineTitleCell
             line={line}
@@ -171,8 +163,10 @@ const TimelineTableConnector = (connector) => {
             </tr>
           )
         } else {
+          // Note the z-index.  It's needed to stack controls from the
+          // top row onto the next row.
           return (
-            <Row key={`lineId-${line.id}`}>
+            <Row key={`lineId-${line.id}`} style={{ zIndex: 100 - index, position: 'relative' }}>
               {lineTitle}
               {cards}
             </Row>
@@ -181,14 +175,20 @@ const TimelineTableConnector = (connector) => {
       })
       return [
         ...renderedLines,
-        <AddLineRow key="insert-line" bookId={currentTimeline} howManyCells={howManyCells} />,
+        <AddLineRow
+          key="insert-line"
+          bookId={currentTimeline}
+          howManyCells={howManyCells}
+          zIndex={100 - renderedLines.length}
+        />,
       ]
     }
 
     renderVertical() {
       const lineMap = this.lineMapping()
       const lineMapKeys = Object.keys(lineMap)
-      const { beats, beatActions, currentTimeline, isSmall, isLarge, isMedium } = this.props
+      const { beats, beatActions, currentTimeline, isSmall, isLarge, isMedium, beatPositions } =
+        this.props
 
       const beatToggler = (beat) => () => {
         if (!beat) return
@@ -201,6 +201,7 @@ const TimelineTableConnector = (connector) => {
         if (isLarge || isMedium || idx === 0) {
           inserts = lineMapKeys.flatMap((linePosition) => {
             const line = lineMap[linePosition]
+            const beatPosition = beatPositions[beat.id]
             return (
               <BeatInsertCell
                 key={`${linePosition}-insert`}
@@ -208,7 +209,7 @@ const TimelineTableConnector = (connector) => {
                 isInBeatList={false}
                 handleInsert={this.handleInsertNewBeat}
                 color={line.color}
-                showLine={beat.position == 0}
+                showLine={beatPosition == 0}
                 tableLength={this.state.tableLength}
                 hovering={this.state.hovering}
                 onMouseEnter={() => this.startHovering(beat.id)}
@@ -239,7 +240,7 @@ const TimelineTableConnector = (connector) => {
           const lastBeat = beats[idx - 1]
           return [
             <Row key={`beatId-${beat.id}`}>
-              {isLarge || idx === 0 ? (
+              {isLarge || isMedium || idx === 0 ? (
                 <BeatInsertCell
                   isFirst={idx === 0}
                   isInBeatList={true}
@@ -315,15 +316,16 @@ const TimelineTableConnector = (connector) => {
       this.props.notificationActions.showToastNotification(false)
     }
 
-    getToastMessage = (cardAction, newBookId) => {
-      if (cardAction == 'move' && newBookId) {
+    getToastMessage = (cardAction, newBookId, lineAction) => {
+      if ((cardAction === 'move' || lineAction === 'move') && newBookId) {
         const { books, actions } = this.props
-        const bookTitle = this.bookTitle(books[newBookId])
+        const bookTitle = newBookId === 'series' ? t('Series') : this.bookTitle(books[newBookId])
+        const entityType = cardAction ? 'Scene card' : 'Plotline'
 
         // if card is moved to another book, create the book link
         return (
           <div className="toast-message-with-anchor">
-            {t('Woohoo! Scene card moved to')}
+            {t(`Woohoo! ${entityType} moved to`)}
             <a href="#" onClick={() => actions.changeCurrentTimeline(newBookId)}>
               {` ${bookTitle}`}
             </a>
@@ -343,10 +345,22 @@ const TimelineTableConnector = (connector) => {
           )}
           role="alert"
         >
-          {this.getToastMessage(toast.cardAction, toast.newBookId)}
+          {this.getToastMessage(toast.cardAction, toast.newBookId, toast.lineAction)}
           <button className="close" onClick={() => this.handleCloseToast()}>
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+      )
+    }
+
+    renderMessage = () => {
+      const { message } = this.props
+      return (
+        <div
+          className={cx('update-notifier scene-card-update-toast alert alert-info')}
+          role="alert"
+        >
+          {message}
         </div>
       )
     }
@@ -398,12 +412,13 @@ const TimelineTableConnector = (connector) => {
     }
 
     renderVerticalCards(beat, lineMap, lineMapKeys) {
-      const { cardMap, isSmall, beatHasChildrenMap } = this.props
+      const { cardMap, isSmall, beatHasChildrenMap, beatPositions } = this.props
       const renderedCards = lineMapKeys.flatMap((linePosition) => {
         const cells = []
         const line = lineMap[linePosition]
         const cards = cardMap[`${line.id}-${beat.id}`]
-        const key = `${cards ? 'card' : 'blank'}-${beat.position}-${linePosition}`
+        const beatPosition = beatPositions[beat.id]
+        const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${linePosition}`
         if (cards) {
           cells.push(
             <CardCell
@@ -412,7 +427,7 @@ const TimelineTableConnector = (connector) => {
               beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
               beatId={beat.id}
               lineId={line.id}
-              beatPosition={beat.position}
+              beatPosition={beatPosition}
               linePosition={linePosition}
               color={line.color}
             />
@@ -430,7 +445,7 @@ const TimelineTableConnector = (connector) => {
     }
 
     render() {
-      const { darkMode, orientation, isSmall, toast } = this.props
+      const { darkMode, orientation, isSmall, toast, message } = this.props
 
       if (isSmall) {
         return (
@@ -440,7 +455,12 @@ const TimelineTableConnector = (connector) => {
               vertical: orientation == 'vertical',
             })}
           >
-            <table className="table-header-rotated">
+            <table
+              className="table-header-rotated"
+              ref={(ref) => {
+                this.props.setTableRef(ref)
+              }}
+            >
               <TopRow />
               <tbody>{this.renderRows()}</tbody>
               {toast.visible ? this.renderToastMessage() : null}
@@ -451,6 +471,7 @@ const TimelineTableConnector = (connector) => {
         return [
           <TopRow key="top-row" />,
           toast.visible ? this.renderToastMessage() : null,
+          message ? this.renderMessage() : null,
           this.renderRows(),
         ]
       }
@@ -480,6 +501,9 @@ const TimelineTableConnector = (connector) => {
     books: PropTypes.object.isRequired,
     toast: PropTypes.object,
     notificationActions: PropTypes.object,
+    beatPositions: PropTypes.object.isRequired,
+    setTableRef: PropTypes.func,
+    message: PropTypes.string,
   }
 
   const {
@@ -510,6 +534,8 @@ const TimelineTableConnector = (connector) => {
           isMedium: selectors.isMediumSelector(state.present),
           isLarge: selectors.isLargeSelector(state.present),
           toast: selectors.toastNotificationSelector(state.present),
+          beatPositions: selectors.visibleBeatPositions(state.present),
+          message: selectors.messageSelector(state.present),
         }
       },
       (dispatch) => {

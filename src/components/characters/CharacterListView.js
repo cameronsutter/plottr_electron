@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import {
   Glyphicon,
@@ -11,6 +11,7 @@ import {
   Grid,
   Row,
   Col,
+  FormControl,
 } from 'react-bootstrap'
 import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import CustomAttrFilterListConnector from '../CustomAttrFilterList'
@@ -26,8 +27,36 @@ import TemplatePickerConnector from '../templates/TemplatePicker'
 import SubNavConnector from '../containers/SubNav'
 import { newIds } from 'pltr/v2'
 import { checkDependencies } from '../checkDependencies'
+import { withEventTargetValue } from '../withEventTargetValue'
 
 const { nextId } = newIds
+
+const selectedId = (charactersByCategory, characters, categories, characterDetailId) => {
+  if (!characters.length) return null
+  if (!Object.keys(charactersByCategory).length) return null
+  const allCategories = [...categories, { id: null }] // uncategorized
+
+  // check for the currently active one
+  if (characterDetailId != null) {
+    const isVisible = allCategories.some((cat) => {
+      if (!charactersByCategory[cat.id] || !charactersByCategory[cat.id].length) return false
+      return charactersByCategory[cat.id].some((ch) => ch.id == characterDetailId)
+    })
+    if (isVisible) return characterDetailId
+  }
+
+  // default to first one in the first category
+  const firstCategoryWithChar = allCategories.find(
+    (cat) => charactersByCategory[cat.id] && charactersByCategory[cat.id].length
+  )
+  if (firstCategoryWithChar)
+    return (
+      charactersByCategory[firstCategoryWithChar.id][0] &&
+      charactersByCategory[firstCategoryWithChar.id][0].id
+    )
+
+  return null
+}
 
 const CharacterListViewConnector = (connector) => {
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
@@ -43,125 +72,97 @@ const CharacterListViewConnector = (connector) => {
   const templatesDisabled = connector.platform.templatesDisabled
   checkDependencies({ templatesDisabled })
 
-  class CharacterListView extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        attributesDialogOpen: false,
-        categoriesDialogOpen: false,
-        addAttrText: '',
-        characterDetailId: null,
-        editingSelected: false,
-        showTemplatePicker: false,
-        creating: false,
-        templateData: null,
-      }
-    }
+  const CharacterListView = ({
+    visibleCharactersByCategory,
+    filterIsEmpty,
+    characters,
+    categories,
+    customAttributes,
+    customAttributesThatCanChange,
+    characterSort,
+    darkMode,
+    charactersSearchTerm,
+    actions,
+    customAttributeActions,
+    uiActions,
+  }) => {
+    const [attributesDialogOpen, setAttributesDialogOpen] = useState(false)
+    const [categoriesDialogOpen, setCategoriesDialogOpen] = useState(false)
+    const [characterDetailId, setCharacterDetailId] = useState(null)
+    const [editingSelected, setEditingSelected] = useState(false)
+    const [showTemplatePicker, setShowTemplatePicker] = useState(false)
+    const [creating, setCreating] = useState(false)
+    const [templateData, setTemplateData] = useState(null)
 
-    static getDerivedStateFromProps(props, state) {
-      let returnVal = { ...state }
-      const { visibleCharactersByCategory, characters, categories } = props
-      returnVal.characterDetailId = CharacterListView.selectedId(
-        visibleCharactersByCategory,
-        characters,
-        categories,
-        state.characterDetailId
+    useEffect(() => {
+      setCharacterDetailId(
+        selectedId(visibleCharactersByCategory, characters, categories, characterDetailId)
       )
-      return returnVal
+    }, [visibleCharactersByCategory, characters, categories])
+
+    const editSelected = () => {
+      setEditingSelected(true)
     }
 
-    static selectedId(charactersByCategory, characters, categories, characterDetailId) {
-      if (!characters.length) return null
-      if (!Object.keys(charactersByCategory).length) return null
-      const allCategories = [...categories, { id: null }] // uncategorized
-
-      // check for the currently active one
-      if (characterDetailId != null) {
-        const isVisible = allCategories.some((cat) => {
-          if (!charactersByCategory[cat.id] || !charactersByCategory[cat.id].length) return false
-          return charactersByCategory[cat.id].some((ch) => ch.id == characterDetailId)
-        })
-        if (isVisible) return characterDetailId
-      }
-
-      // default to first one in the first category
-      const firstCategoryWithChar = allCategories.find(
-        (cat) => charactersByCategory[cat.id] && charactersByCategory[cat.id].length
-      )
-      if (firstCategoryWithChar)
-        return (
-          charactersByCategory[firstCategoryWithChar.id][0] &&
-          charactersByCategory[firstCategoryWithChar.id][0].id
-        )
-
-      return null
+    const stopEditing = () => {
+      setEditingSelected(false)
     }
 
-    editingSelected = () => {
-      this.setState({ editingSelected: true })
+    const closeDialog = () => {
+      setAttributesDialogOpen(false)
+      setCategoriesDialogOpen(false)
     }
 
-    stopEditing = () => {
-      this.setState({ editingSelected: false })
-    }
-
-    closeDialog = () => {
-      this.setState({
-        attributesDialogOpen: false,
-        categoriesDialogOpen: false,
-      })
-    }
-
-    handleCreateNewCharacter = () => {
-      // this.setState({ creating: true })
+    const handleCreateNewCharacter = () => {
+      // setState({ creating: true })
 
       // going back to old way (without modal) to think it over
-      const id = nextId(this.props.characters)
-      this.props.actions.addCharacter()
-      this.setState({ characterDetailId: id, editingSelected: true })
+      const id = nextId(characters)
+      actions.addCharacter()
+      setCharacterDetailId(id)
+      setEditingSelected(true)
     }
 
-    handleChooseTemplate = (templateData) => {
-      // this.setState({ showTemplatePicker: false, templateData: templateData, creating: true })
+    const handleChooseTemplate = (templateData) => {
+      // setState({ showTemplatePicker: false, templateData: templateData, creating: true })
 
       // going back to old way (without modal) to think it over
-      const id = nextId(this.props.characters)
-      this.props.actions.addCharacterWithTemplate(null, templateData)
-      this.setState({ characterDetailId: id, editingSelected: true, showTemplatePicker: false })
+      const id = nextId(characters)
+      actions.addCharacterWithTemplate(null, templateData)
+      setCharacterDetailId(id)
+      setEditingSelected(true)
+      setShowTemplatePicker(false)
     }
 
-    handleFinishCreate = (name) => {
-      const id = nextId(this.props.characters)
-      if (this.state.templateData) {
-        this.props.actions.addCharacterWithTemplate(name, this.state.templateData)
+    const handleFinishCreate = (name) => {
+      const id = nextId(characters)
+      if (templateData) {
+        actions.addCharacterWithTemplate(name, templateData)
       } else {
-        this.props.actions.addCharacter(name)
+        actions.addCharacter(name)
       }
 
-      this.setState({
-        creating: false,
-        templateData: null,
-        characterDetailId: id,
-        editingSelected: true,
-      })
+      setCreating(false)
+      setTemplateData(null)
+      setCharacterDetailId(id)
+      setEditingSelected(true)
     }
 
-    renderCreateInput() {
-      if (!this.state.creating) return null
+    const renderCreateInput = () => {
+      if (!creating) return null
 
       return (
         <InputModal
           title={i18n('Name')}
-          getValue={this.handleFinishCreate}
-          cancel={() => this.setState({ creating: false })}
+          getValue={handleFinishCreate}
+          cancel={() => setCreating(false)}
           isOpen={true}
           type="text"
         />
       )
     }
 
-    renderSubNav() {
-      const { filterIsEmpty, uiActions } = this.props
+    const renderSubNav = () => {
       const filterPopover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="characters" />
@@ -183,31 +184,31 @@ const CharacterListViewConnector = (connector) => {
         </Popover>
       )
       let sortGlyph = 'sort-by-attributes'
-      if (this.props.characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
+      if (characterSort.includes('~desc')) sortGlyph = 'sort-by-attributes-alt'
       return (
         <SubNav>
           <Nav bsStyle="pills">
             <NavItem>
               <ButtonGroup>
-                <Button bsSize="small" onClick={this.handleCreateNewCharacter}>
+                <Button bsSize="small" onClick={handleCreateNewCharacter}>
                   <Glyphicon glyph="plus" /> {i18n('New')}
                 </Button>
                 <Button
                   disabled={templatesDisabled}
                   bsSize="small"
-                  onClick={() => this.setState({ showTemplatePicker: true })}
+                  onClick={() => setShowTemplatePicker(true)}
                 >
                   {i18n('Use Template')}
                 </Button>
               </ButtonGroup>
             </NavItem>
             <NavItem>
-              <Button bsSize="small" onClick={() => this.setState({ attributesDialogOpen: true })}>
+              <Button bsSize="small" onClick={() => setAttributesDialogOpen(true)}>
                 <Glyphicon glyph="list" /> {i18n('Attributes')}
               </Button>
             </NavItem>
             <NavItem>
-              <Button bsSize="small" onClick={() => this.setState({ categoriesDialogOpen: true })}>
+              <Button bsSize="small" onClick={() => setCategoriesDialogOpen(true)}>
                 <Glyphicon glyph="list" /> {i18n('Categories')}
               </Button>
             </NavItem>
@@ -238,36 +239,43 @@ const CharacterListViewConnector = (connector) => {
                 </Button>
               </OverlayTrigger>
             </NavItem>
+            <NavItem>
+              <FormControl
+                onChange={withEventTargetValue(uiActions.setCharactersSearchTerm)}
+                value={charactersSearchTerm}
+                type="text"
+                placeholder="Search"
+              />
+            </NavItem>
           </Nav>
         </SubNav>
       )
     }
 
-    renderVisibleCharacters = (categoryId) => {
-      const { visibleCharactersByCategory } = this.props
+    const renderVisibleCharacters = (categoryId) => {
       if (!visibleCharactersByCategory[categoryId]) return []
 
       return visibleCharactersByCategory[categoryId].map((ch) => (
         <CharacterItem
           key={ch.id}
           character={ch}
-          selected={ch.id == this.state.characterDetailId}
-          startEdit={this.editingSelected}
-          stopEdit={this.stopEditing}
-          select={() => this.setState({ characterDetailId: ch.id })}
+          selected={ch.id == characterDetailId}
+          startEdit={editSelected}
+          stopEdit={stopEditing}
+          select={() => setCharacterDetailId(ch.id)}
         />
       ))
     }
 
-    renderCategory(category) {
-      const charactersInCategory = this.renderVisibleCharacters(category.id)
+    const renderCategory = (category) => {
+      const charactersInCategory = renderVisibleCharacters(category.id)
       if (!charactersInCategory.length) return null
       return (
         <div key={`category-${category.id}`}>
-          <h2>{category.name}</h2>
+          <h2 className="character-list__category-title">{category.name}</h2>
           <div
             className={cx('character-list__list', 'list-group', {
-              darkmode: this.props.darkMode,
+              darkmode: darkMode,
             })}
           >
             {charactersInCategory}
@@ -276,84 +284,81 @@ const CharacterListViewConnector = (connector) => {
       )
     }
 
-    renderCharacters() {
-      let categories = [...this.props.categories]
-      categories.push({ id: null, name: i18n('Uncategorized') })
-
-      return categories.map((cat) => this.renderCategory(cat))
+    const renderCharacters = () => {
+      return [...categories, { id: null, name: i18n('Uncategorized') }].map((cat) =>
+        renderCategory(cat)
+      )
     }
 
-    renderCharacterDetails() {
-      let character = this.props.characters.find((char) => char.id == this.state.characterDetailId)
+    const renderCharacterDetails = () => {
+      let character = characters.find((char) => char.id == characterDetailId)
       if (!character) return null
 
       return (
         <CharacterView
           key={`character-${character.id}`}
           characterId={character.id}
-          editing={this.state.editingSelected}
-          stopEditing={this.stopEditing}
-          startEditing={this.editingSelected}
-          openAttributes={() => this.setState({ attributesDialogOpen: true })}
+          editing={editingSelected}
+          stopEditing={stopEditing}
+          startEditing={editSelected}
+          openAttributes={() => setAttributesDialogOpen(true)}
         />
       )
     }
 
-    renderCustomAttributes() {
-      if (!this.state.attributesDialogOpen) return null
+    const renderCustomAttributes = () => {
+      if (!attributesDialogOpen) return null
 
-      return <CustomAttributeModal type="characters" closeDialog={this.closeDialog} />
+      return <CustomAttributeModal type="characters" closeDialog={closeDialog} />
     }
 
-    renderCategoriesModal() {
-      if (!this.state.categoriesDialogOpen) return null
+    const renderCategoriesModal = () => {
+      if (!categoriesDialogOpen) return null
 
-      return <CharacterCategoriesModal closeDialog={this.closeDialog} />
+      return <CharacterCategoriesModal closeDialog={closeDialog} />
     }
 
-    renderTemplatePicker() {
-      if (!this.state.showTemplatePicker) return null
+    const renderTemplatePicker = () => {
+      if (!showTemplatePicker) return null
 
       return (
         <TemplatePicker
           modal={true}
           types={['characters']}
-          isOpen={this.state.showTemplatePicker}
-          close={() => this.setState({ showTemplatePicker: false })}
-          onChooseTemplate={this.handleChooseTemplate}
-          canMakeCharacterTemplates={!!this.props.customAttributes.length}
+          isOpen={showTemplatePicker}
+          close={() => setShowTemplatePicker(false)}
+          onChooseTemplate={handleChooseTemplate}
+          canMakeCharacterTemplates={!!customAttributes.length}
         />
       )
     }
 
-    render() {
-      if (this.state.editingSelected) window.SCROLLWITHKEYS = false
-      else window.SCROLLWITHKEYS = true
+    if (editingSelected) window.SCROLLWITHKEYS = false
+    else window.SCROLLWITHKEYS = true
 
-      return (
-        <div className="character-list container-with-sub-nav">
-          {this.renderSubNav()}
-          {this.renderCustomAttributes()}
-          {this.renderCategoriesModal()}
-          {this.renderTemplatePicker()}
-          {this.renderCreateInput()}
-          <Grid fluid className="tab-body">
-            <Row>
-              <Col sm={3}>
-                <h1 className={cx('secondary-text', { darkmode: this.props.darkMode })}>
-                  {i18n('Characters')}{' '}
-                  <Button onClick={this.handleCreateNewCharacter}>
-                    <Glyphicon glyph="plus" />
-                  </Button>
-                </h1>
-                <div className="character-list__category-list">{this.renderCharacters()}</div>
-              </Col>
-              <Col sm={9}>{this.renderCharacterDetails()}</Col>
-            </Row>
-          </Grid>
-        </div>
-      )
-    }
+    return (
+      <div className="character-list container-with-sub-nav">
+        {renderSubNav()}
+        {renderCustomAttributes()}
+        {renderCategoriesModal()}
+        {renderTemplatePicker()}
+        {renderCreateInput()}
+        <Grid fluid className="tab-body">
+          <Row>
+            <Col sm={3}>
+              <h1 className={cx('secondary-text', { darkmode: darkMode })}>
+                {i18n('Characters')}{' '}
+                <Button onClick={handleCreateNewCharacter}>
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </h1>
+              <div className="character-list__category-list">{renderCharacters()}</div>
+            </Col>
+            <Col sm={9}>{renderCharacterDetails()}</Col>
+          </Row>
+        </Grid>
+      </div>
+    )
   }
 
   CharacterListView.propTypes = {
@@ -365,6 +370,7 @@ const CharacterListViewConnector = (connector) => {
     customAttributesThatCanChange: PropTypes.array,
     characterSort: PropTypes.string,
     darkMode: PropTypes.bool,
+    charactersSearchTerm: PropTypes.string,
     actions: PropTypes.object.isRequired,
     customAttributeActions: PropTypes.object.isRequired,
     uiActions: PropTypes.object.isRequired,
@@ -387,7 +393,7 @@ const CharacterListViewConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          visibleCharactersByCategory: selectors.visibleSortedCharactersByCategorySelector(
+          visibleCharactersByCategory: selectors.visibleSortedSearchedCharactersByCategorySelector(
             state.present
           ),
           filterIsEmpty: selectors.characterFilterIsEmptySelector(state.present),
@@ -399,6 +405,7 @@ const CharacterListViewConnector = (connector) => {
           ),
           characterSort: selectors.characterSortSelector(state.present),
           darkMode: selectors.isDarkModeSelector(state.present),
+          charactersSearchTerm: selectors.charactersSearchTermSelector(state.present),
         }
       },
       (dispatch) => {

@@ -4,6 +4,13 @@ import { t } from 'plottr_locales'
 import { IoIosDocument } from 'react-icons/io'
 import { checkDependencies } from '../../checkDependencies'
 
+const truncateTitle = (title) => {
+  if (title.length > 80) {
+    return `${title.slice(0, 80)}...`
+  }
+  return title
+}
+
 const BackupFilesConnector = (connector) => {
   const {
     platform: {
@@ -27,11 +34,11 @@ const BackupFilesConnector = (connector) => {
           <p>
             <strong>{t('Session Start')}</strong>
             <br />
-            <span>{nameSansStart}</span>
+            <span>{truncateTitle(nameSansStart)}</span>
           </p>
         )
       } else {
-        return <p>{name}</p>
+        return <p>{truncateTitle(name)}</p>
       }
     }
 
@@ -42,22 +49,23 @@ const BackupFilesConnector = (connector) => {
           <p title={nameSansStart}>
             <strong>{t('Session Start')}</strong>
             <br />
-            <span>{nameSansStart}</span>
+            <span>{truncateTitle(nameSansStart)}</span>
           </p>
         )
       } else {
-        return <p title={storageObject.fileName}>{storageObject.fileName}</p>
+        return <p title={storageObject.fileName}>{truncateTitle(storageObject.fileName)}</p>
       }
     }
 
-    const renderedFiles = folder.backups.reduce((acc, b) => {
+    const renderedFiles = folder.backups.reduce((acc, b, index) => {
       const isCloudBackup = b.storagePath
       const fileName = isCloudBackup ? b.fileName?.toLowerCase() : b.toLowerCase()
       if (fileName?.includes(searchTerm.toLowerCase())) {
         const filePath = isCloudBackup ? b.storagePath : joinPath(folder.path, b)
-        acc.push(
+        return [
+          ...acc,
           <div
-            key={b}
+            key={index}
             className="dashboard__backups__item icon"
             onClick={() => openInFolder(filePath)}
           >
@@ -65,8 +73,8 @@ const BackupFilesConnector = (connector) => {
             <div className="dashboard__backups__item__title">
               {isCloudBackup ? fileNameFromStorageObject(b) : fileNameFromPath(b)}
             </div>
-          </div>
-        )
+          </div>,
+        ]
       }
       return acc
     }, [])

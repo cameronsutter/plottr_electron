@@ -94,6 +94,7 @@ const RecentFilesConnector = (connector) => {
     shouldBeInPro,
     offlineModeEnabled,
     isOnWeb,
+    hasCurrentProLicense,
   }) => {
     const [searchTerm, setSearchTerm] = useState('')
     const [onlineSortedIds, onlineFilesById] = sortedKnownFiles
@@ -125,11 +126,20 @@ const RecentFilesConnector = (connector) => {
 
     useEffect(() => {
       if ((!isInOfflineMode && !resuming) || !shouldBeInPro) {
-        if (!isEqual(onlineSortedIds, sortedIds)) {
-          setSortedIds(onlineSortedIds)
-        }
-        if (!isEqual(onlineFilesById, filesById)) {
-          setFilesById(onlineFilesById)
+        const newFilesById = Object.entries(onlineFilesById).reduce((acc, [id, file]) => {
+          if ((file.fileName || file.path || '').toLowerCase().includes(searchTerm.toLowerCase())) {
+            return {
+              ...acc,
+              [id]: file,
+            }
+          }
+
+          return acc
+        }, {})
+        if (!isEqual(newFilesById, filesById)) {
+          const newSortedIds = onlineSortedIds.filter((id) => newFilesById[id])
+          setFilesById(newFilesById)
+          setSortedIds(newSortedIds)
         }
       } else if (offlineModeEnabled && isInOfflineMode) {
         listOfflineFiles().then((offlineFiles) => {
@@ -153,6 +163,7 @@ const RecentFilesConnector = (connector) => {
       setFilesById,
       setSortedIds,
       resuming,
+      searchTerm,
     ])
 
     const openFile = (filePath, id) => {
@@ -300,7 +311,11 @@ const RecentFilesConnector = (connector) => {
 
     return (
       <div className="dashboard__recent-files">
-        <RecentsHeader setSearchTerm={setSearchTerm} />
+        <RecentsHeader
+          setSearchTerm={setSearchTerm}
+          hasCurrentProLicense={hasCurrentProLicense}
+          isOnWeb={isOnWeb}
+        />
         {renderRecents() || <Spinner />}
       </div>
     )
@@ -315,6 +330,7 @@ const RecentFilesConnector = (connector) => {
     shouldBeInPro: PropTypes.bool,
     offlineModeEnabled: PropTypes.bool,
     isOnWeb: PropTypes.bool,
+    hasCurrentProLicense: PropTypes.bool,
   }
 
   const {
@@ -334,6 +350,7 @@ const RecentFilesConnector = (connector) => {
       shouldBeInPro: selectors.shouldBeInProSelector(state.present),
       offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
       isOnWeb: selectors.isOnWebSelector(state.present),
+      hasCurrentProLicense: selectors.hasProSelector(state.present),
     }))(RecentFiles)
   }
 

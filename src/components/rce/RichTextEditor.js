@@ -43,6 +43,7 @@ const RichTextEditorConnector = (connector) => {
   const ToolBar = UnconnectedToolBar(connector)
 
   const RichTextEditor = ({
+    key,
     id,
     undoId,
     text,
@@ -96,18 +97,15 @@ const RichTextEditorConnector = (connector) => {
     }, [autoFocus, editorWrapperRef])
 
     // State management
-    const [value, currentSelection, key, onValueChanged, onKeyDown, onPaste] = useEditState(
-      editor,
-      id,
-      fileId,
-      clientId,
-      onChange,
-      undo,
-      redo,
-      text,
-      selection,
-      undoId
-    )
+    const [
+      value,
+      onValueChanged,
+      onKeyDown,
+      onPaste,
+      _signalFocusToEditState,
+      _signalBlurToEditState,
+      _editorIsReady,
+    ] = useEditState(key, fileId, id, editor, onChange, undo, redo, text, selection, undoId, log)
 
     const handleKeyDown = (event) => {
       for (const hotkey in HOTKEYS) {
@@ -187,9 +185,9 @@ const RichTextEditorConnector = (connector) => {
 
     const otherProps = {}
     return (
-      <Slate editor={editor} value={value} onChange={onValueChanged} key={key.current}>
+      <Slate editor={editor} value={value} onChange={onValueChanged} key={key}>
         <div className={cx('slate-editor__wrapper', className)}>
-          <ToolBar editor={editor} selection={currentSelection} />
+          <ToolBar editor={editor} selection={selection} />
           <div
             // the firstChild will be the contentEditable dom node
             ref={(e) => {
@@ -219,6 +217,7 @@ const RichTextEditorConnector = (connector) => {
   }
 
   RichTextEditor.propTypes = {
+    key: PropTypes.string.isRequired,
     text: PropTypes.any,
     id: PropTypes.string,
     fileId: PropTypes.string,

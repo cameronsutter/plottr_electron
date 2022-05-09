@@ -138,6 +138,7 @@ const ImagePickerConnector = (connector) => {
 
     close = () => {
       this.setState({ open: false })
+      if (this.props.onClose) this.props.onClose()
       if (this.props.modalOnly) this.props.close()
     }
 
@@ -405,6 +406,7 @@ const ImagePickerConnector = (connector) => {
     modalOnly: PropTypes.bool,
     deleteButton: PropTypes.bool,
     close: PropTypes.func,
+    onClose: PropTypes.func,
     images: PropTypes.object,
     actions: PropTypes.object,
     isCloudFile: PropTypes.bool,

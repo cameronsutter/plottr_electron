@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import { Glyphicon, Nav, NavItem, Button, Popover, Alert, Grid, Row, Col } from 'react-bootstrap'
+import {
+  FormControl,
+  Glyphicon,
+  Nav,
+  NavItem,
+  Button,
+  Popover,
+  Alert,
+  Grid,
+  Row,
+  Col,
+} from 'react-bootstrap'
 import UnconnectedOverlayTrigger from '../OverlayTrigger'
 import UnconnectedBeatView from './BeatView'
 import UnconnectedMiniMap from './MiniMap'
@@ -12,6 +23,7 @@ import { helpers } from 'pltr/v2'
 import { emptyCard } from 'pltr/v2/helpers/cards'
 
 import { checkDependencies } from '../checkDependencies'
+import { withEventTargetValue } from '../withEventTargetValue'
 
 const {
   card: { cardMapping },
@@ -38,22 +50,14 @@ const OutlineViewConnector = (connector) => {
     beats,
     allCards,
     card2Dmap,
+    outlineSearchTerm,
   }) => {
     const [active, setActive] = useState(0)
     const [firstRender, setFirstRender] = useState(true)
 
     useEffect(() => {
       setTimeout(() => setFirstRender(false), 500)
-    }, [])
-
-    useEffect(() => {
-      setFirstRender(true)
-      setTimeout(() => setFirstRender(false), 500)
     }, [currentTimeline])
-
-    const fixMe = () => {
-      log.warn('OutlineView waypoint needs fixing')
-    }
 
     const filterItem = (id) => {
       actions.setOutlineFilter(id)
@@ -123,6 +127,14 @@ const OutlineViewConnector = (connector) => {
               </OverlayTrigger>
               {filterDeclaration}
             </NavItem>
+            <NavItem>
+              <FormControl
+                onChange={withEventTargetValue(actions.setOutlineSearchTerm)}
+                value={outlineSearchTerm}
+                type="text"
+                placeholder="Search"
+              />
+            </NavItem>
           </Nav>
           {!exportDisabled && (
             <Nav pullRight>
@@ -149,12 +161,7 @@ const OutlineViewConnector = (connector) => {
             : []
           return (
             <ErrorBoundary key={beat.id}>
-              <BeatView
-                beat={beat}
-                cards={beatCards}
-                waypoint={fixMe}
-                activeFilter={!!outlineFilter}
-              />
+              <BeatView beat={beat} cards={beatCards} activeFilter={!!outlineFilter} />
             </ErrorBoundary>
           )
         })
@@ -205,6 +212,7 @@ const OutlineViewConnector = (connector) => {
     currentTimeline: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     isSeries: PropTypes.bool,
     actions: PropTypes.object.isRequired,
+    outlineSearchTerm: PropTypes.string.isRequired,
   }
 
   const {
@@ -222,10 +230,11 @@ const OutlineViewConnector = (connector) => {
           beats: selectors.visibleSortedBeatsByBookIgnoringCollapsedSelector(state.present),
           lines: selectors.sortedLinesByBookSelector(state.present),
           beatMapping: selectors.sparceBeatMap(state.present),
-          card2Dmap: selectors.cardMapSelector(state.present),
+          card2Dmap: selectors.outlineSearchedCardMapSelector(state.present),
           outlineFilter: selectors.outlineFilterSelector(state.present),
           allCards: selectors.allCardsSelector(state.present),
           isSeries: selectors.isSeriesSelector(state.present),
+          outlineSearchTerm: selectors.outlineSearchTermSelector(state.present),
         }
       },
       (dispatch) => {

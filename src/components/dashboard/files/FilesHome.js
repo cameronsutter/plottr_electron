@@ -139,15 +139,14 @@ const FilesHomeConnector = (connector) => {
     const handleNameInput = useCallback(
       (value) => {
         setNamingFile(null)
-        setTemplate(null)
-
         if (template) {
           createWithTemplate(template, value)
         } else {
           createNew(template, value)
         }
+        setTemplate(null)
       },
-      [setNamingFile, setTemplate]
+      [setNamingFile, setTemplate, template, namingFile]
     )
     const cancelNameInput = useCallback(() => {
       setNamingFile(null)

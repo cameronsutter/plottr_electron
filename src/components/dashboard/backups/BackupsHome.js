@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
-import { t } from 'plottr_locales'
 import { Col, Grid, Row, FormControl } from 'react-bootstrap'
+
+import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
+
 import UnconnectedDashboardErrorBoundary from '../../containers/DashboardErrorBoundary'
 import UnconnectedBackupFiles from './BackupFiles'
 import UnconnectedFolders from './Folders'
@@ -24,18 +27,17 @@ const BackupsHomeConnector = (connector) => {
       setSearchTerm('')
     }, [selectedFolder])
 
-    let body = null
-    if (selectedFolder) {
-      body = <BackupFiles folder={selectedFolder} searchTerm={searchTerm} />
-    } else {
-      body = <Folders selectFolder={selectFolder} folders={folders} searchTerm={searchTerm} />
-    }
+    const body = selectedFolder ? (
+      <BackupFiles folder={selectedFolder} searchTerm={searchTerm} />
+    ) : (
+      <Folders selectFolder={selectFolder} folders={folders} searchTerm={searchTerm} />
+    )
 
     let breadcrumb = null
     if (selectedFolder) {
       const date = selectedFolder.date
       const dateStr = t('{date, date, medium}', {
-        date: date instanceof Date ? date : new Date(date.replace(/_/g, '-')),
+        date: date instanceof Date ? date : helpers.date.parseStringDate(date),
       })
       breadcrumb = (
         <div className="dashboard__breadcrumb">

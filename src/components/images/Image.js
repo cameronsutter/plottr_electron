@@ -21,6 +21,10 @@ const ImageConnector = (connector) => {
     }
 
     useEffect(() => {
+      setImageSrc(null)
+    }, [setImageSrc, image])
+
+    useEffect(() => {
       if (!image || imageSrc) return
 
       if (isOnStorage()) {
@@ -31,6 +35,12 @@ const ImageConnector = (connector) => {
         setImageSrc(image.data)
       }
     }, [image, setImageSrc, imageSrc])
+
+    useEffect(() => {
+      if (!image && imageSrc) {
+        setImageSrc(null)
+      }
+    }, [image, imageSrc])
 
     if (!image && !imageSrc) return null
     else if (!image || !imageSrc) return <Spinner />

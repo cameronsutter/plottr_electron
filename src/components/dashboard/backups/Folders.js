@@ -1,23 +1,26 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
-import { t } from 'plottr_locales'
 import { IoIosFolder } from 'react-icons/io'
-import { Spinner } from '../../Spinner'
 import { Badge } from 'react-bootstrap'
+
+import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
+
+import { Spinner } from '../../Spinner'
 
 const FoldersConnector = (connector) => {
   const Folders = ({ selectFolder, folders, searchTerm }) => {
     if (searchTerm.length && !folders.length) return <p>{t('No Matches')}</p>
     if (!folders.length) return <Spinner />
 
-    const renderedFolders = folders.map((f) => {
+    const renderedFolders = folders.map((f, index) => {
       try {
         const dateStr = t('{date, date, medium}', {
-          date: f.date instanceof Date ? f.date : new Date(f.date.replace(/_/g, '-')),
+          date: f.date instanceof Date ? f.date : helpers.date.parseStringDate(f.date),
         })
         return (
           <div
-            key={f.date}
+            key={index}
             className="dashboard__backups__item icon"
             onClick={() => selectFolder(f)}
           >

@@ -25,11 +25,18 @@ const BookConnector = (connector) => {
   } = connector
 
   class Book extends Component {
-    state = { editing: false, hovering: false, deleting: false, showTemplatePicker: false }
+    state = {
+      editing: false,
+      hovering: false,
+      deleting: false,
+      showTemplatePicker: false,
+      showImagePicker: false,
+    }
 
     chooseImage = (newId) => {
       const id = newId == -1 ? null : newId
       this.props.actions.editBook(this.props.book.id, { imageId: id })
+      this.setState({ hovering: false })
     }
 
     deleteBook = (e) => {
@@ -39,7 +46,7 @@ const BookConnector = (connector) => {
 
     cancelDelete = (e) => {
       e.stopPropagation()
-      this.setState({ deleting: false })
+      this.setState({ deleting: false, hovering: false })
     }
 
     handleDelete = (e) => {
@@ -54,6 +61,14 @@ const BookConnector = (connector) => {
     handleChooseTemplate = (template) => {
       this.props.addBook(template)
       this.setState({ showTemplatePicker: false })
+    }
+
+    finishEditing = () => {
+      this.setState({ editing: false, hovering: false })
+    }
+
+    cancelPickImage = () => {
+      this.setState({ hovering: false })
     }
 
     renderDelete() {
@@ -78,6 +93,7 @@ const BookConnector = (connector) => {
             <ImagePicker
               chooseImage={this.chooseImage}
               selectedId={this.props.book.imageId}
+              onClose={this.cancelPickImage}
               iconOnly
               deleteButton
             />
@@ -101,7 +117,7 @@ const BookConnector = (connector) => {
           bookId={book.id}
           bookNumber={bookNumber}
           modal={true}
-          cancel={() => this.setState({ editing: false })}
+          cancel={this.finishEditing}
         />
       )
     }

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import {
   Glyphicon,
@@ -7,17 +7,22 @@ import {
   FormControl,
   FormGroup,
   ControlLabel,
+  DropdownButton,
+  MenuItem,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
+import { sort } from 'lodash'
+import cx from 'classnames'
+import { FaBook, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
+import { FiCopy } from 'react-icons/fi'
+import Floater from 'react-floater'
+
+import { helpers } from 'pltr/v2'
+import { t } from 'plottr_locales'
+
 import UnconnectedColorPicker from '../ColorPicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import InputModal from '../dialogs/InputModal'
-import { t } from 'plottr_locales'
-import cx from 'classnames'
-import { FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
-import Floater from 'react-floater'
-import { helpers } from 'pltr/v2'
-
 import { checkDependencies } from '../checkDependencies'
 
 const {
@@ -25,191 +30,247 @@ const {
   orientedClassName: { orientedClassName },
 } = helpers
 
-const CELL_WIDTH = 200
-
 const LineTitleCellConnector = (connector) => {
   const ColorPicker = UnconnectedColorPicker(connector)
 
-  class LineTitleCell extends PureComponent {
-    constructor(props) {
-      super(props)
-      this.state = {
-        hovering: false,
-        editing: props.line.title === '',
-        dragging: false,
-        inDropZone: false,
-        dropDepth: 0,
-        showColorPicker: false,
-        deleting: false,
+  const LineTitleCell = ({
+    line,
+    bookId,
+    handleReorder,
+    darkMode,
+    orientation,
+    timelineIsExpanded,
+    isSmall,
+    isMedium,
+    isLarge,
+    lineIsExpanded,
+    actions,
+    uiActions,
+    notifications,
+    books,
+    zIndex,
+    actStructureEnabled,
+  }) => {
+    const [hovering, setHovering] = useState(false)
+    const [editing, setEditing] = useState(line.title === '')
+    const [dragging, setDragging] = useState(false)
+    const [inDropZone, setInDropZone] = useState(false)
+    const [dropDepth, setDropDepth] = useState(0)
+    const [showColorPicker, setShowColorPicker] = useState(false)
+    const [deleting, setDeleting] = useState(false)
+    const [movingLine, setMovingLine] = useState(false)
+
+    const hoverTimeout = useRef(null)
+    const titleInputRef = useRef()
+    const bookChoiceDropDown = useRef()
+
+    useEffect(() => {
+      if (movingLine && bookChoiceDropDown.current) {
+        const dropDownId = bookChoiceDropDown.current.props.id
+        const dropDown = document.querySelector(`#${dropDownId}`)
+        if (dropDown) {
+          dropDown.focus()
+        }
       }
-      this.hoverTimeout = null
-      this.titleInputRef = null
-    }
+    }, [movingLine])
 
-    deleteLine = (e) => {
+    useEffect(() => {
+      window.SCROLLWITHKEYS = false
+    }, [editing])
+
+    const deleteLine = (e) => {
       e.stopPropagation()
-      this.props.actions.deleteLine(this.props.line.id)
+      actions.deleteLine(line.id)
     }
 
-    cancelDelete = (e) => {
+    const cancelDelete = (e) => {
       e.stopPropagation()
-      this.setState({ deleting: false })
+      setDeleting(false)
     }
 
-    handleDelete = (e) => {
+    const handleDelete = (e) => {
       e.stopPropagation()
-      this.setState({ deleting: true, hovering: false })
+      setDeleting(true)
+      setHovering(false)
     }
 
-    editTitle = () => {
-      const ref = this.titleInputRef
+    const editTitle = () => {
+      const ref = titleInputRef.current
       if (!ref) return
-      this.finalizeEdit(ref.value)
+      finalizeEdit(ref.value)
     }
 
-    finalizeEdit = (newVal) => {
-      var id = this.props.line.id
-      this.props.actions.editLineTitle(id, newVal)
-      this.setState({ editing: false, hovering: false })
+    const finalizeEdit = (newVal) => {
+      var id = line.id
+      actions.editLineTitle(id, newVal)
+      setMovingLine(false)
+      setEditing(false)
+      setHovering(false)
     }
 
-    handleFinishEditingTitle = (event) => {
+    const handleFinishEditingTitle = (event) => {
       if (event.which === 13) {
-        this.editTitle()
+        editTitle()
       }
     }
 
-    handleBlur = () => {
-      if (this.titleInputRef.value !== '') {
-        this.editTitle()
-        this.setState({ editing: false, hovering: false })
+    const handleBlur = (event) => {
+      if (titleInputRef.current && titleInputRef.current.value !== '') {
+        editTitle()
+        setEditing(false)
+        setHovering(false)
+      }
+      if (!event.relatedTarget || !event.relatedTarget.attributes.role.value === 'menuitem') {
+        setMovingLine(false)
       }
     }
 
-    handleDragStart = (e) => {
+    const handleDragStart = (e) => {
       e.dataTransfer.effectAllowed = 'move'
-      e.dataTransfer.setData('text/json', JSON.stringify(this.props.line))
-      this.setState({ dragging: true })
+      e.dataTransfer.setData('text/json', JSON.stringify(line))
+      setDragging(true)
     }
 
-    handleDragEnd = () => {
-      this.setState({ dragging: false })
+    const handleDragEnd = () => {
+      setDragging(false)
     }
 
-    handleDragEnter = (e) => {
-      if (!this.state.dragging) this.setState({ dropDepth: this.state.dropDepth + 1 })
+    const handleDragEnter = (e) => {
+      if (!dragging) setDropDepth(dropDepth + 1)
     }
 
-    handleDragOver = (e) => {
+    const handleDragOver = (e) => {
       e.preventDefault()
-      if (!this.state.dragging) this.setState({ inDropZone: true })
-    }
-
-    handleDragLeave = (e) => {
-      if (!this.state.dragging) {
-        let dropDepth = this.state.dropDepth
-        --dropDepth
-        this.setState({ dropDepth: dropDepth })
-        if (dropDepth > 0) return
-        this.setState({ inDropZone: false })
+      if (!dragging) {
+        setInDropZone(true)
       }
     }
 
-    handleDrop = (e) => {
+    const handleDragLeave = (e) => {
+      if (!dragging) {
+        let newDropDepth = dropDepth
+        --newDropDepth
+        setDropDepth(newDropDepth)
+        if (newDropDepth > 0) return
+        setInDropZone(false)
+      }
+    }
+
+    const handleDrop = (e) => {
       e.stopPropagation()
-      this.setState({ inDropZone: false, dropDepth: 0 })
+      setInDropZone(false)
+      setDropDepth(0)
 
       var json = e.dataTransfer.getData('text/json')
       var droppedLine = JSON.parse(json)
       if (droppedLine.id == null) return
 
-      this.props.handleReorder(this.props.line.position, droppedLine.position)
+      handleReorder(line.position, droppedLine.position)
     }
 
-    handleEsc = (event) => {
-      if (event.which === 27) this.setState({ editing: false })
+    const handleEsc = (event) => {
+      if (event.which === 27) {
+        setEditing(false)
+        setMovingLine(false)
+      }
     }
 
-    changeColor = (newColor) => {
+    const changeColor = (newColor) => {
       if (newColor) {
-        this.props.actions.editLineColor(this.props.line.id, newColor)
+        actions.editLineColor(line.id, newColor)
       }
-      this.setState({ showColorPicker: false })
+      setShowColorPicker(false)
     }
 
-    openColorPicker = () => {
-      this.setState({ showColorPicker: true })
+    const openColorPicker = () => {
+      setShowColorPicker(true)
     }
 
-    startEditing = () => {
-      this.setState({ editing: true })
+    const startEditing = () => {
+      if (!movingLine) {
+        setEditing(true)
+      }
     }
 
-    startHovering = () => {
-      clearTimeout(this.hoverTimeout)
-      this.setState({ hovering: true })
+    const startHovering = () => {
+      clearTimeout(hoverTimeout.current)
+      setHovering(true)
     }
 
-    stopHovering = () => {
-      this.hoverTimeout = setTimeout(() => this.setState({ hovering: false }), 200)
+    const stopHovering = () => {
+      hoverTimeout.current = setTimeout(() => setHovering(false), 200)
     }
 
-    toggleLine = () => {
-      if (this.props.lineIsExpanded) {
-        this.props.actions.collapseLine(this.props.line.id)
+    const toggleLine = () => {
+      if (lineIsExpanded) {
+        actions.collapseLine(line.id)
       } else {
-        this.props.actions.expandLine(this.props.line.id)
+        actions.expandLine(line.id)
       }
     }
 
-    toggleExpanded = () => {
-      if (this.props.timelineIsExpanded) {
-        this.props.uiActions.collapseTimeline()
+    const toggleExpanded = () => {
+      if (timelineIsExpanded) {
+        uiActions.collapseTimeline()
       } else {
-        this.props.uiActions.expandTimeline()
+        uiActions.expandTimeline()
       }
     }
 
-    renderEditInput() {
-      if (!this.state.editing) return null
+    const duplicateThisPlotline = () => {
+      actions.duplicateLine(line.id, line.position + 1)
+    }
+
+    const toggleMovingLine = () => {
+      const thereIsAnotherBook = books.allIds.some((id) => {
+        return bookId !== id
+      })
+      if (thereIsAnotherBook) {
+        setMovingLine(!movingLine)
+      }
+    }
+
+    const renderEditInput = () => {
+      if (!editing) return null
 
       return (
         <InputModal
           isOpen={true}
           type="text"
-          getValue={this.finalizeEdit}
-          defaultValue={this.props.line.title}
-          title={t('Edit {lineName}', { lineName: this.props.line.title || t('New Plotline') })}
-          cancel={() => this.setState({ editing: false, hovering: false })}
+          getValue={finalizeEdit}
+          defaultValue={line.title}
+          title={t('Edit {lineName}', { lineName: line.title || t('New Plotline') })}
+          cancel={() => {
+            setEditing(false)
+            setMovingLine(false)
+            setHovering(false)
+          }}
         />
       )
     }
 
-    renderDelete() {
-      if (!this.state.deleting) return null
+    const renderDelete = () => {
+      if (!deleting) return null
 
       return (
         <DeleteConfirmModal
-          name={this.props.line.title || t('New Plotline')}
-          onDelete={this.deleteLine}
-          onCancel={this.cancelDelete}
+          name={line.title || t('New Plotline')}
+          onDelete={deleteLine}
+          onCancel={cancelDelete}
         />
       )
     }
 
-    renderColorPicker() {
-      if (this.state.showColorPicker) {
-        var key = 'colorPicker-' + this.props.line.id
-        return (
-          <ColorPicker key={key} color={this.props.line.color} closeDialog={this.changeColor} />
-        )
+    const renderColorPicker = () => {
+      if (showColorPicker) {
+        var key = 'colorPicker-' + line.id
+        return <ColorPicker key={key} color={line.color} closeDialog={changeColor} />
       } else {
         return null
       }
     }
 
-    renderHoverOptions = () => {
-      const { lineIsExpanded, orientation, timelineIsExpanded, isSmall } = this.props
+    const renderHoverOptions = () => {
       let expandedIcon = null
       let allIcon = null
       if (lineIsExpanded) {
@@ -227,23 +288,51 @@ const LineTitleCellConnector = (connector) => {
         let klasses = orientedClassName('line-title__hover-options', orientation)
         return (
           <div className={cx(klasses, { 'small-timeline': isSmall })}>
-            <Button block bsSize="small" onClick={this.startEditing}>
+            <Button title={t('Edit title')} block bsSize="small" onClick={startEditing}>
               <Glyphicon glyph="edit" />
             </Button>
-            <Button block bsSize="small" onClick={this.openColorPicker}>
+            <Button title={t('Change color')} block bsSize="small" onClick={openColorPicker}>
               <Glyphicon glyph="tint" />
             </Button>
             {isSmall ? null : (
               <>
-                <Button block bsSize="small" onClick={this.toggleLine}>
+                <Button
+                  title={t('Expand or collapse stacks')}
+                  block
+                  bsSize="small"
+                  onClick={toggleLine}
+                >
                   {expandedIcon}
                 </Button>
-                <Button block bsSize="small" onClick={this.toggleExpanded}>
+                <Button
+                  title={t('Expand or collapse all stacks')}
+                  block
+                  bsSize="small"
+                  onClick={toggleExpanded}
+                >
                   {allIcon} {t('All')}
                 </Button>
+                <Button
+                  title={t('Duplicate plotline')}
+                  block
+                  bsSize="small"
+                  onClick={duplicateThisPlotline}
+                >
+                  <FiCopy />
+                </Button>
+                {actStructureEnabled ? null : (
+                  <Button
+                    title={t('Move plotline')}
+                    block
+                    bsSize="small"
+                    onClick={toggleMovingLine}
+                  >
+                    <FaBook />
+                  </Button>
+                )}
               </>
             )}
-            <Button block bsSize="small" onClick={this.handleDelete}>
+            <Button title={t('Delete plotline')} block bsSize="small" onClick={handleDelete}>
               <Glyphicon glyph="trash" />
             </Button>
           </div>
@@ -252,23 +341,43 @@ const LineTitleCellConnector = (connector) => {
         return (
           <div className="line-title__hover-options">
             <ButtonGroup>
-              <Button bsSize="small" onClick={this.startEditing}>
+              <Button title={t('Edit title')} bsSize="small" onClick={startEditing}>
                 <Glyphicon glyph="edit" />
               </Button>
-              <Button bsSize="small" onClick={this.openColorPicker}>
+              <Button title={t('Change color')} bsSize="small" onClick={openColorPicker}>
                 <Glyphicon glyph="tint" />
               </Button>
               {isSmall ? null : (
                 <>
-                  <Button bsSize="small" onClick={this.toggleLine}>
+                  <Button
+                    title={t('Expand or collapse stacks')}
+                    bsSize="small"
+                    onClick={toggleLine}
+                  >
                     {expandedIcon}
                   </Button>
-                  <Button bsSize="small" onClick={this.toggleExpanded}>
+                  <Button
+                    title={t('Expand or collapse all stacks')}
+                    bsSize="small"
+                    onClick={toggleExpanded}
+                  >
                     {allIcon} {t('All')}
                   </Button>
+                  <Button
+                    title={t('Duplicate plotline')}
+                    bsSize="small"
+                    onClick={duplicateThisPlotline}
+                  >
+                    <FiCopy />
+                  </Button>
+                  {actStructureEnabled ? null : (
+                    <Button title={t('Move plotline')} bsSize="small" onClick={toggleMovingLine}>
+                      <FaBook />
+                    </Button>
+                  )}
                 </>
               )}
-              <Button bsSize="small" onClick={this.handleDelete}>
+              <Button title={t('Delete plotline')} bsSize="small" onClick={handleDelete}>
                 <Glyphicon glyph="trash" />
               </Button>
             </ButtonGroup>
@@ -277,30 +386,59 @@ const LineTitleCellConnector = (connector) => {
       }
     }
 
-    renderTitle() {
-      const { darkMode } = this.props
-      if (!this.state.editing) return truncateTitle(t(this.props.line.title), 50)
+    const moveToBook = (targetBookId) => {
+      actions.moveLine(line.id, targetBookId)
+      notifications.showToastNotification(true, null, targetBookId, 'move')
+    }
+
+    const renderBookOptions = () => {
+      const title = isMedium ? t('Book') : t('Change book')
+      return (
+        <DropdownButton
+          open
+          ref={bookChoiceDropDown}
+          id={`line-book-${line.id}`}
+          bsSize="small"
+          title={title}
+          onBlur={handleBlur}
+        >
+          {books.allIds.sort().map((id, index) => {
+            const book = books[id]
+            if (Array.isArray(book)) return null
+            if (bookId === book.id) return null
+
+            return (
+              <MenuItem key={book.id} eventKey={book.id} onClick={() => moveToBook(book.id)}>
+                {book.title || t('Untitled')}
+              </MenuItem>
+            )
+          })}
+        </DropdownButton>
+      )
+    }
+
+    const renderTitle = () => {
+      if (movingLine) {
+        return renderBookOptions()
+      }
+      if (!editing) return truncateTitle(t(line.title), 50)
       return (
         <FormGroup>
           <ControlLabel className={cx({ darkmode: darkMode })}>{t('Plotline name')}</ControlLabel>
           <FormControl
             type="text"
-            defaultValue={this.props.line.title}
-            inputRef={(ref) => {
-              this.titleInputRef = ref
-            }}
+            defaultValue={line.title}
+            inputRef={titleInputRef}
             autoFocus
-            onKeyDown={this.handleEsc}
-            onBlur={this.handleBlur}
-            onKeyPress={this.handleFinishEditingTitle}
+            onKeyDown={handleEsc}
+            onBlur={handleBlur}
+            onKeyPress={handleFinishEditingTitle}
           />
         </FormGroup>
       )
     }
 
-    renderSmall() {
-      const { line, orientation } = this.props
-      const { hovering, inDropZone } = this.state
+    const renderSmall = () => {
       const isHorizontal = orientation == 'horizontal'
       const klasses = {
         'rotate-45': !isHorizontal,
@@ -312,22 +450,22 @@ const LineTitleCellConnector = (connector) => {
       return (
         <th
           className={cx(klasses)}
-          onDragEnter={this.handleDragEnter}
-          onDragOver={this.handleDragOver}
-          onDragLeave={this.handleDragLeave}
-          onDrop={this.handleDrop}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
         >
-          {this.renderColorPicker()}
-          {this.renderDelete()}
-          {this.renderEditInput()}
+          {renderColorPicker()}
+          {renderDelete()}
+          {renderEditInput()}
           <div
             draggable
-            onDragStart={this.handleDragStart}
-            onDragEnd={this.handleDragEnd}
-            onClick={hovering ? this.stopHovering : this.startHovering}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            onClick={hovering ? stopHovering : startHovering}
           >
             <Floater
-              component={this.renderHoverOptions}
+              component={renderHoverOptions}
               open={hovering}
               placement={placement}
               hideArrow
@@ -341,61 +479,55 @@ const LineTitleCellConnector = (connector) => {
       )
     }
 
-    render() {
-      const { orientation, isSmall, isMedium } = this.props
-      const { editing, hovering, inDropZone } = this.state
-      if (editing) {
-        window.SCROLLWITHKEYS = false
-      }
+    if (isSmall) return renderSmall()
 
-      if (isSmall) return this.renderSmall()
+    let innerKlass = cx(orientedClassName('line-title__body', orientation), {
+      'medium-timeline': isMedium,
+      hover: hovering,
+      dropping: inDropZone,
+    })
+    let wrapperKlass = cx(orientedClassName('line-title__cell', orientation), {
+      'medium-timeline': isMedium,
+    })
 
-      let innerKlass = cx(orientedClassName('line-title__body', orientation), {
-        'medium-timeline': isMedium,
-        hover: hovering,
-        dropping: inDropZone,
-      })
-      let wrapperKlass = cx(orientedClassName('line-title__cell', orientation), {
-        'medium-timeline': isMedium,
-      })
-
-      let placement = 'bottom'
-      if (orientation == 'vertical') placement = 'right'
-      return (
-        <Cell>
-          <div
-            className={wrapperKlass}
-            onMouseEnter={this.startHovering}
-            onMouseLeave={this.stopHovering}
-            onDrop={this.handleDrop}
+    let placement = 'bottom'
+    if (orientation == 'vertical') placement = 'right'
+    // Note the z-index.  This is needed to have titles stack their
+    // controls onto titles to their right.
+    return (
+      <Cell style={{ zIndex, position: zIndex ? 'relative' : null }}>
+        <div
+          className={wrapperKlass}
+          onMouseEnter={startHovering}
+          onMouseLeave={stopHovering}
+          onDrop={handleDrop}
+        >
+          {renderDelete()}
+          <Floater
+            component={renderHoverOptions}
+            open={hovering && !movingLine}
+            placement={placement}
+            hideArrow
+            offset={0}
+            style={{ cursor: 'move' }}
           >
-            {this.renderDelete()}
-            <Floater
-              component={this.renderHoverOptions}
-              open={hovering}
-              placement={placement}
-              hideArrow
-              offset={0}
-              style={{ cursor: 'move' }}
+            <div
+              className={innerKlass}
+              onClick={startEditing}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onDragEnter={handleDragEnter}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              draggable={true}
             >
-              <div
-                className={innerKlass}
-                onClick={this.startEditing}
-                onDragStart={this.handleDragStart}
-                onDragEnd={this.handleDragEnd}
-                onDragEnter={this.handleDragEnter}
-                onDragOver={this.handleDragOver}
-                onDragLeave={this.handleDragLeave}
-                draggable={true}
-              >
-                {this.renderTitle()}
-              </div>
-            </Floater>
-          </div>
-          {this.renderColorPicker()}
-        </Cell>
-      )
-    }
+              {renderTitle()}
+            </div>
+          </Floater>
+        </div>
+        {renderColorPicker()}
+      </Cell>
+    )
   }
 
   LineTitleCell.propTypes = {
@@ -411,6 +543,10 @@ const LineTitleCellConnector = (connector) => {
     lineIsExpanded: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     uiActions: PropTypes.object.isRequired,
+    notifications: PropTypes.object.isRequired,
+    books: PropTypes.object.isRequired,
+    zIndex: PropTypes.number,
+    actStructureEnabled: PropTypes.bool,
   }
 
   const {
@@ -421,8 +557,15 @@ const LineTitleCellConnector = (connector) => {
 
   const LineActions = actions.line
   const uiActions = actions.ui
+  const notifications = actions.notifications
 
-  const { lineIsExpandedSelector, isLargeSelector, isMediumSelector, isSmallSelector } = selectors
+  const {
+    lineIsExpandedSelector,
+    isLargeSelector,
+    isMediumSelector,
+    isSmallSelector,
+    allBooksSelector,
+  } = selectors
 
   if (redux) {
     const { connect, bindActionCreators } = redux
@@ -437,12 +580,15 @@ const LineTitleCellConnector = (connector) => {
           isMedium: isMediumSelector(state.present),
           isLarge: isLargeSelector(state.present),
           lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.line.id],
+          books: allBooksSelector(state.present),
+          actStructureEnabled: selectors.beatHierarchyIsOn(state.present),
         }
       },
       (dispatch, ownProps) => {
         return {
           actions: bindActionCreators(LineActions, dispatch),
           uiActions: bindActionCreators(uiActions, dispatch),
+          notifications: bindActionCreators(notifications, dispatch),
         }
       }
     )(LineTitleCell)

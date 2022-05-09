@@ -68,11 +68,12 @@ const NewFilesConnector = (connector) => {
 
       return (
         <InputModal
-          title={t('Name')}
+          title={t('Name Your Project:')}
           getValue={handleNameInput}
           cancel={cancelNameInput}
           isOpen={true}
           type="text"
+          customOkButtonText={t('Save')}
         />
       )
     }
@@ -110,17 +111,17 @@ const NewFilesConnector = (connector) => {
             {isOnWeb ? null : (
               <Col xs={3}>
                 <Dropdown
-                  className={cx('dashboard__new-files__item icon pro-import', {
+                  className={cx('dashboard__new-files__item icon import-file', {
                     active: activeView == 'import',
                   })}
                 >
                   <Dropdown.Toggle noCaret>
                     <BiImport />
-                    <div>{t('Import')}</div>
+                    <div>{t('Import File')}</div>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
+                    <MenuItem onSelect={doScrivenerImport}>{t('Scrivener')}</MenuItem>
                     <MenuItem onSelect={doSnowflakeImport}>{t('Snowflake Pro')}</MenuItem>
-                    <MenuItem onSelect={doScrivenerImport}>{t('Scrivener Project')}</MenuItem>
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>

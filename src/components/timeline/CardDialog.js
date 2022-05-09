@@ -27,6 +27,7 @@ import TemplatePickerConnector from '../templates/TemplatePicker'
 import { helpers } from 'pltr/v2'
 
 import { checkDependencies } from '../checkDependencies'
+import { IoIosWarning } from 'react-icons/io'
 
 const {
   card: { truncateTitle },
@@ -72,6 +73,8 @@ const CardDialogConnector = (connector) => {
     darkMode,
     currentTimeline,
     notificationActions,
+    destinationBeatId,
+    destinationLineId,
   }) => {
     const [deleting, setDeleting] = useState(false)
     const [showColorPicker, setShowColorPicker] = useState(false)
@@ -377,10 +380,17 @@ const CardDialogConnector = (connector) => {
     }
 
     const renderBooks = (onSelect = changeBook) => {
-      return books.allIds.map((id) => {
+      return ['series', ...books.allIds].map((id) => {
+        const destinationLine = destinationLineId(id)
+        const destinationBeat = destinationBeatId(id)
+        const noDestination = !destinationLine || !destinationBeat
+
         return (
-          <MenuItem key={id} onSelect={() => onSelect(id)}>
-            {books[id].title || t('Untitled')}
+          <MenuItem key={id} onSelect={() => onSelect(id)} disabled={noDestination}>
+            <div className="card-dialog__book-selector">
+              {noDestination && <IoIosWarning />}
+              {id === 'series' ? t('Series') : books[id].title || t('Untitled')}
+            </div>
           </MenuItem>
         )
       })
@@ -406,6 +416,7 @@ const CardDialogConnector = (connector) => {
       const title = cardMetaData.title
       return (
         <FormControl
+          placeholder={t('Enter title')}
           style={{ fontSize: '24px', textAlign: 'center', marginBottom: '6px' }}
           onKeyPress={handleEnter}
           type="text"
@@ -605,6 +616,8 @@ const CardDialogConnector = (connector) => {
     uiActions: PropTypes.object.isRequired,
     notificationActions: PropTypes.object.isRequired,
     currentTimeline: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    destinationLineId: PropTypes.func,
+    destinationBeatId: PropTypes.func,
   }
 
   const MemoizedCardDialog = React.memo(CardDialog)
@@ -633,6 +646,9 @@ const CardDialogConnector = (connector) => {
           isSeries: selectors.isSeriesSelector(state.present),
           currentTimeline: selectors.currentTimelineSelector(state.present),
           getTemplateById: selectors.templateByIdFnSelector(state.present),
+          destinationLineId: (bookId) => selectors.firstLineForBookSelector(state.present, bookId),
+          destinationBeatId: (bookId) =>
+            selectors.firstVisibleBeatForBookSelector(state.present, bookId),
         }
       },
       (dispatch) => {

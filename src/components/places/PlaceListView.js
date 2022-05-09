@@ -1,8 +1,25 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import { Glyphicon, Nav, NavItem, Button, Popover, Alert, Grid, Row, Col } from 'react-bootstrap'
+import { flatten } from 'lodash'
+import {
+  Glyphicon,
+  Nav,
+  NavItem,
+  Button,
+  Popover,
+  Alert,
+  Grid,
+  Row,
+  Col,
+  FormControl,
+} from 'react-bootstrap'
+
+import { t as i18n } from 'plottr_locales'
+import { newIds } from 'pltr/v2'
+
 import UnconnectedOverlayTrigger from '../OverlayTrigger'
+import UnconnectedPlaceCategoriesModal from './PlaceCategoriesModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
@@ -10,15 +27,30 @@ import UnconnectedSortList from '../SortList'
 import UnconnectedSubNav from '../containers/SubNav'
 import UnconnectedPlaceView from './PlaceView'
 import UnconnectedPlaceItem from './PlaceItem'
-import { t as i18n } from 'plottr_locales'
-import { newIds } from 'pltr/v2'
 
 import { checkDependencies } from '../checkDependencies'
+import { withEventTargetValue } from '../withEventTargetValue'
 
 const { nextId } = newIds
 
+const detailID = (placeCategories, placeDetailId) => {
+  const places = flatten(Object.values(placeCategories))
+  if (places.length == 0) return null
+
+  let id = places[0].id
+
+  // check for the currently active one
+  if (placeDetailId != null) {
+    let activePlace = places.find((pl) => pl.id === placeDetailId)
+    if (activePlace) id = activePlace.id
+  }
+
+  return id
+}
+
 const PlaceListViewConnector = (connector) => {
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
+  const PlaceCategoriesModal = UnconnectedPlaceCategoriesModal(connector)
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const ErrorBoundary = UnconnectedErrorBoundary(connector)
   const SortList = UnconnectedSortList(connector)
@@ -27,80 +59,51 @@ const PlaceListViewConnector = (connector) => {
   const PlaceItem = UnconnectedPlaceItem(connector)
   const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
-  class PlaceListView extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        dialogOpen: false,
-        addAttrText: '',
-        placeDetailId: null,
-        editingSelected: false,
-      }
+  const PlaceListView = ({
+    visiblePlacesByCategory,
+    categories,
+    filterIsEmpty,
+    customAttributes,
+    customAttributesThatCanChange,
+    restrictedValues,
+    darkMode,
+    actions,
+    placeSearchTerm,
+    customAttributeActions,
+    uiActions,
+    places,
+    placeSort,
+  }) => {
+    const [dialogOpen, setDialogOpen] = useState(false)
+    const [placeDetailId, setPlaceDetailId] = useState(null)
+    const [editingSelected, setEditingSelected] = useState(false)
+    const [categoriesOpen, setCategoriesOpen] = useState(false)
 
-      this.attrInputRef = React.createRef()
+    useEffect(() => {
+      setPlaceDetailId(detailID(visiblePlacesByCategory, placeDetailId))
+    }, [visiblePlacesByCategory])
+
+    const editSelected = () => {
+      setEditingSelected(true)
     }
 
-    static getDerivedStateFromProps(props, state) {
-      let returnVal = { ...state }
-      const { visiblePlaces } = props
-      returnVal.placeDetailId = PlaceListView.detailID(visiblePlaces, state.placeDetailId)
-
-      return returnVal
+    const stopEditing = () => {
+      setEditingSelected(false)
     }
 
-    static detailID(places, placeDetailId) {
-      if (places.length == 0) return null
-
-      let id = places[0].id
-
-      // check for the currently active one
-      if (placeDetailId != null) {
-        let activePlace = places.find((pl) => pl.id === placeDetailId)
-        if (activePlace) id = activePlace.id
-      }
-
-      return id
+    const closeDialog = () => {
+      setCategoriesOpen(false)
+      setDialogOpen(false)
     }
 
-    editingSelected = () => {
-      this.setState({ editingSelected: true })
+    const handleCreateNewPlace = () => {
+      const id = nextId(places)
+      actions.addPlace()
+      setPlaceDetailId(id)
+      setEditingSelected(true)
     }
 
-    stopEditing = () => {
-      this.setState({ editingSelected: false })
-    }
-
-    closeDialog = () => {
-      this.setState({ dialogOpen: false })
-    }
-
-    handleCreateNewPlace = () => {
-      const id = nextId(this.props.places)
-      this.props.actions.addPlace()
-      this.setState({ placeDetailId: id, editingSelected: true })
-    }
-
-    handleType = () => {
-      const attr = this.attrInputRef.current.value
-      this.setState({ addAttrText: attr })
-    }
-
-    handleAddCustomAttr = (event) => {
-      if (event.which === 13) {
-        this.saveAttr()
-      }
-    }
-
-    saveAttr = () => {
-      const name = this.attrInputRef.current.value
-      if (name == '' || this.props.restrictedValues.includes(name)) return // nothing? restricted value? no op
-
-      this.props.customAttributeActions.addPlaceAttr({ name, type: 'text' })
-      this.setState({ addAttrText: '' })
-    }
-
-    renderSubNav() {
-      const { placeSort, filterIsEmpty, uiActions } = this.props
+    const renderSubNav = () => {
       const filterPopover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="places" />
@@ -127,13 +130,18 @@ const PlaceListViewConnector = (connector) => {
         <SubNav>
           <Nav bsStyle="pills">
             <NavItem>
-              <Button bsSize="small" onClick={this.handleCreateNewPlace}>
+              <Button bsSize="small" onClick={handleCreateNewPlace}>
                 <Glyphicon glyph="plus" /> {i18n('New')}
               </Button>
             </NavItem>
             <NavItem>
-              <Button bsSize="small" onClick={() => this.setState({ dialogOpen: true })}>
+              <Button bsSize="small" onClick={() => setDialogOpen(true)}>
                 <Glyphicon glyph="list" /> {i18n('Attributes')}
+              </Button>
+            </NavItem>
+            <NavItem>
+              <Button bsSize="small" onClick={() => setCategoriesOpen(true)}>
+                <Glyphicon glyph="list" /> {i18n('Categories')}
               </Button>
             </NavItem>
             <NavItem>
@@ -163,43 +171,70 @@ const PlaceListViewConnector = (connector) => {
                 </Button>
               </OverlayTrigger>
             </NavItem>
+            <NavItem>
+              <FormControl
+                onChange={withEventTargetValue(uiActions.setPlacesSearchTerm)}
+                value={placeSearchTerm}
+                type="text"
+                placeholder="Search"
+              />
+            </NavItem>
           </Nav>
         </SubNav>
       )
     }
 
-    renderVisiblePlaces = () => {
-      return this.props.visiblePlaces.map((pl) => (
+    const renderVisiblePlacesByCategory = (categoryId) => {
+      const places =
+        categoryId === null
+          ? [
+              ...(visiblePlacesByCategory[null] || []),
+              ...(visiblePlacesByCategory[undefined] || []),
+            ]
+          : visiblePlacesByCategory[categoryId]
+
+      if (!places) return []
+
+      return places.map((pl) => (
         <PlaceItem
           key={pl.id}
           place={pl}
-          selected={pl.id == this.state.placeDetailId}
-          startEdit={this.editingSelected}
-          stopEdit={this.stopEditing}
-          select={() => this.setState({ placeDetailId: pl.id })}
+          selected={pl.id == placeDetailId}
+          startEdit={editSelected}
+          stopEdit={stopEditing}
+          select={() => setPlaceDetailId(pl.id)}
         />
       ))
     }
 
-    renderPlaces() {
+    const renderCategory = (category) => {
+      const placesInCategory = renderVisiblePlacesByCategory(category.id)
+      if (!placesInCategory.length) return null
       return (
-        <div className={cx('place-list__list', 'list-group', { darkmode: this.props.darkMode })}>
-          {this.renderVisiblePlaces()}
+        <div key={`category-${category.id}`}>
+          <h2 className="place-list__category-title">{category.name}</h2>
+          <div className={cx('place-list__list', 'list-group', { darkmode: darkMode })}>
+            {placesInCategory}
+          </div>
         </div>
       )
     }
 
-    renderPlaceDetails() {
-      let place = this.props.places.find((pl) => pl.id === this.state.placeDetailId)
+    const renderPlaces = () => {
+      return [...categories, { id: null, name: i18n('Uncategorized') }].map(renderCategory)
+    }
+
+    const renderPlaceDetails = () => {
+      let place = places.find((pl) => pl.id === placeDetailId)
       if (place) {
         return (
           <ErrorBoundary>
             <PlaceView
               key={`place-${place.id}`}
               place={place}
-              editing={this.state.editingSelected}
-              stopEditing={this.stopEditing}
-              startEditing={this.editingSelected}
+              editing={editingSelected}
+              stopEditing={stopEditing}
+              startEditing={editSelected}
             />
           </ErrorBoundary>
         )
@@ -208,43 +243,47 @@ const PlaceListViewConnector = (connector) => {
       }
     }
 
-    renderCustomAttributes() {
-      if (!this.state.dialogOpen) {
+    const renderCustomAttributes = () => {
+      if (!dialogOpen) {
         return null
       }
-      return (
-        <CustomAttributeModal hideSaveAsTemplate type="places" closeDialog={this.closeDialog} />
-      )
+      return <CustomAttributeModal hideSaveAsTemplate type="places" closeDialog={closeDialog} />
     }
 
-    render() {
-      let klasses = 'secondary-text'
-      if (this.props.darkMode) klasses += ' darkmode'
-      return (
-        <div className="place-list container-with-sub-nav">
-          {this.renderSubNav()}
-          {this.renderCustomAttributes()}
-          <Grid fluid className="tab-body">
-            <Row>
-              <Col sm={3}>
-                <h1 className={klasses}>
-                  {i18n('Places')}{' '}
-                  <Button onClick={this.handleCreateNewPlace}>
-                    <Glyphicon glyph="plus" />
-                  </Button>
-                </h1>
-                {this.renderPlaces()}
-              </Col>
-              <Col sm={9}>{this.renderPlaceDetails()}</Col>
-            </Row>
-          </Grid>
-        </div>
-      )
+    const renderCategoriesModal = () => {
+      if (!categoriesOpen) return null
+
+      return <PlaceCategoriesModal closeDialog={closeDialog} />
     }
+
+    let klasses = 'secondary-text'
+    if (darkMode) klasses += ' darkmode'
+    return (
+      <div className="place-list container-with-sub-nav">
+        {renderSubNav()}
+        {renderCustomAttributes()}
+        {renderCategoriesModal()}
+        <Grid fluid className="tab-body">
+          <Row>
+            <Col sm={3}>
+              <h1 className={klasses}>
+                {i18n('Places')}{' '}
+                <Button onClick={handleCreateNewPlace}>
+                  <Glyphicon glyph="plus" />
+                </Button>
+              </h1>
+              <div className="place-list__category-list">{renderPlaces()}</div>
+            </Col>
+            <Col sm={9}>{renderPlaceDetails()}</Col>
+          </Row>
+        </Grid>
+      </div>
+    )
   }
 
   PlaceListView.propTypes = {
-    visiblePlaces: PropTypes.array.isRequired,
+    visiblePlacesByCategory: PropTypes.array.isRequired,
+    categories: PropTypes.array.isRequired,
     filterIsEmpty: PropTypes.bool.isRequired,
     customAttributes: PropTypes.array.isRequired,
     customAttributesThatCanChange: PropTypes.array,
@@ -252,6 +291,7 @@ const PlaceListViewConnector = (connector) => {
     darkMode: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
     customAttributeActions: PropTypes.object.isRequired,
+    placeSearchTerm: PropTypes.string,
     uiActions: PropTypes.object.isRequired,
     places: PropTypes.array,
     placeSort: PropTypes.string.isRequired,
@@ -274,7 +314,10 @@ const PlaceListViewConnector = (connector) => {
       (state) => {
         return {
           places: state.present.places,
-          visiblePlaces: selectors.visibleSortedPlacesSelector(state.present),
+          visiblePlacesByCategory: selectors.visibleSortedSearchedPlacesByCategorySelector(
+            state.present
+          ),
+          categories: selectors.sortedPlaceCategoriesSelector(state.present),
           filterIsEmpty: selectors.placeFilterIsEmptySelector(state.present),
           customAttributes: state.present.customAttributes.places,
           customAttributesThatCanChange: selectors.placeCustomAttributesThatCanChangeSelector(
@@ -283,6 +326,7 @@ const PlaceListViewConnector = (connector) => {
           restrictedValues: selectors.placeCustomAttributesRestrictedValues(state.present),
           darkMode: selectors.isDarkModeSelector(state.present),
           placeSort: selectors.placeSortSelector(state.present),
+          placeSearchTerm: selectors.placesSearchTermSelector(state.present),
         }
       },
       (dispatch) => {

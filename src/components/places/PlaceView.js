@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import {
@@ -9,7 +9,8 @@ import {
   FormGroup,
   Glyphicon,
 } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
+import { t } from 'plottr_locales'
+import UnconnectedCategoryPicker from '../CategoryPicker'
 import UnconnectedBookSelectList from '../project/BookSelectList'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedEditAttribute from '../EditAttribute'
@@ -19,6 +20,7 @@ import UnconnectedRichText from '../rce/RichText'
 import UnconnectedSelectList from '../SelectList'
 
 import { checkDependencies } from '../checkDependencies'
+import { withEventTargetValue } from '../withEventTargetValue'
 
 const PlaceViewConnector = (connector) => {
   const BookSelectList = UnconnectedBookSelectList(connector)
@@ -27,127 +29,133 @@ const PlaceViewConnector = (connector) => {
   const ImagePicker = UnconnectedImagePicker(connector)
   const RichText = UnconnectedRichText(connector)
   const SelectList = UnconnectedSelectList(connector)
+  const CategoryPicker = UnconnectedCategoryPicker(connector)
 
   const {
     pltr: { helpers },
   } = connector
   checkDependencies({ helpers })
 
-  class PlaceView extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        newImageId: null,
-        deleting: false,
+  const PlaceView = ({
+    place,
+    editing,
+    startEditing,
+    stopEditing,
+    actions,
+    customAttributes,
+    cards,
+    notes,
+    selection,
+    editorPath,
+    darkMode,
+    tags,
+    places,
+  }) => {
+    const [deleting, setDeleting] = useState(false)
+
+    useEffect(() => {
+      return () => {
+        if (editing) saveEdit(false)
       }
+    }, [])
 
-      this.nameInputRef = null
-      this.descriptionInputRef = null
-    }
-
-    componentWillUnmount() {
-      if (this.props.editing) this.saveEdit(false)
-    }
-
-    deletePlace = (e) => {
+    const deletePlace = (e) => {
       e.stopPropagation()
-      this.props.actions.deletePlace(this.props.place.id)
+      actions.deletePlace(place.id)
     }
 
-    cancelDelete = (e) => {
+    const cancelDelete = (e) => {
       e.stopPropagation()
-      this.setState({ deleting: false })
+      setDeleting(false)
     }
 
-    handleDelete = (e) => {
+    const handleDelete = (e) => {
       e.stopPropagation()
-      this.setState({ deleting: true })
-      this.props.stopEditing()
+      setDeleting(true)
+      stopEditing()
     }
 
-    handleEnter = (event) => {
+    const handleEnter = (event) => {
       if (event.which === 13) {
-        this.saveEdit()
+        saveEdit()
       }
     }
 
-    handleEsc = (event) => {
+    const handleEsc = (event) => {
       if (event.which === 27) {
-        this.saveEdit()
+        saveEdit()
       }
     }
 
-    handleAttrDescriptionChange = (attrName, desc, selection) => {
-      const editorPath = helpers.editors.placeCustomAttributeEditorPath(
-        this.props.place.id,
-        attrName
-      )
+    const handleAttrDescriptionChange = (attrName, desc, selection) => {
+      const editorPath = helpers.editors.placeCustomAttributeEditorPath(place.id, attrName)
 
-      this.props.actions.editPlace(
-        this.props.place.id,
+      actions.editPlace(
+        place.id,
         helpers.editors.attrIfPresent(attrName, desc),
         editorPath,
         selection
       )
     }
 
-    handleNotesChanged = (value, selection) => {
-      this.props.actions.editPlace(
-        this.props.place.id,
+    const handleNotesChanged = (value, selection) => {
+      actions.editPlace(
+        place.id,
         helpers.editors.attrIfPresent('notes', value),
-        this.props.editorPath,
+        editorPath,
         selection
       )
     }
 
-    saveEdit = (close = true) => {
-      var name = this.nameInputRef.value || this.props.place.name
-      var description = this.descriptionInputRef.value
-      var attrs = {}
-      if (this.state.newImageId) {
-        attrs.imageId = this.state.newImageId == -1 ? null : this.state.newImageId
-      }
-      this.props.actions.editPlace(this.props.place.id, { name, description, ...attrs })
-      if (close) this.props.stopEditing()
+    const saveEdit = (close = true) => {
+      if (close) stopEditing()
     }
 
-    renderDelete() {
-      if (!this.state.deleting) return null
+    const changeName = (newName) => {
+      actions.editPlace(place.id, { name: newName })
+    }
+
+    const changeCategory = (newCategoryId) => {
+      actions.editPlace(place.id, { categoryId: newCategoryId })
+    }
+
+    const editDescription = (newDescription) => {
+      actions.editPlace(place.id, { description: newDescription })
+    }
+
+    const updateImageId = (newImageId) => {
+      actions.editPlace(place.id, { imageId: newImageId })
+    }
+
+    const renderDelete = () => {
+      if (!deleting) return null
 
       return (
         <DeleteConfirmModal
-          name={this.props.place.name || i18n('New Place')}
-          onDelete={this.deletePlace}
-          onCancel={this.cancelDelete}
+          name={place.name || t('New Place')}
+          onDelete={deletePlace}
+          onCancel={cancelDelete}
         />
       )
     }
 
-    renderEditingImage() {
-      const { place } = this.props
-
-      let imgId = this.state.newImageId || place.imageId
+    const renderEditingImage = () => {
       return (
         <FormGroup>
-          <ControlLabel>{i18n('Place Image')}</ControlLabel>
+          <ControlLabel>{t('Place Image')}</ControlLabel>
           <div className="place-list__place__edit-image-wrapper">
             <div className="place-list__place__edit-image">
-              <Image size="small" shape="rounded" imageId={imgId} />
+              <Image size="small" shape="rounded" imageId={place.imageId} />
             </div>
             <div>
-              <ImagePicker
-                selectedId={imgId}
-                chooseImage={(id) => this.setState({ newImageId: id })}
-                deleteButton
-              />
+              <ImagePicker selectedId={place.imageId} chooseImage={updateImageId} deleteButton />
             </div>
           </div>
         </FormGroup>
       )
     }
 
-    renderEditingCustomAttributes() {
-      const { place, customAttributes } = this.props
+    const renderEditingCustomAttributes = () => {
       return customAttributes.map((attr, index) => {
         const editorPath = helpers.editors.placeCustomAttributeEditorPath(place.id, attr.name)
         const { name, type } = attr
@@ -158,10 +166,8 @@ const PlaceViewConnector = (connector) => {
               entityType="place"
               value={place[name]}
               editorPath={editorPath}
-              onChange={(desc, selection) =>
-                this.handleAttrDescriptionChange(name, desc, selection)
-              }
-              onSave={this.saveEdit}
+              onChange={(desc, selection) => handleAttrDescriptionChange(name, desc, selection)}
+              onSave={saveEdit}
               name={name}
               type={type}
             />
@@ -170,61 +176,62 @@ const PlaceViewConnector = (connector) => {
       })
     }
 
-    renderEditing() {
-      const { place, darkMode } = this.props
+    const renderEditing = () => {
       return (
         <div className="place-list__place-wrapper">
           <div className={cx('place-list__place', 'editing', { darkmode: darkMode })}>
             <div className="place-list__place__edit-form">
               <div className="place-list__inputs__normal">
                 <FormGroup>
-                  <ControlLabel>{i18n('Name')}</ControlLabel>
+                  <ControlLabel>{t('Name')}</ControlLabel>
                   <FormControl
                     type="text"
-                    inputRef={(ref) => {
-                      this.nameInputRef = ref
-                    }}
+                    onChange={withEventTargetValue(changeName)}
                     autoFocus
-                    onKeyDown={this.handleEsc}
-                    onKeyPress={this.handleEnter}
+                    onKeyDown={handleEsc}
+                    onKeyPress={handleEnter}
                     defaultValue={place.name}
                   />
                 </FormGroup>
                 <FormGroup>
-                  <ControlLabel>{i18n('Short Description')}</ControlLabel>
+                  <ControlLabel>{t('Short Description')}</ControlLabel>
                   <FormControl
                     type="text"
-                    inputRef={(ref) => {
-                      this.descriptionInputRef = ref
-                    }}
-                    onKeyDown={this.handleEsc}
-                    onKeyPress={this.handleEnter}
+                    onChange={withEventTargetValue(editDescription)}
+                    onKeyDown={handleEsc}
+                    onKeyPress={handleEnter}
                     defaultValue={place.description}
                   />
                 </FormGroup>
-                {this.renderEditingImage()}
                 <FormGroup>
-                  <ControlLabel>{i18n('Notes')}</ControlLabel>
+                  <ControlLabel>{t('Category')}</ControlLabel>
+                  <CategoryPicker
+                    type="places"
+                    selectedId={place.categoryId}
+                    onChange={changeCategory}
+                  />
+                </FormGroup>
+                {renderEditingImage()}
+                <FormGroup>
+                  <ControlLabel>{t('Notes')}</ControlLabel>
                   <RichText
-                    id={this.props.editorPath}
+                    id={editorPath}
                     description={place.notes}
-                    onChange={this.handleNotesChanged}
-                    selection={this.props.selection}
+                    onChange={handleNotesChanged}
+                    selection={selection}
                     editable
                     autofocus={false}
                   />
                 </FormGroup>
               </div>
-              <div className="place-list__inputs__custom">
-                {this.renderEditingCustomAttributes()}
-              </div>
+              <div className="place-list__inputs__custom">{renderEditingCustomAttributes()}</div>
             </div>
             <ButtonToolbar className="card-dialog__button-bar">
-              <Button bsStyle="success" onClick={this.saveEdit}>
-                {i18n('Save')}
+              <Button bsStyle="success" onClick={saveEdit}>
+                {t('Save')}
               </Button>
-              <Button className="card-dialog__delete" onClick={this.handleDelete}>
-                {i18n('Delete')}
+              <Button className="card-dialog__delete" onClick={handleDelete}>
+                {t('Delete')}
               </Button>
             </ButtonToolbar>
           </div>
@@ -232,65 +239,7 @@ const PlaceViewConnector = (connector) => {
       )
     }
 
-    // renderAssociations () {
-    //   let cards = null
-    //   let notes = null
-    //   if (this.props.place.cards.length > 0) {
-    //     cards = this.renderCardAssociations()
-    //   }
-    //   if (this.props.place.noteIds.length > 0) {
-    //     notes = this.renderNoteAssociations()
-    //   }
-    //   if (cards && notes) {
-    //     return [cards, <span key='ampersand'> & </span>, notes]
-    //   } else {
-    //     return cards || notes
-    //   }
-    // }
-
-    // renderCardAssociations () {
-    //   if (!this.props.place.cards) return null
-    //   if (!this.props.place.cards.length) return null
-
-    //   let label = i18n(`{
-    //     count, plural,
-    //       one {1 card}
-    //       other {# cards}
-    //   }`, { count: this.props.place.cards.length })
-    //   let cardsAssoc = this.props.place.cards.reduce((arr, cId) => {
-    //     let card = this.props.cards.find(c => c.id == cId)
-    //     if (card) return arr.concat(card.title)
-    //     return arr
-    //   }, []).join(', ')
-    //   let tooltip = <Tooltip id='card-association-tooltip'>{cardsAssoc}</Tooltip>
-    //   return <OverlayTrigger placement='top' overlay={tooltip} key='card-association'>
-    //     <span>{label}</span>
-    //   </OverlayTrigger>
-    // }
-
-    // renderNoteAssociations () {
-    //   if (!this.props.place.noteIds) return null
-    //   if (!this.props.place.noteIds.length) return null
-
-    //   let label = i18n(`{
-    //     count, plural,
-    //       one {1 note}
-    //       other {# notes}
-    //   }`, { count: this.props.place.noteIds.length })
-    //   let noteAssoc = this.props.place.noteIds.reduce((arr, nId) => {
-    //     let note = this.props.notes.find(n => n.id == nId)
-    //     if (note) return arr.concat(note.title)
-    //     return arr
-    //   }, []).join(', ')
-    //   let tooltip = <Tooltip id='notes-association-tooltip'>{noteAssoc}</Tooltip>
-    //   return <OverlayTrigger placement='top' overlay={tooltip} key='note-association'>
-    //     <span>{label}</span>
-    //   </OverlayTrigger>
-    // }
-
-    renderPlace() {
-      const { place, customAttributes } = this.props
-
+    const renderPlace = () => {
       const details = customAttributes.map((attr, idx) => {
         const { name, type } = attr
         let desc = <dd>{place[name]}</dd>
@@ -310,18 +259,18 @@ const PlaceViewConnector = (connector) => {
       })
       return (
         <div className="place-list__place-wrapper">
-          {this.renderDelete()}
-          <div className="place-list__place" onClick={this.props.startEditing}>
-            <h4 className="secondary-text">{place.name || i18n('New Place')}</h4>
+          {renderDelete()}
+          <div className="place-list__place" onClick={startEditing}>
+            <h4 className="secondary-text">{place.name || t('New Place')}</h4>
             <div className="place-list__place-inner">
               <div>
                 <dl className="dl-horizontal">
-                  <dt>{i18n('Description')}</dt>
+                  <dt>{t('Description')}</dt>
                   <dd>{place.description}</dd>
                 </dl>
                 {details}
                 <dl className="dl-horizontal">
-                  <dt>{i18n('Notes')}</dt>
+                  <dt>{t('Notes')}</dt>
                   <dd>
                     <RichText description={place.notes} />
                   </dd>
@@ -337,36 +286,32 @@ const PlaceViewConnector = (connector) => {
       )
     }
 
-    render() {
-      if (this.props.editing) window.SCROLLWITHKEYS = false
-      else window.SCROLLWITHKEYS = true
+    if (editing) window.SCROLLWITHKEYS = false
+    else window.SCROLLWITHKEYS = true
 
-      const { darkMode, place, tags, actions } = this.props
-
-      return (
-        <div className={cx('place-list__place-view', { darkmode: darkMode })}>
-          <div className="place-list__place-view__left-side">
-            <BookSelectList
-              selectedBooks={place.bookIds}
-              parentId={place.id}
-              add={actions.addBook}
-              remove={actions.removeBook}
-            />
-            <SelectList
-              parentId={place.id}
-              type={'Tags'}
-              selectedItems={place.tags}
-              allItems={tags}
-              add={actions.addTag}
-              remove={actions.removeTag}
-            />
-          </div>
-          <div className="place-list__place-view__right-side">
-            {this.props.editing ? this.renderEditing() : this.renderPlace()}
-          </div>
+    return (
+      <div className={cx('place-list__place-view', { darkmode: darkMode })}>
+        <div className="place-list__place-view__left-side">
+          <BookSelectList
+            selectedBooks={place.bookIds}
+            parentId={place.id}
+            add={actions.addBook}
+            remove={actions.removeBook}
+          />
+          <SelectList
+            parentId={place.id}
+            type={'Tags'}
+            selectedItems={place.tags}
+            allItems={tags}
+            add={actions.addTag}
+            remove={actions.removeTag}
+          />
         </div>
-      )
-    }
+        <div className="place-list__place-view__right-side">
+          {editing ? renderEditing() : renderPlace()}
+        </div>
+      </div>
+    )
   }
 
   PlaceView.propTypes = {

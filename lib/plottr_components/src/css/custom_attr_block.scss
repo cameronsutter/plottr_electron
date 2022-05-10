@@ -63,6 +63,9 @@
 }
 
 @media (max-width: 824px) {
+  .custom-attr__add-button {
+    width: 100% !important;
+  }
   .custom-attr__save-as-template {
     margin-right: 0;
   }

@@ -93,6 +93,19 @@ const OutlineViewConnector = (connector) => {
       return <ul className="filter-list__list">{items}</ul>
     }
 
+    const insertSpace = (event) => {
+      const currentValue = event.target.value
+      const start = event.target.selectionStart
+      const end = event.target.selectionEnd
+      if (event.key === ' ') {
+        actions.setOutlineSearchTerm(
+          currentValue.slice(0, start) + ' ' + currentValue.slice(end + 1)
+        )
+      }
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
     const renderSubNav = () => {
       const popover = () => (
         <Popover id="filter">
@@ -130,6 +143,7 @@ const OutlineViewConnector = (connector) => {
             <NavItem>
               <FormControl
                 onChange={withEventTargetValue(actions.setOutlineSearchTerm)}
+                onKeyUp={insertSpace}
                 value={outlineSearchTerm}
                 type="text"
                 placeholder="Search"

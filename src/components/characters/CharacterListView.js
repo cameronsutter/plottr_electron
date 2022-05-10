@@ -162,6 +162,19 @@ const CharacterListViewConnector = (connector) => {
       )
     }
 
+    const insertSpace = (event) => {
+      const currentValue = event.target.value
+      const start = event.target.selectionStart
+      const end = event.target.selectionEnd
+      if (event.key === ' ') {
+        uiActions.setCharactersSearchTerm(
+          currentValue.slice(0, start) + ' ' + currentValue.slice(end + 1)
+        )
+      }
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
     const renderSubNav = () => {
       const filterPopover = () => (
         <Popover id="filter">
@@ -242,6 +255,7 @@ const CharacterListViewConnector = (connector) => {
             <NavItem>
               <FormControl
                 onChange={withEventTargetValue(uiActions.setCharactersSearchTerm)}
+                onKeyUp={insertSpace}
                 value={charactersSearchTerm}
                 type="text"
                 placeholder="Search"

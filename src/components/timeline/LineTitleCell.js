@@ -11,7 +11,6 @@ import {
   MenuItem,
 } from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
-import { sort } from 'lodash'
 import cx from 'classnames'
 import { FaBook, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { FiCopy } from 'react-icons/fi'
@@ -63,6 +62,19 @@ const LineTitleCellConnector = (connector) => {
     const hoverTimeout = useRef(null)
     const titleInputRef = useRef()
     const bookChoiceDropDown = useRef()
+    const titleCellRef = useRef()
+
+    useEffect(() => {
+      if (titleCellRef.current && zIndex) {
+        const wrapperDiv = titleCellRef.current
+        if (wrapperDiv) {
+          wrapperDiv.style.zIndex = zIndex
+          if (orientation !== 'vertical') {
+            wrapperDiv.style.position = 'relative'
+          }
+        }
+      }
+    }, [zIndex])
 
     useEffect(() => {
       if (movingLine && bookChoiceDropDown.current) {
@@ -495,7 +507,7 @@ const LineTitleCellConnector = (connector) => {
     // Note the z-index.  This is needed to have titles stack their
     // controls onto titles to their right.
     return (
-      <Cell style={{ zIndex, position: zIndex ? 'relative' : null }}>
+      <Cell ref={titleCellRef}>
         <div
           className={wrapperKlass}
           onMouseEnter={startHovering}

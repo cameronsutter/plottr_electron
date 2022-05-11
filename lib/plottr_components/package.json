@@ -65,7 +65,9 @@
   },
   "dependencies": {
     "axios": "^0.22.0",
+    "invariant": "^2.2.4",
     "pretty-date": "^0.2.0",
+    "prop-types-extra": "^1.1.1",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^16.8.6",

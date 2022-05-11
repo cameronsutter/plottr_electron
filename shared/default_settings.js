@@ -21,5 +21,6 @@ module.exports = {
     openDashboardFirst: true,
     beatHierarchy: false,
     enableOfflineMode: false,
+    streamFriendly: false,
   },
 }

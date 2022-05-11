@@ -95,45 +95,47 @@ export const PRO_ID = '104900'
 
 // callback(hasPro, info)
 export function checkForPro(email, callback) {
-  return rp(makeRequest(subscriptionsURL(email)))
-    .then((response) => {
-      log.info('successful pro request')
-      if (!response.subscriptions) {
-        log.info(response)
-        callback(false)
+  // first check for claims
+  return getIdTokenResult()
+    .then((token) => {
+      if (token?.claims?.beta || token?.claims?.admin || token?.claims?.lifetime) {
+        callback(true)
         return
-      }
-
-      // find the subscription with Pro
-      const activeSub = response.subscriptions.find((sub) => {
-        return sub.info && isProProduct(sub.info) && isActiveSub(sub.info)
-      })
-      if (activeSub) {
-        const { info } = activeSub
-        // TODO: save this info somewhere
-        log.info(info.product_id, info.status, info.expiration)
-        callback(true, info)
       } else {
-        getIdTokenResult()
-          .then((token) => {
-            if (token?.claims?.beta || token?.claims?.admin || token?.claims?.lifetime) {
-              callback(true)
+        // now check for Pro subscription
+        return rp(makeRequest(subscriptionsURL(email)))
+          .then((response) => {
+            log.info('successful pro request')
+            if (!response.subscriptions) {
+              log.info(response)
+              callback(false)
+              return
+            }
+            const activeSub = response.subscriptions.find((sub) => {
+              return sub.info && isProProduct(sub.info) && isActiveSub(sub.info)
+            })
+            if (activeSub) {
+              const { info } = activeSub
+              log.info(info.product_id, info.status, info.expiration)
+              callback(true, info)
             } else {
               callback(false)
             }
+            return
           })
-          .catch((error) => {
-            callback(false)
+          .catch((err) => {
+            if (err.message === `No customer found for ${email}!`) {
+              callback(false)
+              return Promise.resolve(true)
+            }
+            log.error('Failed to check for pro', err)
+            return Promise.reject(err)
           })
       }
     })
-    .catch((err) => {
-      if (err.message === `No customer found for ${email}!`) {
-        callback(false)
-        return Promise.resolve(true)
-      }
-      log.error('Failed to check for pro', err)
-      return Promise.reject(err)
+    .catch((error) => {
+      callback(false)
+      return Promise.reject(error)
     })
 }
 
@@ -164,14 +166,14 @@ function licenseURL(action, productID, license) {
 
 function isActiveLicense(body) {
   // license could also be:
-  // - site_inactive
+  // - site_inactive (check_license without url or inactive url)
   // - invalid
   // - disabled
   // - expired
-  // - inactive
+  // - inactive (no active devices yet, but valid license)
 
-  // not handling site_inactive nor inactive differently than invalid for now
-  return body.success && body.license == 'valid'
+  // not handling site_inactive differently than invalid for now
+  return body.success && (body.license == 'valid' || body.license == 'inactive')
 }
 
 function licenseIsForProduct(body) {
@@ -205,7 +207,7 @@ function mapV2old(isActive) {
   }
 }
 
-function mapPro(isActive) {
+function mapClassic(isActive) {
   const currentAppSettings = fileSystemAPIs.currentAppSettings()
 
   if (isActive) {
@@ -242,8 +244,8 @@ function getGracePeriodEnd() {
 }
 
 const productMapping = {
-  33347: mapPro,
-  33345: mapPro,
+  33347: mapClassic,
+  33345: mapClassic,
   11321: mapV2old,
   11322: mapV2old,
 }

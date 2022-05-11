@@ -41,6 +41,17 @@
     .custom-attr-item__checkbox-label {
       margin-right: 50px;
     }
+
+    @media (max-width: 1024px) {
+      width: 100%;
+    }
+
+    @media (max-width: 500px) {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: inherit;
+    }
   }
 }
 
@@ -58,6 +69,15 @@
   margin-right: 24px;
 }
 
+@media (max-width: 824px) {
+  .custom-attr__add-button {
+    width: 100% !important;
+  }
+  .custom-attr__save-as-template {
+    margin-right: 0;
+  }
+}
+
 .custom-attr-item {
   display: flex;
   align-items: center;
@@ -69,6 +89,13 @@
   border: 0;
   padding: 1px 4px;
 }
+
+@media (max-width: 824px) {
+  .custom-attr-item__input {
+    width: 70%;
+  }
+}
+
 
 .custom-attr-item__input--hidden {
   display: none;
@@ -82,6 +109,13 @@
   input {
     margin-right: 8px !important;
     align-self: center;
+  }
+}
+
+@media (max-width: 1024px) {
+  .custom-attr-item__checkbox-label {
+    width: 100%;
+    margin-right: 5px !important;
   }
 }
 

@@ -132,7 +132,7 @@ const LineTitleCellConnector = (connector) => {
         setEditing(false)
         setHovering(false)
       }
-      if (!event.relatedTarget || !event.relatedTarget.attributes.role.value === 'menuitem') {
+      if (!event.relatedTarget || !event.relatedTarget.attributes?.role?.value === 'menuitem') {
         setMovingLine(false)
       }
     }
@@ -234,9 +234,11 @@ const LineTitleCellConnector = (connector) => {
     }
 
     const toggleMovingLine = () => {
-      const thereIsAnotherBook = books.allIds.some((id) => {
-        return bookId !== id
-      })
+      const thereIsAnotherBook =
+        bookId !== 'series' ||
+        books.allIds.some((id) => {
+          return bookId !== id
+        })
       if (thereIsAnotherBook) {
         setMovingLine(!movingLine)
       }
@@ -414,8 +416,8 @@ const LineTitleCellConnector = (connector) => {
           title={title}
           onBlur={handleBlur}
         >
-          {books.allIds.sort().map((id, index) => {
-            const book = books[id]
+          {[...books.allIds, 'series'].sort().map((id, index) => {
+            const book = id === 'series' ? { id: 'series', title: t('Series') } : books[id]
             if (Array.isArray(book)) return null
             if (bookId === book.id) return null
 

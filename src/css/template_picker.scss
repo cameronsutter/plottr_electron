@@ -30,6 +30,13 @@
       color: $gray-4;
     }
 
+    @media (max-width: 824px) {
+      h1 {
+        font-size: 14pt !important;
+        word-break: break-all;
+      }
+    }
+
     ul.list-group {
       max-width: 300px;
     }
@@ -43,6 +50,10 @@
       &:hover {
         background-color: $gray-9;
         border-color: $gray-9;
+      }
+
+      @media (max-width: 824px) {
+        word-break: break-all;
       }
     }
 

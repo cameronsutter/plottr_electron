@@ -370,6 +370,10 @@ function newFileFromTemplate(template, name) {
 async function createNew(template, name) {
   if (template) {
     const templateFileJSON = newFileFromTemplate(template, name)
+    const fileName = name || t('Untitled')
+    if (templateFileJSON.books[1]) {
+      templateFileJSON.books[1].title = fileName
+    }
     const filePath = await saveToTempFile(templateFileJSON, name)
     const fileId = addToKnownFiles(filePath)
     openKnownFile(filePath, fileId)

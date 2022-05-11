@@ -9,6 +9,30 @@
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   margin-bottom: 10px;
+
+  @media (max-width: 1000px) {
+    .form-group .control-label {
+      text-align: left;
+    }
+
+    .col-xs-2, .col-xs-1, .col-xs-5 {
+      padding: 0 !important;
+      width: 100%;
+      display: flex;
+      margin: 0 !important;
+      margin-left: 16px !important;
+    }
+
+    .col-xs-2 {
+      p {
+        margin-top: 0 !important;
+      }
+
+      button {
+        margin-bottom: 18px;
+      }
+    }
+  }
 }
 
 .color-picker__show-color {
@@ -20,8 +44,26 @@
   vertical-align: middle;
   background-color: white;
   border: 1px solid #eee;
+
+  @media (max-width: 1000px) {
+    margin: 0 !important;
+    .form-group .control-label {
+      text-align: left;
+    }
+  }
 }
 
+
+@media (max-width: 1000px) {
+  .form-horizontal .form-group {
+    width: 100%;
+    margin: 0 !important;
+    margin-top: 10px !important;
+    .form-control {
+      width: 60%;
+    }
+  }
+}
 .color-picker__box-wrapper {
   p {
     @include header-font;
@@ -51,7 +93,7 @@
 
 .mini-color-picker {
   position: fixed;
-  z-index: 100;
+  z-index: 9999;
   width: 200px;
   height: 200px;
   overflow: scroll;

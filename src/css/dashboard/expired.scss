@@ -29,6 +29,12 @@
     h2 {
       margin: 8px;
     }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 18px;
+      }
+    }
   }
 
   .expired__choice:hover {

@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { groupBy, pickBy, keys } from 'lodash' // get/set will possibly be used to edit values
-import { Grid, Col } from 'react-bootstrap'
+import { Grid } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
 
 import { newIds, helpers, selectors } from 'pltr/v2'
 
-import { Row } from 'connected-components'
+import { Col, Row } from 'connected-components'
 import DevFileDrop from './DevFileDrop'
 
 const {

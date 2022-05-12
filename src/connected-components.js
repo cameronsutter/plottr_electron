@@ -428,6 +428,7 @@ const platform = {
 
 const components = connections.pltr(platform)
 
+export const Nav = components.Nav
 export const Col = components.Col
 export const Row = components.Row
 export const Button = components.Button

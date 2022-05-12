@@ -75,6 +75,7 @@
     "react-is": "^16.13.1",
     "react-overlays": "^0.9.3",
     "react-sticky-table": "^5.1.11",
+    "react-transition-group": "^4.4.2",
     "react-waypoint": "^10.1.0",
     "react.pure.component": "^1.2.0",
     "slate": "^0.65.3",

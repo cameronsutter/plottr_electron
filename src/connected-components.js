@@ -428,6 +428,7 @@ const platform = {
 
 const components = connections.pltr(platform)
 
+export const Navbar = components.Navbar
 export const Grid = components.Grid
 export const NavItem = components.NavItem
 export const Nav = components.Nav

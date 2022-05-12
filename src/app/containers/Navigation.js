@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { Navbar, NavItem } from 'react-bootstrap'
+import { Navbar } from 'react-bootstrap'
 import { ipcRenderer } from 'electron'
 import { FaRegUser, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
@@ -10,7 +10,7 @@ import OfflineBanner from '../components/OfflineBanner'
 
 import { t } from 'plottr_locales'
 
-import { Nav, Beamer, BookChooser, Button } from 'connected-components'
+import { NavItem, Nav, Beamer, BookChooser, Button } from 'connected-components'
 import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'

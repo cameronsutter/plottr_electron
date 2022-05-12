@@ -80,6 +80,7 @@
     "slate": "^0.65.3",
     "slate-history": "^0.65.3",
     "slate-hyperscript": "^0.62.0",
-    "slate-react": "^0.65.3"
+    "slate-react": "^0.65.3",
+    "warning": "^4.0.3"
   }
 }

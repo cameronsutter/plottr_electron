@@ -66,6 +66,7 @@
   "dependencies": {
     "axios": "^0.22.0",
     "invariant": "^2.2.4",
+    "keycode": "^2.2.1",
     "pretty-date": "^0.2.0",
     "prop-types-extra": "^1.1.1",
     "react": "^16.8.6",
@@ -82,6 +83,7 @@
     "slate-history": "^0.65.3",
     "slate-hyperscript": "^0.62.0",
     "slate-react": "^0.65.3",
+    "uncontrollable": "^7.2.1",
     "warning": "^4.0.3"
   }
 }

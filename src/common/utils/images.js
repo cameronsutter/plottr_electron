@@ -5,7 +5,7 @@ import isUrl from 'is-url'
 
 const maxWidth = 700
 const maxHeight = 500
-const format = 'JPEG' // PNG or WEBP
+const format = 'WEBP' // PNG or WEBP
 const quality = 50 // out of 100
 const rotation = 0
 const output = 'base64'

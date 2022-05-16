@@ -1,3 +1,12 @@
+@import 'colors';
+
 .blurred {
   filter: blur(10px);
+}
+
+.toolbar__search {
+  height: 33px;
+  padding: 5px 10px;
+  border-color: $gray-6;
+  border-radius: 3px;
 }

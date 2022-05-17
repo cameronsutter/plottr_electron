@@ -15,6 +15,7 @@ module.exports = {
     backupDays: 30,
     backupLocation: 'default',
     dark: 'system',
+    themeSource: 'system',
     numberOfBackups: 30,
     backupType: 'never-delete',
     localBackups: false,

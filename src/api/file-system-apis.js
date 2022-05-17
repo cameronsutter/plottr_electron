@@ -27,6 +27,11 @@ function addDays(date, days) {
   return result
 }
 
+function americanToYearFirst(dateString) {
+  const [month, day, year] = dateString.split('_')
+  return `${year}_${month}_${day}`
+}
+
 export const listenToTrialChanges = (cb) => {
   cb(trialStore.store)
   return trialStore.onDidAnyChange.bind(trialStore)(cb)
@@ -210,7 +215,7 @@ function readBackupsDirectory(cb) {
       fs.readdir(thisPath, (error, backupFiles) => {
         tempList.push({
           path: thisPath,
-          date: dir,
+          date: americanToYearFirst(dir),
           backups: backupFiles,
         })
         cb(sortBy(tempList, (a) => new Date(a.date.replace(/_/g, '-'))).reverse())

@@ -62,8 +62,9 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
     event.returnValue = getSocketWorkerPort()
   })
 
-  ipcMain.on('pls-set-dark-setting', (_event, newValue) => {
+  ipcMain.on('pls-set-dark-setting', (event, newValue) => {
     setDarkMode(newValue)
+    broadcastToAllWindows('reload-dark-mode', SETTINGS.store.user.dark)
   })
 
   ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {

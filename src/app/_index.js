@@ -328,6 +328,11 @@ ipcRenderer.on('update-worker-port', (_event, newPort) => {
   createClient(getPort())
 })
 
+ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
+  fileSystemAPIs.saveAppSetting('user.dark', newValue)
+  store.dispatch(actions.settings.setDarkMode(newValue))
+})
+
 // TODO: not sure when/whether we should unsubscribe.  Presumably
 // when the window is refreshed/closed?
 //

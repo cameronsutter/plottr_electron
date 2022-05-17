@@ -32,6 +32,7 @@ log.info(`--------Init (${app.getVersion()})--------`)
 const ENV_FILE_PATH = path.resolve('.env')
 import { config } from 'dotenv'
 import { broadcastToAllWindows } from './modules/broadcast'
+import { setDarkMode } from './modules/theme'
 config({ path: ENV_FILE_PATH })
 const rollbar = setupRollbar('main', {})
 
@@ -100,6 +101,8 @@ app.whenReady().then(() => {
         let win = BrowserWindow.getFocusedWindow()
         if (win) win.toggleDevTools()
       })
+
+      setDarkMode(SETTINGS.store.user.dark)
 
       if (process.env.NODE_ENV != 'dev') {
         app.setAsDefaultProtocolClient('plottr')

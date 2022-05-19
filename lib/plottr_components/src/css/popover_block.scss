@@ -1,12 +1,10 @@
-.plottr_popover {
+.plottr-popover {
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text;
   font-size: $font-size-base;
 
   background-color: $popover-bg;
   background-clip: padding-box;
-  border: 1px solid $popover-fallback-border-color;
-  border: 1px solid $popover-border-color;
   border-radius: $border-radius-large;
   @include box-shadow(0 5px 10px rgba(0,0,0,.2));
 }

@@ -49,6 +49,19 @@
     cursor: pointer;
     transition: all .4s $cubic;
     color: $gray-1;
+
+    @media (max-width: 768px) {
+      h2 {
+        font-size: 18px;
+        word-break: break-all;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 16px;
+      }
+    }
   }
 
   .verify__chooser {

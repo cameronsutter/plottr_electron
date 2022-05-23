@@ -435,7 +435,6 @@ export const Nav = components.Nav
 export const Col = components.Col
 export const Row = components.Row
 export const Button = components.Button
-export const OverlayTrigger = components.OverlayTrigger
 export const DeleteConfirmModal = components.DeleteConfirmModal
 export const MessageModal = components.MessageModal
 export const ColorPickerColor = components.ColorPickerColor

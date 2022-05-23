@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
+import { selectors, actions } from 'pltr/v2'
 
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
@@ -21,7 +22,6 @@ import {
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
-import { selectors } from 'pltr/v2'
 
 const App = ({
   forceProjectDashboard,
@@ -32,6 +32,7 @@ const App = ({
   isResuming,
   userNeedsToLogin,
   sessionChecked,
+  clickOnDom,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -198,7 +199,12 @@ const App = ({
           <Navigation forceProjectDashboard={forceProjectDashboard} />
         </React.StrictMode>
       </ErrorBoundary>
-      <main className="project-main tour-end">
+      <main
+        className="project-main tour-end"
+        onClick={(event) => {
+          clickOnDom(event.clientX, event.clientY)
+        }}
+      >
         <React.StrictMode>
           <Body />
         </React.StrictMode>
@@ -238,4 +244,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, { clickOnDom: actions.domEvents.clickOnDom })(App)

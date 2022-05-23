@@ -43,7 +43,6 @@ const Listener = ({
   setProLicenseInfo,
   startLoadingALicenseType,
   finishLoadingALicenseType,
-  clickOnDom,
 }) => {
   const [unsubscribeFunction, setUnsubscribeFunction] = useState(null)
 
@@ -195,16 +194,6 @@ const Listener = ({
     }
   }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro, checkingProSubscription])
 
-  useEffect(() => {
-    const clickHandler = (event) => {
-      clickOnDom(event.clientX, event.clientY)
-    }
-    document.addEventListener('click', clickHandler)
-    return () => {
-      document.removeEventListener('click', clickHandler)
-    }
-  }, [clickOnDom])
-
   return null
 }
 
@@ -269,6 +258,5 @@ export default connect(
     setProLicenseInfo: actions.license.setProLicenseInfo,
     startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
     finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
-    clickOnDom: actions.domEvents.clickOnDom,
   }
 )(Listener)

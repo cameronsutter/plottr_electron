@@ -109,7 +109,7 @@ function reloadWindow() {
 }
 
 function reloadAllWindows() {
-  windows.forEach((w) => w.browserWindow.webContents.reload())
+  windows.forEach((w) => w.browserWindow.webContents.send('reload'))
 }
 
 function dereferenceWindow(winObj) {

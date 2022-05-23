@@ -36,17 +36,24 @@ const App = ({
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
   const [showAskToSave, setShowAskToSave] = useState(false)
-  const [blockClosing, setBlockClosing] = useState(true)
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [showActsGuideHelp, setShowActsGuideHelp] = useState(false)
 
+  // FIXME: the close logic is broken and overly complicated.  I only
+  // made the addition here because we found a problem close to
+  // release.
+  const [blockClosing, setBlockClosing] = useState(true)
   const isTryingToReload = useRef(false)
   const isTryingToClose = useRef(false)
+  const alreadyClosingOrRefreshing = useRef(false)
 
   const closeOrRefresh = (shouldClose) => {
+    alreadyClosingOrRefreshing.current = true
     if (isTryingToReload.current) {
+      console.log('Trying to reload')
       location.reload()
     } else {
+      console.log('Trying to close')
       if (shouldClose) window.close()
     }
   }
@@ -57,8 +64,10 @@ const App = ({
       event,
       isTryingToClose.current,
       isTryingToReload.current,
-      blockClosing
+      blockClosing,
+      alreadyClosingOrRefreshing.current
     )
+    if (alreadyClosingOrRefreshing.current) return
     if (!blockClosing) return
     if (process.env.NODE_ENV == 'development') {
       closeOrRefresh(isTryingToClose.current)
@@ -150,7 +159,7 @@ const App = ({
   }
 
   const renderAskToSave = () => {
-    if (!showAskToSave || !isCloudFile) return null
+    if (!showAskToSave || isCloudFile) return null
 
     return (
       <AskToSaveModal

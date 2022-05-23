@@ -222,7 +222,6 @@ Listener.propTypes = {
   setProLicenseInfo: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
-  clickOnDom: PropTypes.func.isRequired,
 }
 
 export default connect(

@@ -92,7 +92,11 @@ app.whenReady().then(() => {
         if (!openedFile && !(fileLaunchedOn && is.macos)) {
           openedFile = true
           log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
-          openProjectWindow(fileLaunchedOn)
+          try {
+            openProjectWindow(fileLaunchedOn)
+          } catch (error) {
+            log.error('Error booting file: ', error)
+          }
         }
       }, 1000)
 

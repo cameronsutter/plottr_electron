@@ -43,10 +43,16 @@ contextMenu({
 
 if (!is.development) {
   process.on('uncaughtException', function (error) {
-    log.error(error)
+    console.error('Uncaught exception.  Quitting...', error)
+    log.error('Uncaught exception.  Quitting...', error)
     rollbar.error(error, function (sendErr, data) {
       gracefullyQuit()
     })
+  })
+  process.on('unhandledRejection', function (error) {
+    console.error('Unhandled rejection.', error)
+    log.error('Unhandled rejection.', error)
+    rollbar.error(error)
   })
   // ensure only 1 instance is running
   const gotTheLock = app.requestSingleInstanceLock()

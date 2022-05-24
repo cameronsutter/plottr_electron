@@ -7,18 +7,40 @@ import { checkDependencies } from '../../checkDependencies'
 const DarkOptionsSelect = (connector) => {
   const {
     platform: {
+      setDarkMode,
       settings: { saveAppSetting },
     },
   } = connector
-  checkDependencies({ saveAppSetting })
+  checkDependencies({ setDarkMode, saveAppSetting })
 
   const DarkOptionsSelect = ({ settings }) => {
     const changeSetting = (ev) => {
-      saveAppSetting('user.dark', ev.target.value)
+      switch (ev.target.value) {
+        case 'system': {
+          saveAppSetting('user.themeSource', 'system')
+          break
+        }
+        case 'light': {
+          saveAppSetting('user.themeSource', 'manual')
+          saveAppSetting('user.dark', 'light')
+          break
+        }
+        case 'dark': {
+          saveAppSetting('user.themeSource', 'manual')
+          saveAppSetting('user.dark', 'dark')
+          break
+        }
+      }
+      // This, if present, talks to the external world to let it know
+      // about the change.
+      setDarkMode(ev.target.value)
     }
 
+    const themeSource = settings.user.themeSource
+    const selectedValue = settings.user.dark || 'system'
+
     return (
-      <select value={settings.user.dark || 'system'} onChange={changeSetting}>
+      <select value={themeSource === 'system' ? 'system' : selectedValue} onChange={changeSetting}>
         <option value="system">{i18n('System')}</option>
         <option value="dark">{i18n('Dark')}</option>
         <option value="light">{i18n('Light')}</option>

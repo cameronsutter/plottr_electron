@@ -53,11 +53,14 @@ const OutlineViewConnector = (connector) => {
     outlineSearchTerm,
   }) => {
     const [active, setActive] = useState(0)
-    const [firstRender, setFirstRender] = useState(true)
+    const [beatsToRender, setBeatsToRender] = useState(1)
 
     useEffect(() => {
-      setTimeout(() => setFirstRender(false), 500)
-    }, [currentTimeline])
+      if (beatsToRender >= beats.length) return
+      window.requestIdleCallback(() => {
+        setBeatsToRender(beatsToRender + 1)
+      })
+    }, [beats, beatsToRender, setBeatsToRender])
 
     const filterItem = (id) => {
       actions.setOutlineFilter(id)
@@ -147,6 +150,7 @@ const OutlineViewConnector = (connector) => {
                 value={outlineSearchTerm}
                 type="text"
                 placeholder="Search"
+                className="toolbar__search"
               />
             </NavItem>
           </Nav>
@@ -165,8 +169,7 @@ const OutlineViewConnector = (connector) => {
       return (
         !!beats.length &&
         !!beatsWithCards.length &&
-        beats.map((beat, idx) => {
-          if (firstRender && idx > 2) return null
+        beats.slice(0, beatsToRender).map((beat, idx) => {
           let hasCards = beatsWithCards.includes(beat.id)
           const beatCards = hasCards
             ? cardMapping[beat.id]

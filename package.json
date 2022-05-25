@@ -83,7 +83,7 @@
     "dom-parser": "^0.1.6",
     "dotenv-webpack": "^7.1.0",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
-    "electron": "^18.0.4",
+    "electron": "18.2.4",
     "electron-builder": "^22.8.0",
     "electron-notarize": "^1.0.0",
     "enzyme": "^3.11.0",
@@ -147,7 +147,7 @@
     "xml-js": "^1.6.11"
   },
   "build": {
-    "electronVersion": "18.0.4",
+    "electronVersion": "18.2.4",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "publish": [

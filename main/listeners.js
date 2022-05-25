@@ -234,16 +234,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
     openLoginPopupWindow()
   })
 
-  ipcMain.on('rm-rf', (event, path, messageId) => {
-    try {
-      fs.rmdirSync(path, { recursive: true })
-      event.sender.send(`rm-rf-reply-${messageId}`, null)
-    } catch (error) {
-      log.error('Error deleting a file via rm-rf: ', path, error)
-      event.sender.send(`rm-rf-reply-${messageId}`, error.message || `Error deleting ${path}`)
-    }
-  })
-
   ipcMain.on('notify', (event, title, body) => {
     try {
       const notification = new Notification({

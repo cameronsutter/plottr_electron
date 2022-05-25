@@ -2,7 +2,7 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING, RM_RF } from './socket-server-message-types'
+import { PING, RM_RF } from '../shared/socket-server-message-types'
 import { logger } from './logger'
 
 export const connect = (port) => {

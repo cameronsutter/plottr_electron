@@ -1,7 +1,7 @@
 import { WebSocketServer } from 'ws'
 import fs from 'fs'
 
-import { PING, RM_RF } from './message-types'
+import { PING, RM_RF } from '../../shared/socket-server-message-types'
 import { logger } from './logger'
 
 const parseArgs = () => {

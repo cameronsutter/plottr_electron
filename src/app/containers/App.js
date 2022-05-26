@@ -230,6 +230,7 @@ App.propTypes = {
   isResuming: PropTypes.bool,
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
+  clickOnDom: PropTypes.func,
 }
 
 function mapStateToProps(state) {

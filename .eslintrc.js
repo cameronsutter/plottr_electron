@@ -24,6 +24,7 @@ module.exports = {
     },
   },
   ignorePatterns: [
+    '*.bundle.js',
     '/node_modules/**',
     '/build/**',
     '**/*.json',

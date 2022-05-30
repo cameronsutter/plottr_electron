@@ -8,7 +8,6 @@
   },
   "depnedencies": {
     "net": "^1.0.2",
-    "react-bootstrap": "^0.32.4",
     "react-scripts": "4.0.3",
     "slate": "^0.59.0",
     "slate-history": "^0.59.0",

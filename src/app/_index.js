@@ -285,15 +285,20 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
   const state = store.getState().present
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
-  uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
-    const fileId = response.data.fileId
-    openFile(`plottr://${fileId}`, fileId, false)
-    // Fixme: this could have been called to create from a snowflake
-    // file too(!)
-    store.dispatch(actions.applicationState.finishScrivenerImporter())
-    closeDashboard()
-    return fileId
-  })
+  uploadToFirebase(emailAddress, userId, json, fileName)
+    .then((response) => {
+      const fileId = response.data.fileId
+      openFile(`plottr://${fileId}`, fileId, false)
+      // Fixme: this could have been called to create from a snowflake
+      // file too(!)
+      store.dispatch(actions.applicationState.finishScrivenerImporter())
+      closeDashboard()
+      return fileId
+    })
+    .catch((error) => {
+      logger.error(error)
+      store.dispatch(actions.applicationState.finishScrivenerImporter())
+    })
 })
 
 ipcRenderer.on('finish-creating-local-scrivener-imported-file', () => {

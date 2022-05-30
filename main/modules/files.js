@@ -420,6 +420,10 @@ function createRTFConversionFunction(sender) {
 }
 
 function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
+  if (importedPath.error) {
+    log.error(importedPath.error)
+    return sender.send('finish-creating-local-scrivener-imported-file')
+  }
   const storyName = path.basename(importedPath, '.scriv')
   let json = emptyFile(storyName, app.getVersion())
   json.beats = {
@@ -434,19 +438,29 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   )
 
   if (isLoggedIntoPro) {
-    importedJsonPromise.then((importedJson) => {
-      sender.send('create-plottr-cloud-file', importedJson, storyName)
-    })
+    importedJsonPromise
+      .then((importedJson) => {
+        sender.send('create-plottr-cloud-file', importedJson, storyName)
+      })
+      .catch((error) => {
+        log.error(error)
+        sender.send('finish-creating-local-scrivener-imported-file')
+      })
     return Promise.resolve()
   }
 
-  return importedJsonPromise.then((importedJson) => {
-    return saveToTempFile(importedJson, storyName).then((filePath) => {
-      const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+  return importedJsonPromise
+    .then((importedJson) => {
+      return saveToTempFile(importedJson, storyName).then((filePath) => {
+        const fileId = addToKnownFiles(filePath)
+        openKnownFile(filePath, fileId)
+        sender.send('finish-creating-local-scrivener-imported-file')
+      })
+    })
+    .catch((error) => {
+      log.error(error)
       sender.send('finish-creating-local-scrivener-imported-file')
     })
-  })
 }
 
 function openKnownFile(filePath, id, unknown) {

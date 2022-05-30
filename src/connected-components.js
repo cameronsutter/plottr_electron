@@ -428,7 +428,13 @@ const platform = {
 
 const components = connections.pltr(platform)
 
-export const OverlayTrigger = components.OverlayTrigger
+export const Navbar = components.Navbar
+export const Grid = components.Grid
+export const NavItem = components.NavItem
+export const Nav = components.Nav
+export const Col = components.Col
+export const Row = components.Row
+export const Button = components.Button
 export const DeleteConfirmModal = components.DeleteConfirmModal
 export const MessageModal = components.MessageModal
 export const ColorPickerColor = components.ColorPickerColor

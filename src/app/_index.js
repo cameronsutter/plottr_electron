@@ -38,6 +38,7 @@ import { exportSaveDialog } from '../export-save-dialog'
 import { instrumentLongRunningTasks } from './longRunning'
 import { getPort, setPort } from '../workerPort'
 import { createClient } from '../socket-client'
+import { rootComponent } from './rootComponent'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -340,6 +341,6 @@ ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
 // listeners and too many of those cause slow-downs.
 const _unsubscribeToPublishers = world.publishChangesToStore(store)
 
-const root = document.getElementById('react-root')
+const root = rootComponent()
 
 renderFile(root)

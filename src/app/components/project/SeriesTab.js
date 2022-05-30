@@ -1,6 +1,12 @@
 import React from 'react'
-import { EditSeries, ErrorBoundary, BookList, FileLocation, SubNav } from 'connected-components'
-import { Nav } from 'react-bootstrap'
+import {
+  Nav,
+  EditSeries,
+  ErrorBoundary,
+  BookList,
+  FileLocation,
+  SubNav,
+} from 'connected-components'
 
 export default function SeriesTab() {
   const SubNavigation = () => {

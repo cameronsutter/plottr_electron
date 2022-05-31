@@ -277,7 +277,9 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
     // simply open a backup file locally.
     json.file.isCloudFile = false
   } catch (error) {
-    return Promise.resolve()
+    logger.error(error)
+    rollbar.error(error)
+    return Promise.reject('bootLocalFile001: json-parse')
   }
   ipcRenderer.send('save-backup', filePath, json)
   return new Promise((resolve, reject) => {
@@ -291,6 +293,7 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
           rollbar.error(err)
           logger.error(err)
           // We... still load the file!?
+          return reject('bootLocalFile002: migration')
         }
         store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
@@ -341,15 +344,14 @@ export function bootFile(filePath, options, numOpenFiles) {
         store.dispatch(actions.applicationState.finishLoadingFile())
       })
       .catch((error) => {
-        store.dispatch(actions.applicationState.finishLoadingFile())
-        // TODO: error dialog and ask the user to try again
         logger.error(error)
         rollbar.error(error)
+        store.dispatch(actions.applicationState.errorLoadingFile())
       })
   } catch (error) {
-    // TODO: error dialog and ask the user to try again
     logger.error(error)
     rollbar.error(error)
+    store.dispatch(actions.applicationState.errorLoadingFile())
     return Promise.reject(error)
   }
 }

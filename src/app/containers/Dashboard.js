@@ -9,8 +9,8 @@ import { DashboardBody, DashboardNav, FullPageSpinner as Spinner } from 'connect
 
 import OfflineBanner from '../components/OfflineBanner'
 
-const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy }) => {
-  const [activeView, setActiveView] = useState('files')
+const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy, openTo }) => {
+  const [activeView, setActiveView] = useState(openTo || 'files')
 
   useEffect(() => {
     const closeListener = document.addEventListener('close-dashboard', closeDashboard)
@@ -39,6 +39,7 @@ Dashboard.propTypes = {
   closeDashboard: PropTypes.func.isRequired,
   cantShowFile: PropTypes.bool,
   busy: PropTypes.bool,
+  openTo: PropTypes.string,
 }
 
 export default React.memo(

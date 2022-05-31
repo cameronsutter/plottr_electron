@@ -1,0 +1,81 @@
+{
+  "name": "tree-changes-hook",
+  "version": "0.9.1",
+  "description": "React hook for tree-changes",
+  "author": "Gil Barbara <gilbarbara@gmail.com>",
+  "keywords": [
+    "comparison",
+    "tree",
+    "react",
+    "hook"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gilbarbara/tree-changes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gilbarbara/tree-changes/issues"
+  },
+  "homepage": "https://github.com/gilbarbara/tree-changes/tree/master/packages/tree-changes-hook#readme",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "files": [
+    "esm",
+    "lib",
+    "src"
+  ],
+  "types": "lib",
+  "sideEffects": false,
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0"
+  },
+  "dependencies": {
+    "@gilbarbara/deep-equal": "^0.1.0",
+    "tree-changes": "^0.9.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.0",
+    "@types/react": "^17.0.21",
+    "@types/react-dom": "^17.0.9",
+    "@gilbarbara/tsconfig": "0.1.1",
+    "del-cli": "^4.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc",
+    "build:esm": "tsc -m es6 --outDir esm",
+    "watch:cjs": "npm run build:cjs -- -w",
+    "watch:esm": "npm run build:esm -- -w",
+    "lint": "eslint --ext .ts,.tsx src test",
+    "clean": "del lib/* && del esm/*",
+    "test": "jest",
+    "test:coverage": "jest --coverage --bail",
+    "test:watch": "jest --watchAll --verbose",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier \"**/*.{js,jsx,json,yml,yaml,css,less,scss,ts,tsx,md,graphql,mdx}\" --write",
+    "validate": "npm run lint && npm run typecheck && npm run test:coverage && npm run build && npm run size",
+    "size": "size-limit",
+    "prepublishOnly": "npm run validate"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@gilbarbara/eslint-config"
+    ]
+  },
+  "prettier": "@gilbarbara/prettier-config",
+  "size-limit": [
+    {
+      "path": "./lib/index.js",
+      "limit": "4 kB"
+    },
+    {
+      "path": "./esm/index.js",
+      "limit": "4 kB"
+    }
+  ]
+}

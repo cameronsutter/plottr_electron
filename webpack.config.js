@@ -163,6 +163,14 @@ const rendererConfig = {
       'wired-up-firebase': path.resolve(__dirname, 'src', 'wired-up-firebase.js'),
       'world-api': path.resolve(__dirname, 'src', 'world.js'),
       plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
+      // The NPM package has trouble with circular objects.
+      'tree-changes-hook': path.resolve(
+        __dirname,
+        'lib',
+        'tree-changes',
+        'packages',
+        'tree-changes-hook'
+      ),
       // Avoid duplicate react in libs problem (see
       // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)
       // If a better solution arose since this was written then feel
@@ -233,6 +241,14 @@ const loginPopupConfig = {
       'wired-up-firebase': path.resolve(__dirname, 'src', 'wired-up-firebase.js'),
       'world-api': path.resolve(__dirname, 'src', 'world.js'),
       plottr_components: path.resolve(__dirname, 'lib', 'plottr_components', 'dist', 'components'),
+      // The NPM package has trouble with circular objects.
+      'tree-changes-hook': path.resolve(
+        __dirname,
+        'lib',
+        'tree-changes',
+        'packages',
+        'tree-changes-hook'
+      ),
       // Avoid duplicate react in libs problem (see
       // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)
       // If a better solution arose since this was written then feel

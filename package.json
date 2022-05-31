@@ -14,6 +14,7 @@
   "main": "bin/electron_main.js",
   "scripts": {
     "start": "cross-env NODE_ENV=dev electron --inspect=5858 .",
+    "postinstall": "npm --prefix=lib/tree-changes i && npm --prefix=lib/tree-changes/packages/tree-changes-hook i && npm --prefix=lib/tree-changes/packages/tree-changes-hook run build",
     "compile": "npm --prefix lib/plottr_components run compile && cross-env NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "npm-run-all --parallel watch:*",
     "watch:plottr": "echo 'do you have fsevents?' && cross-env NODE_ENV=dev node_modules/.bin/webpack",
@@ -138,6 +139,7 @@
     "semver": "^7.1.3",
     "style-loader": "^0.13.0",
     "tinycolor2": "^1.4.2",
+    "tree-changes": "file:./lib/tree-changes",
     "url-loader": "^4.1.1",
     "uuid": "^8.3.1",
     "webpack": "^5.70.0",

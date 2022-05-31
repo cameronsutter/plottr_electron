@@ -31,6 +31,7 @@ module.exports = {
     '**/*.xml',
     'lib/plottr_components/dist/**',
     'lib/plottr_check-prop-types/**',
+    'lib/tree-changes',
   ],
   rules: {
     'no-unused-vars': [

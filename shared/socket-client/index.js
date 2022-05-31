@@ -44,6 +44,7 @@ const connect = (port, logger) => {
       }
 
       switch (type) {
+        case SAVE_FILE:
         case RM_RF:
         case PING: {
           resolvePromise()

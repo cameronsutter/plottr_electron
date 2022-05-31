@@ -38,6 +38,8 @@ import { exportSaveDialog } from '../export-save-dialog'
 import { instrumentLongRunningTasks } from './longRunning'
 import { createClient, getPort, setPort } from '../../shared/socket-client'
 import { rootComponent } from './rootComponent'
+import { makeFileModule } from './files'
+import { whenClientIsReady } from '../../shared/socket-client'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -45,6 +47,7 @@ setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
 setPort(socketWorkerPort)
 createClient(getPort(), logger)
+const { saveFile } = makeFileModule(whenClientIsReady)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -123,7 +126,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
 
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
-  ipcRenderer.send('save-file', present.file.fileName, present)
+  saveFile(present.file.fileName, present)
 })
 
 ipcRenderer.on('save-as', () => {
@@ -137,7 +140,7 @@ ipcRenderer.on('save-as', () => {
   })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    ipcRenderer.send('save-file', newFilePath, present)
+    saveFile(newFilePath, present)
     const listener = (event, fileSaved) => {
       if (fileSaved === newFilePath) {
         ipcRenderer.send('pls-open-window', newFilePath, true)
@@ -158,7 +161,7 @@ const ensureEndsInPltr = (filePath) => {
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
   if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
-    ipcRenderer.send('save-file', present.file.fileName, present)
+    saveFile(present.file.fileName, present)
     return
   }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]

@@ -123,12 +123,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
     openKnownFile(filePath, id, unknown, headerBarFileName)
   })
 
-  ipcMain.on('save-file', (event, fileName, file) => {
-    saveFile(fileName, file).then(() => {
-      event.sender.send('file-saved', fileName)
-    })
-  })
-
   ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
     autoSave(event, filePath, file, userId, previousFile)
   })

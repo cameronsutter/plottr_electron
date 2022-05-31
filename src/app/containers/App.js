@@ -22,6 +22,7 @@ import {
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
+import MainIntegrationContext from '../../mainIntegrationContext'
 
 const App = ({
   forceProjectDashboard,
@@ -33,6 +34,7 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
+  saveFile,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -145,11 +147,11 @@ const App = ({
     closeOrRefresh(true)
   }
 
-  const saveAndClose = () => {
+  const saveAndClose = (saveFile) => () => {
     setBlockClosing(false)
     setShowAskToSave(false)
     const { present } = store.getState()
-    ipcRenderer.send('save-file', present.file.fileName, present)
+    saveFile(present.file.fileName, present)
     closeOrRefresh(true)
   }
 
@@ -163,11 +165,17 @@ const App = ({
     if (!showAskToSave || isCloudFile) return null
 
     return (
-      <AskToSaveModal
-        dontSave={dontSaveAndClose}
-        save={saveAndClose}
-        cancel={() => setShowAskToSave(false)}
-      />
+      <MainIntegrationContext.Consumer>
+        {({ saveFile }) => {
+          return (
+            <AskToSaveModal
+              dontSave={dontSaveAndClose}
+              save={saveAndClose(saveFile)}
+              cancel={() => setShowAskToSave(false)}
+            />
+          )
+        }}
+      </MainIntegrationContext.Consumer>
     )
   }
 

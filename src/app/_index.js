@@ -36,8 +36,7 @@ import { openFile, rmRF } from 'connected-components'
 import { notifyUser } from '../notifyUser'
 import { exportSaveDialog } from '../export-save-dialog'
 import { instrumentLongRunningTasks } from './longRunning'
-import { getPort, setPort } from '../workerPort'
-import { createClient } from '../socket-client'
+import { createClient, getPort, setPort } from '../../shared/socket-client'
 import { rootComponent } from './rootComponent'
 
 const win = getCurrentWindow()
@@ -45,7 +44,7 @@ const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
 setPort(socketWorkerPort)
-createClient(getPort())
+createClient(getPort(), logger)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -326,7 +325,7 @@ ipcRenderer.on('error', (event, { message, source }) => {
 ipcRenderer.on('update-worker-port', (_event, newPort) => {
   const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
   setPort(socketWorkerPort)
-  createClient(getPort())
+  createClient(getPort(), logger)
 })
 
 ipcRenderer.on('reload-dark-mode', (_event, newValue) => {

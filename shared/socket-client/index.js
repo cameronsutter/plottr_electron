@@ -2,10 +2,10 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING, RM_RF, SAVE_FILE } from '../../shared/socket-server-message-types'
-import { logger } from '../logger'
+import { PING, RM_RF, SAVE_FILE } from '../socket-server-message-types'
+import { setPort, getPort } from './workerPort'
 
-export const connect = (port) => {
+const connect = (port, logger) => {
   const clientConnection = new WebSocket(`ws://localhost:${port}`)
   const promises = new Map()
 
@@ -83,13 +83,15 @@ export const connect = (port) => {
 }
 
 const instance = () => {
+  let initialised = false
   let client = null
   let resolvedPromise = null
   let resolve = null
   let reject = null
 
-  const createClient = (port) => {
-    connect(port)
+  const createClient = (port, logger) => {
+    initialised = true
+    connect(port, logger)
       .then((newClient) => {
         if (client) client.close(0, 'New client requested')
         client = newClient
@@ -101,17 +103,6 @@ const instance = () => {
           reject(error)
         }
       })
-  }
-
-  const checkClient = () => {
-    if (client === null) {
-      throw new Error('Socket server not yet ready.')
-    }
-  }
-
-  const getClient = () => {
-    checkClient()
-    return client
   }
 
   const whenClientIsReady = (f) => {
@@ -141,13 +132,17 @@ const instance = () => {
     })
   }
 
+  const isInitialised = () => {
+    return initialised
+  }
+
   return {
     createClient,
-    getClient,
     whenClientIsReady,
+    isInitialised,
   }
 }
 
-const { createClient, getClient, whenClientIsReady } = instance()
+const { createClient, isInitialised, whenClientIsReady } = instance()
 
-export { createClient, getClient, whenClientIsReady }
+export { createClient, isInitialised, whenClientIsReady, setPort, getPort }

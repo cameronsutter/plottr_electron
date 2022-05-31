@@ -19,6 +19,7 @@ const Error = ({ errorMessage, clearError }) => {
 
 Error.propTypes = {
   errorMessage: PropTypes.string,
+  clearError: PropTypes.func.isRequired,
 }
 
 export default connect(

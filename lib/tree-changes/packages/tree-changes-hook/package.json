@@ -46,7 +46,7 @@
     "typescript": "^4.4.3"
   },
   "scripts": {
-    "build": "npm run clean && npm run build:cjs && npm run build:esm",
+    "build": "npm run build:cjs && npm run build:esm",
     "build:cjs": "tsc",
     "build:esm": "tsc -m es6 --outDir esm",
     "watch:cjs": "npm run build:cjs -- -w",

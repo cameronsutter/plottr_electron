@@ -212,7 +212,7 @@ Listener.propTypes = {
   filePath: PropTypes.string,
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
-  selectFile: PropTypes.string,
+  selectFile: PropTypes.func.isRequired,
   setResuming: PropTypes.func.isRequired,
   resuming: PropTypes.bool,
   isCloudFile: PropTypes.bool,

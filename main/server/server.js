@@ -1,8 +1,9 @@
 import { WebSocketServer } from 'ws'
 import fs from 'fs'
 
-import { PING, RM_RF } from '../../shared/socket-server-message-types'
+import { PING, RM_RF, SAVE_FILE } from '../../shared/socket-server-message-types'
 import { logger } from './logger'
+import { saveFile } from './files'
 
 const parseArgs = () => {
   return {
@@ -31,15 +32,31 @@ const setupListeners = (port) => {
             )
             return
           }
+          case SAVE_FILE: {
+            logger.info('Saving: ', payload)
+            const { filePath, file } = payload
+            saveFile(filePath, file).then((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            return
+          }
           case RM_RF: {
             logger.info('Deleting: ', payload)
             rm(payload.path, { recursive: true })
-              .then(() => {
+              .then((result) => {
                 webSocket.send(
                   JSON.stringify({
                     type,
                     messageId,
-                    payload: {},
+                    payload,
+                    result,
                   })
                 )
               })

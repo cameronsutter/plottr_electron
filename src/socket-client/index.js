@@ -2,8 +2,8 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING, RM_RF } from '../shared/socket-server-message-types'
-import { logger } from './logger'
+import { PING, RM_RF, SAVE_FILE } from '../../shared/socket-server-message-types'
+import { logger } from '../logger'
 
 export const connect = (port) => {
   const clientConnection = new WebSocket(`ws://localhost:${port}`)
@@ -67,11 +67,16 @@ export const connect = (port) => {
     return sendPromise(RM_RF, { path })
   }
 
+  const saveFile = (filePath, file) => {
+    return sendPromise(SAVE_FILE, { filePath, file })
+  }
+
   return new Promise((resolve, reject) => {
     clientConnection.on('open', () => {
       resolve({
         ping,
         rmRf,
+        saveFile,
       })
     })
   })

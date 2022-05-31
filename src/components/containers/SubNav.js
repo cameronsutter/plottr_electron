@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import { Navbar } from 'react-bootstrap'
 
+import Navbar from '../Navbar'
 import { checkDependencies } from '../checkDependencies'
 
 const SubNavConnector = (connector) => {

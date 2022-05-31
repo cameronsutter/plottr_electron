@@ -1,31 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Glyphicon,
-  Nav,
-  NavItem,
-  Button,
-  ButtonGroup,
-  Popover,
-  Alert,
-  Grid,
-  Row,
-  Col,
-  FormControl,
-} from 'react-bootstrap'
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
+import cx from 'classnames'
+
+import { t as i18n } from 'plottr_locales'
+import { newIds } from 'pltr/v2'
+
+import Grid from '../Grid'
+import Alert from '../Alert'
+import NavItem from '../NavItem'
+import Nav from '../Nav'
+import ButtonGroup from '../ButtonGroup'
+import Popover from '../PlottrPopover'
+import Glyphicon from '../Glyphicon'
+import Col from '../Col'
+import Row from '../Row'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import CustomAttrFilterListConnector from '../CustomAttrFilterList'
 import UnconnectedSortList from '../SortList'
 import CharacterViewConnector from './CharacterView'
-import { t as i18n } from 'plottr_locales'
-import cx from 'classnames'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import CharacterCategoriesModalConnector from './CharacterCategoriesModal'
 import InputModal from '../dialogs/InputModal'
 import CharacterItemConnector from './CharacterItem'
 import TemplatePickerConnector from '../templates/TemplatePicker'
 import SubNavConnector from '../containers/SubNav'
-import { newIds } from 'pltr/v2'
+import UnconnectedFloater from '../PlottrFloater'
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
 
@@ -67,7 +67,7 @@ const CharacterListViewConnector = (connector) => {
   const TemplatePicker = TemplatePickerConnector(connector)
   const CharacterCategoriesModal = CharacterCategoriesModalConnector(connector)
   const SubNav = SubNavConnector(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
+  const Floater = UnconnectedFloater(connector)
 
   const templatesDisabled = connector.platform.templatesDisabled
   checkDependencies({ templatesDisabled })
@@ -93,6 +93,8 @@ const CharacterListViewConnector = (connector) => {
     const [showTemplatePicker, setShowTemplatePicker] = useState(false)
     const [creating, setCreating] = useState(false)
     const [templateData, setTemplateData] = useState(null)
+    const [filterVisible, setFilterVisible] = useState(false)
+    const [sortVisible, setSortVisible] = useState(false)
 
     useEffect(() => {
       setCharacterDetailId(
@@ -226,37 +228,55 @@ const CharacterListViewConnector = (connector) => {
               </Button>
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
                 rootClose
+                open={filterVisible}
+                onClose={() => {
+                  setFilterVisible(false)
+                }}
                 placement="bottom"
-                overlay={filterPopover}
+                component={filterPopover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setFilterVisible(!filterVisible)
+                  }}
+                >
                   <Glyphicon glyph="filter" /> {i18n('Filter')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
               {filterDeclaration}
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
+                open={sortVisible}
+                onClose={() => {
+                  setSortVisible(false)
+                }}
                 rootClose
                 placement="bottom"
-                overlay={sortPopover}
+                component={sortPopover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setSortVisible(!sortVisible)
+                  }}
+                >
                   <Glyphicon glyph={sortGlyph} /> {i18n('Sort')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
             </NavItem>
             <NavItem>
               <FormControl
                 onChange={withEventTargetValue(uiActions.setCharactersSearchTerm)}
                 onKeyUp={insertSpace}
-                value={charactersSearchTerm}
+                value={charactersSearchTerm || ''}
                 type="text"
                 placeholder="Search"
               />

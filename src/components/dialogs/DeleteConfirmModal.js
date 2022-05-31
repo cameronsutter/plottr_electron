@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import { Modal, Button, Form } from 'react-bootstrap'
+
 import { t as i18n } from 'plottr_locales'
+
+import Form from '../Form'
+import Modal from '../Modal'
+import Button from '../Button'
 
 export default function DeleteConfirmModal(props) {
   const { name, customText, onDelete, onCancel, notSubmit } = props

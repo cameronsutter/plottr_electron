@@ -1,7 +1,12 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
+
 import { t } from 'plottr_locales'
-import { Col, Grid, Row, FormControl } from 'react-bootstrap'
+
+import Grid from '../../Grid'
+import Col from '../../Col'
+import Row from '../../Row'
+import FormControl from '../../FormControl'
 
 export default function RecentsHeader({ setSearchTerm, hasCurrentProLicense, isOnWeb }) {
   return (

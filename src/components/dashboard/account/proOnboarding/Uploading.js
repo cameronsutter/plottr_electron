@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'react-proptypes'
 
-import { ProgressBar } from 'react-bootstrap'
 import { t } from 'plottr_locales'
 
+import ProgressBar from '../../../ProgressBar'
 import FailedUploads from './FailedUploads'
 import { StepBody, StepFooter, StepHeader } from '../../../onboarding/Step'
 import { checkDependencies } from '../../../checkDependencies'

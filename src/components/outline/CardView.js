@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { FormControl, FormGroup, ButtonToolbar, Button, Glyphicon } from 'react-bootstrap'
 import _ from 'lodash'
+import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
+import cx from 'classnames'
+
 import { t as i18n } from 'plottr_locales'
+
+import ButtonToolbar from '../ButtonToolbar'
+import Glyphicon from '../Glyphicon'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import UnconnectedRichText from '../rce/RichText'
 import TagLabel from '../TagLabel'
 import UnconnectedImage from '../images/Image'
 import UnconnectedSelectList from '../SelectList'
-import cx from 'classnames'
-import { FaGripLinesVertical, FaCircle } from 'react-icons/fa'
-
 import { checkDependencies } from '../checkDependencies'
 
 const CardViewConnector = (connector) => {
@@ -255,13 +260,6 @@ const CardViewConnector = (connector) => {
       return this.renderChipCloud(card.places, places)
     }
 
-    renderDivider() {
-      const { card } = this.props
-      if (!card.tags.length && !card.characters.length && !card.places.length) return null
-
-      return <div className="divider" />
-    }
-
     render() {
       const { actions, card, line, darkMode, characters, places, tags } = this.props
       const style = { color: line.color }
@@ -303,7 +301,7 @@ const CardViewConnector = (connector) => {
               {this.renderDescription()}
               <Glyphicon glyph="pencil" />
             </div>
-            <div className="divider" />
+            <div className="outline-divider" />
             <div className="outline__card-bottom">
               <SelectList
                 parentId={card.id}
@@ -341,7 +339,7 @@ const CardViewConnector = (connector) => {
 
   CardView.propTypes = {
     card: PropTypes.object.isRequired,
-    selection: PropTypes.object.isRequired,
+    selection: PropTypes.object,
     index: PropTypes.number.isRequired,
     reorder: PropTypes.func.isRequired,
     line: PropTypes.object.isRequired,

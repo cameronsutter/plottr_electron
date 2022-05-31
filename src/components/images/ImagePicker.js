@@ -1,28 +1,26 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import {
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Button,
-  Grid,
-  Row,
-  Col,
-  Glyphicon,
-  ButtonToolbar,
-  ButtonGroup,
-  Nav,
-  NavItem,
-} from 'react-bootstrap'
 import { v4 as uuidv4 } from 'uuid'
 
-import ImageConnector from './Image'
 import { t as i18n } from 'plottr_locales'
+
+import Grid from '../Grid'
+import NavItem from '../NavItem'
+import Nav from '../Nav'
+import ButtonGroup from '../ButtonGroup'
+import ButtonToolbar from '../ButtonToolbar'
+import Glyphicon from '../Glyphicon'
+import Col from '../Col'
+import Row from '../Row'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
+import ImageConnector from './Image'
 import { Spinner } from '../Spinner'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import PlottrModalConnector from '../PlottrModal'
-
 import { readImage, isImageUrl, readImageFromURL } from '../images'
 import { checkDependencies } from '../checkDependencies'
 

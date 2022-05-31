@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Glyphicon,
-  Nav,
-  NavItem,
-  Button,
-  Alert,
-  Popover,
-  Grid,
-  Row,
-  Col,
-  FormControl,
-} from 'react-bootstrap'
 import cx from 'classnames'
 
 import { t as i18n } from 'plottr_locales'
 import { newIds } from 'pltr/v2'
 
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
+import Grid from '../Grid'
+import Alert from '../Alert'
+import NavItem from '../NavItem'
+import Nav from '../Nav'
+import Popover from '../PlottrPopover'
+import Glyphicon from '../Glyphicon'
+import Col from '../Col'
+import Row from '../Row'
+import FormControl from '../FormControl'
+import Button from '../Button'
+import UnconnectedPlottrFloater from '../PlottrFloater'
 import UnconnectedNoteView from './NoteView'
 import UnconnectedErrorBoundary from '../containers/ErrorBoundary'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
@@ -59,6 +57,7 @@ const detailID = (notesByCategory, notes, categories, noteDetailId) => {
 }
 
 const NoteListViewConnector = (connector) => {
+  const Floater = UnconnectedPlottrFloater(connector)
   const SortList = UnconnectedSortList(connector)
   const ErrorBoundary = UnconnectedErrorBoundary(connector)
   const NoteView = UnconnectedNoteView(connector)
@@ -67,7 +66,6 @@ const NoteListViewConnector = (connector) => {
   const NoteItem = UnconnectedNoteItem(connector)
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   const NoteListView = ({
     categories,
@@ -87,6 +85,8 @@ const NoteListViewConnector = (connector) => {
     const [editingSelected, setEditingSelected] = useState(false)
     const [categoriesDialogOpen, setCategoriesDialogOpen] = useState(false)
     const [attributesDialogOpen, setAttributesDialogOpen] = useState(false)
+    const [filterVisible, setFilterVisible] = useState(false)
+    const [sortVisible, setSortVisible] = useState(false)
 
     useEffect(() => {
       setNoteDetailId(detailID(visibleNotesByCategory, notes, categories, noteDetailId))
@@ -231,37 +231,55 @@ const NoteListViewConnector = (connector) => {
               </Button>
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
                 rootClose
+                open={filterVisible}
+                onClose={() => {
+                  setFilterVisible(false)
+                }}
                 placement="bottom"
-                overlay={popover}
+                component={popover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setFilterVisible(!filterVisible)
+                  }}
+                >
                   <Glyphicon glyph="filter" /> {i18n('Filter')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
               {filterDeclaration}
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
                 rootClose
+                open={sortVisible}
+                onClose={() => {
+                  setSortVisible(false)
+                }}
                 placement="bottom"
-                overlay={sortPopover}
+                component={sortPopover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setSortVisible(!sortVisible)
+                  }}
+                >
                   <Glyphicon glyph={sortGlyph} /> {i18n('Sort')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
             </NavItem>
             <NavItem>
               <FormControl
                 onChange={withEventTargetValue(uiActions.setNotesSearchTerm)}
                 onKeyUp={insertSpace}
-                value={notesSearchTerm}
+                value={notesSearchTerm || ''}
                 type="text"
                 placeholder="Search"
                 className="toolbar__search"
@@ -303,7 +321,7 @@ const NoteListViewConnector = (connector) => {
     characters: PropTypes.array.isRequired,
     places: PropTypes.array.isRequired,
     tags: PropTypes.array.isRequired,
-    darkMode: PropTypes.object.isRequired,
+    darkMode: PropTypes.bool,
     uiActions: PropTypes.object.isRequired,
     filterIsEmpty: PropTypes.bool.isRequired,
     noteSort: PropTypes.string.isRequired,

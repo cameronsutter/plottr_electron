@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { FormControl } from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
 
+import FormControl from './FormControl'
 import { checkDependencies } from './checkDependencies'
 
 const CategoryPickerConnector = (connector) => {

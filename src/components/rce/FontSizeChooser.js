@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
-import { DropdownButton, MenuItem } from 'react-bootstrap'
 import { Editor } from 'slate'
 import { ReactEditor } from 'slate-react'
+
+import DropdownButton from '../DropdownButton'
+import MenuItem from '../MenuItem'
 
 const UnMemoisedFontSizeChooser = ({ editor }) => {
   const [currentSize, setCurrentSize] = useState(getCurrentSize(editor))
@@ -46,7 +48,6 @@ const UnMemoisedFontSizeChooser = ({ editor }) => {
       title={currentSize}
       onSelect={changeSize}
       id="size-dropdown"
-      rootCloseEvent="click"
     >
       {renderSizes()}
     </DropdownButton>

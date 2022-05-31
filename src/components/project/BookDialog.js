@@ -1,18 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Modal,
-  Form,
-  FormGroup,
-  Col,
-  ControlLabel,
-  FormControl,
-  ButtonToolbar,
-  Button,
-} from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
 
+import { t as i18n } from 'plottr_locales'
+
+import Form from '../Form'
+import Modal from '../Modal'
+import ButtonToolbar from '../ButtonToolbar'
+import Col from '../Col'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import { checkDependencies } from '../checkDependencies'
 
 const BookDialogConnector = (connector) => {

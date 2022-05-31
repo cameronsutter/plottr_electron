@@ -1,8 +1,14 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import PropTypes from 'react-proptypes'
-import { t } from 'plottr_locales'
-import { ButtonToolbar, Button, Glyphicon, FormControl } from 'react-bootstrap'
 import cx from 'classnames'
+import { isEqual } from 'lodash'
+
+import { t } from 'plottr_locales'
+
+import ButtonToolbar from '../ButtonToolbar'
+import Glyphicon from '../Glyphicon'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import UnconnectedPlottrModal from '../PlottrModal'
 import UnconnectedPlotlineTemplateDetails from './PlotlineTemplateDetails'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
@@ -12,9 +18,7 @@ import ProjectTemplateDetails from './ProjectTemplateDetails'
 import TemplateEdit from './TemplateEdit'
 import getTestIds from '../getTestIds'
 import { template } from 'pltr/v2'
-
 import { checkDependencies } from '../checkDependencies'
-import { isEqual } from 'lodash'
 
 export const testIds = getTestIds()
 

@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import { Button } from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
 
+import Button from '../../Button'
 import UnconnectedAbout from './About'
 import UnconnectedExpiredView from './ExpiredView'
 import UnconnectedLicenseInfo from './LicenseInfo'

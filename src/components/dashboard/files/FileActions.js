@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
+
 import { t } from 'plottr_locales'
-import { Dropdown, MenuItem, Glyphicon } from 'react-bootstrap'
+
+import Glyphicon from '../../Glyphicon'
+import MenuItem from '../../MenuItem'
+import Dropdown from '../../Dropdown'
 import DeleteConfirmModal from '../../dialogs/DeleteConfirmModal'
 import { checkDependencies } from '../../checkDependencies'
 

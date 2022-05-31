@@ -1,11 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import { Glyphicon, Button, ButtonGroup } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
+
+import { t as i18n } from 'plottr_locales'
+
+import ButtonGroup from '../ButtonGroup'
+import Glyphicon from '../Glyphicon'
+import Button from '../Button'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedImage from '../images/Image'
-
 import { checkDependencies } from '../checkDependencies'
 
 const PlaceItemConnector = (connector) => {

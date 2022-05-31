@@ -1,20 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  ButtonToolbar,
-  ButtonGroup,
-  Button,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Glyphicon,
-} from 'react-bootstrap'
+import cx from 'classnames'
+
+import { t as i18n } from 'plottr_locales'
+
+import ButtonGroup from '../ButtonGroup'
+import ButtonToolbar from '../ButtonToolbar'
+import Glyphicon from '../Glyphicon'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import UnconnectedColorPicker from '../ColorPicker'
 import UnconnectedCategoryPicker from '../CategoryPicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
-import { t as i18n } from 'plottr_locales'
-import cx from 'classnames'
-
 import { checkDependencies } from '../checkDependencies'
 
 const TagViewConnector = (connector) => {
@@ -93,17 +92,17 @@ const TagViewConnector = (connector) => {
         return
       }
 
-      let { title, id, color } = tag
+      let { title, id } = tag
       var newTitle = titleInputRef.current.value || title
       if (newTag) {
         actions.addCreatedTag({
           title: newTitle,
-          color: color,
+          color: tag.color || color,
           categoryId: categoryId,
         })
         doneCreating()
       } else {
-        actions.editTag(id, newTitle, color, categoryId)
+        actions.editTag(id, newTitle, tag.color || color, categoryId)
       }
       setEditing(false)
     }

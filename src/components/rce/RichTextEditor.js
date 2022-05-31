@@ -43,7 +43,7 @@ const RichTextEditorConnector = (connector) => {
   const ToolBar = UnconnectedToolBar(connector)
 
   const RichTextEditor = ({
-    key,
+    editorKey,
     id,
     undoId,
     text,
@@ -105,7 +105,19 @@ const RichTextEditorConnector = (connector) => {
       _signalFocusToEditState,
       _signalBlurToEditState,
       _editorIsReady,
-    ] = useEditState(key, fileId, id, editor, onChange, undo, redo, text, selection, undoId, log)
+    ] = useEditState(
+      editorKey,
+      fileId,
+      id,
+      editor,
+      onChange,
+      undo,
+      redo,
+      text,
+      selection,
+      undoId,
+      log
+    )
 
     const handleKeyDown = (event) => {
       for (const hotkey in HOTKEYS) {
@@ -116,32 +128,6 @@ const RichTextEditorConnector = (connector) => {
         }
       }
       onKeyDown(event)
-    }
-
-    const handleKeyUp = () => {
-      // scroll to the cursor
-      if (editor.selection == null) return
-      try {
-        const domPoint = ReactEditor.toDOMPoint(editor, editor.selection.focus)
-        const node = domPoint[0]
-        let isElem = false
-        let parent = node.parentElement
-        // find the closest parent that is a slate element
-        while (!isElem) {
-          if (parent == null) {
-            isElem = true
-            return
-          }
-          if (parent.dataset.slateNode == 'element') {
-            isElem = true
-          } else {
-            parent = parent.parentElement
-          }
-        }
-        parent.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      } catch (e) {
-        // Do nothing if there is an error.
-      }
     }
 
     const handleInput = (e) => {
@@ -185,7 +171,7 @@ const RichTextEditorConnector = (connector) => {
 
     const otherProps = {}
     return (
-      <Slate editor={editor} value={value} onChange={onValueChanged} key={key}>
+      <Slate editor={editor} value={value} onChange={onValueChanged} key={editorKey}>
         <div className={cx('slate-editor__wrapper', className)}>
           <ToolBar editor={editor} selection={selection} />
           <div
@@ -217,7 +203,7 @@ const RichTextEditorConnector = (connector) => {
   }
 
   RichTextEditor.propTypes = {
-    key: PropTypes.string.isRequired,
+    editorKey: PropTypes.string.isRequired,
     text: PropTypes.any,
     id: PropTypes.string,
     fileId: PropTypes.string,

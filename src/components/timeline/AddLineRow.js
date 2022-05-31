@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { Row, Cell } from 'react-sticky-table'
-import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
 import { t } from 'plottr_locales'
 
+import Glyphicon from '../Glyphicon'
 import InputModal from '../dialogs/InputModal'
 import UnconnectedTemplatePicker from '../templates/TemplatePicker'
 

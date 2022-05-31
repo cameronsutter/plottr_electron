@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import {
-  ButtonToolbar,
-  Button,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  Tabs,
-  Tab,
-  Glyphicon,
-} from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
+
+import Tab from '../Tab'
+import Glyphicon from '../Glyphicon'
+import Tabs from '../Tabs'
+import ButtonToolbar from '../ButtonToolbar'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedCategoryPicker from '../CategoryPicker'
 import UnconnectedRichText from '../rce/RichText'
@@ -161,6 +161,9 @@ const CharacterEditDetailsConnector = (connector) => {
     }
 
     const selectTab = (key) => {
+      // We could get a synthetic event back from React
+      if (typeof key === 'object') return
+
       if (key == 'new') {
         setShowTemplatePicker(true)
       } else {

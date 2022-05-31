@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { Button, Grid, Row, Col, ListGroupItem, ListGroup } from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
+
+import ListGroup from '../../../ListGroup'
+import ListGroupItem from '../../../ListGroupItem'
+import Grid from '../../../Grid'
+import Col from '../../../Col'
+import Row from '../../../Row'
+import Button from '../../../Button'
 import { StepBody, StepFooter, StepHeader } from '../../../onboarding/Step'
 import OnboardingButtonBar from '../../../onboarding/OnboardingButtonBar'
 import { Checkbox } from '../../../Checkbox'

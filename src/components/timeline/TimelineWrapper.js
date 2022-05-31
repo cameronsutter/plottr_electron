@@ -1,20 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Nav,
-  NavItem,
-  Button,
-  ButtonGroup,
-  Glyphicon,
-  Popover,
-  Alert,
-  Dropdown,
-  MenuItem,
-} from 'react-bootstrap'
 import { StickyTable } from 'react-sticky-table'
-import { t } from 'plottr_locales'
 import cx from 'classnames'
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
+import { VscSymbolStructure } from 'react-icons/vsc'
+
+import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
+
+import UnconnectedPlottrFloater from '../PlottrFloater'
+import Popover from '../PlottrPopover'
+import MenuItem from '../MenuItem'
+import Dropdown from '../Dropdown'
+import Alert from '../Alert'
+import NavItem from '../NavItem'
+import Nav from '../Nav'
+import ButtonGroup from '../ButtonGroup'
+import Glyphicon from '../Glyphicon'
+import Button from '../Button'
 import UnconnectedTimelineTable from './TimelineTable'
 import UnconnectedActsConfigModal from '../dialogs/ActsConfigModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
@@ -23,9 +25,7 @@ import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
 import UnconnectedExportNavItem from '../export/ExportNavItem'
 import { FunSpinner } from '../Spinner'
 import UnconnectedSubNav from '../containers/SubNav'
-import { helpers } from 'pltr/v2'
 import { checkDependencies } from '../checkDependencies'
-import { VscSymbolStructure } from 'react-icons/vsc'
 
 const BREAKPOINT = 890
 
@@ -34,13 +34,13 @@ const SCENE_CELL_WIDTH = 175 + 17
 const SCENE_CELL_HEIGHT = 74 + 40
 
 const TimelineWrapperConnector = (connector) => {
+  const Floater = UnconnectedPlottrFloater(connector)
   const TimelineTable = UnconnectedTimelineTable(connector)
   const ActsConfigModal = UnconnectedActsConfigModal(connector)
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
 
   const {
     platform: { mpq, exportDisabled, templatesDisabled },
@@ -61,6 +61,7 @@ const TimelineWrapperConnector = (connector) => {
     const [beatConfigIsOpen, setBeatConfigIsOpen] = useState(false)
     const [clearing, setClearing] = useState(false)
     const [isSmallerThanToolbar, setIsSmallerThanToolbar] = useState(false)
+    const [filterIsOpen, setFilterIsOpen] = useState(false)
 
     const scrollTimeoutRef = useRef(null)
     const tableRef = useRef(null)
@@ -282,7 +283,7 @@ const TimelineWrapperConnector = (connector) => {
         scrollDirectionFirst = 'menu-up'
         scrollDirectionSecond = 'menu-down'
       }
-      const popover = () => (
+      const renderPopover = () => (
         <Popover id="filter">
           <CustomAttrFilterList type="cards" showColor={true} />
         </Popover>
@@ -335,17 +336,25 @@ const TimelineWrapperConnector = (connector) => {
         <SubNav>
           <Nav bsStyle="pills">
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
-                trigger="click"
-                rootClose
+                open={filterIsOpen}
                 placement="bottom"
-                overlay={popover}
+                component={renderPopover}
+                onClose={() => {
+                  setFilterIsOpen(false)
+                }}
+                rootClose
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setFilterIsOpen(!filterIsOpen)
+                  }}
+                >
                   <Glyphicon glyph="filter" /> {t('Filter')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
               {filterDeclaration}
             </NavItem>
             <NavItem>

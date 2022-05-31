@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
-import { Glyphicon } from 'react-bootstrap'
+
 import { t } from 'plottr_locales'
+
+import Glyphicon from '../Glyphicon'
 import UnconnectedRichText from '../rce/RichText'
 import UnconnectedImage from '../images/Image'
-
 import { checkDependencies } from '../checkDependencies'
 
 const CharacterDetailsConnector = (connector) => {

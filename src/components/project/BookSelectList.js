@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import { difference } from 'lodash'
 import PropTypes from 'react-proptypes'
-import { Button, Glyphicon, Popover } from 'react-bootstrap'
-import { t as i18n } from 'plottr_locales'
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
-import UnconnectedImage from '../images/Image'
 import cx from 'classnames'
-import { helpers } from 'pltr/v2'
 
+import { t as i18n } from 'plottr_locales'
+
+import Popover from '../PlottrPopover'
+import Glyphicon from '../Glyphicon'
+import Button from '../Button'
+import UnconnectedImage from '../images/Image'
+import UnconnectedFloater from '../PlottrFloater'
+import { helpers } from 'pltr/v2'
 import { checkDependencies } from '../checkDependencies'
 
 const {
@@ -16,13 +19,29 @@ const {
 
 const BookSelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
+  const Floater = UnconnectedFloater(connector)
 
   class BookSelectList extends Component {
     constructor(props) {
       super(props)
 
       this.renderUnSelected = this.renderUnSelected.bind(this)
+
+      this.state = {
+        open: false,
+      }
+    }
+
+    close = () => {
+      this.setState({
+        open: false,
+      })
+    }
+
+    open = () => {
+      this.setState({
+        open: true,
+      })
     }
 
     renderUnSelected() {
@@ -91,16 +110,17 @@ const BookSelectListConnector = (connector) => {
         <div className="select-list__wrapper">
           <label className="select-list__details-label">
             {i18n('Books')}:
-            <OverlayTrigger
-              trigger="click"
+            <Floater
+              open={this.state.open}
+              onClose={this.close}
               rootClose
-              placement="right"
-              overlay={this.renderUnSelected}
+              placement="right-start"
+              component={this.renderUnSelected}
             >
-              <Button bsSize="xsmall">
+              <Button bsSize="xsmall" onClick={this.open}>
                 <Glyphicon glyph="plus" />
               </Button>
-            </OverlayTrigger>
+            </Floater>
           </label>
           {this.renderSelected()}
         </div>

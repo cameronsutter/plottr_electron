@@ -1,6 +1,15 @@
 // Connections
 import connections from '../connections'
 
+// Basic components (from react-bootstrap)
+import Button from './Button'
+import Row from './Row'
+import Col from './Col'
+import Nav from './Nav'
+import NavItem from './NavItem'
+import Grid from './Grid'
+import Navbar from './Navbar'
+
 // Templates
 import CardTemplateDetails from './templates/CardTemplateDetails'
 import PlotlineTemplateDetails from './templates/PlotlineTemplateDetails'
@@ -96,9 +105,6 @@ import SortList from './SortList'
 import SelectList from './SelectList'
 import TagLabel from './TagLabel'
 
-// Utilities
-import OverlayTrigger from './OverlayTrigger'
-
 // Dashboard
 import DashboardBody from './dashboard/navigation/DashboardBody'
 import DashboardNav from './dashboard/navigation/DashboardNav'
@@ -110,7 +116,13 @@ import ProOnboarding from './dashboard/account/proOnboarding/index'
 import FirebaseLogin from './FirebaseLogin'
 
 export {
-  OverlayTrigger,
+  Navbar,
+  Grid,
+  NavItem,
+  Nav,
+  Col,
+  Row,
+  Button,
   DeleteConfirmModal,
   ErrorModal,
   MessageModal,

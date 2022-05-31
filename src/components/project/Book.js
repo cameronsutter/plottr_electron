@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { t } from 'plottr_locales'
-import UnconnectedBookDialog from './BookDialog'
-import { Glyphicon, ButtonGroup, Button } from 'react-bootstrap'
 import cx from 'classnames'
+
+import { t } from 'plottr_locales'
+
+import ButtonGroup from '../ButtonGroup'
+import Glyphicon from '../Glyphicon'
+import UnconnectedBookDialog from './BookDialog'
+import Button from '../Button'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedImage from '../images/Image'
 import UnconnectedImagePicker from '../images/ImagePicker'

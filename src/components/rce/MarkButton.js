@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'react-proptypes'
 import { Editor } from 'slate'
-import { Button } from 'react-bootstrap'
+
+import Button from '../Button'
 
 const UnMemoisedMarkButton = ({ mark, icon, editor, selection, logger }) => {
   return (

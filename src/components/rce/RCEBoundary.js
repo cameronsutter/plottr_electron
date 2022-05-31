@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import setupRollbar from '../../utils/rollbar'
-import { t as i18n } from 'plottr_locales'
-import { Button } from 'react-bootstrap'
 import { IoIosAlert } from 'react-icons/io'
 
+import { t as i18n } from 'plottr_locales'
+
+import Button from '../Button'
 import { checkDependencies } from '../checkDependencies'
+import setupRollbar from '../../utils/rollbar'
+import { makeErrorWindow } from '../errorWindow'
 
 const RCEBoundaryConnector = (connector) => {
   const {
@@ -42,6 +44,8 @@ const RCEBoundaryConnector = (connector) => {
       return { error, viewError: false }
     }
 
+    withErrorWindow = makeErrorWindow(' logging to Rollbar ')
+
     componentDidMount() {
       setupRollbar(
         'ErrorBoundary',
@@ -64,11 +68,17 @@ const RCEBoundaryConnector = (connector) => {
     componentDidCatch(error, errorInfo) {
       if (selectionErrorMessages.some((m) => error.message.includes(m))) {
         log.warn('Reseting selection on RCE after an error.', error, errorInfo)
-        return this.props.resetChildren()
+        this.props.resetChildren()
+        return
       }
       this.error = error
       this.errorInfo = errorInfo
-      this.state.rollbar.error(error, errorInfo)
+      log.error(error, errorInfo)
+      if (this.state.rollbar) {
+        this.withErrorWindow(() => {
+          this.state.rollbar.error(error, errorInfo)
+        })
+      }
     }
 
     componentDidUpdate() {

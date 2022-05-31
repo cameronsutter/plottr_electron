@@ -2,23 +2,20 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { flatten } from 'lodash'
-import {
-  Glyphicon,
-  Nav,
-  NavItem,
-  Button,
-  Popover,
-  Alert,
-  Grid,
-  Row,
-  Col,
-  FormControl,
-} from 'react-bootstrap'
 
 import { t as i18n } from 'plottr_locales'
 import { newIds } from 'pltr/v2'
 
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
+import Grid from '../Grid'
+import Alert from '../Alert'
+import NavItem from '../NavItem'
+import Nav from '../Nav'
+import Popover from '../PlottrPopover'
+import Glyphicon from '../Glyphicon'
+import Col from '../Col'
+import Row from '../Row'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import UnconnectedPlaceCategoriesModal from './PlaceCategoriesModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import UnconnectedCustomAttrFilterList from '../CustomAttrFilterList'
@@ -27,6 +24,7 @@ import UnconnectedSortList from '../SortList'
 import UnconnectedSubNav from '../containers/SubNav'
 import UnconnectedPlaceView from './PlaceView'
 import UnconnectedPlaceItem from './PlaceItem'
+import UnconnectedFloater from '../PlottrFloater'
 
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
@@ -57,7 +55,7 @@ const PlaceListViewConnector = (connector) => {
   const SubNav = UnconnectedSubNav(connector)
   const PlaceView = UnconnectedPlaceView(connector)
   const PlaceItem = UnconnectedPlaceItem(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
+  const Floater = UnconnectedFloater(connector)
 
   const PlaceListView = ({
     visiblePlacesByCategory,
@@ -78,6 +76,8 @@ const PlaceListViewConnector = (connector) => {
     const [placeDetailId, setPlaceDetailId] = useState(null)
     const [editingSelected, setEditingSelected] = useState(false)
     const [categoriesOpen, setCategoriesOpen] = useState(false)
+    const [filterVisible, setFilterVisible] = useState(false)
+    const [sortVisible, setSortVisible] = useState(false)
 
     useEffect(() => {
       setPlaceDetailId(detailID(visiblePlacesByCategory, placeDetailId))
@@ -158,37 +158,55 @@ const PlaceListViewConnector = (connector) => {
               </Button>
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
                 rootClose
+                open={filterVisible}
+                onClose={() => {
+                  setFilterVisible(false)
+                }}
                 placement="bottom"
-                overlay={filterPopover}
+                component={filterPopover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setFilterVisible(!sortVisible)
+                  }}
+                >
                   <Glyphicon glyph="filter" /> {i18n('Filter')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
               {filterDeclaration}
             </NavItem>
             <NavItem>
-              <OverlayTrigger
+              <Floater
                 containerPadding={20}
                 trigger="click"
                 rootClose
+                open={sortVisible}
+                onClose={() => {
+                  setSortVisible(false)
+                }}
                 placement="bottom"
-                overlay={sortPopover}
+                component={sortPopover}
               >
-                <Button bsSize="small">
+                <Button
+                  bsSize="small"
+                  onClick={() => {
+                    setSortVisible(!sortVisible)
+                  }}
+                >
                   <Glyphicon glyph={sortGlyph} /> {i18n('Sort')}
                 </Button>
-              </OverlayTrigger>
+              </Floater>
             </NavItem>
             <NavItem>
               <FormControl
                 onChange={withEventTargetValue(uiActions.setPlacesSearchTerm)}
                 onKeyUp={insertSpace}
-                value={placeSearchTerm}
+                value={placeSearchTerm || ''}
                 type="text"
                 placeholder="Search"
                 className="toolbar__search"
@@ -297,7 +315,7 @@ const PlaceListViewConnector = (connector) => {
   }
 
   PlaceListView.propTypes = {
-    visiblePlacesByCategory: PropTypes.array.isRequired,
+    visiblePlacesByCategory: PropTypes.object.isRequired,
     categories: PropTypes.array.isRequired,
     filterIsEmpty: PropTypes.bool.isRequired,
     customAttributes: PropTypes.array.isRequired,

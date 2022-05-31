@@ -1,9 +1,9 @@
 import React, { Component, createRef } from 'react'
 import UnconnectedBlankCard from './BlankCard'
 import PropTypes from 'react-proptypes'
-import { Glyphicon } from 'react-bootstrap'
 import cx from 'classnames'
 
+import Glyphicon from '../Glyphicon'
 import { checkDependencies } from '../checkDependencies'
 
 const CardAddConnector = (connector) => {

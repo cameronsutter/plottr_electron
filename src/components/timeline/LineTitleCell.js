@@ -1,24 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
-import {
-  Glyphicon,
-  Button,
-  ButtonGroup,
-  FormControl,
-  FormGroup,
-  ControlLabel,
-  DropdownButton,
-  MenuItem,
-} from 'react-bootstrap'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import { FaBook, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { FiCopy } from 'react-icons/fi'
-import Floater from 'react-floater'
 
 import { helpers } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
+import UnconnectedPlottrFloater from '../PlottrFloater'
+import DropdownButton from '../DropdownButton'
+import MenuItem from '../MenuItem'
+import ButtonGroup from '../ButtonGroup'
+import Glyphicon from '../Glyphicon'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import UnconnectedColorPicker from '../ColorPicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import InputModal from '../dialogs/InputModal'
@@ -31,6 +29,7 @@ const {
 
 const LineTitleCellConnector = (connector) => {
   const ColorPicker = UnconnectedColorPicker(connector)
+  const Floater = UnconnectedPlottrFloater(connector)
 
   const LineTitleCell = ({
     line,

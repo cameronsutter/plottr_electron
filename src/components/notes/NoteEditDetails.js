@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import { ButtonToolbar, Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+
 import { t as i18n } from 'plottr_locales'
+
+import ButtonToolbar from '../ButtonToolbar'
+import ControlLabel from '../ControlLabel'
+import FormGroup from '../FormGroup'
+import FormControl from '../FormControl'
+import Button from '../Button'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import UnconnectedCategoryPicker from '../CategoryPicker'
 import UnconnectedRichText from '../rce/RichText'

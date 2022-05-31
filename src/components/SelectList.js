@@ -1,71 +1,69 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { Button, Glyphicon, Popover } from 'react-bootstrap'
-import UnconnectedOverlayTrigger from './OverlayTrigger'
-import TagLabel from './TagLabel'
-import { t as i18n } from 'plottr_locales'
 import cx from 'classnames'
+
+import { t as i18n } from 'plottr_locales'
+
+import Popover from './PlottrPopover'
+import Glyphicon from './Glyphicon'
+import Button from './Button'
+import TagLabel from './TagLabel'
 import UnconnectedImage from './images/Image'
+import UnconnectedFloater from './PlottrFloater'
 
 const SelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
+  const Floater = UnconnectedFloater(connector)
 
-  class SelectList extends Component {
-    constructor(props) {
-      super(props)
-      this.renderUnSelected = this.renderUnSelected.bind(this)
-    }
+  const SelectList = ({ horizontal, type, selectedItems, allItems, remove, parentId, add }) => {
+    const [visible, setVisible] = useState(false)
 
-    renderSelected() {
+    const renderSelected = () => {
       let body
-      if (this.props.type === 'Tags') {
-        body = this.renderSelectedTags()
+      if (type === 'Tags') {
+        body = renderSelectedTags()
       } else {
-        body = this.renderSelectedItems()
+        body = renderSelectedItems()
       }
       return <div className="chip-cloud">{body}</div>
     }
 
-    renderSelectedTags() {
-      if (!this.props.selectedItems) return null
+    const renderSelectedTags = () => {
+      if (!selectedItems) return null
 
-      return this.props.selectedItems.map((tId) => {
-        var tag = this.props.allItems.find((item) => item.id == tId)
+      return selectedItems.map((tId) => {
+        var tag = allItems.find((item) => item.id == tId)
         if (!tag) return null
         return (
           <div key={tId} className="tag-chip">
             <TagLabel tag={tag} />
-            <Glyphicon glyph="remove" onClick={() => this.props.remove(this.props.parentId, tId)} />
+            <Glyphicon glyph="remove" onClick={() => remove(parentId, tId)} />
           </div>
         )
       })
     }
 
-    renderSelectedItems() {
-      if (!this.props.selectedItems) return null
+    const renderSelectedItems = () => {
+      if (!selectedItems) return null
 
-      return this.props.selectedItems.map((itemId) => {
-        var item = this.props.allItems.find((item) => item.id == itemId)
+      return selectedItems.map((itemId) => {
+        var item = allItems.find((item) => item.id == itemId)
         if (!item) return null
         return (
           <div key={itemId} className="chip">
             <Image size="xs" shape="circle" imageId={item.imageId} />
             <span>{item.name}</span>
-            <Glyphicon
-              glyph="remove"
-              onClick={() => this.props.remove(this.props.parentId, itemId)}
-            />
+            <Glyphicon glyph="remove" onClick={() => remove(parentId, itemId)} />
           </div>
         )
       })
     }
 
-    renderUnSelected() {
-      const type = this.props.type
-      const itemsToList = !this.props.selectedItems
-        ? this.props.allItems
-        : this.props.allItems.filter((i) => !this.props.selectedItems.includes(i.id))
+    const renderUnSelected = () => {
+      const type = type
+      const itemsToList = !selectedItems
+        ? allItems
+        : allItems.filter((i) => !selectedItems.includes(i.id))
       let listItems = (
         <small>
           <i>{i18n('no more to add')}</i>
@@ -78,7 +76,7 @@ const SelectListConnector = (connector) => {
             colorSpan = <span className="colored" style={{ backgroundColor: i.color }}></span>
           }
           return (
-            <li key={`${type}-${i.id}`} onClick={() => this.props.add(this.props.parentId, i.id)}>
+            <li key={`${type}-${i.id}`} onClick={() => add(parentId, i.id)}>
               {colorSpan}
               {i.name || i.title}
             </li>
@@ -104,38 +102,44 @@ const SelectListConnector = (connector) => {
       )
     }
 
-    render() {
-      let label = ''
-      switch (this.props.type) {
-        case 'Characters':
-          label = i18n('Characters')
-          break
-        case 'Places':
-          label = i18n('Places')
-          break
-        case 'Tags':
-          label = i18n('Tags')
-          break
-      }
-      return (
-        <div className={cx('select-list__wrapper', { horizontal: this.props.horizontal })}>
-          <label className="select-list__details-label">
-            {label}:
-            <OverlayTrigger
-              trigger="click"
-              rootClose
-              placement="right"
-              overlay={this.renderUnSelected}
-            >
-              <Button bsSize="xsmall">
-                <Glyphicon glyph="plus" />
-              </Button>
-            </OverlayTrigger>
-          </label>
-          {this.renderSelected()}
-        </div>
-      )
+    let label = ''
+    switch (type) {
+      case 'Characters':
+        label = i18n('Characters')
+        break
+      case 'Places':
+        label = i18n('Places')
+        break
+      case 'Tags':
+        label = i18n('Tags')
+        break
     }
+    return (
+      <div className={cx('select-list__wrapper', { horizontal: horizontal })}>
+        <label className="select-list__details-label">
+          {label}:
+          <Floater
+            rootClose
+            open={visible}
+            onClose={() => {
+              setVisible(false)
+            }}
+            placement="right-start"
+            component={renderUnSelected}
+          >
+            <Button
+              bsSize="xsmall"
+              onClick={(event) => {
+                setVisible(!visible)
+              }}
+            >
+              <Glyphicon glyph="plus" />
+            </Button>
+          </Floater>
+        </label>
+        {renderSelected()}
+      </div>
+    )
   }
 
   SelectList.propTypes = {

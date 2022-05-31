@@ -1,15 +1,16 @@
 import React, { Component, createRef } from 'react'
 import PropTypes from 'react-proptypes'
-import UnconnectedCardDialog from './CardDialog'
-import { Popover } from 'react-bootstrap'
-import UnconnectedOverlayTrigger from '../OverlayTrigger'
-import UnconnectedRichText from '../rce/RichText'
-import TagLabel from '../TagLabel'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
-import { helpers } from 'pltr/v2'
 import tinycolor from 'tinycolor2'
 
+import { helpers } from 'pltr/v2'
+
+import UnconnectedPlottrFloater from '../PlottrFloater'
+import Popover from '../PlottrPopover'
+import UnconnectedCardDialog from './CardDialog'
+import UnconnectedRichText from '../rce/RichText'
+import TagLabel from '../TagLabel'
 import { checkDependencies } from '../checkDependencies'
 
 const {
@@ -20,7 +21,7 @@ const {
 const CardConnector = (connector) => {
   const CardDialog = UnconnectedCardDialog(connector)
   const RichText = UnconnectedRichText(connector)
-  const OverlayTrigger = UnconnectedOverlayTrigger(connector)
+  const Floater = UnconnectedPlottrFloater(connector)
 
   class Card extends Component {
     cardRef = createRef()
@@ -124,9 +125,9 @@ const CardConnector = (connector) => {
       )
     }
 
-    renderPopover() {
+    renderPopover = () => {
       return (
-        <Popover title={this.props.card.title} id={`card-popover-${this.props.card.id}`}>
+        <Popover id={`card-popover-${this.props.card.id}`} title={this.props.card.title}>
           <div className="card__popover-wrapper">
             <RichText
               description={this.props.cardDescription}
@@ -136,30 +137,6 @@ const CardConnector = (connector) => {
           </div>
         </Popover>
       )
-    }
-
-    // TODO: this should be a selector
-    hasDetailsToShow() {
-      const { card, cardDescription } = this.props
-
-      if (card.tags && card.tags.length) return true
-
-      if (!cardDescription) return false
-      if (!cardDescription.length) return false
-      if (cardDescription.length > 1) return true
-
-      // if it only has one blank paragraph
-      if (
-        cardDescription.length == 1 &&
-        cardDescription[0] &&
-        cardDescription[0].children &&
-        cardDescription[0].children.length == 1 &&
-        cardDescription[0].children[0] &&
-        cardDescription[0].children[0].text == ''
-      )
-        return false
-
-      return true
     }
 
     renderTags() {
@@ -191,7 +168,7 @@ const CardConnector = (connector) => {
     }
 
     renderTitle() {
-      const { card, isSmall, orientation, beatPosition, linePosition } = this.props
+      const { card, isSmall, beatPosition, linePosition, orientation } = this.props
       let titleStyle = {}
       if (!isSmall && card.color) {
         titleStyle.backgroundColor = card.color
@@ -201,14 +178,13 @@ const CardConnector = (connector) => {
         }
       }
       let title = (
-        <div className="card__title" style={titleStyle}>
+        <div onClick={this.openDialog} className="card__title" style={titleStyle}>
           {isSmall ? '' : truncateTitle(card.title, 150)}
         </div>
       )
 
-      if (!this.state.dragging && (isSmall || this.hasDetailsToShow())) {
-        let placement = 'left'
-
+      let placement = 'left'
+      if (!this.state.dragging && (isSmall || this.props.card.hasDescription)) {
         // sane default placements
         if (isSmall) {
           placement = 'right'
@@ -235,11 +211,16 @@ const CardConnector = (connector) => {
             if (cardPos.x < midPoint) placement = 'right'
           }
         }
-
         title = (
-          <OverlayTrigger trigger="hover" placement={placement} overlay={this.renderPopover}>
+          <Floater
+            component={this.renderPopover}
+            open={this.state.hovering}
+            placement={placement}
+            offset={0}
+            styles={{ wrapper: { cursor: 'move' } }}
+          >
             {title}
-          </OverlayTrigger>
+          </Floater>
         )
       }
 
@@ -282,7 +263,7 @@ const CardConnector = (connector) => {
               onMouseOver={this.startHovering}
               onMouseLeave={this.stopHovering}
             >
-              <div onClick={this.openDialog}>{this.renderTitle()}</div>
+              {this.renderTitle()}
             </div>
           </div>
         )
@@ -303,6 +284,7 @@ const CardConnector = (connector) => {
             {this.renderDialog()}
             {this.renderDropZone()}
             <div
+              id={`card-body-${card.id}`}
               className={bodyKlass}
               style={cardStyle}
               draggable

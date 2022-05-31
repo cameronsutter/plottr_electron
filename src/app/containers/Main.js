@@ -62,6 +62,7 @@ const Main = ({
   const [dashboardClosed, setDashboardClosed] = useState(false)
   const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
   const [openDashboardTo, setOpenDashboardTo] = useState(null)
+  const [pathToProject, setPathToProject] = useState('')
 
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
@@ -86,6 +87,8 @@ const Main = ({
         finishCheckingFileToLoad()
         return
       }
+
+      setPathToProject(filePath)
 
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
@@ -212,6 +215,10 @@ const Main = ({
     setCurrentAppStateToDashboard()
   }
 
+  const showFile = () => {
+    shell.showItemInFolder(pathToProject)
+  }
+
   // IMPORTANT: the order of these return statements is significant.
   // We'll exit at the earliest one that evaluates true for it's
   // guarding if.
@@ -237,10 +244,10 @@ const Main = ({
 
     const errorMessage = isInProMode
       ? t(
-          'Oops! Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
+          'Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
         )
       : t(
-          'Oops! Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.'
+          'Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.'
         )
 
     const body = errorLoadingFile ? (
@@ -251,12 +258,23 @@ const Main = ({
             <h1>{t('Something went wrong,')}</h1>
             <h2>{t("but don't worry!")}</h2>
           </div>
-          <div className="error-boundary__view-error well">
-            <h3 className="error-boundary-title">{errorMessage}</h3>
+          <div className="error-boundary__view-error well text-center">
+            <h5 className="error-boundary-title" style={{ lineHeight: 1.75 }}>
+              {errorMessage}
+            </h5>
           </div>
-          <div className="error-boundary__options">
-            <Button onClick={goToSupport}>{t('Contact Support')}</Button>
-            <Button onClick={viewBackups}>{t('View Backups')}</Button>
+          <div className="error-boundary__options" style={{ width: '50%' }}>
+            <Button bsSize="lg" onClick={goToSupport}>
+              {t('Contact Support')}
+            </Button>
+            {isInProMode ? null : (
+              <Button bsSize="lg" onClick={showFile}>
+                {t('Show File')}
+              </Button>
+            )}
+            <Button bsSize="lg" onClick={viewBackups}>
+              {t('View Backups')}
+            </Button>
           </div>
         </div>
       </>

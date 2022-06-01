@@ -244,7 +244,9 @@ input[type='file'] {
 }
 .plottr-popover {
   .popover-content {
-    max-height: 100vh;
+    // 35 is the height of the popover title
+    max-height: calc(80vh - 35px);
+    overflow-y: auto;
   }
 }
 #list-popover.popover {

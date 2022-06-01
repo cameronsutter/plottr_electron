@@ -3,14 +3,7 @@ import { PropTypes } from 'prop-types'
 
 import { t } from 'plottr_locales'
 
-import {
-  PlottrModal,
-  ModalBody,
-  ModalHeader,
-  ModalFooter,
-  Form,
-  Button,
-} from 'connected-components'
+import { PlottrModal, ModalBody, ModalFooter, Form, Button } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -24,15 +17,12 @@ const modalStyles = {
     left: 'auto',
     bottom: 'auto',
     right: 'auto',
-    minHeight: 500,
-    maxHeight: 'calc(100vh - 120px)',
   },
 }
 
 const UploadOfflineFile = ({ closeDialog, filePath, onUploadFile, onCancel }) => {
   return (
     <PlottrModal isOpen onRequestClose={closeDialog} style={modalStyles}>
-      <ModalHeader>Upload this file?</ModalHeader>
       <ModalBody>
         <h6>
           {t(

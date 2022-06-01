@@ -26,7 +26,7 @@ const UploadOfflineFile = ({ closeDialog, filePath, onUploadFile, onCancel }) =>
       <ModalBody>
         <h6>
           {t(
-            'To use { thing } in Plottr Pro, you need to upload it first.  Would you like to upload it?',
+            'To use "{ thing }" in Plottr Pro, you need to upload it first.  Would you like to upload it?',
             {
               thing: filePath,
             }

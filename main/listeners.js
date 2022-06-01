@@ -238,7 +238,7 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
 
   ipcMain.on('read-file', (event, filePath) => {
     fs.readFile(filePath, (error, fileData) => {
-      event.sender.send('file-read', fileData)
+      event.sender.send('file-read', JSON.parse(fileData))
     })
   })
 }

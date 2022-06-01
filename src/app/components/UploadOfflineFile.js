@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types'
 
 import { t } from 'plottr_locales'
 
-import { PlottrModal, ModalBody, ModalFooter, Form, Button } from 'connected-components'
+import { Spinner, PlottrModal, ModalBody, ModalFooter, Form, Button } from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -20,9 +20,13 @@ const modalStyles = {
   },
 }
 
-const UploadOfflineFile = ({ closeDialog, filePath, onUploadFile, onCancel }) => {
+const preventDefault = (event) => {
+  event.preventDefault()
+}
+
+const UploadOfflineFile = ({ filePath, onUploadFile, onCancel, busy }) => {
   return (
-    <PlottrModal isOpen onRequestClose={closeDialog} style={modalStyles}>
+    <PlottrModal isOpen style={modalStyles}>
       <ModalBody>
         <h6>
           {t(
@@ -34,11 +38,19 @@ const UploadOfflineFile = ({ closeDialog, filePath, onUploadFile, onCancel }) =>
         </h6>
       </ModalBody>
       <ModalFooter>
-        <Form onSubmit={onUploadFile}>
-          <Button onClick={onUploadFile} type="submit" bsStyle="primary">
-            {t('Upload')}
+        <Form onSubmit={preventDefault}>
+          <Button onClick={onUploadFile} disabled={busy} type="submit" bsStyle="primary">
+            {busy ? (
+              <>
+                <Spinner /> {t('Uploading')}
+              </>
+            ) : (
+              t('Upload')
+            )}
           </Button>
-          <Button onClick={onCancel}>{t('Cancel')}</Button>
+          <Button onClick={onCancel} disabled={busy}>
+            {t('Cancel')}
+          </Button>
         </Form>
       </ModalFooter>
     </PlottrModal>
@@ -47,9 +59,9 @@ const UploadOfflineFile = ({ closeDialog, filePath, onUploadFile, onCancel }) =>
 
 UploadOfflineFile.propTypes = {
   filePath: PropTypes.string.isRequired,
-  closeDialog: PropTypes.func.isRequired,
   onUploadFile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  busy: PropTypes.bool,
 }
 
 export default UploadOfflineFile

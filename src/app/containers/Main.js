@@ -30,7 +30,7 @@ function displayFileName(filePath, isCloudFile, displayFilePath) {
   return `${plottr}${baseFileName}${devMessage}`
 }
 
-const LoadingSplash = (loadingState, loadingProgress) => {
+const LoadingSplash = ({ loadingState, loadingProgress }) => {
   return (
     <div id="temporary-inner">
       <div className="loading-splash">
@@ -71,6 +71,7 @@ const Main = ({
   finishCheckingFileToLoad,
   loadingProgress,
   fileToUpload,
+  uploadingFileToCloud,
   emailAddress,
   userId,
   darkMode,
@@ -82,6 +83,8 @@ const Main = ({
   setCurrentAppStateToApplication,
   promptToUploadFile,
   dismissPromptToUploadFile,
+  startUploadingFileToCloud,
+  finishUploadingFileToCloud,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -144,8 +147,6 @@ const Main = ({
       }
     }
 
-    startCheckingFileToLoad()
-    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
     const stateFetchedListener = (
       event,
       filePath,
@@ -170,6 +171,8 @@ const Main = ({
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
     ipcRenderer.on('state-fetched', stateFetchedListener)
+    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
+    startCheckingFileToLoad()
 
     return () => {
       ipcRenderer.removeListener('reload-from-file', reloadListener)
@@ -256,6 +259,42 @@ const Main = ({
     return <Login />
   }
 
+  if (fileToUpload) {
+    return (
+      <>
+        <LoadingSplash />
+        <UploadOfflineFile
+          filePath={fileToUpload}
+          onUploadFile={() => {
+            const fileReadListener = (event, data) => {
+              startUploadingFileToCloud()
+              uploadExisting(emailAddress, userId, data).then((response) => {
+                const { fileId } = response.data || {}
+                if (!fileId) {
+                  // FIXME: Use the new error loading file component
+                  // here when its merged.
+                  return
+                }
+                finishUploadingFileToCloud()
+                dismissPromptToUploadFile()
+                // Lie about the number of open files to avoid opening
+                // the dashboard when we double click a file.
+                //
+                // FIXME: where should the options come from?
+                bootFile(`plottr://${fileId}`, {}, 2)
+              })
+              ipcRenderer.removeListener('file-read', fileReadListener)
+            }
+            ipcRenderer.on('file-read', fileReadListener)
+            ipcRenderer.send('read-file', fileToUpload)
+          }}
+          onCancel={dismissPromptToUploadFile}
+          busy={uploadingFileToCloud}
+        />
+      </>
+    )
+  }
+
   if (firstTimeBooting) {
     // TODO: @cameron, @jeana, this is where we can put a more
     // interesting loading component for users and let them know what
@@ -269,30 +308,6 @@ const Main = ({
 
   if (isInTrialModeWithExpiredTrial) {
     return <Expired />
-  }
-
-  if (fileToUpload) {
-    return (
-      <>
-        <LoadingSplash />
-        <UploadOfflineFile
-          closeDialog={dismissPromptToUploadFile}
-          filePath={fileToUpload}
-          onUploadFile={() => {
-            ipcRenderer.on('file-read', (event, data) => {
-              uploadExisting(emailAddress, userId, data).then(({ fileId }) => {
-                // Lie about the number of open files to avoid opening
-                // the dashboard when we double click a file.
-                //
-                // FIXME: where should the options come from?
-                bootFile(`plottr://${fileId}`, {}, 2)
-              })
-            })
-          }}
-          onCancel={dismissPromptToUploadFile}
-        />
-      </>
-    )
   }
 
   if (cantShowFile || ((currentAppStateIsDashboard || showDashboard) && !dashboardClosed)) {
@@ -318,6 +333,7 @@ Main.propTypes = {
   loadingState: PropTypes.string.isRequired,
   loadingProgress: PropTypes.number.isRequired,
   fileToUpload: PropTypes.string,
+  uploadingFileToCloud: PropTypes.bool,
   emailAddress: PropTypes.string,
   userId: PropTypes.string,
   setOffline: PropTypes.func.isRequired,
@@ -331,7 +347,9 @@ Main.propTypes = {
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
   promptToUploadFile: PropTypes.func.isRequired,
-  dismissPromptToUploadFile: PropTypes.func.isrequired,
+  dismissPromptToUploadFile: PropTypes.func.isRequired,
+  startUploadingFileToCloud: PropTypes.func.isRequired,
+  finishUploadingFileToCloud: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -355,6 +373,7 @@ export default connect(
     fileName: selectors.fileNameSelector(state.present),
     isOnboarding: selectors.isOnboardingToProFromRootSelector(state.present),
     fileToUpload: selectors.filePathToUploadSelector(state.present),
+    uploadingFileToCloud: selectors.uploadingFileToCloudSelector(state.present),
     emailAddress: selectors.emailAddressSelector(state.present),
     userId: selectors.userIdSelector(state.present),
   }),
@@ -366,5 +385,7 @@ export default connect(
     setCurrentAppStateToApplication: actions.client.setCurrentAppStateToApplication,
     promptToUploadFile: actions.applicationState.promptToUploadFile,
     dismissPromptToUploadFile: actions.applicationState.dismissPromptToUploadFile,
+    startUploadingFileToCloud: actions.applicationState.startUploadingFileToCloud,
+    finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
   }
 )(Main)

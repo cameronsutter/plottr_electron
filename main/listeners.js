@@ -40,11 +40,8 @@ import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 export const listenOnIPCMain = (getSocketWorkerPort) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
     const lastFile = lastOpenedFile()
-    const lastFileIsValid =
-      (proMode && lastFile && lastFile.startsWith('plottr://')) ||
-      (!proMode && lastFile && !lastFile.startsWith('plottr://'))
     const win = getWindowById(id)
-    const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
+    const filePath = win.filePath || lastFile
     if (win) {
       event.sender.send(
         'state-fetched',
@@ -237,5 +234,11 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
       // ignore
       // on windows you need something called an Application User Model ID which may not work
     }
+  })
+
+  ipcMain.on('read-file', (event, filePath) => {
+    fs.readFile(filePath, (error, fileData) => {
+      event.sender.send('file-read', fileData)
+    })
   })
 }

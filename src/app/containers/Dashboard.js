@@ -7,7 +7,6 @@ import cx from 'classnames'
 import { selectors } from 'pltr/v2'
 import { DashboardBody, DashboardNav, FullPageSpinner as Spinner } from 'connected-components'
 
-import UploadOfflineFile from '../components/UploadOfflineFile'
 import OfflineBanner from '../components/OfflineBanner'
 
 const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy }) => {
@@ -30,12 +29,6 @@ const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy }) => {
         {busy ? <Spinner /> : null}
         <DashboardNav currentView={activeView} setView={setActiveView} />
         <DashboardBody currentView={activeView} setView={setActiveView} />
-        <UploadOfflineFile
-          closeDialog={() => {}}
-          filePath="Test"
-          onUploadFile={() => {}}
-          onCancel={() => {}}
-        />
       </div>
     </div>
   )

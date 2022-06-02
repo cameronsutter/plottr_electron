@@ -7,6 +7,7 @@ import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 import log from 'electron-log'
 
+import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'
 import export_config from 'plottr_import_export/src/exporter/default_config'
@@ -155,6 +156,7 @@ const platform = {
         })
         .catch((error) => {
           logger.error('Error opening existing file', error)
+          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again.'))
           store.dispatch(actions.project.showLoader(false))
           if (isLoggedIn) {
             store.dispatch(actions.applicationState.finishUploadingFileToCloud())

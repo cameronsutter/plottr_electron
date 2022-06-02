@@ -52,7 +52,6 @@
     "watch:cjs": "npm run build:cjs -- -w",
     "watch:esm": "npm run build:esm -- -w",
     "lint": "eslint --ext .ts,.tsx src test",
-    "clean": "del lib/* && del esm/*",
     "test": "jest",
     "test:coverage": "jest --coverage --bail",
     "test:watch": "jest --watchAll --verbose",

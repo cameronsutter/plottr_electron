@@ -421,8 +421,7 @@ function createRTFConversionFunction(sender) {
 
 function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
   if (importedPath.error) {
-    log.error(importedPath.error)
-    return sender.send('finish-creating-local-scrivener-imported-file')
+    return sender.send('error-importing-scrivener')
   }
   const storyName = path.basename(importedPath, '.scriv')
   let json = emptyFile(storyName, app.getVersion())
@@ -443,8 +442,7 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
         sender.send('create-plottr-cloud-file', importedJson, storyName)
       })
       .catch((error) => {
-        log.error(error)
-        sender.send('finish-creating-local-scrivener-imported-file')
+        return sender.send('error-importing-scrivener', error)
       })
     return Promise.resolve()
   }
@@ -458,8 +456,7 @@ function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
       })
     })
     .catch((error) => {
-      log.error(error)
-      sender.send('finish-creating-local-scrivener-imported-file')
+      return sender.send('error-importing-scrivener', error)
     })
 }
 

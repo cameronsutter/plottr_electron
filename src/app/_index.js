@@ -296,13 +296,19 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
       return fileId
     })
     .catch((error) => {
-      logger.error(error)
-      store.dispatch(actions.applicationState.finishScrivenerImporter())
+      ipcRenderer.send('error-importing-scrivener', error)
     })
 })
 
 ipcRenderer.on('finish-creating-local-scrivener-imported-file', () => {
   store.dispatch(actions.applicationState.finishScrivenerImporter())
+})
+
+ipcRenderer.on('error-importing-scrivener', (event, error) => {
+  logger.warn('[scrivener import]', error)
+  rollbar.warn({ message: error })
+  store.dispatch(actions.applicationState.finishScrivenerImporter())
+  dialog.showErrorBox(t('Error'), t(error || 'There was an error doing that. Try again'))
 })
 
 ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {

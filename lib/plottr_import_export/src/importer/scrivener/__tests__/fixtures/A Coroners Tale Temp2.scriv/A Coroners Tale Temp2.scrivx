@@ -1,0 +1,906 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrivenerProject Template="No" Version="2.0" Identifier="2E69AEF5-59B6-4092-BB9D-083A69BAFB36" Creator="SCRWIN-3.1.1.0" Device="DESKTOP-UG4M6C1" Modified="2022-04-14 15:59:37 +0100" ModID="CF3FC5F4-7F89-43CF-8FE5-A82069D7B327">
+    <Binder>
+        <BinderItem UUID="4D4DD58E-2FB6-4B35-AEA5-54422A2A4A34" Type="DraftFolder" Created="2022-02-09 22:20:18 +0100" Modified="2021-08-18 22:29:07 +0100">
+            <Title>Thief Catcher</Title>
+            <MetaData/>
+            <Children>
+                <BinderItem UUID="9D367D6E-1F6E-4C68-B333-9416B12C94D1" Type="Text" Created="2022-02-09 22:20:18 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Sarah is burgled</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="0D453A28-04F8-45C3-B57A-2618D14E1A16" Type="Text" Created="2021-08-17 16:02:33 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg sees Edwin arrive at the magistrate's house</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="2BEC05CD-6E6E-4BCB-B374-311A34CC64F7" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin talks to magistrate</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>85,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="59206F96-6CA5-4D3B-AF4C-2F00AB9C7F58" Type="Text" Created="2021-09-19 07:55:31 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin sees Sarah</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="3BAC2FE2-39E3-4CAC-99E9-F3163EF73151" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg meets Edwin</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="87A57C3A-DDD3-4074-A329-88232CF13097" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg asks Edwin to help her become a thief-taker</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="8FBA3A0B-5392-45E7-B1C3-109D63AC53FD" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Sarah receives blackmail message</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="C87BAB0A-03DE-4E3B-8227-585F804E72AF" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg follows Joseph and Walter</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="DB9EDA27-3853-4E28-938A-9881ED6CE99D" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin receives a message</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="200A72FC-5B52-4B10-BFB4-4CF946CFEB11" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg reports back to Edwin</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>656,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="424CDF34-6D1C-42AD-BE47-FAA4B7F315D0" Type="Text" Created="2021-11-29 07:10:15 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Sarah asks Meg for help</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="54F2E946-58B7-44F3-B8E0-A563E17AC0B9" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Sarah approaches Edwin</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>203,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="DDEAB260-2544-451C-8D27-A1CA6050BF26" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin talks to thief-taker Zeb Garbutt</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="E9800CCF-85BE-4AB1-9577-64DF84C84741" Type="Text" Created="2021-11-18 20:04:37 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin asks Meg to take a message to Sarah</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="6A55518E-F0A9-4FA3-8E02-D10F20AFE451" Type="Text" Created="2021-11-18 20:32:03 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin cautions Sarah not to use other thief-taker</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="74549244-E2DA-48AC-88FC-C43415708659" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin asks Meg to help with burglary investigation</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="DD935EDA-BDCB-4F73-828A-3C84ACD18409" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg sees Sarah's footman meet Ben Steps</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="55C05BE3-ED78-44CE-8A5B-9074720030C0" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg follows Geoffrey</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="9826DB63-5A49-42F8-9DFD-BA4EAF397BCA" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin hears of Matthew Kemp</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="D4667EC7-D9E4-4EBC-93A3-CD831BC580FE" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Edwin finds Kemp</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="4559D351-1E17-4361-8ADC-62EEC6F77441" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-14 13:58:22 +0100">
+                    <Title>Meg challenges Joseph</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="48A370C3-2BF3-492E-97B1-618EF12EB09B" Type="Text" Created="2022-03-30 20:12:45 +0100" Modified="2022-04-13 20:07:23 +0100">
+                    <Title>Edwin receives a second message</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="F229EFEF-2DD4-47D7-83B4-D46A58A7AB32" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-13 20:07:27 +0100">
+                    <Title>Meg watches meeting place 1</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>28,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="78B51FBC-D797-4CFC-A3C6-189E78EBB676" Type="Text" Created="2022-04-10 08:37:49 +0100" Modified="2022-04-13 20:07:34 +0100">
+                    <Title>Meg watches meeting place 2</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="A2A538CB-3FDD-4004-9F0C-B5C46263AD60" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-13 20:07:37 +0100">
+                    <Title>Edwin meets Ben Steps for the first time</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="F3C0CAD7-881F-4AA3-8CAF-A4DD1046344B" Type="Text" Created="2022-04-11 08:16:06 +0100" Modified="2022-04-13 20:07:41 +0100">
+                    <Title>Meg follows Ben Steps</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="9D066476-60D7-4F07-BDC4-0E907AB4EF1E" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-13 20:07:44 +0100">
+                    <Title>Edwin investigates Sarah</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="9396835D-8CCA-41EC-B3F0-81C0C602470A" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-08 20:58:23 +0100">
+                    <Title>Edwin investigates Ben Steps</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="18C41EEB-682D-4117-9287-B8A5FC0BE215" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>EXPAND ON INVESTIGATION OF BURGLARY</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="7084460B-DCD4-43AB-BD20-95B94DED1939" Type="Text" Created="2021-09-02 06:14:17 +0100" Modified="2022-04-13 20:07:48 +0100">
+                    <Title>Sarah goes to confront Ben Steps part 1</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>28,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="179E830D-2EF9-4194-AF2F-9D962421E9F4" Type="Text" Created="2022-03-17 09:34:08 +0100" Modified="2022-04-13 20:07:51 +0100">
+                    <Title>Sarah goes to confront Ben Steps part 2</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="D5DB5A0A-3D5F-4579-96F3-A8A7EEE18FBF" Type="Text" Created="2021-09-09 20:29:15 +0100" Modified="2022-04-13 20:07:56 +0100">
+                    <Title>Ben Steps is found dead/is murdered</Title>
+                    <MetaData>
+                        <LabelID>3</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                        <NotesTextSelection>83,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="A463E7FC-32E0-4D09-ACC0-951FC4E93BBB" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>The Coroner examines the body</Title>
+                    <MetaData>
+                        <LabelID>3</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="8207B47E-54A5-430F-AD8E-19AB1FFC3DB1" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin returns the stolen items</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="BE8A80BE-680B-439E-9EEF-4C3528FA6215" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin is accused</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="44066A4C-360D-42D7-BC18-40B992EDA86A" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin is interviewed by the magistrate</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="BF312E49-84FB-4DE7-BAAD-0FE25986252E" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin returns for his money</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="273B74C3-4AAC-4B91-A1E0-B09457280253" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-04-10 08:23:07 +0100">
+                    <Title>Meg questions Edwin about Ben's killing</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="C13419F6-4B9B-400B-B272-276C652E2E75" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Meg thinks about Edwin as suspect</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="9F49B93E-FFA7-4FB7-8B1F-B1AE00FCF863" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Sarah apologises to Edwin</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="2C235EBE-1994-40C4-AD37-0C82D673961C" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin pays Meg out of his savings.</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="DD103C5B-98B9-440F-B3B7-EE9CDB5E4039" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin challenges Sarah - did she kill Steps?</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="F3DB6EBF-DDC5-4BED-BFC6-4FBD91FA427E" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>EXPLAIN ABOUT Meg'S INVESTIGATION</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="8157411E-8ED6-493C-87F5-7B750D954C19" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Meg watches Edwin follow Sarah</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="0C434AB8-32EA-4BFE-8E60-0DC36EAA834A" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin finds a note in Ben's lodgings</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="3A48F2FE-3C34-4A56-BF96-4DD7F0E76CB1" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin bumps into Sarah in town</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="07162E64-2CC1-47C7-9183-91DD0F9D4583" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin talks to Seth Green</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="119373D3-3779-4D69-A18F-5F900EE254E7" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin and Sarah agree to meet each day</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="06ECDC0F-E6F5-4706-9593-B4B1DDDB1B72" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin is introduced to Ralf</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="0A1C0493-5803-4C05-87BD-8B8847945A4C" Type="Text" Created="2021-09-01 17:14:17 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Seth Green contacts Edwin</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="30B032DD-1D90-4017-BEE5-17ACAB63A2F3" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin finds Jacob Trussle</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="9ED7C6F2-7EC0-4C58-8DD2-7407DEA81386" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Sarah tells Edwin she told Ralf about them</Title>
+                    <MetaData>
+                        <LabelID>1</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="1609FD8A-271C-444A-9963-8808BFAAEB15" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin interviews Trussle's wife</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="19054CD6-74E8-4FBC-A766-D7E162346940" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Ralf threatens Edwin</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="E9E11665-2FE3-42B2-B1A9-9DA35D05B25E" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Joseph reveals she told Sarah where Ben lived</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="E9D033A3-32BC-47B5-94FA-5644CF867E1F" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Joseph points a finger at Ralf</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="1F0421FA-3713-4C3A-8001-C2F0EFD7724F" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin talks to tavern owner</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="EFBEE415-6BD5-48CE-AE41-2F104F3ECB9B" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin discusses Geoffrey with Sarah</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="AC03F7D2-C70F-426D-8D41-094F6069A78C" Type="Text" Created="2021-09-03 07:00:48 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin sees Walter and confronts him</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="6CE7245C-574D-4A8C-9402-F9EFC34544B4" Type="Text" Created="2021-09-03 07:27:51 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin confronts Geoffrey about false name</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="71CE35B4-F803-42BE-863A-1A09073C52C2" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin and Meg go through murder suspects</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="6FECEA26-BB8D-46FA-BD15-6CB94FCC46F0" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin identifies the killer</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="E33384E5-56B5-4B00-BA8C-8E6D99F7C75B" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin accuses Ralf</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="EA72D4A3-B3BB-4C38-A6E4-D7260FB33F3F" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin explains to the magistrate</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="1E30AF3A-7337-457B-9196-38FA16470523" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Ralf leaves on a ship</Title>
+                    <MetaData>
+                        <LabelID>3</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="F185DED3-6A35-4127-9303-D06CF758EE3E" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>EXPAND ON EDWIN AND SARAH STORY.</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="364B7373-9406-4C4E-8F3A-204B97A7E947" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Edwin and Sarah story concludes</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="C67FE51B-2654-4DCB-991C-C17A782B754A" Type="Text" Created="2021-09-01 17:14:18 +0100" Modified="2022-03-28 08:09:34 +0100">
+                    <Title>Meg 'officially' becomes Edwin's assistant</Title>
+                    <MetaData>
+                        <LabelID>0</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <SectionType>BBB358DF-53D5-4449-B1F3-3ED167CF9203</SectionType>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                        <Target Type="Words">1000</Target>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem UUID="02F732DA-81AE-4219-A2CD-D0948C03C387" Type="Folder" Created="2022-04-14 08:15:37 +0100" Modified="2022-04-14 08:15:49 +0100">
+            <Title>Research and notes</Title>
+            <MetaData>
+                <IncludeInCompile>Yes</IncludeInCompile>
+            </MetaData>
+            <TextSettings>
+                <TextSelection>0,0</TextSelection>
+            </TextSettings>
+            <Children>
+                <BinderItem UUID="C9C1BA2D-AC44-48AA-AF1C-D22D4981CABA" Type="Text" Created="2022-02-15 16:10:41 +0100" Modified="2022-03-07 07:50:48 +0100">
+                    <Title>Project Notes</Title>
+                    <MetaData/>
+                    <TextSettings>
+                        <TextSelection>358,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem UUID="56A85348-B06C-4946-ACB9-B8F615A08831" Type="ResearchFolder" Created="2022-02-09 22:20:18 +0100" Modified="">
+            <Title>Notes</Title>
+            <MetaData/>
+        </BinderItem>
+        <BinderItem UUID="9214B8F4-319B-4C1B-9266-D4C72084A58F" Type="TrashFolder" Created="2022-02-09 22:20:18 +0100" Modified="">
+            <Title>Trash</Title>
+            <MetaData/>
+        </BinderItem>
+    </Binder>
+    <Collections>
+        <Collection Type="Binder" ID="52195833-9932-4F6D-AA89-27344544EF06" Color="0.941176 0.937255 0.956863">
+            <Title>Binder</Title>
+        </Collection>
+        <Collection Type="RecentSearch" ID="65BD1403-6C79-4ED5-BD07-02E18C9933EE" Color="0.901961 0.901961 0.980392">
+            <Title>Search Results</Title>
+            <SearchSettings Operator="Any" Type="Text" Scope="All" CompileSetting="All" CaseSensitive="No" IgnoreDiacritics="No">magdal</SearchSettings>
+        </Collection>
+        <Collection Type="Arbitrary" ID="213FED4A-25B2-464E-BEE3-6C2E3C927C36" Color="0.992157 0.972549 0.819608">
+            <Title>Synced Documents</Title>
+        </Collection>
+    </Collections>
+    <SectionTypes>
+        <TypeDefinitions>
+            <Type ID="A5768764-1BB1-4D3B-AF6A-2B31C2F302D8">Chapter-CG</Type>
+            <Type ID="BBB358DF-53D5-4449-B1F3-3ED167CF9203">Scene-CG</Type>
+        </TypeDefinitions>
+        <LevelTypes>
+            <Folders>
+                <Type>A5768764-1BB1-4D3B-AF6A-2B31C2F302D8</Type>
+            </Folders>
+            <Containers>
+                <Type>A5768764-1BB1-4D3B-AF6A-2B31C2F302D8</Type>
+            </Containers>
+            <Files>
+                <Type>A5768764-1BB1-4D3B-AF6A-2B31C2F302D8</Type>
+            </Files>
+        </LevelTypes>
+    </SectionTypes>
+    <LabelSettings>
+        <Title>Label</Title>
+        <DefaultLabelID>-1</DefaultLabelID>
+        <Labels>
+            <Label ID="-1">No Label</Label>
+            <Label ID="0" Color="1.000000 0.000000 0.000000">POV: Meg</Label>
+            <Label ID="1" Color="0.333333 0.000000 1.000000">POV: Sarah</Label>
+            <Label ID="2" Color="0.388235 0.772549 0.000000">POV: Edwin</Label>
+            <Label ID="3" Color="1.000000 1.000000 0.000000">POV: General narrator</Label>
+        </Labels>
+    </LabelSettings>
+    <StatusSettings>
+        <Title>Status</Title>
+        <DefaultStatusID>-1</DefaultStatusID>
+        <StatusItems>
+            <Status ID="-1">No Status</Status>
+        </StatusItems>
+    </StatusSettings>
+    <ProjectTargets Notify="No">
+        <DraftTarget Type="Words" CountIncludedOnly="No" CurrentCompileGroupOnly="No">70000</DraftTarget>
+        <SessionTarget Type="Words" CountDraftOnly="No" AllowNegatives="No" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" CanWriteOnDeadlineDate="No" WritingDays="">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2022-04-14 15:59:37 +0100"/>
+    </ProjectTargets>
+    <RecentWritingHistory Date="2022-04-14 00:00:00 +0100">
+        <DraftWordCount>0</DraftWordCount>
+        <DraftCharCount>0</DraftCharCount>
+        <OtherWordCount>-3844</OtherWordCount>
+        <OtherCharCount>-23503</OtherCharCount>
+    </RecentWritingHistory>
+    <PrintSettings PaperSize="595.0,842.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="72.0" BottomMargin="72.0" PaperType="iso-a4" Orientation="Portrait" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="No" PagesAcross="1" PagesDown="1"/>
+</ScrivenerProject>

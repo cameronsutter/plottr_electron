@@ -2,7 +2,7 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING, RM_RF, SAVE_FILE } from '../socket-server-message-types'
+import { PING, RM_RF, SAVE_FILE, SAVE_OFFLINE_FILE } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
 const connect = (port, logger) => {
@@ -44,6 +44,7 @@ const connect = (port, logger) => {
       }
 
       switch (type) {
+        case SAVE_OFFLINE_FILE:
         case SAVE_FILE:
         case RM_RF:
         case PING: {
@@ -72,12 +73,17 @@ const connect = (port, logger) => {
     return sendPromise(SAVE_FILE, { filePath, file })
   }
 
+  const saveOfflineFile = (file) => {
+    return sendPromise(SAVE_OFFLINE_FILE, { file })
+  }
+
   return new Promise((resolve, reject) => {
     clientConnection.on('open', () => {
       resolve({
         ping,
         rmRf,
         saveFile,
+        saveOfflineFile,
       })
     })
   })

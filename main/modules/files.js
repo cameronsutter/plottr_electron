@@ -19,7 +19,7 @@ import SETTINGS from './settings'
 import { OFFLINE_FILE_FILES_PATH, offlineFilePath, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
 
-const { unlink, readdir, lstat } = fs.promises
+const { lstat } = fs.promises
 
 const makeFileModule = () => {
   const TMP_PATH = 'tmp'
@@ -275,62 +275,9 @@ const makeFileModule = () => {
     if (unknown) addToKnown(filePath)
   }
 
-  function listOfflineFiles() {
-    return readdir(OFFLINE_FILE_FILES_PATH)
-      .then((entries) => {
-        return Promise.all(
-          entries.map((entry) => {
-            return lstat(path.join(OFFLINE_FILE_FILES_PATH, entry)).then((folder) => ({
-              keep: folder.isFile(),
-              payload: path.join(OFFLINE_FILE_FILES_PATH, entry),
-            }))
-          })
-        ).then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
-      })
-      .catch((error) => {
-        log.error(`Couldn't list the offline files directory: ${OFFLINE_FILE_FILES_PATH}`, error)
-        return Promise.reject(error)
-      })
-  }
-
-  function cleanOfflineBackups(knownFiles) {
-    const expectedOfflineFiles = knownFiles
-      .filter(({ isCloudFile, fileName }) => isCloudFile && fileName)
-      .map(({ fileName }) => offlineFilePath(fileName))
-    return listOfflineFiles().then((files) => {
-      const filesToClean = files.filter((filePath) => expectedOfflineFiles.indexOf(filePath) === -1)
-      return Promise.all(
-        filesToClean.map((filePath) => {
-          log.info(
-            'Removing offline backup: "',
-            filePath,
-            '" because the online counterpart no longer exists'
-          )
-          return unlink(filePath)
-        })
-      )
-    })
-  }
-
-  function saveOfflineFile(file) {
-    // Don't save an offline version of an offline file
-    if (!fs.existsSync(OFFLINE_FILE_FILES_PATH)) {
-      fs.mkdirSync(OFFLINE_FILE_FILES_PATH, { recursive: true })
-    }
-    if (!file || !file.file || !file.file.fileName) {
-      log.error('Trying to save a file but there is no file record on it.', file)
-      return
-    }
-    const filePath = offlineFilePath(file.file.fileName)
-    cleanOfflineBackups(file.knownFiles).then(() => {
-      return saveFile(filePath, file)
-    })
-  }
-
   return {
     TMP_PATH,
     TEMP_FILES_PATH,
-    listOfflineFiles,
     tempFilesStore,
     saveFile,
     autoSave,
@@ -342,14 +289,12 @@ const makeFileModule = () => {
     createFromSnowflake,
     createFromScrivener,
     openKnownFile,
-    saveOfflineFile,
   }
 }
 
 const {
   TMP_PATH,
   TEMP_FILES_PATH,
-  listOfflineFiles,
   tempFilesStore,
   saveFile,
   autoSave,
@@ -361,13 +306,11 @@ const {
   createFromSnowflake,
   createFromScrivener,
   openKnownFile,
-  saveOfflineFile,
 } = makeFileModule()
 
 export {
   TMP_PATH,
   TEMP_FILES_PATH,
-  listOfflineFiles,
   tempFilesStore,
   saveFile,
   autoSave,
@@ -379,5 +322,4 @@ export {
   createFromSnowflake,
   createFromScrivener,
   openKnownFile,
-  saveOfflineFile,
 }

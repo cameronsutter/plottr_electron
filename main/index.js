@@ -73,7 +73,7 @@ const broadcastPortChange = (port) => {
 }
 
 app.whenReady().then(() => {
-  startServer(log, broadcastPortChange)
+  startServer(log, broadcastPortChange, app.getPath('userData'))
     .then((port) => {
       log.info(`Socket worker started on ${port}`)
       return port

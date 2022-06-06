@@ -21,7 +21,6 @@ import {
   openKnownFile,
   createNew,
   createFromSnowflake,
-  saveFile,
   TEMP_FILES_PATH,
   removeFromTempFiles,
   removeFromKnownFiles,
@@ -169,10 +168,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
         event.sender.send('save-backup-success', filePath)
       }
     })
-  })
-
-  ipcMain.on('record-offline-backup', (_event, file) => {
-    saveOfflineFile(file)
   })
 
   ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {

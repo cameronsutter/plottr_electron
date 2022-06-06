@@ -4,7 +4,7 @@ import { join } from 'path'
 const START_PORT = 8000
 const MAX_ATTEMPTS = 10
 
-export const startServer = (log, broadcastPortChange) => {
+export const startServer = (log, broadcastPortChange, userDataPath) => {
   let attempts = 0
 
   function attemptAStart() {
@@ -16,7 +16,7 @@ export const startServer = (log, broadcastPortChange) => {
       const randomPort = START_PORT + Math.floor(1000 * Math.random())
       log.info(`Starting socket server on port: ${randomPort}`)
 
-      const server = fork(join(__dirname, './socketServer.bundle.js'), [randomPort])
+      const server = fork(join(__dirname, './socketServer.bundle.js'), [randomPort, userDataPath])
       server.on('close', (code) => {
         log.warn(`Socket server died with code: ${code}`)
         if (code === 1) {

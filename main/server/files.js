@@ -273,7 +273,9 @@ const FileModule = (userDataPath) => {
     })
   }
 
-  return { saveFile, saveOfflineFile }
+  const basename = path.basename
+
+  return { saveFile, saveOfflineFile, basename }
 }
 
 export default FileModule

@@ -345,4 +345,4 @@ const _unsubscribeToPublishers = world.publishChangesToStore(store)
 
 const root = rootComponent()
 
-renderFile(root)
+renderFile(root, whenClientIsReady)

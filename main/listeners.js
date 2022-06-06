@@ -27,7 +27,6 @@ import {
   deleteKnownFile,
   editKnownFilePath,
   autoSave,
-  saveOfflineFile,
   createFromScrivener,
 } from './modules/files'
 import { lastOpenedFile } from './modules/lastOpened'

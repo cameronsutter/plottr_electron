@@ -6,7 +6,7 @@ import { emptyFile, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { logger } from './logger'
 
-const { lstat, writeFile, readFile, open, unlink, readdir } = fs.promises
+const { lstat, writeFile, open, unlink, readdir } = fs.promises
 
 const FileModule = (userDataPath) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
@@ -275,7 +275,9 @@ const FileModule = (userDataPath) => {
 
   const basename = path.basename
 
-  return { saveFile, saveOfflineFile, basename }
+  const readFile = fs.promises.readFile
+
+  return { saveFile, saveOfflineFile, basename, readFile }
 }
 
 export default FileModule

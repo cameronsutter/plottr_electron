@@ -235,10 +235,4 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
       // on windows you need something called an Application User Model ID which may not work
     }
   })
-
-  ipcMain.on('read-file', (event, filePath) => {
-    fs.readFile(filePath, (error, fileData) => {
-      event.sender.send('file-read', JSON.parse(fileData))
-    })
-  })
 }

@@ -10,6 +10,7 @@ import { actions, selectors } from 'pltr/v2'
 import { bootFile } from '../bootFile'
 import { isOfflineFile } from '../../common/utils/files'
 
+import MainIntegrationContext from '../../mainIntegrationContext'
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
@@ -261,37 +262,40 @@ const Main = ({
 
   if (fileToUpload) {
     return (
-      <>
-        <LoadingSplash />
-        <UploadOfflineFile
-          filePath={fileToUpload}
-          onUploadFile={() => {
-            const fileReadListener = (event, data) => {
-              startUploadingFileToCloud()
-              uploadProject(data, emailAddress, userId).then((response) => {
-                const { fileId } = response.data || {}
-                if (!fileId) {
-                  // FIXME: Use the new error loading file component
-                  // here when its merged.
-                  return
-                }
-                finishUploadingFileToCloud()
-                dismissPromptToUploadFile()
-                // Lie about the number of open files to avoid opening
-                // the dashboard when we double click a file.
-                //
-                // FIXME: where should the options come from?
-                bootFile(`plottr://${fileId}`, {}, 2)
-              })
-              ipcRenderer.removeListener('file-read', fileReadListener)
-            }
-            ipcRenderer.on('file-read', fileReadListener)
-            ipcRenderer.send('read-file', fileToUpload)
-          }}
-          onCancel={dismissPromptToUploadFile}
-          busy={uploadingFileToCloud}
-        />
-      </>
+      <MainIntegrationContext.Consumer>
+        {({ readFile }) => {
+          return (
+            <>
+              <LoadingSplash />
+              <UploadOfflineFile
+                filePath={fileToUpload}
+                onUploadFile={() => {
+                  readFile(fileToUpload).then((data) => {
+                    startUploadingFileToCloud()
+                    uploadProject(data, emailAddress, userId).then((response) => {
+                      const { fileId } = response.data || {}
+                      if (!fileId) {
+                        // FIXME: Use the new error loading file component
+                        // here when its merged.
+                        return
+                      }
+                      finishUploadingFileToCloud()
+                      dismissPromptToUploadFile()
+                      // Lie about the number of open files to avoid opening
+                      // the dashboard when we double click a file.
+                      //
+                      // FIXME: where should the options come from?
+                      bootFile(`plottr://${fileId}`, {}, 2)
+                    })
+                  })
+                }}
+                onCancel={dismissPromptToUploadFile}
+                busy={uploadingFileToCloud}
+              />
+            </>
+          )
+        }}
+      </MainIntegrationContext.Consumer>
     )
   }
 

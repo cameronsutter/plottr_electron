@@ -8,6 +8,7 @@ import {
   SAVE_FILE,
   SAVE_OFFLINE_FILE,
   FILE_BASENAME,
+  READ_FILE,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -50,6 +51,7 @@ const connect = (port, logger) => {
       }
 
       switch (type) {
+        case READ_FILE:
         case FILE_BASENAME:
         case SAVE_OFFLINE_FILE:
         case SAVE_FILE:
@@ -88,6 +90,10 @@ const connect = (port, logger) => {
     return sendPromise(FILE_BASENAME, { filePath })
   }
 
+  const readFile = (filePath) => {
+    return sendPromise(READ_FILE, { filePath })
+  }
+
   return new Promise((resolve, reject) => {
     clientConnection.on('open', () => {
       resolve({
@@ -96,6 +102,7 @@ const connect = (port, logger) => {
         saveFile,
         saveOfflineFile,
         basename,
+        readFile,
       })
     })
   })

@@ -11,6 +11,11 @@ const MainIntegrationContext = React.createContext({
       `Couldn't produce the basename of ${filePath}.  Please wire up the MainIntegrationContext producer.`
     )
   },
+  readFile: (filePath) => {
+    throw new Error(
+      `Couldn't read file at ${filePath}.  Please wire up the MainIntegrationContext producer.`
+    )
+  },
 })
 
 export default MainIntegrationContext

@@ -4,6 +4,7 @@ import fs from 'fs'
 import {
   FILE_BASENAME,
   PING,
+  READ_FILE,
   RM_RF,
   SAVE_FILE,
   SAVE_OFFLINE_FILE,
@@ -21,7 +22,7 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const setupListeners = (port, userDataPath) => {
-  const { saveFile, saveOfflineFile, basename } = FileModule(userDataPath)
+  const { saveFile, saveOfflineFile, basename, readFile } = FileModule(userDataPath)
 
   logger.info(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
@@ -109,6 +110,22 @@ const setupListeners = (port, userDataPath) => {
                 payload,
               })
             )
+            return
+          }
+          case READ_FILE: {
+            logger.info('Reading a file at path: ', payload)
+            const { filePath } = payload
+            readFile(filePath).then((fileData) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result: JSON.parse(fileData),
+                  payload,
+                })
+              )
+            })
+            return
           }
         }
       } catch (error) {

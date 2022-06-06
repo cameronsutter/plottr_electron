@@ -34,7 +34,6 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
-  saveFile,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)

@@ -10,12 +10,15 @@ import { actions, selectors } from 'pltr/v2'
 import { bootFile } from '../bootFile'
 import { isOfflineFile } from '../../common/utils/files'
 
+import MainIntegrationContext from '../../mainIntegrationContext'
 import App from './App'
 import Choice from './Choice'
 import Login from './Login'
 import Expired from './Expired'
 import Dashboard from './Dashboard'
 import ProOnboarding from './ProOnboarding'
+import UploadOfflineFile from '../components/UploadOfflineFile'
+import { uploadProject } from '../../common/utils/upload_project'
 
 const win = getCurrentWindow()
 
@@ -26,6 +29,29 @@ function displayFileName(filePath, isCloudFile, displayFilePath) {
   const baseFileName = displayFilePath ? ` - ${path.basename(filePath)}` : ''
   const plottr = isCloudFile ? 'Plottr Pro' : 'Plottr'
   return `${plottr}${baseFileName}${devMessage}`
+}
+
+const LoadingSplash = ({ loadingState, loadingProgress }) => {
+  return (
+    <div id="temporary-inner">
+      <div className="loading-splash">
+        <img src="../icons/logo_28_500.png" height="500" />
+        {loadingState ? <h3>{loadingState}</h3> : null}
+        {loadingProgress ? (
+          <div className="loading-splash__progress">
+            <div
+              className="loading-splash__progress__bar"
+              style={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+LoadingSplash.propTypes = {
+  loadingState: PropTypes.string,
+  loadingProgress: PropTypes.number,
 }
 
 const Main = ({
@@ -45,6 +71,10 @@ const Main = ({
   startCheckingFileToLoad,
   finishCheckingFileToLoad,
   loadingProgress,
+  fileToUpload,
+  uploadingFileToCloud,
+  emailAddress,
+  userId,
   darkMode,
   isInOfflineMode,
   currentAppStateIsDashboard,
@@ -52,6 +82,10 @@ const Main = ({
   isOnboarding,
   setCurrentAppStateToDashboard,
   setCurrentAppStateToApplication,
+  promptToUploadFile,
+  dismissPromptToUploadFile,
+  startUploadingFileToCloud,
+  finishUploadingFileToCloud,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -114,8 +148,6 @@ const Main = ({
       }
     }
 
-    startCheckingFileToLoad()
-    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
     const stateFetchedListener = (
       event,
       filePath,
@@ -123,12 +155,16 @@ const Main = ({
       numOpenFiles,
       windowOpenedWithKnownPath
     ) => {
+      const lastFileIsOfflineAndWeAreInPro =
+        isInProMode && filePath && !filePath.startsWith('plottr://')
       // There are valid possibilities for filePath to be null.
       //
       // i.e. no file has ever been opened or the last opened file was
       // in a mode that doesn't match current. e.g. it's a pro file
       // and we're in classic mode.
-      if (filePath) {
+      if (lastFileIsOfflineAndWeAreInPro) {
+        promptToUploadFile(filePath)
+      } else if (filePath) {
         load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
@@ -136,11 +172,20 @@ const Main = ({
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
     ipcRenderer.on('state-fetched', stateFetchedListener)
+    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
+    startCheckingFileToLoad()
 
     return () => {
       ipcRenderer.removeListener('reload-from-file', reloadListener)
     }
-  }, [isInOfflineMode, readyToCheckFileToLoad, checkingFileToLoad, checkedFileToLoad, needsToLogin])
+  }, [
+    isInOfflineMode,
+    readyToCheckFileToLoad,
+    checkingFileToLoad,
+    checkedFileToLoad,
+    needsToLogin,
+    promptToUploadFile,
+  ])
 
   // A latch so that we only show initial loading splash once.
   useEffect(() => {
@@ -215,24 +260,50 @@ const Main = ({
     return <Login />
   }
 
+  if (fileToUpload) {
+    return (
+      <MainIntegrationContext.Consumer>
+        {({ readFile }) => {
+          return (
+            <>
+              <LoadingSplash />
+              <UploadOfflineFile
+                filePath={fileToUpload}
+                onUploadFile={() => {
+                  readFile(fileToUpload).then((data) => {
+                    startUploadingFileToCloud()
+                    uploadProject(data, emailAddress, userId).then((response) => {
+                      const { fileId } = response.data || {}
+                      if (!fileId) {
+                        // FIXME: Use the new error loading file component
+                        // here when its merged.
+                        return
+                      }
+                      finishUploadingFileToCloud()
+                      dismissPromptToUploadFile()
+                      // Lie about the number of open files to avoid opening
+                      // the dashboard when we double click a file.
+                      //
+                      // FIXME: where should the options come from?
+                      bootFile(`plottr://${fileId}`, {}, 2)
+                    })
+                  })
+                }}
+                onCancel={dismissPromptToUploadFile}
+                busy={uploadingFileToCloud}
+              />
+            </>
+          )
+        }}
+      </MainIntegrationContext.Consumer>
+    )
+  }
+
   if (firstTimeBooting) {
     // TODO: @cameron, @jeana, this is where we can put a more
     // interesting loading component for users and let them know what
     // we're loading based on the `applicationState` key in Redux ^_^
-    return (
-      <div id="temporary-inner">
-        <div className="loading-splash">
-          <img src="../icons/logo_28_500.png" height="500" />
-          <h3>{loadingState}</h3>
-          <div className="loading-splash__progress">
-            <div
-              className="loading-splash__progress__bar"
-              style={{ width: `${loadingProgress}%` }}
-            />
-          </div>
-        </div>
-      </div>
-    )
+    return <LoadingSplash loadingState={loadingState} loadingProgress={loadingProgress} />
   }
 
   if (isFirstTime) {
@@ -265,6 +336,10 @@ Main.propTypes = {
   selectedFileIsCloudFile: PropTypes.bool,
   loadingState: PropTypes.string.isRequired,
   loadingProgress: PropTypes.number.isRequired,
+  fileToUpload: PropTypes.string,
+  uploadingFileToCloud: PropTypes.bool,
+  emailAddress: PropTypes.string,
+  userId: PropTypes.string,
   setOffline: PropTypes.func.isRequired,
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
@@ -275,6 +350,10 @@ Main.propTypes = {
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
+  promptToUploadFile: PropTypes.func.isRequired,
+  dismissPromptToUploadFile: PropTypes.func.isRequired,
+  startUploadingFileToCloud: PropTypes.func.isRequired,
+  finishUploadingFileToCloud: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -287,7 +366,7 @@ export default connect(
     showDashboard: selectors.showDashboardOnBootSelector(state.present),
     checkingFileToLoad: selectors.checkingFileToLoadSelector(state.present),
     checkedFileToLoad: selectors.checkedFileToLoadSelector(state.present),
-    readyToCheckFileToLoad: selectors.isInSomeValidLicenseStateSelector(state.present),
+    readyToCheckFileToLoad: selectors.readyToCheckFileToLoadSelector(state.present),
     cantShowFile: selectors.cantShowFileSelector(state.present),
     selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
     loadingState: selectors.loadingStateSelector(state.present),
@@ -297,6 +376,10 @@ export default connect(
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
     fileName: selectors.fileNameSelector(state.present),
     isOnboarding: selectors.isOnboardingToProFromRootSelector(state.present),
+    fileToUpload: selectors.filePathToUploadSelector(state.present),
+    uploadingFileToCloud: selectors.uploadingFileToCloudSelector(state.present),
+    emailAddress: selectors.emailAddressSelector(state.present),
+    userId: selectors.userIdSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,
@@ -304,5 +387,9 @@ export default connect(
     finishCheckingFileToLoad: actions.applicationState.finishCheckingFileToLoad,
     setCurrentAppStateToDashboard: actions.client.setCurrentAppStateToDashboard,
     setCurrentAppStateToApplication: actions.client.setCurrentAppStateToApplication,
+    promptToUploadFile: actions.applicationState.promptToUploadFile,
+    dismissPromptToUploadFile: actions.applicationState.dismissPromptToUploadFile,
+    startUploadingFileToCloud: actions.applicationState.startUploadingFileToCloud,
+    finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
   }
 )(Main)

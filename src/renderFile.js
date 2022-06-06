@@ -18,9 +18,21 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const basename = (filePath) => {
+    return whenClientIsReady(({ basename }) => {
+      return basename(filePath)
+    })
+  }
+
+  const readFile = (filePath) => {
+    return whenClientIsReady(({ readFile }) => {
+      return readFile(filePath)
+    })
+  }
+
   render(
     <Provider store={store}>
-      <MainIntegrationContext.Provider value={{ saveFile }}>
+      <MainIntegrationContext.Provider value={{ saveFile, basename, readFile }}>
         <Listener />
         <Renamer />
         <SaveAs />

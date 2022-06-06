@@ -1,7 +1,14 @@
 import { WebSocketServer } from 'ws'
 import fs from 'fs'
 
-import { PING, RM_RF, SAVE_FILE, SAVE_OFFLINE_FILE } from '../../shared/socket-server-message-types'
+import {
+  FILE_BASENAME,
+  PING,
+  READ_FILE,
+  RM_RF,
+  SAVE_FILE,
+  SAVE_OFFLINE_FILE,
+} from '../../shared/socket-server-message-types'
 import { logger } from './logger'
 import FileModule from './files'
 
@@ -15,7 +22,7 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const setupListeners = (port, userDataPath) => {
-  const { saveFile, saveOfflineFile } = FileModule(userDataPath)
+  const { saveFile, saveOfflineFile, basename, readFile } = FileModule(userDataPath)
 
   logger.info(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
@@ -86,6 +93,34 @@ const setupListeners = (port, userDataPath) => {
                   type,
                   messageId,
                   result,
+                  payload,
+                })
+              )
+            })
+            return
+          }
+          case FILE_BASENAME: {
+            logger.info('Computing basename for: ', payload)
+            const { filePath } = payload
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: basename(filePath),
+                payload,
+              })
+            )
+            return
+          }
+          case READ_FILE: {
+            logger.info('Reading a file at path: ', payload)
+            const { filePath } = payload
+            readFile(filePath).then((fileData) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result: JSON.parse(fileData),
                   payload,
                 })
               )

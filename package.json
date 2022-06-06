@@ -62,7 +62,6 @@
     "rtf.js": "^3.0.7",
     "tiny-invariant": "^1.0.6",
     "trash": "^8.1.0",
-    "tree-changes": "^0.6.1",
     "utf-8-validate": "^5.0.9",
     "ws": "^8.5.0"
   },

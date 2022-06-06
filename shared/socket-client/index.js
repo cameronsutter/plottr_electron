@@ -2,7 +2,14 @@ import WebSocket from 'ws'
 import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
-import { PING, RM_RF, SAVE_FILE, SAVE_OFFLINE_FILE } from '../socket-server-message-types'
+import {
+  PING,
+  RM_RF,
+  SAVE_FILE,
+  SAVE_OFFLINE_FILE,
+  FILE_BASENAME,
+  READ_FILE,
+} from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
 const connect = (port, logger) => {
@@ -30,7 +37,7 @@ const connect = (port, logger) => {
 
   clientConnection.on('message', (data) => {
     try {
-      const { type, payload, messageId } = JSON.parse(data)
+      const { type, payload, messageId, result } = JSON.parse(data)
       const resolvePromise = () => {
         const unresolvedPromise = promises.get(messageId)
         if (!unresolvedPromise) {
@@ -40,10 +47,12 @@ const connect = (port, logger) => {
           return
         }
         promises.delete(messageId)
-        unresolvedPromise.resolve(payload)
+        unresolvedPromise.resolve(result)
       }
 
       switch (type) {
+        case READ_FILE:
+        case FILE_BASENAME:
         case SAVE_OFFLINE_FILE:
         case SAVE_FILE:
         case RM_RF:
@@ -77,6 +86,14 @@ const connect = (port, logger) => {
     return sendPromise(SAVE_OFFLINE_FILE, { file })
   }
 
+  const basename = (filePath) => {
+    return sendPromise(FILE_BASENAME, { filePath })
+  }
+
+  const readFile = (filePath) => {
+    return sendPromise(READ_FILE, { filePath })
+  }
+
   return new Promise((resolve, reject) => {
     clientConnection.on('open', () => {
       resolve({
@@ -84,6 +101,8 @@ const connect = (port, logger) => {
         rmRf,
         saveFile,
         saveOfflineFile,
+        basename,
+        readFile,
       })
     })
   })

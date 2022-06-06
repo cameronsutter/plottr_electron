@@ -24,6 +24,7 @@ import { addToKnown } from './modules/known_files'
 import { TEMP_FILES_PATH } from './modules/files'
 import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
+import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -63,14 +64,16 @@ app.userAgentFallback =
 // app boots, it only opens a window corresponding to that event.
 let openedFile = false
 
-let socketWorkerPort = null
 const broadcastPortChange = (port) => {
-  socketWorkerPort = port
+  if (!isInitialised()) {
+    createClient(port, log)
+  }
+  setPort(port)
   broadcastToAllWindows('update-worker-port', port)
 }
 
 app.whenReady().then(() => {
-  startServer(log, broadcastPortChange)
+  startServer(log, broadcastPortChange, app.getPath('userData'))
     .then((port) => {
       log.info(`Socket worker started on ${port}`)
       return port
@@ -80,8 +83,7 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      socketWorkerPort = port
-      listenOnIPCMain(() => socketWorkerPort)
+      listenOnIPCMain(() => getPort())
       loadMenu()
 
       const fileLaunchedOn = fileToLoad(process.argv)

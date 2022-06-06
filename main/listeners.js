@@ -21,14 +21,12 @@ import {
   openKnownFile,
   createNew,
   createFromSnowflake,
-  saveFile,
   TEMP_FILES_PATH,
   removeFromTempFiles,
   removeFromKnownFiles,
   deleteKnownFile,
   editKnownFilePath,
   autoSave,
-  saveOfflineFile,
   createFromScrivener,
 } from './modules/files'
 import { lastOpenedFile } from './modules/lastOpened'
@@ -123,12 +121,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
     openKnownFile(filePath, id, unknown, headerBarFileName)
   })
 
-  ipcMain.on('save-file', (event, fileName, file) => {
-    saveFile(fileName, file).then(() => {
-      event.sender.send('file-saved', fileName)
-    })
-  })
-
   ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
     autoSave(event, filePath, file, userId, previousFile)
   })
@@ -175,10 +167,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
         event.sender.send('save-backup-success', filePath)
       }
     })
-  })
-
-  ipcMain.on('record-offline-backup', (_event, file) => {
-    saveOfflineFile(file)
   })
 
   ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {

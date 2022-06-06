@@ -1,6 +1,6 @@
-import { ipcRenderer } from 'electron'
-
 import { selectors } from 'pltr/v2'
+
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const offlineRecorder = (store) => (next) => (action) => {
   const result = next(action)
@@ -27,13 +27,15 @@ function saveOfflineBackup(jsonData) {
     resetCount++
   }
   const forceSave = () => {
-    ipcRenderer.send('record-offline-backup', {
-      ...jsonData,
-      file: {
-        ...jsonData.file,
-        originalTimeStamp: jsonData.file.timeStamp,
-        originalVersionStamp: jsonData.file.versionStamp,
-      },
+    whenClientIsReady(({ saveOfflineFile }) => {
+      return saveOfflineFile({
+        ...jsonData,
+        file: {
+          ...jsonData.file,
+          originalTimeStamp: jsonData.file.timeStamp,
+          originalVersionStamp: jsonData.file.versionStamp,
+        },
+      })
     })
     resetCount = 0
     saveTimeout = null

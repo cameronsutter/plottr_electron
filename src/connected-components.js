@@ -72,7 +72,7 @@ import {
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
-import { whenClientIsReady } from './socket-client'
+import { whenClientIsReady } from '../shared/socket-client'
 
 const win = getCurrentWindow()
 const version = app.getVersion()

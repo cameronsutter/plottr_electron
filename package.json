@@ -42,6 +42,7 @@
   "dependencies": {
     "@electron/remote": "^2.0.1",
     "axios": "^0.22.0",
+    "bufferutil": "^4.0.6",
     "docx": "^5.5.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^2.0.6",
@@ -60,6 +61,9 @@
     "rollbar": "^2.19.4",
     "rtf.js": "^3.0.7",
     "tiny-invariant": "^1.0.6",
+    "trash": "^8.1.0",
+    "tree-changes": "^0.6.1",
+    "utf-8-validate": "^5.0.9",
     "ws": "^8.5.0"
   },
   "devDependencies": {

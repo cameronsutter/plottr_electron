@@ -1,18 +1,22 @@
 import { WebSocketServer } from 'ws'
 import fs from 'fs'
 
-import { PING, RM_RF } from '../../shared/socket-server-message-types'
+import { PING, RM_RF, SAVE_FILE, SAVE_OFFLINE_FILE } from '../../shared/socket-server-message-types'
 import { logger } from './logger'
+import FileModule from './files'
 
 const parseArgs = () => {
   return {
     port: process.argv[2],
+    userDataPath: process.argv[3],
   }
 }
 
 const { rm } = fs.promises
 
-const setupListeners = (port) => {
+const setupListeners = (port, userDataPath) => {
+  const { saveFile, saveOfflineFile } = FileModule(userDataPath)
+
   logger.info(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
 
@@ -31,21 +35,61 @@ const setupListeners = (port) => {
             )
             return
           }
+          case SAVE_FILE: {
+            logger.info('Saving (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+              filePath: payload.file.filePath,
+            })
+            const { filePath, file } = payload
+            saveFile(filePath, file).then((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            return
+          }
           case RM_RF: {
             logger.info('Deleting: ', payload)
             rm(payload.path, { recursive: true })
-              .then(() => {
+              .then((result) => {
                 webSocket.send(
                   JSON.stringify({
                     type,
                     messageId,
-                    payload: {},
+                    payload,
+                    result,
                   })
                 )
               })
               .catch((error) => {
                 logger.error('Error while deleting ', payload, error)
               })
+            return
+          }
+          case SAVE_OFFLINE_FILE: {
+            logger.info('Saving offline file (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+            })
+            const { file } = payload
+            saveOfflineFile(file).then((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
             return
           }
         }
@@ -59,9 +103,9 @@ const setupListeners = (port) => {
 }
 
 const startServer = () => {
-  const { port } = parseArgs()
+  const { port, userDataPath } = parseArgs()
   logger.info('args', process.argv)
-  setupListeners(port)
+  setupListeners(port, userDataPath)
 }
 
 startServer()

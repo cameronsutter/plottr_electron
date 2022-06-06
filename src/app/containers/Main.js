@@ -17,7 +17,7 @@ import Expired from './Expired'
 import Dashboard from './Dashboard'
 import ProOnboarding from './ProOnboarding'
 import UploadOfflineFile from '../components/UploadOfflineFile'
-import { uploadExisting } from '../../files'
+import { uploadProject } from '../../common/utils/upload_project'
 
 const win = getCurrentWindow()
 
@@ -268,7 +268,7 @@ const Main = ({
           onUploadFile={() => {
             const fileReadListener = (event, data) => {
               startUploadingFileToCloud()
-              uploadExisting(emailAddress, userId, data).then((response) => {
+              uploadProject(data, emailAddress, userId).then((response) => {
                 const { fileId } = response.data || {}
                 if (!fileId) {
                   // FIXME: Use the new error loading file component

@@ -1,9 +1,18 @@
 import React from 'react'
 import { PropTypes } from 'prop-types'
+import basename from 'basename'
 
 import { t } from 'plottr_locales'
 
-import { Spinner, PlottrModal, ModalBody, ModalFooter, Form, Button } from 'connected-components'
+import {
+  Spinner,
+  PlottrModal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Form,
+  Button,
+} from 'connected-components'
 
 const modalStyles = {
   overlay: {
@@ -27,14 +36,17 @@ const preventDefault = (event) => {
 const UploadOfflineFile = ({ filePath, onUploadFile, onCancel, busy }) => {
   return (
     <PlottrModal isOpen style={modalStyles}>
+      <ModalHeader>{t('Upload to Plottr Pro?')}</ModalHeader>
       <ModalBody>
         <h6>
-          {t(
-            'To use "{ thing }" in Plottr Pro, you need to upload it first.  Would you like to upload it?',
-            {
-              thing: filePath,
-            }
-          )}
+          {t('To use "{ thing }" in Plottr Pro, you need to upload it first.', {
+            thing: basename(filePath),
+          })}
+        </h6>
+        <h6>
+          {t('({ thing }).', {
+            thing: filePath,
+          })}
         </h6>
       </ModalBody>
       <ModalFooter>

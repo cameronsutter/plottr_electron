@@ -1,7 +1,8 @@
 import mixpanel from 'mixpanel-browser'
 import { USER } from '../../file-system/stores'
-import log from 'electron-log'
 import { helpers } from 'pltr/v2'
+
+import log from '../../../shared/logger'
 
 const {
   beats: { reduce },

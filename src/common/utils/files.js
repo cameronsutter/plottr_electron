@@ -3,7 +3,7 @@ import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { sortBy } from 'lodash'
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 
 const { readdir, lstat, readFile } = fs.promises
 

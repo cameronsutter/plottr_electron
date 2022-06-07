@@ -15,7 +15,7 @@ import {
   USER,
 } from '../file-system/stores'
 import { backupBasePath } from '../common/utils/backup'
-import { logger } from '../logger'
+import logger from '../../shared/logger'
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2

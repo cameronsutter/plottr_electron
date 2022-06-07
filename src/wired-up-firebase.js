@@ -1,7 +1,7 @@
 import { firebaseWorker } from 'plottr_firebase/worker/firebase-worker'
 import { machineIdSync } from 'node-machine-id'
 
-import { logger } from './logger'
+import logger from '../shared/logger'
 
 const mintSessionClientId = machineIdSync
 

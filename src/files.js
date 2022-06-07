@@ -8,7 +8,7 @@ import { actions, reducers, emptyFile, selectors } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard-events'
 import { store } from './app/store'
-import { logger } from './logger'
+import logger from '../shared/logger'
 import { uploadToFirebase } from './upload-to-firebase'
 import { whenClientIsReady } from '../shared/socket-client'
 

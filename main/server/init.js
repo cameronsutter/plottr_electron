@@ -28,11 +28,13 @@ export const startServer = (log, broadcastPortChange, userDataPath) => {
         return reject(new Error(`Socket worker died with unhandled error code: ${code}`))
       })
       server.on('message', (message) => {
-        log.info(`Received "${message}" from socket worker.`)
         if (message === 'ready') {
+          log.info(`Received "${message}" from socket worker.`)
           log.info('Started socket server!')
           resolve(randomPort)
           broadcastPortChange(randomPort)
+        } else {
+          log.info(message)
         }
       })
     })

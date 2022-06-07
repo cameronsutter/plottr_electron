@@ -5,7 +5,7 @@ import path from 'path'
 
 import { t } from 'plottr_locales'
 
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
 

@@ -9,7 +9,7 @@ import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
 import { uploadToFirebase } from '../../upload-to-firebase'
 
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)

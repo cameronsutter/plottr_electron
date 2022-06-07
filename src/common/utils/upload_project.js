@@ -3,7 +3,7 @@ import { app } from '@electron/remote'
 
 import { uploadExisting } from '../../files'
 import extractImages from '../extract_images'
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 
 const appVersion = app.getVersion()
 

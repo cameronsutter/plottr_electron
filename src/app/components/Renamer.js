@@ -10,7 +10,7 @@ import { InputModal } from 'connected-components'
 import { editFileName } from 'wired-up-firebase'
 import { renameCloudBackupFile } from '../../files'
 
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 
 const Renamer = ({ userId, showLoader, fileList, startRenamingFile, finishRenamingFile }) => {
   const [visible, setVisible] = useState(false)

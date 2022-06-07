@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
 import { dialog } from '@electron/remote'
-import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
 import { selectors, actions } from 'pltr/v2'
 
+import log from '../../../shared/logger'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'

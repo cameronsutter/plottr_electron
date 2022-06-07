@@ -1,4 +1,4 @@
-import { logger } from '../logger'
+import logger from '../../shared/logger'
 
 const handleLongTask = (entry) => {
   logger.warn(`Detected long task: ${JSON.stringify(entry)}`)

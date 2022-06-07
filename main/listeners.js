@@ -37,7 +37,7 @@ import {
 } from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
-export const listenOnIPCMain = (getSocketWorkerPort) => {
+export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
     const lastFile = lastOpenedFile()
     const win = getWindowById(id)
@@ -48,7 +48,8 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
         filePath,
         newFileOptions(),
         numberOfWindows(),
-        win.filePath
+        win.filePath,
+        processSwitches.serialise()
       )
     }
   })

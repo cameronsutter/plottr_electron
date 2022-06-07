@@ -3,6 +3,8 @@ import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
 import Store from 'electron-store'
+import yargs from 'yargs/yargs'
+import { hideBin } from 'yargs/helpers'
 
 Store.initRenderer()
 
@@ -25,6 +27,23 @@ import { TEMP_FILES_PATH } from './modules/files'
 import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
 import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
+import ProcessSwitches from './modules/processSwitches'
+
+////////////////////////////////
+////       Arguments      //////
+////////////////////////////////
+/**
+ * You can launch Plottr with command line arguments.  Using these
+ * arguments, you can:
+ *
+ *  - Open a particular file: On Windows and Linux, the first
+ *    user-supplied argument is the file to launch.  (MacOS uses a
+ *    different means to open a file).
+ *  - On any platform, you may supply the argument
+ *    "--enable-test-utilities".  This will make various facilities to
+ *    test and stress-test Plottr available at runtime for both the
+ *    production and development builds.
+ */
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -83,7 +102,10 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      listenOnIPCMain(() => getPort())
+      const yargv = parseArguments(process.argv)
+      console.log('yargv', yargv)
+      const processSwitches = ProcessSwitches(yargv)
+      listenOnIPCMain(() => getPort(), processSwitches)
       loadMenu()
 
       const fileLaunchedOn = fileToLoad(process.argv)
@@ -134,6 +156,10 @@ app.whenReady().then(() => {
       })
     })
 })
+
+function parseArguments(processArgv) {
+  return yargs(hideBin(processArgv)).argv
+}
 
 function fileToLoad(argv) {
   if (is.windows && process.env.NODE_ENV != 'dev') {

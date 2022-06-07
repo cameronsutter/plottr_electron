@@ -85,7 +85,10 @@ let openedFile = false
 
 const broadcastPortChange = (port) => {
   if (!isInitialised()) {
-    createClient(port, log)
+    createClient(port, log, (error) => {
+      log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
+      app.quit()
+    })
   }
   setPort(port)
   broadcastToAllWindows('update-worker-port', port)
@@ -98,7 +101,7 @@ app.whenReady().then(() => {
       return port
     })
     .catch((error) => {
-      log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.')
+      log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
       app.quit()
     })
     .then((port) => {

@@ -1,5 +1,4 @@
 import WebSocket from 'ws'
-import log from 'electron-log'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -42,7 +41,7 @@ const connect = (port, logger) => {
         const resolvePromise = () => {
           const unresolvedPromise = promises.get(messageId)
           if (!unresolvedPromise) {
-            log.error(
+            logger.error(
               `Received a reply for ${messageId} that ${type} completed, but there was no promise to fulfil`
             )
             return
@@ -52,18 +51,18 @@ const connect = (port, logger) => {
         }
 
         switch (type) {
-        case READ_FILE:
-        case FILE_BASENAME:
-        case SAVE_OFFLINE_FILE:
-        case SAVE_FILE:
-        case RM_RF:
-        case PING: {
-          resolvePromise()
-          return
-        }
+          case READ_FILE:
+          case FILE_BASENAME:
+          case SAVE_OFFLINE_FILE:
+          case SAVE_FILE:
+          case RM_RF:
+          case PING: {
+            resolvePromise()
+            return
+          }
         }
 
-        log.error(
+        logger.error(
           `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
         )
       } catch (error) {
@@ -119,7 +118,7 @@ const instance = () => {
   let resolve = null
   let reject = null
 
-  const createClient = (port, logger) => {
+  const createClient = (port, logger, onFailedToConnect) => {
     initialised = true
     connect(port, logger)
       .then((newClient) => {
@@ -130,8 +129,7 @@ const instance = () => {
       .catch((error) => {
         if (error) {
           logger.error('Failed to connect to web socket server: ', error)
-          // TODO BEFORE MERGING: quit the app.  It's not safe to
-          // continue without a connection!!!
+          onFailedToConnect(error)
           reject(error)
         }
       })

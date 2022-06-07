@@ -49,7 +49,7 @@ const FileModule = (userDataPath) => {
         })
       }
     } catch (error) {
-      console.error(
+      logger.error(
         `Failed to parse contents of file: ${filePath}.  Attempting to write it again.`,
         error
       )
@@ -65,7 +65,7 @@ const FileModule = (userDataPath) => {
     } catch (error) {
       // If we couldn't read the file, then bail out.  Something went
       // horribly wrong.
-      console.error(`Failed to save to ${filePath}.  Old file is un-touched.`, error)
+      logger.error(`Failed to save to ${filePath}.  Old file is un-touched.`, error)
       return Promise.reject(error)
     }
   }
@@ -141,7 +141,7 @@ const FileModule = (userDataPath) => {
             // Otherwise, we had an error that we don't yet account for.
             // Log it for later diagnosis and try again after waiting a
             // small bit.
-            console.error(`Unhandled error when saving ${filePath}.`, error)
+            logger.error(`Unhandled error when saving ${filePath}.`, error)
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 checkSave(filePath, data, originalStats, counter + 1).then(resolve, reject)
@@ -153,7 +153,7 @@ const FileModule = (userDataPath) => {
       // We ran out of attempts to save the file.
       const error = Error(`Failed to save to ${filePath}.  Old file is un-touched.`)
       error.maxAttemptsHit = true
-      console.error(error)
+      logger.error(error)
       return Promise.reject(error)
     }
   }
@@ -168,7 +168,7 @@ const FileModule = (userDataPath) => {
         else return [key, ...acc]
       }, [])
       const errorMessage = `Tried to save file at ${filePath} but after removing system keys it lacks the following expected keys: ${missingKeys}`
-      console.error(errorMessage)
+      logger.error(errorMessage)
       return Promise.reject(new Error(errorMessage))
     }
 

@@ -232,6 +232,7 @@ const makeFileModule = () => {
   function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
     const storyName = path.basename(importedPath, '.scriv')
     let json = emptyFile(storyName, app.getVersion())
+    const isScrivener = true
     json.beats = {
       series: tree.newTree('id'),
     }
@@ -245,7 +246,7 @@ const makeFileModule = () => {
 
     if (isLoggedIntoPro) {
       importedJsonPromise.then((importedJson) => {
-        sender.send('create-plottr-cloud-file', importedJson, storyName)
+        sender.send('create-plottr-cloud-file', importedJson, storyName, isScrivener)
       })
       return Promise.resolve()
     }

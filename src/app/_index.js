@@ -294,16 +294,18 @@ ipcRenderer.on('close-dashboard', () => {
   closeDashboard()
 })
 
-ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
+ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName, isScrivenerFile) => {
   const state = store.getState().present
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
   uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
     const fileId = response.data.fileId
     openFile(`plottr://${fileId}`, fileId, false)
-    // Fixme: this could have been called to create from a snowflake
-    // file too(!)
-    store.dispatch(actions.applicationState.finishScrivenerImporter())
+
+    if (isScrivenerFile) {
+      store.dispatch(actions.applicationState.finishScrivenerImporter())
+    }
+
     closeDashboard()
     return fileId
   })

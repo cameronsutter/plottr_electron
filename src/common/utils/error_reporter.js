@@ -2,10 +2,11 @@ import { shell, ipcRenderer } from 'electron'
 import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
-import log from 'electron-log'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
 import { USER } from '../../file-system/stores'
+
+import log from '../../../shared/logger'
 
 let previousAction = null
 

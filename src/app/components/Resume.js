@@ -8,7 +8,7 @@ import { t } from 'plottr_locales'
 import { selectors, actions, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { MessageModal } from 'connected-components'
 import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
 

@@ -43,13 +43,13 @@ const setupListeners = (port, userDataPath) => {
             return
           }
           case SAVE_FILE: {
+            const { filePath, file } = payload
             logger.info('Saving (reduced payload): ', {
               file: {
                 ...payload.file.file,
               },
-              filePath: payload.file.filePath,
+              filePath: filePath,
             })
-            const { filePath, file } = payload
             saveFile(filePath, file).then((result) => {
               webSocket.send(
                 JSON.stringify({

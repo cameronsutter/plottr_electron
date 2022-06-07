@@ -1,9 +1,9 @@
 import rp from 'request-promise-native'
-import log from 'electron-log'
 import { machineIdSync } from 'node-machine-id'
 
 import { getIdTokenResult } from 'wired-up-firebase'
 
+import log from '../../shared/logger'
 import setupRollbar from '../common/utils/rollbar'
 import { fileSystemAPIs } from './'
 import { isMacOS } from '../isOS'

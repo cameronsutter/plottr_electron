@@ -5,7 +5,6 @@ import path from 'path'
 import { ActionCreators } from 'redux-undo'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
-import log from 'electron-log'
 
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'
@@ -44,7 +43,7 @@ import {
   uploadExisting,
   deleteCloudBackupFile,
 } from './files'
-import { logger } from './logger'
+import logger from '../shared/logger'
 import { closeDashboard } from './dashboard-events'
 import { fileSystemAPIs, licenseServerAPIs } from './api'
 import { isWindows, isLinux, isMacOS } from './isOS'
@@ -330,7 +329,7 @@ const platform = {
   createErrorReport,
   createFullErrorReport,
   handleCustomerServiceCode,
-  log,
+  log: logger,
   dialog,
   showSaveDialogSync,
   showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),

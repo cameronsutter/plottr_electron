@@ -27,7 +27,7 @@ import {
   createFromTemplate,
   openExistingProj,
 } from '../dashboard-events'
-import { logger } from '../logger'
+import logger from '../../shared/logger'
 import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
@@ -46,7 +46,17 @@ const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
 setPort(socketWorkerPort)
-createClient(getPort(), logger)
+createClient(getPort(), logger, (error) => {
+  logger.error(
+    `Failed to reconnect to socket server on port: <${getPort()}>.  Killing the window.`,
+    error
+  )
+  dialog.showErrorBox(
+    t('Error'),
+    t("Plottr ran into a problem and can't start.  Please contact support.")
+  )
+  window.close()
+})
 const { saveFile } = makeFileModule(whenClientIsReady)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
@@ -327,8 +337,19 @@ ipcRenderer.on('error', (event, { message, source }) => {
 
 ipcRenderer.on('update-worker-port', (_event, newPort) => {
   const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
+  logger.info(`Updating the socket server port to: ${newPort}`)
   setPort(socketWorkerPort)
-  createClient(getPort(), logger)
+  createClient(getPort(), logger, (error) => {
+    logger.error(
+      `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
+      error
+    )
+    dialog.showErrorBox(
+      t('Error'),
+      t('Plottr ran into a problem and needs to close.  Please contact support.')
+    )
+    window.close()
+  })
 })
 
 ipcRenderer.on('reload-dark-mode', (_event, newValue) => {

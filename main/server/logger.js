@@ -1,11 +1,12 @@
 export const logger = {
   info: (...args) => {
-    console.log('[Socket Server]: ', ...args)
+    process.send(`[Socket Server]: ${JSON.stringify(args, null, 2)}`)
   },
   warn: (...args) => {
-    console.warn('[Socket Server]: ', ...args)
+    process.send(`[Socket Server]: ${JSON.stringify(args, null, 2)}`)
   },
   error: (...args) => {
-    console.error('[Socket Server]: ', ...args)
+    console.error('[Socket Server]: ', JSON.stringify(args, null, 2))
+    process.send(`[Socket Server]: ${JSON.stringify(args, null, 2)}`)
   },
 }

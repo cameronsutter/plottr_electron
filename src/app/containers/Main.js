@@ -86,6 +86,7 @@ const Main = ({
   dismissPromptToUploadFile,
   startUploadingFileToCloud,
   finishUploadingFileToCloud,
+  enableTestUtilities,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -153,7 +154,8 @@ const Main = ({
       filePath,
       options,
       numOpenFiles,
-      windowOpenedWithKnownPath
+      windowOpenedWithKnownPath,
+      processSwitches
     ) => {
       const lastFileIsOfflineAndWeAreInPro =
         isInProMode && filePath && !filePath.startsWith('plottr://')
@@ -168,6 +170,9 @@ const Main = ({
         load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
+      }
+      if (processSwitches.testUtilitiesEnabled) {
+        enableTestUtilities()
       }
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
@@ -354,6 +359,7 @@ Main.propTypes = {
   dismissPromptToUploadFile: PropTypes.func.isRequired,
   startUploadingFileToCloud: PropTypes.func.isRequired,
   finishUploadingFileToCloud: PropTypes.func.isRequired,
+  enableTestUtilities: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -391,5 +397,6 @@ export default connect(
     dismissPromptToUploadFile: actions.applicationState.dismissPromptToUploadFile,
     startUploadingFileToCloud: actions.applicationState.startUploadingFileToCloud,
     finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
+    enableTestUtilities: actions.testingAndDiagnosis.enableTestUtilities,
   }
 )(Main)

@@ -10,7 +10,7 @@ import { t } from 'plottr_locales'
 
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 import { fileSystemAPIs, licenseServerAPIs } from '../../api'
 
 const Listener = ({

@@ -118,7 +118,7 @@ describe('ImportScrivener', () => {
   describe('All 3 scrivener files', () => {
     PROBLEMATIC_SCRIVENER_FILES.forEach((file) => {
       const testOutput = readOutput(file)
-      const strippedFileName = file.split('/').pop().split('.pltr')
+      const strippedFileName = file.split('/').pop().split('.pltr')[0]
 
       describe(`${strippedFileName} file`, () => {
         it('should produce a .pltr file', () => {

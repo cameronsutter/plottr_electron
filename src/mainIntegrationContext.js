@@ -3,17 +3,27 @@ import React from 'react'
 const MainIntegrationContext = React.createContext({
   saveFile: (filePath, data) => {
     throw new Error(
-      `Couldn't save file at ${filePath} with data: ${data}.  Please wire up the MainIntegrationContext producer.`
+      `Couldn't save file at ${filePath} with data: ${data}.  Please wire up the MainIntegrationContext provider.`
     )
   },
   basename: (filePath) => {
     throw new Error(
-      `Couldn't produce the basename of ${filePath}.  Please wire up the MainIntegrationContext producer.`
+      `Couldn't produce the basename of ${filePath}.  Please wire up the MainIntegrationContext provider.`
     )
   },
   readFile: (filePath) => {
     throw new Error(
-      `Couldn't read file at ${filePath}.  Please wire up the MainIntegrationContext producer.`
+      `Couldn't read file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
+    )
+  },
+  autoSave: (filePath, file, userId, previousFile) => {
+    throw new Error(
+      `Couldn't auto save file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
+    )
+  },
+  saveBackup: (filePath, file) => {
+    throw new Error(
+      `Couldn't back-up file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
     )
   },
 })

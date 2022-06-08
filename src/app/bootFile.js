@@ -261,7 +261,7 @@ function bootCloudFile(filePath, beatHierarchy) {
     .catch(handleErrorBootingFile(fileId))
 }
 
-function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
+function bootLocalFile(filePath, numOpenFiles, beatHierarchy, saveBackup) {
   win.setTitle('Plottr')
   win.setRepresentedFilename(filePath)
   let json
@@ -279,7 +279,7 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
   } catch (error) {
     return Promise.resolve()
   }
-  ipcRenderer.send('save-backup', filePath, json)
+  saveBackup(filePath, json)
   return new Promise((resolve, reject) => {
     migrateIfNeeded(
       app.getVersion(),
@@ -321,7 +321,7 @@ function bootLocalFile(filePath, numOpenFiles, beatHierarchy) {
   })
 }
 
-export function bootFile(filePath, options, numOpenFiles) {
+export function bootFile(filePath, options, numOpenFiles, saveBackup) {
   // Now that we know what the file path for this window should be,
   // tell the main process.
   ipcRenderer.send('pls-set-my-file-path', filePath)
@@ -335,7 +335,7 @@ export function bootFile(filePath, options, numOpenFiles) {
     return (
       isCloudFile
         ? bootCloudFile(filePath, beatHierarchy)
-        : bootLocalFile(filePath, numOpenFiles, beatHierarchy)
+        : bootLocalFile(filePath, numOpenFiles, beatHierarchy, saveBackup)
     )
       .then(() => {
         store.dispatch(actions.applicationState.finishLoadingFile())

@@ -2,14 +2,23 @@ import fs from 'fs'
 import path from 'path'
 import { isEqual } from 'lodash'
 
-import { emptyFile, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { emptyFile, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
-import { logger } from './logger'
+import SettingsModule from './settings'
+import BackupModule from './backup'
+import {
+  AUTO_SAVE_BACKUP_ERROR,
+  AUTO_SAVE_ERROR,
+  AUTO_SAVE_WORKED_THIS_TIME,
+} from '../../shared/socket-server-message-types'
 
 const { lstat, writeFile, open, unlink, readdir } = fs.promises
 
-const FileModule = (userDataPath) => {
+const FileModule = (userDataPath, logger) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
+
+  const { saveBackup } = BackupModule(userDataPath, logger)
+  const { readSettings } = SettingsModule(userDataPath)
 
   function escapeFileName(fileName) {
     return escape(fileName.replace(/[/\\]/g, '-'))
@@ -219,6 +228,66 @@ const FileModule = (userDataPath) => {
   }
   const saveFile = fileSaver()
 
+  const autoSaver = () => {
+    let itWorkedLastTime = true
+
+    let backupTimeout = null
+    let resetCount = 0
+    const MAX_ATTEMPTS = 200
+
+    return async function autoSave(send, inputFilePath, file, userId, previousFile) {
+      // Don't auto save while resolving resuming the connection
+      if (selectors.isResumingSelector(file)) return
+
+      const onCloud = selectors.isCloudFileSelector(file)
+      const isOffline = selectors.isOfflineSelector(file)
+      const offlineModeEnabled = selectors.offlineModeEnabledSelector(file)
+      const filePath =
+        onCloud && isOffline && offlineModeEnabled ? offlineFilePath(inputFilePath) : inputFilePath
+      if (!onCloud || isOffline) {
+        try {
+          await saveFile(filePath, file)
+          // didn't work last time, but it did this time
+          if (!itWorkedLastTime) {
+            itWorkedLastTime = true
+            send(AUTO_SAVE_WORKED_THIS_TIME)
+          }
+        } catch (saveError) {
+          itWorkedLastTime = false
+          send(AUTO_SAVE_ERROR, filePath, saveError.message)
+        }
+      }
+      // either way, save a backup
+      function forceBackup() {
+        // save local backup if: 1) not cloud file OR 2) localBackups is on
+        readSettings().then((settings) => {
+          if (!onCloud || (onCloud && settings.user.localBackup)) {
+            const backupFilePath = onCloud ? `${file.file.fileName}.pltr` : filePath
+            saveBackup(backupFilePath, previousFile || file, (backupError) => {
+              if (backupError) {
+                send(AUTO_SAVE_BACKUP_ERROR, backupFilePath, backupError.message)
+              }
+            })
+          }
+          backupTimeout = null
+          resetCount = 0
+        })
+      }
+      if (backupTimeout) {
+        clearTimeout(backupTimeout)
+        resetCount++
+      }
+      if (resetCount >= MAX_ATTEMPTS) {
+        forceBackup()
+        return
+      }
+      // NOTE: We want to backup every 60 seconds, but saves only happen
+      // every 10 seconds.
+      backupTimeout = setTimeout(forceBackup, 59000)
+    }
+  }
+  const autoSave = autoSaver()
+
   function listOfflineFiles() {
     return readdir(offlineFileFilesPath)
       .then((entries) => {
@@ -277,7 +346,7 @@ const FileModule = (userDataPath) => {
 
   const readFile = fs.promises.readFile
 
-  return { saveFile, saveOfflineFile, basename, readFile }
+  return { saveFile, saveOfflineFile, basename, readFile, autoSave }
 }
 
 export default FileModule

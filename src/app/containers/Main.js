@@ -87,6 +87,7 @@ const Main = ({
   startUploadingFileToCloud,
   finishUploadingFileToCloud,
   enableTestUtilities,
+  saveBackup,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -124,7 +125,7 @@ const Main = ({
         !!isInProMode === !!isCloudFile(filePath) ||
         (isInOfflineMode && isOfflineFile(filePath))
       ) {
-        bootFile(filePath, options, numOpenFiles)
+        bootFile(filePath, options, numOpenFiles, saveBackup)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -298,7 +299,7 @@ const Main = ({
                       //
                       // FIXME: where should the options come from?
                       const newFilePath = `plottr://${fileId}`
-                      bootFile(newFilePath, {}, 2)
+                      bootFile(newFilePath, {}, 2, saveBackup)
                       ipcRenderer.send('update-last-opened-file', newFilePath)
                     })
                   })
@@ -369,6 +370,7 @@ Main.propTypes = {
   startUploadingFileToCloud: PropTypes.func.isRequired,
   finishUploadingFileToCloud: PropTypes.func.isRequired,
   enableTestUtilities: PropTypes.func.isRequired,
+  saveBackup: PropTypes.func.isRequired,
 }
 
 export default connect(

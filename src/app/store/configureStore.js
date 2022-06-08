@@ -35,7 +35,7 @@ const sameActionCloseInTime = (action, currentState, _previousHistory) => {
   return null
 }
 
-export function configureStore(initialState) {
+export function configureStore(whenClientIsReady, initialState) {
   const reducer = undoable(rootReducer(dataRepairers), {
     limit: 40,
     ignoreInitialState: true,
@@ -45,9 +45,9 @@ export function configureStore(initialState) {
   const middlewares = applyMiddleware(
     thunk,
     actionRecorder,
-    saver,
+    saver(whenClientIsReady),
     firebaseSync,
-    offlineRecorder,
+    offlineRecorder(whenClientIsReady),
     tracker,
     logger,
     reporter

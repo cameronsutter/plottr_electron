@@ -26,7 +26,6 @@ import {
   removeFromKnownFiles,
   deleteKnownFile,
   editKnownFilePath,
-  autoSave,
   createFromScrivener,
 } from './modules/files'
 import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
@@ -35,7 +34,6 @@ import {
   setFilePathForWindowWithFilePath,
   setFilePathForWindowWithId,
 } from './modules/windows/index'
-import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
@@ -121,10 +119,6 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     openKnownFile(filePath, id, unknown, headerBarFileName)
   })
 
-  ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
-    autoSave(event, filePath, file, userId, previousFile)
-  })
-
   ipcMain.on('remove-from-temp-files-if-temp', (_event, filePath) => {
     if (filePath.includes(TEMP_FILES_PATH)) {
       removeFromTempFiles(filePath, false)
@@ -149,24 +143,6 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     editKnownFilePath(oldFilePath, newFilePath)
     editWindowPath(oldFilePath, newFilePath)
     broadcastToAllWindows('reload-recents')
-  })
-
-  ipcMain.on('ensure-backup-full-path', () => {
-    ensureBackupTodayPath()
-  })
-
-  ipcMain.on('ensure-backup-today-path', () => {
-    ensureBackupTodayPath()
-  })
-
-  ipcMain.on('save-backup', (event, filePath, file) => {
-    saveBackup(filePath, file, (error) => {
-      if (error) {
-        event.sender.send('save-backup-error', error, filePath)
-      } else {
-        event.sender.send('save-backup-success', filePath)
-      }
-    })
   })
 
   ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {

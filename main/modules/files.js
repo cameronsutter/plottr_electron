@@ -10,13 +10,11 @@ import { t } from 'plottr_locales'
 import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
 import { importFromSnowflake, importFromScrivener } from 'plottr_import_export'
 
-import { selectors, emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { openProjectWindow } from './windows/projects'
 import { shell } from 'electron'
 import { broadcastToAllWindows } from './broadcast'
-import { saveBackup } from './backup'
-import SETTINGS from './settings'
-import { OFFLINE_FILE_FILES_PATH, offlineFilePath, isOfflineFile } from './offlineFilePath'
+import { OFFLINE_FILE_FILES_PATH, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
 
 const { lstat, writeFile } = fs.promises
@@ -33,64 +31,6 @@ const makeFileModule = () => {
       return saveFile(filePath, jsonData)
     })
   }
-
-  const autoSaver = () => {
-    let itWorkedLastTime = true
-
-    let backupTimeout = null
-    let resetCount = 0
-    const MAX_ATTEMPTS = 200
-
-    return async function autoSave(event, inputFilePath, file, userId, previousFile) {
-      // Don't auto save while resolving resuming the connection
-      if (selectors.isResumingSelector(file)) return
-
-      const onCloud = selectors.isCloudFileSelector(file)
-      const isOffline = selectors.isOfflineSelector(file)
-      const offlineModeEnabled = selectors.offlineModeEnabledSelector(file)
-      const filePath =
-        onCloud && isOffline && offlineModeEnabled ? offlineFilePath(inputFilePath) : inputFilePath
-      if (!onCloud || isOffline) {
-        try {
-          await saveFile(filePath, file)
-          // didn't work last time, but it did this time
-          if (!itWorkedLastTime) {
-            itWorkedLastTime = true
-            event.sender.send('auto-save-worked-this-time')
-          }
-        } catch (saveError) {
-          itWorkedLastTime = false
-          event.sender.send('auto-save-error', filePath, saveError)
-        }
-      }
-      // either way, save a backup
-      function forceBackup() {
-        // save local backup if: 1) not cloud file OR 2) localBackups is on
-        if (!onCloud || (onCloud && SETTINGS.get('user.localBackups'))) {
-          const backupFilePath = onCloud ? `${file.file.fileName}.pltr` : filePath
-          saveBackup(backupFilePath, previousFile || file, (backupError) => {
-            if (backupError) {
-              event.sender.send('auto-save-backup-error', backupFilePath, backupError)
-            }
-          })
-        }
-        backupTimeout = null
-        resetCount = 0
-      }
-      if (backupTimeout) {
-        clearTimeout(backupTimeout)
-        resetCount++
-      }
-      if (resetCount >= MAX_ATTEMPTS) {
-        forceBackup()
-        return
-      }
-      // NOTE: We want to backup every 60 seconds, but saves only happen
-      // every 10 seconds.
-      backupTimeout = setTimeout(forceBackup, 59000)
-    }
-  }
-  const autoSave = autoSaver()
 
   function removeFromTempFiles(filePath, doDelete = true) {
     const tmpFiles = tempFilesStore.get()

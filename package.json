@@ -37,7 +37,8 @@
     "lint": "eslint .",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
-    "validate": "npm-run-all format:check lint test"
+    "validate": "npm-run-all format:check lint test",
+    "import-test": "electron --inspect=5858 . --import-from-scrivener ./examples/example3.scriv --output-file test.pltr"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",

@@ -29,6 +29,8 @@ import { listenOnIPCMain } from './listeners'
 import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
 import ProcessSwitches from './modules/processSwitches'
 
+const { ipcMain } = electron
+
 ////////////////////////////////
 ////       Arguments      //////
 ////////////////////////////////
@@ -105,23 +107,38 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      const yargv = parseArguments(process.argv)
-      console.log('yargv', yargv)
-      const processSwitches = ProcessSwitches(yargv)
-      listenOnIPCMain(() => getPort(), processSwitches)
       loadMenu()
-
+      const yargv = parseArguments(process.argv)
+      log.info('yargv', yargv)
+      const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
 
-      // Wait a little bit in case the app was launched by double clicking
-      // on a file.
-      setTimeout(() => {
-        if (!openedFile && !(fileLaunchedOn && is.macos)) {
-          openedFile = true
-          log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
-          openProjectWindow(fileLaunchedOn)
+      listenOnIPCMain(() => getPort(), processSwitches)
+
+      const importFromScrivener = processSwitches.importFromScrivener()
+      if (importFromScrivener) {
+        const { sourceFile, destinationFile } = importFromScrivener
+        log.info(`Importing ${sourceFile} to ${destinationFile}`)
+        const newWindow = openProjectWindow(null)
+        if (!newWindow) {
+          throw new Error('Could not create window to export with.')
         }
-      }, 1000)
+        newWindow.on('ready-to-show', () => {
+          ipcMain.once('listeners-registered', () => {
+            newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+          })
+        })
+      } else {
+        // Wait a little bit in case the app was launched by double clicking
+        // on a file.
+        setTimeout(() => {
+          if (!openedFile && !(fileLaunchedOn && is.macos)) {
+            openedFile = true
+            log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+            openProjectWindow(fileLaunchedOn)
+          }
+        }, 1000)
+      }
 
       // Register the toggleDevTools shortcut listener.
       globalShortcut.register('CommandOrControl+Alt+R', () => {

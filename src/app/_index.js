@@ -359,6 +359,11 @@ ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
   store.dispatch(actions.settings.setDarkMode(newValue))
 })
 
+ipcRenderer.on('import-scrivener-file', (_event, sourceFile, destinationFile) => {
+  logger.info(`Received instruction to import from ${sourceFile} to ${destinationFile}`)
+  ipcRenderer.send('create-from-scrivener', sourceFile, false, destinationFile)
+})
+
 // TODO: not sure when/whether we should unsubscribe.  Presumably
 // when the window is refreshed/closed?
 //
@@ -369,3 +374,5 @@ const _unsubscribeToPublishers = world.publishChangesToStore(store)
 const root = rootComponent()
 
 renderFile(root, whenClientIsReady)
+
+ipcRenderer.send('listeners-registered')

@@ -38,7 +38,7 @@
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
     "validate": "npm-run-all format:check lint test",
-    "import-test": "electron --inspect=5858 . --import-from-scrivener ./examples/example3.scriv --output-file test.pltr"
+    "import-test": "electron --inspect=5858 . --import-from-scrivener ./examples/example3.scriv --output-file test.pltr && jest test/end-to-end/import-scrivener.test.js"
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",

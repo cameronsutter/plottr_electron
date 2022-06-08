@@ -29,7 +29,7 @@ import {
   autoSave,
   createFromScrivener,
 } from './modules/files'
-import { lastOpenedFile } from './modules/lastOpened'
+import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
 import {
   editWindowPath,
   setFilePathForWindowWithFilePath,
@@ -235,5 +235,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
       // ignore
       // on windows you need something called an Application User Model ID which may not work
     }
+  })
+
+  ipcMain.on('update-last-opened-file', (_event, newFilePath) => {
+    setLastOpenedFilePath(newFilePath)
   })
 }

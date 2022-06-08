@@ -297,7 +297,9 @@ const Main = ({
                       // the dashboard when we double click a file.
                       //
                       // FIXME: where should the options come from?
-                      bootFile(`plottr://${fileId}`, {}, 2)
+                      const newFilePath = `plottr://${fileId}`
+                      bootFile(newFilePath, {}, 2)
+                      ipcRenderer.send('update-last-opened-file', newFilePath)
                     })
                   })
                 }}

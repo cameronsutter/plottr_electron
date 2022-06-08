@@ -1,0 +1,2129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScrivenerProject Identifier="989A0ABE-655D-4F60-9D4A-1EC9A1E35D8A" Version="2.0" Creator="SCRMAC-3.2.3-14869" Device="Denises-MacBook-Pro" Author="Denise Todd" Modified="2022-05-14 09:15:30 -0700" ModID="AF7A1D8B-4FD7-477E-B285-2431A40617D6">
+    <Binder>
+        <BinderItem UUID="4A1D6B18-0952-42EB-A487-D17915DD3BA1" Type="DraftFolder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+            <Title>Manuscript</Title>
+            <Children>
+                <BinderItem UUID="5506FDFA-828D-4533-B557-7C60F82FBAAB" Type="Folder" Created="2021-08-05 18:57:10 -0700" Modified="2021-09-04 15:30:50 -0700">
+                    <Title>(A)-1.5 OPENING IMG / Sets tone, mood, type, sA
+Opening Image
+Sets the tone, mood, type, and scope of the project. A "before" snapshot.
+1
+…
+1
+700
+1
+
+Theme Stated
+Secondary character poses question or statement to MC that is theme of the movie.
+12
+
+3185
+
+
+Baby dies 
+	1.	Baby Dies
+
+
+
+
+
+
+cope  /"before" snapshot./Theme stated by 2ndary character</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="B3ADE4EA-5749-4E54-923F-97D67C725C9F" Type="Text" Created="2020-07-02 10:33:06 -0700" Modified="2022-05-03 14:49:45 -0700">
+                            <Title>Prologue:  Recruiting</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>561,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="46603102-CC6F-434E-AD9A-20345CED270E" Type="Text" Created="2020-06-18 08:34:42 -0700" Modified="2021-03-12 17:38:38 -0700">
+                            <Title>&lt;$n&gt;) 3rd Stillborn Family Life</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>163,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>572,0</TextSelection>
+                                <Target Type="Words" Notify="No">1200</Target>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>0</KeywordID>
+                                <KeywordID>1</KeywordID>
+                                <KeywordID>2</KeywordID>
+                                <KeywordID>3</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="D3E5303C-2B59-40AF-A6D4-E027B2D9D561" Type="Text" Created="2017-09-10 08:43:33 -0700" Modified="2021-10-03 10:10:49 -0700">
+                            <Title>&lt;$n&gt;) Pa steals from employer</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>344,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>0</KeywordID>
+                                <KeywordID>1</KeywordID>
+                                <KeywordID>4</KeywordID>
+                                <KeywordID>5</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="CF7E031B-C730-41DD-9B32-5DDDB88208ED" Type="Text" Created="2020-05-14 12:36:23 -0700" Modified="2021-06-29 11:49:01 -0700">
+                            <Title>&lt;$n&gt;) Neighbors support </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2,510</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>1</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>7</KeywordID>
+                                <KeywordID>3</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="C101BA38-9A26-441B-8C7E-DA34DAF86D5B" Type="Text" Created="2019-06-14 13:41:29 -0700" Modified="2021-09-08 14:52:43 -0700">
+                            <Title>&lt;$n&gt;) Bobby Recruits David (Pa)</Title>
+                            <MetaData>
+                                <LabelID>14</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>8</KeywordID>
+                                <KeywordID>0</KeywordID>
+                                <KeywordID>9</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="099B6F7E-EFC7-4FDA-89D4-0E5A9830A865" Type="Folder" Created="2021-08-05 18:55:12 -0700" Modified="2021-09-02 09:19:41 -0700">
+                    <Title>(B)-2 SETUP Introduce or hint at all A story characters; &lt;&lt;==</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="0302E8CB-CB62-4C1E-AE2A-6D1B2A516EAC" Type="Text" Created="2015-11-02 16:26:55 -0700" Modified="2021-01-31 11:13:15 -0700">
+                            <Title>&lt;$n&gt;) Store scene</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>10265,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>10</KeywordID>
+                                <KeywordID>11</KeywordID>
+                                <KeywordID>7</KeywordID>
+                                <KeywordID>12</KeywordID>
+                                <KeywordID>13</KeywordID>
+                                <KeywordID>14</KeywordID>
+                                <KeywordID>6</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="F841E9BC-3A48-40D8-BF43-368EFE68D0AE" Type="Text" Created="2018-07-09 16:14:15 -0700" Modified="2021-02-01 08:43:43 -0700">
+                            <Title>&lt;$n&gt;) Dinner Scene</Title>
+                            <MetaData>
+                                <SectionType>4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D</SectionType>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>49,0</NotesTextSelection>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>0</KeywordID>
+                                <KeywordID>1</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="D114171E-F890-49A9-B1E2-B898FD85A198" Type="Text" Created="2017-04-16 12:57:28 -0700" Modified="2021-02-01 08:44:25 -0700">
+                            <Title>&lt;$n&gt;) Suzie stands up to Pa </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>511,0</NotesTextSelection>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>228,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="A2BFBCA1-F200-4906-A5AE-5C224C54BB5D" Type="Text" Created="2017-10-08 08:44:04 -0700" Modified="2021-01-31 11:44:51 -0700">
+                            <Title>&lt;$n&gt;) Mrs.Jones brings books </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3241,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>2</KeywordID>
+                                <KeywordID>1</KeywordID>
+                                <KeywordID>15</KeywordID>
+                                <KeywordID>3</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>16</KeywordID>
+                            </Keywords>
+                            <Bookmarks>
+                                <Bookmark Destination="https://en.wikipedia.org/wiki/Chiricahua_Mountains">Chiricahua Mountains </Bookmark>
+                            </Bookmarks>
+                        </BinderItem>
+                        <BinderItem UUID="71EECE9F-C50E-4108-834E-5B17FAC14694" Type="Text" Created="2020-06-26 16:01:22 -0700" Modified="2021-08-05 18:02:20 -0700">
+                            <Title>&lt;$n&gt;) Mrs. J deals w Pa</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3041,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="198D050C-6328-4530-B7C7-1BE5998B21E7" Type="Folder" Created="2021-08-05 18:53:43 -0700" Modified="2021-09-02 09:20:20 -0700">
+                    <Title>(C)-1 INCITING INCIDENT: Life-changing event that knocks down house of cards.</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="5595619D-2E17-4F6E-8923-5CB428668790" Type="Text" Created="2017-09-10 08:50:49 -0700" Modified="2022-05-03 12:04:15 -0700">
+                            <Title>&lt;$n&gt;) Priest sermon  </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>57,0</NotesTextSelection>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>8803,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="4830A459-0D17-48DE-981C-BA8E7D1C8774" Type="Text" Created="2020-05-03 17:32:39 -0700" Modified="2021-02-01 00:07:41 -0700">
+                            <Title>&lt;$n&gt;) Suzie &amp; Jo walk home</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>8000,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="2387FE2A-36B1-4745-8AA2-C57C00DB03BB" Type="Text" Created="2020-04-22 11:34:58 -0700" Modified="2021-02-01 00:31:31 -0700">
+                            <Title>&lt;$n&gt;) Priest's suicide</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3028,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="5FC82F6C-FB2A-4E0F-8206-E8D9E3FEA899" Type="Text" Created="2015-11-02 15:11:58 -0700" Modified="2021-09-22 09:28:16 -0700">
+                            <Title>&lt;$n&gt;) Pa is shot</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>65,0</NotesTextSelection>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>968,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>0</KeywordID>
+                                <KeywordID>1</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="C7D99832-732F-490C-B96C-177AD851C1FC" Type="Folder" Created="2021-08-05 18:51:22 -0700" Modified="2021-09-02 09:22:07 -0700">
+                    <Title>(D)-6 DEBATE</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="D415B3F4-5CFD-4BD5-BCDF-19E9FBB6F872" Type="Text" Created="2015-11-02 15:15:17 -0700" Modified="2021-08-05 19:56:13 -0700">
+                            <Title>&lt;$n&gt;) Ma doesn't return</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Eye</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>6435,6</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>8</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="D468DC26-3BD6-4D8D-8B3B-A0B26D144D0E" Type="Folder" Created="2021-09-02 09:21:31 -0700" Modified="2021-09-02 09:21:53 -0700">
+                    <Title>ACT II CLEAR CHANGE </Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="68973E3D-6A50-4F35-8934-6727D0F11A02" Type="Folder" Created="2021-08-05 18:48:11 -0700" Modified="2021-09-02 09:23:55 -0700">
+                    <Title>(E)-2START SUBPLOT "love" story; break from A STORY tension; carries theme; often uses new "funhouse" version of characters.</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="47C2D834-8C32-4478-A50C-758B3EB82133" Type="Text" Created="2020-06-10 11:33:28 -0700" Modified="2021-09-22 09:23:39 -0700">
+                            <Title>&lt;$n&gt;) Shack with Aiden</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4631,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="49CC8EB3-FC6D-4C5D-AA1E-972933E028FE" Type="Text" Created="2019-09-13 11:03:47 -0700" Modified="2021-02-01 00:44:14 -0700">
+                            <Title>&lt;$n&gt;) Party scene </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>117,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>6662,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>17</KeywordID>
+                                <KeywordID>18</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="08BD5B34-DE8B-4644-AD1E-76E1F620A977" Type="Text" Created="2019-09-13 11:32:24 -0700" Modified="2021-01-28 21:33:44 -0700">
+                            <Title>&lt;$n&gt;) Suzie presses Aiden for info, refuses his help </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>37,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>9340,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>19</KeywordID>
+                                <KeywordID>20</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="9862EC17-DA52-49A0-9A3A-106413869A05" Type="Folder" Created="2020-12-05 14:21:43 -0700" Modified="2021-09-02 09:24:29 -0700">
+                    <Title>(F)-11PROMISE OF PREMISE /fun and games /threshold between 1st &amp; 2nd half; can be false peak or false collapse; stakes are raised; </Title>
+                    <MetaData>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <CorkboardAndOutliner>
+                        <SelectedSubdocumentUUIDs>3097A29B-750D-46B4-97EB-725CF18FAC8E</SelectedSubdocumentUUIDs>
+                    </CorkboardAndOutliner>
+                    <Children>
+                        <BinderItem UUID="8997286F-D703-473E-9E5E-5004EFAC05E2" Type="Text" Created="2020-05-29 09:57:56 -0700" Modified="2021-01-31 22:42:26 -0700">
+                            <Title>&lt;$n&gt;) Follow the money</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>46,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5154,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>1</KeywordID>
+                                <KeywordID>21</KeywordID>
+                                <KeywordID>16</KeywordID>
+                                <KeywordID>22</KeywordID>
+                                <KeywordID>23</KeywordID>
+                                <KeywordID>24</KeywordID>
+                                <KeywordID>3</KeywordID>
+                                <KeywordID>25</KeywordID>
+                                <KeywordID>18</KeywordID>
+                                <KeywordID>6</KeywordID>
+                            </Keywords>
+                            <Bookmarks>
+                                <Bookmark Destination="https://en.wikipedia.org/wiki/Chiricahua_Mountains">Chiricahua Mountains </Bookmark>
+                            </Bookmarks>
+                        </BinderItem>
+                        <BinderItem UUID="2533B27C-6750-42CA-8C79-CE5660138D05" Type="Text" Created="2019-06-28 00:24:59 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Bobby enamered by Cartel money</Title>
+                            <MetaData>
+                                <LabelID>14</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>146,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>327,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="65003CC1-180A-49DA-BDD3-B823C77F7660" Type="Text" Created="2019-10-21 09:11:55 -0700" Modified="2021-01-28 16:07:47 -0700">
+                            <Title>&lt;$n&gt;) Bobby finds Ma's truck but no Ma </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>1908,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>125,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>8</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>19</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="514F4C3A-C858-4088-9777-66AB8C8C2BC8" Type="Text" Created="2019-08-13 12:03:34 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Looks for Ma </Title>
+                            <MetaData>
+                                <SectionType>4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D</SectionType>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>21,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>6514,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>8</KeywordID>
+                                <KeywordID>6</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="323873FD-AE69-4392-8CDA-488A2CDC197C" Type="Text" Created="2019-10-15 07:58:18 -0700" Modified="2021-10-03 18:28:36 -0700">
+                            <Title>&lt;$n&gt;) House ransacked, finds diary</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>142,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4450,0</TextSelection>
+                            </TextSettings>
+                            <CorkboardAndOutliner>
+                                <SelectedSubdocumentUUIDs>37612BF5-EFFF-4C88-8189-C87C79ABCF81</SelectedSubdocumentUUIDs>
+                            </CorkboardAndOutliner>
+                        </BinderItem>
+                        <BinderItem UUID="9DDF9C3C-3C39-4BA1-BD54-A7BA49CEF58F" Type="Text" Created="2020-02-05 17:36:29 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Cartel warns Bobby (first encounter) </Title>
+                            <MetaData>
+                                <LabelID>14</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2408,4</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>8</KeywordID>
+                                <KeywordID>26</KeywordID>
+                                <KeywordID>27</KeywordID>
+                                <KeywordID>28</KeywordID>
+                                <KeywordID>6</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="EAD14584-F3CA-458D-AA5F-1AB546A947FA" Type="Text" Created="2020-03-28 14:51:57 -0700" Modified="2021-02-01 08:45:16 -0700">
+                            <Title>&lt;$n&gt;) Bobby wants to move in, Suzie refuses</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2379,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="7B8FAAE1-154A-47F6-A4C4-B372F159C657" Type="Text" Created="2019-11-09 12:00:40 -0700" Modified="2021-01-28 16:07:44 -0700">
+                            <Title>&lt;$n&gt;) Cartel threatens Bobby (second encounter) </Title>
+                            <MetaData>
+                                <LabelID>14</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2515,6</TextSelection>
+                            </TextSettings>
+                            <Bookmarks>
+                                <Bookmark BinderUUID="B6E2EFF4-8606-4711-910C-D95376439B1D"/>
+                            </Bookmarks>
+                        </BinderItem>
+                        <BinderItem UUID="B6E2EFF4-8606-4711-910C-D95376439B1D" Type="Text" Created="2020-01-20 11:25:24 -0700" Modified="2021-01-28 16:07:48 -0700">
+                            <Title>&lt;$n&gt;) Suzie scouts Mine and finds Pa alive </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>71,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>726,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>28</KeywordID>
+                                <KeywordID>26</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>8</KeywordID>
+                            </Keywords>
+                            <Bookmarks>
+                                <Bookmark BinderUUID="7B8FAAE1-154A-47F6-A4C4-B372F159C657"/>
+                            </Bookmarks>
+                        </BinderItem>
+                        <BinderItem UUID="4E64F020-74C6-47DA-823A-0F44F7A48304" Type="Text" Created="2020-04-02 11:48:03 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Suzie turns the table and threatens Cartel </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>2</KeywordID>
+                                <KeywordID>8</KeywordID>
+                                <KeywordID>3</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>29</KeywordID>
+                                <KeywordID>25</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="6BC82509-2EA6-4ED3-96E4-08D5DBEA36AC" Type="Text" Created="2020-02-09 07:50:46 -0700" Modified="2021-02-01 08:45:47 -0700">
+                            <Title>&lt;$n&gt;) Aiden and Mrs. Jones hide info from FBI </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>7</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>75,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>30</KeywordID>
+                                <KeywordID>2</KeywordID>
+                                <KeywordID>29</KeywordID>
+                                <KeywordID>15</KeywordID>
+                                <KeywordID>31</KeywordID>
+                                <KeywordID>32</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="F39DC977-B1AC-4BC6-ABBE-B398777454AA" Type="Text" Created="2020-02-09 09:21:24 -0700" Modified="2021-02-01 08:45:56 -0700">
+                            <Title>&lt;$n&gt;) Aiden delivers money to Cartel</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>6766,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>33</KeywordID>
+                                <KeywordID>26</KeywordID>
+                                <KeywordID>34</KeywordID>
+                                <KeywordID>15</KeywordID>
+                                <KeywordID>31</KeywordID>
+                                <KeywordID>35</KeywordID>
+                                <KeywordID>36</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="DCCDA47D-25A3-40C4-BA7C-A3B54B2CD730" Type="Text" Created="2019-06-28 00:36:10 -0700" Modified="2021-02-01 08:46:17 -0700">
+                            <Title>&lt;$n&gt;) Suzie dupes Bobby 
+ </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="0352ADD8-7DE0-4BE6-A111-D3C8921C6B5F" Type="Text" Created="2020-04-01 10:05:12 -0700" Modified="2021-10-03 19:02:21 -0700">
+                            <Title>&lt;$n&gt;) Aiden and Mrs. Jones afraid the stress will break Suzie</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>67,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3233,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="FD332AD4-47B1-4B11-B2C1-1E91977FBEF5" Type="Text" Created="2019-06-14 13:49:14 -0700" Modified="2021-10-04 15:42:05 -0700">
+                            <Title>&lt;$n&gt;) Suzie accepts Aiden's help</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>7071,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="D6B400BF-2030-469D-B227-44B7E16ABF1B" Type="Text" Created="2020-04-04 10:53:32 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Suzie steals Cartel Money from dry cleaners.</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>174,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="CF538978-270E-4FAF-8431-86E1473F69EB" Type="Text" Created="2020-04-08 11:19:07 -0700" Modified="2021-02-01 08:48:00 -0700">
+                            <Title>&lt;$n&gt;) Aiden sets up FBI raid and warns Cartel</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>726,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="8EAE707F-6088-4905-A168-F4D212C18CBB" Type="Text" Created="2020-04-08 12:33:22 -0700" Modified="2021-02-01 08:48:31 -0700">
+                            <Title>&lt;$n&gt;) FBI raids drycleaners, finds no money</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1226,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="EAA932A3-5572-425C-9C41-2A5711E230C2" Type="Text" Created="2019-06-28 00:30:57 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Suzie ups the stakes for the Cartel</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2655,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="7DB57845-A564-49AB-9066-2A9386412C8A" Type="Folder" Created="2021-09-02 09:24:47 -0700" Modified="2021-09-02 09:25:27 -0700">
+                    <Title>MIDPOINT</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="0CF81365-E326-4CE6-A7C4-851A53A5BBE4" Type="Folder" Created="2021-08-05 18:45:58 -0700" Modified="2021-09-02 09:27:27 -0700">
+                    <Title>(G)-8.5 BAD GUYS MOVE IN / opposite of midpoint (peak/collapse); whiff of death - old way of thinking dies/give up moment/runaway moment; false defeat; no hope</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="F792E09E-6AE8-42EF-8C43-7BA8F1EF4659" Type="Text" Created="2019-10-15 08:12:33 -0700" Modified="2021-01-28 16:07:48 -0700">
+                            <Title>&lt;$n&gt;) Cartle considers new threat</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4179,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="1735C9FE-E225-497F-AEBE-0060C3CD00C7" Type="Text" Created="2019-12-17 23:26:43 -0700" Modified="2021-02-01 08:45:32 -0700">
+                            <Title>&lt;$n&gt;) Cartel demands Jeb launder more money </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <StatusID>8</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5790,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>37</KeywordID>
+                                <KeywordID>26</KeywordID>
+                                <KeywordID>11</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="C9D43B46-2603-404D-B828-C58F22179902" Type="Text" Created="2020-04-21 15:12:47 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Cartel kidnaps Suzie </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>277,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="34506F1A-C9F8-4C19-B7FA-C1D7E0372FFD" Type="Text" Created="2020-05-01 12:19:24 -0700" Modified="2021-02-01 08:48:54 -0700">
+                            <Title>&lt;$n&gt;) Aiden decides not to tell FBI about kidnapping </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1722,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="9349BF9F-7184-4B1C-A313-75707B97002F" Type="Text" Created="2020-05-01 12:25:01 -0700" Modified="2021-01-28 16:07:48 -0700">
+                            <Title>&lt;$n&gt;) Suzie escapes from Cartel's torture </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5442,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="3B61CF45-8ECC-41A8-ABCB-C82926C25BCE" Type="Text" Created="2020-07-09 08:15:45 -0700" Modified="2021-02-01 08:49:06 -0700">
+                            <Title>&lt;$n&gt;) Suzie goes to Aiden after kidnapping </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3461,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="C4D9A429-A9CB-4183-9AB7-F24D0BA15F31" Type="Folder" Created="2021-08-05 18:43:49 -0700" Modified="2021-09-02 09:28:20 -0700">
+                    <Title>(H)-4 ALL IS LOST  / Darkest Moment / Subplot combine and reveal solution</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="ED8DE39C-DC15-4941-B11A-CBABC1FBA5A8" Type="Text" Created="2020-02-14 10:54:30 -0700" Modified="2021-10-04 14:18:14 -0700">
+                            <Title>&lt;$n&gt;) Ma found dead</Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>55,0</NotesTextSelection>
+                                <IconFileName>Warning</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3713,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>34</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>1</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="C1E7B10B-1038-4AB7-9606-6DC0FDCFB759" Type="Text" Created="2020-02-14 12:20:13 -0700" Modified="2021-10-04 14:19:13 -0700">
+                            <Title>&lt;$n&gt;) Why go on </Title>
+                            <MetaData>
+                                <LabelID>13</LabelID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Warning</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5154,0</TextSelection>
+                            </TextSettings>
+                            <Keywords>
+                                <KeywordID>2</KeywordID>
+                                <KeywordID>6</KeywordID>
+                                <KeywordID>29</KeywordID>
+                                <KeywordID>8</KeywordID>
+                            </Keywords>
+                        </BinderItem>
+                        <BinderItem UUID="68177A78-DC62-4849-8C14-D7B91F8E0636" Type="Text" Created="2020-05-01 12:30:13 -0700" Modified="2021-01-28 16:07:49 -0700">
+                            <Title>&lt;$n&gt;) Gang rape, faces reality of Bee </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>279,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="FD7057BF-50D2-40EB-BF75-7120E3C5098A" Type="Text" Created="2020-05-01 12:42:51 -0700" Modified="2021-08-05 20:29:24 -0700">
+                            <Title>&lt;$n&gt;) Cartel believes Mo, that David stole the $750K</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>ToDo.png</IconFileName>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4440,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="E3308592-D24F-49CE-9775-8836AEB2ECD2" Type="Text" Created="2020-10-12 09:23:06 -0700" Modified="2021-08-05 17:48:47 -0700">
+                            <Title>&lt;$n&gt;) In hospital </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1899,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="6D809EA9-EBE2-4F74-A292-7E14B2FB697D" Type="Text" Created="2020-10-27 09:17:33 -0700" Modified="2021-08-05 17:50:04 -0700">
+                            <Title>&lt;$n&gt;) Bobby hung from  statue </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1657,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="6D9FA666-D715-400F-AD36-9B06D446CC33" Type="Text" Created="2020-11-08 15:41:53 -0700" Modified="2021-10-04 14:32:56 -0700">
+                            <Title>&lt;$n&gt;) Pa shot at Jeb's store </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2556,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="7148EF27-2DE4-4AAB-BDDD-8BD52FABD956" Type="Folder" Created="2020-12-05 14:22:19 -0700" Modified="2021-09-02 09:28:47 -0700">
+                    <Title>(I)-10 ACT III Wrap-up; dispatch all bad guys ==&gt;</Title>
+                    <MetaData>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="C15C40AA-A07F-4762-90A3-427CA6D10191" Type="Text" Created="2020-12-03 10:33:09 -0700" Modified="2021-08-05 17:53:36 -0700">
+                            <Title>&lt;$n&gt;) Leads Cartel and FBI to the shack </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2684,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="D8CB07F6-6530-4CFD-A4B8-7D754FA2573C" Type="Text" Created="2020-12-03 11:16:41 -0700" Modified="2021-08-05 17:55:20 -0700">
+                            <Title>&lt;$n&gt;) Gives Mrs. Jones the evidence </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>124,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>6642,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="7048C193-98E2-4E00-8E9E-A460A450845F" Type="Text" Created="2020-12-28 10:55:26 -0700" Modified="2021-08-05 17:57:42 -0700">
+                            <Title>&lt;$n&gt;) Agents to Shack</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>85,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>3874,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="3A3D0D0D-4BA2-4A07-9C7C-71C246C83932" Type="Text" Created="2020-12-04 10:05:21 -0700" Modified="2021-08-05 18:00:33 -0700">
+                            <Title>&lt;$n&gt; ) Jeb / Aiden questioned by FBI in hospital</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4749,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="56771E9A-1A17-4E93-BCC3-2E12A1260E66" Type="Text" Created="2020-12-28 12:06:19 -0700" Modified="2021-08-05 17:37:19 -0700">
+                            <Title>&lt;$n&gt; ) Mole is caught El Brutal dies</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>824,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="0469626B-2EE8-4A7E-9F77-CABFF5A716A2" Type="Text" Created="2020-12-03 11:46:35 -0700" Modified="2021-08-05 17:40:24 -0700">
+                            <Title>&lt;$n&gt; ) FBI cleans up </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4397,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="F5FAA29F-EFCA-4F34-8C93-8A7A795F5833" Type="Text" Created="2020-12-04 09:32:00 -0700" Modified="2021-01-30 13:05:11 -0700">
+                            <Title>&lt;$n&gt;) Info Goes Public </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>674,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="9F5C7319-E852-4876-96F1-3E3618473698" Type="Text" Created="2020-05-04 14:21:46 -0700" Modified="2021-08-05 17:41:52 -0700">
+                            <Title>&lt;$n&gt;) FBI identifies bodies in field</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>535,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1112,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="E858FD11-49CD-4E05-983A-A649E1E9B4FD" Type="Text" Created="2020-05-01 12:52:32 -0700" Modified="2021-08-05 17:44:51 -0700">
+                            <Title>&lt;$n&gt;) Jeb finishes story about Suzie's Ma </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>aeonComplete</FieldID>
+                                        <Value>No</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>187,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="5E00F9D2-38CE-4451-97CA-2E7AC9FF7C88" Type="Text" Created="2020-05-04 14:26:23 -0700" Modified="2021-08-05 17:43:37 -0700">
+                            <Title>&lt;$n&gt;) Tells Aiden Bee is gone. </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>2249,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="835FCA6E-4D63-4A71-92CB-5DD42B9842BC" Type="Folder" Created="2021-08-05 18:21:13 -0700" Modified="2021-09-02 09:28:54 -0700">
+                    <Title>(J)&lt;1  FINALE opposite of opening image; show how much change has occurred ==&gt;</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>aeonComplete</FieldID>
+                                <Value>No</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="C5D7FD29-6890-4DFB-B946-BD7B2900E60E" Type="Text" Created="2020-12-29 11:37:00 -0700" Modified="2021-08-05 17:45:49 -0700">
+                            <Title>&lt;$n&gt;) After the funeral</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>138,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem UUID="669D7B65-8096-4EFD-A0E2-6BDE8C1E3585" Type="ResearchFolder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+            <Title>Research</Title>
+            <Children>
+                <BinderItem UUID="E9B134DE-4062-43C8-9E3A-7C8D2315056B" Type="Folder" Created="2019-09-19 12:39:52 -0700" Modified="2022-05-05 12:54:28 -0700">
+                    <Title>Characters</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Bookmarks>
+                        <Bookmark BinderUUID="26F8FC17-B6CD-4A3A-8424-D613071911A2"/>
+                    </Bookmarks>
+                    <Children>
+                        <BinderItem UUID="C33A41F0-544A-4F11-8B26-31B21E37A88B" Type="Text" Created="2020-03-28 14:44:27 -0700" Modified="2020-03-28 14:45:20 -0700">
+                            <Title>Character Freewrite guidelines</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1199,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="BF09AD2D-2BB8-41C0-A990-1ECDD0FEF32C" Type="Text" Created="2020-02-19 17:33:03 -0700" Modified="2020-03-30 15:12:47 -0700">
+                            <Title>Char Web </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Reviewer Comments</IconFileName>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>426,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="F6C400D6-2786-4214-BDE9-DF90E36228B0" Type="Text" Created="2019-09-19 13:51:20 -0700" Modified="2020-07-17 16:34:01 -0700">
+                            <Title>Suzie A / B Bannon</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>78,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="86275870-C177-4D02-9ECB-F7B1492941ED" Type="Text" Created="2019-09-19 13:52:35 -0700" Modified="2020-04-21 13:56:27 -0700">
+                            <Title>Pa Bannon</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="0CC05914-1BC3-4092-B9E7-7E91A5B80E43" Type="Text" Created="2019-09-19 13:53:27 -0700" Modified="2020-04-21 13:56:41 -0700">
+                            <Title>Ma Bannon</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="7038CAA0-BBB8-413A-BF39-6103058EC4B9" Type="Text" Created="2019-09-19 13:53:51 -0700" Modified="2021-01-28 21:33:44 -0700">
+                            <Title>Bobby - Ma's brother </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>404,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="073A9680-94B0-4566-9EC5-D8B1E7111437" Type="Text" Created="2019-09-19 13:53:57 -0700" Modified="2019-10-28 09:45:34 -0700">
+                            <Title>Dot  &amp; Joe Darling- Neighbor</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="4B92766F-8851-43BF-9BC1-EE80BD9F37B8" Type="Text" Created="2019-10-09 12:10:45 -0700" Modified="2019-10-09 12:11:46 -0700">
+                            <Title>Butch Darling</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>27,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="26F8FC17-B6CD-4A3A-8424-D613071911A2" Type="Text" Created="2019-09-19 14:01:08 -0700" Modified="2019-10-28 09:45:37 -0700">
+                            <Title>Margaret Carter- Nieghbor</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="D87D68D8-4B71-4EB4-9334-158C1EB4B61B" Type="Text" Created="2020-05-29 12:14:20 -0700" Modified="2020-05-29 12:14:29 -0700">
+                            <Title>Beth Pillar - shy neighbor </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="A3347ECB-DC7D-4A1D-BC7D-836FC2BD6464" Type="Text" Created="2019-09-19 13:54:02 -0700" Modified="2020-02-14 09:02:12 -0700">
+                            <Title>Cartel </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="6EEAA2D8-5C39-4B35-93A8-E7547AC635E1" Type="Text" Created="2020-02-14 09:03:04 -0700" Modified="2020-02-14 09:14:03 -0700">
+                            <Title>Mo Mano de Ora - man of gold </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>969,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="7FB09ACA-C56A-4229-910E-82E16CECBC6E" Type="Text" Created="2020-02-14 09:21:12 -0700" Modified="2020-02-14 09:22:28 -0700">
+                            <Title>Nerd guy </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>175,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="82A2773F-4B49-4441-8653-844F2A3047D8" Type="Text" Created="2020-02-14 08:29:46 -0700" Modified="2020-02-14 09:23:14 -0700">
+                            <Title>Guga Guerrero</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>285,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="8AF30079-6FC9-4496-94B9-52ED976EFBF4" Type="Text" Created="2019-09-19 14:42:54 -0700" Modified="2020-03-30 15:12:47 -0700">
+                            <Title>Jacob - Suzies younger brother </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="53C28C6A-45A4-4FC3-A0A4-1279067425B1" Type="Text" Created="2019-09-19 13:53:41 -0700" Modified="2019-10-28 09:45:30 -0700">
+                            <Title>Father John</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="127CFDA9-E1F3-483D-87B3-6EAE65AD75B4" Type="Text" Created="2019-09-19 14:52:25 -0700" Modified="2020-02-07 16:57:00 -0700">
+                            <Title>Father Joe/chged to Mark- original Priest</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="B6763EE1-22C4-4889-9852-872C199A925E" Type="Text" Created="2019-09-19 15:04:24 -0700" Modified="2019-10-28 09:45:45 -0700">
+                            <Title>Father Ralph - 3rd Priest/replaced Father TBD</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="DAAA5D40-07EF-4514-85F7-44A71FF06AD8" Type="Text" Created="2020-05-29 12:00:50 -0700" Modified="2020-05-29 12:01:03 -0700">
+                            <Title>Joan - church admin </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="693537E1-3EA8-4DF3-B3E5-D84C4CBD0AC3" Type="Text" Created="2019-09-28 15:43:31 -0700" Modified="2019-10-28 09:45:47 -0700">
+                            <Title>Jeb Manwell - Store owner, Aiden's father</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="F218597E-9513-4841-8475-FFACBC550CA3" Type="Text" Created="2019-09-19 15:17:52 -0700" Modified="2020-03-30 15:12:47 -0700">
+                            <Title>Aiden Mannwell- Suzie's BF</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="1500DE01-9DAA-4B2C-8252-E197633DAC2A" Type="Text" Created="2019-09-20 11:37:22 -0700" Modified="2020-03-30 15:12:47 -0700">
+                            <Title>Jo Mannwell - Aiden's younger sister and Suzie's friend</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="3CCC7C13-BF3A-4B25-8604-A77909B3288D" Type="Text" Created="2019-10-08 23:57:08 -0700" Modified="2019-10-08 23:58:04 -0700">
+                            <Title>Jeb's Store -the Corner Store</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="FF88670E-15FF-4D18-A2EE-FDB6147C649E" Type="Text" Created="2020-02-14 07:54:23 -0700" Modified="2020-02-14 07:55:03 -0700">
+                            <Title>Joan-jeb's dead wife</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>23,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="108730CB-E961-4574-BAB0-23656DED5839" Type="Text" Created="2019-09-22 08:28:49 -0700" Modified="2019-10-28 09:45:48 -0700">
+                            <Title>Mrs. Caroline Jones - former yeacher and mentor</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="C6D988CC-9555-4493-B704-F8A11D18EA05" Type="Text" Created="2019-09-23 15:48:43 -0700" Modified="2021-01-27 15:36:12 -0700">
+                            <Title>Jackson</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="B07D058E-28CF-4F0A-A62C-20FE192BFDC3" Type="Text" Created="2019-10-26 09:39:50 -0700" Modified="2019-10-28 09:45:55 -0700">
+                            <Title>Bill Derks - rancher </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="D5D2EC6A-E54D-438A-974F-CE3FE11B936F" Type="Text" Created="2019-11-24 08:04:30 -0700" Modified="2019-11-24 08:05:00 -0700">
+                            <Title>Conchita Romero</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="3394033F-1896-499A-84AE-502B749CE82C" Type="Text" Created="2019-11-24 09:03:16 -0700" Modified="2019-11-24 09:04:14 -0700">
+                            <Title>Angel Romero</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="6370AD27-C8AA-4131-945F-9F71B8A8984C" Type="Text" Created="2019-11-24 08:09:09 -0700" Modified="2020-05-20 11:42:51 -0700">
+                            <Title>Maricela Romero </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="1B05FD58-2198-475E-99C5-C7D776C187AF" Type="Text" Created="2020-05-20 11:41:44 -0700" Modified="2020-05-20 11:43:17 -0700">
+                            <Title>Gilberto Romero - husband </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="C5024EE9-933C-409E-902C-3C4101D105EA" Type="Text" Created="2020-01-20 10:07:28 -0700" Modified="2020-03-30 15:12:47 -0700">
+                            <Title>Sammy - Aiden's friend </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>74,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="EF4267A6-246E-422B-903E-6F3E5C8C00A6" Type="Text" Created="2020-04-19 12:38:28 -0700" Modified="2020-04-19 12:38:56 -0700">
+                            <Title>Vito Molina owns dry cleaners </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>18,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="98EA5CC0-0890-47AC-8AD4-87900D556CBF" Type="Text" Created="2020-04-21 15:06:24 -0700" Modified="2020-04-21 15:06:39 -0700">
+                            <Title>Jerry Bakery owner across from the corner store </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="05E51BE6-F50C-444E-A268-335EAE34D7BB" Type="Text" Created="2020-03-29 13:07:21 -0700" Modified="2020-12-04 10:31:12 -0700">
+                            <Title>Mark Delacroix  - FBI </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>47,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="69D6A885-2D07-4BA1-B3CF-0B5C3313BF9E" Type="Text" Created="2020-12-04 10:31:12 -0700" Modified="2020-12-04 10:31:16 -0700">
+                            <Title>Dan Palmer - FBI </Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="69822417-D015-4BDD-90BD-18AAA6198D15" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Notes</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <IconFileName>Notes (Yellow Notepad)</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+        <BinderItem UUID="F2DF7FDE-46C4-4962-97F3-128A46433573" Type="TrashFolder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+            <Title>Trash</Title>
+            <Children>
+                <BinderItem UUID="F8F9FDEF-FD9F-4A8C-B33D-3434A1220ADC" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Novel Format</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <IconFileName>Information</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="3E5B46A7-2D74-46C0-9C84-D3D1B9EB378E" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Manuscript Format</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="684ADA52-4D45-48D2-B03D-5ECB784963EE" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Title Page</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>118,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="4D01D8EC-C1C3-427E-88C0-602D9158FC95" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Paperback</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="486D874A-7589-4C1E-BECE-40B465746BA1" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Title Page</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="21506607-96CA-4FB1-8B5F-A1859F4DCEDE" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Copyright</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>82,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="874592F5-2256-46A1-8434-432743846FB8" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Dedication</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>55,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>11,23</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="EAED9F93-2779-4184-82E8-30D27307C6AC" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Blank Page</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>197,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,13</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="4C4363AD-1F58-4140-A55F-DEE1298CA1C4" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Ebook</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="C88ACCC3-4FDB-4952-80E1-177623CDE141" Type="Image" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Cover</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>png</FileExtension>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                            </MetaData>
+                            <MediaSettings>
+                                <ImageScaleFactor>1.0</ImageScaleFactor>
+                                <ImageRotation>None</ImageRotation>
+                                <ImageScalesProportionally>Yes</ImageScalesProportionally>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem UUID="98EA5CEF-B7B1-468C-83CD-9AB24AFAFDF3" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Dedication</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>55,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>5,21</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="9A470BDE-CF2B-4872-97C6-74F19BC90197" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Sample Output</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="A01D76FD-6D6D-4A05-B3D7-72013BF9A630" Type="PDF" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Standard Manuscript</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>pdf</FileExtension>
+                            </MetaData>
+                            <MediaSettings>
+                                <CurrentPDFPage>0</CurrentPDFPage>
+                            </MediaSettings>
+                        </BinderItem>
+                        <BinderItem UUID="96044A4A-0A94-45BF-888E-01E9664985FF" Type="PDF" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Paperback Novel</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <FileExtension>pdf</FileExtension>
+                            </MetaData>
+                            <MediaSettings>
+                                <CurrentPDFPage>0</CurrentPDFPage>
+                            </MediaSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="5C03DE09-C285-48ED-827F-78E62B7D0F72" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Template Sheets</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="BE948F87-BDA3-4551-8E08-AC248FE89301" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Character Sketch</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                                <IconFileName>Characters (Character Sheet)</IconFileName>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,14</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                        <BinderItem UUID="87D59B4E-F1D6-4025-9FBA-33F60ED8F985" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Setting Sketch</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <IconFileName>Locations (Location Sheet)</IconFileName>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,15</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="57ECC98D-8199-4935-B5F1-D1F7A2D60646" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Front Matter</Title>
+                    <MetaData>
+                        <SectionType ChildDefault="F3D99402-96E3-4558-A2BE-FB83286017C8"></SectionType>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>26,0</NotesTextSelection>
+                        <IconFileName>Front Matter</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem UUID="FD75AC3C-F304-4EA6-ADCC-2C32D6589969" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Chapter</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem UUID="0A7EDD9F-9DE0-4CC9-9AC1-EE0E3769B6A8" Type="Text" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                            <Title>Scene</Title>
+                            <MetaData>
+                                <StatusID>2</StatusID>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem UUID="06C0455C-36DD-4F38-BB7B-F7DD2453A8A5" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Characters</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <IconFileName>Characters (Photo)</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <DefaultChildTemplateUUID>BE948F87-BDA3-4551-8E08-AC248FE89301</DefaultChildTemplateUUID>
+                </BinderItem>
+                <BinderItem UUID="6830B6AC-686B-4370-A979-2FD1D7288BDA" Type="Folder" Created="2022-05-05 12:49:34 -0700" Modified="2022-05-05 12:49:34 -0700">
+                    <Title>Places</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <IconFileName>Locations (Map)</IconFileName>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <DefaultChildTemplateUUID>87D59B4E-F1D6-4025-9FBA-33F60ED8F985</DefaultChildTemplateUUID>
+                </BinderItem>
+            </Children>
+        </BinderItem>
+    </Binder>
+    <Collections>
+        <Collection Type="Binder" ID="48DE1CBF-217F-4B94-944D-6D8C97396DCF" Color="0.112547 0.112547 0.112547">
+            <Title>Binder</Title>
+        </Collection>
+        <Collection Type="RecentSearch" ID="2655DDF6-4AB8-42CB-A433-1CD76FC351D2" Color="0.190666 0.172707 0.216531">
+            <Title>Search Results</Title>
+        </Collection>
+    </Collections>
+    <Keywords>
+        <Keyword ID="0">
+            <Title>Pa_On</Title>
+            <Color>0.345296 0.842795 0.948837</Color>
+        </Keyword>
+        <Keyword ID="1">
+            <Title>Ma_On</Title>
+            <Color>0.49947 0.858294 0.299317</Color>
+        </Keyword>
+        <Keyword ID="2">
+            <Title>Susie-A_On</Title>
+            <Color>0.027461 0.442871 0.064239</Color>
+        </Keyword>
+        <Keyword ID="3">
+            <Title>Susie-B_Off</Title>
+            <Color>0.398314 0.025911 0.068215</Color>
+        </Keyword>
+        <Keyword ID="4">
+            <Title>Loc: House</Title>
+            <Color>0.99906 0.945919 0.596807</Color>
+        </Keyword>
+        <Keyword ID="5">
+            <Title>Bobby_Off</Title>
+            <Color>0.491439 0.631121 0.108802</Color>
+        </Keyword>
+        <Keyword ID="6">
+            <Title>Pa_Off</Title>
+            <Color>0.28373 0.92912 0.662754</Color>
+        </Keyword>
+        <Keyword ID="7">
+            <Title>Jacob Off</Title>
+            <Color>0.734792 0.275124 0.802415</Color>
+        </Keyword>
+        <Keyword ID="8">
+            <Title>Bobby_On</Title>
+            <Color>0.265293 0.599653 0.114664</Color>
+        </Keyword>
+        <Keyword ID="9">
+            <Title>Camaro-Bobby</Title>
+            <Color>0.653603 0.748623 0.98656</Color>
+        </Keyword>
+        <Keyword ID="10">
+            <Title>Margaret_On</Title>
+            <Color>0.770897 0.327924 0.089195</Color>
+        </Keyword>
+        <Keyword ID="11">
+            <Title>Jeb_On</Title>
+            <Color>0.588044 0.716878 0.51934</Color>
+        </Keyword>
+        <Keyword ID="12">
+            <Title>Father John_Off</Title>
+            <Color>0.263937 0.399533 0.790024</Color>
+        </Keyword>
+        <Keyword ID="13">
+            <Title>Betty the cow</Title>
+            <Color>0.823732 0.674479 0.562945</Color>
+        </Keyword>
+        <Keyword ID="14">
+            <Title>Bill Derks - rancher</Title>
+            <Color>0.491439 0.631121 0.108802</Color>
+        </Keyword>
+        <Keyword ID="15">
+            <Title>Mrs. Jones_On</Title>
+            <Color>0.325083 0.520483 0.786015</Color>
+        </Keyword>
+        <Keyword ID="16">
+            <Title>Loc: Douglas</Title>
+            <Color>0.493365 0.711035 0.755124</Color>
+        </Keyword>
+        <Keyword ID="17">
+            <Title>Jo_On </Title>
+            <Color>0.751281 0.57275 0.778926</Color>
+        </Keyword>
+        <Keyword ID="18">
+            <Title>Jeb_Off </Title>
+            <Color>0.721794 0.763017 0.530417</Color>
+        </Keyword>
+        <Keyword ID="19">
+            <Title>Cartel Group</Title>
+            <Color>0.275736 0.501479 0.258267</Color>
+        </Keyword>
+        <Keyword ID="20">
+            <Title>Mrs. Jones_Off</Title>
+            <Color>0.531658 0.120445 0.799568</Color>
+        </Keyword>
+        <Keyword ID="21">
+            <Title>Loc: Springerville</Title>
+            <Color>0.704488 0.939041 0.574103</Color>
+        </Keyword>
+        <Keyword ID="22">
+            <Title>Mr. Michael Jones_Off</Title>
+            <Color>0.865719 0.93617 0.574461</Color>
+        </Keyword>
+        <Keyword ID="23">
+            <Title>Loc: Shack </Title>
+            <Color>0.995691 0.803533 0.652407</Color>
+        </Keyword>
+        <Keyword ID="24">
+            <Title>RefLoc: Chiricahua Mountains </Title>
+            <Color>0.99906 0.945919 0.596807</Color>
+        </Keyword>
+        <Keyword ID="25">
+            <Title>Aiden_Off </Title>
+            <Color>0.770897 0.327924 0.089195</Color>
+        </Keyword>
+        <Keyword ID="26">
+            <Title>Gold-man_On</Title>
+            <Color>0.491439 0.631121 0.108802</Color>
+        </Keyword>
+        <Keyword ID="27">
+            <Title>Nerd Guy_On</Title>
+            <Color>0.764784 0.637348 0.09731</Color>
+        </Keyword>
+        <Keyword ID="28">
+            <Title>Cartel Boss_On</Title>
+            <Color>0.581667 0.865824 0.936678</Color>
+        </Keyword>
+        <Keyword ID="29">
+            <Title>Ma_Off</Title>
+            <Color>0.713789 0.868953 0.186963</Color>
+        </Keyword>
+        <Keyword ID="30">
+            <Title>Cartel Misc_Off</Title>
+            <Color>0.581667 0.865824 0.936678</Color>
+        </Keyword>
+        <Keyword ID="31">
+            <Title>Aiden_On</Title>
+            <Color>0.764784 0.637348 0.09731</Color>
+        </Keyword>
+        <Keyword ID="32">
+            <Title>FBI_Off</Title>
+            <Color>0.493365 0.711035 0.755124</Color>
+        </Keyword>
+        <Keyword ID="33">
+            <Title>Cartel Boss_Off</Title>
+            <Color>0.584919 0.947693 0.802958</Color>
+        </Keyword>
+        <Keyword ID="34">
+            <Title>Susie-A_Off</Title>
+            <Color>0.304198 0.919063 0.547776</Color>
+        </Keyword>
+        <Keyword ID="35">
+            <Title>FBI_On</Title>
+            <Color>0.475238 0.763781 0.651337</Color>
+        </Keyword>
+        <Keyword ID="36">
+            <Title>Mark Delacroix FBI</Title>
+            <Color>0.588044 0.716878 0.51934</Color>
+        </Keyword>
+        <Keyword ID="37">
+            <Title>Sammy - SRP guy</Title>
+            <Color>0.488978 0.577409 0.802327</Color>
+        </Keyword>
+    </Keywords>
+    <SectionTypes>
+        <TypeDefinitions>
+            <Type ID="D2E24F2F-E4A2-49D0-BACA-26098774C8F9">Part Heading</Type>
+            <Type ID="417A6CCE-D4E1-44BA-9A8D-038360B4B905">Chapter Heading</Type>
+            <Type ID="9AFECE21-8C79-45E0-9B9F-D6D62A9729D3">Scene</Type>
+            <Type ID="5770D705-B9A4-4798-AAB1-B2C56190B02E">Chapter</Type>
+            <Type ID="DFBFB5B6-D47F-4913-9E23-FC3950C10171">Heading</Type>
+            <Type ID="4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D">Section</Type>
+            <Type ID="F3D99402-96E3-4558-A2BE-FB83286017C8">Front Matter</Type>
+            <Type ID="235F7C42-10F1-40AB-9FC5-19AA26EABA47">Table of Contents</Type>
+            <Type ID="EA9C9DBA-B644-4EBB-BDAD-621E5455275A">N/A</Type>
+        </TypeDefinitions>
+        <LevelTypes>
+            <Folders>
+                <Type>EA9C9DBA-B644-4EBB-BDAD-621E5455275A</Type>
+                <Type>417A6CCE-D4E1-44BA-9A8D-038360B4B905</Type>
+            </Folders>
+            <Containers>
+                <Type>4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D</Type>
+            </Containers>
+            <Files>
+                <Type>4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D</Type>
+                <Type>4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D</Type>
+                <Type>9AFECE21-8C79-45E0-9B9F-D6D62A9729D3</Type>
+            </Files>
+        </LevelTypes>
+    </SectionTypes>
+    <LabelSettings>
+        <Title>Label</Title>
+        <DefaultLabelID>-1</DefaultLabelID>
+        <Labels>
+            <Label ID="-1">No Label</Label>
+            <Label ID="7" Color="0.993495 0.701207 0.732587">Red</Label>
+            <Label ID="8" Color="0.995418 0.790946 0.652385">Orange</Label>
+            <Label ID="9" Color="0.997722 0.89273 0.652569">Yellow</Label>
+            <Label ID="10" Color="0.715855 0.948712 0.697692">Green</Label>
+            <Label ID="11" Color="0.702319 0.888276 0.974252">Blue</Label>
+            <Label ID="12" Color="0.957566 0.766747 0.999616">Purple</Label>
+            <Label ID="13" Color="0.449585 0.964936 0.436009">POV Susie</Label>
+            <Label ID="14" Color="0.997722 0.89273 0.652569">POV Bobby </Label>
+            <Label ID="15" Color="0.702319 0.888276 0.974252">POV Aiden</Label>
+        </Labels>
+    </LabelSettings>
+    <StatusSettings>
+        <Title>Status</Title>
+        <DefaultStatusID>-1</DefaultStatusID>
+        <StatusItems>
+            <Status ID="-1">No Status</Status>
+            <Status ID="1">To Do</Status>
+            <Status ID="6">In Progress</Status>
+            <Status ID="2">First Draft</Status>
+            <Status ID="3">Revised Draft</Status>
+            <Status ID="4">Final Draft</Status>
+            <Status ID="5">Done</Status>
+            <Status ID="7">3. Next ProWriting</Status>
+            <Status ID="8">6. Reviewed WRT</Status>
+            <Status ID="9">zz ??Delete??</Status>
+            <Status ID="10">2. Working</Status>
+            <Status ID="11">5. Submitted to WRT </Status>
+            <Status ID="12">7. Updated WRT</Status>
+        </StatusItems>
+    </StatusSettings>
+    <ProjectBookmarks>
+        <Bookmark BinderUUID="06C0455C-36DD-4F38-BB7B-F7DD2453A8A5"/>
+        <Bookmark BinderUUID="6830B6AC-686B-4370-A979-2FD1D7288BDA"/>
+        <Bookmark BinderUUID="69822417-D015-4BDD-90BD-18AAA6198D15"/>
+    </ProjectBookmarks>
+    <ProjectTargets Notify="No">
+        <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 05:24:39 -0700" IgnoreDeadline="Yes">0</DraftTarget>
+        <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" NextResetDate="2022-05-15 00:00:00 -0700" ResetType="Time" ResetTime="00:00" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
+        <PreviousSession Words="0" Characters="0" Date="2022-05-14 09:15:23 -0700"/>
+    </ProjectTargets>
+    <RecentWritingHistory Date="2022-05-14 00:00:00 -0700">
+        <DraftWordCount>0</DraftWordCount>
+        <DraftCharCount>0</DraftCharCount>
+        <OtherWordCount>0</OtherWordCount>
+        <OtherCharCount>0</OtherCharCount>
+    </RecentWritingHistory>
+    <TemplateFolderUUID>5C03DE09-C285-48ED-827F-78E62B7D0F72</TemplateFolderUUID>
+    <BookmarksFolderUUID>69822417-D015-4BDD-90BD-18AAA6198D15</BookmarksFolderUUID>
+    <PrintSettings PaperSize="611.999975,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="na-letter" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"/>
+</ScrivenerProject>

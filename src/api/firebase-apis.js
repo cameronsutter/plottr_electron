@@ -147,7 +147,7 @@ export const listenToBackupsChanges = (cb) => {
         unsubscribeFromBackupsChanges = listenForBackupsFromFirebase(user.uid, (backups) => {
           const grouped = groupBy(backups, (backup) => {
             const date = helpers.time.convertFromNanosAndSeconds(backup?.lastModified) || new Date()
-            return `${date.getMonth() + 1}_${date.getDate()}_${date.getFullYear()}`
+            return `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}`
           })
           const backupFolders = []
           Object.keys(grouped).forEach((key) => {

@@ -1,0 +1,2576 @@
+{
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    },
+    "searchTerms": {
+      "notes": null,
+      "characters": null,
+      "places": null,
+      "tags": null
+    }
+  },
+  "file": {
+    "fileName": "",
+    "loaded": false,
+    "dirty": false,
+    "version": "2022.6.29-alpha.6",
+    "lastOpened": "2022-06-08T12:13:27.184Z"
+  },
+  "series": {
+    "name": "Fractured-Test-Import-to-Plottr",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "Fractured-Test-Import-to-Plottr",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "characters": [
+    {
+      "id": 1,
+      "name": "Character Freewrite guidelines",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Start with your character’s flaws and vulnerabilities. Ask yourself what will make them afraid or mean. What will make them strike out or run away? What would make even your nicest character hurt someone else? Where have they been hurt? How did they manage to hide or harden the wound? What happens when something rips away the protective covering of that injury?": "..."
+    },
+    {
+      "id": 2,
+      "name": "Char Web ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Each opponent should attack the hero weakness in a different manner. ": "..."
+    },
+    {
+      "15": "Date of birth",
+      "id": 3,
+      "name": "Suzie A / B Bannon",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Main Character - Protagonists": "Susan Bannon",
+      "Daughter of Susan and David Bannon": "...",
+      "Gender": "Species",
+      "Height": "Hair color",
+      "Complexion": "Nationality",
+      "Place of birth": "Race/subspecies",
+      "Weight": "Eye color",
+      "Handedness": "Ethnic group",
+      "07/04/": "Family",
+      "Spouse(s)/partner(s)": "Children",
+      "Biological father": "Biological mother",
+      "Siblings": "Single",
+      "Social status": "Job/career",
+      "Position/role": "Rank",
+      "Fugitive, criminal, up-standing member of the public, etc.": "Skills, hobbies, talents and languages",
+      "Hobbies": "Talents/gifts",
+      "Languages": "Physical description",
+      "Actual - very tall for age, gangly but strong both physically and mentally. Subtle pretty.  ": "...",
+      "Personality": "Suzie A - Determined, obstenant, strong willed but insecure.  Wants to fit in, but not sure how,  ",
+      "Likes to learn, be smart, not be noticed, not be the center of attention. Doesn’t like people much - has no reason to trust them, and sees no good use for them.  ": "...",
+      "Personal history": "Character’s personal history."
+    },
+    {
+      "id": 4,
+      "name": "Pa Bannon",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Over six foot ": ""
+    },
+    {
+      "id": 5,
+      "name": "Bobby - Ma's brother ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "But raised with David/Pa more than her because of their abusive father. ": "..."
+    },
+    {
+      "id": 6,
+      "name": "Dot  & Joe Darling- Neighbor",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Drinks a lot - tequila. ": ""
+    },
+    {
+      "id": 7,
+      "name": "Butch Darling",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Dot’s husband": ""
+    },
+    {
+      "id": 8,
+      "name": "Margaret Carter- Nieghbor",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Mo Mano de Ora - man of gold ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "The big burley guy could eat the nerd for lunch with his gold tooth, gold jewelry, and dreadlocks.  ": "..."
+    },
+    {
+      "id": 10,
+      "name": "Nerd guy ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Referenced in Bobby's first Cartel encounter. ": "..."
+    },
+    {
+      "id": 11,
+      "name": "Guga Guerrero",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Mo's boss, Guga Guerrero but was better know as el Brutal Abogado or the Brutal Lawyer.  ": "..."
+    },
+    {
+      "id": 12,
+      "name": "Aiden Mannwell- Suzie's BF",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Drives an \"old\" Pontiac.": ""
+    },
+    {
+      "id": 13,
+      "name": "Joan-jeb's dead wife",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Died of lung disease. ": "..."
+    },
+    {
+      "id": 14,
+      "name": "Mrs. Caroline Jones - former yeacher and mentor",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Deceased Husband - Michael, worked at SRP in Springerville. ": ""
+    },
+    {
+      "id": 15,
+      "name": "Conchita Romero",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Neighbor woman who lost her husband in the tunnels. ": ""
+    },
+    {
+      "id": 16,
+      "name": "Maricela Romero ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Daughter of Conchita Romera  ": "..."
+    },
+    {
+      "id": 17,
+      "name": "Sammy - Aiden's friend ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Suzie meets him at Aiden’s party ": "..."
+    },
+    {
+      "id": 18,
+      "name": "Vito Molina owns dry cleaners ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Dry Cleaner owner ": ""
+    },
+    {
+      "id": 19,
+      "name": "Mark Delacroix  - FBI ",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": null,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Special Agent Mark Delacroix - Aiden's handler ": ""
+    }
+  ],
+  "cards": [
+    {
+      "id": 1,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Prologue:  Recruiting",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "\"Construction Crew\" foreman interviews a farmer for job. Farmers family is threatened to ensure farmer's silence about the illegal nature of the job. Shows the ruthless nature of the Cartel and how they are taking advantage of the dire straits the farmers are in. ***Change to Bobby's POV - helping with the interviewing. Move to prologue -  add in more on the state of Jackson with the smelter closing. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 2,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 0,
+      "title": "<$n>) 3rd Stillborn Family Life",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Opens with Bee giving birth to third (maybe 2nd?) sill born in as many years. Suzie's family and their disfunction is on display: Pa beats Ma, Suzie, and Jacob. Death of babies, and severe drought foreshadow deaths and loss to come. End with Jacob leaving for the army, and Suzie envy of his getting away ***Make Jacob the oldest and maybe he is actually Jeb's son - that is the history between them?? or at least Jeb thinks Jacob might be his. Another reason Jeb hates Pa - that he pushed Jacob away. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 3,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 0,
+      "title": "<$n>) Pa steals from employer",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(Two weeks later? ) Suzie spies on Pa has he returns from one of the nightly outings with Bobby and four other men. She sees him untape wrapped white bricks, and wrapped money from his legs, belly, and back, then go deep into the desert, and returns without them. Suzie is caught spying on him and is beaten, Bee is raped in order for Pa to be able to sleep. Does she really need to be raped again? Maybe too much? Questions Ma to see if she knows about Pa going out at night, and it appears as though she does. Suzie doesn't understand and criticizes Ma - who reacts by almost hitting Suzie - but doesn't. Ends with Ma crying (feeling terrible for almost hitting Suzie) about being just like Pa - and Suzie comforting her saying it's okay. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 4,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 0,
+      "title": "<$n>) Neighbors support ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "***Over the next few days, after stillborn, neighbors visit offering condolences and bringing food. (Drought: death of land = death of babies). Conversation always turns to the drought. Pa hides out to avoid neighbor gossip about him. Mrs. Jones comforts Ma as Ma ***begins to question who the father is. They also collude to help Bee go away. Bee overhears them and isn't happy. ***Refer to last time Suzie thought Bee would have to go away - and she tried to kill herself. (marks on wrist). \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 5,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 0,
+      "title": "<$n>) Bobby Recruits David (Pa)",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(Monday morning) Bobby talks David into joining him in the tunnel dig for the Cartel. David is reluctant, but with the drought, and looming bank loan he agrees and joins Bobby, but understand it must be done it total secret, during the night. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 6,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 1,
+      "title": "<$n>) Store scene",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "**Four weeks after after birth, Suzie and Ma go to Jebs store. Suzie is confronted with hostility from Jeb the store owner, the community is faced with hostility from Cartel and from illegal crossing from Mexico into their ranches and farms (demonstrated by the new on the TV in the store. Suzie is approached by Aiden, an old beau from high school but Suzie tells herself he is there for Bee. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 7,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 1,
+      "title": "<$n>) Dinner Scene",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Back at home, evening. Suzie sets a place for Bee at the table ***[is this consistent - there is not sexual threat there- maybe have Ma warn Suzie that Pa is bad today, then while Ma is preparing dinner Suzie add the plate for Bee]. Pa hits Suzie for setting a place for Bee at the table. Ma does not try to intervene, but Suzie steps in to keep Pa from hitting her Ma. Suzie is the protector of Bee and Ma. Suzie doesn't need anyone. Suzie believe Bee needs her, provides her a voice but she doesn't need Bee. ***Maybe add something in her about Pa not wanting her to see Mrs. J anymore. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 8,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 1,
+      "title": "<$n>) Suzie stands up to Pa ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie helps supplement the family earnings by gleaning the fields but she secretly hides some of the proceeds. He Pa is furious she didn't bring home enough, and starts to beat on her. This time Suzie stands up for herself and hits him good. He recovers and beats her silly, and take Bee into the bedroom and pounds her sexually. Suzie decides fighting back may not be good.  ***Maybe move this earlier? "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 9,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 1,
+      "title": "<$n>) Mrs.Jones brings books ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Mrs. Jones brings books by the house for Suzie after Pa has left. Ma tells Mrs. J that Pa forbade Suzie to work w Mrs. J, Mrs. J says she'll take care of it. They talk about Suzie getting out of the town someday - but she won't leave w/o Bee and Ma.***Add that Suzie looks at her wrist scares when she thinks about leaving w/o Bee. Tells Suzie to come to her place to work anyway. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 10,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 1,
+      "title": "<$n>) Mrs. J deals w Pa",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Sunday morning. Mrs J confront Pa about susie working for her. He relents. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 11,
+      "lineId": 1,
+      "beatId": 3,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 2,
+      "title": "<$n>) Priest sermon  ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(SUNDAY) Priest gives sermon about an evil in the town (later learn its the Cartel). The Cartel has a heated discussion with him after the mass, (in later scene he is found dead). Jo and Suzie walk home together. David asks Bobby to help him on the farm tomorrow morning. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 12,
+      "lineId": 1,
+      "beatId": 3,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 2,
+      "title": "<$n>) Suzie & Jo walk home",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(Sunday - same day after church) Suzie and Jo walk home and discuss Jeb's store, the construction crew, Aiden and Jacob. Jo decides to have a belated 'welcome home' part for Aiden, and gets Suzie to agree to come. Jump into lake to have fun. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 13,
+      "lineId": 1,
+      "beatId": 3,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 2,
+      "title": "<$n>) Priest's suicide",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Priest body is found naked in the desert and deemed a suicide. At his funeral, outsiders stand guard with guns as if to warn the townsfolk to stay in line. (MOVE AFTER PA STEAL FROM CARTEL Scene). \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 14,
+      "lineId": 1,
+      "beatId": 3,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 2,
+      "title": "<$n>) Pa is shot",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Ma realized Pa is the daddy of the three stillborn children, ***add what made Ma realized, and next thing Pa is shot. Unclear as to who did it. Ma believes Pa is dead, calls her bother Bobby to help clean up.*** Add in shovel info ***Suzie should see Bobby and Ma aruguing before they drive off (arguing about what to do since he isn't dead yet. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 15,
+      "lineId": 1,
+      "beatId": 4,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 3,
+      "title": "<$n>) Ma doesn't return",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Ma and Bobby leave with Pa's body. Suzie fears that Ma has nothing good to return to, so probably won't. Suzie obsessively cleans, denying anything is wrong. *** Add Suzie thinking about how much she loves her Ma? They prepare for picnic Ma had promised, but never go. Next morning, she plows the field trying to be normal. At midnight Bobby comes to \"pick up\" Pa but drives off without him. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 16,
+      "lineId": 1,
+      "beatId": 5,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 5,
+      "title": "<$n>) Shack with Aiden",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Flashback to when Aiden and Suzie were in the shack. They begin making out. When they relax Aiden tell her he is going to Sierra Vista to college. Suzie freaks - feels she is being abandoned - needs Bee there. Then Aiden's Pa finds them. Drags Suzie home and confronts Suzie's Pa saying you won't take something from me again. What was Ma's story with Jeb? \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 17,
+      "lineId": 1,
+      "beatId": 5,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 5,
+      "title": "<$n>) Party scene ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(Saturday - a couple weeks after they walked home) At the welcome home party for Aiden, Suzie runs into Maricella who confirms that her Pa (Gilberto - who was interviewed in prior scene/prologue) is missing and he too was going out at night. Suzie learns that several other men are missing as well. Suzie also talks with Aiden about why he returned after college, and Aiden says to help his Dad who is in trouble. [Add interaction wtih Jo}"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 18,
+      "lineId": 1,
+      "beatId": 5,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 5,
+      "title": "<$n>) Suzie presses Aiden for info, refuses his help ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie presses Aiden for info on tunnel and evil influence. She has seen him with some of the evil people at his dad's store asking him specifically about the man with the gold truck. Suzie confides in him showing him the threatening note, and tells him Pa is dead and Cartel has Ma and Bee. He tells her about the Chinolas Cartel and what they are doing. Aiden is working for them but is cagey about it (learn later he is working for FBI infiltrating the Cartel). He suggests Suzie go to the FBI. Suzie pushes away his help, and is more determined to find Ma and Bee on her own, and decides to go to the mine to scout it out for herself. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 19,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 6,
+      "title": "<$n>) Follow the money",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "(Saturday) Suzie goes to work for Mrs. J. Mrs. J gives Suzie a dollar to mark so that she can start to learn to \"follow the money\". Mrs. J hint at a history between Ma and Jeb. She also gently presses Suzie about Bee and tries to help her see the truth (cautiously as she eyes the scars on Suzie's wrists). Next day, (Sunday) Mrs. J confronts Suzie's Pa to let Suzie study and work with her. When she tells Ma and Suzie they can't believe it, and think they will get a beating because Pa will think they put her up to it. But when they get back to the house, Pa is his normal self. Suzie thinks Mrs. J might not have understood Pa. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 20,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 6,
+      "title": "<$n>) Bobby enamered by Cartel money",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Bobby in works the tunnels and see for himself the weaknesses in security that David had mention, but Bobby just dismissed it. He avoids the bosses to keep from having to answer questions about Davids absence. He thinks about the farmers from town who have given their lives to build this drug tunnel. Bobby want in on all this money. Dams David if his disappearance messes the up for him. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 21,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 6,
+      "title": "<$n>) Bobby finds Ma's truck but no Ma ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Bobby takes Suzie to Ma's truck abandoned on an old road. Leaves Suzie there wondering why there is blood on the seat. Pa had been dead a while before they put in the truck, so there shouldn't be blood. ***Off scene: Bobby knows Pa wasn't dead but had planned with Susan that he would be dead before she disposed of the body. Pa fakes unconscientious and hears their plan. That's when he decides to take out Ma. -- where to add??? \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 22,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 6,
+      "title": "<$n>) Looks for Ma ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": " (still at crash site) Suzie finally decides to look for Ma. She finds the engraved shovel, and six grave-like sites. Hears blasting in the distance. Barely gets out of there before a huge dust storm hits. Close to home she finds one of her chickens dead on the road - someone cut of its legs. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 23,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 6,
+      "title": "<$n>) House ransacked, finds diary",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie's house is ransacked, she searches the house trying to figure out what they were looking for, and who it might have been. Finds threatening note - return our stuff or die. Finds Ma's diary & money. Concludes Ma hadn't abandoned them. Grieving for all she has lost, she must visit the baby’s graves, where she finds the drugs and money, realizes that this is what the Cartel was looking for. Concludes she has to go find Ma and Bee- and thus, confront the Cartel"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 24,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 6,
+      "title": "<$n>) Cartel warns Bobby (first encounter) ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Cartel boss warns Bobby that he is accountable for David, who has not shown up for work, because Bobby brought him in. Bobby understands the threat. Introduce specific cartel men - boss, accountant, and muscle. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 25,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 6,
+      "positionInBeat": 6,
+      "title": "<$n>) Bobby wants to move in, Suzie refuses",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie Informs Bobby that David (Pa) stole from Cartel, thinks that why Cartel is threatening Pa. Suzie presses him for info on the road to the mine, the tunnel. Bobby schemes to save his own ass. Suzie hides the finding of the graves near Ma's abandoned truck, doesn't admit to Bobby she knows what the Cartel is looking for. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 26,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 7,
+      "positionInBeat": 6,
+      "title": "<$n>) Cartel threatens Bobby (second encounter) ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Cartel threatens Bobby to produce David or die. Does this in front of the other men as a warning. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 27,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 8,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie scouts Mine and finds Pa alive ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie finishes gathering what she needs to scout mine, and heads out. Receives threatening phone call saying time is running out. Gets to mine, sees Bobby get threatened by Cartel, see Aiden come out of office. She also sees PA––He is alive. Gets shot at (but not hit) while trying to get out of mine area and back home. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 28,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 9,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie turns the table and threatens Cartel ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie makes first threat to Cartel and drops note Goldman's car. Threatens to out the ML locations to the Feds if they don't return Ma and Bee. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 29,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 10,
+      "positionInBeat": 6,
+      "title": "<$n>) Aiden and Mrs. Jones hide info from FBI ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie tries to return the ATV and overhears Aiden and Mrs. Jones. Learns more money laundering scheme, and which store owners are involved (setup). Her plan starts to come together. It's clear now that Aiden has infiltrated the Cartel for the FBI, but isn't sharing everything with them. She sees Aiden mark the bills. ***Review - how much money? and add something later about the marked money. *** Can she sneak in and steal the land dead??? (had originally in Stealing scene from dry cleaners.) - Point out she still has the keys. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 30,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 11,
+      "positionInBeat": 6,
+      "title": "<$n>) Aiden delivers money to Cartel",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Aiden delivers money to the Cartel, also misinforms them that the FBI is focusing on the movie theatre and doesn't tell them he knows about the other stores. He believes he is protecting Suzie's Ma. He then meets with his FBI handler but doesn't tell him what he and Mrs. Jones figured out about the other store involved in the money laundering. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 31,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 12,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie dupes Bobby \n ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie pushes forward with her plan. Bobby's pressures her to tell him where the Cartel stash is. His words confirm that he doesn't know Pa is alive. Bobby feigns wanting to work together, but Suzie realizes he is just out for himself and will take the stash and run. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 32,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 13,
+      "positionInBeat": 6,
+      "title": "<$n>) Aiden and Mrs. Jones afraid the stress will break Suzie",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Aiden sees Cartel get a note, and overhears that it is a threat. Cartel thinks it is Aiden threatening them. Since it mentions Bee, Aiden knows it's from Suzie. He's decides not to tell the FBI. He and Mrs. Jones wonder what this will do to Suzie's psychic when Bee never returns. ***Add their concern about another suicide attempt. Aiden goes to talk Suzie off her threat. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 33,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 14,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie accepts Aiden's help",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Aiden confronts Suzie. Suzie opens up to him about the drugs and money her Pa stole. He confesses why he is working with the FBI: to save his Pa from prosecution as his Pa was threatened into agreeing to help the Cartel with their money laundering. Suzie gets Aiden to agree to call the FBI the day after the raid.  "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 34,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 15,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie steals Cartel Money from dry cleaners.",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Cartel does not act on Suzie's threat; they think it is a joke. She ups the game to show them she isn't kidding. She steals from one of their money laundering businesses which just got a large money drop that morning. ***remove part where she takes the papers. Add to somewhere else - maybe takes them from Aiden's garage? He hasn't turned them over yet?? Or steals them from the motor home when she is captured? \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 35,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 16,
+      "positionInBeat": 6,
+      "title": "<$n>) Aiden sets up FBI raid and warns Cartel",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": " After Suzie's theft, Aiden discloses to the FBI that the store is part of the ML scheme and they immediately jump to raid it. Aiden also tells the Cartel that the FBI is raiding the store but times it such that the FBI gets there first, so that the Cartel thinks the FBI got their money (which Suzie stole). Aiden tricks the Cartel to believe there is someone else informing the FBI. Cartel assume its David, since he is missing. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 36,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 17,
+      "positionInBeat": 6,
+      "title": "<$n>) FBI raids drycleaners, finds no money",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Plan works. FBI raids the store. Cartel men see it happen but can't stop it. The FBI don't find any money in the safe (because Suzie already stole it), but according to the owner they weren't supposed to get a drop until later that day (owners are in on it and lied). The Cartel thinks the FBI has seized their funds. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 37,
+      "lineId": 1,
+      "beatId": 6,
+      "bookId": 1,
+      "positionWithinLine": 18,
+      "positionInBeat": 6,
+      "title": "<$n>) Suzie ups the stakes for the Cartel",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie contacts (via note written by what looks like her Pa) the Cartel again and threatens more stores will go down if they don't release Ma and Bee. She makes it look like the note is from her Pa. Bobby is there when the note is received and is shocked to see the note is from her Pa, and confirms that to the Cartel. Cartel now thinks Bobby was lying to them about David being dead. Note also threatens to tell the Feds about the tunnel here, and the one in Nogalas (which Suzie learns about from papers in the safe when she stole the money). Angel (Gilberto's son who is \"missing\") helps with plot."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 38,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 8,
+      "title": "<$n>) Cartle considers new threat",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Cartel realized the 1st threat was not a hoax. Bobby tells them who the people are in the note: Susan is David's (Suzie's Pa) wife, and Bee is David's daughter (Bobby goes along with the facade because he really sin't sure what's going on). They zero in on David as the one making the threats, but don't understand how they are supposed to return two people they don't have. (Major revelation to reader that the Cartel doesn't have Ma or Bee). During discussion, 2nd threat is delivered. Cartel lash out at Bobby, telling him he has to find David and stop this -- or else; and decides to put an end to this now. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 39,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 8,
+      "title": "<$n>) Cartel demands Jeb launder more money ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Returning home, sSuzie runs into SRP guy, Sammy. Learns about the Utility road into the mine. SRP guy mentions ATV'ers who use it illegally. She gets the idea to borrow Aiden's ATV and goes to the store to get the keys from Aiden. While there she overhears Goldman and Jeb talking about money. Goldman tells them tunnel is open for business. Suzie see Goldman through crack in door (she is hiding) She learns money laundering is how revenue increased. Lies to Aiden about why she wants the ATV - but he suspects the truth and warns her not to go to the mine, she agrees (lies)."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 40,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 8,
+      "title": "<$n>) Cartel kidnaps Suzie ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie waits (hiding) at diner for Cartel to return Ma and Bee. Cartel has the place staked out, and ID's Suzie as David's \"accomplice\" They think David sent is daughter to collect them. So, they kidnap Suzie. Angel sees it happen. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 41,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 8,
+      "title": "<$n>) Aiden decides not to tell FBI about kidnapping ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Angel tells Aiden about Suzie being kidnapped. Aiden and Mrs. Jones realize they have to loop in the FBI."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 42,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 8,
+      "title": "<$n>) Suzie escapes from Cartel's torture ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Cartel has Suzie chained to a bed made of boards. The beat her to find out what she knows, but doesn't work. Its clear they think David is behind this. After a couple of hours, they take a break. Suzie managed to pull a nail from the sideboard and get herself out of the chains. She pulls the board out, and escapes. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 43,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 8,
+      "title": "<$n>) Suzie goes to Aiden after kidnapping ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 44,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 9,
+      "title": "<$n>) Ma found dead",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "She gets a bout of guilt and decides to try and find her Pa to warn him. She deduces the only place he could use as a hide-out is the old shack. She goes there, finds evidence Pa is holding up there, but also finds Ma dead. Pa has killed her. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 45,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 9,
+      "title": "<$n>) Why go on ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie is in utter despair. Doesn't know what to do, doesn't want to go on. She has a choice - to tell the FBI and get Pa arrested for killing Ma, which likely will hinder her chances of getting Bee freed; or should she can go after Bee and let Pa get away with murdering Ma (because he will have to leave town when FBI start hauling in the Cartel and she doesn't think the FBI will find him). At home, Suzie finds Bobby, fights (as in fist fights) with him and tells him Pa is alive, and Ma is dead - how can that be?? ***Bobby confesses that Pa wasn't dead when they put him in the truck, but that Susan said \"she'd take care of that - he was as good as dead.\" "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 46,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 9,
+      "title": "<$n>) Gang rape, faces reality of Bee ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "She attempts to find Bee again, knowing her Pa might get away with murder. She sneaks back to the mine and searches for Bee with no luck. She is about to leave when she hears Bobby telling the Cartel about Pa's location. She gets an idea. *** Needs to leave message fro Aiden - that she has an idea and is on her way back. When she is leaving she runs into the guards again (the same ones that shot at her earlier) and begin to gang rape her. She gets confused. Her psyche fights with becoming Bee to shield Suzie from the rape, and staying Suzie to fight them off and continue with her plan (which causes even more dissonance because her known plan is to save Bee. Or was the plan to get her Pa all along?). If she chooses to stay Suzie, it forces her to denounce Bee. She decides to denounce Bee. *** How does she get away? Leave her for dead maybe tie her up to a cactus? after they get a call from the boss telling them to get back to the Motor home? Maybe she has the ATV again, and Aiden uses the LoJack to find her? - she never returned the keys. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 47,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 9,
+      "title": "<$n>) Cartel believes Mo, that David stole the $750K",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "FBI informant tells Cartel that no money was recovered in the raid. They don't believe Mo when he swears, he delivered the money to the dry cleaners, and they kill him to set an example. Mo's body is found in town to warn folks. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 48,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 9,
+      "title": "<$n>) In hospital ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie in hospital. Almost died. \nThreatened by her Pa. \nS realized he was the one threatening her not the cartel \nShe lens Aiden brought her in - saw the state she was in after the gang rape \nTwo cops come in, one of which S recognizes from the carttel\n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 49,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 9,
+      "title": "<$n>) Bobby hung from  statue ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "As S and Aiden leave the hospital - see Bobby's body hanging in town square \nS feels even more pressure to save herself and the town. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 50,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": 1,
+      "positionWithinLine": 6,
+      "positionInBeat": 9,
+      "title": "<$n>) Pa shot at Jeb's store ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Pa confronts Jeb to find S but ends up in a shoot out \nS shoots Pa dead, Jeb is shot, Aiden is shot, Suzie gets away. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 51,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 10,
+      "title": "<$n>) Leads Cartel and FBI to the shack ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie gets note to Mo saying their money is in the shack.  Mo goes after it. \n\nInforms FBI about the body (her Ma) in the shack and tells them the cartel will be there to clean up the mess.  Also tells FBI that they have a mole. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 52,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 10,
+      "title": "<$n>) Gives Mrs. Jones the evidence ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "S reviews stolen cartel paperwork with Mrs. J\nIt's all they need \nMrs. Jones calls FBI to deliver the paperwork \nAgent raid and leave out Palmer (suspected mole) \nGives mole bad info \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 53,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 10,
+      "title": "<$n>) Agents to Shack",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "FBI goes to shack to find body and Cartel \nCatch cartel men \nSuzie is there to witness it "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 54,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 10,
+      "title": "<$n> ) Jeb / Aiden questioned by FBI in hospital",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jeb's awakens from shooting at his store. Starts warming up to S \nShe tells him he shot Aiden, and she shot her Pa. and that her Ma was killed by her Pa. \nJeb starts story about her Ma \nFBI mole comes into questions Aiden, who corroborates the Bad info his boss gave him. \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 55,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 10,
+      "title": "<$n> ) Mole is caught El Brutal dies",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "S sneaks into FBI mole's car w gun\nDelacroix there w another agent\nEl Brutal arrives in Mo's truck (mo is dead) \nShoot out - Suzie shot in shoulder, El Brutal and FBI mole dead, FBI agent wounded \n"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 56,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 10,
+      "title": "<$n> ) FBI cleans up ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Suzie out of hospital from GSW\nFBI strike deal with MrsJ, Aiden and Susie if they come clean. \nFBI guy sums it all up "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 57,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 6,
+      "positionInBeat": 10,
+      "title": "<$n>) Info Goes Public ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 58,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 7,
+      "positionInBeat": 10,
+      "title": "<$n>) FBI identifies bodies in field",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "S assists FBI in finding the bodies in the field \nAngel convinces her to go to the funeral. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 59,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 8,
+      "positionInBeat": 10,
+      "title": "<$n>) Jeb finishes story about Suzie's Ma ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Jeb goes home from hospital and tells S about her mom\nJeb apologies and gives his blessing for her and Aiden"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 60,
+      "lineId": 1,
+      "beatId": 9,
+      "bookId": 1,
+      "positionWithinLine": 9,
+      "positionInBeat": 10,
+      "title": "<$n>) Tells Aiden Bee is gone. ",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Aiden comes home from hospital. \nHe and Susie finally get time alone \nSusie feels ashamed about the raping, but in the end tells Aiden that she knows now Bee did not exist. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 61,
+      "lineId": 1,
+      "beatId": 10,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 11,
+      "title": "<$n>) After the funeral",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Mass funeral - S arranged for a big banquet for the town using the money she stole.  It rains "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    }
+  ],
+  "lines": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "customAttributes": {
+    "characters": [
+      {
+        "name": "Start with your character’s flaws and vulnerabilities. Ask yourself what will make them afraid or mean. What will make them strike out or run away? What would make even your nicest character hurt someone else? Where have they been hurt? How did they manage to hide or harden the wound? What happens when something rips away the protective covering of that injury?",
+        "type": "text"
+      },
+      {
+        "name": "Each opponent should attack the hero weakness in a different manner. ",
+        "type": "text"
+      },
+      {
+        "name": "Main Character - Protagonists",
+        "type": "text"
+      },
+      {
+        "name": "Daughter of Susan and David Bannon",
+        "type": "text"
+      },
+      {
+        "name": "Gender",
+        "type": "text"
+      },
+      {
+        "name": "Height",
+        "type": "text"
+      },
+      {
+        "name": "Complexion",
+        "type": "text"
+      },
+      {
+        "name": "15",
+        "type": "text"
+      },
+      {
+        "name": "Place of birth",
+        "type": "text"
+      },
+      {
+        "name": "Weight",
+        "type": "text"
+      },
+      {
+        "name": "Handedness",
+        "type": "text"
+      },
+      {
+        "name": "07/04/",
+        "type": "text"
+      },
+      {
+        "name": "Spouse(s)/partner(s)",
+        "type": "text"
+      },
+      {
+        "name": "Biological father",
+        "type": "text"
+      },
+      {
+        "name": "Siblings",
+        "type": "text"
+      },
+      {
+        "name": "Social status",
+        "type": "text"
+      },
+      {
+        "name": "Position/role",
+        "type": "text"
+      },
+      {
+        "name": "Fugitive, criminal, up-standing member of the public, etc.",
+        "type": "text"
+      },
+      {
+        "name": "Hobbies",
+        "type": "text"
+      },
+      {
+        "name": "Languages",
+        "type": "text"
+      },
+      {
+        "name": "Actual - very tall for age, gangly but strong both physically and mentally. Subtle pretty.  ",
+        "type": "text"
+      },
+      {
+        "name": "Personality",
+        "type": "text"
+      },
+      {
+        "name": "Likes to learn, be smart, not be noticed, not be the center of attention. Doesn’t like people much - has no reason to trust them, and sees no good use for them.  ",
+        "type": "text"
+      },
+      {
+        "name": "Personal history",
+        "type": "text"
+      },
+      {
+        "name": "Over six foot ",
+        "type": "text"
+      },
+      {
+        "name": "But raised with David/Pa more than her because of their abusive father. ",
+        "type": "text"
+      },
+      {
+        "name": "Drinks a lot - tequila. ",
+        "type": "text"
+      },
+      {
+        "name": "Dot’s husband",
+        "type": "text"
+      },
+      {
+        "name": "The big burley guy could eat the nerd for lunch with his gold tooth, gold jewelry, and dreadlocks.  ",
+        "type": "text"
+      },
+      {
+        "name": "Referenced in Bobby's first Cartel encounter. ",
+        "type": "text"
+      },
+      {
+        "name": "Mo's boss, Guga Guerrero but was better know as el Brutal Abogado or the Brutal Lawyer.  ",
+        "type": "text"
+      },
+      {
+        "name": "Drives an \"old\" Pontiac.",
+        "type": "text"
+      },
+      {
+        "name": "Died of lung disease. ",
+        "type": "text"
+      },
+      {
+        "name": "Deceased Husband - Michael, worked at SRP in Springerville. ",
+        "type": "text"
+      },
+      {
+        "name": "Neighbor woman who lost her husband in the tunnels. ",
+        "type": "text"
+      },
+      {
+        "name": "Daughter of Conchita Romera  ",
+        "type": "text"
+      },
+      {
+        "name": "Suzie meets him at Aiden’s party ",
+        "type": "text"
+      },
+      {
+        "name": "Dry Cleaner owner ",
+        "type": "text"
+      },
+      {
+        "name": "Special Agent Mark Delacroix - Aiden's handler ",
+        "type": "text"
+      }
+    ],
+    "places": [],
+    "cards": [],
+    "scenes": [],
+    "lines": [],
+    "notes": []
+  },
+  "places": [],
+  "tags": [],
+  "notes": [],
+  "beats": {
+    "1": {
+      "children": {
+        "1": [],
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [],
+        "10": [],
+        "11": [],
+        "12": [],
+        "null": [
+          1,
+          2,
+          3,
+          4,
+          11,
+          5,
+          6,
+          12,
+          7,
+          8,
+          9,
+          10
+        ]
+      },
+      "heap": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": null,
+        "5": null,
+        "6": null,
+        "7": null,
+        "8": null,
+        "9": null,
+        "10": null,
+        "11": null,
+        "12": null
+      },
+      "index": {
+        "1": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 1,
+          "position": 0,
+          "time": 0,
+          "expanded": true,
+          "title": "(A)-1.5 OPENING IMG / Sets tone, mood, type, sA\nOpening Image\nSets the tone, mood, type, and scope of the project. A \"before\" snapshot.\n1\n…\n1\n700\n1\n\nTheme Stated\nSecondary character poses question or statement to MC that is theme of the movie.\n12\n\n3185\n\n\nBaby dies \n\t1.\tBaby Dies\n\n\n\n\n\n\ncope  /\"before\" snapshot./Theme stated by 2ndary character"
+        },
+        "2": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 2,
+          "position": 1,
+          "time": 0,
+          "expanded": true,
+          "title": "(B)-2 SETUP Introduce or hint at all A story characters; <<=="
+        },
+        "3": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 3,
+          "position": 2,
+          "time": 0,
+          "expanded": true,
+          "title": "(C)-1 INCITING INCIDENT: Life-changing event that knocks down house of cards."
+        },
+        "4": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 4,
+          "position": 3,
+          "time": 0,
+          "expanded": true,
+          "title": "(D)-6 DEBATE"
+        },
+        "5": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 5,
+          "position": 5,
+          "time": 0,
+          "expanded": true,
+          "title": "(E)-2START SUBPLOT \"love\" story; break from A STORY tension; carries theme; often uses new \"funhouse\" version of characters."
+        },
+        "6": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 6,
+          "position": 6,
+          "time": 0,
+          "expanded": true,
+          "title": "(F)-11PROMISE OF PREMISE /fun and games /threshold between 1st & 2nd half; can be false peak or false collapse; stakes are raised; "
+        },
+        "7": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 7,
+          "position": 8,
+          "time": 0,
+          "expanded": true,
+          "title": "(G)-8.5 BAD GUYS MOVE IN / opposite of midpoint (peak/collapse); whiff of death - old way of thinking dies/give up moment/runaway moment; false defeat; no hope"
+        },
+        "8": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 8,
+          "position": 9,
+          "time": 0,
+          "expanded": true,
+          "title": "(H)-4 ALL IS LOST  / Darkest Moment / Subplot combine and reveal solution"
+        },
+        "9": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 9,
+          "position": 10,
+          "time": 0,
+          "expanded": true,
+          "title": "(I)-10 ACT III Wrap-up; dispatch all bad guys ==>"
+        },
+        "10": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 10,
+          "position": 11,
+          "time": 0,
+          "expanded": true,
+          "title": "(J)<1  FINALE opposite of opening image; show how much change has occurred ==>"
+        },
+        "11": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 11,
+          "position": 4,
+          "time": 0,
+          "expanded": true,
+          "title": "ACT II CLEAR CHANGE "
+        },
+        "12": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 12,
+          "position": 7,
+          "time": 0,
+          "expanded": true,
+          "title": "MIDPOINT"
+        }
+      }
+    },
+    "series": {
+      "children": {
+        "null": []
+      },
+      "heap": {},
+      "index": {}
+    }
+  },
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ]
+  },
+  "images": {},
+  "hierarchyLevels": {
+    "0": {
+      "name": "Chapter",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#0b1117",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#0b1117"
+      }
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": false
+  }
+}

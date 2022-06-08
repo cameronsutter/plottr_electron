@@ -118,14 +118,15 @@ describe('ImportScrivener', () => {
   describe('All 3 scrivener files', () => {
     PROBLEMATIC_SCRIVENER_FILES.forEach((file) => {
       const testOutput = readOutput(file)
+      const strippedFileName = file.split('/').pop().split('.pltr')
 
-      describe('file', () => {
+      describe(`${strippedFileName} file`, () => {
         it('should produce a .pltr file', () => {
           expect(endsWith(TEST_OUTPUT, '.pltr')).toBeTruthy()
         })
       })
 
-      describe('json', () => {
+      describe(`${strippedFileName} json`, () => {
         it('should produce a json object', () => {
           expect(isAnObject(testOutput)).toBeTruthy()
         })

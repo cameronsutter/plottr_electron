@@ -139,8 +139,15 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) =>
-      load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+    const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
+      const lastFileIsOfflineAndWeAreInPro =
+        isInProMode && filePath && !filePath.startsWith('plottr://')
+      if (lastFileIsOfflineAndWeAreInPro) {
+        promptToUploadFile(filePath)
+      } else {
+        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+      }
+    }
     ipcRenderer.on('reload-from-file', reloadListener)
 
     if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {

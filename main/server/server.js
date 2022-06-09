@@ -189,7 +189,7 @@ const setupListeners = (port, userDataPath) => {
                 send(SAVE_BACKUP_SUCCESS, filePath)
               })
               .catch((error) => {
-                logger.error('Error while saving a backup ', payload, error)
+                logger.error('Error while saving a backup ', payload.file.file, error)
                 send(SAVE_BACKUP_ERROR, filePath, error.message)
               })
             return

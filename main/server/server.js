@@ -15,7 +15,7 @@ import {
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
 } from '../../shared/socket-server-message-types'
-import { logger } from './logger'
+import { makeLogger } from './logger'
 import FileModule from './files'
 import BackupModule from './backup'
 
@@ -29,16 +29,18 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const setupListeners = (port, userDataPath) => {
-  const { saveFile, saveOfflineFile, basename, readFile, autoSave } = FileModule(
-    userDataPath,
-    logger
-  )
-  const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
-
-  logger.info(`Starting server on port: ${port}`)
+  process.send(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
 
   webSocketServer.on('connection', (webSocket) => {
+    const logger = makeLogger(webSocket)
+
+    const { saveFile, saveOfflineFile, basename, readFile, autoSave } = FileModule(
+      userDataPath,
+      logger
+    )
+    const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
+
     webSocket.on('message', (message) => {
       try {
         const { type, messageId, payload } = JSON.parse(message)
@@ -258,7 +260,7 @@ const setupListeners = (port, userDataPath) => {
 
 const startServer = () => {
   const { port, userDataPath } = parseArgs()
-  logger.info('args', process.argv)
+  process.send(`args: ${process.argv}`)
   setupListeners(port, userDataPath)
 }
 

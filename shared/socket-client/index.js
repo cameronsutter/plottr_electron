@@ -17,6 +17,9 @@ import {
   AUTO_SAVE_BACKUP_ERROR,
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
+  LOG_INFO,
+  LOG_WARN,
+  LOG_ERROR,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -118,6 +121,19 @@ const connect = (
           case RM_RF:
           case PING: {
             resolvePromise()
+            return
+          }
+          // Logging
+          case LOG_INFO: {
+            logger.info(result, type)
+            return
+          }
+          case LOG_WARN: {
+            logger.warn(result, type)
+            return
+          }
+          case LOG_ERROR: {
+            logger.error(result, type)
             return
           }
         }

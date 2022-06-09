@@ -7,7 +7,9 @@ const SettingsModule = (userDataPath) => {
   const settingsFileName = process.env.NODE_ENV == 'development' ? 'config_dev.json' : 'config.json'
 
   const readSettings = () => {
-    return readFile(path.join(userDataPath, settingsFileName))
+    return readFile(path.join(userDataPath, settingsFileName)).then((data) => {
+      return JSON.parse(data)
+    })
   }
 
   return { readSettings }

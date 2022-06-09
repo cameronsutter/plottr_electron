@@ -51,7 +51,7 @@ const saver = (whenClientIsReady) => {
     const forceSave = (previousFile) => () => {
       const userId = selectors.userIdSelector(jsonData)
       whenClientIsReady(({ autoSave }) => {
-        autoSave(filePath, jsonData, userId, previousFile)
+        return autoSave(filePath, jsonData, userId, previousFile)
       })
       resetCount = 0
       saveTimeout = null

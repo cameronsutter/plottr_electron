@@ -74,21 +74,21 @@ const connect = (
           // to the normal/happy path):
           case SAVE_BACKUP_ERROR: {
             if (onSaveBackupError) {
-              const [filePath, errorMessage] = payload
+              const [filePath, errorMessage] = result
               onSaveBackupError(filePath, errorMessage)
             }
             return
           }
           case SAVE_BACKUP_SUCCESS: {
             if (onSaveBackupSuccess) {
-              const [filePath] = payload
+              const [filePath] = result
               onSaveBackupSuccess(filePath)
             }
             return
           }
           case AUTO_SAVE_ERROR: {
             if (onAutoSaveError) {
-              const [filePath, errorMessage] = payload
+              const [filePath, errorMessage] = result
               onAutoSaveError(filePath, errorMessage)
             }
             return
@@ -101,7 +101,7 @@ const connect = (
           }
           case AUTO_SAVE_BACKUP_ERROR: {
             if (onAutoSaveBackupError) {
-              const [backupFilePath, backupErrorMessage] = payload
+              const [backupFilePath, backupErrorMessage] = result
               onAutoSaveBackupError(backupFilePath, backupErrorMessage)
             }
             return
@@ -126,7 +126,7 @@ const connect = (
           `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
         )
       } catch (error) {
-        logger.error('Error while replying: ', data, error)
+        logger.error('Error while replying: ', error.message)
       }
     })
 
@@ -198,6 +198,7 @@ const instance = () => {
   let resolvedPromise = null
   let resolve = null
   let reject = null
+  let logger = null
 
   // See the destructured argument of the connect function for the
   // structure of `eventHandlers`.
@@ -221,14 +222,20 @@ const instance = () => {
   const whenClientIsReady = (f) => {
     if (client) {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        window.requestIdleCallback(() => {
           const result = f(client)
-          if (typeof result.then === 'function') {
-            result.then(resolve)
-          } else {
-            resolve(result)
+          try {
+            if (typeof result.then === 'function') {
+              result.then(resolve)
+            } else {
+              resolve(result)
+            }
+          } catch (error) {
+            if (logger) {
+              logger.error('Error while using client: ', error)
+            }
           }
-        }, 0)
+        })
       })
     }
     if (resolvedPromise) {

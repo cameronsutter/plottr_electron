@@ -4,7 +4,8 @@ import fs from 'fs'
 import { xml2json } from 'xml-js'
 import undoable from 'redux-undo'
 
-import { wordExporter, exportConfig as default_config } from 'plottr_import_export'
+import default_config from 'plottr_import_export/src/exporter/default_config'
+import { wordExporter } from 'plottr_import_export'
 import { actions, rootReducer } from 'pltr/v2'
 
 import { readExample3, copyCurrent, exportedPath, prevExportedPath, EXAMPLE_3 } from './common'

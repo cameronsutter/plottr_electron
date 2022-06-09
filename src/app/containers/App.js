@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
 import { dialog } from '@electron/remote'
-import log from 'electron-log'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
+import { selectors, actions } from 'pltr/v2'
 
+import log from '../../../shared/logger'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
 import ActsTour from '../components/intros/Tour'
@@ -21,7 +22,7 @@ import {
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
-import { selectors } from 'pltr/v2'
+import MainIntegrationContext from '../../mainIntegrationContext'
 
 const App = ({
   forceProjectDashboard,
@@ -32,6 +33,7 @@ const App = ({
   isResuming,
   userNeedsToLogin,
   sessionChecked,
+  clickOnDom,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -144,11 +146,11 @@ const App = ({
     closeOrRefresh(true)
   }
 
-  const saveAndClose = () => {
+  const saveAndClose = (saveFile) => () => {
     setBlockClosing(false)
     setShowAskToSave(false)
     const { present } = store.getState()
-    ipcRenderer.send('save-file', present.file.fileName, present)
+    saveFile(present.file.fileName, present)
     closeOrRefresh(true)
   }
 
@@ -162,11 +164,17 @@ const App = ({
     if (!showAskToSave || isCloudFile) return null
 
     return (
-      <AskToSaveModal
-        dontSave={dontSaveAndClose}
-        save={saveAndClose}
-        cancel={() => setShowAskToSave(false)}
-      />
+      <MainIntegrationContext.Consumer>
+        {({ saveFile }) => {
+          return (
+            <AskToSaveModal
+              dontSave={dontSaveAndClose}
+              save={saveAndClose(saveFile)}
+              cancel={() => setShowAskToSave(false)}
+            />
+          )
+        }}
+      </MainIntegrationContext.Consumer>
     )
   }
 
@@ -198,7 +206,12 @@ const App = ({
           <Navigation forceProjectDashboard={forceProjectDashboard} />
         </React.StrictMode>
       </ErrorBoundary>
-      <main className="project-main tour-end">
+      <main
+        className="project-main tour-end"
+        onClick={(event) => {
+          clickOnDom(event.clientX, event.clientY)
+        }}
+      >
         <React.StrictMode>
           <Body />
         </React.StrictMode>
@@ -224,6 +237,7 @@ App.propTypes = {
   isResuming: PropTypes.bool,
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
+  clickOnDom: PropTypes.func,
 }
 
 function mapStateToProps(state) {
@@ -238,4 +252,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, { clickOnDom: actions.domEvents.clickOnDom })(App)

@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
 import { groupBy, pickBy, keys } from 'lodash' // get/set will possibly be used to edit values
-import { Grid, Row, Col } from 'react-bootstrap'
 import ReactJson from 'react-json-view'
-import DevFileDrop from './DevFileDrop'
+
 import { newIds, helpers, selectors } from 'pltr/v2'
+
+import { Col, Row, Grid } from 'connected-components'
+import DevFileDrop from './DevFileDrop'
 
 const {
   books: { isSeries },

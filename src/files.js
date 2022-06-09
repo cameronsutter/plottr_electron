@@ -8,8 +8,9 @@ import { actions, reducers, emptyFile, selectors } from 'pltr/v2'
 
 import { closeDashboard } from './dashboard-events'
 import { store } from './app/store'
-import { logger } from './logger'
+import logger from '../shared/logger'
 import { uploadToFirebase } from './upload-to-firebase'
+import { whenClientIsReady } from '../shared/socket-client'
 
 const fsPromises = fs.promises
 
@@ -78,8 +79,12 @@ export const messageRenameFile = (fileId) => {
   document.dispatchEvent(renameEvent)
 }
 
+// FIXME: we should get to a point where `whenClientIsReady` is
+// injected everywhere.
 export const saveFile = (filePath, file) => {
-  ipcRenderer.send('save-file', filePath, file)
+  return whenClientIsReady(({ saveFile }) => {
+    return saveFile(filePath, file)
+  })
 }
 
 export const editKnownFilePath = (oldFilePath, newFilePath) => {

@@ -27,7 +27,7 @@ import {
   createFromTemplate,
   openExistingProj,
 } from '../dashboard-events'
-import { logger } from '../logger'
+import logger from '../../shared/logger'
 import { fileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
@@ -36,15 +36,28 @@ import { openFile, rmRF } from 'connected-components'
 import { notifyUser } from '../notifyUser'
 import { exportSaveDialog } from '../export-save-dialog'
 import { instrumentLongRunningTasks } from './longRunning'
-import { getPort, setPort } from '../workerPort'
-import { createClient } from '../socket-client'
+import { createClient, getPort, setPort } from '../../shared/socket-client'
+import { rootComponent } from './rootComponent'
+import { makeFileModule } from './files'
+import { whenClientIsReady } from '../../shared/socket-client'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
 setPort(socketWorkerPort)
-createClient(getPort())
+createClient(getPort(), logger, (error) => {
+  logger.error(
+    `Failed to reconnect to socket server on port: <${getPort()}>.  Killing the window.`,
+    error
+  )
+  dialog.showErrorBox(
+    t('Error'),
+    t("Plottr ran into a problem and can't start.  Please contact support.")
+  )
+  window.close()
+})
+const { saveFile } = makeFileModule(whenClientIsReady)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
 
@@ -123,7 +136,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
 
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
-  ipcRenderer.send('save-file', present.file.fileName, present)
+  saveFile(present.file.fileName, present)
 })
 
 ipcRenderer.on('save-as', () => {
@@ -137,7 +150,7 @@ ipcRenderer.on('save-as', () => {
   })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    ipcRenderer.send('save-file', newFilePath, present)
+    saveFile(newFilePath, present)
     const listener = (event, fileSaved) => {
       if (fileSaved === newFilePath) {
         ipcRenderer.send('pls-open-window', newFilePath, true)
@@ -158,7 +171,7 @@ const ensureEndsInPltr = (filePath) => {
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
   if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
-    ipcRenderer.send('save-file', present.file.fileName, present)
+    saveFile(present.file.fileName, present)
     return
   }
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
@@ -281,23 +294,21 @@ ipcRenderer.on('close-dashboard', () => {
   closeDashboard()
 })
 
-ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName) => {
+ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName, isScrivenerFile) => {
   const state = store.getState().present
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
-  uploadToFirebase(emailAddress, userId, json, fileName)
-    .then((response) => {
-      const fileId = response.data.fileId
-      openFile(`plottr://${fileId}`, fileId, false)
-      // Fixme: this could have been called to create from a snowflake
-      // file too(!)
+  uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
+    const fileId = response.data.fileId
+    openFile(`plottr://${fileId}`, fileId, false)
+
+    if (isScrivenerFile) {
       store.dispatch(actions.applicationState.finishScrivenerImporter())
-      closeDashboard()
-      return fileId
-    })
-    .catch((error) => {
-      ipcRenderer.send('error-importing-scrivener', error)
-    })
+    }
+
+    closeDashboard()
+    return fileId
+  })
 })
 
 ipcRenderer.on('finish-creating-local-scrivener-imported-file', () => {
@@ -335,13 +346,29 @@ ipcRenderer.on('error', (event, { message, source }) => {
 
 ipcRenderer.on('update-worker-port', (_event, newPort) => {
   const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
+  logger.info(`Updating the socket server port to: ${newPort}`)
   setPort(socketWorkerPort)
-  createClient(getPort())
+  createClient(getPort(), logger, (error) => {
+    logger.error(
+      `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
+      error
+    )
+    dialog.showErrorBox(
+      t('Error'),
+      t('Plottr ran into a problem and needs to close.  Please contact support.')
+    )
+    window.close()
+  })
 })
 
 ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
   fileSystemAPIs.saveAppSetting('user.dark', newValue)
   store.dispatch(actions.settings.setDarkMode(newValue))
+})
+
+ipcRenderer.on('import-scrivener-file', (_event, sourceFile, destinationFile) => {
+  logger.info(`Received instruction to import from ${sourceFile} to ${destinationFile}`)
+  ipcRenderer.send('create-from-scrivener', sourceFile, false, destinationFile)
 })
 
 // TODO: not sure when/whether we should unsubscribe.  Presumably
@@ -351,6 +378,8 @@ ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
 // listeners and too many of those cause slow-downs.
 const _unsubscribeToPublishers = world.publishChangesToStore(store)
 
-const root = document.getElementById('react-root')
+const root = rootComponent()
 
-renderFile(root)
+renderFile(root, whenClientIsReady)
+
+ipcRenderer.send('listeners-registered')

@@ -10,7 +10,7 @@ import { t } from 'plottr_locales'
 
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
-import { logger } from '../../logger'
+import logger from '../../../shared/logger'
 import { fileSystemAPIs, licenseServerAPIs } from '../../api'
 
 const Listener = ({
@@ -204,12 +204,17 @@ Listener.propTypes = {
   setPermission: PropTypes.func.isRequired,
   selectedFile: PropTypes.object,
   setFileLoaded: PropTypes.func.isRequired,
+  patchFile: PropTypes.func.isRequired,
   clientId: PropTypes.string,
+  fileLoaded: PropTypes.bool,
   isOffline: PropTypes.bool,
   offlineFilePath: PropTypes.string,
+  filePath: PropTypes.string,
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
+  selectFile: PropTypes.func.isRequired,
   setResuming: PropTypes.func.isRequired,
+  resuming: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   withFullFileState: PropTypes.func.isRequired,
   isLoggedIn: PropTypes.bool,

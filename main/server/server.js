@@ -1,18 +1,29 @@
 import { WebSocketServer } from 'ws'
 import fs from 'fs'
 
-import { PING, RM_RF } from '../../shared/socket-server-message-types'
+import {
+  FILE_BASENAME,
+  PING,
+  READ_FILE,
+  RM_RF,
+  SAVE_FILE,
+  SAVE_OFFLINE_FILE,
+} from '../../shared/socket-server-message-types'
 import { logger } from './logger'
+import FileModule from './files'
 
 const parseArgs = () => {
   return {
     port: process.argv[2],
+    userDataPath: process.argv[3],
   }
 }
 
 const { rm } = fs.promises
 
-const setupListeners = (port) => {
+const setupListeners = (port, userDataPath) => {
+  const { saveFile, saveOfflineFile, basename, readFile } = FileModule(userDataPath)
+
   logger.info(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
 
@@ -31,21 +42,89 @@ const setupListeners = (port) => {
             )
             return
           }
+          case SAVE_FILE: {
+            const { filePath, file } = payload
+            logger.info('Saving (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+              filePath: filePath,
+            })
+            saveFile(filePath, file).then((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            return
+          }
           case RM_RF: {
             logger.info('Deleting: ', payload)
             rm(payload.path, { recursive: true })
-              .then(() => {
+              .then((result) => {
                 webSocket.send(
                   JSON.stringify({
                     type,
                     messageId,
-                    payload: {},
+                    payload,
+                    result,
                   })
                 )
               })
               .catch((error) => {
                 logger.error('Error while deleting ', payload, error)
               })
+            return
+          }
+          case SAVE_OFFLINE_FILE: {
+            logger.info('Saving offline file (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+            })
+            const { file } = payload
+            saveOfflineFile(file).then((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            return
+          }
+          case FILE_BASENAME: {
+            logger.info('Computing basename for: ', payload)
+            const { filePath } = payload
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: basename(filePath),
+                payload,
+              })
+            )
+            return
+          }
+          case READ_FILE: {
+            logger.info('Reading a file at path: ', payload)
+            const { filePath } = payload
+            readFile(filePath).then((fileData) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result: JSON.parse(fileData),
+                  payload,
+                })
+              )
+            })
             return
           }
         }
@@ -59,9 +138,9 @@ const setupListeners = (port) => {
 }
 
 const startServer = () => {
-  const { port } = parseArgs()
+  const { port, userDataPath } = parseArgs()
   logger.info('args', process.argv)
-  setupListeners(port)
+  setupListeners(port, userDataPath)
 }
 
 startServer()

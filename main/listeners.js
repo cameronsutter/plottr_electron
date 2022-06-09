@@ -21,17 +21,15 @@ import {
   openKnownFile,
   createNew,
   createFromSnowflake,
-  saveFile,
   TEMP_FILES_PATH,
   removeFromTempFiles,
   removeFromKnownFiles,
   deleteKnownFile,
   editKnownFilePath,
   autoSave,
-  saveOfflineFile,
   createFromScrivener,
 } from './modules/files'
-import { lastOpenedFile } from './modules/lastOpened'
+import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
 import {
   editWindowPath,
   setFilePathForWindowWithFilePath,
@@ -39,21 +37,19 @@ import {
 } from './modules/windows/index'
 import { ensureBackupTodayPath, saveBackup } from './modules/backup'
 
-export const listenOnIPCMain = (getSocketWorkerPort) => {
+export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
     const lastFile = lastOpenedFile()
-    const lastFileIsValid =
-      (proMode && lastFile && lastFile.startsWith('plottr://')) ||
-      (!proMode && lastFile && !lastFile.startsWith('plottr://'))
     const win = getWindowById(id)
-    const filePath = win.filePath || (lastFileIsValid ? lastFile : null)
+    const filePath = win.filePath || lastFile
     if (win) {
       event.sender.send(
         'state-fetched',
         filePath,
         newFileOptions(),
         numberOfWindows(),
-        win.filePath
+        win.filePath,
+        processSwitches.serialise()
       )
     }
   })
@@ -110,23 +106,19 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
     })
   })
 
-  ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro) => {
-    createFromScrivener(importedPath, event.sender, isLoggedIntoPro).catch((error) => {
-      event.sender.send('error', {
-        message: error.message,
-        source: 'create-new-file',
-      })
-    })
+  ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro, destinationFile) => {
+    createFromScrivener(importedPath, event.sender, isLoggedIntoPro, destinationFile).catch(
+      (error) => {
+        event.sender.send('error', {
+          message: error.message,
+          source: 'create-new-file',
+        })
+      }
+    )
   })
 
   ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {
     openKnownFile(filePath, id, unknown, headerBarFileName)
-  })
-
-  ipcMain.on('save-file', (event, fileName, file) => {
-    saveFile(fileName, file).then(() => {
-      event.sender.send('file-saved', fileName)
-    })
   })
 
   ipcMain.on('auto-save', (event, filePath, file, userId, previousFile) => {
@@ -175,10 +167,6 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
         event.sender.send('save-backup-success', filePath)
       }
     })
-  })
-
-  ipcMain.on('record-offline-backup', (_event, file) => {
-    saveOfflineFile(file)
   })
 
   ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {
@@ -249,5 +237,9 @@ export const listenOnIPCMain = (getSocketWorkerPort) => {
       // ignore
       // on windows you need something called an Application User Model ID which may not work
     }
+  })
+
+  ipcMain.on('update-last-opened-file', (_event, newFilePath) => {
+    setLastOpenedFilePath(newFilePath)
   })
 }

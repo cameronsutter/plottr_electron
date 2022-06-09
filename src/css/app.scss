@@ -240,7 +240,13 @@ input[type='file'] {
 .popover {
   .popover-content {
     max-height: 100vh;
-    padding-bottom: 0;
+  }
+}
+.plottr-popover {
+  .popover-content {
+    // 35 is the height of the popover title
+    max-height: calc(80vh - 35px);
+    overflow-y: auto;
   }
 }
 #list-popover.popover {
@@ -250,6 +256,13 @@ input[type='file'] {
   }
 }
 #filter.popover {
+  .popover-content {
+    max-height: 83vh;
+    overflow: auto;
+  }
+}
+
+#filter.plottr-popover {
   .popover-content {
     max-height: 83vh;
     overflow: auto;

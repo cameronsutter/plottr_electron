@@ -1,9 +1,10 @@
-import log from 'electron-log'
 import request from 'request'
 import semverGt from 'semver/functions/gt'
+
 import { manifestStore, templatesStore, customTemplatesStore } from '../../file-system/stores'
 import { fileSystemAPIs } from '../../api'
 import { isDevelopment } from '../../isDevelopment'
+import log from '../../../shared/logger'
 
 const OLD_TEMPLATES_ROOT = 'templates'
 let env = 'prod'

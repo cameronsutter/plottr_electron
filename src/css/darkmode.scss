@@ -40,6 +40,30 @@ body.darkmode {
       border-bottom: 1px solid #444;
     }
   }
+  .plottr-popover {
+    color: $darkmode-text;
+    background-color: $darkmode-background;
+    &.right {
+      .arrow:after {
+        border-right-color: $darkmode-background;
+      }
+    }
+    &.left {
+      .arrow:after {
+        border-left-color: $darkmode-background;
+      }
+    }
+    &.bottom {
+      .arrow:after {
+        border-bottom-color: $darkmode-background;
+      }
+    }
+    .popover-title {
+      background-color: $darkmode-darker-background;
+      color: $darkmode-text;
+      border-bottom: 1px solid #444;
+    }
+  }
   .btn-default {
     border-color: $darkmode-darker-border;
     background-color: $darkmode-darker-background;

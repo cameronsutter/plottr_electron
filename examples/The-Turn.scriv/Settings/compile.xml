@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompileSettings>
+    <ProjectSettings>
+        <Content Scope="Included">
+            <Filter State="Off" Exclude="No" Type="Label">
+                <Label>-1</Label>
+            </Filter>
+        </Content>
+        <Options>
+            <RemoveAnnotations>Yes</RemoveAnnotations>
+            <ResampleImages DPI="72" MaxSize="0">No</ResampleImages>
+            <ConvertRichTextToMMD>No</ConvertRichTextToMMD>
+            <Links/>
+            <PDF>
+                <Cover Source="" Bleed="0.0" BleedUnits="pt"></Cover>
+                <Compression Enabled="No">
+                    <ImageResolutionCompressionType></ImageResolutionCompressionType>
+                    <ImageResolution>300</ImageResolution>
+                    <CompressionQuality>0.5</CompressionQuality>
+                </Compression>
+            </PDF>
+            <Scriptwriting>
+                <IncludeTitles>Yes</IncludeTitles>
+                <IncludeSynopses>Yes</IncludeSynopses>
+                <CommentsAsScriptNotes>Yes</CommentsAsScriptNotes>
+            </Scriptwriting>
+            <Ebook>
+                <Cover>
+                    <ImageDocument Source="FrontMatter"></ImageDocument>
+                    <SVG Width="-1" Height="-1"><![CDATA[]]></SVG>
+                </Cover>
+                <TOC PandocDepth="3">
+                    <HTML Generate="Yes">
+                        <Title>Contents</Title>
+                    </HTML>
+                </TOC>
+            </Ebook>
+        </Options>
+        <MetaData>
+            <Subjects>
+                <Subject></Subject>
+            </Subjects>
+            <EbookLanguage>English</EbookLanguage>
+        </MetaData>
+    </ProjectSettings>
+    <CurrentFileType>docx</CurrentFileType>
+    <FormatSettings>
+        <Format ID="DEFAULT">
+            <SectionLayouts>
+                <Type ID="394FB01F-477C-4C58-8CA5-61633BB49BF2">TEXT-SECTION</Type>
+                <Type ID="6BDADF0F-60A3-41E0-A822-816CDAF08A1D">NEW-PAGE-HEADER-WITH-TEXT</Type>
+            </SectionLayouts>
+        </Format>
+    </FormatSettings>
+    <LastUsedFormats>
+        <docx>4C1A0D13-D71C-48E1-99B7-41F1A1E4ADB8</docx>
+    </LastUsedFormats>
+</CompileSettings>

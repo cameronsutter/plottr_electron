@@ -3,6 +3,8 @@ import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
 import Store from 'electron-store'
+import yargs from 'yargs/yargs'
+import { hideBin } from 'yargs/helpers'
 
 Store.initRenderer()
 
@@ -24,6 +26,26 @@ import { addToKnown } from './modules/known_files'
 import { TEMP_FILES_PATH } from './modules/files'
 import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
+import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
+import ProcessSwitches from './modules/processSwitches'
+
+const { ipcMain } = electron
+
+////////////////////////////////
+////       Arguments      //////
+////////////////////////////////
+/**
+ * You can launch Plottr with command line arguments.  Using these
+ * arguments, you can:
+ *
+ *  - Open a particular file: On Windows and Linux, the first
+ *    user-supplied argument is the file to launch.  (MacOS uses a
+ *    different means to open a file).
+ *  - On any platform, you may supply the argument
+ *    "--enable-test-utilities".  This will make various facilities to
+ *    test and stress-test Plottr available at runtime for both the
+ *    production and development builds.
+ */
 
 ////////////////////////////////
 ////     Startup Tasks    //////
@@ -63,38 +85,60 @@ app.userAgentFallback =
 // app boots, it only opens a window corresponding to that event.
 let openedFile = false
 
-let socketWorkerPort = null
 const broadcastPortChange = (port) => {
-  socketWorkerPort = port
+  if (!isInitialised()) {
+    createClient(port, log, (error) => {
+      log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
+      app.quit()
+    })
+  }
+  setPort(port)
   broadcastToAllWindows('update-worker-port', port)
 }
 
 app.whenReady().then(() => {
-  startServer(log, broadcastPortChange)
+  startServer(log, broadcastPortChange, app.getPath('userData'))
     .then((port) => {
       log.info(`Socket worker started on ${port}`)
       return port
     })
     .catch((error) => {
-      log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.')
+      log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
       app.quit()
     })
     .then((port) => {
-      socketWorkerPort = port
-      listenOnIPCMain(() => socketWorkerPort)
       loadMenu()
-
+      const yargv = parseArguments(process.argv)
+      log.info('yargv', yargv)
+      const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
 
-      // Wait a little bit in case the app was launched by double clicking
-      // on a file.
-      setTimeout(() => {
-        if (!openedFile && !(fileLaunchedOn && is.macos)) {
-          openedFile = true
-          log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
-          openProjectWindow(fileLaunchedOn)
+      listenOnIPCMain(() => getPort(), processSwitches)
+
+      const importFromScrivener = processSwitches.importFromScrivener()
+      if (importFromScrivener) {
+        const { sourceFile, destinationFile } = importFromScrivener
+        log.info(`Importing ${sourceFile} to ${destinationFile}`)
+        const newWindow = openProjectWindow(null)
+        if (!newWindow) {
+          throw new Error('Could not create window to export with.')
         }
-      }, 1000)
+        newWindow.on('ready-to-show', () => {
+          ipcMain.once('listeners-registered', () => {
+            newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+          })
+        })
+      } else {
+        // Wait a little bit in case the app was launched by double clicking
+        // on a file.
+        setTimeout(() => {
+          if (!openedFile && !(fileLaunchedOn && is.macos)) {
+            openedFile = true
+            log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+            openProjectWindow(fileLaunchedOn)
+          }
+        }, 1000)
+      }
 
       // Register the toggleDevTools shortcut listener.
       globalShortcut.register('CommandOrControl+Alt+R', () => {
@@ -132,6 +176,10 @@ app.whenReady().then(() => {
       })
     })
 })
+
+function parseArguments(processArgv) {
+  return yargs(hideBin(processArgv)).argv
+}
 
 function fileToLoad(argv) {
   if (is.windows && process.env.NODE_ENV != 'dev') {

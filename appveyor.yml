@@ -7,8 +7,8 @@ cache:
 init:
   - git config --global core.autocrlf input
 install:
-  - ps: Install-Product node 14 x64
-  - npm i -g npm@7.10.0
+  - ps: Install-Product node 16 x64
+  - npm i -g npm@8.8.0
   - npm ci
 build_script:
   - npm run dist:windows

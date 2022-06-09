@@ -5,7 +5,6 @@ import path from 'path'
 import { ActionCreators } from 'redux-undo'
 import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
-import log from 'electron-log'
 
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'
@@ -44,7 +43,7 @@ import {
   uploadExisting,
   deleteCloudBackupFile,
 } from './files'
-import { logger } from './logger'
+import logger from '../shared/logger'
 import { closeDashboard } from './dashboard-events'
 import { fileSystemAPIs, licenseServerAPIs } from './api'
 import { isWindows, isLinux, isMacOS } from './isOS'
@@ -72,7 +71,7 @@ import {
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
-import { whenClientIsReady } from './socket-client'
+import { whenClientIsReady } from '../shared/socket-client'
 
 const win = getCurrentWindow()
 const version = app.getVersion()
@@ -330,7 +329,7 @@ const platform = {
   createErrorReport,
   createFullErrorReport,
   handleCustomerServiceCode,
-  log,
+  log: logger,
   dialog,
   showSaveDialogSync,
   showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
@@ -428,13 +427,24 @@ const platform = {
 
 const components = connections.pltr(platform)
 
-export const OverlayTrigger = components.OverlayTrigger
+export const Navbar = components.Navbar
+export const Grid = components.Grid
+export const NavItem = components.NavItem
+export const Nav = components.Nav
+export const Col = components.Col
+export const Row = components.Row
+export const Button = components.Button
 export const DeleteConfirmModal = components.DeleteConfirmModal
 export const MessageModal = components.MessageModal
 export const ColorPickerColor = components.ColorPickerColor
 export const ItemsManagerModal = components.ItemsManagerModal
 export const ListItem = components.ListItem
 export const PlottrModal = components.PlottrModal
+export const ModalBody = components.ModalBody
+export const ModalHeader = components.ModalHeader
+export const ModalTitle = components.ModalTitle
+export const ModalFooter = components.ModalFooter
+export const Form = components.Form
 export const EditAttribute = components.EditAttribute
 export const RichText = components.RichText
 export const editorRegistry = components.editorRegistry

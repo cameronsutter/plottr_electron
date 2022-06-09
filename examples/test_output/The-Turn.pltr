@@ -1,0 +1,1023 @@
+{
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large"
+    },
+    "searchTerms": {
+      "notes": null,
+      "characters": null,
+      "places": null,
+      "tags": null
+    }
+  },
+  "file": {
+    "fileName": "",
+    "loaded": false,
+    "dirty": false,
+    "version": "2022.6.29-alpha.6",
+    "lastOpened": "2022-06-08T17:31:51.744Z"
+  },
+  "series": {
+    "name": "The-Turn",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "The-Turn",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "characters": [],
+  "cards": [
+    {
+      "id": 1,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Picking up the pieces",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Raefe negotiates with Norcambers to avoid them taking revenge on NK"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 2,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 0,
+      "title": "Behind the curtain",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Raefe negotiates with NK, prevents a war. Mik learns Nila can entangle and she tells him and Jr what happened."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 3,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 0,
+      "title": "Wired for thought",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Raefe shares his growing unease with Lina. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 4,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 0,
+      "title": "Enacting the part",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Mik finds out more about Nila and the whole underground scene."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 5,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 0,
+      "title": "Getting in touch",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 6,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 0,
+      "title": "Nila goes to sec conf",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 7,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 6,
+      "positionInBeat": 0,
+      "title": "Robertson lays out the plan",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 8,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 7,
+      "positionInBeat": 0,
+      "title": "Raefe learns of sec plans",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 9,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 8,
+      "positionInBeat": 0,
+      "title": "Nila and Mik get closer",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 10,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 9,
+      "positionInBeat": 0,
+      "title": "Des learns more about sec plan",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 11,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 10,
+      "positionInBeat": 0,
+      "title": "School scene",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 12,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 11,
+      "positionInBeat": 0,
+      "title": "The kids compare notes",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 13,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 12,
+      "positionInBeat": 0,
+      "title": "Mik talks to his dad",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 14,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 13,
+      "positionInBeat": 0,
+      "title": "Des uncovers attack plan",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 15,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 14,
+      "positionInBeat": 0,
+      "title": "Nila leaves",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 16,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 15,
+      "positionInBeat": 0,
+      "title": "New K attacks",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 17,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 16,
+      "positionInBeat": 0,
+      "title": "Mik meets Ines",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 18,
+      "lineId": 1,
+      "beatId": 1,
+      "bookId": 1,
+      "positionWithinLine": 17,
+      "positionInBeat": 0,
+      "title": "New mind melds",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 19,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": 1,
+      "title": "Do North",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Mik and Nila arrive in Hudson's Bay. Nila finds out that Ken Robertson Jr. is her dad"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 20,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 1,
+      "positionInBeat": 1,
+      "title": "Out for a walk",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Raefe and Lina have a long talk. She wants him to come to Africa. He's not so sure. He's restless. He decides to go walkabout, trying to buy time to figure things out."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 21,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 2,
+      "positionInBeat": 1,
+      "title": "First Thunberg experience",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Noreen takes them to Thunberg. Describe how it works, some of the main characters. At the head of the Grand Riviere, land is slightly higher."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 22,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 3,
+      "positionInBeat": 1,
+      "title": "Diver has an idea",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Diver comes to grips with what she might do if she took a more active role. She talks to Flier, who agrees it's time. They agree that a way to increase human awareness of how their minds actually work would be helpful. They realize that  Des' ability to \"talk\" to computers could be useful. She contacts Raefe to broach the idea."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 23,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 4,
+      "positionInBeat": 1,
+      "title": "Doubts",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Conflict arises for the first time. Mik has doubts. He and Nila talk through how they decided to come here. Still valid. She tells him her dad."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 24,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 5,
+      "positionInBeat": 1,
+      "title": "Raefe talks to Des",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Des hears Diver's idea from Raefe. He agrees to try. He reports back that his initial attempts have blown his mind -- he's amazed at how the logic of the brain is so different than computers, so rich. Raefe is excited but not sure what to do with this information."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 25,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 6,
+      "positionInBeat": 1,
+      "title": "Diver contacts adno",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Diver gets in touch with Adno. Long time, no see. What is she working on? What about the species that they'v rejected -- how about that brain thing?"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 26,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 7,
+      "positionInBeat": 1,
+      "title": "Raefe comes to Radisson",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 27,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 8,
+      "positionInBeat": 1,
+      "title": "Diver talks to Anti",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "She checks her impressions with Anti who confirms them. She adds information about the differences between species."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 28,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 9,
+      "positionInBeat": 1,
+      "title": "Raefe comes to Thunberg",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Des tells him he has been experimenting with scanning his own brain and shows him how to do it."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 29,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 10,
+      "positionInBeat": 1,
+      "title": "Des comes to thunberg",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "With Raefe, they covertly organize a small group within the area of empaths and teach them what they have learned recently. "
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 30,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 11,
+      "positionInBeat": 1,
+      "title": "Diver talks to Flier",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "She tells him what she learned from Adno. He is surprised and interested. He will think about what to do with this."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 31,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": 1,
+      "positionWithinLine": 12,
+      "positionInBeat": 1,
+      "title": "Nila goes home",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Inspired by Raefe and Des' teaching, she decides to go back home and try to do something similar."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    }
+  ],
+  "lines": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Not so sweet sixteen",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "customAttributes": {
+    "characters": [],
+    "places": [
+      {
+        "name": "A",
+        "type": "text"
+      }
+    ],
+    "cards": [],
+    "scenes": [],
+    "lines": [],
+    "notes": []
+  },
+  "places": [
+    {
+      "id": 1,
+      "name": "Aleron's world",
+      "description": "",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "imageId": null,
+      "bookIds": [],
+      "A": ""
+    }
+  ],
+  "tags": [],
+  "notes": [],
+  "beats": {
+    "1": {
+      "children": {
+        "1": [],
+        "2": [],
+        "null": [
+          1,
+          2
+        ]
+      },
+      "heap": {
+        "1": null,
+        "2": null
+      },
+      "index": {
+        "1": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 1,
+          "position": 0,
+          "time": 0,
+          "expanded": true,
+          "title": "Part I"
+        },
+        "2": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 2,
+          "position": 1,
+          "time": 0,
+          "expanded": true,
+          "title": "Part II"
+        }
+      }
+    },
+    "series": {
+      "children": {
+        "null": []
+      },
+      "heap": {},
+      "index": {}
+    }
+  },
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ]
+  },
+  "images": {},
+  "hierarchyLevels": {
+    "0": {
+      "name": "Chapter",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#0b1117",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#0b1117"
+      }
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": false
+  }
+}

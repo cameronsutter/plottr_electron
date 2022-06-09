@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.6.29-alpha.1",
+  "version": "2022.6.29-alpha.6",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -13,7 +13,8 @@
   },
   "main": "bin/electron_main.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=dev electron --inspect=5858 .",
+    "start": "cross-env NODE_ENV=dev electron --inspect=5858 --enable-test-utilities .",
+    "postinstall": "",
     "compile": "npm --prefix lib/plottr_components run compile && cross-env NODE_ENV=dev node_modules/.bin/webpack",
     "watch": "npm-run-all --parallel watch:*",
     "watch:plottr": "echo 'do you have fsevents?' && cross-env NODE_ENV=dev node_modules/.bin/webpack",
@@ -36,11 +37,17 @@
     "lint": "eslint .",
     "format:check": "prettier . --check",
     "format:write": "prettier . --write",
-    "validate": "npm-run-all format:check lint test"
+    "validate": "npm-run-all format:check lint test",
+    "import-test": "npm run test:aCoronersTale && npm run test:fractureTest && npm run test:theTurn && npm run test:import-scrivener",
+    "test:import-scrivener": "jest test/end-to-end/import-scrivener.test.js",
+    "test:aCoronersTale": "electron --inspect=5858 . --import-from-scrivener ./examples/A-Coroners-Tale-Temp2.scriv --output-file ./examples/test_output/A-Coroners-Tale-Temp2.pltr" ,
+    "test:fractureTest": "electron --inspect=5858 . --import-from-scrivener ./examples/Fractured-Test-Import-to-Plottr.scriv --output-file ./examples/test_output/Fractured-Test-Import-to-Plottr.pltr",
+    "test:theTurn": "electron --inspect=5858 . --import-from-scrivener ./examples/The-Turn.scriv --output-file ./examples/test_output/The-Turn.pltr" 
   },
   "dependencies": {
     "@electron/remote": "^2.0.1",
     "axios": "^0.22.0",
+    "bufferutil": "^4.0.6",
     "docx": "^5.5.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^2.0.6",
@@ -59,8 +66,10 @@
     "rollbar": "^2.19.4",
     "rtf.js": "^3.0.7",
     "tiny-invariant": "^1.0.6",
-    "tree-changes": "^0.6.1",
-    "ws": "^8.5.0"
+    "trash": "^8.1.0",
+    "utf-8-validate": "^5.0.9",
+    "ws": "^8.5.0",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -115,9 +124,7 @@
     "pretty-date": "^0.2.0",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.0.0",
-    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.6",
-    "react-floater": "^0.7.2",
     "react-icons": "^3.11.0",
     "react-image-file-resizer": "^0.4.7",
     "react-json-view": "^1.21.3",

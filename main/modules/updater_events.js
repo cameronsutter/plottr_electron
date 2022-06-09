@@ -4,6 +4,7 @@ import log from 'electron-log'
 import SETTINGS from './settings'
 import { broadcastToAllWindows } from './broadcast'
 
+log.transports.file.level = 'info'
 autoUpdater.logger = log
 autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
 autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')

@@ -5,7 +5,7 @@ import path from 'path'
 import { machineIdSync } from 'node-machine-id'
 import { t } from 'plottr_locales'
 import { SETTINGS, USER, trialStore } from '../../file-system/stores'
-import log from 'electron-log'
+import log from '../../../shared/logger'
 import { isDevelopment } from '../../isDevelopment'
 import { isWindows } from '../../isOS'
 

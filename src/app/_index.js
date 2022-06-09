@@ -298,17 +298,21 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName, isScrivenerFi
   const state = store.getState().present
   const emailAddress = selectors.emailAddressSelector(state)
   const userId = selectors.userIdSelector(state)
-  uploadToFirebase(emailAddress, userId, json, fileName).then((response) => {
-    const fileId = response.data.fileId
-    openFile(`plottr://${fileId}`, fileId, false)
+  uploadToFirebase(emailAddress, userId, json, fileName)
+    .then((response) => {
+      const fileId = response.data.fileId
+      openFile(`plottr://${fileId}`, fileId, false)
 
-    if (isScrivenerFile) {
-      store.dispatch(actions.applicationState.finishScrivenerImporter())
-    }
+      if (isScrivenerFile) {
+        store.dispatch(actions.applicationState.finishScrivenerImporter())
+      }
 
-    closeDashboard()
-    return fileId
-  })
+      closeDashboard()
+      return fileId
+    })
+    .catch((error) => {
+      ipcRenderer.send('error-importing-scrivener', error)
+    })
 })
 
 ipcRenderer.on('finish-creating-local-scrivener-imported-file', () => {
@@ -319,7 +323,7 @@ ipcRenderer.on('error-importing-scrivener', (event, error) => {
   logger.warn('[scrivener import]', error)
   rollbar.warn({ message: error })
   store.dispatch(actions.applicationState.finishScrivenerImporter())
-  dialog.showErrorBox(t('Error'), t(error || 'There was an error doing that. Try again'))
+  dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
 })
 
 ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {

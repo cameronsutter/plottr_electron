@@ -17,7 +17,7 @@ const saver = (whenClientIsReady) => {
   // save.
   const MAX_RESETS = 200
 
-  const backup = (userId, file) => {
+  const cloudBackup = (userId, file) => {
     const onCloud = selectors.isCloudFileSelector(file)
     const forceBackup = (previousFile) => () => {
       saveBackup(userId, previousFile || file)
@@ -55,7 +55,9 @@ const saver = (whenClientIsReady) => {
       })
       resetCount = 0
       saveTimeout = null
-      backup(userId, jsonData)
+      if (!isOffline) {
+        cloudBackup(userId, jsonData)
+      }
     }
     const forceSavePrevious = forceSave(previousFile)
     previousFile = jsonData

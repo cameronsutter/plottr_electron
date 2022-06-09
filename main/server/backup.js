@@ -14,6 +14,7 @@ const BackupModule = (userDataPath, logger) => {
     (configuredBackupLocation !== 'default' && configuredBackupLocation) || backupBasePath
 
   function saveBackup(filePath, data, callback) {
+    logger.info(`Saving backup of: ${filePath}`)
     return readSettings().then((settings) => {
       try {
         if (!settings.backup) {

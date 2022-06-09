@@ -4,7 +4,7 @@ import { DateTime, Duration } from 'luxon'
 
 import SettingsModule from './settings'
 
-const { readdir, lstat, rmdir } = fs.promises
+const { writeFile, readdir, lstat, rmdir } = fs.promises
 
 const BackupModule = (userDataPath, logger) => {
   const { readSettings } = SettingsModule(userDataPath)
@@ -13,7 +13,7 @@ const BackupModule = (userDataPath, logger) => {
   const backupBasePath =
     (configuredBackupLocation !== 'default' && configuredBackupLocation) || backupBasePath
 
-  function saveBackup(filePath, data, callback) {
+  function saveBackup(filePath, data) {
     logger.info(`Saving backup of: ${filePath}`)
     return readSettings().then((settings) => {
       try {
@@ -50,20 +50,20 @@ const BackupModule = (userDataPath, logger) => {
         const startBaseName = `(start-session)-${fileBaseName}`
         const startFilePath = path.join(partialPath, startBaseName)
         if (!fs.existsSync(startFilePath)) {
-          return saveFile(startFilePath, data, callback)
+          return saveFile(startFilePath, data)
         }
 
         const backupFilePath = path.join(partialPath, fileBaseName)
-        return saveFile(backupFilePath, data, callback)
+        return saveFile(backupFilePath, data)
       } catch (error) {
         return Promise.reject(error)
       }
     })
   }
 
-  function saveFile(filePath, data, callback) {
+  function saveFile(filePath, data) {
     var stringState = JSON.stringify(data)
-    fs.writeFile(filePath, stringState, callback)
+    return writeFile(filePath, stringState)
   }
 
   // make the backup a daily record
@@ -75,7 +75,7 @@ const BackupModule = (userDataPath, logger) => {
     var month = today.getMonth() + 1
     var year = today.getFullYear()
 
-    return path.join(backupBasePath(), `${month}_${day}_${year}`)
+    return path.join(backupBasePath, `${month}_${day}_${year}`)
   }
 
   // assumes base path exists
@@ -91,8 +91,8 @@ const BackupModule = (userDataPath, logger) => {
   }
 
   function ensureBackupFullPath() {
-    if (!fs.existsSync(backupBasePath())) {
-      fs.mkdirSync(backupBasePath(), { recursive: true })
+    if (!fs.existsSync(backupBasePath)) {
+      fs.mkdirSync(backupBasePath, { recursive: true })
     }
 
     ensureBackupTodayPath()
@@ -111,7 +111,7 @@ const BackupModule = (userDataPath, logger) => {
       return Promise.resolve([])
     }
 
-    return backupFiles(backupBasePath()).then((unsortedFiles) => {
+    return backupFiles(backupBasePath).then((unsortedFiles) => {
       const files = sortFileNamesByDate(unsortedFiles)
 
       switch (strategy) {
@@ -122,7 +122,7 @@ const BackupModule = (userDataPath, logger) => {
           logger.warn(`Removing old backups: ${filesToDelete}`)
           filesToDelete.forEach((file) => {
             try {
-              fs.unlinkSync(path.join(backupBasePath(), file))
+              fs.unlinkSync(path.join(backupBasePath, file))
             } catch (error) {
               console.log(error)
             }
@@ -136,7 +136,7 @@ const BackupModule = (userDataPath, logger) => {
           logger.warn(`Removing old backups: ${filesToDelete}`)
           filesToDelete.forEach((file) => {
             try {
-              fs.unlinkSync(path.join(backupBasePath(), file))
+              fs.unlinkSync(path.join(backupBasePath, file))
             } catch (error) {
               console.log(error)
             }
@@ -154,12 +154,12 @@ const BackupModule = (userDataPath, logger) => {
   }
 
   function deleteEmptyFolders() {
-    return readdir(backupBasePath())
+    return readdir(backupBasePath)
       .then((elems) =>
         Promise.all(
           elems.map((elem) =>
-            lstat(path.join(backupBasePath(), elem)).then((fileStats) =>
-              readdir(path.join(backupBasePath(), elem)).then((contents) => ({
+            lstat(path.join(backupBasePath, elem)).then((fileStats) =>
+              readdir(path.join(backupBasePath, elem)).then((contents) => ({
                 keep: fileStats.isDirectory() && contents.length === 0,
                 payload: elem,
               }))
@@ -172,7 +172,7 @@ const BackupModule = (userDataPath, logger) => {
             entries
               .filter(({ keep }) => keep)
               .map(({ payload }) => payload)
-              .map((emptyDirectory) => rmdir(path.join(backupBasePath(), emptyDirectory)))
+              .map((emptyDirectory) => rmdir(path.join(backupBasePath, emptyDirectory)))
           )
         )
       )

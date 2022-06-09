@@ -3,6 +3,15 @@ const ProcessSwitches = (yargv) => {
     testUtilitiesEnabled: () => {
       return !!yargv.enableTestUtilities
     },
+    importFromScrivener: () => {
+      if (yargv.importFromScrivener) {
+        return {
+          sourceFile: yargv.importFromScrivener,
+          destinationFile: yargv.outputFile,
+        }
+      }
+      return false
+    },
   }
 
   return {

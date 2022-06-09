@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompileSettings>
+    <ProjectSettings>
+        <Content Scope="Included">
+            <CompileGroup Type="BinderItem"/>
+            <Filter State="Off" Exclude="No" Type="Label">
+                <Label>-1</Label>
+            </Filter>
+        </Content>
+        <Options>
+            <RemoveFootnotes>Yes</RemoveFootnotes>
+            <ResampleImages DPI="72" MaxSize="0">No</ResampleImages>
+            <ConvertRichTextToMMD>No</ConvertRichTextToMMD>
+            <Links/>
+            <PDF>
+                <Cover Source="" Bleed="0.0" BleedUnits="pt"></Cover>
+                <Compression Enabled="No">
+                    <ImageResolutionCompressionType></ImageResolutionCompressionType>
+                    <ImageResolution>300</ImageResolution>
+                    <CompressionQuality>0.5</CompressionQuality>
+                </Compression>
+            </PDF>
+            <Scriptwriting>
+                <IncludeTitles>Yes</IncludeTitles>
+                <IncludeSynopses>Yes</IncludeSynopses>
+                <CommentsAsScriptNotes>Yes</CommentsAsScriptNotes>
+            </Scriptwriting>
+            <Ebook>
+                <Cover>
+                    <ImageDocument Source="FrontMatter"></ImageDocument>
+                    <Title>Cover</Title>
+                    <SVG Width="-1" Height="-1"><![CDATA[]]></SVG>
+                </Cover>
+                <TOC PandocDepth="3">
+                    <HTML Generate="Yes">
+                        <Title>Contents</Title>
+                    </HTML>
+                </TOC>
+            </Ebook>
+        </Options>
+        <MetaData>
+            <ProjectTitle>Title</ProjectTitle>
+            <EbookLanguage>en</EbookLanguage>
+        </MetaData>
+    </ProjectSettings>
+    <CurrentFileType>pdf</CurrentFileType>
+    <FormatSettings>
+        <Format ID="811BCA60-34A9-4AC9-8CF3-75AE457E9275">
+            <SectionLayouts>
+                <Type ID="53CFA2D1-3B40-4829-8712-7FC7E625D0FF"></Type>
+                <Type ID="9B2756C5-C86C-4363-B1EB-B4972691E0CB"></Type>
+            </SectionLayouts>
+        </Format>
+        <Format ID="DE44A4EE-F166-40D6-B4C1-5BF81BC44378">
+            <SectionLayouts>
+                <Type ID="A5768764-1BB1-4D3B-AF6A-2B31C2F302D8"></Type>
+                <Type ID="BBB358DF-53D5-4449-B1F3-3ED167CF9203">11F610E3-53BF-4683-B272-178066B2843A</Type>
+            </SectionLayouts>
+        </Format>
+        <Format ID="manuscript-times">
+            <SectionLayouts>
+                <Type ID="A5768764-1BB1-4D3B-AF6A-2B31C2F302D8">CHAPTER-NUMBER</Type>
+                <Type ID="BBB358DF-53D5-4449-B1F3-3ED167CF9203">TEXT-SECTION</Type>
+            </SectionLayouts>
+        </Format>
+        <Format ID="AB0C40D0-C1CE-4AA1-B7AA-FD7CEB722D5B">
+            <SectionLayouts>
+                <Type ID="A5768764-1BB1-4D3B-AF6A-2B31C2F302D8">14AD3326-9EA8-4D0A-A912-F1A991942157</Type>
+                <Type ID="BBB358DF-53D5-4449-B1F3-3ED167CF9203">TEXT-SECTION</Type>
+            </SectionLayouts>
+        </Format>
+        <Format ID="D30D608C-B9ED-4788-A383-6F880688F12C">
+            <SectionLayouts>
+                <Type ID="A5768764-1BB1-4D3B-AF6A-2B31C2F302D8">CHAPTER-NUMBER</Type>
+                <Type ID="BBB358DF-53D5-4449-B1F3-3ED167CF9203">CHAPTER-NUMBER</Type>
+            </SectionLayouts>
+        </Format>
+    </FormatSettings>
+    <LastUsedFormats>
+        <Print>811BCA60-34A9-4AC9-8CF3-75AE457E9275</Print>
+        <doc>811BCA60-34A9-4AC9-8CF3-75AE457E9275</doc>
+        <docx>0F48A3F4-A70F-4CF6-A7D3-C2FA84A5B211</docx>
+        <pdf>DE44A4EE-F166-40D6-B4C1-5BF81BC44378</pdf>
+    </LastUsedFormats>
+</CompileSettings>

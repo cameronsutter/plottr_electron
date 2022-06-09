@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompileFormat Name="Imported Scrivener v1 Settings" ID="F4383983-EB71-4B2A-9B20-31B3C9815B20">
+    <SectionLayouts/>
+    <SeparatorSettings>
+        <FolderSeparators>
+            <Before Type="PageBreak"/>
+            <Between Type="Double"/>
+            <AfterOverride Use="No" Type="Double"/>
+        </FolderSeparators>
+        <TextSeparators>
+            <Before Type="Double"/>
+            <Between Type="Double"><![CDATA[#]]></Between>
+            <AfterOverride Use="No" Type="PageBreak"/>
+        </TextSeparators>
+        <Font Size="13.0" Override="No">Palatino</Font>
+    </SeparatorSettings>
+    <Transformations>
+        <PlainTextConversion State="Off"/>
+        <OutlineIndent State="Off"/>
+    </Transformations>
+    <Statistics>
+        <ExcludeFrontMatter>Yes</ExcludeFrontMatter>
+        <ExcludeBackMatter>Yes</ExcludeBackMatter>
+        <CountAllText>Yes</CountAllText>
+        <IncludeFootnotes>Yes</IncludeFootnotes>
+    </Statistics>
+    <Tables>
+        <ConvertToImages MaxWidth="600.0">No</ConvertToImages>
+    </Tables>
+    <FootnotesAndComments>
+        <Footnotes>
+            <Font Size="10.0" Override="No">Times New Roman</Font>
+            <DividerStyle>Default</DividerStyle>
+            <FootnoteStyle>Arabic</FootnoteStyle>
+            <EndnoteStyle>Arabic</EndnoteStyle>
+            <Numbering>Continuous</Numbering>
+            <EndnotesArrangement>
+                <Placement>End</Placement>
+                <SectionGrouping>
+                    <Font Size="0.0"/>
+                </SectionGrouping>
+            </EndnotesArrangement>
+        </Footnotes>
+        <Comments>
+            <AnnotationsRTFType>Comments</AnnotationsRTFType>
+            <AnnotationPrefix><![CDATA[[]]></AnnotationPrefix>
+            <AnnotationSuffix><![CDATA[]]]></AnnotationSuffix>
+        </Comments>
+    </FootnotesAndComments>
+    <PageSettings UseDefaultPaperSize="Yes">
+        <PrintSettings PaperSize="612.0,792.0" LeftMargin="72.0" RightMargin="72.0" TopMargin="72.0" BottomMargin="72.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"/>
+        <Margins Units="Inches">
+            <Top>1.0</Top>
+            <Bottom>1.0</Bottom>
+            <Left>1.0</Left>
+            <Right>1.0</Right>
+        </Margins>
+        <HeadersAndFooters>
+            <HeaderFont Size="0.0"/>
+            <FooterFont Size="0.0"/>
+            <CountFirstPages>Yes</CountFirstPages>
+            <FirstRegularPage>-1</FirstRegularPage>
+            <StandardHeader/>
+            <StandardFooter/>
+            <FirstPagesHeader/>
+            <FirstPagesFooter/>
+            <RectoHeader/>
+            <RectoFooter/>
+            <NewSectionHeader/>
+            <NewSectionFooter/>
+            <BackMatterHeader/>
+            <BackMatterFooter/>
+        </HeadersAndFooters>
+    </PageSettings>
+    <RTF>
+        <Columns Location="" Number="2" TwipsBetween="360"/>
+    </RTF>
+    <ScriptFormats>
+        <SummaryFont Size="0.0"/>
+        <ScriptNoteFont Size="0.0"/>
+    </ScriptFormats>
+    <HTML>
+        <UseCenteredBodyTable Width="0">No</UseCenteredBodyTable>
+    </HTML>
+    <MMD>
+        <LaTeXDocumentClass>None</LaTeXDocumentClass>
+    </MMD>
+    <EBookSettings/>
+</CompileFormat>

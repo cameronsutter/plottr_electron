@@ -19,7 +19,7 @@ import SETTINGS from './settings'
 import { OFFLINE_FILE_FILES_PATH, offlineFilePath, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
 
-const { lstat } = fs.promises
+const { lstat, writeFile } = fs.promises
 
 const makeFileModule = () => {
   const TMP_PATH = 'tmp'
@@ -229,9 +229,10 @@ const makeFileModule = () => {
     }
   }
 
-  function createFromScrivener(importedPath, sender, isLoggedIntoPro) {
+  function createFromScrivener(importedPath, sender, isLoggedIntoPro, destinationFile) {
     const storyName = path.basename(importedPath, '.scriv')
     let json = emptyFile(storyName, app.getVersion())
+    const isScrivener = true
     json.beats = {
       series: tree.newTree('id'),
     }
@@ -245,17 +246,25 @@ const makeFileModule = () => {
 
     if (isLoggedIntoPro) {
       importedJsonPromise.then((importedJson) => {
-        sender.send('create-plottr-cloud-file', importedJson, storyName)
+        sender.send('create-plottr-cloud-file', importedJson, storyName, isScrivener)
       })
       return Promise.resolve()
     }
 
     return importedJsonPromise.then((importedJson) => {
-      return saveToTempFile(importedJson, storyName).then((filePath) => {
-        const fileId = addToKnownFiles(filePath)
-        openKnownFile(filePath, fileId)
-        sender.send('finish-creating-local-scrivener-imported-file')
-      })
+      if (destinationFile) {
+        return writeFile(destinationFile, JSON.stringify(importedJson, null, 2)).then(() => {
+          // Right now, this is only used for testing so we want to quit when we're done.
+          log.info(`Finished importing from ${importedPath} to ${destinationFile}`)
+          app.quit()
+        })
+      } else {
+        return saveToTempFile(importedJson, storyName).then((filePath) => {
+          const fileId = addToKnownFiles(filePath)
+          openKnownFile(filePath, fileId)
+          sender.send('finish-creating-local-scrivener-imported-file')
+        })
+      }
     })
   }
 

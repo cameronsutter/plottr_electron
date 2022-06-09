@@ -106,13 +106,15 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     })
   })
 
-  ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro) => {
-    createFromScrivener(importedPath, event.sender, isLoggedIntoPro).catch((error) => {
-      event.sender.send('error', {
-        message: error.message,
-        source: 'create-new-file',
-      })
-    })
+  ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro, destinationFile) => {
+    createFromScrivener(importedPath, event.sender, isLoggedIntoPro, destinationFile).catch(
+      (error) => {
+        event.sender.send('error', {
+          message: error.message,
+          source: 'create-new-file',
+        })
+      }
+    )
   })
 
   ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {

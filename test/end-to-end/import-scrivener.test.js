@@ -27,10 +27,9 @@ describe('ImportScrivener', () => {
       expect(Array.isArray(aCoronersTale.lines)).toBeTruthy()
     })
 
-    it('should only have 1 line', () => {
+    it('should have 4 lines', () => {
       expect(aCoronersTale.lines).toBeDefined()
-      expect(aCoronersTale.lines.length).toBe(1)
-      expect(aCoronersTale.lines.length).toBeLessThan(2)
+      expect(aCoronersTale.lines.length).toBe(4)
     })
 
     it('should only have 1 beat', () => {

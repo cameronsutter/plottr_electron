@@ -109,8 +109,7 @@ describe('ImportScrivener', () => {
             )
 
             if (hasReadMainBody) {
-              expect(hasReadMainBody).toBeDefined()
-              expect(typeof hasReadMainBody).toBe('object')
+              expect(isAnObject(hasReadMainBody)).toBeTruthy()
               expect(hasReadMainBody.children).toHaveLength(1)
               expect(hasReadMainBody.children[0].text).toContain(firstCardParagraph)
             }
@@ -133,7 +132,7 @@ describe('ImportScrivener', () => {
             )
 
             if (hasReadSynopsis) {
-              expect(typeof hasReadSynopsis).toBe('object')
+              expect(isAnObject(hasReadSynopsis)).toBeTruthy()
               expect(hasReadSynopsis.children).toHaveLength(1)
               expect(hasReadSynopsis.children[0].text).toContain(cardSynopsis)
             }

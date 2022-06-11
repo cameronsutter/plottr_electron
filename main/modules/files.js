@@ -185,9 +185,13 @@ const makeFileModule = () => {
     )
 
     if (isLoggedIntoPro) {
-      importedJsonPromise.then((importedJson) => {
-        sender.send('create-plottr-cloud-file', importedJson, storyName, isScrivener)
-      })
+      importedJsonPromise
+        .then((importedJson) => {
+          sender.send('create-plottr-cloud-file', importedJson, storyName, isScrivener)
+        })
+        .catch((error) => {
+          return sender.send('error-importing-scrivener', error)
+        })
       return Promise.resolve()
     }
 
@@ -199,11 +203,15 @@ const makeFileModule = () => {
           app.quit()
         })
       } else {
-        return saveToTempFile(importedJson, storyName).then((filePath) => {
-          const fileId = addToKnownFiles(filePath)
-          openKnownFile(filePath, fileId)
-          sender.send('finish-creating-local-scrivener-imported-file')
-        })
+        return saveToTempFile(importedJson, storyName)
+          .then((filePath) => {
+            const fileId = addToKnownFiles(filePath)
+            openKnownFile(filePath, fileId)
+            sender.send('finish-creating-local-scrivener-imported-file')
+          })
+          .catch((error) => {
+            return sender.send('error-importing-scrivener', error)
+          })
       }
     })
   }

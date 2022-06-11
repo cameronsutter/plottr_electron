@@ -27,10 +27,9 @@ describe('ImportScrivener', () => {
       expect(Array.isArray(aCoronersTale.lines)).toBeTruthy()
     })
 
-    it('should only have 1 line', () => {
+    it('should have 4 lines', () => {
       expect(aCoronersTale.lines).toBeDefined()
-      expect(aCoronersTale.lines.length).toBe(1)
-      expect(aCoronersTale.lines.length).toBeLessThan(2)
+      expect(aCoronersTale.lines.length).toBe(4)
     })
 
     it('should only have 1 beat', () => {
@@ -42,6 +41,8 @@ describe('ImportScrivener', () => {
   describe('FRACTURED_TEST', () => {
     const fracturedTest = readOutput(FRACTURED_TEST_PATH)
     const bookId = '1'
+    const firstCardParagraph = `The swamp cooler, servicing Jeb’s backroom offered no relief during monsoon season in Arizona. Air, heavy with moisture, dampened not only everyone’s clothes but also their moods. Sweat of desperation stained Mark Leon’s shirt; he needed this job.`
+    const cardSynopsis = `"Construction Crew" foreman interviews a farmer for job. Farmers family is threatened to ensure farmer's silence about the illegal nature of the job. Shows the ruthless nature of the Cartel and how they are taking advantage of the dire straits the farmers are in. ***Change to Bobby's POV - helping with the interviewing. Move to prologue -  add in more on the state of Jackson with the smelter closing.`
 
     it('should have an array of lines', () => {
       expect(fracturedTest.lines).toBeDefined()
@@ -75,7 +76,7 @@ describe('ImportScrivener', () => {
       expect(Array.isArray(fracturedTest.characters)).toBeTruthy()
     })
 
-    it('should have produce more than 1 character', () => {
+    it('should produce more than 1 character', () => {
       expect(fracturedTest.characters.length).toBeGreaterThan(1)
     })
 
@@ -84,8 +85,60 @@ describe('ImportScrivener', () => {
       expect(Array.isArray(fracturedTest.cards)).toBeTruthy()
     })
 
-    it('should have produce more than 1 card', () => {
+    it('should produce more than 1 card', () => {
       expect(fracturedTest.cards.length).toBeGreaterThan(1)
+    })
+
+    it("should produce a cards's description", () => {
+      fracturedTest.cards.forEach((item) => {
+        expect(item.description).toBeDefined()
+      })
+    })
+
+    it('should have read the value from the main body of the card', () => {
+      fracturedTest.cards.forEach((card) => {
+        if (card && card.description) {
+          card.description.forEach((item) => {
+            const hasReadMainBody = item.children.find(
+              (i) =>
+                i &&
+                i.children &&
+                i.children[0] &&
+                i.children[0].text &&
+                i.children[0].text.includes(firstCardParagraph)
+            )
+
+            if (hasReadMainBody) {
+              expect(isAnObject(hasReadMainBody)).toBeTruthy()
+              expect(hasReadMainBody.children).toHaveLength(1)
+              expect(hasReadMainBody.children[0].text).toContain(firstCardParagraph)
+            }
+          })
+        }
+      })
+    })
+
+    it('should still read the synopsis text of the card', () => {
+      fracturedTest.cards.forEach((card) => {
+        if (card && card.description) {
+          card.description.forEach((item) => {
+            const hasReadSynopsis = item.children.find(
+              (i) =>
+                i &&
+                i.children &&
+                i.children[0] &&
+                i.children[0].text &&
+                i.children[0].text.includes(cardSynopsis)
+            )
+
+            if (hasReadSynopsis) {
+              expect(isAnObject(hasReadSynopsis)).toBeTruthy()
+              expect(hasReadSynopsis.children).toHaveLength(1)
+              expect(hasReadSynopsis.children[0].text).toContain(cardSynopsis)
+            }
+          })
+        }
+      })
     })
   })
 

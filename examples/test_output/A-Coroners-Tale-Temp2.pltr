@@ -32,7 +32,7 @@
     "loaded": false,
     "dirty": false,
     "version": "2022.6.29-alpha.6",
-    "lastOpened": "2022-06-08T17:31:46.569Z"
+    "lastOpened": "2022-06-10T06:03:52.150Z"
   },
   "series": {
     "name": "A-Coroners-Tale-Temp2",
@@ -60,7 +60,7 @@
   "cards": [
     {
       "id": 1,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
       "positionWithinLine": 0,
@@ -71,7 +71,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "SARAH Beaumont wakes in the night (her husband, GEOFFREY, is away) and hears footsteps on her stairs. As she cowers in the dark, she can tell they're receding. She does not know whether to be relieved, or concerned the person is escaping. She gets out of bed and creeps to the top of the stairs. She sees the back of a man leaving the house."
+              "children": [
+                {
+                  "text": "SARAH Beaumont wakes in the night (her husband, GEOFFREY, is away) and hears footsteps on her stairs. As she cowers in the dark, she can tell they're receding. She does not know whether to be relieved, or concerned the person is escaping. She gets out of bed and creeps to the top of the stairs. She sees the back of a man leaving the house."
+                }
+              ]
             }
           ]
         }
@@ -86,10 +90,10 @@
     },
     {
       "id": 2,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 1,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg sees Edwin arrive at the magistrate's house",
       "description": [
@@ -97,7 +101,171 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg is in the garden, weeding cabbages, when Edwin arrives at the magistrates house. Edwin speaks and Meg answers, then fears he should not have done so."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "<$Scr_Ps::0>The thief-taker tipped a finger to his forehead, when he strode down the path and noticed me down on my knees weeding cabbages.<!$Scr_Ps::0><$Scr_Ps::1>"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Morning, Nate, they’re looking good.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘They are indeed, sir. Soon be ready for the pot.’ As soon as I closed my mouth I thought I’d gone too far. Mister Edwin Hare wasn’t as grand as the master, but he was a guest. If he reported me to Geoffrey as speaking out of turn, I’d be thrashed. Or locked in the shed overnight at the very least. I bowed my head back to my work."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Then the magistrate’s cook will be pleased to have them.’ he said. I squinted up and Mister Hare was grinning. ‘I’ll have to wheedle myself an invitation to dinner.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "With this he went on his way, his long shadow stretching ahead of him until he reached the house. His strong rat-a-tat brought Emily, the maid, running, and made me wish I"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’d  his confidence to bang on any man’s door and demand entry."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I wondered if it was his height, a good head above me, for it couldn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t have been his station, though I knew other men, almost as tall, and they quaked in the presence of gentry the same as the rest of us. I’d witnessed Hare in the tavern more than once, and his fellows listened, nodding and scratching their chins whenever he spoke. It was said his employer, Mister Perry, the coroner for Shropshire, gave him respect, and I knew, for a fact, my master did. I’d wager even King George himself would accept his good counsel."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Emily looked my way when Mister Hare went inside, then blew me a kiss, bold as you like. I didn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t return it, in case the Master or Mistress were watching from a window, I just winked, though I doubt she saw me from this distance, <!$Scr_Ps::1>"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "<$Scr_Ps::0>The thief-taker tipped a finger to his forehead when he noticed me crouching to cut roses.<!$Scr_Ps::0><$Scr_Ps::1>"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Morning, Nate, they’re looking good.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘They are indeed, sir. Mistress Sarah asked me to gather some for the table’ As soon as I closed my mouth I thought I’d gone too far. Mister Edwin Hare wasn’t anywhere near as grand as the master, but he was a guest. If he told Mr Beaumont I’d spoken out of turn, I’d be thrashed. Or locked in the shed overnight at the very least. I bowed my head back to my work."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Then the magistrate’s cook will need to prepare something very special to go with them.’ he said. I squinted up and Mister Hare was grinning. ‘I’ll have to wheedle myself an invitation to dinner.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "With this he went on his way, his long shadow stretching ahead of him until he reached the house. His strong rat-a-tat brought Emily, the maid, running, and made me wish I"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’d  his confidence to bang on any man’s door and demand entry. All the tradesmen went round the back, but not him."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I wondered if it was his height, a good head above me, for it couldn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t have been his station, but I knew other men, almost as tall, and they quaked in the presence of gentry the same as the rest of us. I’d witnessed Hare in the tavern more than once, and his fellows listened, nodding and scratching their chins whenever he spoke. It was said his employer, Mister Perry, the coroner for Shropshire, gave him respect, and I knew, for a fact, my master did. I’d wager even King George himself would accept his good counsel."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Emily looked my way when Mister Hare went inside, then blew me a kiss, bold as you like. I didn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t return it, in case the Master or Mistress were watching from a window, I just winked, though I don’t know why. A housemaid won’t get me to where I want to go.<!$Scr_Ps::1>"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Meg is in the garden, weeding cabbages, when Edwin arrives at the magistrates house. Edwin speaks and Meg answers, then fears he should not have done so."
+                }
+              ]
             }
           ]
         }
@@ -112,10 +280,10 @@
     },
     {
       "id": 3,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 2,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin talks to magistrate",
       "description": [
@@ -123,7 +291,19 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "EDWIN HARE is called to see the magistrate, Geoffrey , who tells him there has been an increase in the number of burglaries and robberies in Bridgnorth, and asks Edwin to help. Edwin refuses because there are no rewards available."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Geoffrey and Sarah are introduced. More info on Edwin."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "EDWIN HARE is called to see the magistrate, Geoffrey , who tells him there has been an increase in the number of burglaries and robberies in Bridgnorth, and asks Edwin to help. Edwin refuses because there are no rewards available."
+                }
+              ]
             }
           ]
         }
@@ -141,7 +321,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 3,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin sees Sarah",
       "description": [
@@ -164,10 +344,10 @@
     },
     {
       "id": 5,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 4,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Meg meets Edwin",
       "description": [
@@ -175,7 +355,155 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "NATHANIEL SPENDER (Meg) is working in the garden when Edwin leaves. He almost hits Edwin with a shovel of manure. He apologises but the magistrate has seen what happened and slaps Meg round the head. Edwin forces him to stop."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Two things caught my eye at the same time. The first, Mister Hare leaving the house, was hardly unexpected. He had to come out sometime. The other, my mistress peeking down at him from a window, was more surprising. I did not know they were acquainted. I doubted my master did either, and he would be none too pleased if he found out. This might be something to keep close to my chest, a lever to move Mister Hare if it were needed."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I stood, abandoning the work I should have been doing, and turned my attention to spreading muck on to the bed close by the gate where it would be easier for Mister Hare to see me."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "If, as I prayed, he spoke to me, I would make my request. Even if he thought me forward, I reasoned he would hardly return to speak to the magistrate about it. In my eagerness, I missed another figure leaving the house, and my master startled me when he stepped out from behind a hedge. The dung on my raised shovel flew directly in Mister Hare"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s direction, only narrowly missing him as he jumped out of the way."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Whoa, careful boy.’ Hare shouted."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "My master was less inclined to be forgiving, and his slap round my head fairly rattled my teeth, knocking me to the ground. I cringed, expecting his boot to crunch into my back. It would not be the first time. Mister Hare came to my rescue."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Beaumont. Stop, for God’s sake. It was an accident.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I could not see Mister Beaumont"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s face though the edge to his voice told me he was not happy."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Please do not tell me how to treat my own servants, Hare. This boy is an oaf and needs to be punished. I am sure you would be less forgiving if he had hit his target. Doubtless you would have been demanding I pay for the cleaning of your clothes.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "The thief-taker stayed quiet for a moment, and I imagined he was considering his next step. The master"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s words sounded like a challenge, one which Hare might not ignore in other circumstances. His height and clear strength would make it an unequal physical match, but he would be unlikely to enter into a fight with an important customer. Nor an influential man who could make his life very difficult. Hare shrugged."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I would not presume, sir, to do such a thing. I would only ask that you show a little mercy. You are right, if the muck had hit me, I would not have been pleased, and may have cuffed the boy myself. But it did not, and there is no harm done. My apologies if it seemed I interfered too strongly.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "His tone seemed to do the trick and my master pulled me up by the ear, then stepped round me to face Hare on the path."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘This is the second time today we have crossed words, Mister Hare, and I hope it does not signal a deterioration in the good relationship we have held so far. Let us hope that the next time we meet you will be in better humour. And please give further thought to the question I put to you inside. A more positive approach to that matter will, I am sure, assist.’ He turned back to me. ‘And you, young Nathaniel Spender, thank Mister Hare for his concern for your welfare and then get back to your work with more concentration and a little less vigour.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "The magistrate nodded his head once more in Mister Hare"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s direction and walked back towards the house. I burbled a few words of apology and gratitude, and prepared to ask for the favour I needed which only he could supply. The frown which had appeared on his face once my master left us, told me my opportunity would not come today. He swung away, pulled down his hat brim and strode past me, leaving the gate squeaking on its hinges as as he turned into the lane."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Perhaps I will need my little piece of information after all."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "NATHANIEL SPENDER (Meg) is working in the garden when Edwin leaves. He almost hits Edwin with a shovel of manure. He apologises but the magistrate has seen what happened and slaps Meg round the head. Edwin forces him to stop."
+                }
+              ]
             }
           ]
         }
@@ -190,10 +518,10 @@
     },
     {
       "id": 6,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 5,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg asks Edwin to help her become a thief-taker",
       "description": [
@@ -201,7 +529,411 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg comes to see Edwin and thanks him for speaking up for her. Edwin asks if it happens often, and Meg admits it does. Meg says she’d like to get into thief-taking and could she learn alongside Edwin. Edwin agrees to help and says he’ll be in touch when he’s offered some appropriate work. "
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Meg reveals he follows people - later it turns out he"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s followed Edwin"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Days came and days went, with me watching the gate whenever I could, to catch Mister Hare when he returned. He did not. The time of year means work in the garden is much reduced, flowers are at the end of their season and summer vegetables are passed. This and the fewer hours of daylight, means I have time to myself I do not have at the peak of the year. There is still plenty of work to do, but it needs the daylight hours and from dusk I am a free woman."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I reasoned I might have more of a chance to convince Mister Hare I would be fit to receive his assistance if I practised the arts I wished to acquire, so to this end I began to follow the movements of others in the house. My first attempts were pathetic, walking so closely behind I was noticed and had to invent some excuse for being in the place, or being so far behind I lost my quarry very soon. With each one, however, I became more proficient and when the time came I was ready to make my plea."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "It would be two weeks after the incident with the manure when my master sent me on an errand to one of his boatyards by the river in Low Town. As I set off and approached the lane at the side gate, the one the servants are allowed to use, I held back behind the large oak tree which stands there, when I spotted Molly, the daughter of a neighbour, Tom Brakspear. The girl is my own age, pretty in a plump kind of a way, and her father"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s few acres would make her a decent catch for any man with a little ambition to get on. If I could discover where she liked to go, and what she liked to do when away from her mother’s skirts, I may be able to make good use of these secrets later on."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I let her past and walk toward the town in the watery sunshine, only stepping out when she was at the far end and unlikely to notice my movement. Stepping lively when Molly turned the corner, I soon caught up enough to see the street she had taken. Her destination would have been obvious had I thought about it. The market. She sauntered amongst the goods on display, lifting a piece of braid here, an apple there, and I could see nothing which would help me grab her attention the next time we spoke. I was about to leave, when I felt a hand on my shoulder."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Meg, what are you up to?’ It was Mister Hare’s voice. I turned and he winked then nodded in Molly’s direction. ‘Good looking young WENCH, that one. Might be a bit above your station though, eh?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I felt the blood rise in my cheeks. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I was following her, that’s all.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘What?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "His laugh made me blush all the more. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I … I mean I was practising.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Ay, but practising what? You can’t follow women about the streets you know, lad. Whatever would her mother say? Or your mother for that matter.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "My tormentor must have seen how much he embarrassed me because he apologised and took my elbow. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Come over here by the wall, Meg. I want a word.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "In a corner by the ale house and the CORN STORE we stood in the shadows, where we couldn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t be seen."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Can I ask you, Meg, does the magistrate beat you often like he did when I last visited?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I said nothing."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Come on, you can tell me, lad. Does he beat you often?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I shouldn’t say, Mister Hare, sir.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘From that, I take it he does. Am I right?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I nodded."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘And do you deserve it?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘If the master thinks I do then I must, mustn’t I, sir.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘There are men in this world, Meg, who take pleasure from the hurting of others, but you’re good to be loyal to Mister Beaumont.’ He leant back against the wall and peered down at me. ‘Now then, what are you up to following Tom Brakspear’s daughter?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I want to be like you, sir.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Like me? Do I go following girls about the town?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I imagine you must, sometimes, sir. Well, people, not girls. Not all the time anyway. How would you catch thieves otherwise?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Ah. So you want to be a thief-taker?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Anyone watching would have wondered why such a huge grin appeared on my face, but I couldn"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’t help myself."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I do, sir. Very much. Can you learn me?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Teach, not learn. But why should I?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "The question stopped me in my tracks. I had thought he would have been happy to take some help. I blurted out the first words which came to me."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘You need an assistant. You know you do. Everyone says there’s crime everywhere. More than ever these days. You can’t do it all yourself.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘An assistant? I have no need for, nor money for, an assistant.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Money? I had not thought of payment. Not yet awhile anyway. You learn … teach … me your tricks and I will do the jobs you cannot be bothered with yourself. When you have seen my worth, sir, then perhaps we will agree a fair price for my time.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Hare threw back his head and laughed. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘By God, you deserve some help, just for the cheek of you. I have nothing at present I can use you for, but when I do I will get in touch. But first, tell me what Molly Brakspear bought from the second woman she spoke to.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Bought? I saw her buy nothing. He guessed this from my furrowed brow."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘You did not notice, did you? She did not buy anything, she gave the woman several apples. If you are to make a good fist of this, then you must see everything. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Everything"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": ". Do you understand?"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I will do my best, sir.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Let us hope your best is good enough, Meg. And if we are to work together, my name is Edwin. I have no need of “sir”, leave that to the likes of your master.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "A second later he was gone and I ran down the hill to complete Mister Beaumont"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s errand, laughing all the way. Only part was due to my pleasure at starting a new, and hopefully profitable career. The other part was that my new teacher did not realise I already did notice many things, like what I had seen him do when I had followed him a week ago."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Meg comes to see Edwin and thanks him for speaking up for her. Edwin asks if it happens often, and Meg admits it does. Meg says she’d like to get into thief-taking and could she learn alongside Edwin. Edwin agrees to help and says he’ll be in touch when he’s offered some appropriate work. "
+                }
+              ]
             }
           ]
         }
@@ -216,20 +948,16 @@
     },
     {
       "id": 7,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 6,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah receives blackmail message",
       "description": [
         {
           "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
+          "children": []
         }
       ],
       "tags": [],
@@ -242,10 +970,10 @@
     },
     {
       "id": 8,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 7,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg follows Joseph and Walter",
       "description": [
@@ -253,7 +981,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg tries to follow Joseph but she only goes to the shops. He puts it down to practice as she hasn't seen him.\nWhen he watches her go back into the house, he sees Geoffrey's cousin, Walter, leaving, so follows him. Walter makes his way down to the river, to one of Geoffrey's boatyards, where he meets two men. The three discuss something, with much pointing. Meg tries to get close enough to hear but they spot him and chase him off. Thankfully, he is not recognised, but has to go home."
+              "children": [
+                {
+                  "text": "Meg tries to follow Joseph but she only goes to the shops. He puts it down to practice as she hasn't seen him.\nWhen he watches her go back into the house, he sees Geoffrey's cousin, Walter, leaving, so follows him. Walter makes his way down to the river, to one of Geoffrey's boatyards, where he meets two men. The three discuss something, with much pointing. Meg tries to get close enough to hear but they spot him and chase him off. Thankfully, he is not recognised, but has to go home."
+                }
+              ]
             }
           ]
         }
@@ -268,10 +1000,10 @@
     },
     {
       "id": 9,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 8,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin receives a message",
       "description": [
@@ -279,7 +1011,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin receives a message from someone who says he knows about Edwin’s past and they need to meet."
+              "children": [
+                {
+                  "text": "Edwin receives a message from someone who says he knows about Edwin’s past and they need to meet."
+                }
+              ]
             }
           ]
         }
@@ -294,10 +1030,10 @@
     },
     {
       "id": 10,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 9,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg reports back to Edwin",
       "description": [
@@ -305,7 +1041,115 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg tells Edwin what he observed when he followed Joseph to the shops, and Walter to the boatyard. He also tells him what he saw when he followed Caleb Knowles (not much).\nWhen they finish he hangs around then follows Edwin, who just goes home, but not before standing on the corner of the square watching Sarah's bedroom window."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "CHANGE SCENE TO FIT SYNOPSIS"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Meg spots Edwin coming from the castle grounds - gives him the info - then follows him home, seeing him stop by Sarah"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s house."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Deleted section: "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I had watched Edwin"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s cottage for half an hour or more, hoping he’d come out. I’d followed him there from the castle, where I spotted him "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’d expected Edwin’s home to be finer than it was. I knew the thief-taker had as much work as he wanted, and everyone said it paid him well. He hardly lived in a hovel, and it excelled the quarters I shared by a thousand times. I would also wager he did not have to endure the stench of horses seeping through his floor. On the other hand, it seemed only one step up from the cottages of the carters and boatmen who ply their trade along the river."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "keeping my distance. I thought it better to pretend to bump into him in the townand I had been hard pushed to keep up with him without giving myself away."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I had watched Edwin"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s cottage for half an hour or more, hoping he’d come out. I’d followed him there from the castle, where I spotted him as I came from behind Saint Mary Magdalene’s church. My master is a great benefactor of the parish and often tells me to tidy the graveyard or deliver flowers from his garden. This day there had been little for me to do other than sweep up the early leaves fallen in the autumn winds. Of course, Mister Beaumont would not know this, so I had no need to rush back when I left. Sometimes when this happens I will wander and find a quiet spot to rest my head, at others, I might walk down to the river and watch the boats loading coal and tiles from Broseley. Edwin had strode from the castle grounds and I had been hard pushed to keep up with him without giving myself away."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’d expected Edwin’s home to be finer than it was. I knew the thief-taker had as much work as he wanted, and everyone said it paid him well. He hardly lived in a hovel, and it excelled the quarters I shared by a thousand times. I would also wager he did not have to endure the stench of horses seeping through his floor. On the other hand, it seemed only one step up from the cottages of the carters and boatmen who ply their trade along the river."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Meg tells Edwin what he observed when he followed Joseph to the shops, and Walter to the boatyard. He also tells him what he saw when he followed Caleb Knowles (not much).\nWhen they finish he hangs around then follows Edwin, who just goes home, but not before standing on the corner of the square watching Sarah's bedroom window."
+                }
+              ]
             }
           ]
         }
@@ -323,7 +1167,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 10,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah asks Meg for help",
       "description": [
@@ -346,10 +1190,10 @@
     },
     {
       "id": 12,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 11,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Sarah approaches Edwin",
       "description": [
@@ -357,7 +1201,419 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Sarah finds Edwin and asks if he will help find the burglar. Edwin hasn’t met her before, though he has seen her with Geoffrey and their daughter, HANNAH. He has thought how attractive she is, though troubled.\nHe says he’s very busy and it would be almost impossible\nto find a burglar without a proper description, and difficult to gain a conviction without clear identification and witnesses. Sarah says she’s not bothered about a conviction, just wants back what had been stolen.\nEdwin asks what it was and she refuses to say."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "DELETED SECTION FROM EARLIER:"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I had watched Edwin"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s cottage for half an hour or more, hoping he’d come out. I’d followed him there from the castle, where I spotted him "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’d e"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "keeping my distance. I thought it better to pretend to bump into him in the townand I had been hard pushed to keep up with him without giving myself away."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah Beaumont picked her way through the hens and puddles punctuating her path to Edwin Hare"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s cottage, thankful she had changed into clothes Geoffrey made her wear on their occasional visits to the countryside. The thick brown woollen cloak and hood ensured she would not be recognised, nor even mark her out as a woman of status. She would need to have the filth cleaned from her boots when she went home, but this was a small price to pay for her anonymity, and it was not as though she would get her own hands dirty."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "She had expected Edwin"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s home to be finer than it was. Sarah knew the thief-taker had as much work as he wanted, and everyone said it paid him well. He hardly lived in a hovel, though it seemed only one step up from the cottages of the carters and boatmen who ply their trade along the river. A single floor, rough stone walls, and thatch which had seen better days. She could no longer imagine living in such a place, not since she had married Geoffrey."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Her first thought was to wait across the street to see if Edwin came out, but realised this might only draw attention and he may not even be home. A tap on his door brought him in a moment."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Mrs Beaumont?’ His fastening of his shirt was not quick enough to hide the purple scar stretching from collarbone to the middle of his chest. Nor to avoid Sarah’s blushes. Edwin checked each way in the street. ‘Your husband is not with you?’{\\Scrv_annot \\color={\\R=0.682353\\G=0.117647\\B=0.062745} \\text="
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Amend to reflect new scene(s) with Meg setting up meeting.\\end_Scrv_annot}"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Not today, Mister Hare. It is I who must speak with you. Do you have a moment?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Then you had better come inside, away from my neighbours’ prying eyes. Come. Quickly.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "The room showed the same lack of care as the outside. A home where a man lived alone and without servants to tidy his mess. A thick broth bubbled above the fire, whilst the inedible vegetable left-overs lay on the table. Edwin swept them up with his hand and threw them on the flames."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Take a seat, madam. I make no apology for the mess, I was not expecting visitors, especially as grand a lady as our magistrate’s wife. Now how may I be of assistance?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "He remained standing and Sarah felt vaguely uncomfortable with the look in his eye. Cruelty? Suspicion? Something else?"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I believe my only option is to be honest with you, sir.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Always a good starting point.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I have been burgled and need your help to reclaim what was stolen.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Mister Beaumont did not mention this when I visited recently.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah lowered her head. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘That is because he does not know. My husband was away on business, and the items which were taken belonged to me.’ She paused. ‘He does not need to be bothered with this.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘But surely, he would not see it as a bother if his home had been broken into?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah rose from her seat."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I have said I do not want him bothered. I had hoped you were a man who has discretion and could help me. If I am wrong-headed then I apologise.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Her host raised a hand."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Please stay Mrs Beaumont. It is I who must apologise if I have shown less tact than the situation requires. Tell me what happened and we will see where it takes us.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘As I have said, my husband was away for the night. A sound woke me. Thinking of my safety, and that of my child, I stayed in my room ready to defend us if necessary. The man went to my dressing room and took some items. When he had them, he went back downstairs and left.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Did you see his face?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I did not.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘And what was it he took?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah took a deep breath. "
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I cannot tell you.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Why not?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Because I do not know if I can trust you not to reveal what I say. Is it not enough for you to understand the items taken are precious to me and I want them back?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Edwin shook his head."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I am afraid it is not enough. You have given me no description of the man so I have no way of finding him. Without knowledge of the stolen goods I cannot even watch for them being sold on.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘The thief has no intention of selling them. He is a blackmailer.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘You have received communication from him?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah passed the message she had received over to Edwin, who scanned it twice."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Have you heard anything further?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Not yet, though I expect I will soon. Are you able to help, Mister Hare?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "It took a minute for Edwin to answer and Sarah could not decide if it was reluctance, uncertainty or a lack of understanding of the gravity of her situation. She wanted to tell him the truth but had meant what she had said, she did not yet trust him enough."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘You must understand, Mrs Beaumont, I am a busy man. To find your man, with no idea of what he looks like, it would take so much time it would upset my other clients, all of whom are paying me well for my services. Besides, and forgive me if I am wrong, if I were to capture him he would need to go before the magistrate for punishment, and I take it this would not be of advantage to you?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘It would not, sir. Though I do not seek punishment, only the return of the things he has stolen.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Even so, I am afraid on this occasion I cannot help, I would be taking your money under false pretences. I suggest you perhaps pay the villain what he asks and lock your secrets away more securely in future.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Sarah pressed her fingertips to her closed eyelids for a second, released them, and scowled at Edwin."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I am afraid I am disappointed in you, Mister Hare. My husband always speaks well of you. He says you appear a man who will do the right thing, regardless of the cost. I can see he is mistaken.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "She stood, pulled her cloak tight around her shoulders, and left."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Sarah finds Edwin and asks if he will help find the burglar. Edwin hasn’t met her before, though he has seen her with Geoffrey and their daughter, HANNAH. He has thought how attractive she is, though troubled.\nHe says he’s very busy and it would be almost impossible\nto find a burglar without a proper description, and difficult to gain a conviction without clear identification and witnesses. Sarah says she’s not bothered about a conviction, just wants back what had been stolen.\nEdwin asks what it was and she refuses to say."
+                }
+              ]
             }
           ]
         }
@@ -372,10 +1628,10 @@
     },
     {
       "id": 13,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 12,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin talks to thief-taker Zeb Garbutt",
       "description": [
@@ -383,7 +1639,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin hears that Sarah has approached another thief-taker, someone less scrupulous."
+              "children": [
+                {
+                  "text": "Edwin hears that Sarah has approached another thief-taker, someone less scrupulous."
+                }
+              ]
             }
           ]
         }
@@ -401,7 +1661,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 13,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin asks Meg to take a message to Sarah",
       "description": [
@@ -409,7 +1669,179 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin asks Meg to ask Joseph to give a message to Sarah."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I almost jumped from my skin when someone spoke from the shadows in Bella"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "’s stable. I had been sent by my master to prepare the horse, ready to take him by carriage to visit his tenants in the Strettons. The gloomy day threatened heavy rain and Mr Beaumont had no desire for a long, wet journey. I had completed the brushing and was about to fit her bridle when the voice came from the dark."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Psst. Meg. Do not jump lad, it is only me, Edwin.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘God’s teeth, sir, what are you doing hiding in here?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "He laughed loud."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I am sorry, I did not mean to scare you. I thought you would be made of sterner stuff.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I .. I was not scared. Just surprised is all. What do you want?’ I swung to look outside the stall. ‘If the magistrate does not have his carriage soon I will be in for a beating.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘All I want is a small favour. You can keep a secret?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "I told him I could."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Then I need to speak to your mistress without Mister Beaumont knowing.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "{\\Scrv_annot \\color={\\R=0.682353\\G=0.117647\\B=0.062745} \\text=Amend next section - Meg \\end_Scrv_annot}{\\Scrv_annot \\color={\\R=0.682353\\G=0.117647\\B=0.062745} \\text="
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "does\\end_Scrv_annot}{\\Scrv_annot \\color={\\R=0.682353\\G=0.117647\\B=0.062745} \\text="
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": " talk with Sarah in the garden\\end_Scrv_annot}"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Well you will be out of luck, Edwin, as I have little contact with the lady. As well you know, I work outside and would never be in the house, the back door is as close as I would get.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Ah, but who do you speak to at that door? Your little friend Joseph, do you not? And she would be close enough to Mrs Beaumont, I am sure. Just give the footman your finest smile and ask her to pass a message. Simple.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘I am not so sure I should be aiding you to have my mistress betray her marriage.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Betray her marriage? Is this what you think I am about, Meg?’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Well -’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "‘Stop right there, before you say too much. It is business, purely business, but one the good lady wants to keep from her husband. If you assist me in this, you will be one step further on the way of learning my craft.’"
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Before I could protest further, the magistrate cried across the yard for his carriage and I had to tell Edwin I would do as he bid."
+                }
+              ]
+            },
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Ten minutes later Mister Beaumont was away, and Joseph was dashing upstairs to tell his wife to meet Edwin in the market place at the time he had requested. I was left dreading how I might have to pay back the footman."
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Edwin asks Meg to ask Joseph to give a message to Sarah."
+                }
+              ]
             }
           ]
         }
@@ -427,7 +1859,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 14,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Edwin cautions Sarah not to use other thief-taker",
       "description": [
@@ -450,10 +1882,10 @@
     },
     {
       "id": 16,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 15,
+      "positionWithinLine": 2,
       "positionInBeat": 0,
       "title": "Edwin asks Meg to help with burglary investigation",
       "description": [
@@ -461,7 +1893,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin calls on Meg and asks if she’ll help. Meg says she will and is very grateful.\nEdwin tells Meg he thinks there must have been some inside information, so to keep an eye on the servants in the house, also Geoffrey, who he does not trust. He thinks it unlikely that Geoffrey is the culprit because he’d have no reason to keep his knowledge secret). He knows the thief is a man but they must have an accomplice in the house."
+              "children": [
+                {
+                  "text": "Edwin calls on Meg and asks if she’ll help. Meg says she will and is very grateful.\nEdwin tells Meg he thinks there must have been some inside information, so to keep an eye on the servants in the house, also Geoffrey, who he does not trust. He thinks it unlikely that Geoffrey is the culprit because he’d have no reason to keep his knowledge secret). He knows the thief is a man but they must have an accomplice in the house."
+                }
+              ]
             }
           ]
         }
@@ -476,10 +1912,10 @@
     },
     {
       "id": 17,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 16,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg sees Sarah's footman meet Ben Steps",
       "description": [
@@ -487,7 +1923,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg is sent on an errand and he sees the footman, Joseph, leave, so follows him. \nMeg follows Joseph and sees him meet a man, who he seems to know. He gives the man money and they argue."
+              "children": [
+                {
+                  "text": "Meg is sent on an errand and he sees the footman, Joseph, leave, so follows him. \nMeg follows Joseph and sees him meet a man, who he seems to know. He gives the man money and they argue."
+                }
+              ]
             }
           ]
         }
@@ -502,10 +1942,10 @@
     },
     {
       "id": 18,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 17,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg follows Geoffrey",
       "description": [
@@ -513,7 +1953,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg follows Geoffrey to a tavern and sees him drunk and with a woman. He sees them go upstairs."
+              "children": [
+                {
+                  "text": "Meg follows Geoffrey to a tavern and sees him drunk and with a woman. He sees them go upstairs."
+                }
+              ]
             }
           ]
         }
@@ -528,10 +1972,10 @@
     },
     {
       "id": 19,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 18,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin hears of Matthew Kemp",
       "description": [
@@ -539,7 +1983,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin asks Sarah if there’s anyone from her past who might have known about her liaison with Thomas Ambrose. She says they had a mutual friend, Matthew Kemp, who knew they were close. She thought she’d seen him in the town a week before the letters were stolen. "
+              "children": [
+                {
+                  "text": "Edwin asks Sarah if there’s anyone from her past who might have known about her liaison with Thomas Ambrose. She says they had a mutual friend, Matthew Kemp, who knew they were close. She thought she’d seen him in the town a week before the letters were stolen. "
+                }
+              ]
             }
           ]
         }
@@ -554,10 +2002,10 @@
     },
     {
       "id": 20,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 19,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin finds Kemp",
       "description": [
@@ -565,7 +2013,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin finds Kemp and he has an alibi. Kemp says it was him watching Sarah's house. He had been told by her father she had married Geoffrey and it took little effort to find where they lived. He had been away in the Caribbean and wanted to talk to Sarah about Thomas.  Edwin demands/seeks proof of the alibi and it checks out. Edwin tells Kemp he will pass on a message to Sarah that he'd like to meet with her."
+              "children": [
+                {
+                  "text": "Edwin finds Kemp and he has an alibi. Kemp says it was him watching Sarah's house. He had been told by her father she had married Geoffrey and it took little effort to find where they lived. He had been away in the Caribbean and wanted to talk to Sarah about Thomas.  Edwin demands/seeks proof of the alibi and it checks out. Edwin tells Kemp he will pass on a message to Sarah that he'd like to meet with her."
+                }
+              ]
             }
           ]
         }
@@ -580,10 +2032,10 @@
     },
     {
       "id": 21,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 20,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg challenges Joseph",
       "description": [
@@ -591,7 +2043,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg challenges Joseph about giving money to the man, and he says her mistress, Sarah, asked her to take it to that address. It was only when he got there he found it was his uncle – Joseph does not say his name. They’d argued because he said Joseph could steal more for him – he also refused to give back the letters he’d stolen."
+              "children": [
+                {
+                  "text": "Meg challenges Joseph about giving money to the man, and he says her mistress, Sarah, asked her to take it to that address. It was only when he got there he found it was his uncle – Joseph does not say his name. They’d argued because he said Joseph could steal more for him – he also refused to give back the letters he’d stolen."
+                }
+              ]
             }
           ]
         }
@@ -609,7 +2065,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 21,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin receives a second message",
       "description": [
@@ -632,10 +2088,10 @@
     },
     {
       "id": 23,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 22,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Meg watches meeting place 1",
       "description": [
@@ -643,7 +2099,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin asks Meg to watch when he meets the man. Meg sneaks out and takes watch,. He’s shocked when he sees the man, Ben Steps, is the one who the footman met. He does not follow, but tells Edwin where Ben Steps lives."
+              "children": [
+                {
+                  "text": "Edwin asks Meg to watch when he meets the man. Meg sneaks out and takes watch,. He’s shocked when he sees the man, Ben Steps, is the one who the footman met. He does not follow, but tells Edwin where Ben Steps lives."
+                }
+              ]
             }
           ]
         }
@@ -661,7 +2121,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 23,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg watches meeting place 2",
       "description": [
@@ -683,10 +2143,10 @@
     },
     {
       "id": 25,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 24,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Edwin meets Ben Steps for the first time",
       "description": [
@@ -694,7 +2154,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin meets BENJAMIN (BEN) STEPS - Ben hides his identity. Ben says he knows Edwin’s past and that he killed Ben’s brother at Carlisle and will be punished if his allegiances are exposed. Ben wants Edwin to give himself up. He gives Edwin seven days to do it or else he’ll reveal Edwin. Edwin requests another meeting with Ben when he’s had time to think about it."
+              "children": [
+                {
+                  "text": "Edwin meets BENJAMIN (BEN) STEPS - Ben hides his identity. Ben says he knows Edwin’s past and that he killed Ben’s brother at Carlisle and will be punished if his allegiances are exposed. Ben wants Edwin to give himself up. He gives Edwin seven days to do it or else he’ll reveal Edwin. Edwin requests another meeting with Ben when he’s had time to think about it."
+                }
+              ]
             }
           ]
         }
@@ -712,7 +2176,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 25,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg follows Ben Steps",
       "description": [
@@ -735,10 +2199,10 @@
     },
     {
       "id": 27,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 26,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Edwin investigates Sarah",
       "description": [
@@ -746,7 +2210,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin carries out some discrete enquiries into Sarah’s background. He finds out about her husband’s financial affairs and his character. Edwin gets a hint that Sarah is not always happy (from a woman who knows her)."
+              "children": [
+                {
+                  "text": "Edwin carries out some discrete enquiries into Sarah’s background. He finds out about her husband’s financial affairs and his character. Edwin gets a hint that Sarah is not always happy (from a woman who knows her)."
+                }
+              ]
             }
           ]
         }
@@ -761,10 +2229,10 @@
     },
     {
       "id": 28,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 27,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin investigates Ben Steps",
       "description": [
@@ -772,7 +2240,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin finds out from Meg where Ben lives and asks Ben’s neighbours questions about him, hiding his own identity, and finds his name and background.\nOne neighbour tells him that Sarah was there before him. \"second person this week up here. She went inside.'"
+              "children": [
+                {
+                  "text": "Edwin finds out from Meg where Ben lives and asks Ben’s neighbours questions about him, hiding his own identity, and finds his name and background.\nOne neighbour tells him that Sarah was there before him. \"second person this week up here. She went inside.'"
+                }
+              ]
             }
           ]
         }
@@ -787,10 +2259,10 @@
     },
     {
       "id": 29,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 28,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "EXPAND ON INVESTIGATION OF BURGLARY",
       "description": [
@@ -798,7 +2270,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "EXPAND ON INVESTIGATION OF BURGLARY\n"
+              "children": [
+                {
+                  "text": "EXPAND ON INVESTIGATION OF BURGLARY\n"
+                }
+              ]
             }
           ]
         }
@@ -813,10 +2289,10 @@
     },
     {
       "id": 30,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 29,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah goes to confront Ben Steps part 1",
       "description": [
@@ -824,7 +2300,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Sarah goes to confront Steps – seen by a neighbour (but he wasn’t there – maybe already dead).  "
+              "children": [
+                {
+                  "text": "Sarah goes to confront Steps – seen by a neighbour (but he wasn’t there – maybe already dead).  "
+                }
+              ]
             }
           ]
         }
@@ -842,7 +2322,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 30,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah goes to confront Ben Steps part 2",
       "description": [
@@ -867,7 +2347,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 31,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Ben Steps is found dead/is murdered",
       "description": [
@@ -875,7 +2355,19 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin turns up for the second meeting and finds Ben dead, his throat slit (?). Steps had been dead for a day or two. Edwin leaves without reporting the killing."
+              "type": "paragraph",
+              "children": [
+                {
+                  "text": "Date: 28th September (current dates - would have been 10-14 days different in 1749)"
+                }
+              ]
+            },
+            {
+              "children": [
+                {
+                  "text": "Edwin turns up for the second meeting and finds Ben dead, his throat slit (?). Steps had been dead for a day or two. Edwin leaves without reporting the killing."
+                }
+              ]
             }
           ]
         }
@@ -890,10 +2382,10 @@
     },
     {
       "id": 33,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 32,
+      "positionWithinLine": 2,
       "positionInBeat": 0,
       "title": "The Coroner examines the body",
       "description": [
@@ -901,7 +2393,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin’s boss, the Coroner, RICHARD PERRY, is called\nout to examine Ben’s body and concludes, quite easily, he’s been murdered."
+              "children": [
+                {
+                  "text": "Edwin’s boss, the Coroner, RICHARD PERRY, is called\nout to examine Ben’s body and concludes, quite easily, he’s been murdered."
+                }
+              ]
             }
           ]
         }
@@ -916,10 +2412,10 @@
     },
     {
       "id": 34,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 33,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin returns the stolen items",
       "description": [
@@ -927,7 +2423,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "After he returns her stolen item(s), Edwin asks for his payment. Sarah asks him to come back the next day. He says he needs it urgently because he may have to go away."
+              "children": [
+                {
+                  "text": "After he returns her stolen item(s), Edwin asks for his payment. Sarah asks him to come back the next day. He says he needs it urgently because he may have to go away."
+                }
+              ]
             }
           ]
         }
@@ -942,10 +2442,10 @@
     },
     {
       "id": 35,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 34,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin is accused",
       "description": [
@@ -953,7 +2453,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "A neighbour spots Edwin as the one asking questions about Ben - he’s jumped by the crowd and taken before Geoffrey.  "
+              "children": [
+                {
+                  "text": "A neighbour spots Edwin as the one asking questions about Ben - he’s jumped by the crowd and taken before Geoffrey.  "
+                }
+              ]
             }
           ]
         }
@@ -968,10 +2472,10 @@
     },
     {
       "id": 36,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 35,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin is interviewed by the magistrate",
       "description": [
@@ -979,7 +2483,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin makes up a reason why he was meeting Ben and talks his way out of trouble. A crowd has formed outside the\nmagistrate’s offices and they’re baying for blood. Geoffrey has to go outside to calm them before he releases Edwin. \nEdwin is told, by , to investigate, to see if he can identify the killer - it seems the best way to take suspicion off himself. He's given 5 days."
+              "children": [
+                {
+                  "text": "Edwin makes up a reason why he was meeting Ben and talks his way out of trouble. A crowd has formed outside the\nmagistrate’s offices and they’re baying for blood. Geoffrey has to go outside to calm them before he releases Edwin. \nEdwin is told, by , to investigate, to see if he can identify the killer - it seems the best way to take suspicion off himself. He's given 5 days."
+                }
+              ]
             }
           ]
         }
@@ -994,10 +2502,10 @@
     },
     {
       "id": 37,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 36,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin returns for his money",
       "description": [
@@ -1005,7 +2513,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin goes back for his money. Her husband is out and Sarah tells him she has none of her own and cannot ask her husband to pay because he does not know her secret. He tells her he needs the money because he may need to go away. She offers to sleep with Edwin as payment. He refuses and storms away. "
+              "children": [
+                {
+                  "text": "Edwin goes back for his money. Her husband is out and Sarah tells him she has none of her own and cannot ask her husband to pay because he does not know her secret. He tells her he needs the money because he may need to go away. She offers to sleep with Edwin as payment. He refuses and storms away. "
+                }
+              ]
             }
           ]
         }
@@ -1020,10 +2532,10 @@
     },
     {
       "id": 38,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 37,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg questions Edwin about Ben's killing",
       "description": [
@@ -1031,7 +2543,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin tells Meg he hasn't been paid yet but he's recovered the goods and will still pay Meg for his part in the finding of them. \nMeg tells Edwin he followed him to Ben Steps' house the day Steps was killed. Meg half-believes Edwin killed Ben and questions Edwin about why she had him follow Ben. Edwin tells her his whole back-story but swears he didn't kill Steps. Meg still does not believe Edwin but trusts him so tells him he'll let it go for the time being.\n"
+              "children": [
+                {
+                  "text": "Edwin tells Meg he hasn't been paid yet but he's recovered the goods and will still pay Meg for his part in the finding of them. \nMeg tells Edwin he followed him to Ben Steps' house the day Steps was killed. Meg half-believes Edwin killed Ben and questions Edwin about why she had him follow Ben. Edwin tells her his whole back-story but swears he didn't kill Steps. Meg still does not believe Edwin but trusts him so tells him he'll let it go for the time being.\n"
+                }
+              ]
             }
           ]
         }
@@ -1046,10 +2562,10 @@
     },
     {
       "id": 39,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 38,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg thinks about Edwin as suspect",
       "description": [
@@ -1057,7 +2573,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Still not satisfied, Meg ponders if Edwin could be a suspect:\n1. Edwin might be being blackmailed by Ben Steps.\n2. He visited Steps on the day he was killed. \n3. He returned the letters to Sarah.\n4. He's promised to pay Meg, even if he does not get paid by Sarah"
+              "children": [
+                {
+                  "text": "Still not satisfied, Meg ponders if Edwin could be a suspect:\n1. Edwin might be being blackmailed by Ben Steps.\n2. He visited Steps on the day he was killed. \n3. He returned the letters to Sarah.\n4. He's promised to pay Meg, even if he does not get paid by Sarah"
+                }
+              ]
             }
           ]
         }
@@ -1072,10 +2592,10 @@
     },
     {
       "id": 40,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 39,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah apologises to Edwin",
       "description": [
@@ -1083,7 +2603,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Sarah comes to find him and says she is so sorry for embarrassing him and cheating him. She says she’s not like that but was so distraught about the burglary affair she wasn’t in her right mind. Sarah explains why she was so worried, and tells Edwin about her unhappy marriage. Sarah says she’ll\nfind some way to repay him, though he may have to wait but Edwin says he will put the burglary down to experience."
+              "children": [
+                {
+                  "text": "Sarah comes to find him and says she is so sorry for embarrassing him and cheating him. She says she’s not like that but was so distraught about the burglary affair she wasn’t in her right mind. Sarah explains why she was so worried, and tells Edwin about her unhappy marriage. Sarah says she’ll\nfind some way to repay him, though he may have to wait but Edwin says he will put the burglary down to experience."
+                }
+              ]
             }
           ]
         }
@@ -1098,10 +2622,10 @@
     },
     {
       "id": 41,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 40,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin pays Meg out of his savings.",
       "description": [
@@ -1109,7 +2633,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin pays Meg out of his savings."
+              "children": [
+                {
+                  "text": "Edwin pays Meg out of his savings."
+                }
+              ]
             }
           ]
         }
@@ -1124,20 +2652,16 @@
     },
     {
       "id": 42,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 41,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin challenges Sarah - did she kill Steps?",
       "description": [
         {
           "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
+          "children": []
         }
       ],
       "tags": [],
@@ -1150,10 +2674,10 @@
     },
     {
       "id": 43,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 42,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "EXPLAIN ABOUT Meg'S INVESTIGATION",
       "description": [
@@ -1161,7 +2685,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": " Explain about Meg's investigation, how he follows Edwin and uncovers the truth.\n"
+              "children": [
+                {
+                  "text": " Explain about Meg's investigation, how he follows Edwin and uncovers the truth.\n"
+                }
+              ]
             }
           ]
         }
@@ -1176,10 +2704,10 @@
     },
     {
       "id": 44,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 43,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg watches Edwin follow Sarah",
       "description": [
@@ -1187,7 +2715,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Meg wants to practice his skills so watches Edwin follow Sarah."
+              "children": [
+                {
+                  "text": "Meg wants to practice his skills so watches Edwin follow Sarah."
+                }
+              ]
             }
           ]
         }
@@ -1202,10 +2734,10 @@
     },
     {
       "id": 45,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 44,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin finds a note in Ben's lodgings",
       "description": [
@@ -1213,7 +2745,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin and Meg go to Ben’s lodgings to search for any clues to\nwho killed him. Edwin also looks for evidence of what the man knew about him.\nHe finds a name, SETH GREEN, scribbled on a hidden scrap of paper and goes to look for him."
+              "children": [
+                {
+                  "text": "Edwin and Meg go to Ben’s lodgings to search for any clues to\nwho killed him. Edwin also looks for evidence of what the man knew about him.\nHe finds a name, SETH GREEN, scribbled on a hidden scrap of paper and goes to look for him."
+                }
+              ]
             }
           ]
         }
@@ -1228,10 +2764,10 @@
     },
     {
       "id": 46,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 45,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin bumps into Sarah in town",
       "description": [
@@ -1239,7 +2775,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin bumps into Sarah in the town, having followed her from home, secretly watched by Meg. Sarah tells Edwin she often walks by the river in the morning."
+              "children": [
+                {
+                  "text": "Edwin bumps into Sarah in the town, having followed her from home, secretly watched by Meg. Sarah tells Edwin she often walks by the river in the morning."
+                }
+              ]
             }
           ]
         }
@@ -1254,10 +2794,10 @@
     },
     {
       "id": 47,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 46,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin talks to Seth Green",
       "description": [
@@ -1265,7 +2805,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "It turns out that Seth is Ben’s informant. The man is in his fifties, has a serious illness, and is dying. Edwin asks why he informed on him. Seth says he’d been a friend of Ben’s father and loyal to him, though he’s never quite trusted the son. He knew nothing of the circumstances but knew Edwin had killed the brother. He’d been drinking with Ben one night and told Ben who killed his brother. He meant no harm and did not suspect Ben would do anything about it.\nEdwin explains how it was a suicide. He’d disarmed Ben’s brother but then he’d run on to Edwin’s sword, ashamed of having been beaten in battle. Edwin tells Seth that Ben is dead, and they must find his killer. Seth explains that Ben’s father had many enemies due to his financial dealings so it could be someone out for revenge."
+              "children": [
+                {
+                  "text": "It turns out that Seth is Ben’s informant. The man is in his fifties, has a serious illness, and is dying. Edwin asks why he informed on him. Seth says he’d been a friend of Ben’s father and loyal to him, though he’s never quite trusted the son. He knew nothing of the circumstances but knew Edwin had killed the brother. He’d been drinking with Ben one night and told Ben who killed his brother. He meant no harm and did not suspect Ben would do anything about it.\nEdwin explains how it was a suicide. He’d disarmed Ben’s brother but then he’d run on to Edwin’s sword, ashamed of having been beaten in battle. Edwin tells Seth that Ben is dead, and they must find his killer. Seth explains that Ben’s father had many enemies due to his financial dealings so it could be someone out for revenge."
+                }
+              ]
             }
           ]
         }
@@ -1280,10 +2824,10 @@
     },
     {
       "id": 48,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 47,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin and Sarah agree to meet each day",
       "description": [
@@ -1291,7 +2835,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin and Sarah meet again by the river. She tells him Geoffrey is away and he has asked her to deliver some instructions to one of his boatyards. They agree to walk together every day whilst Geoffrey is away."
+              "children": [
+                {
+                  "text": "Edwin and Sarah meet again by the river. She tells him Geoffrey is away and he has asked her to deliver some instructions to one of his boatyards. They agree to walk together every day whilst Geoffrey is away."
+                }
+              ]
             }
           ]
         }
@@ -1306,10 +2854,10 @@
     },
     {
       "id": 49,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 48,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin is introduced to Ralf",
       "description": [
@@ -1317,7 +2865,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin is introduced to Ralf by Sarah, when they meet one day when walking. Edwin notices how close they are."
+              "children": [
+                {
+                  "text": "Edwin is introduced to Ralf by Sarah, when they meet one day when walking. Edwin notices how close they are."
+                }
+              ]
             }
           ]
         }
@@ -1332,10 +2884,10 @@
     },
     {
       "id": 50,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 49,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Seth Green contacts Edwin",
       "description": [
@@ -1343,7 +2895,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Seth Green recontacts Edwin and tells him he's been thinking. He's remembered that Ben Steps said, one night, that he was 'getting a pretty penny' out of a man called Jacob Trussle. Green does not know Trussle but thinks he must have lived and worked in Bridgnorth."
+              "children": [
+                {
+                  "text": "Seth Green recontacts Edwin and tells him he's been thinking. He's remembered that Ben Steps said, one night, that he was 'getting a pretty penny' out of a man called Jacob Trussle. Green does not know Trussle but thinks he must have lived and worked in Bridgnorth."
+                }
+              ]
             }
           ]
         }
@@ -1358,10 +2914,10 @@
     },
     {
       "id": 51,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 50,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin finds Jacob Trussle",
       "description": [
@@ -1369,7 +2925,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin finds Jacob Trussle, by asking around. He forces out of Trussle the fact he was being blackmailed by Ben Steps for embezzling his employer, owner of transport boats.\nTrussle tells Edwin he’s glad Steps is dead, but he did not kill him. He has no alibi, other than being at home with his wife."
+              "children": [
+                {
+                  "text": "Edwin finds Jacob Trussle, by asking around. He forces out of Trussle the fact he was being blackmailed by Ben Steps for embezzling his employer, owner of transport boats.\nTrussle tells Edwin he’s glad Steps is dead, but he did not kill him. He has no alibi, other than being at home with his wife."
+                }
+              ]
             }
           ]
         }
@@ -1384,10 +2944,10 @@
     },
     {
       "id": 52,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 51,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Sarah tells Edwin she told Ralf about them",
       "description": [
@@ -1395,7 +2955,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Sarah tells Edwin she’s admitted their relationship to Ralf and he’s promised to keep it secret."
+              "children": [
+                {
+                  "text": "Sarah tells Edwin she’s admitted their relationship to Ralf and he’s promised to keep it secret."
+                }
+              ]
             }
           ]
         }
@@ -1410,10 +2974,10 @@
     },
     {
       "id": 53,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 52,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin interviews Trussle's wife",
       "description": [
@@ -1421,7 +2985,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin talks to Trussle’s wife and she’s vague about days – not very bright woman. Edwin keeps Trussle on his list."
+              "children": [
+                {
+                  "text": "Edwin talks to Trussle’s wife and she’s vague about days – not very bright woman. Edwin keeps Trussle on his list."
+                }
+              ]
             }
           ]
         }
@@ -1436,10 +3004,10 @@
     },
     {
       "id": 54,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 53,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Ralf threatens Edwin",
       "description": [
@@ -1447,7 +3015,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Ralf finds Edwin and warns him (from hiding, in the shadows) not to do any harm to Sarah, or he’ll be sorry. Ralf says he’s keeping an eye on Geoffrey as well but cannot take action because Sarah will lose her livelihood and her daughter."
+              "children": [
+                {
+                  "text": "Ralf finds Edwin and warns him (from hiding, in the shadows) not to do any harm to Sarah, or he’ll be sorry. Ralf says he’s keeping an eye on Geoffrey as well but cannot take action because Sarah will lose her livelihood and her daughter."
+                }
+              ]
             }
           ]
         }
@@ -1462,10 +3034,10 @@
     },
     {
       "id": 55,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 54,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Joseph reveals she told Sarah where Ben lived",
       "description": [
@@ -1473,7 +3045,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Joseph reveals she told Sarah where Ben lived  "
+              "children": [
+                {
+                  "text": "Joseph reveals she told Sarah where Ben lived  "
+                }
+              ]
             }
           ]
         }
@@ -1488,10 +3064,10 @@
     },
     {
       "id": 56,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 55,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Joseph points a finger at Ralf",
       "description": [
@@ -1499,7 +3075,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Joseph tells Meg (when he challenges her) that she told Ralf his sister has a problem. Meg does not mention this until later."
+              "children": [
+                {
+                  "text": "Joseph tells Meg (when he challenges her) that she told Ralf his sister has a problem. Meg does not mention this until later."
+                }
+              ]
             }
           ]
         }
@@ -1514,10 +3094,10 @@
     },
     {
       "id": 57,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 56,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin talks to tavern owner",
       "description": [
@@ -1525,7 +3105,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "John Lincoln, a moneylender, seen in an argument with Ben. He was owed money by Ben. An argument between them was witnessed in the tavern, with much pushing and shoving. Lincoln was heard to threaten to kill Ben if he did not get his payment back soon.  "
+              "children": [
+                {
+                  "text": "John Lincoln, a moneylender, seen in an argument with Ben. He was owed money by Ben. An argument between them was witnessed in the tavern, with much pushing and shoving. Lincoln was heard to threaten to kill Ben if he did not get his payment back soon.  "
+                }
+              ]
             }
           ]
         }
@@ -1540,10 +3124,10 @@
     },
     {
       "id": 58,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 57,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin discusses Geoffrey with Sarah",
       "description": [
@@ -1551,7 +3135,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin asks Sarah if Geoffrey could have known about the letters. She says she thinks it unlikely because he hasn't mentioned it. She then expresses fear for her life if he has found out and not reacted, because it shows he's calculating."
+              "children": [
+                {
+                  "text": "Edwin asks Sarah if Geoffrey could have known about the letters. She says she thinks it unlikely because he hasn't mentioned it. She then expresses fear for her life if he has found out and not reacted, because it shows he's calculating."
+                }
+              ]
             }
           ]
         }
@@ -1569,7 +3157,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 58,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin sees Walter and confronts him",
       "description": [
@@ -1595,7 +3183,7 @@
       "lineId": 1,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 59,
+      "positionWithinLine": 1,
       "positionInBeat": 0,
       "title": "Edwin confronts Geoffrey about false name",
       "description": [
@@ -1618,10 +3206,10 @@
     },
     {
       "id": 61,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 60,
+      "positionWithinLine": 2,
       "positionInBeat": 0,
       "title": "Edwin and Meg go through murder suspects",
       "description": [
@@ -1629,7 +3217,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin and Meg go through the possible suspects:\n- Meg mentions that Ralf knew Steps was blackmailing Sarah.\n- Edwin wonders if Geoffrey could have found out about the letters and that Steps had stolen them. He did not raise it with Sarah because he wanted to get them back first.  "
+              "children": [
+                {
+                  "text": "Edwin and Meg go through the possible suspects:\n- Meg mentions that Ralf knew Steps was blackmailing Sarah.\n- Edwin wonders if Geoffrey could have found out about the letters and that Steps had stolen them. He did not raise it with Sarah because he wanted to get them back first.  "
+                }
+              ]
             }
           ]
         }
@@ -1644,10 +3236,10 @@
     },
     {
       "id": 62,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 61,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin identifies the killer",
       "description": [
@@ -1655,7 +3247,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin identifies Ben’s killer - it was Sarah’s brother, RALF BURGESS. Edwin is torn about what to do. He knows if he captures Ralf and takes him to the magistrate he’ll have no chance with Sarah. He decides to ignore his heart and find Ralf."
+              "children": [
+                {
+                  "text": "Edwin identifies Ben’s killer - it was Sarah’s brother, RALF BURGESS. Edwin is torn about what to do. He knows if he captures Ralf and takes him to the magistrate he’ll have no chance with Sarah. He decides to ignore his heart and find Ralf."
+                }
+              ]
             }
           ]
         }
@@ -1670,10 +3266,10 @@
     },
     {
       "id": 63,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 62,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin accuses Ralf",
       "description": [
@@ -1681,7 +3277,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "When Edwin finds Ralf, he’s told Ralf had discovered Ben had raped Ralf’s now-dead wife when she was younger, so took revenge. Edwin decides that justice has been done, but tells Ralf to leave the area for a while."
+              "children": [
+                {
+                  "text": "When Edwin finds Ralf, he’s told Ralf had discovered Ben had raped Ralf’s now-dead wife when she was younger, so took revenge. Edwin decides that justice has been done, but tells Ralf to leave the area for a while."
+                }
+              ]
             }
           ]
         }
@@ -1696,10 +3296,10 @@
     },
     {
       "id": 64,
-      "lineId": 1,
+      "lineId": 4,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 63,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin explains to the magistrate",
       "description": [
@@ -1707,7 +3307,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin tells the magistrate he found the killer, an itinerant, but he escaped, and Edwin believes he’ll probably not be found again. Magistrate is not happy, and not sure he believes Edwin, but accepts his explanation when Meg backs him up."
+              "children": [
+                {
+                  "text": "Edwin tells the magistrate he found the killer, an itinerant, but he escaped, and Edwin believes he’ll probably not be found again. Magistrate is not happy, and not sure he believes Edwin, but accepts his explanation when Meg backs him up."
+                }
+              ]
             }
           ]
         }
@@ -1722,10 +3326,10 @@
     },
     {
       "id": 65,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 64,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Ralf leaves on a ship",
       "description": [
@@ -1733,7 +3337,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Ralf leaves on a ship bound for America. He sends a note to Sarah, admitting what he did and saying what an honourable man Edwin is, and she should make herself happy."
+              "children": [
+                {
+                  "text": "Ralf leaves on a ship bound for America. He sends a note to Sarah, admitting what he did and saying what an honourable man Edwin is, and she should make herself happy."
+                }
+              ]
             }
           ]
         }
@@ -1748,10 +3356,10 @@
     },
     {
       "id": 66,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 65,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "EXPAND ON EDWIN AND SARAH STORY.",
       "description": [
@@ -1759,7 +3367,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "\nEXPAND ON EDWIN AND SARAH STORY."
+              "children": [
+                {
+                  "text": "\nEXPAND ON EDWIN AND SARAH STORY."
+                }
+              ]
             }
           ]
         }
@@ -1774,10 +3386,10 @@
     },
     {
       "id": 67,
-      "lineId": 1,
+      "lineId": 2,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 66,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Edwin and Sarah story concludes",
       "description": [
@@ -1785,7 +3397,11 @@
           "type": "paragraph",
           "children": [
             {
-              "text": "Edwin resolves to get Sarah away from her husband.\nOR\nSarah says she never wants to see Edwin again (after he's arrested her brother."
+              "children": [
+                {
+                  "text": "Edwin resolves to get Sarah away from her husband.\nOR\nSarah says she never wants to see Edwin again (after he's arrested her brother."
+                }
+              ]
             }
           ]
         }
@@ -1800,20 +3416,16 @@
     },
     {
       "id": 68,
-      "lineId": 1,
+      "lineId": 3,
       "beatId": 1,
       "bookId": 1,
-      "positionWithinLine": 67,
+      "positionWithinLine": 0,
       "positionInBeat": 0,
       "title": "Meg 'officially' becomes Edwin's assistant",
       "description": [
         {
           "type": "paragraph",
-          "children": [
-            {
-              "text": ""
-            }
-          ]
+          "children": []
         }
       ],
       "tags": [],
@@ -1832,6 +3444,36 @@
       "color": "#6cace4",
       "title": "Main Plot",
       "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "color": "#78be20",
+      "title": "Subplot 1: Edwin and Sarah",
+      "position": 1,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 3,
+      "bookId": 1,
+      "color": "#e5554f",
+      "title": "Subplot 2: Meg's development",
+      "position": 2,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 4,
+      "bookId": 1,
+      "color": "#ff7f32",
+      "title": "Mainplot: Killing of Ben Steps",
+      "position": 3,
       "characterId": null,
       "expanded": null,
       "fromTemplateId": null

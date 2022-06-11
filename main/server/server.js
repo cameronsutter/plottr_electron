@@ -8,9 +8,16 @@ import {
   RM_RF,
   SAVE_FILE,
   SAVE_OFFLINE_FILE,
+  BACKUP_FILE,
+  AUTO_SAVE_FILE,
+  SAVE_BACKUP_ERROR,
+  SAVE_BACKUP_SUCCESS,
+  ENSURE_BACKUP_FULL_PATH,
+  ENSURE_BACKUP_TODAY_PATH,
 } from '../../shared/socket-server-message-types'
-import { logger } from './logger'
+import { makeLogger } from './logger'
 import FileModule from './files'
+import BackupModule from './backup'
 
 const parseArgs = () => {
   return {
@@ -22,15 +29,37 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const setupListeners = (port, userDataPath) => {
-  const { saveFile, saveOfflineFile, basename, readFile } = FileModule(userDataPath)
-
-  logger.info(`Starting server on port: ${port}`)
+  process.send(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
 
   webSocketServer.on('connection', (webSocket) => {
+    const logger = makeLogger(webSocket)
+
+    const { saveFile, saveOfflineFile, basename, readFile, autoSave } = FileModule(
+      userDataPath,
+      logger
+    )
+    const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
+
     webSocket.on('message', (message) => {
       try {
         const { type, messageId, payload } = JSON.parse(message)
+
+        const send = (type, ...args) => {
+          try {
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: args,
+                payload,
+              })
+            )
+          } catch (error) {
+            logger.error('Error sending a message back to the socket client')
+          }
+        }
+
         switch (type) {
           case PING: {
             webSocket.send(
@@ -50,16 +79,20 @@ const setupListeners = (port, userDataPath) => {
               },
               filePath: filePath,
             })
-            saveFile(filePath, file).then((result) => {
-              webSocket.send(
-                JSON.stringify({
-                  type,
-                  messageId,
-                  result,
-                  payload,
-                })
-              )
-            })
+            saveFile(filePath, file)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while saving file ', payload, error)
+              })
             return
           }
           case RM_RF: {
@@ -87,16 +120,20 @@ const setupListeners = (port, userDataPath) => {
               },
             })
             const { file } = payload
-            saveOfflineFile(file).then((result) => {
-              webSocket.send(
-                JSON.stringify({
-                  type,
-                  messageId,
-                  result,
-                  payload,
-                })
-              )
-            })
+            saveOfflineFile(file)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while saving offline ', payload, error)
+              })
             return
           }
           case FILE_BASENAME: {
@@ -115,16 +152,100 @@ const setupListeners = (port, userDataPath) => {
           case READ_FILE: {
             logger.info('Reading a file at path: ', payload)
             const { filePath } = payload
-            readFile(filePath).then((fileData) => {
-              webSocket.send(
-                JSON.stringify({
-                  type,
-                  messageId,
-                  result: JSON.parse(fileData),
-                  payload,
-                })
-              )
+            readFile(filePath)
+              .then((fileData) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result: JSON.parse(fileData),
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while reading a file', payload, error)
+              })
+            return
+          }
+          case BACKUP_FILE: {
+            const { filePath, file } = payload
+            logger.info('Backing up file (reduced payload): ', {
+              file: {
+                ...file.file,
+              },
+              filePath: filePath,
             })
+            saveBackup(filePath, file)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+                send(SAVE_BACKUP_SUCCESS, filePath)
+              })
+              .catch((error) => {
+                logger.error('Error while saving a backup ', payload.file.file, error)
+                send(SAVE_BACKUP_ERROR, filePath, error.message)
+              })
+            return
+          }
+          case AUTO_SAVE_FILE: {
+            const { filePath, file, userId, previousFile } = payload
+            logger.info('Auto-saving file (reduced payload): ', {
+              file: {
+                ...file.file,
+              },
+              filePath,
+              previousFile: {
+                ...previousFile.file,
+              },
+              userId,
+            })
+            autoSave(send, filePath, file, userId, previousFile)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while auto saving', payload, error)
+              })
+            return
+          }
+          case ENSURE_BACKUP_FULL_PATH: {
+            logger.info(
+              'Ensuring that the full backup path exists (same op. as ensuring backup path for today.)'
+            )
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: ensureBackupTodayPath(),
+                payload,
+              })
+            )
+            return
+          }
+          case ENSURE_BACKUP_TODAY_PATH: {
+            logger.info('Ensuring that the backup path exists for today.')
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: ensureBackupTodayPath(),
+                payload,
+              })
+            )
             return
           }
         }
@@ -139,7 +260,7 @@ const setupListeners = (port, userDataPath) => {
 
 const startServer = () => {
   const { port, userDataPath } = parseArgs()
-  logger.info('args', process.argv)
+  process.send(`args: ${process.argv}`)
   setupListeners(port, userDataPath)
 }
 

@@ -87,10 +87,33 @@ let openedFile = false
 
 const broadcastPortChange = (port) => {
   if (!isInitialised()) {
-    createClient(port, log, (error) => {
-      log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
-      app.quit()
-    })
+    createClient(
+      port,
+      log,
+      (error) => {
+        log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
+        app.quit()
+      },
+      {
+        onSaveBackupError: (filePath, errorMessage) => {
+          log.error(`Failed to save a backup at ${filePath} because ${errorMessage}`)
+        },
+        onSaveBackupSuccess: (filePath) => {
+          log.info(`Succeeeded to save a backup at ${filePath} this time`)
+        },
+        onAutoSaveError: (filePath, errorMessage) => {
+          log.error(`Failed to auto save a file at ${filePath} because ${errorMessage}`)
+        },
+        onAutoSaveWorkedThisTime: () => {
+          log.info('Auto save worked this time')
+        },
+        onAutoSaveBackupError: (backupFilePath, backupErrorMessage) => {
+          log.error(
+            `Couldn't save a backup at ${backupFilePath} during auto-save because ${backupErrorMessage}`
+          )
+        },
+      }
+    )
   }
   setPort(port)
   broadcastToAllWindows('update-worker-port', port)

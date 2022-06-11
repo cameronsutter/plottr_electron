@@ -8,10 +8,32 @@ import {
   SAVE_OFFLINE_FILE,
   FILE_BASENAME,
   READ_FILE,
+  AUTO_SAVE_FILE,
+  BACKUP_FILE,
+  SAVE_BACKUP_ERROR,
+  SAVE_BACKUP_SUCCESS,
+  AUTO_SAVE_ERROR,
+  AUTO_SAVE_WORKED_THIS_TIME,
+  AUTO_SAVE_BACKUP_ERROR,
+  ENSURE_BACKUP_FULL_PATH,
+  ENSURE_BACKUP_TODAY_PATH,
+  LOG_INFO,
+  LOG_WARN,
+  LOG_ERROR,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
-const connect = (port, logger) => {
+const connect = (
+  port,
+  logger,
+  {
+    onSaveBackupError,
+    onSaveBackupSuccess,
+    onAutoSaveError,
+    onAutoSaveWorkedThisTime,
+    onAutoSaveBackupError,
+  }
+) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
     const promises = new Map()
@@ -51,6 +73,47 @@ const connect = (port, logger) => {
         }
 
         switch (type) {
+          // Additional replies (i.e. these might happen in addition
+          // to the normal/happy path):
+          case SAVE_BACKUP_ERROR: {
+            if (onSaveBackupError) {
+              const [filePath, errorMessage] = result
+              onSaveBackupError(filePath, errorMessage)
+            }
+            return
+          }
+          case SAVE_BACKUP_SUCCESS: {
+            if (onSaveBackupSuccess) {
+              const [filePath] = result
+              onSaveBackupSuccess(filePath)
+            }
+            return
+          }
+          case AUTO_SAVE_ERROR: {
+            if (onAutoSaveError) {
+              const [filePath, errorMessage] = result
+              onAutoSaveError(filePath, errorMessage)
+            }
+            return
+          }
+          case AUTO_SAVE_WORKED_THIS_TIME: {
+            if (onAutoSaveWorkedThisTime) {
+              onAutoSaveWorkedThisTime()
+            }
+            return
+          }
+          case AUTO_SAVE_BACKUP_ERROR: {
+            if (onAutoSaveBackupError) {
+              const [backupFilePath, backupErrorMessage] = result
+              onAutoSaveBackupError(backupFilePath, backupErrorMessage)
+            }
+            return
+          }
+          // Normal replies
+          case ENSURE_BACKUP_FULL_PATH:
+          case ENSURE_BACKUP_TODAY_PATH:
+          case AUTO_SAVE_FILE:
+          case BACKUP_FILE:
           case READ_FILE:
           case FILE_BASENAME:
           case SAVE_OFFLINE_FILE:
@@ -60,13 +123,26 @@ const connect = (port, logger) => {
             resolvePromise()
             return
           }
+          // Logging
+          case LOG_INFO: {
+            logger.info(result, type)
+            return
+          }
+          case LOG_WARN: {
+            logger.warn(result, type)
+            return
+          }
+          case LOG_ERROR: {
+            logger.error(result, type)
+            return
+          }
         }
 
         logger.error(
           `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
         )
       } catch (error) {
-        logger.error('Error while replying: ', data, error)
+        logger.error('Error while replying: ', error.message)
       }
     })
 
@@ -93,6 +169,23 @@ const connect = (port, logger) => {
     const readFile = (filePath) => {
       return sendPromise(READ_FILE, { filePath })
     }
+
+    const autoSave = (filePath, file, userId, previousFile) => {
+      return sendPromise(AUTO_SAVE_FILE, { filePath, file, userId, previousFile })
+    }
+
+    const saveBackup = (filePath, file) => {
+      return sendPromise(BACKUP_FILE, { filePath, file })
+    }
+
+    const ensureBackupFullPath = () => {
+      return sendPromise(ENSURE_BACKUP_FULL_PATH)
+    }
+
+    const ensureBackupTodayPath = () => {
+      return sendPromise(ENSURE_BACKUP_TODAY_PATH)
+    }
+
     return new Promise((resolve, reject) => {
       clientConnection.on('open', () => {
         resolve({
@@ -102,6 +195,10 @@ const connect = (port, logger) => {
           saveOfflineFile,
           basename,
           readFile,
+          autoSave,
+          saveBackup,
+          ensureBackupFullPath,
+          ensureBackupTodayPath,
           close: clientConnection.close.bind(clientConnection),
         })
       })
@@ -117,10 +214,13 @@ const instance = () => {
   let resolvedPromise = null
   let resolve = null
   let reject = null
+  let logger = null
 
-  const createClient = (port, logger, onFailedToConnect) => {
+  // See the destructured argument of the connect function for the
+  // structure of `eventHandlers`.
+  const createClient = (port, logger, onFailedToConnect, eventHandlers) => {
     initialised = true
-    connect(port, logger)
+    connect(port, logger, eventHandlers)
       .then((newClient) => {
         if (client) client.close(0, 'New client requested')
         client = newClient
@@ -138,14 +238,20 @@ const instance = () => {
   const whenClientIsReady = (f) => {
     if (client) {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        window.requestIdleCallback(() => {
           const result = f(client)
-          if (typeof result.then === 'function') {
-            result.then(resolve)
-          } else {
-            resolve(result)
+          try {
+            if (typeof result.then === 'function') {
+              result.then(resolve)
+            } else {
+              resolve(result)
+            }
+          } catch (error) {
+            if (logger) {
+              logger.error('Error while using client: ', error)
+            }
           }
-        }, 0)
+        })
       })
     }
     if (resolvedPromise) {

@@ -46,17 +46,51 @@ const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
 setPort(socketWorkerPort)
-createClient(getPort(), logger, (error) => {
-  logger.error(
-    `Failed to reconnect to socket server on port: <${getPort()}>.  Killing the window.`,
-    error
-  )
-  dialog.showErrorBox(
-    t('Error'),
-    t("Plottr ran into a problem and can't start.  Please contact support.")
-  )
-  window.close()
-})
+const socketServerEventHandlers = {
+  onSaveBackupError: (filePath, errorMessage) => {
+    logger.warn('[file save backup]', errorMessage)
+    rollbar.error({ message: 'BACKUP failed' })
+    rollbar.warn(errorMessage, { fileName: filePath })
+  },
+  onSaveBackupSuccess: (filePath) => {
+    logger.info('[file save backup]', 'success', filePath)
+  },
+  onAutoSaveError: (filePath, errorMessage) => {
+    logger.warn(errorMessage)
+    rollbar.warn(errorMessage, { fileName: filePath })
+    dialog.showErrorBox(
+      t('Auto-saving failed'),
+      t("Saving your file didn't work. Check where it's stored.")
+    )
+  },
+  onAutoSaveWorkedThisTime: () => {
+    dialog.showMessageBox(win, {
+      title: t('Auto-saving worked'),
+      message: t('Saving worked this time 🎉'),
+    })
+  },
+  onAutoSaveBackupError: (backupFilePath, backupErrorMessage) => {
+    logger.warn('[save state backup]', backupErrorMessage)
+    rollbar.error({ message: 'BACKUP failed' })
+    rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
+  },
+}
+createClient(
+  getPort(),
+  logger,
+  (error) => {
+    logger.error(
+      `Failed to reconnect to socket server on port: <${getPort()}>.  Killing the window.`,
+      error
+    )
+    dialog.showErrorBox(
+      t('Error'),
+      t("Plottr ran into a problem and can't start.  Please contact support.")
+    )
+    window.close()
+  },
+  socketServerEventHandlers
+)
 const { saveFile } = makeFileModule(whenClientIsReady)
 
 setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
@@ -73,8 +107,9 @@ process.on('uncaughtException', (err) => {
 
 // Secondary SETUP //
 window.requestIdleCallback(() => {
-  ipcRenderer.send('ensure-backup-full-path')
-  ipcRenderer.send('ensure-backup-today-path')
+  whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath }) => {
+    return ensureBackupFullPath().then(ensureBackupTodayPath)
+  })
   TemplateFetcher.fetch()
   initMixpanel()
 })
@@ -258,38 +293,6 @@ ipcRenderer.on('create-error-report', () => {
   createFullErrorReport()
 })
 
-ipcRenderer.on('auto-save-error', (event, filePath, error) => {
-  logger.warn(error)
-  rollbar.warn(error, { fileName: filePath })
-  dialog.showErrorBox(
-    t('Auto-saving failed'),
-    t("Saving your file didn't work. Check where it's stored.")
-  )
-})
-
-ipcRenderer.on('auto-save-worked-this-time', (event, filePath) => {
-  dialog.showMessageBox(win, {
-    title: t('Auto-saving worked'),
-    message: t('Saving worked this time 🎉'),
-  })
-})
-
-ipcRenderer.on('auto-save-backup-error', (event, filePath, error) => {
-  logger.warn('[save state backup]', error)
-  rollbar.error({ message: 'BACKUP failed' })
-  rollbar.warn(error, { fileName: filePath })
-})
-
-ipcRenderer.on('save-backup-error', (event, error, filePath) => {
-  logger.warn('[file open backup]', error)
-  rollbar.error({ message: 'BACKUP failed' })
-  rollbar.warn(error, { fileName: filePath })
-})
-
-ipcRenderer.on('save-backup-success', (event, filePath) => {
-  logger.info('[file open backup]', 'success', filePath)
-})
-
 ipcRenderer.on('close-dashboard', () => {
   closeDashboard()
 })
@@ -341,17 +344,22 @@ ipcRenderer.on('update-worker-port', (_event, newPort) => {
   const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
   logger.info(`Updating the socket server port to: ${newPort}`)
   setPort(socketWorkerPort)
-  createClient(getPort(), logger, (error) => {
-    logger.error(
-      `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
-      error
-    )
-    dialog.showErrorBox(
-      t('Error'),
-      t('Plottr ran into a problem and needs to close.  Please contact support.')
-    )
-    window.close()
-  })
+  createClient(
+    getPort(),
+    logger,
+    (error) => {
+      logger.error(
+        `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
+        error
+      )
+      dialog.showErrorBox(
+        t('Error'),
+        t('Plottr ran into a problem and needs to close.  Please contact support.')
+      )
+      window.close()
+    },
+    socketServerEventHandlers
+  )
 })
 
 ipcRenderer.on('reload-dark-mode', (_event, newValue) => {

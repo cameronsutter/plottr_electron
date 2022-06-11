@@ -1,4 +1,5 @@
 import { configureStore } from './configureStore'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
-const store = configureStore()
+const store = configureStore(whenClientIsReady)
 export { store }

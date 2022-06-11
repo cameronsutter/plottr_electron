@@ -1,12 +1,15 @@
 import { DateTime } from 'luxon'
-import {
-  backupFiles,
-  backupFolders,
-  isABackupFile,
-  sortFileNamesByDate,
-  fileIsSoonerThan,
-} from '../backup'
+import BackupModule from '../backup'
 import { sep } from 'path'
+
+const CONSOLE_LOGGER = () => ({
+  info: console.log,
+  warn: console.warn,
+  error: console.error,
+})
+
+const { backupFiles, backupFolders, isABackupFile, sortFileNamesByDate, fileIsSoonerThan } =
+  BackupModule('/tmp/plottr-test-backups')
 
 describe('isABackupFile', () => {
   describe('given an empty file name', () => {

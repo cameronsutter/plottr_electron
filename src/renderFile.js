@@ -30,14 +30,28 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const autoSave = (filePath, file, userId, previousFile) => {
+    return whenClientIsReady(({ autoSave }) => {
+      return autoSave(filePath, file, userId, previousFile)
+    })
+  }
+
+  const saveBackup = (filePath, file) => {
+    return whenClientIsReady(({ saveBackup }) => {
+      return saveBackup(filePath, file)
+    })
+  }
+
   render(
     <Provider store={store}>
-      <MainIntegrationContext.Provider value={{ saveFile, basename, readFile }}>
+      <MainIntegrationContext.Provider
+        value={{ saveFile, basename, readFile, autoSave, saveBackup }}
+      >
         <Listener />
         <Renamer />
         <SaveAs />
         <Error />
-        <Main />
+        <Main saveBackup={saveBackup} />
       </MainIntegrationContext.Provider>
     </Provider>,
     root

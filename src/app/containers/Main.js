@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, shell } from 'electron'
 import { getCurrentWindow } from '@electron/remote'
 import path from 'path'
+import { IoIosAlert } from 'react-icons/io'
 
+import { t } from 'plottr_locales'
 import { actions, selectors } from 'pltr/v2'
+import { Button } from 'plottr_components'
 
 import { bootFile } from '../bootFile'
 import { isOfflineFile } from '../../common/utils/files'
@@ -67,6 +70,7 @@ const Main = ({
   readyToCheckFileToLoad,
   cantShowFile,
   loadingState,
+  errorLoadingFile,
   selectedFileIsCloudFile,
   startCheckingFileToLoad,
   finishCheckingFileToLoad,
@@ -93,6 +97,8 @@ const Main = ({
   // to the file that's open.
   const [dashboardClosed, setDashboardClosed] = useState(false)
   const [firstTimeBooting, setFirstTimeBooting] = useState(busyBooting)
+  const [openDashboardTo, setOpenDashboardTo] = useState(null)
+  const [pathToProject, setPathToProject] = useState('')
 
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
@@ -117,6 +123,8 @@ const Main = ({
         finishCheckingFileToLoad()
         return
       }
+
+      setPathToProject(filePath)
 
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
@@ -255,6 +263,20 @@ const Main = ({
     dashboardClosed,
   ])
 
+  const goToSupport = () => {
+    shell.openExternal('https://plottr.com/support/')
+  }
+
+  const viewBackups = () => {
+    setFirstTimeBooting(false)
+    setOpenDashboardTo('backups')
+    setCurrentAppStateToDashboard()
+  }
+
+  const showFile = () => {
+    shell.showItemInFolder(pathToProject)
+  }
+
   // IMPORTANT: the order of these return statements is significant.
   // We'll exit at the earliest one that evaluates true for it's
   // guarding if.
@@ -318,7 +340,58 @@ const Main = ({
     // TODO: @cameron, @jeana, this is where we can put a more
     // interesting loading component for users and let them know what
     // we're loading based on the `applicationState` key in Redux ^_^
-    return <LoadingSplash loadingState={loadingState} loadingProgress={loadingProgress} />
+
+    const errorMessage = isInProMode
+      ? t(
+          'Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
+        )
+      : t(
+          'Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.'
+        )
+
+    const body = errorLoadingFile ? (
+      <>
+        <div className="error-boundary">
+          <div className="text-center">
+            <IoIosAlert />
+            <h1>{t('Something went wrong,')}</h1>
+            <h2>{t("but don't worry!")}</h2>
+          </div>
+          <div className="error-boundary__view-error well text-center">
+            <h5 className="error-boundary-title" style={{ lineHeight: 1.75 }}>
+              {errorMessage}
+            </h5>
+          </div>
+          <div className="error-boundary__options" style={{ width: '50%' }}>
+            <Button bsSize="lg" onClick={goToSupport}>
+              {t('Contact Support')}
+            </Button>
+            {isInProMode ? null : (
+              <Button bsSize="lg" onClick={showFile}>
+                {t('Show File')}
+              </Button>
+            )}
+            <Button bsSize="lg" onClick={viewBackups}>
+              {t('View Backups')}
+            </Button>
+          </div>
+        </div>
+      </>
+    ) : (
+      <>
+        <img src="../icons/logo_28_500.png" height="500" />
+        <h3>{loadingState}</h3>
+        <div className="loading-splash__progress">
+          <div className="loading-splash__progress__bar" style={{ width: `${loadingProgress}%` }} />
+        </div>
+      </>
+    )
+
+    return (
+      <div id="temporary-inner">
+        <div className="loading-splash">{body}</div>
+      </div>
+    )
   }
 
   if (isFirstTime) {
@@ -330,7 +403,13 @@ const Main = ({
   }
 
   if (cantShowFile || ((currentAppStateIsDashboard || showDashboard) && !dashboardClosed)) {
-    return <Dashboard closeDashboard={closeDashboard} cantShowFile={cantShowFile} />
+    return (
+      <Dashboard
+        closeDashboard={closeDashboard}
+        cantShowFile={cantShowFile}
+        openTo={openDashboardTo}
+      />
+    )
   }
 
   return <App forceProjectDashboard={showDashboard} />
@@ -355,6 +434,7 @@ Main.propTypes = {
   uploadingFileToCloud: PropTypes.bool,
   emailAddress: PropTypes.string,
   userId: PropTypes.string,
+  errorLoadingFile: PropTypes.bool.isRequired,
   setOffline: PropTypes.func.isRequired,
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
@@ -387,6 +467,7 @@ export default connect(
     cantShowFile: selectors.cantShowFileSelector(state.present),
     selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
     loadingState: selectors.loadingStateSelector(state.present),
+    errorLoadingFile: selectors.errorLoadingFileSelector(state.present) || false,
     loadingProgress: selectors.loadingProgressSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),

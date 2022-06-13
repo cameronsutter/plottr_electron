@@ -65,10 +65,16 @@ contextMenu({
 
 if (!is.development) {
   process.on('uncaughtException', function (error) {
-    log.error(error)
+    console.error('Uncaught exception.  Quitting...', error)
+    log.error('Uncaught exception.  Quitting...', error)
     rollbar.error(error, function (sendErr, data) {
       gracefullyQuit()
     })
+  })
+  process.on('unhandledRejection', function (error) {
+    console.error('Unhandled rejection.', error)
+    log.error('Unhandled rejection.', error)
+    rollbar.error(error)
   })
   // ensure only 1 instance is running
   const gotTheLock = app.requestSingleInstanceLock()
@@ -158,45 +164,49 @@ app.whenReady().then(() => {
           if (!openedFile && !(fileLaunchedOn && is.macos)) {
             openedFile = true
             log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+            try {
+              openProjectWindow(fileLaunchedOn)
+            } catch (error) {
+              log.error('Error booting file: ', error)
+            }
+          }
+        })
+
+        // Register the toggleDevTools shortcut listener.
+        globalShortcut.register('CommandOrControl+Alt+R', () => {
+          let win = BrowserWindow.getFocusedWindow()
+          if (win) win.toggleDevTools()
+        })
+
+        setDarkMode(SETTINGS.store.user.dark)
+
+        if (process.env.NODE_ENV != 'dev') {
+          app.setAsDefaultProtocolClient('plottr')
+        }
+
+        app.on('activate', async () => {
+          if (hasWindows()) {
+            focusFirstWindow()
+          } else {
             openProjectWindow(fileLaunchedOn)
           }
-        }, 1000)
+        })
+
+        app.on('second-instance', (_event, argv) => {
+          log.info('second-instance')
+          loadMenu()
+          const newFileToLoad = fileToLoad(argv)
+          openProjectWindow(newFileToLoad)
+        })
+
+        app.on('window-all-closed', () => {
+          if (is.windows) app.quit()
+        })
+
+        app.on('will-quit', () => {
+          app.releaseSingleInstanceLock()
+        })
       }
-
-      // Register the toggleDevTools shortcut listener.
-      globalShortcut.register('CommandOrControl+Alt+R', () => {
-        let win = BrowserWindow.getFocusedWindow()
-        if (win) win.toggleDevTools()
-      })
-
-      setDarkMode(SETTINGS.store.user.dark)
-
-      if (process.env.NODE_ENV != 'dev') {
-        app.setAsDefaultProtocolClient('plottr')
-      }
-
-      app.on('activate', async () => {
-        if (hasWindows()) {
-          focusFirstWindow()
-        } else {
-          openProjectWindow(fileLaunchedOn)
-        }
-      })
-
-      app.on('second-instance', (_event, argv) => {
-        log.info('second-instance')
-        loadMenu()
-        const newFileToLoad = fileToLoad(argv)
-        openProjectWindow(newFileToLoad)
-      })
-
-      app.on('window-all-closed', () => {
-        if (is.windows) app.quit()
-      })
-
-      app.on('will-quit', () => {
-        app.releaseSingleInstanceLock()
-      })
     })
 })
 

@@ -1,4 +1,0 @@
-Calculations assume: 
-275 words per pate 
-70,000 novel length 
-1500 word per chapter 

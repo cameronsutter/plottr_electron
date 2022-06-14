@@ -11,6 +11,7 @@ import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import logger from '../../../shared/logger'
 import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
+import { retryWithBackOff } from './effect'
 
 const MAX_RETRIES = 5
 
@@ -49,7 +50,9 @@ const Resume = ({
       setShowResumeMessageDialog(true)
       let retryCount = 0
       const checkAndUploadBackup = () => {
-        return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
+        return retryWithBackOff(() => {
+          return initialFetch(userId, fileId, clientId, app.getVersion())
+        }).then((cloudFile) => {
           return new Promise((resolve, reject) => {
             withFullFileState((state) => {
               const offlineFile = state.present
@@ -67,12 +70,14 @@ const Resume = ({
                 logger.info(
                   `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
                 )
-                overwriteAllKeys(fileId, clientId, {
-                  ...offlineFile,
-                  file: {
-                    ...offlineFile.file,
-                    fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-                  },
+                retryWithBackOff(() => {
+                  return overwriteAllKeys(fileId, clientId, {
+                    ...offlineFile,
+                    file: {
+                      ...offlineFile.file,
+                      fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+                    },
+                  })
                 }).then(() => {
                   setOverwritingCloudWithBackup(true)
                   setCheckingForOfflineDrift(false)

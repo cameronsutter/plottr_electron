@@ -346,7 +346,19 @@ const FileModule = (userDataPath, logger) => {
 
   const readFile = fs.promises.readFile
 
-  return { saveFile, saveOfflineFile, basename, readFile, autoSave }
+  const fileExists = (filePath) => {
+    return lstat(filePath)
+      .then(() => true)
+      .catch((error) => {
+        if (error.code === 'ENOENT') {
+          return Promise.resolve(false)
+        } else {
+          return Promise.reject(error)
+        }
+      })
+  }
+
+  return { saveFile, saveOfflineFile, basename, readFile, autoSave, fileExists }
 }
 
 export default FileModule

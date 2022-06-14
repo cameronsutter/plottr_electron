@@ -174,7 +174,7 @@ const Main = ({
       processSwitches
     ) => {
       const lastFileIsOfflineAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://')
+        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
       // There are valid possibilities for filePath to be null.
       //
       // i.e. no file has ever been opened or the last opened file was

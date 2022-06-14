@@ -162,6 +162,12 @@ const handleOfflineBackup = (backupOurs, uploadOurs, fileId, offlineFile, email,
         ...offlineFile.file,
         fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
       },
+    }).catch((error) => {
+      logger.error(`Erorr uploading our offline file ${fileId}`, error)
+      dialog.showErrorBox(
+        t('Error'),
+        t('There was an error uploading your offline backup. Please exit and start again')
+      )
     })
   }
   return Promise.resolve(false)

@@ -13,8 +13,6 @@ import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
 import { retryWithBackOff } from './effect'
 
-const MAX_RETRIES = 5
-
 const Resume = ({
   isResuming,
   setResuming,
@@ -48,7 +46,6 @@ const Resume = ({
     ) {
       setCheckingForOfflineDrift(true)
       setShowResumeMessageDialog(true)
-      let retryCount = 0
       const checkAndUploadBackup = () => {
         return retryWithBackOff(() => {
           return initialFetch(userId, fileId, clientId, app.getVersion())
@@ -64,7 +61,6 @@ const Resume = ({
                 )
                 setResuming(false)
                 setCheckingForOfflineDrift(false)
-                retryCount = 0
                 resolve(false)
               } else if (uploadOurs) {
                 logger.info(
@@ -105,7 +101,6 @@ const Resume = ({
                   setBackingUpOfflineFile(true)
                   setCheckingForOfflineDrift(false)
                   setResuming(false)
-                  retryCount = 0
                   resolve(true)
                 })
               }
@@ -113,29 +108,16 @@ const Resume = ({
           })
         })
       }
-      /* eslint-disable no-inner-declarations */
-      function handleError(error) {
+      checkAndUploadBackup().catch((error) => {
         logger.error('Error trying to resume online mode', error)
-        retryCount++
-        if (retryCount > MAX_RETRIES) {
-          setResuming(false)
-          setCheckingForOfflineDrift(false)
-          setOverwritingCloudWithBackup(false)
-          dialog.showErrorBox(
-            t('Error'),
-            t('There was an error reconnecting.  Please save the file and restart Plottr.')
-          )
-          retryCount = 0
-        } else {
-          checkAndUploadBackup().catch((error) => {
-            setTimeout(() => {
-              handleError(error)
-            }, 1000)
-          })
-        }
-      }
-      /* eslint-enable */
-      checkAndUploadBackup().catch(handleError)
+        setResuming(false)
+        setCheckingForOfflineDrift(false)
+        setOverwritingCloudWithBackup(false)
+        dialog.showErrorBox(
+          t('Error'),
+          t('There was an error reconnecting.  Please save the file and restart Plottr.')
+        )
+      })
     }
   }, [
     isResuming,

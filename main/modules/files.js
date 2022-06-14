@@ -32,6 +32,12 @@ const makeFileModule = () => {
     })
   }
 
+  const fileExists = (filePath) => {
+    return whenClientIsReady(({ fileExists }) => {
+      return fileExists(filePath)
+    })
+  }
+
   function removeFromTempFiles(filePath, doDelete = true) {
     const tmpFiles = tempFilesStore.get()
     const key = Object.keys(tmpFiles).find((id) => tmpFiles[id].filePath == filePath)
@@ -75,6 +81,8 @@ const makeFileModule = () => {
     })
   }
 
+  const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 10
+
   async function saveToTempFile(json, name) {
     const maxKey = Object.keys(tempFilesStore.store)
       .map((x) => parseInt(x))
@@ -82,14 +90,28 @@ const makeFileModule = () => {
     const tempId = maxKey + 1
     const fileName = name || `${t('Untitled')}${tempId == 1 ? '' : tempId}`
     const tempName = `${fileName}.pltr`
-    const filePath = path.join(TEMP_FILES_PATH, tempName)
+    let counter = 1
+    let filePath = path.join(TEMP_FILES_PATH, tempName)
+    let exists = await fileExists(filePath)
+    while (exists) {
+      log.warn(`Temp file exists at ${filePath}.  Attempting to create a new name`)
+      const tempName = `${fileName}-${uuidv4()}.pltr`
+      filePath = path.join(TEMP_FILES_PATH, tempName)
+      if (counter > MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME) {
+        const errorMessage = `We couldn't save your file to ${filePath}`
+        log.error(errorMessage, 'reached max attempts to find unique file name')
+        throw new Error(errorMessage)
+      }
+      counter++
+      exists = await fileExists(filePath)
+    }
     let stats
     try {
       stats = await lstat(filePath)
     } catch (error) {
       if (error.code !== 'ENOENT') {
         const errorMessage = `We couldn't save your file to ${filePath}.`
-        log.error(errorMessage)
+        log.error(errorMessage, `file doesn't exist after creating it`)
         throw new Error(errorMessage)
       }
     }

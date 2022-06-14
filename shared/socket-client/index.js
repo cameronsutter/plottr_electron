@@ -20,6 +20,7 @@ import {
   LOG_INFO,
   LOG_WARN,
   LOG_ERROR,
+  FILE_EXISTS,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -117,6 +118,7 @@ const connect = (
             return
           }
           // Normal replies
+          case FILE_EXISTS:
           case ENSURE_BACKUP_FULL_PATH:
           case ENSURE_BACKUP_TODAY_PATH:
           case AUTO_SAVE_FILE:
@@ -193,6 +195,10 @@ const connect = (
       return sendPromise(ENSURE_BACKUP_TODAY_PATH)
     }
 
+    const fileExists = (filePath) => {
+      return sendPromise(FILE_EXISTS, { filePath })
+    }
+
     return new Promise((resolve, reject) => {
       clientConnection.on('open', () => {
         resolve({
@@ -206,6 +212,7 @@ const connect = (
           saveBackup,
           ensureBackupFullPath,
           ensureBackupTodayPath,
+          fileExists,
           close: clientConnection.close.bind(clientConnection),
         })
       })

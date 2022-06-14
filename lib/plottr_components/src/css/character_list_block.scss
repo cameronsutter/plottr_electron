@@ -198,6 +198,17 @@
       padding: 16px;
       border-left: 1px solid $gray-8;
       border-right: 1px solid $gray-8;
+      & > .tab-pane {
+        .card-dialog__custom-attributes__wrapper {
+          margin-bottom: 16px;
+          .template-attr__description-label {
+            @include application-text;
+            font-size: 14px;
+            color: $gray-3;
+            margin-top: -4px;
+          }
+        }
+      }
       & > .tab-pane .template-picker__link {
         cursor: pointer;
         margin-left: 4px;
@@ -210,6 +221,9 @@
           color: $red-5 !important;
         }
       }
+    }
+    .slate-editor__wrapper {
+      margin: 0;
     }
   }
   .btn-toolbar {

@@ -23,6 +23,13 @@ import {
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
+const defer =
+  typeof process === 'object' && process.type === 'renderer'
+    ? window.requestIdleCallback
+    : (f) => {
+        setTimeout(f, 0)
+      }
+
 const connect = (
   port,
   logger,
@@ -238,7 +245,7 @@ const instance = () => {
   const whenClientIsReady = (f) => {
     if (client) {
       return new Promise((resolve, reject) => {
-        window.requestIdleCallback(() => {
+        defer(() => {
           const result = f(client)
           try {
             if (typeof result.then === 'function') {

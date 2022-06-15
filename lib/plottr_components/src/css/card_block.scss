@@ -27,14 +27,8 @@
   }
   &:hover {
     .card__add-card {
-      color: $blue-5;
-      .glyphicon {
-        background-color: $body-background-color;
-        padding: 2px 2px 2.5px 3px;
-        border: 1px solid $blue-7;
-        border-radius: 3px;
+        color: $blue-5;
       }
-    }
   }
 
   &.vertical {
@@ -91,6 +85,15 @@
     .card__add-card {
       display: block;
       z-index: 10;
+
+    }
+    &:hover .card__add-card {
+      .glyphicon {
+        background-color: $body-background-color;
+        padding: 2px 2px 2.5px 3px;
+        border: 1px solid $blue-7;
+        border-radius: 3px;
+      }
     }
     .card__behind {
       right: 18px;

@@ -20,6 +20,7 @@ const Navigation = ({
   currentView,
   changeCurrentView,
   offlineModeEnabled,
+  clickOnDom,
 }) => {
   const [dashboardView, setDashboardView] = useState(null)
 
@@ -73,7 +74,14 @@ const Navigation = ({
       ) : null}
       <OfflineBanner />
       {offlineModeEnabled ? <Resume /> : null}
-      <Navbar className="project-nav" fluid inverse={darkMode}>
+      <Navbar
+        onClick={(event) => {
+          clickOnDom(event.clientX, event.clientY)
+        }}
+        className="project-nav"
+        fluid
+        inverse={darkMode}
+      >
         <Nav onSelect={handleSelect} activeKey={currentView} bsStyle="pills">
           <BookChooser />
           <NavItem eventKey="project">{t('Project')}</NavItem>
@@ -108,6 +116,7 @@ Navigation.propTypes = {
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
   offlineModeEnabled: PropTypes.bool,
+  clickOnDom: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -119,6 +128,7 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps, { changeCurrentView: actions.ui.changeCurrentView })(
-  Navigation
-)
+export default connect(mapStateToProps, {
+  changeCurrentView: actions.ui.changeCurrentView,
+  clickOnDom: actions.domEvents.clickOnDom,
+})(Navigation)

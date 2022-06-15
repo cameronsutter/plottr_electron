@@ -209,6 +209,7 @@ const App = ({
       <main
         className="project-main tour-end"
         onClick={(event) => {
+          // The other part of this click handler is in Navigation
           clickOnDom(event.clientX, event.clientY)
         }}
       >

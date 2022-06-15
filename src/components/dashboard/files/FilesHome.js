@@ -39,10 +39,12 @@ const FilesHomeConnector = (connector) => {
     const filters = [{ name: 'Snowflake Pro file', extensions: ['snowXML'] }]
     const properties = ['openFile']
     const files = showOpenDialogSync({ title, filters, properties })
-    if (files && files[0] && files[0].toLowerCase().includes('.snowxml')) {
-      return files[0]
-    } else {
-      return errorActions.importError('Wrong file format')
+    if (files && files[0]) {
+      if (files[0].toLowerCase().includes('.snowxml')) {
+        return files[0]
+      } else {
+        errorActions.importError('Wrong file format')
+      }
     }
   }
 
@@ -51,10 +53,12 @@ const FilesHomeConnector = (connector) => {
     const filters = [{ name: t('Scrivener file'), extensions: ['scriv'] }]
     const properties = ['openFile', 'createDirectory', 'openDirectory']
     const files = showOpenDialogSync({ title, filters, properties })
-    if (files && files[0] && files[0].toLowerCase().includes('.scriv')) {
-      return files[0]
-    } else {
-      return errorActions.importError(t('Wrong file format'))
+    if (files && files[0]) {
+      if (files[0].toLowerCase().includes('.scriv')) {
+        return files[0]
+      } else {
+        errorActions.importError(t('Wrong file format'))
+      }
     }
   }
 
@@ -83,8 +87,10 @@ const FilesHomeConnector = (connector) => {
           throw new Error(t('Wrong file format'))
         }
       } catch (error) {
-        log.error(error)
-        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        if (error) {
+          log.error(error)
+          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        }
       }
     }
 
@@ -92,15 +98,17 @@ const FilesHomeConnector = (connector) => {
       mpq.push('btn_create_from_import', { type: 'scrivener' })
       try {
         const importedPath = scrivenerImportDialog(errorActions)
-        if (importedPath && typeof importedPath == 'string' && !importedPath.error) {
+        if (importedPath && typeof importedPath == 'string') {
           createFromScrivener(importedPath)
           importActions.startScrivenerImporter()
         } else {
           throw new Error(importedPath.error)
         }
       } catch (error) {
-        log.error(error)
-        return dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        if (error) {
+          log.error(error)
+          return dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        }
       }
     }
 

@@ -5,6 +5,7 @@
   padding-left: 10px;
   margin-bottom: 0;
   li {
+    user-select: none;
     cursor: pointer;
     padding: 5px;
     span.colored {
@@ -80,6 +81,7 @@
 }
 
 .chip {
+  user-select: none;
   font-size: 14px;
   line-height: 16px;
   border-radius: 2rem;

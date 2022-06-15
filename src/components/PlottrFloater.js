@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
-import Floater from 'react-floater'
-import { isEqual } from 'lodash'
+import { Popover, ArrowContainer } from 'react-tiny-popover'
 
 const PORTAL_ID = 'plottr-floater-portal'
 
@@ -18,91 +17,40 @@ const PlottrFloaterConnector = (connector) => {
     hideArrow,
     zIndex,
   }) => {
-    const [portalAdded, setPortalAdded] = useState(false)
-
-    const firstClick = useRef(lastClick)
-    const ref = useRef()
-
-    const portalId = zIndex ? `${PORTAL_ID}-${zIndex}` : PORTAL_ID
-    const floaterZIndex = zIndex || 1200
-
-    useEffect(() => {
-      if (open) {
-        firstClick.current = lastClick
-      }
-      window.requestIdleCallback(() => {
-        // Using the singleton portal DOM node.
-        const portal = document.querySelector(`#${portalId}`)
-        if (portal) {
-          setPortalAdded(true)
-        }
-        if (!portalAdded && !portal) {
-          const portalDiv = document.createElement('div')
-          portalDiv.id = portalId
-          portalDiv.style.zIndex = floaterZIndex
-          document.body.appendChild(portalDiv)
-          setPortalAdded(true)
-          return
-        }
-        if (portal) {
-          for (const child of portal.children) {
-            child.style.zIndex = floaterZIndex
-          }
-        }
-      })
-    }, [open, portalAdded, zIndex])
-
-    useEffect(() => {
-      if (!rootClose || !ref.current || !onClose || !open) return
-
-      if (!isEqual(firstClick.current, lastClick)) {
-        const { x, y } = lastClick
-        const { left, right, top, bottom } = ref.current.getBoundingClientRect()
-        if (!(x >= left && x <= right && y >= top && y <= bottom)) {
-          onClose()
-        }
-      }
-    }, [lastClick, open, rootClose, onClose])
-
     const SuppliedComponent = component
 
-    const Component = (props) => {
-      return (
-        <div ref={ref}>
-          <SuppliedComponent {...props} />
-        </div>
-      )
-    }
-
-    // We don't yet have a DOM node to render to.
-    if (!portalAdded) {
-      return children
-    }
+    const Component = useCallback(
+      ({ position, childRect, popoverRect }) => {
+        return (
+          <ArrowContainer
+            position={position}
+            childRect={childRect}
+            popoverRect={popoverRect}
+            arrowColor={'white'}
+            arrowSize={10}
+            arrowStyle={{}}
+            className="popover-arrow-container"
+            arrowClassName="popover-arrow"
+          >
+            <SuppliedComponent />
+          </ArrowContainer>
+        )
+      },
+      [component]
+    )
 
     return (
-      <Floater
-        styles={{
-          options: {
-            zIndex: floaterZIndex,
-          },
-          wrapper: {
-            cursor: 'pointer',
-            zIndex: null,
-          },
-          arrow: {
-            length: 8,
-            spread: 16,
-          },
-        }}
-        containerPadding={containerPadding}
-        component={Component}
-        open={open}
-        placement={placement}
-        hideArrow={hideArrow}
-        portalElement={`#${portalId}`}
+      <Popover
+        isOpen={open}
+        positions={[placement, ...['left', 'right', 'bottom', 'top']]}
+        padding={containerPadding}
+        // FIXME: Root close on SelectLists is a bit finicky
+        onClickOutside={rootClose ? onClose : () => {}}
+        content={Component}
+        containerStyle={{ zIndex: zIndex || 1200 }}
       >
         {children}
-      </Floater>
+      </Popover>
     )
   }
 

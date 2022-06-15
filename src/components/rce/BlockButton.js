@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { Editor, Transforms } from 'slate'
 
@@ -48,9 +48,28 @@ export const handleHeadings = (editor, format, logger) => {
   Transforms.wrapNodes(editor, { type: format })
 }
 
-export const handleList = (editor, format, logger) => {
+export const handleList = (editor, inputFormat, logger) => {
   try {
     const isInList = Editor.isInList(editor, editor.selection)
+
+    if (isInList) {
+      const [parentElement, parentPath] = Editor.parentOfType(editor, editor.selection, {
+        match: (n) => LIST_TYPES.includes(n.type),
+      })
+      const format = inputFormat || parentElement.type
+      if (parentElement.type !== format) {
+        Transforms.setNodes(
+          editor,
+          {
+            type: format,
+          },
+          {
+            at: parentPath,
+          }
+        )
+        return
+      }
+    }
 
     // Careful!  All interactions with the editor might prompt
     // normalisation, which could undo the operation that you're trying
@@ -69,6 +88,7 @@ export const handleList = (editor, format, logger) => {
     // The reason we don't wrap in a list-item is because the Normalizer takes care of making sure that
     // list-items are the only children of lists. If we try to do it in here we get a double bullet effect
     if (!isInList) {
+      const format = inputFormat
       const block = { type: format, children: [] }
       Transforms.wrapNodes(editor, block)
 
@@ -129,6 +149,21 @@ export const handleBlockQuote = (editor, format, logger) => {
 }
 
 const BlockButton = ({ editor, format, icon, logger }) => {
+  const [blockIsActive, setBlockIsActive] = useState(false)
+
+  useEffect(() => {
+    const timeout = setInterval(() => {
+      const newBlockIsActive = isBlockActive(editor, format, logger)
+      if (newBlockIsActive !== blockIsActive) {
+        setBlockIsActive(newBlockIsActive)
+      }
+    }, 100)
+
+    return () => {
+      clearInterval(timeout)
+    }
+  }, [setBlockIsActive, blockIsActive, editor.selection, logger])
+
   const toggleBlock = (editor, format) => {
     if (LIST_TYPES.includes(format)) {
       handleList(editor, format, logger)
@@ -148,7 +183,7 @@ const BlockButton = ({ editor, format, icon, logger }) => {
 
   return (
     <Button
-      bsStyle={isBlockActive(editor, format, logger) ? 'primary' : 'default'}
+      bsStyle={blockIsActive ? 'primary' : 'default'}
       onMouseDown={(event) => {
         event.preventDefault()
         toggleBlock(editor, format)

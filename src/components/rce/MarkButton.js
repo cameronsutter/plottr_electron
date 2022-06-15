@@ -1,13 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'react-proptypes'
 import { Editor } from 'slate'
 
 import Button from '../Button'
 
-const UnMemoisedMarkButton = ({ mark, icon, editor, selection, logger }) => {
+const UnMemoisedMarkButton = ({ mark, icon, editor, logger }) => {
+  const [markIsActive, setMarkIsActive] = useState(false)
+
+  useEffect(() => {
+    const timeout = setInterval(() => {
+      const newMarkIsActive = isMarkActive(editor, mark, logger)
+      if (newMarkIsActive !== markIsActive) {
+        setMarkIsActive(newMarkIsActive)
+      }
+    }, 100)
+
+    return () => {
+      clearInterval(timeout)
+    }
+  }, [setMarkIsActive, markIsActive, editor.selection, logger])
+
   return (
     <Button
-      bsStyle={isMarkActive(editor, mark, logger) ? 'primary' : 'default'}
+      bsStyle={markIsActive ? 'primary' : 'default'}
       onMouseDown={(event) => {
         event.preventDefault()
         toggleMark(editor, mark, logger)
@@ -22,11 +37,19 @@ UnMemoisedMarkButton.propTypes = {
   mark: PropTypes.string.isRequired,
   icon: PropTypes.node.isRequired,
   editor: PropTypes.object.isRequired,
-  selection: PropTypes.object,
   logger: PropTypes.object.isRequired,
 }
 
-export const MarkButton = React.memo(UnMemoisedMarkButton)
+const areEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.mark === nextProps.mark &&
+    prevProps.icon === nextProps.icon &&
+    prevProps.editor.selection === nextProps.editor.selection &&
+    prevProps.logger === nextProps.logger
+  )
+}
+
+export const MarkButton = React.memo(UnMemoisedMarkButton, areEqual)
 
 const isMarkActive = (editor, mark, logger) => {
   try {

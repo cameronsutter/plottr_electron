@@ -9,6 +9,8 @@ import Nav from './Nav'
 import NavItem from './NavItem'
 import Grid from './Grid'
 import Navbar from './Navbar'
+import Modal from './Modal'
+import Form from './Form'
 
 // Templates
 import CardTemplateDetails from './templates/CardTemplateDetails'
@@ -115,6 +117,11 @@ import ProOnboarding from './dashboard/account/proOnboarding/index'
 // Firebase
 import FirebaseLogin from './FirebaseLogin'
 
+const ModalBody = Modal.Body
+const ModalHeader = Modal.Header
+const ModalTitle = Modal.Title
+const ModalFooter = Modal.Footer
+
 export {
   Navbar,
   Grid,
@@ -130,6 +137,11 @@ export {
   ItemsManagerModal,
   ListItem,
   PlottrModal,
+  ModalBody,
+  ModalHeader,
+  ModalTitle,
+  ModalFooter,
+  Form,
   EditAttribute,
   FilterList,
   RichText,

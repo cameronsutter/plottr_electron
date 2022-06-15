@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
 
@@ -13,7 +14,7 @@ const HelpHomeConnector = (connector) => {
   } = connector
   checkDependencies({ os, mpq, openExternal, createFullErrorReport, handleCustomerServiceCode })
 
-  const HelpHome = (props) => {
+  const HelpHome = ({ isOnWeb, withFullFileState }) => {
     const serviceCodeRef = useRef(null)
 
     const submitCode = () => {
@@ -39,6 +40,12 @@ const HelpHomeConnector = (connector) => {
       return React.createElement('webview', {
         src: 'https://docs.plottr.com',
         allowpopups: 'true',
+      })
+    }
+
+    const handleCreateErrorReport = () => {
+      withFullFileState((state) => {
+        createFullErrorReport(state.present)
       })
     }
 
@@ -86,7 +93,7 @@ const HelpHomeConnector = (connector) => {
           <h1>{t('Actions')}</h1>
           <div className="dashboard__help__item actions">
             <Button onClick={l('plottr.com/support')}>{t('Report a Problem')}</Button>
-            <Button onClick={createFullErrorReport}>{t('Create an Error Report')}</Button>
+            <Button onClick={handleCreateErrorReport}>{t('Create an Error Report')}</Button>
             <div>
               <FormGroup controlId="customerServiceCode">
                 <FormControl
@@ -108,7 +115,31 @@ const HelpHomeConnector = (connector) => {
     )
   }
 
-  return HelpHome
+  HelpHome.propTypes = {
+    isOnWeb: PropTypes.bool,
+    withFullFileState: PropTypes.func,
+  }
+
+  const {
+    redux,
+    pltr: { selectors, actions },
+  } = connector
+  checkDependencies({ redux })
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect(
+      (state) => ({
+        isOnWeb: selectors.isOnWebSelector(state.present),
+      }),
+      {
+        withFullFileState: actions.project.withFullFileState,
+      }
+    )(HelpHome)
+  }
+
+  throw new Error('Could not connect HelpHome')
 }
 
 export default HelpHomeConnector

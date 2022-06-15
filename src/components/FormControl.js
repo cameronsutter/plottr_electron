@@ -37,6 +37,10 @@ const defaultProps = {
 }
 
 class FormControl extends React.Component {
+  handleMousDown = (event) => {
+    event.stopPropagation()
+  }
+
   render() {
     return (
       <FormGroupContext.Consumer>
@@ -77,6 +81,7 @@ class FormControl extends React.Component {
           return (
             <Component
               {...elementProps}
+              onMouseDown={this.handleMousDown}
               type={type}
               id={id}
               ref={inputRef}

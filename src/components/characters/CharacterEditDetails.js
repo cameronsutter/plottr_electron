@@ -279,6 +279,7 @@ const CharacterEditDetailsConnector = (connector) => {
                 onSave={finishEditing}
                 name={attr.name}
                 type={attr.type}
+                description={attr.description}
               />
             </React.Fragment>
           )

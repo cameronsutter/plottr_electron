@@ -16,6 +16,8 @@ import { t } from 'plottr_locales'
 import ButtonGroup from '../ButtonGroup'
 import ButtonToolbar from '../ButtonToolbar'
 import UnconnectedFloater from '../PlottrFloater'
+import IndentParagraphButton from './IndentParagraphButton'
+import DedentParagraphButton from './DedentParagraphButton'
 import { addColorMark } from './ColorButton'
 import UnconnectedImagesButton from './ImagesButton'
 import { MarkButton } from './MarkButton'
@@ -44,7 +46,7 @@ const UnconnectedToolBar = (connector) => {
   const underlineIcon = <FaUnderline />
   const strikeThroughIcon = <FaStrikethrough />
 
-  const ToolBar = ({ editor, darkMode, selection }) => {
+  const ToolBar = ({ editor, darkMode }) => {
     const [showColorPicker, toggleColorPicker] = useState(false)
     const [fonts, setFonts] = useState(null)
     const [recentFonts, setRecentFonts] = useState(null)
@@ -82,39 +84,16 @@ const UnconnectedToolBar = (connector) => {
               logger={log}
             />
             <FontSizeChooser editor={editor} />
-            <MarkButton
-              selection={selection}
-              mark="bold"
-              icon={boldIcon}
-              editor={editor}
-              logger={log}
-            />
-            <MarkButton
-              selection={selection}
-              mark="italic"
-              icon={italicIcon}
-              editor={editor}
-              logger={log}
-            />
-            <MarkButton
-              selection={selection}
-              mark="underline"
-              icon={underlineIcon}
-              editor={editor}
-              logger={log}
-            />
-            <MarkButton
-              selection={selection}
-              mark="strike"
-              icon={strikeThroughIcon}
-              editor={editor}
-              logger={log}
-            />
+            <MarkButton mark="bold" icon={boldIcon} editor={editor} logger={log} />
+            <MarkButton mark="italic" icon={italicIcon} editor={editor} logger={log} />
+            <MarkButton mark="underline" icon={underlineIcon} editor={editor} logger={log} />
+            <MarkButton mark="strike" icon={strikeThroughIcon} editor={editor} logger={log} />
             <Floater
               component={miniColorPickerOverlay}
               open={showColorPicker}
               placement="bottom"
               hideArrow
+              rootClose
               onClose={closeColorPicker}
             >
               <ColorButton
@@ -128,6 +107,8 @@ const UnconnectedToolBar = (connector) => {
             <BlockButton format="block-quote" icon={<FaQuoteLeft />} editor={editor} logger={log} />
             <BlockButton format="numbered-list" icon={<FaListOl />} editor={editor} logger={log} />
             <BlockButton format="bulleted-list" icon={<FaListUl />} editor={editor} logger={log} />
+            <IndentParagraphButton editor={editor} logger={log} />
+            <DedentParagraphButton editor={editor} logger={log} />
             <LinkButton editor={editor} logger={log} />
             <ImagesButton editor={editor} />
           </ButtonGroup>
@@ -138,7 +119,6 @@ const UnconnectedToolBar = (connector) => {
 
   ToolBar.propTypes = {
     editor: PropTypes.object.isRequired,
-    selection: PropTypes.object,
     darkMode: PropTypes.bool,
   }
 

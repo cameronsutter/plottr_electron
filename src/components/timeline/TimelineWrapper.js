@@ -17,6 +17,7 @@ import Nav from '../Nav'
 import ButtonGroup from '../ButtonGroup'
 import Glyphicon from '../Glyphicon'
 import Button from '../Button'
+import FormControl from '../FormControl'
 import UnconnectedTimelineTable from './TimelineTable'
 import UnconnectedActsConfigModal from '../dialogs/ActsConfigModal'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
@@ -26,6 +27,7 @@ import UnconnectedExportNavItem from '../export/ExportNavItem'
 import { FunSpinner } from '../Spinner'
 import UnconnectedSubNav from '../containers/SubNav'
 import { checkDependencies } from '../checkDependencies'
+import { withEventTargetValue } from '../withEventTargetValue'
 
 const BREAKPOINT = 890
 
@@ -43,10 +45,15 @@ const TimelineWrapperConnector = (connector) => {
   const SubNav = UnconnectedSubNav(connector)
 
   const {
-    platform: { mpq, exportDisabled, templatesDisabled },
+    platform: {
+      file: { saveFile },
+      mpq,
+      exportDisabled,
+      templatesDisabled,
+    },
   } = connector
   const saveAsTemplate = connector.platform.template.startSaveAsTemplate
-  checkDependencies({ mpq, exportDisabled, templatesDisabled, saveAsTemplate })
+  checkDependencies({ saveFile, mpq, exportDisabled, templatesDisabled, saveAsTemplate })
 
   const TimelineWrapper = ({
     timelineBundle,
@@ -56,6 +63,10 @@ const TimelineWrapperConnector = (connector) => {
     cardsExistOnTimeline,
     actions,
     featureFlags,
+    testingAndDiagnosisEnabled,
+    projectActions,
+    isOnWeb,
+    timelineSearchTerm,
   }) => {
     const [mounted, setMounted] = useState(false)
     const [beatConfigIsOpen, setBeatConfigIsOpen] = useState(false)
@@ -123,6 +134,35 @@ const TimelineWrapperConnector = (connector) => {
       e.stopPropagation()
       setClearing(false)
       actions.resetTimeline(bookId)
+    }
+
+    // ////////////////
+    //   Searching   //
+    // ////////////////
+
+    const insertSpace = (event) => {
+      const currentValue = event.target.value
+      const start = event.target.selectionStart
+      const end = event.target.selectionEnd
+      if (event.key === ' ') {
+        actions.setTimelineSearchTerm(
+          currentValue.slice(0, start) + ' ' + currentValue.slice(end + 1)
+        )
+      }
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    // ////////////////
+    //  Stress Test  //
+    // ////////////////
+
+    const spamSave = () => {
+      for (let i = 0; i < 1000; ++i) {
+        projectActions.withFullFileState((state) => {
+          saveFile(state.present.file.fileName, state.present)
+        })
+      }
     }
 
     // ////////////////
@@ -309,6 +349,11 @@ const TimelineWrapperConnector = (connector) => {
             {t('Structure')}
           </Button>
         </NavItem>,
+        exportDisabled ? null : (
+          <React.Fragment key="export-nav-item">
+            <ExportNavItem noLabel />
+          </React.Fragment>
+        ),
         <NavItem key="right-2">
           <Dropdown id="moar-dropdown">
             <Dropdown.Toggle noCaret bsSize="small">
@@ -337,7 +382,6 @@ const TimelineWrapperConnector = (connector) => {
           <Nav bsStyle="pills">
             <NavItem>
               <Floater
-                containerPadding={20}
                 open={filterIsOpen}
                 placement="bottom"
                 component={renderPopover}
@@ -368,7 +412,6 @@ const TimelineWrapperConnector = (connector) => {
               </Button>
             </NavItem>
             <NavItem>
-              <span className="subnav__container__label">{t('Zoom')}: </span>
               <ButtonGroup>
                 <Button
                   bsSize="small"
@@ -397,7 +440,6 @@ const TimelineWrapperConnector = (connector) => {
               </ButtonGroup>
             </NavItem>
             <NavItem>
-              <span className="subnav__container__label">{t('Scroll')}: </span>
               <ButtonGroup bsSize="small">
                 <Button onClick={scrollLeft}>
                   <Glyphicon glyph={scrollDirectionFirst} />
@@ -410,7 +452,30 @@ const TimelineWrapperConnector = (connector) => {
                 <Button onClick={scrollEnd}>{t('End')}</Button>
               </ButtonGroup>
             </NavItem>
-            {!exportDisabled && <ExportNavItem />}
+            {testingAndDiagnosisEnabled ? (
+              <NavItem key="testing-utilities">
+                <Dropdown id="moar-dropdown">
+                  <Dropdown.Toggle noCaret bsSize="small">
+                    <Glyphicon glyph="option-vertical" /> {t('Testing utilities')}
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <MenuItem disabled={isOnWeb} onSelect={spamSave}>
+                      {t('Stress test saving')}
+                    </MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </NavItem>
+            ) : null}
+            <NavItem draggable="false">
+              <FormControl
+                onChange={withEventTargetValue(actions.setTimelineSearchTerm)}
+                onKeyUp={insertSpace}
+                value={timelineSearchTerm || ''}
+                type="text"
+                placeholder="Search"
+                className="toolbar__search"
+              />
+            </NavItem>
             {isSmallerThanToolbar ? rightItems : null}
           </Nav>
           {!isSmallerThanToolbar ? <Nav pullRight>{rightItems}</Nav> : null}
@@ -485,6 +550,10 @@ const TimelineWrapperConnector = (connector) => {
     actions: PropTypes.object.isRequired,
     tourActions: PropTypes.object.isRequired,
     tour: PropTypes.object.isRequired,
+    testingAndDiagnosisEnabled: PropTypes.bool,
+    projectActions: PropTypes.object.isRequired,
+    isOnWeb: PropTypes.bool,
+    timelineSearchTerm: PropTypes.string,
   }
 
   const {
@@ -504,12 +573,16 @@ const TimelineWrapperConnector = (connector) => {
           timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),
           tour: selectors.tourSelector(state.present),
+          testingAndDiagnosisEnabled: selectors.testingAndDiagnosisEnabledSelector(state.present),
+          isOnWeb: selectors.isOnWebSelector(state.present),
+          timelineSearchTerm: selectors.timelineSearchTermSelector(state.present),
         }
       },
       (dispatch) => {
         return {
           actions: bindActionCreators(actions.ui, dispatch),
           tourActions: bindActionCreators(actions.tour, dispatch),
+          projectActions: bindActionCreators(actions.project, dispatch),
         }
       }
     )(TimelineWrapper)

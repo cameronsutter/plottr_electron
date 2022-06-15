@@ -29,6 +29,7 @@ const propTypes = {
    */
   type: PropTypes.oneOf(['button', 'reset', 'submit']),
   className: PropTypes.string,
+  ref: PropTypes.object,
 }
 
 const defaultProps = {
@@ -37,45 +38,45 @@ const defaultProps = {
   disabled: false,
 }
 
-class Button extends React.Component {
-  renderAnchor(elementProps, className) {
+const Button = (inputProps, ref) => {
+  const { active, block, className, ...props } = inputProps
+  const [bsProps, elementProps] = splitBsProps(props)
+
+  const classes = {
+    ...getClassSet(bsProps),
+    active,
+    [prefix(bsProps, 'block')]: block,
+  }
+  const fullClassName = classNames(className, classes)
+
+  const renderAnchor = (elementProps, className) => {
     return (
       <SafeAnchor
         {...elementProps}
+        ref={ref}
         className={classNames(className, elementProps.disabled && 'disabled')}
       />
     )
   }
 
-  renderButton({ componentClass, ...elementProps }, className) {
+  const renderButton = ({ componentClass, ...elementProps }, className) => {
     const Component = componentClass || 'button'
 
     return (
       <Component
         {...omit(elementProps, ['innerRef'])}
+        ref={ref}
         type={elementProps.type || 'button'}
         className={className}
       />
     )
   }
 
-  render() {
-    const { active, block, className, ...props } = this.props
-    const [bsProps, elementProps] = splitBsProps(props)
-
-    const classes = {
-      ...getClassSet(bsProps),
-      active,
-      [prefix(bsProps, 'block')]: block,
-    }
-    const fullClassName = classNames(className, classes)
-
-    if (elementProps.href) {
-      return this.renderAnchor(elementProps, fullClassName)
-    }
-
-    return this.renderButton(elementProps, fullClassName)
+  if (elementProps.href) {
+    return renderAnchor(elementProps, fullClassName)
   }
+
+  return renderButton(elementProps, fullClassName)
 }
 
 Button.propTypes = propTypes
@@ -88,7 +89,7 @@ export default bsClass(
     bsStyles(
       [...Object.values(State), Style.DEFAULT, Style.PRIMARY, Style.LINK],
       Style.DEFAULT,
-      Button
+      React.forwardRef(Button)
     )
   )
 )

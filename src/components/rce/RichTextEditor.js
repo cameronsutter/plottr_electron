@@ -3,7 +3,7 @@ import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { t } from 'plottr_locales'
 import isHotkey from 'is-hotkey'
-import { Transforms } from 'slate'
+import { Editor, Transforms } from 'slate'
 import { Slate, Editable, ReactEditor } from 'slate-react'
 import UnconnectedToolBar from './ToolBar'
 import { toggleMark } from './MarkButton'
@@ -14,6 +14,8 @@ import { useRegisterEditor } from './editor-registry'
 import { useEditState } from './useEditState'
 
 import { checkDependencies } from '../checkDependencies'
+import { indent } from './IndentParagraphButton'
+import { handleList } from './BlockButton'
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -120,6 +122,20 @@ const RichTextEditorConnector = (connector) => {
     )
 
     const handleKeyDown = (event) => {
+      if (event.key === 'Tab') {
+        if (event.shiftKey) {
+          if (Editor.isInList(editor, editor.selection)) {
+            handleList(editor, null, log)
+            event.preventDefault()
+            event.stopPropagation()
+            return
+          }
+        } else if (indent(editor, null, log)) {
+          event.preventDefault()
+          event.stopPropagation()
+          return
+        }
+      }
       for (const hotkey in HOTKEYS) {
         if (isHotkey(hotkey, event)) {
           event.preventDefault()
@@ -173,7 +189,7 @@ const RichTextEditorConnector = (connector) => {
     return (
       <Slate editor={editor} value={value} onChange={onValueChanged} key={editorKey}>
         <div className={cx('slate-editor__wrapper', className)}>
-          <ToolBar editor={editor} selection={selection} />
+          <ToolBar editor={editor} />
           <div
             // the firstChild will be the contentEditable dom node
             ref={(e) => {
@@ -191,7 +207,6 @@ const RichTextEditorConnector = (connector) => {
               placeholder={t('Enter some text...')}
               onPaste={onPaste}
               onKeyDown={handleKeyDown}
-              onKeyUp={handleKeyUp}
               onInput={handleInput}
               onBlur={handleOnBlur}
               onFocus={handleOnFocus}
@@ -239,6 +254,7 @@ const RichTextEditorConnector = (connector) => {
       }),
       { cacheImage: actions.imageCache.cacheImage }
     )(
+      // eslint-disable-next-line react/display-name
       React.memo(RichTextEditor, (prevProps, nextProps) => {
         return (
           prevProps.id === nextProps.id &&

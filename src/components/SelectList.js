@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 
@@ -10,13 +10,38 @@ import Button from './Button'
 import TagLabel from './TagLabel'
 import UnconnectedImage from './images/Image'
 import UnconnectedFloater from './PlottrFloater'
+import { contains } from './domHelpers'
 
 const SelectListConnector = (connector) => {
   const Image = UnconnectedImage(connector)
   const Floater = UnconnectedFloater(connector)
 
-  const SelectList = ({ horizontal, type, selectedItems, allItems, remove, parentId, add }) => {
+  const SelectList = ({
+    horizontal,
+    type,
+    selectedItems,
+    allItems,
+    remove,
+    parentId,
+    add,
+    click,
+  }) => {
     const [visible, setVisible] = useState(false)
+
+    const buttonRef = useRef()
+    const selectListRef = useRef()
+    const previousClick = useRef(click)
+
+    useEffect(() => {
+      if (!selectListRef.current || !buttonRef.current) return
+      if (contains(buttonRef.current, click)) return
+
+      if (click.counter !== previousClick.counter && !contains(selectListRef.current, click)) {
+        setVisible(false)
+      }
+
+      previousClick.current = click
+    }, [click])
 
     const renderSelected = () => {
       let body
@@ -97,7 +122,9 @@ const SelectListConnector = (connector) => {
       }
       return (
         <Popover id="list-popover" title={title}>
-          <ul className="select-list__item-select-list">{listItems}</ul>
+          <ul ref={selectListRef} className="select-list__item-select-list">
+            {listItems}
+          </ul>
         </Popover>
       )
     }
@@ -116,15 +143,14 @@ const SelectListConnector = (connector) => {
     }
     return (
       <div className={cx('select-list__wrapper', { horizontal: horizontal })}>
-        <label className="select-list__details-label">
+        <label ref={buttonRef} className="select-list__details-label">
           {label}:
           <Floater
-            rootClose
             open={visible}
             onClose={() => {
               setVisible(false)
             }}
-            placement="right-start"
+            placement="right"
             component={renderUnSelected}
           >
             <Button
@@ -150,9 +176,25 @@ const SelectListConnector = (connector) => {
     selectedItems: PropTypes.array.isRequired,
     allItems: PropTypes.array.isRequired,
     horizontal: PropTypes.bool,
+    click: PropTypes.object,
   }
 
-  return SelectList
+  const {
+    redux,
+    pltr: { selectors },
+  } = connector
+
+  if (redux) {
+    const { connect } = redux
+
+    return connect((state) => {
+      return {
+        click: selectors.lastClickSelector(state.present),
+      }
+    })(SelectList)
+  }
+
+  throw new Error('Could not connect SelectList')
 }
 
 export default SelectListConnector

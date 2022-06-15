@@ -232,7 +232,6 @@ const NoteListViewConnector = (connector) => {
             </NavItem>
             <NavItem>
               <Floater
-                containerPadding={20}
                 trigger="click"
                 rootClose
                 open={filterVisible}
@@ -255,7 +254,6 @@ const NoteListViewConnector = (connector) => {
             </NavItem>
             <NavItem>
               <Floater
-                containerPadding={20}
                 trigger="click"
                 rootClose
                 open={sortVisible}
@@ -275,7 +273,7 @@ const NoteListViewConnector = (connector) => {
                 </Button>
               </Floater>
             </NavItem>
-            <NavItem>
+            <NavItem draggable="false">
               <FormControl
                 onChange={withEventTargetValue(uiActions.setNotesSearchTerm)}
                 onKeyUp={insertSpace}

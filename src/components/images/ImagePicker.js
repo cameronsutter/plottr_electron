@@ -149,7 +149,7 @@ const ImagePickerConnector = (connector) => {
     }
 
     chooseNoImage = () => {
-      this.props.chooseImage(-1)
+      this.props.chooseImage(null)
       if (this.state.open) this.close()
       this.setState({ selectedId: null })
     }
@@ -307,7 +307,7 @@ const ImagePickerConnector = (connector) => {
             {text}
           </Button>
         )
-        if (selectedId && selectedId != -1 && deleteButton) {
+        if (selectedId && selectedId > 0 && deleteButton) {
           let deleteText = iconOnly ? null : ` ${i18n('Remove')}`
           return (
             <ButtonGroup>

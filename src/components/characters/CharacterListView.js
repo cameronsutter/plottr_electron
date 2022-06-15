@@ -229,7 +229,6 @@ const CharacterListViewConnector = (connector) => {
             </NavItem>
             <NavItem>
               <Floater
-                containerPadding={20}
                 trigger="click"
                 rootClose
                 open={filterVisible}
@@ -252,7 +251,6 @@ const CharacterListViewConnector = (connector) => {
             </NavItem>
             <NavItem>
               <Floater
-                containerPadding={20}
                 trigger="click"
                 open={sortVisible}
                 onClose={() => {
@@ -272,13 +270,14 @@ const CharacterListViewConnector = (connector) => {
                 </Button>
               </Floater>
             </NavItem>
-            <NavItem>
+            <NavItem draggable="false">
               <FormControl
                 onChange={withEventTargetValue(uiActions.setCharactersSearchTerm)}
                 onKeyUp={insertSpace}
                 value={charactersSearchTerm || ''}
                 type="text"
                 placeholder="Search"
+                className="toolbar__search"
               />
             </NavItem>
           </Nav>

@@ -69,6 +69,10 @@ const CharacterItemConnector = (connector) => {
       this.props.startEdit()
     }
 
+    handleDuplicate = () => {
+      this.props.actions.duplicateCharacter(this.props.character.id)
+    }
+
     renderDelete() {
       if (!this.state.deleting) return null
 
@@ -106,6 +110,9 @@ const CharacterItemConnector = (connector) => {
             <ButtonGroup className={buttonKlasses}>
               <Button bsSize="small" onClick={this.startEditing}>
                 <Glyphicon glyph="edit" />
+              </Button>
+              <Button bsSize="small" onClick={this.handleDuplicate}>
+                <Glyphicon glyph="duplicate" />
               </Button>
               <Button bsSize="small" onClick={this.handleDelete}>
                 <Glyphicon glyph="trash" />

@@ -130,7 +130,6 @@ const OutlineViewConnector = (connector) => {
           <Nav bsStyle="pills">
             <NavItem>
               <Floater
-                containerPadding={20}
                 rootClose
                 onClose={() => {
                   setFilterVisible(false)
@@ -151,7 +150,7 @@ const OutlineViewConnector = (connector) => {
               </Floater>
               {filterDeclaration}
             </NavItem>
-            <NavItem>
+            <NavItem draggable="false">
               <FormControl
                 onChange={withEventTargetValue(actions.setOutlineSearchTerm)}
                 onKeyUp={insertSpace}
@@ -176,7 +175,6 @@ const OutlineViewConnector = (connector) => {
 
       return (
         !!beats.length &&
-        !!beatsWithCards.length &&
         beats.slice(0, beatsToRender).map((beat, idx) => {
           let hasCards = beatsWithCards.includes(beat.id)
           const beatCards = hasCards

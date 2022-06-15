@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 
@@ -11,33 +11,6 @@ const { reds, oranges, greens, blues, purples, grays, whites, browns, defaults }
 
 const MiniColorPickerConnector = (connector) => {
   const MiniColorPicker = (props) => {
-    const pickerRef = useRef(null)
-    const [coords, setCoords] = useState({})
-
-    useEffect(() => {
-      const el = props.el?.current
-      if (el && el.children[0]) setCoords(el.children[0].getBoundingClientRect())
-    }, [props.el])
-
-    useEffect(() => {
-      document.addEventListener('mousedown', handleClickOutside)
-
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
-
-    const handleClickOutside = (event) => {
-      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
-        props.close()
-      }
-    }
-
-    const useCoords = () => {
-      if (!coords.x) return {}
-
-      // 35 = height of this button
-      return { top: coords.y + 35 }
-    }
-
     const renderColor = (color) => {
       return (
         <Button
@@ -48,11 +21,14 @@ const MiniColorPickerConnector = (connector) => {
       )
     }
 
+    const communicateRefBack = (ref) => {
+      if (props.childRef) props.childRef(ref)
+    }
+
     return (
       <div
+        ref={communicateRefBack}
         className={cx('mini-color-picker', { darkmode: props.darkMode })}
-        style={props.position || useCoords()}
-        ref={pickerRef}
       >
         <p>{i18n('Default Colors')}</p>
         <div className="color-picker__box">
@@ -131,6 +107,7 @@ const MiniColorPickerConnector = (connector) => {
   }
 
   MiniColorPicker.propTypes = {
+    childRef: PropTypes.func,
     el: PropTypes.object,
     close: PropTypes.func,
     chooseColor: PropTypes.func,

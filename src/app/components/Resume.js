@@ -11,8 +11,7 @@ import { initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 import logger from '../../../shared/logger'
 import { uploadProject } from '../../common/utils/upload_project'
 import { resumeDirective } from '../../resume'
-
-const MAX_RETRIES = 5
+import { retryWithBackOff } from './effect'
 
 const Resume = ({
   isResuming,
@@ -47,9 +46,10 @@ const Resume = ({
     ) {
       setCheckingForOfflineDrift(true)
       setShowResumeMessageDialog(true)
-      let retryCount = 0
       const checkAndUploadBackup = () => {
-        return initialFetch(userId, fileId, clientId, app.getVersion()).then((cloudFile) => {
+        return retryWithBackOff(() => {
+          return initialFetch(userId, fileId, clientId, app.getVersion())
+        }).then((cloudFile) => {
           return new Promise((resolve, reject) => {
             withFullFileState((state) => {
               const offlineFile = state.present
@@ -61,18 +61,19 @@ const Resume = ({
                 )
                 setResuming(false)
                 setCheckingForOfflineDrift(false)
-                retryCount = 0
                 resolve(false)
               } else if (uploadOurs) {
                 logger.info(
                   `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
                 )
-                overwriteAllKeys(fileId, clientId, {
-                  ...offlineFile,
-                  file: {
-                    ...offlineFile.file,
-                    fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-                  },
+                retryWithBackOff(() => {
+                  return overwriteAllKeys(fileId, clientId, {
+                    ...offlineFile,
+                    file: {
+                      ...offlineFile.file,
+                      fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+                    },
+                  })
                 }).then(() => {
                   setOverwritingCloudWithBackup(true)
                   setCheckingForOfflineDrift(false)
@@ -100,7 +101,6 @@ const Resume = ({
                   setBackingUpOfflineFile(true)
                   setCheckingForOfflineDrift(false)
                   setResuming(false)
-                  retryCount = 0
                   resolve(true)
                 })
               }
@@ -108,29 +108,16 @@ const Resume = ({
           })
         })
       }
-      /* eslint-disable no-inner-declarations */
-      function handleError(error) {
+      checkAndUploadBackup().catch((error) => {
         logger.error('Error trying to resume online mode', error)
-        retryCount++
-        if (retryCount > MAX_RETRIES) {
-          setResuming(false)
-          setCheckingForOfflineDrift(false)
-          setOverwritingCloudWithBackup(false)
-          dialog.showErrorBox(
-            t('Error'),
-            t('There was an error reconnecting.  Please save the file and restart Plottr.')
-          )
-          retryCount = 0
-        } else {
-          checkAndUploadBackup().catch((error) => {
-            setTimeout(() => {
-              handleError(error)
-            }, 1000)
-          })
-        }
-      }
-      /* eslint-enable */
-      checkAndUploadBackup().catch(handleError)
+        setResuming(false)
+        setCheckingForOfflineDrift(false)
+        setOverwritingCloudWithBackup(false)
+        dialog.showErrorBox(
+          t('Error'),
+          t('There was an error reconnecting.  Please save the file and restart Plottr.')
+        )
+      })
     }
   }, [
     isResuming,

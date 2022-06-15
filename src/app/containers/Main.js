@@ -149,9 +149,9 @@ const Main = ({
     // it to make sure that we have destinct lambdas to de-register
     // later.
     const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
-      const lastFileIsOfflineAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://')
-      if (lastFileIsOfflineAndWeAreInPro) {
+      const lastFileIsClassicAndWeAreInPro =
+        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
+      if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(filePath)
       } else {
         load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
@@ -173,14 +173,14 @@ const Main = ({
       windowOpenedWithKnownPath,
       processSwitches
     ) => {
-      const lastFileIsOfflineAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://')
+      const lastFileIsClassicAndWeAreInPro =
+        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
       // There are valid possibilities for filePath to be null.
       //
       // i.e. no file has ever been opened or the last opened file was
       // in a mode that doesn't match current. e.g. it's a pro file
       // and we're in classic mode.
-      if (lastFileIsOfflineAndWeAreInPro) {
+      if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(filePath)
       } else if (filePath) {
         load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)

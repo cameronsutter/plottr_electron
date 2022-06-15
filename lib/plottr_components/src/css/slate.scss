@@ -35,8 +35,14 @@
         overflow: auto;
       }
 
-      .size-picker {
-        width: 60px;
+      &.size-picker {
+        button {
+          width: 60px;
+        }
+        .dropdown-menu {
+          min-width: 60px;
+          width: 60px;
+        }
       }
     }
   }

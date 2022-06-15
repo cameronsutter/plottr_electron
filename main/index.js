@@ -166,7 +166,7 @@ app.whenReady().then(() => {
             log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
             try {
               openProjectWindow(fileLaunchedOn)
-              addToKnown(fileLaunchedOn)
+              if (fileLaunchedOn) addToKnown(fileLaunchedOn)
             } catch (error) {
               log.error('Error booting file: ', error)
             }
@@ -197,7 +197,7 @@ app.whenReady().then(() => {
           log.info('second-instance')
           loadMenu()
           const newFileToLoad = fileToLoad(argv)
-          addToKnown(newFileToLoad)
+          if (newFileToLoad) addToKnown(newFileToLoad)
           openProjectWindow(newFileToLoad)
         })
 

@@ -1,5 +1,6 @@
 .plottr-popover {
   max-width: 600px;
+  max-height: calc(100vh - 35px);
 
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text;

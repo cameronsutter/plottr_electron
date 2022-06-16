@@ -246,7 +246,7 @@ input[type='file'] {
   .popover-content {
     // 35 is the height of the popover title
     max-height: calc(80vh - 35px);
-    overflow-y: auto;
+    overflow: auto;
   }
 }
 #list-popover.popover {

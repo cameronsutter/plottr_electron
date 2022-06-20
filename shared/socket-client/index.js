@@ -21,6 +21,7 @@ import {
   LOG_WARN,
   LOG_ERROR,
   FILE_EXISTS,
+  BACKUP_OFFLINE_BACKUP_FOR_RESUME,
 
   // Error reply types
   RM_RF_ERROR_REPLY,
@@ -142,6 +143,7 @@ const connect = (
             return
           }
           // Normal replies
+          case BACKUP_OFFLINE_BACKUP_FOR_RESUME:
           case FILE_EXISTS:
           case ENSURE_BACKUP_FULL_PATH:
           case ENSURE_BACKUP_TODAY_PATH:
@@ -237,6 +239,10 @@ const connect = (
       return sendPromise(FILE_EXISTS, { filePath })
     }
 
+    const backupOfflineBackupForResume = (file) => {
+      return sendPromise(BACKUP_OFFLINE_BACKUP_FOR_RESUME, { file })
+    }
+
     return new Promise((resolve, reject) => {
       clientConnection.on('open', () => {
         resolve({
@@ -251,6 +257,7 @@ const connect = (
           ensureBackupFullPath,
           ensureBackupTodayPath,
           fileExists,
+          backupOfflineBackupForResume,
           close: clientConnection.close.bind(clientConnection),
         })
       })

@@ -15,6 +15,7 @@ import {
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   FILE_EXISTS,
+  BACKUP_OFFLINE_BACKUP_FOR_RESUME,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
@@ -36,10 +37,15 @@ const setupListeners = (port, userDataPath) => {
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
 
-    const { saveFile, saveOfflineFile, basename, readFile, autoSave, fileExists } = FileModule(
-      userDataPath,
-      logger
-    )
+    const {
+      saveFile,
+      saveOfflineFile,
+      basename,
+      readFile,
+      autoSave,
+      fileExists,
+      backupOfflineBackupForResume,
+    } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
 
     webSocket.on('message', (message) => {
@@ -299,6 +305,18 @@ const setupListeners = (port, userDataPath) => {
                 logger.error('Error while checking whether a file exists', filePath, error)
                 replyWithErrorMessage(error.message)
               })
+            return
+          }
+          case BACKUP_OFFLINE_BACKUP_FOR_RESUME: {
+            logger.info('Backing up offline file for resume (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+            })
+            const { file } = payload
+            backupOfflineBackupForResume(file).then(() => {
+              
+            })
           }
         }
       } catch (error) {

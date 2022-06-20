@@ -1,0 +1,1241 @@
+{
+  "_declaration": {
+    "_attributes": {
+      "version": "1.0",
+      "encoding": "UTF-8"
+    }
+  },
+  "ScrivenerProject": {
+    "_attributes": {
+      "Identifier": "49152BC3-F8FE-463D-85B9-3AADB6AE4DE4",
+      "Version": "2.0",
+      "Creator": "SCRMAC-3.2.3-14869",
+      "Device": "jeanas-Stuff",
+      "Author": "",
+      "Modified": "2022-06-16 15:18:57 +0800",
+      "ModID": "0A0C4712-BAB2-4DF7-81D7-EA9D74411B09"
+    },
+    "Binder": {
+      "BinderItem": [
+        {
+          "_attributes": {
+            "UUID": "F8F9FDEF-FD9F-4A8C-B33D-3434A1220ADC",
+            "Type": "Text",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Novel Format"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            },
+            "IconFileName": {
+              "_text": "Information"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "20FF5857-6C7B-4724-A9E4-91C74599F1C8",
+            "Type": "Text",
+            "Created": "2022-06-16 14:47:49 +0800",
+            "Modified": "2022-06-16 14:47:49 +0800"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "4A1D6B18-0952-42EB-A487-D17915DD3BA1",
+            "Type": "DraftFolder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Manuscript"
+          },
+          "Children": {
+            "BinderItem": [
+              {
+                "_attributes": {
+                  "UUID": "D5397FD6-99DB-4FED-B7A9-9F985D9A9FE2",
+                  "Type": "Folder",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Part"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,0"
+                  }
+                },
+                "Children": {
+                  "BinderItem": [
+                    {
+                      "_attributes": {
+                        "UUID": "58D0189B-0507-4669-B129-4A392CF07F36",
+                        "Type": "Folder",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Chapter"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,0"
+                        }
+                      },
+                      "Children": {
+                        "BinderItem": [
+                          {
+                            "_attributes": {
+                              "UUID": "A9C97B44-46C8-4CA8-8F28-B8C0606A58EF",
+                              "Type": "Text",
+                              "Created": "2022-06-16 14:47:37 +0800",
+                              "Modified": "2022-06-16 14:47:37 +0800"
+                            },
+                            "Title": {
+                              "_text": "Scene"
+                            },
+                            "MetaData": {
+                              "StatusID": {
+                                "_text": "2"
+                              },
+                              "IncludeInCompile": {
+                                "_text": "Yes"
+                              }
+                            },
+                            "TextSettings": {
+                              "TextSelection": {
+                                "_text": "0,0"
+                              }
+                            }
+                          },
+                          {
+                            "_attributes": {
+                              "UUID": "E6BBAC10-E639-4E86-A784-EDEEE7DF0206",
+                              "Type": "Text",
+                              "Created": "2022-06-16 14:47:37 +0800",
+                              "Modified": "2022-06-16 14:47:37 +0800"
+                            },
+                            "Title": {
+                              "_text": "Scene"
+                            },
+                            "MetaData": {
+                              "StatusID": {
+                                "_text": "2"
+                              },
+                              "IncludeInCompile": {
+                                "_text": "Yes"
+                              }
+                            },
+                            "TextSettings": {
+                              "TextSelection": {
+                                "_text": "0,0"
+                              }
+                            }
+                          },
+                          {
+                            "_attributes": {
+                              "UUID": "BC997527-8DBC-46F7-8A24-1D0C2140E002",
+                              "Type": "Text",
+                              "Created": "2022-06-16 14:47:53 +0800",
+                              "Modified": "2022-06-16 14:47:53 +0800"
+                            },
+                            "MetaData": {
+                              "IncludeInCompile": {
+                                "_text": "Yes"
+                              }
+                            },
+                            "TextSettings": {
+                              "TextSelection": {
+                                "_text": "0,0"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "567B89D4-21E4-44DF-BD5C-3F32EEC78ADD",
+                        "Type": "Folder",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Chapter"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,0"
+                        }
+                      },
+                      "Children": {
+                        "BinderItem": {
+                          "_attributes": {
+                            "UUID": "F5604565-3F9E-451B-98E0-142BE1BDE83D",
+                            "Type": "Text",
+                            "Created": "2022-06-16 14:47:37 +0800",
+                            "Modified": "2022-06-16 14:47:37 +0800"
+                          },
+                          "Title": {
+                            "_text": "Scene"
+                          },
+                          "MetaData": {
+                            "IncludeInCompile": {
+                              "_text": "Yes"
+                            }
+                          },
+                          "TextSettings": {
+                            "TextSelection": {
+                              "_text": "0,0"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "9408C07B-72C0-4002-9C51-5EADF229C3F0",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:56 +0800",
+                        "Modified": "2022-06-16 14:47:56 +0800"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,0"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "_attributes": {
+                  "UUID": "68F32305-EBE6-4072-B6C2-B8883B667EBC",
+                  "Type": "Folder",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Part"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,0"
+                  }
+                },
+                "Children": {
+                  "BinderItem": {
+                    "_attributes": {
+                      "UUID": "245C2ABD-E9C1-4091-B1B7-DA32402644E7",
+                      "Type": "Folder",
+                      "Created": "2022-06-16 14:47:37 +0800",
+                      "Modified": "2022-06-16 14:47:37 +0800"
+                    },
+                    "Title": {
+                      "_text": "Chapter"
+                    },
+                    "MetaData": {
+                      "IncludeInCompile": {
+                        "_text": "Yes"
+                      }
+                    },
+                    "TextSettings": {
+                      "TextSelection": {
+                        "_text": "0,0"
+                      }
+                    },
+                    "Children": {
+                      "BinderItem": [
+                        {
+                          "_attributes": {
+                            "UUID": "156AAE33-5D68-4ACA-8469-6440CDFED4EA",
+                            "Type": "Text",
+                            "Created": "2022-06-16 14:47:37 +0800",
+                            "Modified": "2022-06-16 14:47:37 +0800"
+                          },
+                          "Title": {
+                            "_text": "Scene"
+                          },
+                          "MetaData": {
+                            "IncludeInCompile": {
+                              "_text": "Yes"
+                            }
+                          },
+                          "TextSettings": {
+                            "TextSelection": {
+                              "_text": "0,0"
+                            }
+                          }
+                        },
+                        {
+                          "_attributes": {
+                            "UUID": "F74B41DB-93D7-4114-A3EA-6EFBEADDEDAF",
+                            "Type": "Text",
+                            "Created": "2022-06-16 14:47:58 +0800",
+                            "Modified": "2022-06-16 14:47:58 +0800"
+                          },
+                          "MetaData": {
+                            "IncludeInCompile": {
+                              "_text": "Yes"
+                            }
+                          },
+                          "TextSettings": {
+                            "TextSelection": {
+                              "_text": "0,0"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "06C0455C-36DD-4F38-BB7B-F7DD2453A8A5",
+            "Type": "Folder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Characters"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            },
+            "IconFileName": {
+              "_text": "Characters (Photo)"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          },
+          "DefaultChildTemplateUUID": {
+            "_text": "BE948F87-BDA3-4551-8E08-AC248FE89301"
+          },
+          "Children": {
+            "BinderItem": {
+              "_attributes": {
+                "UUID": "DC9B5D6E-E477-4620-8E33-8E7ED0449313",
+                "Type": "Text",
+                "Created": "2022-06-16 14:48:01 +0800",
+                "Modified": "2022-06-16 14:48:01 +0800"
+              },
+              "Title": {
+                "_text": "Character Sketch"
+              },
+              "MetaData": {
+                "IncludeInCompile": {
+                  "_text": "Yes"
+                },
+                "ShowSynopsisImage": {
+                  "_text": "Yes"
+                },
+                "IconFileName": {
+                  "_text": "Characters (Character Sheet)"
+                }
+              },
+              "TextSettings": {
+                "TextSelection": {
+                  "_text": "0,14"
+                }
+              }
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "6830B6AC-686B-4370-A979-2FD1D7288BDA",
+            "Type": "Folder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Places"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            },
+            "IconFileName": {
+              "_text": "Locations (Map)"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          },
+          "DefaultChildTemplateUUID": {
+            "_text": "87D59B4E-F1D6-4025-9FBA-33F60ED8F985"
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "57ECC98D-8199-4935-B5F1-D1F7A2D60646",
+            "Type": "Folder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Front Matter"
+          },
+          "MetaData": {
+            "SectionType": {
+              "_attributes": {
+                "ChildDefault": "C256170C-9607-4380-B84A-86A34F8D32A4"
+              }
+            },
+            "IncludeInCompile": {
+              "_text": "Yes"
+            },
+            "IconFileName": {
+              "_text": "Front Matter"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          },
+          "Children": {
+            "BinderItem": [
+              {
+                "_attributes": {
+                  "UUID": "3E5B46A7-2D74-46C0-9C84-D3D1B9EB378E",
+                  "Type": "Folder",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Manuscript Format"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,0"
+                  }
+                },
+                "Children": {
+                  "BinderItem": {
+                    "_attributes": {
+                      "UUID": "684ADA52-4D45-48D2-B03D-5ECB784963EE",
+                      "Type": "Text",
+                      "Created": "2022-06-16 14:47:37 +0800",
+                      "Modified": "2022-06-16 14:47:37 +0800"
+                    },
+                    "Title": {
+                      "_text": "Title Page"
+                    },
+                    "MetaData": {
+                      "IncludeInCompile": {
+                        "_text": "Yes"
+                      }
+                    },
+                    "TextSettings": {
+                      "TextSelection": {
+                        "_text": "0,0"
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "_attributes": {
+                  "UUID": "4D01D8EC-C1C3-427E-88C0-602D9158FC95",
+                  "Type": "Folder",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Paperback"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,0"
+                  }
+                },
+                "Children": {
+                  "BinderItem": [
+                    {
+                      "_attributes": {
+                        "UUID": "486D874A-7589-4C1E-BECE-40B465746BA1",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Title Page"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,0"
+                        }
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "21506607-96CA-4FB1-8B5F-A1859F4DCEDE",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Copyright"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        },
+                        "NotesTextSelection": {
+                          "_text": "82,0"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,0"
+                        }
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "874592F5-2256-46A1-8434-432743846FB8",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Dedication"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        },
+                        "NotesTextSelection": {
+                          "_text": "55,0"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "11,23"
+                        }
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "EAED9F93-2779-4184-82E8-30D27307C6AC",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Blank Page"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        },
+                        "NotesTextSelection": {
+                          "_text": "197,0"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "0,13"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "_attributes": {
+                  "UUID": "4C4363AD-1F58-4140-A55F-DEE1298CA1C4",
+                  "Type": "Folder",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Ebook"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,0"
+                  }
+                },
+                "Children": {
+                  "BinderItem": [
+                    {
+                      "_attributes": {
+                        "UUID": "C88ACCC3-4FDB-4952-80E1-177623CDE141",
+                        "Type": "Image",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Cover"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        },
+                        "FileExtension": {
+                          "_text": "png"
+                        },
+                        "ShowSynopsisImage": {
+                          "_text": "Yes"
+                        }
+                      },
+                      "MediaSettings": {
+                        "ImageScaleFactor": {
+                          "_text": "1.0"
+                        },
+                        "ImageRotation": {
+                          "_text": "None"
+                        },
+                        "ImageScalesProportionally": {
+                          "_text": "Yes"
+                        }
+                      }
+                    },
+                    {
+                      "_attributes": {
+                        "UUID": "98EA5CEF-B7B1-468C-83CD-9AB24AFAFDF3",
+                        "Type": "Text",
+                        "Created": "2022-06-16 14:47:37 +0800",
+                        "Modified": "2022-06-16 14:47:37 +0800"
+                      },
+                      "Title": {
+                        "_text": "Dedication"
+                      },
+                      "MetaData": {
+                        "IncludeInCompile": {
+                          "_text": "Yes"
+                        },
+                        "NotesTextSelection": {
+                          "_text": "55,0"
+                        }
+                      },
+                      "TextSettings": {
+                        "TextSelection": {
+                          "_text": "5,21"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "69822417-D015-4BDD-90BD-18AAA6198D15",
+            "Type": "Folder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Notes"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            },
+            "IconFileName": {
+              "_text": "Notes (Yellow Notepad)"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "669D7B65-8096-4EFD-A0E2-6BDE8C1E3585",
+            "Type": "ResearchFolder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Research"
+          },
+          "Children": {
+            "BinderItem": {
+              "_attributes": {
+                "UUID": "9A470BDE-CF2B-4872-97C6-74F19BC90197",
+                "Type": "Folder",
+                "Created": "2022-06-16 14:47:37 +0800",
+                "Modified": "2022-06-16 14:47:37 +0800"
+              },
+              "Title": {
+                "_text": "Sample Output"
+              },
+              "MetaData": {
+                "IncludeInCompile": {
+                  "_text": "Yes"
+                }
+              },
+              "TextSettings": {
+                "TextSelection": {
+                  "_text": "0,0"
+                }
+              },
+              "Children": {
+                "BinderItem": [
+                  {
+                    "_attributes": {
+                      "UUID": "B7BDE57C-9C5A-4101-9BC2-8A2F0545998B",
+                      "Type": "PDF",
+                      "Created": "2022-06-16 14:47:37 +0800",
+                      "Modified": "2022-06-16 14:47:37 +0800"
+                    },
+                    "Title": {
+                      "_text": "Standard Manuscript"
+                    },
+                    "MetaData": {
+                      "IncludeInCompile": {
+                        "_text": "Yes"
+                      },
+                      "FileExtension": {
+                        "_text": "pdf"
+                      }
+                    },
+                    "MediaSettings": {
+                      "CurrentPDFPage": {
+                        "_text": "0"
+                      }
+                    }
+                  },
+                  {
+                    "_attributes": {
+                      "UUID": "550D0728-6EB3-433B-9915-A1B5711884C6",
+                      "Type": "PDF",
+                      "Created": "2022-06-16 14:47:37 +0800",
+                      "Modified": "2022-06-16 14:47:37 +0800"
+                    },
+                    "Title": {
+                      "_text": "Paperback Novel"
+                    },
+                    "MetaData": {
+                      "IncludeInCompile": {
+                        "_text": "Yes"
+                      },
+                      "FileExtension": {
+                        "_text": "pdf"
+                      }
+                    },
+                    "MediaSettings": {
+                      "CurrentPDFPage": {
+                        "_text": "0"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "5C03DE09-C285-48ED-827F-78E62B7D0F72",
+            "Type": "Folder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Template Sheets"
+          },
+          "MetaData": {
+            "IncludeInCompile": {
+              "_text": "Yes"
+            }
+          },
+          "TextSettings": {
+            "TextSelection": {
+              "_text": "0,0"
+            }
+          },
+          "Children": {
+            "BinderItem": [
+              {
+                "_attributes": {
+                  "UUID": "BE948F87-BDA3-4551-8E08-AC248FE89301",
+                  "Type": "Text",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Character Sketch"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  },
+                  "ShowSynopsisImage": {
+                    "_text": "Yes"
+                  },
+                  "IconFileName": {
+                    "_text": "Characters (Character Sheet)"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,14"
+                  }
+                }
+              },
+              {
+                "_attributes": {
+                  "UUID": "87D59B4E-F1D6-4025-9FBA-33F60ED8F985",
+                  "Type": "Text",
+                  "Created": "2022-06-16 14:47:37 +0800",
+                  "Modified": "2022-06-16 14:47:37 +0800"
+                },
+                "Title": {
+                  "_text": "Setting Sketch"
+                },
+                "MetaData": {
+                  "IncludeInCompile": {
+                    "_text": "Yes"
+                  },
+                  "IconFileName": {
+                    "_text": "Locations (Location Sheet)"
+                  }
+                },
+                "TextSettings": {
+                  "TextSelection": {
+                    "_text": "0,15"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "_attributes": {
+            "UUID": "F2DF7FDE-46C4-4962-97F3-128A46433573",
+            "Type": "TrashFolder",
+            "Created": "2022-06-16 14:47:37 +0800",
+            "Modified": "2022-06-16 14:47:37 +0800"
+          },
+          "Title": {
+            "_text": "Trash"
+          }
+        }
+      ]
+    },
+    "Collections": {
+      "Collection": [
+        {
+          "_attributes": {
+            "Type": "Binder",
+            "ID": "48DE1CBF-217F-4B94-944D-6D8C97396DCF",
+            "Color": "0.112547 0.112547 0.112547"
+          },
+          "Title": {
+            "_text": "Binder"
+          }
+        },
+        {
+          "_attributes": {
+            "Type": "RecentSearch",
+            "ID": "2655DDF6-4AB8-42CB-A433-1CD76FC351D2",
+            "Color": "0.190667 0.172702 0.216529"
+          },
+          "Title": {
+            "_text": "Search Results"
+          }
+        }
+      ]
+    },
+    "SectionTypes": {
+      "TypeDefinitions": {
+        "Type": [
+          {
+            "_attributes": {
+              "ID": "DA299D05-E212-41BE-A82B-88EA3A472C49"
+            },
+            "_text": "Part Heading"
+          },
+          {
+            "_attributes": {
+              "ID": "417A6CCE-D4E1-44BA-9A8D-038360B4B905"
+            },
+            "_text": "Chapter Heading"
+          },
+          {
+            "_attributes": {
+              "ID": "9AFECE21-8C79-45E0-9B9F-D6D62A9729D3"
+            },
+            "_text": "Scene"
+          },
+          {
+            "_attributes": {
+              "ID": "5770D705-B9A4-4798-AAB1-B2C56190B02E"
+            },
+            "_text": "Chapter"
+          },
+          {
+            "_attributes": {
+              "ID": "DFBFB5B6-D47F-4913-9E23-FC3950C10171"
+            },
+            "_text": "Heading"
+          },
+          {
+            "_attributes": {
+              "ID": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            "_text": "Section"
+          },
+          {
+            "_attributes": {
+              "ID": "C256170C-9607-4380-B84A-86A34F8D32A4"
+            },
+            "_text": "Front Matter"
+          },
+          {
+            "_attributes": {
+              "ID": "65D1D6C9-09DA-44D4-9379-DC47D8BEA312"
+            },
+            "_text": "Table of Contents"
+          },
+          {
+            "_attributes": {
+              "ID": "8CA56ABC-1675-44AC-B5C5-FCFBC0C6E87D"
+            },
+            "_text": "N/A"
+          }
+        ]
+      },
+      "LevelTypes": {
+        "Folders": {
+          "Type": [
+            {
+              "_text": "8CA56ABC-1675-44AC-B5C5-FCFBC0C6E87D"
+            },
+            {
+              "_text": "DA299D05-E212-41BE-A82B-88EA3A472C49"
+            },
+            {
+              "_text": "417A6CCE-D4E1-44BA-9A8D-038360B4B905"
+            }
+          ]
+        },
+        "Containers": {
+          "Type": [
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            }
+          ]
+        },
+        "Files": {
+          "Type": [
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            {
+              "_text": "4BA429EF-6143-4FB6-9B43-D4E6E4F0CE1D"
+            },
+            {
+              "_text": "9AFECE21-8C79-45E0-9B9F-D6D62A9729D3"
+            }
+          ]
+        }
+      }
+    },
+    "LabelSettings": {
+      "Title": {
+        "_text": "Label"
+      },
+      "DefaultLabelID": {
+        "_text": "-1"
+      },
+      "Labels": {
+        "Label": [
+          {
+            "_attributes": {
+              "ID": "-1"
+            },
+            "_text": "No Label"
+          },
+          {
+            "_attributes": {
+              "ID": "7",
+              "Color": "0.993495 0.701207 0.732587"
+            },
+            "_text": "Red"
+          },
+          {
+            "_attributes": {
+              "ID": "8",
+              "Color": "0.995418 0.790946 0.652385"
+            },
+            "_text": "Orange"
+          },
+          {
+            "_attributes": {
+              "ID": "9",
+              "Color": "0.997722 0.89273 0.652569"
+            },
+            "_text": "Yellow"
+          },
+          {
+            "_attributes": {
+              "ID": "10",
+              "Color": "0.715855 0.948712 0.697692"
+            },
+            "_text": "Green"
+          },
+          {
+            "_attributes": {
+              "ID": "11",
+              "Color": "0.702319 0.888276 0.974252"
+            },
+            "_text": "Blue"
+          },
+          {
+            "_attributes": {
+              "ID": "12",
+              "Color": "0.957566 0.766747 0.999616"
+            },
+            "_text": "Purple"
+          }
+        ]
+      }
+    },
+    "StatusSettings": {
+      "Title": {
+        "_text": "Status"
+      },
+      "DefaultStatusID": {
+        "_text": "-1"
+      },
+      "StatusItems": {
+        "Status": [
+          {
+            "_attributes": {
+              "ID": "-1"
+            },
+            "_text": "No Status"
+          },
+          {
+            "_attributes": {
+              "ID": "1"
+            },
+            "_text": "To Do"
+          },
+          {
+            "_attributes": {
+              "ID": "6"
+            },
+            "_text": "In Progress"
+          },
+          {
+            "_attributes": {
+              "ID": "2"
+            },
+            "_text": "First Draft"
+          },
+          {
+            "_attributes": {
+              "ID": "3"
+            },
+            "_text": "Revised Draft"
+          },
+          {
+            "_attributes": {
+              "ID": "4"
+            },
+            "_text": "Final Draft"
+          },
+          {
+            "_attributes": {
+              "ID": "5"
+            },
+            "_text": "Done"
+          }
+        ]
+      }
+    },
+    "ProjectBookmarks": {
+      "Bookmark": [
+        {
+          "_attributes": {
+            "BinderUUID": "06C0455C-36DD-4F38-BB7B-F7DD2453A8A5"
+          }
+        },
+        {
+          "_attributes": {
+            "BinderUUID": "6830B6AC-686B-4370-A979-2FD1D7288BDA"
+          }
+        },
+        {
+          "_attributes": {
+            "BinderUUID": "69822417-D015-4BDD-90BD-18AAA6198D15"
+          }
+        }
+      ]
+    },
+    "ProjectTargets": {
+      "_attributes": {
+        "Notify": "No"
+      },
+      "DraftTarget": {
+        "_attributes": {
+          "Type": "Words",
+          "CountIncludedOnly": "Yes",
+          "CurrentCompileGroupOnly": "Yes",
+          "Deadline": "2011-04-12 20:24:39 +0800",
+          "IgnoreDeadline": "Yes"
+        },
+        "_text": "0"
+      },
+      "SessionTarget": {
+        "_attributes": {
+          "Type": "Words",
+          "CountDraftOnly": "Yes",
+          "AllowNegatives": "No",
+          "NextResetDate": "2022-06-17 00:00:00 +0800",
+          "ResetType": "Time",
+          "ResetTime": "00:00",
+          "DeterminedFromDeadline": "No",
+          "WritingDays": "",
+          "CanWriteOnDeadlineDate": "No"
+        },
+        "_text": "0"
+      },
+      "PreviousSession": {
+        "_attributes": {
+          "Words": "0",
+          "Characters": "0",
+          "Date": "2022-06-16 15:18:54 +0800"
+        }
+      }
+    },
+    "RecentWritingHistory": {
+      "_attributes": {
+        "Date": "2022-06-16 14:47:37 +0800"
+      },
+      "DraftWordCount": {
+        "_text": "0"
+      },
+      "DraftCharCount": {
+        "_text": "0"
+      },
+      "OtherWordCount": {
+        "_text": "0"
+      },
+      "OtherCharCount": {
+        "_text": "0"
+      }
+    },
+    "TemplateFolderUUID": {
+      "_text": "5C03DE09-C285-48ED-827F-78E62B7D0F72"
+    },
+    "BookmarksFolderUUID": {
+      "_text": "69822417-D015-4BDD-90BD-18AAA6198D15"
+    },
+    "PrintSettings": {
+      "_attributes": {
+        "PaperSize": "595.0,842.0",
+        "LeftMargin": "72.0",
+        "RightMargin": "72.0",
+        "TopMargin": "90.0",
+        "BottomMargin": "90.0",
+        "PaperType": "iso-a4",
+        "Orientation": "Portrait",
+        "HorizontalPagination": "Clip",
+        "VerticalPagination": "Auto",
+        "ScaleFactor": "1.0",
+        "HorizontallyCentered": "Yes",
+        "VerticallyCentered": "Yes",
+        "Collates": "Yes",
+        "PagesAcross": "1",
+        "PagesDown": "1"
+      }
+    }
+  }
+}

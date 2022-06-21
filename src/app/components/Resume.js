@@ -177,7 +177,7 @@ const Resume = ({
         : null}
       {overwritingCloudWithBackup ? t('Your changes were uploaded to the cloud.') : null}
       {!checkingOfflineDrift && !backingUpOfflineFile && !overwritingCloudWithBackup
-        ? t('Successfully resumed from the cloud version.')
+        ? t('Successfully resumed.')
         : null}
     </MessageModal>
   )

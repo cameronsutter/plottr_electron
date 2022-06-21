@@ -48,6 +48,9 @@ const setupListeners = (port, userDataPath) => {
     } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
 
+    // FIXME: we should reply with an error when the action fails so
+    // that we can fail the promise in the client (like we do for the
+    // Firebase client).
     webSocket.on('message', (message) => {
       try {
         const { type, messageId, payload } = JSON.parse(message)

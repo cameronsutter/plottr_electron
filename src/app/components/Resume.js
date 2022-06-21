@@ -69,7 +69,7 @@ const Resume = ({
                   )
                   if (doNothing) {
                     logger.info(
-                      `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
+                      `After resuming, there are no changes between to upload to the cloud, for file with id: ${fileId}.`
                     )
                     setResuming(false)
                     setCheckingForOfflineDrift(false)
@@ -177,9 +177,7 @@ const Resume = ({
         : null}
       {overwritingCloudWithBackup ? t('Your changes were uploaded to the cloud.') : null}
       {!checkingOfflineDrift && !backingUpOfflineFile && !overwritingCloudWithBackup
-        ? t(
-            'No changes were detected between the offline backup file and the Plottr cloud version.'
-          )
+        ? t('Successfully resumed from the cloud version.')
         : null}
     </MessageModal>
   )

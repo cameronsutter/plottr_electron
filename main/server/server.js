@@ -61,6 +61,21 @@ const setupListeners = (port, userDataPath) => {
           }
         }
 
+        const typeToErrorReplyType = (type) => {
+          return `${type}_ERROR_REPLY`
+        }
+
+        const replyWithErrorMessage = (errorMessage) => {
+          webSocket.send(
+            JSON.stringify({
+              type: typeToErrorReplyType(type),
+              messageId,
+              payload,
+              result: errorMessage,
+            })
+          )
+        }
+
         switch (type) {
           case PING: {
             webSocket.send(
@@ -93,6 +108,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while saving file ', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -111,6 +127,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while deleting ', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -134,6 +151,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while saving offline ', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -166,6 +184,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while reading a file', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -220,6 +239,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while auto saving', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -227,26 +247,38 @@ const setupListeners = (port, userDataPath) => {
             logger.info(
               'Ensuring that the full backup path exists (same op. as ensuring backup path for today.)'
             )
-            webSocket.send(
-              JSON.stringify({
-                type,
-                messageId,
-                result: ensureBackupTodayPath(),
-                payload,
-              })
-            )
+            try {
+              const result = ensureBackupTodayPath()
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            } catch (error) {
+              logger.error('Error ensuring the full backup path exists', error)
+              replyWithErrorMessage(error.message)
+            }
             return
           }
           case ENSURE_BACKUP_TODAY_PATH: {
             logger.info('Ensuring that the backup path exists for today.')
-            webSocket.send(
-              JSON.stringify({
-                type,
-                messageId,
-                result: ensureBackupTodayPath(),
-                payload,
-              })
-            )
+            try {
+              const result = ensureBackupTodayPath()
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result: result,
+                  payload,
+                })
+              )
+            } catch (error) {
+              logger.error('Error ensuring the backup path for today', error)
+              replyWithErrorMessage(error.message)
+            }
             return
           }
           case FILE_EXISTS: {
@@ -265,6 +297,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while checking whether a file exists', filePath, error)
+                replyWithErrorMessage(error.message)
               })
           }
         }

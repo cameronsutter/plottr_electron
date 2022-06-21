@@ -21,6 +21,18 @@ import {
   LOG_WARN,
   LOG_ERROR,
   FILE_EXISTS,
+
+  // Error reply types
+  RM_RF_ERROR_REPLY,
+  SAVE_FILE_ERROR_REPLY,
+  SAVE_OFFLINE_FILE_ERROR_REPLY,
+  FILE_BASENAME_ERROR_REPLY,
+  READ_FILE_ERROR_REPLY,
+  BACKUP_FILE_ERROR_REPLY,
+  AUTO_SAVE_FILE_ERROR_REPLY,
+  ENSURE_BACKUP_FULL_PATH_ERROR_REPLY,
+  ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY,
+  FILE_EXISTS_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -78,6 +90,18 @@ const connect = (
           }
           promises.delete(messageId)
           unresolvedPromise.resolve(result)
+        }
+
+        const rejectPromise = () => {
+          const unresolvedPromise = promises.get(messageId)
+          if (!unresolvedPromise) {
+            logger.error(
+              `Received a reply for ${messageId} that ${type} completed, but there was no promise to fulfil`
+            )
+            return
+          }
+          promises.delete(messageId)
+          unresolvedPromise.reject(result)
         }
 
         switch (type) {
@@ -143,6 +167,20 @@ const connect = (
           }
           case LOG_ERROR: {
             logger.error(result, type)
+            return
+          }
+          // Error return types
+          case RM_RF_ERROR_REPLY:
+          case SAVE_FILE_ERROR_REPLY:
+          case SAVE_OFFLINE_FILE_ERROR_REPLY:
+          case FILE_BASENAME_ERROR_REPLY:
+          case READ_FILE_ERROR_REPLY:
+          case BACKUP_FILE_ERROR_REPLY:
+          case AUTO_SAVE_FILE_ERROR_REPLY:
+          case ENSURE_BACKUP_FULL_PATH_ERROR_REPLY:
+          case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
+          case FILE_EXISTS_ERROR_REPLY: {
+            rejectPromise()
             return
           }
         }
@@ -256,7 +294,7 @@ const instance = () => {
           const result = f(client)
           try {
             if (typeof result.then === 'function') {
-              result.then(resolve)
+              result.then(resolve, reject)
             } else {
               resolve(result)
             }

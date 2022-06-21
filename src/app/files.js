@@ -11,7 +11,13 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
-  return { saveFile, backupOfflineBackupForResume }
+  const readOfflineFiles = () => {
+    return whenClientIsReady(({ readOfflineFiles }) => {
+      return readOfflineFiles()
+    })
+  }
+
+  return { saveFile, backupOfflineBackupForResume, readOfflineFiles }
 }
 
 export { makeFileModule }

@@ -290,13 +290,17 @@ const FileModule = (userDataPath, logger) => {
   }
   const autoSave = autoSaver()
 
+  const isResumeBackup = (fileName) => {
+    return fileName.includes('_resume-backup_')
+  }
+
   function listOfflineFiles() {
     return readdir(offlineFileFilesPath)
       .then((entries) => {
         return Promise.all(
           entries.map((entry) => {
             return lstat(path.join(offlineFileFilesPath, entry)).then((folder) => ({
-              keep: folder.isFile(),
+              keep: folder.isFile() && !isResumeBackup(entry),
               payload: path.join(offlineFileFilesPath, entry),
             }))
           })
@@ -308,13 +312,36 @@ const FileModule = (userDataPath, logger) => {
       })
   }
 
+  function readOfflineFiles() {
+    return listOfflineFiles().then((files) => {
+      return Promise.all(
+        files.map((file) => {
+          return readFile(file).then((jsonString) => {
+            try {
+              const fileData = JSON.parse(jsonString).file
+              return [
+                {
+                  ...fileData,
+                  path: file,
+                },
+              ]
+            } catch (error) {
+              logger.error(`Error reading offline file: ${file}`, error)
+              return []
+            }
+          })
+        })
+      ).then((results) => results.flatMap((x) => x))
+    })
+  }
+
   function cleanOfflineBackups(knownFiles) {
     const expectedOfflineFiles = knownFiles
       .filter(({ isCloudFile, fileName }) => isCloudFile && fileName)
       .map(({ fileName }) => offlineFilePath(fileName))
     return listOfflineFiles().then((files) => {
       const filesToClean = files.filter((filePath) => {
-        if (filePath.includes('_resume-backup_')) {
+        if (isResumeBackup(filePath)) {
           logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)
           return false
         }
@@ -403,6 +430,7 @@ const FileModule = (userDataPath, logger) => {
     autoSave,
     fileExists,
     backupOfflineBackupForResume,
+    readOfflineFiles,
   }
 }
 

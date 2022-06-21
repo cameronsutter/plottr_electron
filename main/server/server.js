@@ -16,6 +16,7 @@ import {
   ENSURE_BACKUP_TODAY_PATH,
   FILE_EXISTS,
   BACKUP_OFFLINE_BACKUP_FOR_RESUME,
+  READ_OFFLINE_FILES,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
@@ -45,6 +46,7 @@ const setupListeners = (port, userDataPath) => {
       autoSave,
       fileExists,
       backupOfflineBackupForResume,
+      readOfflineFiles,
     } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
 
@@ -330,6 +332,24 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while saving offline backup file for resuming', payload, error)
+              })
+            return
+          }
+          case READ_OFFLINE_FILES: {
+            logger.info('Reading offline files.')
+            readOfflineFiles()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while reading offline files', payload, error)
               })
           }
         }

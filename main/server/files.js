@@ -314,7 +314,7 @@ const FileModule = (userDataPath, logger) => {
       .map(({ fileName }) => offlineFilePath(fileName))
     return listOfflineFiles().then((files) => {
       const filesToClean = files.filter((filePath) => {
-        if (filePath.startsWith('_resume-backup_')) {
+        if (filePath.includes('_resume-backup_')) {
           logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)
           return false
         }
@@ -366,7 +366,9 @@ const FileModule = (userDataPath, logger) => {
   function backupOfflineBackupForResume(file) {
     return ensureOfflineBackupPathExists().then(() => {
       return checkForFileRecord(file).then(() => {
-        const filePath = `_resume-backup_${new Date().toISOString()}_offlineFilePath(file.file.fileName)`
+        const filePath = `${offlineFilePath(
+          `_resume-backup_${new Date().toISOString()}_${file.file.fileName}`
+        )}`
         return saveFile(filePath, file)
       })
     })

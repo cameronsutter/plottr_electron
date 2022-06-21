@@ -317,9 +317,20 @@ const setupListeners = (port, userDataPath) => {
               },
             })
             const { file } = payload
-            backupOfflineBackupForResume(file).then(() => {
-              
-            })
+            backupOfflineBackupForResume(file)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while saving offline backup file for resuming', payload, error)
+              })
           }
         }
       } catch (error) {

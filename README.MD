@@ -172,6 +172,28 @@ What you should see is the following:
    4. It detects that both the online and the offline file changed.  In which case, it should warn you that it’s making a backup of your file and switching to the online file.  You should find the backup on the dashboard.
  - After it’s finished “resuming” (there’s state in redux and a component which track this state) it should have switched to online mode and changes you make should be reflected on Plottr cloud again.
 
+Another note that taken during a Slack discussion that might help understand the feature.
+
+> The feature itself should work as follows:
+> While a user plots in Plottr Pro, all changes are backed up in a hidden offline copy.
+> If the machine running Plottr loses its connection to the Internet, we notify the user that they're now working offline (there should be a banner across the bottom).
+> A couple of things might happen now:
+> The user quits Plottr without modifying the file.
+> The user plots some more on the machine that lost its connection.
+> The user modifies the file on another machine that's still connected to the Internet.
+> Later on, there are also some potential scenarios:
+> The user starts Plottr while not connected to the Internet.
+> The user starts Plottr after reconnecting to the Internet.
+> The machine re-acquires the Internet connection without the user closing Plottr.
+> If a. then 1. happens, users are presented with the files that they were working on previously, but they're loaded from the local file system.  This sequence leads to scenario b.
+> If a. then 2. happens, Plottr checks for drift between the file stored online and the file stored locally when it boots any file (more on drift resolution later).
+> If b. then 2. happens, Plottr checks for drift as above (when Plottr boots a file).
+> If b. then 3. happens, then Plottr presents a "resuming" dialog to the user that prevents further plotting (plottring? :slightly_smiling_face:) before we fetch the online file and check for drift.
+> Resolving Drift:
+> In the case of a., optionally followed by c., followed by 1., 2., or 3., Plottr recognises that the user didn't modify the local file and accepts all changes from the remote file.
+> In the case of b. followed optionally by 1. then 2. or 3. but not c. Plottr sees that the remote file didn't change and overwrites it with local changes.
+> In the case of b. and c. followed optionally by 1. and then either 2. or 3., Plottr does the same thing as Dropbox: it creates a "conflicted copy" (which we call a resume backup and put a date-stamp on it), adds that copy to the list of all of your files, and then it opens  the online file.  i.e. if the file changes locally while offline and on the remote server, we backup the local copy and start using the remote copy.
+
 ## File Bootup Sequence
 Here's how booting a file works.
 1. `app.whenReady` create a new window with **no file path**.
@@ -207,6 +229,16 @@ Here's how booting a file works.
    and stored on the window object on the main process.
  - So we'll reply with that path and **ignore conditions 6.a-c** so
    that we simply open the file.
+
+# License Management
+
+The following is a description of how Plottr uses EDD to manage licenses.
+
+On our wordpress site (my.plottr.com) we use a plugin called Easy Digital Downloads (EDD) for purchases. EDD has a license key system as an additional plugin. You can configure the license keys for things like number of activations, lifetime vs duration, etc
+We have several “products” which are called “downloads” in EDD that are different forms of access to Plottr. Some are no longer being sold but users are still on those plans (Windows only, Mac only, both platforms bundled together, “Universal” which is what Ryan calls the non-platform dependent product, lifetime, annual, etc)
+We use a few API endpoints directed at my.plottr.com and handled by EDD which activate and check licenses. Plottr calls out to these endpoints and receives a json response
+When a user makes a purchase, we’ve added some code in the EDD plugin to create a user in Firebase with the same email/pw. There is also another WP plugin that we are using called Firebase PRO that acts as a single-sign-on between the WP user and the Firebase user
+When a user purchases lifetime Pro, it creates a lifetime “claim” in their firebase user through a Zapier integration. (WP --> Zapier --> Firebase). When a user purchases non-lifetime Pro, we will check if they have an active subscription in EDD for Pro using the /subscriptions EDD endpoint
 
 # Debugging Tests
 

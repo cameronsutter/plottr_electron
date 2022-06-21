@@ -327,49 +327,45 @@ const FileModule = (userDataPath, logger) => {
     })
   }
 
+  function ensureOfflineBackupPathExists() {
+    return lstat(offlineFileFilesPath).catch((error) => {
+      if (error.code === 'ENOENT') {
+        return mkdir(offlineFileFilesPath, { recursive: true })
+      }
+      return Promise.reject(error)
+    })
+  }
+
+  function checkForFileRecord(file) {
+    if (!file || !file.file || !file.file.fileName) {
+      logger.error('Trying to save a file but there is no file record on it.', file)
+      return Promise.reject(
+        new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
+      )
+    }
+    return Promise.resolve(file)
+  }
+
   function saveOfflineFile(file) {
-    // Don't save an offline version of an offline file
-    lstat(offlineFileFilesPath)
-      .catch((error) => {
-        if (error.code === 'ENOENT') {
-          return mkdir(offlineFileFilesPath, { recursive: true })
-        }
-        return Promise.reject(error)
-      })
-      .then((result) => {
-        if (!file || !file.file || !file.file.fileName) {
-          logger.error('Trying to save a file but there is no file record on it.', file)
-          return Promise.reject(
-            new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
-          )
-        }
+    return ensureOfflineBackupPathExists().then(() => {
+      return checkForFileRecord(file).then(() => {
         const filePath = offlineFilePath(file.file.fileName)
         return cleanOfflineBackups(file.knownFiles).then(() => {
           return saveFile(filePath, file)
         })
       })
+    })
   }
 
   function backupOfflineBackupForResume(file) {
-    lstat(offlineFileFilesPath)
-      .catch((error) => {
-        if (error.code === 'ENOENT') {
-          return mkdir(offlineFileFilesPath, { recursive: true })
-        }
-        return Promise.reject(error)
-      })
-      .then((result) => {
-        if (!file || !file.file || !file.file.fileName) {
-          logger.error('Trying to save a file but there is no file record on it.', file)
-          return Promise.reject(
-            new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
-          )
-        }
-        const filePath = offlineFilePath(file.file.fileName)
+    return ensureOfflineBackupPathExists().then(() => {
+      return checkForFileRecord(file).then(() => {
+        const filePath = `_${new Date().toISOString()}_offlineFilePath(file.file.fileName)`
         return cleanOfflineBackups(file.knownFiles).then(() => {
           return saveFile(filePath, file)
         })
       })
+    })
   }
 
   const basename = path.basename

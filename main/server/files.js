@@ -366,8 +366,13 @@ const FileModule = (userDataPath, logger) => {
   function backupOfflineBackupForResume(file) {
     return ensureOfflineBackupPathExists().then(() => {
       return checkForFileRecord(file).then(() => {
+        const date = new Date()
         const filePath = `${offlineFilePath(
-          `_resume-backup_${new Date().toISOString()}_${file.file.fileName}`
+          `_resume-backup_${
+            date.getMonth() + 1
+          }-${date.getDate()}-${date.getFullYear()}-${date.getHours()}h${date.getMinutes()}_${
+            file.file.fileName
+          }`
         )}`
         return saveFile(filePath, file)
       })

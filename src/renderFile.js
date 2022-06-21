@@ -43,10 +43,16 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const backupOfflineBackupForResume = (file) => {
+    return whenClientIsReady(({ backupOfflineBackupForResume }) => {
+      return backupOfflineBackupForResume(file)
+    })
+  }
+
   render(
     <Provider store={store}>
       <MainIntegrationContext.Provider
-        value={{ saveFile, basename, readFile, autoSave, saveBackup }}
+        value={{ saveFile, basename, readFile, autoSave, saveBackup, backupOfflineBackupForResume }}
       >
         <Listener />
         <Renamer />

@@ -26,6 +26,11 @@ const MainIntegrationContext = React.createContext({
       `Couldn't back-up file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
     )
   },
+  backupOfflineBackupForResume: (file) => {
+    throw new Error(
+      `Couldn't back-up an offline file to resume from the file.  Please wire up the MainIntegrationCentext provider.`
+    )
+  },
 })
 
 export default MainIntegrationContext

@@ -12,7 +12,7 @@ import {
   AUTO_SAVE_WORKED_THIS_TIME,
 } from '../../shared/socket-server-message-types'
 
-const { lstat, writeFile, open, unlink, readdir } = fs.promises
+const { lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const FileModule = (userDataPath, logger) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
@@ -329,19 +329,25 @@ const FileModule = (userDataPath, logger) => {
 
   function saveOfflineFile(file) {
     // Don't save an offline version of an offline file
-    if (!fs.existsSync(offlineFileFilesPath)) {
-      fs.mkdirSync(offlineFileFilesPath, { recursive: true })
-    }
-    if (!file || !file.file || !file.file.fileName) {
-      logger.error('Trying to save a file but there is no file record on it.', file)
-      return Promise.reject(
-        new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
-      )
-    }
-    const filePath = offlineFilePath(file.file.fileName)
-    return cleanOfflineBackups(file.knownFiles).then(() => {
-      return saveFile(filePath, file)
-    })
+    lstat(offlineFileFilesPath)
+      .catch((error) => {
+        if (error.code === 'ENOENT') {
+          return mkdir(offlineFileFilesPath, { recursive: true })
+        }
+        return Promise.reject(error)
+      })
+      .then((result) => {
+        if (!file || !file.file || !file.file.fileName) {
+          logger.error('Trying to save a file but there is no file record on it.', file)
+          return Promise.reject(
+            new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
+          )
+        }
+        const filePath = offlineFilePath(file.file.fileName)
+        return cleanOfflineBackups(file.knownFiles).then(() => {
+          return saveFile(filePath, file)
+        })
+      })
   }
 
   function backupOfflineBackupForResume(file) {

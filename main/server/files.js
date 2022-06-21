@@ -370,7 +370,7 @@ const FileModule = (userDataPath, logger) => {
         const filePath = `${offlineFilePath(
           `_resume-backup_${
             date.getMonth() + 1
-          }-${date.getDate()}-${date.getFullYear()}-${date.getHours()}h${date.getMinutes()}_${
+          }-${date.getDate()}-${date.getFullYear()}-${date.getHours()}h${date.getMinutes()}m${date.getSeconds()}_${
             file.file.fileName
           }`
         )}`

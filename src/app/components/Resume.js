@@ -14,6 +14,7 @@ import { resumeDirective } from '../../resume'
 import { retryWithBackOff } from './effect'
 
 const Resume = ({
+  offlineModeEnabled,
   isResuming,
   setResuming,
   email,
@@ -31,6 +32,7 @@ const Resume = ({
   setBackingUpOfflineFile,
 }) => {
   useEffect(() => {
+    if (!offlineModeEnabled) return
     // Only resume when we're loaded up and good to go.  The hook
     // depends on email, userId etc. so we can safely guard the resume
     // process with this check.
@@ -120,6 +122,7 @@ const Resume = ({
       })
     }
   }, [
+    offlineModeEnabled,
     isResuming,
     userId,
     email,
@@ -142,6 +145,8 @@ const Resume = ({
     setShowResumeMessageDialog(false)
     setBackingUpOfflineFile(false)
   }
+
+  if (!offlineModeEnabled) return null
 
   if (!isResuming && !showResumeMessageDialog) return null
 
@@ -184,6 +189,7 @@ Resume.propTypes = {
   setOverwritingCloudWithBackup: PropTypes.func.isRequired,
   setShowResumeMessageDialog: PropTypes.func.isRequired,
   setBackingUpOfflineFile: PropTypes.func.isRequired,
+  offlineModeEnabled: PropTypes.bool,
 }
 
 export default connect(
@@ -197,6 +203,7 @@ export default connect(
     email: selectors.emailAddressSelector(state.present),
     fileId: selectors.fileIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
+    offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     withFullFileState: actions.project.withFullFileState,

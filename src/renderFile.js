@@ -7,6 +7,7 @@ import Listener from './app/components/listener'
 import Renamer from './app/components/Renamer'
 import SaveAs from './app/components/SaveAs'
 import Error from './app/components/Error'
+import Resume from './app/components/Resume'
 import MainIntegrationContext from './mainIntegrationContext'
 
 import { store } from './app/store'
@@ -51,6 +52,7 @@ export const renderFile = (root, whenClientIsReady) => {
         <Renamer />
         <SaveAs />
         <Error />
+        <Resume />
         <Main saveBackup={saveBackup} />
       </MainIntegrationContext.Provider>
     </Provider>,

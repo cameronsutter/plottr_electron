@@ -259,9 +259,10 @@ const FileModule = (userDataPath, logger) => {
       }
       // either way, save a backup
       function forceBackup() {
+        logger.info('Saving a backup from auto save for file at', inputFilePath)
         // save local backup if: 1) not cloud file OR 2) localBackups is on
         readSettings().then((settings) => {
-          if (!onCloud || (onCloud && settings.user.localBackup)) {
+          if (!onCloud || (onCloud && settings.user.localBackups)) {
             const backupFilePath = onCloud ? `${file.file.fileName}.pltr` : filePath
             saveBackup(backupFilePath, previousFile || file, (backupError) => {
               if (backupError) {
@@ -283,6 +284,7 @@ const FileModule = (userDataPath, logger) => {
       }
       // NOTE: We want to backup every 60 seconds, but saves only happen
       // every 10 seconds.
+      logger.info('59 seconds later, a backup will be taken for file with path', filePath)
       backupTimeout = setTimeout(forceBackup, 59000)
     }
   }

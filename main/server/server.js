@@ -334,7 +334,7 @@ const setupListeners = (port, userDataPath) => {
           }
         }
       } catch (error) {
-        logger.error('Failed to handle message: ', message, error)
+        logger.error('Failed to handle message: ', message.toString().substring(0, 50), error)
       }
     })
   })

@@ -1,10 +1,13 @@
 import logger from '../../../shared/logger'
 
-// Note: back off is in milliseconds
+// Note: back off is in milliseconds.
+//
+// By default max backoff is two minutes.  i.e. the last attempt will
+// wait two minutes before trying again.
 export const retryWithBackOff = (
   thunk,
   log = logger,
-  maxAttempts = 5,
+  maxAttempts = 8,
   initialBackOffLength = 500
 ) => {
   let backOffInterval = initialBackOffLength

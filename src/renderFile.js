@@ -58,7 +58,7 @@ export const renderFile = (root, whenClientIsReady) => {
         <Renamer />
         <SaveAs />
         <Error />
-        <Resume />
+        <Resume backupOfflineBackupForResume={backupOfflineBackupForResume} />
         <Main saveBackup={saveBackup} />
       </MainIntegrationContext.Provider>
     </Provider>,

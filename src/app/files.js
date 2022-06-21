@@ -5,7 +5,13 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
-  return { saveFile }
+  const backupOfflineBackupForResume = (file) => {
+    return whenClientIsReady(({ backupOfflineBackupForResume }) => {
+      return backupOfflineBackupForResume(file)
+    })
+  }
+
+  return { saveFile, backupOfflineBackupForResume }
 }
 
 export { makeFileModule }

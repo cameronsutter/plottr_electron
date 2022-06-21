@@ -16,6 +16,8 @@ import logger from '../../shared/logger'
 import { store } from 'store'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
+import { makeFileModule } from './files'
+import { whenClientIsReady } from '../../shared/socket-client'
 
 const clientId = machineIdSync()
 
@@ -117,6 +119,8 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
   })
 }
 
+const { backupOfflineBackupForResume } = makeFileModule(whenClientIsReady)
+
 /* If we find that we had an offline backup, we need to either:
  *  - Backup the local copy and open the online copy,
  *  - overwrite the cloud copy, or
@@ -127,50 +131,52 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
  * to signal that it should load the original file.
  */
 const handleOfflineBackup = (backupOurs, uploadOurs, fileId, offlineFile, email, userId) => {
-  if (backupOurs) {
-    logger.info(
-      `Backing up a local version of ${fileId} because both offline and online versions changed.`
-    )
-    const date = new Date()
-    const file = {
-      ...offlineFile,
-      file: {
-        ...offlineFile.file,
-        fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
-          date.getMonth() + 1
-        }-${date.getDate()}-${date.getFullYear()}`,
-      },
-    }
-    return uploadProject(file, email, userId)
-      .then((result) => ({
+  return backupOfflineBackupForResume(offlineFile).then(() => {
+    if (backupOurs) {
+      logger.info(
+        `Backing up a local version of ${fileId} because both offline and online versions changed.`
+      )
+      const date = new Date()
+      const file = {
         ...offlineFile,
         file: {
           ...offlineFile.file,
-          id: result.data.fileId,
+          fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
+            date.getMonth() + 1
+          }-${date.getDate()}-${date.getFullYear()}`,
         },
-      }))
-      .then(() => {
-        return false
-      })
-  } else if (uploadOurs) {
-    logger.info(
-      `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
-    )
-    return overwriteAllKeys(fileId, clientId, {
-      ...removeSystemKeys(offlineFile),
-      file: {
-        ...offlineFile.file,
-        fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-      },
-    }).catch((error) => {
-      logger.error(`Erorr uploading our offline file ${fileId}`, error)
-      dialog.showErrorBox(
-        t('Error'),
-        t('There was an error uploading your offline backup. Please exit and start again')
+      }
+      return uploadProject(file, email, userId)
+        .then((result) => ({
+          ...offlineFile,
+          file: {
+            ...offlineFile.file,
+            id: result.data.fileId,
+          },
+        }))
+        .then(() => {
+          return false
+        })
+    } else if (uploadOurs) {
+      logger.info(
+        `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
       )
-    })
-  }
-  return Promise.resolve(false)
+      return overwriteAllKeys(fileId, clientId, {
+        ...removeSystemKeys(offlineFile),
+        file: {
+          ...offlineFile.file,
+          fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+        },
+      }).catch((error) => {
+        logger.error(`Erorr uploading our offline file ${fileId}`, error)
+        dialog.showErrorBox(
+          t('Error'),
+          t('There was an error uploading your offline backup. Please exit and start again')
+        )
+      })
+    }
+    return Promise.resolve(false)
+  })
 }
 
 function handleNoFileId(fileId, filePath) {

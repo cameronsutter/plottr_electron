@@ -177,18 +177,22 @@ Another note that taken during a Slack discussion that might help understand the
 > The feature itself should work as follows:
 > While a user plots in Plottr Pro, all changes are backed up in a hidden offline copy.
 > If the machine running Plottr loses its connection to the Internet, we notify the user that they're now working offline (there should be a banner across the bottom).
+>
 > A couple of things might happen now:
-> The user quits Plottr without modifying the file.
-> The user plots some more on the machine that lost its connection.
-> The user modifies the file on another machine that's still connected to the Internet.
+> a. The user quits Plottr without modifying the file.
+> b. The user plots some more on the machine that lost its connection.
+> c. The user modifies the file on another machine that's still connected to the Internet.
+>
 > Later on, there are also some potential scenarios:
-> The user starts Plottr while not connected to the Internet.
-> The user starts Plottr after reconnecting to the Internet.
-> The machine re-acquires the Internet connection without the user closing Plottr.
+> 1. The user starts Plottr while not connected to the Internet.
+> 2. The user starts Plottr after reconnecting to the Internet.
+> 3. The machine re-acquires the Internet connection without the user closing Plottr.
+>
 > If a. then 1. happens, users are presented with the files that they were working on previously, but they're loaded from the local file system.  This sequence leads to scenario b.
 > If a. then 2. happens, Plottr checks for drift between the file stored online and the file stored locally when it boots any file (more on drift resolution later).
 > If b. then 2. happens, Plottr checks for drift as above (when Plottr boots a file).
 > If b. then 3. happens, then Plottr presents a "resuming" dialog to the user that prevents further plotting (plottring? :slightly_smiling_face:) before we fetch the online file and check for drift.
+>
 > Resolving Drift:
 > In the case of a., optionally followed by c., followed by 1., 2., or 3., Plottr recognises that the user didn't modify the local file and accepts all changes from the remote file.
 > In the case of b. followed optionally by 1. then 2. or 3. but not c. Plottr sees that the remote file didn't change and overwrites it with local changes.

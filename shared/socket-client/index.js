@@ -35,6 +35,8 @@ import {
   ENSURE_BACKUP_FULL_PATH_ERROR_REPLY,
   ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY,
   FILE_EXISTS_ERROR_REPLY,
+  BACKUP_OFFLINE_BACKUP_FOR_RESUME_ERROR_REPLY,
+  READ_OFFLINE_FILES_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -174,6 +176,8 @@ const connect = (
             return
           }
           // Error return types
+          case BACKUP_OFFLINE_BACKUP_FOR_RESUME_ERROR_REPLY:
+          case READ_OFFLINE_FILES_ERROR_REPLY:
           case RM_RF_ERROR_REPLY:
           case SAVE_FILE_ERROR_REPLY:
           case SAVE_OFFLINE_FILE_ERROR_REPLY:
@@ -192,7 +196,27 @@ const connect = (
         logger.error(
           `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
         )
+        rejectPromise()
       } catch (error) {
+        try {
+          const { type, messageId, result } = JSON.parse(data)
+          // Same as rejectPromise above, but without a lexical
+          // environment with the payload.
+          const unresolvedPromise = promises.get(messageId)
+          if (!unresolvedPromise) {
+            logger.error(
+              `Received a reply for ${messageId} that ${type} completed, but there was no promise to fulfil`
+            )
+            return
+          }
+          promises.delete(messageId)
+          unresolvedPromise.reject(result)
+        } catch (innerError) {
+          logger.error(
+            'Error while trying to reject a promise in the socket client when something went wrong responding to a message from the socket server: ',
+            error.message
+          )
+        }
         logger.error('Error while replying: ', error.message)
       }
     })

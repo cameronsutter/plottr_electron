@@ -87,6 +87,8 @@ const setupListeners = (port, userDataPath) => {
           )
         }
 
+        // TODO: this code is repetative.  We might be able to do much
+        // better.
         switch (type) {
           case PING: {
             webSocket.send(
@@ -332,6 +334,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while saving offline backup file for resuming', payload, error)
+                replyWithErrorMessage(error.message)
               })
             return
           }
@@ -350,6 +353,7 @@ const setupListeners = (port, userDataPath) => {
               })
               .catch((error) => {
                 logger.error('Error while reading offline files', payload, error)
+                replyWithErrorMessage(error.message)
               })
           }
         }

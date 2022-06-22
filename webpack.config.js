@@ -24,6 +24,8 @@ const defineConfig = [
 //   plugins.push(new BundleAnalyzerPlugin())
 // }
 
+defineConfig.LOGGER = JSON.stringify('false')
+
 if (process.env.NODE_ENV === 'dev' && process.env.LOGGER === 'true') {
   console.log('[Define Plugin] Adding LOGGER to process.env.')
   defineConfig.LOGGER = JSON.stringify('true')

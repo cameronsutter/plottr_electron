@@ -69,7 +69,7 @@ const Resume = ({
                   )
                   if (doNothing) {
                     logger.info(
-                      `After resuming, there are no changes between to upload to the cloud, for file with id: ${fileId}.`
+                      `After resuming, there are no changes to upload to the cloud, for file with id: ${fileId}.`
                     )
                     setResuming(false)
                     setCheckingForOfflineDrift(false)

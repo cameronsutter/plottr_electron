@@ -1,9 +1,8 @@
 import { shouldIgnoreAction } from './shouldIgnoreAction'
 
 const logger = (store) => (next) => (action) => {
-  if (shouldIgnoreAction(action)) return next(action)
-
-  if (process.env.NODE_ENV === 'development' && process.env.LOGGER === 'true') {
+  if (LOGGER === 'true') {
+    if (shouldIgnoreAction(action)) return next(action)
     console.info('----------')
     console.info(`action: ${action.type}, payload: `, action)
     console.info('before', store.getState())

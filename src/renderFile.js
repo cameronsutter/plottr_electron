@@ -7,6 +7,7 @@ import Listener from './app/components/listener'
 import Renamer from './app/components/Renamer'
 import SaveAs from './app/components/SaveAs'
 import Error from './app/components/Error'
+import Resume from './app/components/Resume'
 import MainIntegrationContext from './mainIntegrationContext'
 
 import { store } from './app/store'
@@ -42,15 +43,22 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const backupOfflineBackupForResume = (file) => {
+    return whenClientIsReady(({ backupOfflineBackupForResume }) => {
+      return backupOfflineBackupForResume(file)
+    })
+  }
+
   render(
     <Provider store={store}>
       <MainIntegrationContext.Provider
-        value={{ saveFile, basename, readFile, autoSave, saveBackup }}
+        value={{ saveFile, basename, readFile, autoSave, saveBackup, backupOfflineBackupForResume }}
       >
         <Listener />
         <Renamer />
         <SaveAs />
         <Error />
+        <Resume backupOfflineBackupForResume={backupOfflineBackupForResume} />
         <Main saveBackup={saveBackup} />
       </MainIntegrationContext.Provider>
     </Provider>,

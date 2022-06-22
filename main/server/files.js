@@ -12,7 +12,7 @@ import {
   AUTO_SAVE_WORKED_THIS_TIME,
 } from '../../shared/socket-server-message-types'
 
-const { lstat, writeFile, open, unlink, readdir } = fs.promises
+const { lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const FileModule = (userDataPath, logger) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
@@ -290,13 +290,17 @@ const FileModule = (userDataPath, logger) => {
   }
   const autoSave = autoSaver()
 
+  const isResumeBackup = (fileName) => {
+    return fileName.includes('_resume-backup_')
+  }
+
   function listOfflineFiles() {
     return readdir(offlineFileFilesPath)
       .then((entries) => {
         return Promise.all(
           entries.map((entry) => {
             return lstat(path.join(offlineFileFilesPath, entry)).then((folder) => ({
-              keep: folder.isFile(),
+              keep: folder.isFile() && !isResumeBackup(entry),
               payload: path.join(offlineFileFilesPath, entry),
             }))
           })
@@ -308,12 +312,41 @@ const FileModule = (userDataPath, logger) => {
       })
   }
 
+  function readOfflineFiles() {
+    return listOfflineFiles().then((files) => {
+      return Promise.all(
+        files.map((file) => {
+          return readFile(file).then((jsonString) => {
+            try {
+              const fileData = JSON.parse(jsonString).file
+              return [
+                {
+                  ...fileData,
+                  path: file,
+                },
+              ]
+            } catch (error) {
+              logger.error(`Error reading offline file: ${file}`, error)
+              return []
+            }
+          })
+        })
+      ).then((results) => results.flatMap((x) => x))
+    })
+  }
+
   function cleanOfflineBackups(knownFiles) {
     const expectedOfflineFiles = knownFiles
       .filter(({ isCloudFile, fileName }) => isCloudFile && fileName)
       .map(({ fileName }) => offlineFilePath(fileName))
     return listOfflineFiles().then((files) => {
-      const filesToClean = files.filter((filePath) => expectedOfflineFiles.indexOf(filePath) === -1)
+      const filesToClean = files.filter((filePath) => {
+        if (isResumeBackup(filePath)) {
+          logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)
+          return false
+        }
+        return expectedOfflineFiles.indexOf(filePath) === -1
+      })
       return Promise.all(
         filesToClean.map((filePath) => {
           logger.info(
@@ -327,20 +360,49 @@ const FileModule = (userDataPath, logger) => {
     })
   }
 
-  function saveOfflineFile(file) {
-    // Don't save an offline version of an offline file
-    if (!fs.existsSync(offlineFileFilesPath)) {
-      fs.mkdirSync(offlineFileFilesPath, { recursive: true })
-    }
+  function ensureOfflineBackupPathExists() {
+    return lstat(offlineFileFilesPath).catch((error) => {
+      if (error.code === 'ENOENT') {
+        return mkdir(offlineFileFilesPath, { recursive: true })
+      }
+      return Promise.reject(error)
+    })
+  }
+
+  function checkForFileRecord(file) {
     if (!file || !file.file || !file.file.fileName) {
       logger.error('Trying to save a file but there is no file record on it.', file)
       return Promise.reject(
         new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
       )
     }
-    const filePath = offlineFilePath(file.file.fileName)
-    return cleanOfflineBackups(file.knownFiles).then(() => {
-      return saveFile(filePath, file)
+    return Promise.resolve(file)
+  }
+
+  function saveOfflineFile(file) {
+    return ensureOfflineBackupPathExists().then(() => {
+      return checkForFileRecord(file).then(() => {
+        const filePath = offlineFilePath(file.file.fileName)
+        return cleanOfflineBackups(file.knownFiles).then(() => {
+          return saveFile(filePath, file)
+        })
+      })
+    })
+  }
+
+  function backupOfflineBackupForResume(file) {
+    return ensureOfflineBackupPathExists().then(() => {
+      return checkForFileRecord(file).then(() => {
+        const date = new Date()
+        const filePath = `${offlineFilePath(
+          `_resume-backup_${
+            date.getMonth() + 1
+          }-${date.getDate()}-${date.getFullYear()}-${date.getHours()}h${date.getMinutes()}m${date.getSeconds()}_${
+            file.file.fileName
+          }`
+        )}`
+        return saveFile(filePath, file)
+      })
     })
   }
 
@@ -360,7 +422,16 @@ const FileModule = (userDataPath, logger) => {
       })
   }
 
-  return { saveFile, saveOfflineFile, basename, readFile, autoSave, fileExists }
+  return {
+    saveFile,
+    saveOfflineFile,
+    basename,
+    readFile,
+    autoSave,
+    fileExists,
+    backupOfflineBackupForResume,
+    readOfflineFiles,
+  }
 }
 
 export default FileModule

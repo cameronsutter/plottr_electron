@@ -14,6 +14,7 @@ import { resumeDirective } from '../../resume'
 import { retryWithBackOff } from './effect'
 
 const Resume = ({
+  offlineModeEnabled,
   isResuming,
   setResuming,
   email,
@@ -29,8 +30,10 @@ const Resume = ({
   setOverwritingCloudWithBackup,
   setShowResumeMessageDialog,
   setBackingUpOfflineFile,
+  backupOfflineBackupForResume,
 }) => {
   useEffect(() => {
+    if (!offlineModeEnabled) return
     // Only resume when we're loaded up and good to go.  The hook
     // depends on email, userId etc. so we can safely guard the resume
     // process with this check.
@@ -46,65 +49,76 @@ const Resume = ({
     ) {
       setCheckingForOfflineDrift(true)
       setShowResumeMessageDialog(true)
+
       const checkAndUploadBackup = () => {
-        return retryWithBackOff(() => {
-          return initialFetch(userId, fileId, clientId, app.getVersion())
-        }).then((cloudFile) => {
-          return new Promise((resolve, reject) => {
-            withFullFileState((state) => {
-              const offlineFile = state.present
-              const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
-              const [uploadOurs, backupOurs, doNothing] = resumeDirective(offlineFile, cloudFile)
-              if (doNothing) {
-                logger.info(
-                  `After resuming, there are no changes between the local and cloud files for file with id: ${fileId}.`
-                )
-                setResuming(false)
-                setCheckingForOfflineDrift(false)
-                resolve(false)
-              } else if (uploadOurs) {
-                logger.info(
-                  `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
-                )
-                retryWithBackOff(() => {
-                  return overwriteAllKeys(fileId, clientId, {
-                    ...offlineFile,
-                    file: {
-                      ...offlineFile.file,
-                      fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-                    },
-                  })
-                }).then(() => {
-                  setOverwritingCloudWithBackup(true)
-                  setCheckingForOfflineDrift(false)
-                  setResuming(false)
-                  resolve(true)
+        return new Promise((resolve, reject) => {
+          withFullFileState((state) => {
+            const offlineFile = state.present
+            return backupOfflineBackupForResume(offlineFile)
+              .then(() => {
+                return retryWithBackOff(() => {
+                  return initialFetch(userId, fileId, clientId, app.getVersion())
                 })
-              } else if (backupOurs) {
-                logger.info(
-                  `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
-                )
-                const date = new Date()
-                uploadProject(
-                  {
-                    ...offlineFile,
-                    file: {
-                      ...offlineFile.file,
-                      fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
-                        date.getMonth() + 1
-                      }-${date.getDate()}-${date.getFullYear()}`,
-                    },
-                  },
-                  email,
-                  userId
-                ).then(() => {
-                  setBackingUpOfflineFile(true)
-                  setCheckingForOfflineDrift(false)
-                  setResuming(false)
-                  resolve(true)
+              })
+              .then((cloudFile) => {
+                return new Promise((resolve, reject) => {
+                  const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
+                  const [uploadOurs, backupOurs, doNothing] = resumeDirective(
+                    offlineFile,
+                    cloudFile
+                  )
+                  if (doNothing) {
+                    logger.info(
+                      `After resuming, there are no changes to upload to the cloud, for file with id: ${fileId}.`
+                    )
+                    setResuming(false)
+                    setCheckingForOfflineDrift(false)
+                    resolve(false)
+                  } else if (uploadOurs) {
+                    logger.info(
+                      `Detected that the online version of file with id: ${fileId} didn't cahnge, but we changed ours.  Uploading our version.`
+                    )
+                    retryWithBackOff(() => {
+                      return overwriteAllKeys(fileId, clientId, {
+                        ...offlineFile,
+                        file: {
+                          ...offlineFile.file,
+                          fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+                        },
+                      })
+                    }).then(() => {
+                      setOverwritingCloudWithBackup(true)
+                      setCheckingForOfflineDrift(false)
+                      setResuming(false)
+                      resolve(true)
+                    })
+                  } else if (backupOurs) {
+                    logger.info(
+                      `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
+                    )
+                    const date = new Date()
+                    uploadProject(
+                      {
+                        ...offlineFile,
+                        file: {
+                          ...offlineFile.file,
+                          fileName: `${decodeURI(offlineFile.file.fileName)} - Resume Backup - ${
+                            date.getMonth() + 1
+                          }-${date.getDate()}-${date.getFullYear()}`,
+                        },
+                      },
+                      email,
+                      userId
+                    ).then(() => {
+                      setBackingUpOfflineFile(true)
+                      setCheckingForOfflineDrift(false)
+                      setResuming(false)
+                      resolve(true)
+                    })
+                  }
                 })
-              }
-            })
+              })
+              .then(resolve, reject)
           })
         })
       }
@@ -120,6 +134,7 @@ const Resume = ({
       })
     }
   }, [
+    offlineModeEnabled,
     isResuming,
     userId,
     email,
@@ -143,6 +158,8 @@ const Resume = ({
     setBackingUpOfflineFile(false)
   }
 
+  if (!offlineModeEnabled) return null
+
   if (!isResuming && !showResumeMessageDialog) return null
 
   return (
@@ -160,9 +177,7 @@ const Resume = ({
         : null}
       {overwritingCloudWithBackup ? t('Your changes were uploaded to the cloud.') : null}
       {!checkingOfflineDrift && !backingUpOfflineFile && !overwritingCloudWithBackup
-        ? t(
-            'No changes were detected between the offline backup file and the Plottr cloud version.'
-          )
+        ? t('Successfully resumed.')
         : null}
     </MessageModal>
   )
@@ -184,6 +199,8 @@ Resume.propTypes = {
   setOverwritingCloudWithBackup: PropTypes.func.isRequired,
   setShowResumeMessageDialog: PropTypes.func.isRequired,
   setBackingUpOfflineFile: PropTypes.func.isRequired,
+  offlineModeEnabled: PropTypes.bool,
+  backupOfflineBackupForResume: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -197,6 +214,7 @@ export default connect(
     email: selectors.emailAddressSelector(state.present),
     fileId: selectors.fileIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
+    offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     withFullFileState: actions.project.withFullFileState,

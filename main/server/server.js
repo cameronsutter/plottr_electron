@@ -15,6 +15,8 @@ import {
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   FILE_EXISTS,
+  BACKUP_OFFLINE_BACKUP_FOR_RESUME,
+  READ_OFFLINE_FILES,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
@@ -36,10 +38,16 @@ const setupListeners = (port, userDataPath) => {
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
 
-    const { saveFile, saveOfflineFile, basename, readFile, autoSave, fileExists } = FileModule(
-      userDataPath,
-      logger
-    )
+    const {
+      saveFile,
+      saveOfflineFile,
+      basename,
+      readFile,
+      autoSave,
+      fileExists,
+      backupOfflineBackupForResume,
+      readOfflineFiles,
+    } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
 
     webSocket.on('message', (message) => {
@@ -76,6 +84,8 @@ const setupListeners = (port, userDataPath) => {
           )
         }
 
+        // TODO: this code is repetative.  We might be able to do much
+        // better.
         switch (type) {
           case PING: {
             webSocket.send(
@@ -299,10 +309,53 @@ const setupListeners = (port, userDataPath) => {
                 logger.error('Error while checking whether a file exists', filePath, error)
                 replyWithErrorMessage(error.message)
               })
+            return
+          }
+          case BACKUP_OFFLINE_BACKUP_FOR_RESUME: {
+            logger.info('Backing up offline file for resume (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+            })
+            const { file } = payload
+            backupOfflineBackupForResume(file)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while saving offline backup file for resuming', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case READ_OFFLINE_FILES: {
+            logger.info('Reading offline files.')
+            readOfflineFiles()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while reading offline files', payload, error)
+                replyWithErrorMessage(error.message)
+              })
           }
         }
       } catch (error) {
-        logger.error('Failed to handle message: ', message, error)
+        logger.error('Failed to handle message: ', message.toString().substring(0, 50), error)
       }
     })
   })

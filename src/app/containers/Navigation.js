@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { ipcRenderer } from 'electron'
 import { FaRegUser, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
-import Resume from '../components/Resume'
 import OfflineBanner from '../components/OfflineBanner'
 
 import { t } from 'plottr_locales'
@@ -14,14 +13,7 @@ import { selectors, actions } from 'pltr/v2'
 
 const isDev = process.env.NODE_ENV == 'development'
 
-const Navigation = ({
-  isInTrialMode,
-  darkMode,
-  currentView,
-  changeCurrentView,
-  offlineModeEnabled,
-  clickOnDom,
-}) => {
+const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, clickOnDom }) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -73,7 +65,6 @@ const Navigation = ({
         />
       ) : null}
       <OfflineBanner />
-      {offlineModeEnabled ? <Resume /> : null}
       <Navbar
         onClick={(event) => {
           clickOnDom(event.clientX, event.clientY)
@@ -115,7 +106,6 @@ Navigation.propTypes = {
   darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
-  offlineModeEnabled: PropTypes.bool,
   clickOnDom: PropTypes.func.isRequired,
 }
 
@@ -124,7 +114,6 @@ function mapStateToProps(state) {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
-    offlineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }
 }
 

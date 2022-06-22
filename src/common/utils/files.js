@@ -3,11 +3,13 @@ import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { sortBy } from 'lodash'
-import logger from '../../../shared/logger'
 
-const { readdir, lstat, readFile } = fs.promises
+import { makeFileModule } from '../../app/files'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
+
+const { readOfflineFiles } = makeFileModule(whenClientIsReady)
 
 function getDateValue(fileObj) {
   if (fileObj.lastOpened) {
@@ -33,42 +35,7 @@ export function removeFromKnownFiles(id) {
 }
 
 export function listOfflineFiles() {
-  return readdir(OFFLINE_FILE_FILES_PATH)
-    .then((entries) => {
-      return Promise.all(
-        entries.map((entry) => {
-          return lstat(path.join(OFFLINE_FILE_FILES_PATH, entry)).then((folder) => ({
-            keep: folder.isFile(),
-            payload: path.join(OFFLINE_FILE_FILES_PATH, entry),
-          }))
-        })
-      )
-        .then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
-        .then((files) => {
-          return Promise.all(
-            files.map((file) => {
-              return readFile(file).then((jsonString) => {
-                try {
-                  const fileData = JSON.parse(jsonString).file
-                  return [
-                    {
-                      ...fileData,
-                      path: file,
-                    },
-                  ]
-                } catch (error) {
-                  logger.error(`Error reading offline file: ${file}`, error)
-                  return []
-                }
-              })
-            })
-          ).then((results) => results.flatMap((x) => x))
-        })
-    })
-    .catch((error) => {
-      logger.error(`Couldn't list the offline files directory: ${OFFLINE_FILE_FILES_PATH}`, error)
-      return Promise.reject(error)
-    })
+  return readOfflineFiles()
 }
 
 export const sortAndSearch = (searchTerm, files) => {

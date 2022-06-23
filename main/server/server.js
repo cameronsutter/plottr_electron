@@ -257,38 +257,40 @@ const setupListeners = (port, userDataPath) => {
             logger.info(
               'Ensuring that the full backup path exists (same op. as ensuring backup path for today.)'
             )
-            try {
-              const result = ensureBackupTodayPath()
-              webSocket.send(
-                JSON.stringify({
-                  type,
-                  messageId,
-                  result,
-                  payload,
-                })
-              )
-            } catch (error) {
-              logger.error('Error ensuring the full backup path exists', error)
-              replyWithErrorMessage(error.message)
-            }
+            ensureBackupTodayPath()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error ensuring the full backup path exists', error)
+                replyWithErrorMessage(error.message)
+              })
             return
           }
           case ENSURE_BACKUP_TODAY_PATH: {
             logger.info('Ensuring that the backup path exists for today.')
-            try {
-              const result = ensureBackupTodayPath()
-              webSocket.send(
-                JSON.stringify({
-                  type,
-                  messageId,
-                  result: result,
-                  payload,
-                })
-              )
-            } catch (error) {
-              logger.error('Error ensuring the backup path for today', error)
-              replyWithErrorMessage(error.message)
-            }
+            ensureBackupTodayPath()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result: result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error ensuring the backup path for today', error)
+                replyWithErrorMessage(error.message)
+              })
             return
           }
           case FILE_EXISTS: {

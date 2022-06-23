@@ -4,20 +4,25 @@ import { DateTime, Duration } from 'luxon'
 
 import SettingsModule from './settings'
 
-const { writeFile, readdir, lstat, rmdir } = fs.promises
+const { writeFile, readdir, lstat, rmdir, unlink, mkdir } = fs.promises
 
 const BackupModule = (userDataPath, logger) => {
   const { readSettings } = SettingsModule(userDataPath)
 
-  const configuredBackupLocation = path.join(userDataPath, 'backups')
-  const backupBasePath =
-    (configuredBackupLocation !== 'default' && configuredBackupLocation) || backupBasePath
+  const defaultBackupPath = path.join(userDataPath, 'backups')
+  const backupBasePath = () => {
+    return readSettings().then((settings) => {
+      const configuredBackupPath = settings.user.backupLocation
+      return (configuredBackupPath !== 'default' && configuredBackupPath) || defaultBackupPath
+    })
+  }
 
   function saveBackup(filePath, data) {
     logger.info(`Saving backup of: ${filePath}`)
     return readSettings().then((settings) => {
       try {
         if (!settings.backup) {
+          logger.warn('Backups are disabled.')
           return Promise.resolve()
         }
 
@@ -28,6 +33,7 @@ const BackupModule = (userDataPath, logger) => {
             : backupStrategy === 'days'
             ? settings.user.backupDays
             : settings.user.numberOfBackups
+
         // Don't involve deletion in the control flow of this function
         // because it'll slow things down and we don't really mind if it
         // fails.
@@ -43,18 +49,31 @@ const BackupModule = (userDataPath, logger) => {
             logger.error('Error while deleting old backups', error)
           })
 
-        ensureBackupTodayPath()
-        const partialPath = backupPath()
+        return ensureBackupTodayPath()
+          .then(backupPath)
+          .then((partialPath) => {
+            const fileBaseName = path.basename(filePath)
+            const startBaseName = `(start-session)-${fileBaseName}`
+            const startFilePath = path.join(partialPath, startBaseName)
+            const SAVED_START_OF_SESSION_BACKUP = 'saved-start-of-session-backup'
+            return lstat(startFilePath)
+              .catch((error) => {
+                if (error.code === 'ENOENT') {
+                  return saveFile(startFilePath, data).then(() => {
+                    return SAVED_START_OF_SESSION_BACKUP
+                  })
+                }
+                return Promise.reject(error)
+              })
+              .then((result) => {
+                if (result === SAVED_START_OF_SESSION_BACKUP) {
+                  return result
+                }
 
-        const fileBaseName = path.basename(filePath)
-        const startBaseName = `(start-session)-${fileBaseName}`
-        const startFilePath = path.join(partialPath, startBaseName)
-        if (!fs.existsSync(startFilePath)) {
-          return saveFile(startFilePath, data)
-        }
-
-        const backupFilePath = path.join(partialPath, fileBaseName)
-        return saveFile(backupFilePath, data)
+                const backupFilePath = path.join(partialPath, fileBaseName)
+                return saveFile(backupFilePath, data)
+              })
+          })
       } catch (error) {
         return Promise.reject(error)
       }
@@ -75,27 +94,42 @@ const BackupModule = (userDataPath, logger) => {
     var month = today.getMonth() + 1
     var year = today.getFullYear()
 
-    return path.join(backupBasePath, `${month}_${day}_${year}`)
+    return backupBasePath().then((basePath) => {
+      return path.join(basePath, `${month}_${day}_${year}`)
+    })
   }
 
   // assumes base path exists
   function ensureBackupTodayPath() {
     return readSettings().then((settings) => {
-      if (!settings.backup) return
+      if (!settings.backup) return true
 
-      const backupFolder = backupPath()
-      if (fs.existsSync(backupFolder)) return
-
-      fs.mkdirSync(backupFolder, { recursive: true })
+      return backupPath().then((backupFolder) => {
+        return lstat(backupFolder).catch((error) => {
+          if (error.code === 'ENOENT') {
+            return mkdir(backupFolder, { recursive: true })
+          }
+          return Promise.reject(error)
+        })
+      })
     })
   }
 
   function ensureBackupFullPath() {
-    if (!fs.existsSync(backupBasePath)) {
-      fs.mkdirSync(backupBasePath, { recursive: true })
-    }
+    return readSettings().then((settings) => {
+      return backupBasePath().then((basePath) => {
+        if (!settings.backup) return true
 
-    ensureBackupTodayPath()
+        return lstat(basePath)
+          .catch((error) => {
+            if (error.code === 'ENOENT') {
+              return mkdir(basePath, { recursive: true })
+            }
+            return Promise.reject(error)
+          })
+          .then(ensureBackupTodayPath)
+      })
+    })
   }
 
   function deleteOldBackups(strategy, amount) {
@@ -111,71 +145,86 @@ const BackupModule = (userDataPath, logger) => {
       return Promise.resolve([])
     }
 
-    return backupFiles(backupBasePath).then((unsortedFiles) => {
-      const files = sortFileNamesByDate(unsortedFiles)
+    return backupBasePath().then((basePath) => {
+      return backupFiles(basePath).then((unsortedFiles) => {
+        const files = sortFileNamesByDate(unsortedFiles)
 
-      switch (strategy) {
-        case 'days': {
-          const anchorDate = nDaysAgo(amount)
-          const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
-          if (!filesToDelete.length) return []
-          logger.warn(`Removing old backups: ${filesToDelete}`)
-          filesToDelete.forEach((file) => {
-            try {
-              fs.unlinkSync(path.join(backupBasePath, file))
-            } catch (error) {
-              console.log(error)
-            }
-          })
-          deleteEmptyFolders()
-          return filesToDelete
+        switch (strategy) {
+          case 'days': {
+            const anchorDate = nDaysAgo(amount)
+            const filesToDelete = files.filter((file) => !fileIsSoonerThan(anchorDate, file))
+            if (!filesToDelete.length) return []
+            logger.warn(`Removing old backups: ${filesToDelete}`)
+            return Promise.all(
+              filesToDelete.map((file) => {
+                return unlink(path.join(basePath, file)).catch((error) => {
+                  logger.error(error)
+                  // Ignore this error, it's not a big deal if we fail
+                  // to delete an old backup
+                  return Promise.resolve(true)
+                })
+              })
+            )
+              .then(deleteEmptyFolders)
+              .then(() => {
+                return filesToDelete
+              })
+          }
+          case 'number': {
+            const filesToDelete = files.slice(0, files.length - amount)
+            if (!filesToDelete.length) return []
+            logger.warn(`Removing old backups: ${filesToDelete}`)
+            return Promise.all(
+              filesToDelete.map((file) => {
+                return unlink(path.join(basePath, file)).catch((error) => {
+                  logger.error('Error deleting an old backup: ${fille}', error)
+                  // Ignore this error, it's not a big deal if we fail
+                  // to delete an old backup
+                  return Promise.resolve(true)
+                })
+              })
+            )
+              .then(deleteEmptyFolders)
+              .then(() => {
+                return filesToDelete
+              })
+          }
+          default: {
+            logger.warn(
+              `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
+            )
+            return []
+          }
         }
-        case 'number': {
-          const filesToDelete = files.slice(0, files.length - amount)
-          if (!filesToDelete.length) return []
-          logger.warn(`Removing old backups: ${filesToDelete}`)
-          filesToDelete.forEach((file) => {
-            try {
-              fs.unlinkSync(path.join(backupBasePath, file))
-            } catch (error) {
-              console.log(error)
-            }
-          })
-          deleteEmptyFolders()
-          return filesToDelete
-        }
-        default:
-          logger.warn(
-            `Unhandled backup strategy for removing old backups (${strategy}).  Leaving everything as is.`
-          )
-          return []
-      }
+      })
     })
   }
 
   function deleteEmptyFolders() {
-    return readdir(backupBasePath)
-      .then((elems) =>
-        Promise.all(
-          elems.map((elem) =>
-            lstat(path.join(backupBasePath, elem)).then((fileStats) =>
-              readdir(path.join(backupBasePath, elem)).then((contents) => ({
-                keep: fileStats.isDirectory() && contents.length === 0,
-                payload: elem,
-              }))
+    return backupBasePath()
+      .then((basePath) => {
+        return readdir().then((elems) =>
+          Promise.all(
+            elems.map((elem) =>
+              lstat(path.join(basePath, elem)).then((fileStats) =>
+                readdir(path.join(basePath, elem)).then((contents) => ({
+                  keep: fileStats.isDirectory() && contents.length === 0,
+                  payload: elem,
+                }))
+              )
+            )
+          ).then((entries) =>
+            // rmdir is a safe way to do this because it will check that a
+            // folder is empty before deleting it.
+            Promise.all(
+              entries
+                .filter(({ keep }) => keep)
+                .map(({ payload }) => payload)
+                .map((emptyDirectory) => rmdir(path.join(basePath, emptyDirectory)))
             )
           )
-        ).then((entries) =>
-          // rmdir is a safe way to do this because it will check that a
-          // folder is empty before deleting it.
-          Promise.all(
-            entries
-              .filter(({ keep }) => keep)
-              .map(({ payload }) => payload)
-              .map((emptyDirectory) => rmdir(path.join(backupBasePath, emptyDirectory)))
-          )
         )
-      )
+      })
       .catch((error) => {
         logger.error('Error while deleting empty folders', error)
       })

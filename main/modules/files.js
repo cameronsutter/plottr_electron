@@ -239,7 +239,7 @@ const makeFileModule = () => {
   }
 
   function openKnownFile(filePath, id, unknown) {
-    if (id && !filePath.startsWith('plottr://')) {
+    if (id && filePath && !filePath.startsWith('plottr://')) {
       // update lastOpen, but wait a little so the file doesn't move from under their mouse
       setTimeout(() => {
         if (isOfflineFile(filePath)) {

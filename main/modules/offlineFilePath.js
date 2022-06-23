@@ -13,7 +13,7 @@ function offlineFilePath(filePath) {
 }
 
 function isOfflineFile(filePath) {
-  return filePath.startsWith(OFFLINE_FILE_FILES_PATH)
+  return filePath && filePath.startsWith(OFFLINE_FILE_FILES_PATH)
 }
 
 export { offlineFilePath, isOfflineFile, OFFLINE_FILE_FILES_PATH }

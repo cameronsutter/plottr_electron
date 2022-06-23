@@ -15,10 +15,11 @@ function getKnownFilesInfo() {
 // be that `addToKnownFiles` does some fixing to broken stores and
 // `addToKnown` sets the last opened date.
 function addToKnown(filePath) {
-  // We don't want to track recent files when they're offline files.
-  if (filePath.startsWith(OFFLINE_FILE_FILES_PATH)) return
   // We also don't want to track recent files that don't have a path.
   if (!filePath || filePath === '') return
+
+  // We don't want to track recent files when they're offline files.
+  if (filePath.startsWith(OFFLINE_FILE_FILES_PATH)) return
 
   const files = knownFilesStore.store
   const matches = Object.values(files)

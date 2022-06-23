@@ -227,8 +227,9 @@ const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
   return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
 }
 
-const afterLoading = (json) => {
+const afterLoading = (userId, saveBackup) => (json) => {
   logger.info(`Loaded file ${json.file.fileName}.`)
+  saveBackup(`${json.file.fileName}.pltr`, json)
 }
 
 const makeFlagsConsistent = (beatHierarchy) => (json) => {
@@ -243,7 +244,7 @@ const makeFlagsConsistent = (beatHierarchy) => (json) => {
   return json
 }
 
-const bootWithUser = (fileId, beatHierarchy) => (user) => {
+const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
   const userId = user.uid
   const email = user.email
   return initialFetch(userId, fileId, clientId, app.getVersion())
@@ -251,7 +252,7 @@ const bootWithUser = (fileId, beatHierarchy) => (user) => {
       return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
         .then(migrate(fetchedFile, fileId))
         .then(makeFlagsConsistent(beatHierarchy))
-        .then(afterLoading)
+        .then(afterLoading(userId, saveBackup))
     })
     .catch((error) => {
       const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
@@ -270,7 +271,7 @@ const handleErrorBootingFile = (fileId) => (error) => {
   return Promise.reject(error)
 }
 
-function bootCloudFile(filePath, beatHierarchy) {
+function bootCloudFile(filePath, beatHierarchy, saveBackup) {
   const fileId = filePath.split('plottr://')[1]
   if (!fileId) {
     return handleNoFileId(fileId, filePath)
@@ -278,7 +279,7 @@ function bootCloudFile(filePath, beatHierarchy) {
 
   return waitForUser()
     .then(handleEroneousUserStates(filePath))
-    .then(bootWithUser(fileId, beatHierarchy))
+    .then(bootWithUser(fileId, beatHierarchy, saveBackup))
     .catch(handleErrorBootingFile(fileId))
 }
 
@@ -358,7 +359,7 @@ export function bootFile(filePath, options, numOpenFiles, saveBackup) {
     store.dispatch(actions.applicationState.startLoadingFile())
     return (
       isCloudFile
-        ? bootCloudFile(filePath, beatHierarchy)
+        ? bootCloudFile(filePath, beatHierarchy, saveBackup)
         : bootLocalFile(filePath, numOpenFiles, beatHierarchy, saveBackup)
     )
       .then(() => {

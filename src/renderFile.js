@@ -2,6 +2,10 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
+import { selectors } from 'pltr/v2'
+
+import { saveBackup as saveBackupOnFirebase } from 'wired-up-firebase'
+
 import Main from 'containers/Main'
 import Listener from './app/components/listener'
 import Renamer from './app/components/Renamer'
@@ -38,8 +42,20 @@ export const renderFile = (root, whenClientIsReady) => {
   }
 
   const saveBackup = (filePath, file) => {
-    return whenClientIsReady(({ saveBackup }) => {
-      return saveBackup(filePath, file)
+    const state = store.getState().present
+    const onCloud = selectors.isCloudFileSelector(state)
+    const userId = selectors.userIdSelector(state)
+    const localBackupsEnabled = selectors.localBackupsEnabledSelector(state)
+
+    const result = onCloud ? saveBackupOnFirebase(userId, file) : Promise.resolve(true)
+
+    return result.then(() => {
+      return whenClientIsReady(({ saveBackup }) => {
+        if (!onCloud || (onCloud && localBackupsEnabled)) {
+          return saveBackup(filePath, file)
+        }
+        return Promise.resolve(false)
+      })
     })
   }
 

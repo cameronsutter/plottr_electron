@@ -17,8 +17,16 @@ const convertFromNanosAndSeconds = (nanosAndSecondsObject) => {
 }
 
 function getDateValue(fileObj) {
-  if (fileObj.lastOpened) {
+  // At some point, we stored a timestamp in this field.  Now it's a
+  // `seconds`, and `nanoseconds` object.
+  const lastOpenedIsString = typeof fileObj.lastOpened === 'string'
+
+  if (!lastOpenedIsString && fileObj.lastOpened) {
     return convertFromNanosAndSeconds(fileObj.lastOpened) || new Date()
+  }
+
+  if (lastOpenedIsString) {
+    return new Date(fileObj.lastOpened)
   }
 
   try {
@@ -51,16 +59,27 @@ export const sortedFileSystemKnownFilesByIdSelector = createSelector(
   fileSystemKnownFilesSelector,
   searchTermSelector,
   (files, searchTerm) => {
-    const filteredFileIds = Object.keys(files).filter((id) => {
-      if (searchTerm && searchTerm.length > 1) {
-        const f = files[`${id}`]
-        return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
-      } else {
-        return true
+    const filteredFileIds = files
+      .filter((f) => {
+        if (searchTerm && searchTerm.length > 1) {
+          return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
+        } else {
+          return true
+        }
+      })
+      .map(({ id }) => {
+        return id
+      })
+    const sortedIds = sortBy(filteredFileIds, (id) =>
+      getDateValue(files.find((file) => file.id === id))
+    ).reverse()
+    const filesById = files.reduce((acc, nextFile) => {
+      return {
+        ...acc,
+        [nextFile.id]: nextFile,
       }
-    })
-    const sortedIds = sortBy(filteredFileIds, (id) => getDateValue(files[`${id}`])).reverse()
-    return [sortedIds, files]
+    }, {})
+    return [sortedIds, filesById]
   }
 )
 const filesByPosition = (filesArray) => {

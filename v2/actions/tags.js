@@ -6,6 +6,7 @@ import {
   DELETE_TAG,
   CHANGE_TAG_COLOR,
   LOAD_TAGS,
+  DUPLICATE_TAG,
 } from '../constants/ActionTypes'
 
 export function addTag() {
@@ -34,4 +35,8 @@ export function deleteTag(id) {
 
 export function load(patching, tags) {
   return { type: LOAD_TAGS, patching, tags }
+}
+
+export function duplicateTag(id) {
+  return { type: DUPLICATE_TAG, id }
 }

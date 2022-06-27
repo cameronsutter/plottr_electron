@@ -7,6 +7,15 @@ import { parseStringDate } from '../helpers/date'
 
 export const backupFoldersSelector = (state) => state.backups.folders
 
+export const nonEmptyBackupFoldersSelector = createSelector(
+  backupFoldersSelector,
+  (backupFolders) => {
+    return backupFolders.filter(({ backups }) => {
+      return backups.length > 0
+    })
+  }
+)
+
 const visualDateStringFromDateString = (dateString) => {
   return t('{date, date, medium}', {
     date: parseStringDate(dateString),
@@ -23,7 +32,7 @@ const matchesSearchTerm = (searchTerm) => (file) => {
   return file.fileName && file.fileName.toLowerCase().includes(searchTerm.toLowerCase())
 }
 export const filteredSortedBackupsSelector = createSelector(
-  backupFoldersSelector,
+  nonEmptyBackupFoldersSelector,
   searchTermSelector,
   folderSearchSelector,
   (backupFolders, searchTerm, folderSearch) => {

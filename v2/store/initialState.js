@@ -75,6 +75,8 @@ export const ui = {
     characters: null,
     places: null,
     tags: null,
+    outline: null,
+    timeline: null,
   },
 }
 

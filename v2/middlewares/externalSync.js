@@ -19,6 +19,9 @@ const externalSync = (patch, withData) => (store) => (next) => (action) => {
   const clientId = present.client.clientId
   if (fileId) {
     const previous = action.type === '@@redux-undo/UNDO' ? future[0] : past[past.length - 1]
+    // It's possible that nothing undoable happened yet.
+    if (!previous) return result
+
     Object.keys(present).forEach((key) => {
       if (SYSTEM_REDUCER_KEYS.indexOf(key) > -1) return
       if (

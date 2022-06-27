@@ -32,6 +32,13 @@ import {
   SET_PLACES_SEARCH_TERM,
   SET_CHARACTERS_SEARCH_TERM,
   SET_OUTLINE_SEARCH_TERM,
+  SET_TIMELINE_SEARCH_TERM,
+  ADD_NOTE,
+  ADD_CHARACTER,
+  ADD_PLACE,
+  ADD_TAG,
+  ADD_CARD,
+  ADD_CREATED_TAG,
 } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
@@ -195,12 +202,32 @@ const ui =
         }
       }
 
+      case ADD_NOTE: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            notes: null,
+          },
+        }
+      }
+
       case SET_CHARACTERS_SEARCH_TERM: {
         return {
           ...state,
           searchTerms: {
             ...state.searchTerms,
             characters: action.searchTerm,
+          },
+        }
+      }
+
+      case ADD_CHARACTER: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            characters: null,
           },
         }
       }
@@ -215,6 +242,16 @@ const ui =
         }
       }
 
+      case ADD_PLACE: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            places: null,
+          },
+        }
+      }
+
       case SET_TAGS_SEARCH_TERM: {
         return {
           ...state,
@@ -225,12 +262,44 @@ const ui =
         }
       }
 
+      case ADD_CREATED_TAG:
+      case ADD_TAG: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            tags: null,
+          },
+        }
+      }
+
       case SET_OUTLINE_SEARCH_TERM: {
         return {
           ...state,
           searchTerms: {
             ...state.searchTerms,
             outline: action.searchTerm,
+          },
+        }
+      }
+
+      case SET_TIMELINE_SEARCH_TERM: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            timeline: action.searchTerm,
+          },
+        }
+      }
+
+      case ADD_CARD: {
+        return {
+          ...state,
+          searchTerms: {
+            ...state.searchTerms,
+            outline: null,
+            timeline: null,
           },
         }
       }

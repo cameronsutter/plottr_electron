@@ -87,6 +87,10 @@ export const loadingFileSelector = createSelector(
   fileStateSelector,
   ({ loadingFile }) => loadingFile
 )
+export const errorLoadingFileSelector = createSelector(
+  fileStateSelector,
+  ({ errorLoadingFile }) => errorLoadingFile
+)
 export const deletingFileSelector = createSelector(
   fileStateSelector,
   ({ deletingFile }) => deletingFile
@@ -94,6 +98,10 @@ export const deletingFileSelector = createSelector(
 export const savingFileAsSelector = createSelector(
   fileStateSelector,
   ({ savingFileAs }) => savingFileAs
+)
+export const filePathToUploadSelector = createSelector(
+  fileStateSelector,
+  ({ filePathToUpload }) => filePathToUpload
 )
 
 export const sessionStateSelector = createSelector(
@@ -437,6 +445,14 @@ export const isInSomeValidLicenseStateSelector = createSelector(
           !needToCheckProSubscription &&
           (hasPro || hasLicense || isInTrialMode)))
     )
+  }
+)
+
+export const readyToCheckFileToLoadSelector = createSelector(
+  isInSomeValidLicenseStateSelector,
+  filePathToUploadSelector,
+  (inValidLicenseState, filePathToUpload) => {
+    return !filePathToUpload && inValidLicenseState
   }
 )
 

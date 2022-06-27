@@ -7,6 +7,7 @@ import {
   FINISH_LOADING_A_LICENSE_TYPE,
   FINISH_LOADING_A_SETTINGS_TYPE,
   FINISH_LOADING_FILE,
+  ERROR_LOADING_FILE,
   FINISH_LOADING_FILE_LIST,
   FINISH_LOGGING_IN,
   FINISH_ONBOARDING,
@@ -29,6 +30,8 @@ import {
   START_RENAMING_FILE,
   START_SAVING_FILE_AS,
   START_UPLOADING_FILE_TO_CLOUD,
+  PROMPT_TO_UPLOAD_FILE,
+  DISMISS_PROMPT_TO_UPLOAD_FILE,
 } from '../constants/ActionTypes'
 
 // Project states
@@ -63,6 +66,9 @@ export const startLoadingFile = () => ({
 })
 export const finishLoadingFile = () => ({
   type: FINISH_LOADING_FILE,
+})
+export const errorLoadingFile = () => ({
+  type: ERROR_LOADING_FILE,
 })
 export const startRenamingFile = () => ({
   type: START_RENAMING_FILE,
@@ -138,4 +144,13 @@ export const startScrivenerImporter = () => ({
 
 export const finishScrivenerImporter = () => ({
   type: FINISH_IMPORTING_SCRIVENER,
+})
+
+export const promptToUploadFile = (filePath) => ({
+  type: PROMPT_TO_UPLOAD_FILE,
+  filePath,
+})
+
+export const dismissPromptToUploadFile = () => ({
+  type: DISMISS_PROMPT_TO_UPLOAD_FILE,
 })

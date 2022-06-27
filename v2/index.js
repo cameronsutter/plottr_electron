@@ -28,6 +28,8 @@ import * as backupsActions from './actions/backups'
 import * as applicationStateActions from './actions/applicationState'
 import * as imageCacheActions from './actions/imageCache'
 import * as notificationActions from './actions/notifications'
+import * as domEventActions from './actions/domEvents'
+import * as testingAndDiagnosisActions from './actions/testingAndDiagnosis'
 
 import * as ActionTypes from './constants/ActionTypes'
 import * as LoadActions from './constants/loadActions'
@@ -81,11 +83,17 @@ import * as settingsSelectors from './selectors/settings'
 import * as backupsSelectors from './selectors/backups'
 import * as applicationStateSelectors from './selectors/applicationState'
 import * as imageCacheSelectors from './selectors/imageCache'
-import * as notificationSelector from './selectors/notifications'
+import * as notificationSelectors from './selectors/notifications'
+import * as domEventsSelectors from './selectors/domEvents'
+import * as testingAndDiagnosisSelectors from './selectors/testingAndDiagnosis'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
-import { SYSTEM_REDUCER_KEYS, removeSystemKeys } from './reducers/systemReducers'
+import {
+  SYSTEM_REDUCER_KEYS,
+  SYSTEM_REDUCER_ACTION_TYPES,
+  removeSystemKeys,
+} from './reducers/systemReducers'
 import customAttributesReducer from './reducers/customAttributes'
 import linesReducer from './reducers/lines'
 import beatsReducer from './reducers/beats'
@@ -115,6 +123,8 @@ import backupsReducer from './reducers/backups'
 import applicationStateReducer from './reducers/applicationState'
 import imageCacheReducer from './reducers/imageCache'
 import notificationsReducer from './reducers/notifications'
+import domEventsReducer from './reducers/domEvents'
+import testingAndDiagnosisReducer from './reducers/testingAndDiagnosis'
 
 import * as initialState from './store/initialState'
 import * as lineColors from './store/lineColors'
@@ -163,6 +173,8 @@ const reducers = {
   applicationState: applicationStateReducer,
   imageCache: imageCacheReducer,
   notifications: notificationsReducer,
+  domEvents: domEventsReducer,
+  testingAndDiagnosis: testingAndDiagnosisReducer,
 }
 
 const selectors = {
@@ -196,7 +208,9 @@ const selectors = {
   ...backupsSelectors,
   ...applicationStateSelectors,
   ...imageCacheSelectors,
-  ...notificationSelector,
+  ...notificationSelectors,
+  ...domEventsSelectors,
+  ...testingAndDiagnosisSelectors,
 }
 
 const actions = {
@@ -230,6 +244,8 @@ const actions = {
   applicationState: applicationStateActions,
   imageCache: imageCacheActions,
   notifications: notificationActions,
+  domEvents: domEventActions,
+  testingAndDiagnosis: testingAndDiagnosisActions,
 }
 
 const helpers = {
@@ -269,6 +285,7 @@ export {
   rootReducer,
   mainReducer,
   SYSTEM_REDUCER_KEYS,
+  SYSTEM_REDUCER_ACTION_TYPES,
   removeSystemKeys,
   reducers,
   selectors,

@@ -2,7 +2,12 @@ import { createSelector } from 'reselect'
 import { createSelectorCreator, defaultMemoize } from 'reselect'
 import { isEqual } from 'lodash'
 import { sortBy } from 'lodash'
-import { outlineSearchTermSelector, timelineFilterIsEmptySelector, timelineFilterSelector } from './ui'
+import {
+  outlineSearchTermSelector,
+  timelineFilterIsEmptySelector,
+  timelineFilterSelector,
+  timelineSearchTermSelector,
+} from './ui'
 import { findNode, nodeParent } from '../reducers/tree'
 import { nextId } from '../store/newIds'
 import {
@@ -11,6 +16,7 @@ import {
   visibleSortedBeatsByBookIgnoringCollapsedSelector,
 } from './beats'
 import { beatHierarchyIsOn } from './featureFlags'
+import { outOfOrderSearch } from '../helpers/outOfOrderSearch'
 
 export const allCardsSelector = (state) => state.cards
 
@@ -30,6 +36,18 @@ const templateMetadata = (template) => {
   }
 }
 
+const cardIsNonEmpty = (children) => {
+  return (
+    children.length > 1 ||
+    children.some((element) => {
+      return (
+        (element.text && element.text !== '') ||
+        (Array.isArray(element.children) && cardIsNonEmpty(element.children))
+      )
+    })
+  )
+}
+
 const cardMetaData = (card) => {
   const {
     id,
@@ -43,6 +61,7 @@ const cardMetaData = (card) => {
     title,
     templates,
     positionWithinLine,
+    description,
   } = card
 
   return {
@@ -57,6 +76,7 @@ const cardMetaData = (card) => {
     title,
     templates: templates.map(templateMetadata),
     positionWithinLine,
+    hasDescription: cardIsNonEmpty(description),
   }
 }
 
@@ -161,20 +181,35 @@ export const cardMapSelector = createSelector(
   }
 )
 
+const stringifiedCardsByIdSelector = createSelector(allCardsSelector, (cards) => {
+  return cards.reduce((acc, nextCard) => {
+    return {
+      ...acc,
+      [nextCard.id]: JSON.stringify(nextCard).toLowerCase(),
+    }
+  }, {})
+})
+
 export const outlineSearchedCardMapSelector = createSelector(
   allCardsSelector,
   collapsedBeatSelector,
   sortedBeatsByBookSelector,
   beatHierarchyIsOn,
   outlineSearchTermSelector,
-  (cards, collapsedBeats, allSortedBeats, hierarchyIsOn, outlineSearchTerm) => {
+  stringifiedCardsByIdSelector,
+  (cards, collapsedBeats, allSortedBeats, hierarchyIsOn, outlineSearchTerm, stringifiedCards) => {
     const beatIds = allSortedBeats.map(({ id }) => id)
     const beatPositions = beatIds.map((x) => x)
     beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
-    const lowerCaseSearchTerm = outlineSearchTerm && outlineSearchTerm.toLowerCase()
-    const filteredCards = lowerCaseSearchTerm
-      ? cards.filter(({ title }) => {
-          return title.toLowerCase().match(lowerCaseSearchTerm)
+    const lowerCaseSearchTerms =
+      outlineSearchTerm &&
+      outlineSearchTerm
+        .toLowerCase()
+        .split(' ')
+        .filter((x) => x)
+    const filteredCards = lowerCaseSearchTerms
+      ? cards.filter(({ id }) => {
+          return outOfOrderSearch(lowerCaseSearchTerms, stringifiedCards[id])
         })
       : cards
     return filteredCards.reduce(
@@ -194,6 +229,37 @@ export const cardMetaDataMapSelector = createDeepEqualSelector(
     const beatPositions = beatIds.map((x) => x)
     beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
     return cards.reduce(
+      cardReduce('lineId', 'beatId', hierarchyIsOn && collapsedBeats, beatPositions),
+      {}
+    )
+  }
+)
+
+export const searchedCardMetaDataMapSelector = createDeepEqualSelector(
+  allCardMetaDataSelector,
+  collapsedBeatSelector,
+  sortedBeatsByBookSelector,
+  beatHierarchyIsOn,
+  timelineSearchTermSelector,
+  stringifiedCardsByIdSelector,
+  (cards, collapsedBeats, allSortedBeats, hierarchyIsOn, timelineSearchTerm, stringifiedCards) => {
+    const beatIds = allSortedBeats.map(({ id }) => id)
+    const beatPositions = beatIds.map((x) => x)
+    beatIds.forEach((beatId, index) => (beatPositions[beatId] = index))
+    const lowerCaseSearchTerms =
+      timelineSearchTerm &&
+      timelineSearchTerm
+        .toLowerCase()
+        .split(' ')
+        .filter((x) => x)
+
+    const filteredCards = lowerCaseSearchTerms
+      ? cards.filter(({ id }) => {
+          return outOfOrderSearch(lowerCaseSearchTerms, stringifiedCards[id])
+        })
+      : cards
+
+    return filteredCards.reduce(
       cardReduce('lineId', 'beatId', hierarchyIsOn && collapsedBeats, beatPositions),
       {}
     )

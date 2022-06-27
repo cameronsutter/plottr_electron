@@ -1,3 +1,4 @@
+import { finishCheckingFileToLoad } from '../actions/applicationState'
 import {
   START_CREATING_CLOUD_FILE,
   FINISH_CREATING_CLOUD_FILE,
@@ -5,6 +6,7 @@ import {
   FINISH_UPLOADING_FILE_TO_CLOUD,
   START_LOADING_FILE,
   FINISH_LOADING_FILE,
+  ERROR_LOADING_FILE,
   START_RENAMING_FILE,
   FINISH_RENAMING_FILE,
   START_LOGGING_IN,
@@ -29,6 +31,8 @@ import {
   START_ONBOARDING_FROM_ROOT,
   START_IMPORTING_SCRIVENER,
   FINISH_IMPORTING_SCRIVENER,
+  PROMPT_TO_UPLOAD_FILE,
+  DISMISS_PROMPT_TO_UPLOAD_FILE,
 } from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
@@ -38,6 +42,7 @@ const INITIAL_STATE = {
     importingNewProject: false,
   },
   file: {
+    filePathToUpload: null,
     checkingFileToLoad: false,
     checkedFileToLoad: false,
     creatingCloudFile: false,
@@ -171,7 +176,7 @@ const finishLoadingSettingsType = (settingsState, settingsType) => {
   }
 }
 
-const applicationStateReducer = (state = INITIAL_STATE, action) => {
+function applicationStateReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case START_LOADING_FILE_LIST: {
       return {
@@ -247,6 +252,27 @@ const applicationStateReducer = (state = INITIAL_STATE, action) => {
         },
       }
     }
+    case PROMPT_TO_UPLOAD_FILE: {
+      return {
+        ...state,
+        file: {
+          ...state.file,
+          filePathToUpload: action.filePath,
+        },
+      }
+    }
+    case DISMISS_PROMPT_TO_UPLOAD_FILE: {
+      return applicationStateReducer(
+        {
+          ...state,
+          file: {
+            ...state.file,
+            filePathToUpload: null,
+          },
+        },
+        finishCheckingFileToLoad()
+      )
+    }
     case START_LOADING_FILE: {
       return {
         ...state,
@@ -264,6 +290,17 @@ const applicationStateReducer = (state = INITIAL_STATE, action) => {
           ...state.file,
           loadingFile: false,
           fileLoaded: true,
+        },
+      }
+    }
+    case ERROR_LOADING_FILE: {
+      return {
+        ...state,
+        file: {
+          ...state.file,
+          errorLoadingFile: true,
+          loadingFile: true,
+          fileLoaded: false,
         },
       }
     }

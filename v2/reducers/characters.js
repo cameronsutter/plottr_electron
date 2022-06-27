@@ -26,6 +26,7 @@ import {
   ADD_TEMPLATE_TO_CHARACTER,
   REMOVE_TEMPLATE_FROM_CHARACTER,
   EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
+  DUPLICATE_CHARACTER,
 } from '../constants/ActionTypes'
 import { character as defaultCharacter } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
@@ -314,6 +315,18 @@ const characters =
 
       case LOAD_CHARACTERS:
         return action.characters
+
+      case DUPLICATE_CHARACTER: {
+        const itemToDuplicate = state.find(({ id }) => id === action.id)
+        if (!itemToDuplicate) {
+          return state
+        }
+        const duplicated = {
+          ...cloneDeep(itemToDuplicate),
+          id: nextId(state),
+        }
+        return [...state, { ...duplicated }]
+      }
 
       default:
         return state

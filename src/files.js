@@ -105,6 +105,10 @@ export const offlineFilePathFromFileName = (filePath) => {
 }
 
 export const offlineFilePath = (file) => {
+  if (!file?.file?.fileName) {
+    return null
+  }
+
   if (file.file.fileName.startsWith(OFFLINE_FILE_FILES_PATH)) {
     return file.file.fileName
   }

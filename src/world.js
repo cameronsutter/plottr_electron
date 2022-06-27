@@ -58,7 +58,8 @@ const afterSettingsLoad = (store, fn) => {
 }
 
 const combineCloudAndFileSystemSources =
-  (fileSystemSource, cloudSource, mergeSources) => (store, cb) => {
+  (fileSystemSource, cloudSource, mergeSources, forceIncludeLocal = false) =>
+  (store, cb) => {
     let _currentFileSystemResult = null
     let _currentCloudResult = null
 
@@ -70,7 +71,7 @@ const combineCloudAndFileSystemSources =
         )
         if (_currentCloudResult) {
           cb(mergeSources(_currentFileSystemResult, _currentCloudResult))
-        } else if (!previouslyLoggedIntoPro) {
+        } else if (forceIncludeLocal || !previouslyLoggedIntoPro) {
           cb(_currentFileSystemResult)
         }
       })
@@ -133,7 +134,8 @@ const mergeBackups = (firebaseFolders, localFolders) => {
 const listenToBackupsChanges = combineCloudAndFileSystemSources(
   fileSystemAPIs.listenToBackupsChanges,
   firebaseAPIs.listenToBackupsChanges,
-  mergeBackups
+  mergeBackups,
+  true
 )
 
 const currentBackups = () => {

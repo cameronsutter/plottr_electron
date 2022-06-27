@@ -158,6 +158,9 @@
     position: absolute;
     top: 55% !important;
   }
+  .slate-editor__wrapper {
+    overflow-y: unset;
+  }
 }
 
 .outline__description__editing {

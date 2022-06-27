@@ -1,5 +1,6 @@
 .plottr-popover {
   max-width: 600px;
+  max-height: calc(100vh - 35px);
 
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text;
@@ -9,4 +10,18 @@
   background-clip: padding-box;
   border-radius: $border-radius-large;
   @include box-shadow(0 5px 10px rgba(0,0,0,.2));
+}
+
+.darkmode .plottr-popover{
+  background-color: $darkmode-background;
+
+  ul,
+  ol {
+    color: $darkmode-text;
+  }
+
+  .popover-title {
+    background-color: $darkmode-darker-background;
+    border-bottom: 1px solid #444;
+  }
 }

@@ -129,6 +129,10 @@ const SelectListConnector = (connector) => {
       )
     }
 
+    const handleMouseLeave = () => {
+      if (visible) setVisible(false)
+    }
+
     let label = ''
     switch (type) {
       case 'Characters':
@@ -142,7 +146,10 @@ const SelectListConnector = (connector) => {
         break
     }
     return (
-      <div className={cx('select-list__wrapper', { horizontal: horizontal })}>
+      <div
+        className={cx('select-list__wrapper', { horizontal: horizontal })}
+        onMouseLeave={handleMouseLeave}
+      >
         <label ref={buttonRef} className="select-list__details-label">
           {label}:
           <Floater

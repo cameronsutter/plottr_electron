@@ -237,7 +237,10 @@ const CardDialogConnector = (connector) => {
     }
 
     const currentTimelineBookTitle = () => {
-      const title = currentTimeline === 'series' ? 'Series' : books[currentTimeline].title
+      let title = books[currentTimeline]?.title || t('Untitled')
+      if (currentTimeline === 'series') {
+        title = t('Series')
+      }
       if (title.length > 20) {
         return title.slice(0, 20) + '...'
       }
@@ -670,6 +673,8 @@ const CardDialogConnector = (connector) => {
           isSeries: selectors.isSeriesSelector(state.present),
           currentTimeline: selectors.currentTimelineSelector(state.present),
           getTemplateById: selectors.templateByIdFnSelector(state.present),
+          // FIXME: these function change each re-render we should
+          // instead create a selector that produces the function.
           destinationLineId: (bookId) => selectors.firstLineForBookSelector(state.present, bookId),
           destinationBeatId: (bookId) =>
             selectors.firstVisibleBeatForBookSelector(state.present, bookId),

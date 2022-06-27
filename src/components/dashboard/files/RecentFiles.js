@@ -142,18 +142,27 @@ const RecentFilesConnector = (connector) => {
           setSortedIds(newSortedIds)
         }
       } else if (offlineModeEnabled && isInOfflineMode) {
-        listOfflineFiles().then((offlineFiles) => {
-          const [offlineSortedIds, offlineFilesById] = sortAndSearch(
-            searchTerm,
-            markOffline(offlineFiles)
-          )
-          if (!isEqual(offlineSortedIds, sortedIds)) {
-            setSortedIds(offlineSortedIds)
-          }
-          if (!isEqual(offlineFilesById, filesById)) {
-            setFilesById(offlineFilesById)
-          }
-        })
+        listOfflineFiles()
+          .then((offlineFiles) => {
+            return offlineFiles.map((file) => {
+              return {
+                ...file,
+                fileName: basename(file.fileName),
+              }
+            })
+          })
+          .then((offlineFiles) => {
+            const [offlineSortedIds, offlineFilesById] = sortAndSearch(
+              searchTerm,
+              markOffline(offlineFiles)
+            )
+            if (!isEqual(offlineSortedIds, sortedIds)) {
+              setSortedIds(offlineSortedIds)
+            }
+            if (!isEqual(offlineFilesById, filesById)) {
+              setFilesById(offlineFilesById)
+            }
+          })
       }
     }, [
       offlineModeEnabled,

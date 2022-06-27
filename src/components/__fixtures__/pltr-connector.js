@@ -36,6 +36,7 @@ const connector = {
       startSaveAsTemplate: () => {},
       saveTemplate: () => {},
     },
+    isDevelopment: true,
     settings: {},
     openExternal: () => {},
     createErrorReport: () => {},

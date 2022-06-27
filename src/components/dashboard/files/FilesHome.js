@@ -83,7 +83,7 @@ const FilesHomeConnector = (connector) => {
         const importedPath = snowflakeImportDialog(errorActions)
         if (importedPath && typeof importedPath == 'string') {
           createFromSnowflake(importedPath)
-        } else {
+        } else if (importedPath && importedPath.error) {
           throw new Error(t('Wrong file format'))
         }
       } catch (error) {
@@ -101,7 +101,7 @@ const FilesHomeConnector = (connector) => {
         if (importedPath && typeof importedPath == 'string') {
           createFromScrivener(importedPath)
           importActions.startScrivenerImporter()
-        } else {
+        } else if (importedPath && importedPath.error) {
           throw new Error(importedPath.error)
         }
       } catch (error) {

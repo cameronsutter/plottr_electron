@@ -8,7 +8,7 @@ const truncateTitle = (title) => {
   if (title.length > 80) {
     return `${title.slice(0, 80)}...`
   }
-  return title
+  return decodeURI(title)
 }
 
 const BackupFilesConnector = (connector) => {

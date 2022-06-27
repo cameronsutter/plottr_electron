@@ -1,5 +1,5 @@
 import { Editor, Transforms, Element, Node } from 'slate'
-import { LIST_TYPES, HEADING_TYPES, createEditor } from './helpers'
+import { LIST_TYPES, HEADING_TYPES, IMAGE_TYPES, createEditor } from './helpers'
 
 const withNormalizer = (editor) => {
   const { normalizeNode } = editor
@@ -61,9 +61,10 @@ const withNormalizer = (editor) => {
 
     // Don't allow a collection of list items to not have a parent of a list type
     if (Element.isElement(node) && !LIST_TYPES.includes(node.type)) {
-      let allChildrenAreListTypes = true
+      let allChildrenAreListTypes =
+        node.children && node.children.length && node.children.length > 0
       for (const [child] of Node.children(editor, path)) {
-        allChildrenAreListTypes &= Element.isElement(child) && child.type == 'list-item'
+        allChildrenAreListTypes &= Element.isElement(child) && child.type === 'list-item'
       }
       if (allChildrenAreListTypes) {
         Transforms.setNodes(editor, { type: 'bulleted-list' }, { at: path })
@@ -72,17 +73,30 @@ const withNormalizer = (editor) => {
 
     // Don't allow root-level collections of nodes to all be list items.
     if (Array.isArray(path) && path.length === 0 && node.children && node.children.length > 0) {
-      let allChildrenAreListTypes = true
+      let allChildrenAreListTypes = node.children.length !== 0
+      let allChildrenAreEmpty = node.children.length !== 0
       for (const child of node.children) {
-        allChildrenAreListTypes &= Element.isElement(child) && child.type == 'list-item'
+        allChildrenAreListTypes &= Element.isElement(child) && child.type === 'list-item'
+        allChildrenAreEmpty &=
+          Element.isElement(child) &&
+          Array.isArray(child.children) &&
+          child.children.every((subChild) => {
+            return subChild.text === ''
+          })
       }
       if (allChildrenAreListTypes) {
-        node.children = [
-          {
-            type: 'bulleted-list',
-            children: node.children,
-          },
-        ]
+        if (allChildrenAreEmpty) {
+          node.children.forEach((child, index) => {
+            Transforms.setNodes(editor, { type: 'paragraph' }, { at: [...path, index] })
+          })
+        } else {
+          node.children = [
+            {
+              type: 'bulleted-list',
+              children: node.children,
+            },
+          ]
+        }
       }
     }
 
@@ -95,6 +109,35 @@ const withNormalizer = (editor) => {
       if (allChildrenAreText) {
         Transforms.setNodes(editor, { type: 'paragraph' }, { at: path })
         return
+      }
+    }
+
+    // Ensure that there's always something (by default a paragraph)
+    // after an image at the end of a document.
+    if (Element.isElement(node) && IMAGE_TYPES.includes(node.type)) {
+      const parent = Editor.parent(editor, path)
+      // If we don't have a parent for an image then something's gone
+      // horribly wrong(!)
+      if (parent) {
+        const [parentNode, parentPath] = parent
+        // If this image is in the root's children, check whether it's
+        // the last element
+        if (
+          parentPath.length === 0 &&
+          parentNode.children.indexOf(node) === parentNode.children.length - 1
+        ) {
+          const emptyParagraph = {
+            type: 'paragraph',
+            children: [
+              {
+                text: '',
+              },
+            ],
+          }
+          Transforms.insertNodes(editor, emptyParagraph, { at: [parentNode.children.length] })
+        }
+      } else {
+        console.warn("Silent invariant violated.  Image doesn't have a parent!")
       }
     }
 

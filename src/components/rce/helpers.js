@@ -14,6 +14,7 @@ const { RCE_INITIAL_VALUE } = initialState
 
 export const LIST_TYPES = ['numbered-list', 'bulleted-list']
 export const HEADING_TYPES = ['heading-one', 'heading-two']
+export const IMAGE_TYPES = ['image-data', 'image-link']
 
 export function useTextConverter(text, log) {
   let rceText = text

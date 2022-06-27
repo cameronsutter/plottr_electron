@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 
 import { t, setupI18n } from 'plottr_locales'
@@ -47,6 +47,12 @@ const OptionsHomeConnector = (connector) => {
       setupI18n(settings, { electron })
     }, [settings.locale])
 
+    const handleSetActiveTab = (x) => {
+      if (typeof x === 'number') {
+        setActiveTab(x)
+      }
+    }
+
     const osIsUnknown = os() === 'unknown'
 
     const onChangeBackupLocation = () => {
@@ -84,11 +90,19 @@ const OptionsHomeConnector = (connector) => {
     const dashboardFirstIsOn =
       settings.user.openDashboardFirst === undefined ? true : settings.user.openDashboardFirst
 
+    const handleSelectLanguage = useCallback(
+      (newLanguage) => {
+        saveAppSetting('locale', newLanguage)
+        updateLanguage(newLanguage)
+      },
+      [saveAppSetting, updateLanguage]
+    )
+
     return (
       <div className="dashboard__options">
         <h1>{t('Settings')}</h1>
         <div>
-          <Tabs activeKey={activeTab} onSelect={setActiveTab} id="settings-tabs">
+          <Tabs activeKey={activeTab} onSelect={handleSetActiveTab} id="settings-tabs">
             <Tab eventKey={1} title={t('General')}>
               {!osIsUnknown ? (
                 <div className="dashboard__options__item">
@@ -108,12 +122,7 @@ const OptionsHomeConnector = (connector) => {
               </div>
               <div className="dashboard__options__item">
                 <h4>{t('Language')}</h4>
-                <LanguagePicker
-                  onSelectLanguage={(newLanguage) => {
-                    saveAppSetting('locale', newLanguage)
-                    updateLanguage(newLanguage)
-                  }}
-                />
+                <LanguagePicker onSelectLanguage={handleSelectLanguage} />
               </div>
             </Tab>
             <Tab eventKey={2} title={t('Dashboard')}>

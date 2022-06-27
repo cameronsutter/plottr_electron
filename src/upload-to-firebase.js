@@ -7,6 +7,7 @@ export const uploadToFirebase = (emailAddress, userId, file, fileName) => {
     fileName,
     shareRecords: [{ emailAddress, permission: 'owner' }],
     version: file.file.version,
+    lastOpened: new Date(),
   }
   delete newFile.id
   return axios.post(

@@ -51,6 +51,7 @@
 
 .book-list__droppable {
   user-select: none;
+  outline: none;
 
   &.dragging {
     // background-color: $gray-9;

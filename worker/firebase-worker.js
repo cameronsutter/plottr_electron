@@ -88,6 +88,28 @@ import {
   INITIALISE_WORKER,
   LISTEN_UNSUBSCRIBE,
   LOG_FROM_WORKER,
+  EDIT_FILE_NAME_ERROR_REPLY,
+  OVERWRITE_ALL_KEYS_ERROR_REPLY,
+  INITIAL_FETCH_ERROR_REPLY,
+  DELETE_FILE_ERROR_REPLY,
+  FETCH_FILES_ERROR_REPLY,
+  LOG_OUT_ERROR_REPLY,
+  MINT_COOKIE_TOKEN_ERROR_REPLY,
+  PATCH_ERROR_REPLY,
+  OVERWRITE_ERROR_REPLY,
+  SHARE_DOCUMENT_ERROR_REPLY,
+  RELEASE_RCE_LOCK_ERROR_REPLY,
+  LOCK_RCE_ERROR_REPLY,
+  SAVE_BACKUP_ERROR_REPLY,
+  SAVE_CUSTOM_TEMPLATE_ERROR_REPLY,
+  EDIT_CUSTOM_TEMPLATE_ERROR_REPLY,
+  DELETE_CUSTOM_TEMPLATE_ERROR_REPLY,
+  SAVE_IMAGE_TO_STORAGE_BLOB_ERROR_REPLY,
+  SAVE_IMAGE_TO_STORAGE_FROM_URL_ERROR_REPLY,
+  BACKUP_PUBLIC_URL_ERROR_REPLY,
+  IMAGE_PUBLIC_URL_ERROR_REPLY,
+  GET_ID_TOKEN_RESULT_ERROR_REPLY,
+  LOGIN_WITH_EMAIL_AND_PASSWORD_ERROR_REPLY,
 } from './firebase-messages'
 
 export const firebaseWorker = (logger, mintSessionClientId) => {
@@ -101,12 +123,16 @@ export const firebaseWorker = (logger, mintSessionClientId) => {
   const sendPromise = (type, payload) => {
     const messageId = uuidv4()
     const reply = new Promise((resolve, reject) => {
-      worker.postMessage({
-        type,
-        messageId,
-        payload,
-      })
-      promises.set(messageId, { resolve, reject })
+      try {
+        worker.postMessage({
+          type,
+          messageId,
+          payload,
+        })
+        promises.set(messageId, { resolve, reject })
+      } catch (error) {
+        reject(error)
+      }
     })
     return reply
   }
@@ -282,6 +308,17 @@ export const firebaseWorker = (logger, mintSessionClientId) => {
       promises.delete(messageId)
       unresolvedPromise.resolve(payload)
     }
+    const resolvePromiseWithError = () => {
+      const unresolvedPromise = promises.get(messageId)
+      if (!unresolvedPromise) {
+        logger.error(
+          `Received a reply for ${messageId} that ${type} completed, but there was no promise to fulfil`
+        )
+        return
+      }
+      promises.delete(messageId)
+      unresolvedPromise.reject(payload)
+    }
     switch (type) {
       case LISTEN_TO_CUSTOM_TEMPLATES_REPLY:
       case LISTEN_FOR_BACKUPS_REPLY:
@@ -304,6 +341,7 @@ export const firebaseWorker = (logger, mintSessionClientId) => {
         store.dispatch(action)
         return
       }
+      case IS_STORAGE_URL_REPLY:
       case GET_ID_TOKEN_RESULT_REPLY:
       case IMAGE_PUBLIC_URL_REPLY:
       case BACKUP_PUBLIC_URL_REPLY:
@@ -348,6 +386,33 @@ export const firebaseWorker = (logger, mintSessionClientId) => {
             break
           }
         }
+        break
+      }
+      // Caught errors in promises
+      case EDIT_FILE_NAME_ERROR_REPLY:
+      case OVERWRITE_ALL_KEYS_ERROR_REPLY:
+      case INITIAL_FETCH_ERROR_REPLY:
+      case DELETE_FILE_ERROR_REPLY:
+      case FETCH_FILES_ERROR_REPLY:
+      case LOG_OUT_ERROR_REPLY:
+      case MINT_COOKIE_TOKEN_ERROR_REPLY:
+      case PATCH_ERROR_REPLY:
+      case OVERWRITE_ERROR_REPLY:
+      case SHARE_DOCUMENT_ERROR_REPLY:
+      case RELEASE_RCE_LOCK_ERROR_REPLY:
+      case LOCK_RCE_ERROR_REPLY:
+      case SAVE_BACKUP_ERROR_REPLY:
+      case SAVE_CUSTOM_TEMPLATE_ERROR_REPLY:
+      case EDIT_CUSTOM_TEMPLATE_ERROR_REPLY:
+      case DELETE_CUSTOM_TEMPLATE_ERROR_REPLY:
+      case SAVE_IMAGE_TO_STORAGE_BLOB_ERROR_REPLY:
+      case SAVE_IMAGE_TO_STORAGE_FROM_URL_ERROR_REPLY:
+      case BACKUP_PUBLIC_URL_ERROR_REPLY:
+      case IMAGE_PUBLIC_URL_ERROR_REPLY:
+      case GET_ID_TOKEN_RESULT_ERROR_REPLY:
+      case LOGIN_WITH_EMAIL_AND_PASSWORD_ERROR_REPLY: {
+        resolvePromiseWithError()
+        return
       }
     }
   }

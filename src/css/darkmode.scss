@@ -16,6 +16,9 @@ body.darkmode {
   .control-label {
     color: $darkmode-text;
   }
+  .card__hidden-cards {
+    background-color: $darkmode-darker-background;
+  }
   .popover {
     color: $darkmode-text;
     background-color: $darkmode-background;

@@ -83,6 +83,7 @@ const Main = ({
   isInOfflineMode,
   currentAppStateIsDashboard,
   fileName,
+  isOnboardingFromRoot,
   isOnboarding,
   setCurrentAppStateToDashboard,
   setCurrentAppStateToApplication,
@@ -287,7 +288,7 @@ const Main = ({
   // loaded and we can check things like the user's local and pro
   // licenses.
 
-  if (isOnboarding) {
+  if (isOnboardingFromRoot || (cantShowFile && isOnboarding)) {
     return <ProOnboarding />
   }
 
@@ -442,6 +443,7 @@ Main.propTypes = {
   isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.bool.isRequired,
   fileName: PropTypes.string,
+  isOnboardingFromRoot: PropTypes.bool,
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
   setCurrentAppStateToApplication: PropTypes.func.isRequired,
@@ -473,7 +475,8 @@ export default connect(
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
     fileName: selectors.fileNameSelector(state.present),
-    isOnboarding: selectors.isOnboardingToProFromRootSelector(state.present),
+    isOnboardingFromRoot: selectors.isOnboardingToProFromRootSelector(state.present),
+    isOnboarding: selectors.isOnboardingToProSelector(state.present),
     fileToUpload: selectors.filePathToUploadSelector(state.present),
     uploadingFileToCloud: selectors.uploadingFileToCloudSelector(state.present),
     emailAddress: selectors.emailAddressSelector(state.present),

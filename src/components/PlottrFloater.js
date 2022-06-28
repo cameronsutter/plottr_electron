@@ -16,6 +16,7 @@ const PlottrFloaterConnector = (connector) => {
     children,
     hideArrow,
     zIndex,
+    darkMode,
   }) => {
     const SuppliedComponent = component
 
@@ -26,7 +27,7 @@ const PlottrFloaterConnector = (connector) => {
             position={position}
             childRect={childRect}
             popoverRect={popoverRect}
-            arrowColor={'white'}
+            arrowColor={darkMode ? '#555' : 'white'}
             arrowSize={10}
             arrowStyle={{}}
             className="popover-arrow-container"
@@ -66,6 +67,7 @@ const PlottrFloaterConnector = (connector) => {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
     hideArrow: PropTypes.bool,
     zIndex: PropTypes.number,
+    darkMode: PropTypes.bool,
   }
 
   const {
@@ -79,6 +81,7 @@ const PlottrFloaterConnector = (connector) => {
     return connect((state) => {
       return {
         lastClick: selectors.lastClickSelector(state.present),
+        darkMode: selectors.isDarkModeSelector(state.present),
       }
     })(PlottrFloater)
   }

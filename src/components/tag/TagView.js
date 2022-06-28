@@ -57,6 +57,7 @@ const TagViewConnector = (connector) => {
 
     const handleCancel = () => {
       setEditing(false)
+      stopHovering()
       if (newTag) {
         doneCreating()
       }
@@ -105,6 +106,7 @@ const TagViewConnector = (connector) => {
         actions.editTag(id, newTitle, tag.color || color, categoryId)
       }
       setEditing(false)
+      stopHovering()
     }
 
     const changeColor = (color) => {

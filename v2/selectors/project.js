@@ -12,10 +12,13 @@ export const isCloudFileSelector = createSelector(
   projectSelector,
   fileSelector,
   isOnWebSelector,
-  (project, file, isOnWeb) =>
-    isOnWeb ||
-    (project && project.selectedFile && project.selectedFile.isCloudFile) ||
-    file.isCloudFile
+  (project, file, isOnWeb) => {
+    return (
+      isOnWeb ||
+      (project && project.selectedFile && project.selectedFile.isCloudFile) ||
+      (file && file.isCloudFile)
+    )
+  }
 )
 export const isOfflineSelector = (state) => state.project && state.project.isOffline
 export const isResumingSelector = (state) => state.project.resuming

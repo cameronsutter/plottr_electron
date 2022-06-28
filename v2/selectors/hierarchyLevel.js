@@ -46,7 +46,7 @@ export const hierarchyChildLevelNameSelector = createSelector(
       return level.name
     } else {
       return `${repeat('Sub-', newDepth - hierarchyLevels.length + 1)}${
-        hierarchyLevels[hierarchyLevels.length - 1].name
+        (hierarchyLevels[hierarchyLevels.length - 1] || { name: '' }).name
       }`
     }
   }

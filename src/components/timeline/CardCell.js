@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import { FaCircle } from 'react-icons/fa'
+import tinycolor from 'tinycolor2'
 
 import { helpers } from 'pltr/v2'
 
@@ -15,6 +16,7 @@ import { checkDependencies } from '../checkDependencies'
 
 const {
   lists: { reorderList, moveToAbove },
+  colors: { getContrastYIQ },
 } = helpers
 
 const CardCellConnector = (connector) => {
@@ -264,7 +266,15 @@ const CardCellConnector = (connector) => {
         })
         return <div className={cellKlass}>{this.renderCards(true)}</div>
       } else {
-        let cardStyle = { borderColor: color }
+        const topCard = cards[0]
+        const cardStyle = {
+          borderColor: topCard?.color ? tinycolor(topCard.color).darken(10).toHslString() : color,
+        }
+        cardStyle.backgroundColor = topCard?.color
+        const [useBlack, _] = getContrastYIQ((topCard?.color && topCard?.color) || '#F1F5F8') // $gray-9
+        if (!useBlack) {
+          cardStyle.color = 'white'
+        }
         if (!isVisible) {
           cardStyle.opacity = '0.1'
         }

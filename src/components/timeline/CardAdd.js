@@ -13,8 +13,27 @@ const CardAddConnector = (connector) => {
     state = { creating: false, dropping: false }
     titleInputRef = createRef()
 
+    constructor(props) {
+      super(props)
+
+      this.firstClick = props.lastClick
+      this.blankCardRef = null
+    }
+
     componentWillUnmount() {
       window.removeEventListener('keydown', this.handleCancelCreate)
+    }
+
+    componentDidUpdate(prevProps) {
+      if (this.blankCardRef) {
+        const { top, right, bottom, left } = this.blankCardRef.getBoundingClientRect()
+        const { x, y } = this.props.lastClick
+        if (x >= left && x <= right && y >= top && y <= bottom) return
+      }
+
+      if (Math.abs(this.firstClick.counter - this.props.lastClick.counter) > 1) {
+        this.setState({ creating: false })
+      }
     }
 
     saveCreate = () => {
@@ -55,6 +74,7 @@ const CardAddConnector = (connector) => {
 
     startCreating = () => {
       window.addEventListener('keydown', this.handleCancelCreate)
+      this.firstClick = this.props.lastClick
       this.setState({ creating: true })
     }
 
@@ -88,7 +108,7 @@ const CardAddConnector = (connector) => {
     render() {
       if (this.state.creating) {
         return (
-          <div className="vertical-blank-card__wrapper">
+          <div className="vertical-blank-card__wrapper" ref={(ref) => (this.blankCardRef = ref)}>
             <BlankCard
               verticalInsertion
               beatId={this.props.beatId}
@@ -131,6 +151,7 @@ const CardAddConnector = (connector) => {
       if (this.state.creating != nextState.creating) return true
       if (this.props.color != nextProps.color) return true
       if (this.props.allowDrop != nextProps.allowDrop) return true
+      if (this.props.lastClick != nextProps.lastClick) return true
       return false
     }
 
@@ -144,6 +165,7 @@ const CardAddConnector = (connector) => {
       lineId: PropTypes.number.isRequired,
       dropPosition: PropTypes.number,
       readOnly: PropTypes.bool,
+      lastClick: PropTypes.objecct,
     }
   }
 
@@ -158,6 +180,7 @@ const CardAddConnector = (connector) => {
 
     return connect((state) => ({
       readOnly: !selectors.canWriteSelector(state.present),
+      lastClick: selectors.lastClickSelector(state.present),
     }))(CardAdd)
   }
 

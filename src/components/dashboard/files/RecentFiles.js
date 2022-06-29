@@ -54,6 +54,14 @@ const markOffline = (files) => {
   return files.map((file) => ({ ...file, offline: true }))
 }
 
+const safelyDecodeURI = (str) => {
+  try {
+    return decodeURI(str)
+  } catch (error) {
+    return str
+  }
+}
+
 const formatFileName = (fileName, fileBasename, onFirebase, offline) => {
   return offline ? fileName : onFirebase ? fileName : fileBasename.replace('.pltr', '')
 }
@@ -270,7 +278,9 @@ const RecentFilesConnector = (connector) => {
                         <FaSignal title="This is an offline backup of a Plottr cloud file" />{' '}
                       </>
                     ) : null}
-                    {formatFileName(f.fileName, fileBasename, onFirebase, f.offline)}
+                    {safelyDecodeURI(
+                      formatFileName(f.fileName, fileBasename, onFirebase, f.offline)
+                    )}
                   </div>
                   <div className="secondary-text">{formattedPath}</div>
                 </div>

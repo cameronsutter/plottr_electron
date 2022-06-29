@@ -1,6 +1,7 @@
 import jsonDiff from 'json-diff'
 
 const logger = (store) => (next) => (action) => {
+  // eslint-disable-next-line
   if (LOGGER === 'true') {
     console.info('----------START Redux Change Logger START----------')
     console.info(`action: ${action.type}, payload: `, action)

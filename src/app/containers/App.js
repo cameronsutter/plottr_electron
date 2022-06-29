@@ -10,7 +10,6 @@ import { selectors, actions } from 'pltr/v2'
 import log from '../../../shared/logger'
 import Navigation from 'containers/Navigation'
 import Body from 'containers/Body'
-import ActsTour from '../components/intros/Tour'
 import Spinner from '../components/Spinner'
 import {
   AskToSaveModal,
@@ -26,7 +25,6 @@ import MainIntegrationContext from '../../mainIntegrationContext'
 
 const App = ({
   forceProjectDashboard,
-  showTour,
   userId,
   isCloudFile,
   isOffline,
@@ -178,17 +176,6 @@ const App = ({
     )
   }
 
-  const renderGuidedTour = () => {
-    let feature = store.getState().present.tour.feature.name
-    if (!feature) return null
-    if (
-      store.getState().present.featureFlags.BEAT_HIERARCHY && //in the future can include a switch(feature) which if case('acts') -> tourConditions = true --- if tourConditions true then the tour will run
-      feature
-    )
-      return <ActsTour />
-    return null
-  }
-
   const renderAdvanceExportModal = () => {
     if (!showExportDialog) return null
     return <ExportDialog close={() => setShowExportDialog(false)} />
@@ -221,7 +208,6 @@ const App = ({
         <Spinner />
         {renderTemplateCreate()}
         {renderAskToSave()}
-        {showTour && renderGuidedTour()}
         {renderAdvanceExportModal()}
         {renderActStructureHelpModal()}
       </React.StrictMode>
@@ -231,7 +217,6 @@ const App = ({
 
 App.propTypes = {
   userId: PropTypes.string,
-  showTour: PropTypes.bool,
   forceProjectDashboard: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   isOffline: PropTypes.bool,
@@ -243,7 +228,6 @@ App.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    showTour: selectors.showTourSelector(state.present),
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),

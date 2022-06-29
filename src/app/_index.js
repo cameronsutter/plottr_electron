@@ -239,10 +239,6 @@ ipcRenderer.on('redo', (event) => {
   store.dispatch(ActionCreators.redo())
 })
 
-ipcRenderer.on('acts-tour-start', (event) => {
-  store.dispatch(actions.tour.setTourFeature({ name: 'acts', id: 1, endStep: 8 }))
-})
-
 window.onerror = function (message, file, line, column, err) {
   logger.error(err)
   rollbar.error(err)

@@ -198,16 +198,19 @@ export const currentBackups = () => {
 
   return _currentBackups
 }
+
+const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
+
 function readBackupsDirectory(cb) {
   readdir(backupBasePath())
     .then((entries) => {
       return Promise.all(
         entries
           .filter((d) => {
-            return d[0] != '.' && !d.includes('.pltr')
+            return d[0] !== '.' && !d.includes('.pltr') && d.match(BACKUP_FOLDER_REGEX)
           })
           .map((entry) => {
-            return lstat(entry).then((fileStats) => {
+            return lstat(path.join(backupBasePath(), entry)).then((fileStats) => {
               return {
                 keep: fileStats.isDirectory(),
                 payload: entry,

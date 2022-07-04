@@ -13,7 +13,6 @@
   "main": "main.js",
   "scripts": {},
   "dependencies": {
-    "docx": "^7.3.0",
     "dom-parser": "^0.1.6",
     "image-extensions": "^1.1.0",
     "immer": "^9.0.6",

@@ -50,7 +50,6 @@
     "axios": "^0.22.0",
     "bufferutil": "^4.0.6",
     "dom-helpers": "^3.4.0",
-    "docx": "^7.3.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^2.0.6",
     "electron-context-menu": "^2.0.1",

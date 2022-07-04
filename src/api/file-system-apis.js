@@ -17,6 +17,8 @@ import {
 import { backupBasePath } from '../common/utils/backup'
 import logger from '../../shared/logger'
 
+const { readdir, lstat } = fs.promises
+
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
@@ -197,29 +199,48 @@ export const currentBackups = () => {
   return _currentBackups
 }
 function readBackupsDirectory(cb) {
-  fs.readdir(backupBasePath(), (err, directories) => {
-    if (err) {
-      logger.error('Error reading backup directory.', err)
-      cb([])
-      return
-    }
-
-    const filteredDirs = directories.filter((d) => {
-      return d[0] != '.' && !d.includes('.pltr')
-    })
-    let tempList = []
-    filteredDirs.forEach((dir) => {
-      const thisPath = path.join(backupBasePath(), dir)
-      // FIXME: readdir is async, it doesn't make sense to call the
-      // callback inside of it :/
-      fs.readdir(thisPath, (error, backupFiles) => {
-        tempList.push({
-          path: thisPath,
-          date: americanToYearFirst(dir),
-          backups: backupFiles,
-        })
-        cb(sortBy(tempList, (a) => new Date(a.date.replace(/_/g, '-'))).reverse())
+  readdir(backupBasePath())
+    .then((entries) => {
+      return Promise.all(
+        entries
+          .filter((d) => {
+            return d[0] != '.' && !d.includes('.pltr')
+          })
+          .map((entry) => {
+            return lstat(entry).then((fileStats) => {
+              return {
+                keep: fileStats.isDirectory(),
+                payload: entry,
+              }
+            })
+          })
+      ).then((results) => {
+        return results.filter(({ keep }) => keep).map(({ payload }) => payload)
       })
     })
-  })
+    .then((directories) => {
+      return Promise.all(
+        directories.map((directory) => {
+          const thisPath = path.join(backupBasePath(), directory)
+          return readdir(thisPath).then((entries) => {
+            const files = entries.filter((entry) => {
+              return entry.endsWith('.pltr')
+            })
+            return {
+              path: thisPath,
+              date: americanToYearFirst(directory),
+              backups: files,
+            }
+          })
+        })
+      )
+    })
+    .then((results) => {
+      cb(sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
+    })
+    .catch((error) => {
+      logger.error('Error reading backup directory.', error)
+      cb([])
+      return
+    })
 }

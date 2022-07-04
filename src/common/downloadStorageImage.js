@@ -1,11 +1,9 @@
-import axios from 'axios'
-
 import { imagePublicURL } from 'wired-up-firebase'
 
-export const downloadStorageImage = (storageURL) => {
-  return imagePublicURL(storageURL).then((url) => {
-    return axios.get(url).then((response) => {
-      return Buffer.from(response.data, 'binary').toString('base64')
+export const downloadStorageImage = (storageURL, fileId, userId) => {
+  return imagePublicURL(storageURL, fileId, userId).then((url) => {
+    return fetch(url).then((response) => {
+      return response.blob()
     })
   })
 }

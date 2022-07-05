@@ -33,6 +33,7 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
+  isOnWeb,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -204,9 +205,11 @@ const App = ({
         <React.StrictMode>
           <Body />
         </React.StrictMode>
-        <React.StrictMode>
-          <UpdateNotifier />
-        </React.StrictMode>
+        {!isOnWeb && (
+          <React.StrictMode>
+            <UpdateNotifier />
+          </React.StrictMode>
+        )}
       </main>
       <React.StrictMode>
         <Spinner />
@@ -228,6 +231,7 @@ App.propTypes = {
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
+  isOnWeb: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -238,6 +242,7 @@ function mapStateToProps(state) {
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
+    isOnWeb: selectors.isOnWebSelector(state.present),
   }
 }
 

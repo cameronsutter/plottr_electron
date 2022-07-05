@@ -27,7 +27,8 @@ export function editTemplateDetails(id, templateData, userId) {
     link: templateData.link,
   }
   if (isLocalTemplate(id)) {
-    customTemplateStore.set(id, info)
+    const template = customTemplateStore.get()[id]
+    customTemplateStore.set(id, { ...template, ...info })
     return
   }
 

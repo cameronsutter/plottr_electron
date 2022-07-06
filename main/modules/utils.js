@@ -53,7 +53,10 @@ function makeBrowserWindow(filePath) {
     fullscreenable: true,
     webPreferences: {
       nodeIntegration: true,
-      spellcheck: true,
+      spellcheck:
+        SETTINGS.get('user.useSpellcheck') === undefined
+          ? true
+          : SETTINGS.get('user.useSpellcheck'),
       webviewTag: true,
       contextIsolation: false,
     },

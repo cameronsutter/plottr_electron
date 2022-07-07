@@ -1,0 +1,242 @@
+.plotline-modal__wrapper {
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'header' 'body' 'footer';
+  grid-template-rows: auto 1fr auto;
+}
+
+.plotline-modal__header {
+  grid-area: header;
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  hr {
+    margin-top: 8px;
+  }
+}
+
+.plotline-modal__body {
+  grid-area: body;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.plotline-modal__options {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 20px;
+
+    legend {
+      margin-bottom: 5px;
+    }
+
+    label {
+      margin-left: 5px;
+    }
+  }
+}
+
+.plotline-modal__preview {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #dae2ec;
+  padding-top: 10px;
+}
+
+.plotline-modal__preview-before {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  width: 45%;
+}
+
+.plotline-modal__preview-divider {
+  align-self: stretch;
+  border-right: 1px solid #dae2ec;
+}
+
+.plotline-modal__preview-after {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-self: stretch;
+  width: 45%;
+}
+
+.plotline-modal__preview-level {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.plotline-modal__footer {
+  grid-area: footer;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+  hr {
+    margin-top: 0;
+  }
+}
+
+.leader-line {
+  z-index: 99999;
+}
+
+.plotline-modal__timeline-controls-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.plotline-modal__timeline-view-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+
+.plotline-modal__timeline-view-selector {
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 5px;
+    color: $yellow-5;
+  }
+}
+
+.plotline-modal__select-line {
+  margin-left: 5px !important;
+  @include user-text;
+}
+
+.plotline-modal__timeline-view-dropdown {
+
+}
+
+.plotline-modal__hierarchy-count-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-left: 20px;
+}
+
+.plotline-modal__hierarchy-count {
+  width: 50px;
+  text-align: center;
+  color: $input-color;
+}
+
+.plotline-modal__hierarchy-count-adjustment-control {
+  background: none;
+  border: none;
+}
+
+.plotline-modal__levels-table {
+  flex-grow: 1;
+}
+
+.plotline-modal__levels-table-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid #dae2ec;
+}
+
+.plotline-modal__levels-table-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.plotline-modal__levels-table-cell {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 14%;
+  font-family: 'Lato', sans-serif;
+  box-shadow: none;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  height: 40px;
+  border-bottom: 2px solid #f2cb8000;
+  transition: border-bottom 0.5s;
+
+  .color-picker__choice {
+    .btn {
+      width: 26px;
+      height: 26px;
+      padding: 12px;
+    }
+  }
+
+  .btn-warning {
+    width: 28px;
+  }
+
+  .plotline-modal__levels-spacer {
+    width: 33px;
+    &.small {
+      width: 8px;
+    }
+  }
+
+  &.align-left {
+    justify-content: flex-start;
+  }
+
+  &.arrow {
+    svg {
+      margin-right: 4px;
+    }
+  }
+}
+
+.plotline-modal__levels-table-cell--editing {
+  margin-top: -2px;
+  padding: 0;
+  border-bottom: 2px solid $orange-6;
+  color: $input-color;
+}
+
+input[type='checkbox'].plotline-modal__toggle-control {
+  margin: 0;
+  height: 20px;
+  width: 20px;
+}

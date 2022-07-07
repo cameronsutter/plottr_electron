@@ -133,6 +133,15 @@ const rendererConfig = {
   module: {
     rules: [
       {
+        test: path.resolve(__dirname, 'node_modules/leader-line'),
+        use: [
+          {
+            loader: 'skeleton-loader',
+            options: { procedure: (content) => `${content}export default LeaderLine` },
+          },
+        ],
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'lib', 'pltr'),

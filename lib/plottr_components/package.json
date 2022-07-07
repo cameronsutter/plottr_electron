@@ -68,6 +68,7 @@
     "image-conversion": "^2.1.1",
     "invariant": "^2.2.4",
     "keycode": "^2.2.1",
+    "leader-line": "^1.0.7",
     "pretty-date": "^0.2.0",
     "prop-types-extra": "^1.1.1",
     "react": "^16.8.6",

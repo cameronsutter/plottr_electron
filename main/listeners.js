@@ -61,6 +61,10 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     broadcastToAllWindows('reload-dark-mode', SETTINGS.store.user.dark)
   })
 
+  ipcMain.on('pls-set-new-font', (event, newValue) => {
+    broadcastToAllWindows('reload-with-new-font', newValue)
+  })
+
   ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
     if (newValue) {
       broadcastSetBeatHierarchy()

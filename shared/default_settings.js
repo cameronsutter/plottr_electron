@@ -23,5 +23,7 @@ module.exports = {
     beatHierarchy: false,
     enableOfflineMode: false,
     streamFriendly: false,
+    font: 'Forum',
+    fontSize: 16,
   },
 }

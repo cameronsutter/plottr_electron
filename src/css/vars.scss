@@ -48,7 +48,7 @@ $new-item-border: 2px dashed $new-item-border-color;
 }
 
 @mixin application-text {
-  font-family: 'Lato', sans-serif !important;
+  font-family: var(--selectedFont), sans-serif !important;
 }
 
 @mixin user-text {

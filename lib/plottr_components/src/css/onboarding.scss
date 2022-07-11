@@ -33,7 +33,7 @@
 .step__header {
   padding: 16px;
   p {
-    font-size: calc(var(--selected-font-size, 16px) + 4px);
+    font-size: 20px;
     margin: 16px 0;
     color: $blue-6;
   }
@@ -47,7 +47,7 @@
     margin: auto;
     background-color: $neutral-gray-8-half;
     ol {
-      font-size: calc(var(--selected-font-size, 16px) + 4px);
+      font-size: 20px;
       text-align: left;
       padding-left: 60px;
       color: $text-color;
@@ -73,7 +73,7 @@
     text-align: left;
     .list-group-item {
       p.secondary-text {
-        font-size: calc(var(--selected-font-size, 16px) - 4px);
+        font-size: 12px;
         margin-left: 20px;
         @include secondary-text;
       }
@@ -107,7 +107,7 @@
 .step__footer {
   padding: 32px 16px 16px 16px;
   .large-text {
-    font-size: calc(var(--selected-font-size, 16px) + 4px);
+    font-size: 20px;
   }
 }
 

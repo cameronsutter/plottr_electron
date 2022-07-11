@@ -286,10 +286,11 @@
 
 .card__popover-description {
   min-width: 250px;
-  @include body-text-font;
+  @include rce-text-font;
 
   .slate-editor__editor {
     text-align: justify;
+    @include rce-text-font;
   }
 }
 

@@ -232,10 +232,10 @@ const Main = ({
   }, [setOffline])
 
   useEffect(() => {
-    window.document.documentElement.style.setProperty('--selected-font', settings.user.font)
+    window.document.documentElement.style.setProperty('--default-rce-font', settings.user.font)
     if (settings.user.fontSize) {
       window.document.documentElement.style.setProperty(
-        '--selected-font-size',
+        '--default-rce-font-size',
         String(settings.user.fontSize) + 'px'
       )
     }

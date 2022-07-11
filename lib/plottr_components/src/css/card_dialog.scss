@@ -139,7 +139,7 @@
     }
   }
   textarea {
-    font-size: calc(var(--selected-font-size, 16px) + 4px);
+    @include rce-text-font;
 
   }
   .slate-editor__wrapper {
@@ -150,6 +150,7 @@
   .slate-editor__editor {
     height: calc(100% - 30px);
     overflow-y: auto;
+    @include rce-text-font;
   }
 }
 

@@ -49,8 +49,13 @@ $new-item-border: 2px dashed $new-item-border-color;
   font-size: var(--selected-font-size, 16px) !important;
 }
 
+@mixin rce-text-font {
+  font-family: var(--default-rce-font, 'Forum'), sans-serif !important;
+  font-size: var(--default-rce-font-size, 20px) !important;
+}
+
 @mixin application-text {
-  font-family: var(--selected-font), sans-serif !important;
+  font-family: var(--selected-font, 'Lato'), sans-serif !important;
 }
 
 @mixin user-text {

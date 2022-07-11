@@ -14,10 +14,11 @@ const tracker = (store) => (next) => (action) => {
   if (!USER.get('payment_id')) return result
 
   const state = store.getState()
-  if (state && state.ui && state.file) {
+  const { present } = state
+  if (present && present.ui && present.file) {
     const attrs = {
-      timeline_orientation: state.ui.orientation,
-      version: state.file.version,
+      timeline_orientation: present.ui.orientation,
+      version: present.file.version,
     }
 
     if (action.type == ADD_LINES_FROM_TEMPLATE)

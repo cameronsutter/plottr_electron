@@ -182,7 +182,7 @@ h3.popover-title {
 }
 .navbar-brand {
   @include header-font;
-  font-size: 24px;
+  font-size: var(--selected-font-size, 16px) + 8px;
 }
 .nav.navbar-nav {
   @include application-text;

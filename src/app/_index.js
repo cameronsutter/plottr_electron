@@ -379,6 +379,11 @@ ipcRenderer.on('reload-with-new-font', (_event, newValue) => {
   store.dispatch(actions.settings.setFontSettings({ font: newValue }))
 })
 
+ipcRenderer.on('reload-with-new-font-size', (_event, newValue) => {
+  fileSystemAPIs.saveAppSetting('user.fontSize', newValue)
+  store.dispatch(actions.settings.setFontSettings({ fontSize: newValue }))
+})
+
 ipcRenderer.on('import-scrivener-file', (_event, sourceFile, destinationFile) => {
   logger.info(`Received instruction to import from ${sourceFile} to ${destinationFile}`)
   ipcRenderer.send('create-from-scrivener', sourceFile, false, destinationFile)

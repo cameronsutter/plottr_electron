@@ -212,7 +212,7 @@
   div.template {
     @include application-text;
     text-align: center;
-    font-size: 14px;
+    font-size: calc(var(--selected-font-size, 16px) - 2px);
   }
   &.medium-timeline {
     flex-direction: column-reverse;
@@ -245,7 +245,7 @@
   div.template {
     @include application-text;
     text-align: center;
-    font-size: 14px;
+    font-size: calc(var(--selected-font-size, 14px) - 2px);
   }
   &.medium-timeline {
     font-size: 12px;

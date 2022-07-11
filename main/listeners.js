@@ -65,6 +65,10 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     broadcastToAllWindows('reload-with-new-font', newValue)
   })
 
+  ipcMain.on('pls-set-new-font-size', (event, newValue) => {
+    broadcastToAllWindows('reload-with-new-font-size', newValue)
+  })
+
   ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
     if (newValue) {
       broadcastSetBeatHierarchy()

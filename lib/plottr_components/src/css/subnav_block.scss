@@ -87,7 +87,8 @@
       padding-top: 0;
       li > a {
         color: $gray-0;
-        font-size: 19px;
+        font-size: calc(var(--selected-font-size, 16px) + 3px);
+
       }
       li:first-child {
         padding: 5px 0 5px 0;

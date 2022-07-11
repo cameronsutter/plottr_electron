@@ -43,7 +43,7 @@
 
   .export-dialog__option-lists {
     @include application-text;
-    font-size: 18px;
+    font-size: calc(var(--selected-font, 16px) + 2px);
     display: flex;
     flex-wrap: wrap;
     padding: 0 16px;

@@ -109,6 +109,9 @@ const platform = {
   setFontStyle: (value) => {
     ipcRenderer.send('pls-set-new-font', value)
   },
+  setFontSize: (value) => {
+    ipcRenderer.send('pls-set-new-font-size', value)
+  },
   appQuit: () => {
     ipcRenderer.send('pls-quit')
   },

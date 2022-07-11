@@ -27,7 +27,7 @@
   height: calc(100% - 77px);
   position: relative;
   h2 {
-    font-size: 17px;
+    font-size: calc(var(--selected-font, 16px) + 1px);
   }
 }
 

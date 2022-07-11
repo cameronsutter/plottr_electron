@@ -34,25 +34,25 @@ $new-item-border-color: #aaa;
 $new-item-border: 2px dashed $new-item-border-color;
 
 @mixin header-font {
-  font-family: 'IBM Plex Serif', serif !important;
+  font-family: var(--selected-font, 'IBM Plex Serif'), serif !important;
 }
 
 @mixin sub-header-font {
-  font-family: 'IBM Plex Serif', serif;
-  font-size: 20px;
+  font-family: var(--selected-font, 'IBM Plex Serif');
+  font-size: calc(var(--selected-font-size, 16px) + 4px);
 }
 
 @mixin body-text-font {
-  font-family: 'Forum', sans-serif !important;
-  font-size: 16px !important;
+  font-family: var(--selected-font, 'Forum'), sans-serif !important;
+  font-size: var(--selected-font-size, 16px) !important;
 }
 
 @mixin application-text {
-  font-family: var(--selectedFont), sans-serif !important;
+  font-family: var(--selected-font), sans-serif !important;
 }
 
 @mixin user-text {
-  font-family: 'Forum', sans-serif !important;
+  font-family: var(--selected-font, 'Forum'), sans-serif !important;
 }
 
 @mixin secondary-text {

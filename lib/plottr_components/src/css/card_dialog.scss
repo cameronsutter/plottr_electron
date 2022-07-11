@@ -94,7 +94,7 @@
 
           .template-attr__description-label {
             @include application-text;
-            font-size: 14px;
+            font-size: calc(var(--selected-font-size, 16px) - 2px);
             color: $gray-3;
             margin-top: -4px;
           }
@@ -139,7 +139,8 @@
     }
   }
   textarea {
-    font-size: 20px;
+    font-size: calc(var(--selected-font-size, 16px) + 4px);
+
   }
   .slate-editor__wrapper {
     height: 100%;

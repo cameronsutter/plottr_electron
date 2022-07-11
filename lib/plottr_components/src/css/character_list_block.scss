@@ -203,7 +203,7 @@
           margin-bottom: 16px;
           .template-attr__description-label {
             @include application-text;
-            font-size: 14px;
+            font-size: var(--selected-font, 14px);
             color: $gray-3;
             margin-top: -4px;
           }

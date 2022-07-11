@@ -232,8 +232,13 @@ const Main = ({
   }, [setOffline])
 
   useEffect(() => {
-    window.document.documentElement.style.setProperty('--selectedFont', settings.user.font)
-    window.document.documentElement.style.setProperty('--selectedFontSize', '16')
+    window.document.documentElement.style.setProperty('--selected-font', settings.user.font)
+    if (settings.user.fontSize) {
+      window.document.documentElement.style.setProperty(
+        '--selected-font-size',
+        String(settings.user.fontSize) + 'px'
+      )
+    }
   }, [settings.user])
 
   useEffect(() => {

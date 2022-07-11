@@ -32,7 +32,7 @@ $medium_width: 80px;
     .control-label {
       @include secondary-text;
       font-weight: normal;
-      font-size: 16px;
+      font-size: var(--selected-font-size , 16px);
       margin-bottom: 0;
     }
     .control-label.darkmode {
@@ -204,7 +204,7 @@ $medium_width: 80px;
     .control-label {
       @include secondary-text;
       font-weight: normal;
-      font-size: 16px;
+      font-size: var(--selected-font-size , 16px);
       margin-bottom: 0;
     }
     .control-label.darkmode {

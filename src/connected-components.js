@@ -57,6 +57,7 @@ import { USER } from './file-system/stores'
 
 import extractImages from './common/extract_images'
 import { resizeImage } from './common/resizeImage'
+import { downloadStorageImage } from './common/downloadStorageImage'
 
 import { deleteTemplate, editTemplateDetails } from './common/utils/templates'
 import { createFullErrorReport } from './common/utils/full_error_report'
@@ -429,7 +430,8 @@ const platform = {
       } = state.present
       return saveImageToStorageFromURLInFirebase(userId, name, url)
     },
-    resizeImage: resizeImage,
+    resizeImage,
+    downloadStorageImage,
   },
 }
 

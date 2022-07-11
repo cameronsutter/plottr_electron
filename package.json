@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.7.4-beta.1",
+  "version": "2022.8.10-alpha.1",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -30,7 +30,7 @@
     "extract-strings": "lib/plottr_locales/lib/format-message-cli/format-message extract -o lib/plottr_locales/src/en-extracted.json \"bin/**/*.js\" \"src/**/*.js\" \"shared/**/*.js\" \"lib/plottr_components/src/**/*.js\" \"lib/pltr/v2/**/*.js\" && npm --prefix lib/plottr_locales run sync && npm run generate-flipped",
     "generate-flipped": "node ./lib/plottr_locales/src/build-flipped-locale.js",
     "test": "jest \"(src.*)|(lib.*)|(main.*)\"",
-    "test:watch": "jest \"(src.*)|(lib.*)|(main.*)\" --watch",
+    "test:watch": "jest \"lib/plottr_import_export/src/exporter/word/exporters/__tests__/convertImages.test.js\" --watch",
     "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
     "test:integration": "jest test/integration",
     "lint-file": "eslint",
@@ -49,7 +49,6 @@
     "@electron/remote": "^2.0.1",
     "axios": "^0.22.0",
     "bufferutil": "^4.0.6",
-    "docx": "^5.5.0",
     "dom-helpers": "^3.4.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^2.0.6",
@@ -160,6 +159,9 @@
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-cli": "^4.9.2",
     "xml-js": "^1.6.11"
+  },
+  "optionalDependencies": {
+    "dmg-license": "^1.0.11"
   },
   "build": {
     "electronVersion": "18.2.4",

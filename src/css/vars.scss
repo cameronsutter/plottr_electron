@@ -38,7 +38,7 @@ $new-item-border: 2px dashed $new-item-border-color;
 }
 
 @mixin sub-header-font {
-  font-family: var(--selected-font, 'IBM Plex Serif');
+  font-family: var(--selected-font, 'IBM Plex Serif'), serif;
   font-size: calc(var(--selected-font-size, 16px) + 4px);
 }
 

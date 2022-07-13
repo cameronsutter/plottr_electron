@@ -29,9 +29,14 @@ const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
 
 function displayFileName(filePath, isCloudFile, displayFilePath) {
   const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = displayFilePath ? ` - ${decodeURI(path.basename(filePath))}` : ''
+  const baseFileName = displayFilePath ? ` - ${path.basename(filePath)}` : ''
   const plottr = isCloudFile ? 'Plottr Pro' : 'Plottr'
-  return `${plottr}${baseFileName}${devMessage}`
+  try {
+    const decodedFileName = decodeURIComponent(baseFileName)
+    return `${plottr}${decodedFileName}${devMessage}`
+  } catch (error) {
+    return `${plottr}${baseFileName}${devMessage}`
+  }
 }
 
 const LoadingSplash = ({ loadingState, loadingProgress }) => {

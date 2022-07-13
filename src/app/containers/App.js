@@ -33,7 +33,6 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
-  isOnWeb,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)

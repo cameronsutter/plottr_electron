@@ -17,10 +17,48 @@ import {
   FILE_EXISTS,
   BACKUP_OFFLINE_BACKUP_FOR_RESUME,
   READ_OFFLINE_FILES,
+  CURRENT_TRIAL,
+  START_TRIAL,
+  EXTEND_TRIAL_WITH_RESET,
+  CURRENT_LICENSE,
+  DELETE_LICENSE,
+  SAVE_LICENSE_INFO,
+  CURRENT_KNOWN_FILES,
+  CURRENT_TEMPLATES,
+  CURRENT_CUSTOM_TEMPLATES,
+  CURRENT_TEMPLATE_MANIFEST,
+  CURRENT_EXPORT_CONFIG_SETTINGS,
+  SAVE_EXPORT_CONFIG_SETTINGS,
+  CURRENT_APP_SETTINGS,
+  SAVE_APP_SETTING,
+  CURRENT_USER_SETTINGS,
+  CURRENT_BACKUPS,
+  LISTEN_TO_TRIAL_CHANGES,
+  LISTEN_TO_LICENSE_CHANGES,
+  LISTEN_TO_KNOWN_FILES_CHANGES,
+  LISTEN_TO_TEMPLATES_CHANGES,
+  LISTEN_TO_CUSTOM_TEMPLATES_CHANGES,
+  LISTEN_TO_TEMPLATE_MANIFEST_CHANGES,
+  LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES,
+  LISTEN_TO_APP_SETTINGS_CHANGES,
+  LISTEN_TO_USER_SETTINGS_CHANGES,
+  LISTEN_TO_BACKUPS_CHANGES,
+  BACKUP_BASE_PATH,
+  LISTEN_TO_TRIAL_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_LICENSE_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_KNOWN_FILES_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_TEMPLATES_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_CUSTOM_TEMPLATES_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_TEMPLATE_MANIFEST_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_APP_SETTINGS_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_USER_SETTINGS_CHANGES_UNSUBSCRIBE,
+  LISTEN_TO_BACKUPS_CHANGES_UNSUBSCRIBE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
 import BackupModule from './backup'
+import fileSystemModule from './file-system'
 
 const parseArgs = () => {
   return {
@@ -34,6 +72,7 @@ const { rm } = fs.promises
 const setupListeners = (port, userDataPath) => {
   process.send(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
+  const unsubscribeFunctions = new Map()
 
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
@@ -49,6 +88,34 @@ const setupListeners = (port, userDataPath) => {
       readOfflineFiles,
     } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
+    const {
+      listenToTrialChanges,
+      currentTrial,
+      startTrial,
+      extendTrialWithReset,
+      listenToLicenseChanges,
+      currentLicense,
+      deleteLicense,
+      saveLicenseInfo,
+      listenToknownFilesChanges,
+      currentKnownFiles,
+      listenToTemplatesChanges,
+      currentTemplates,
+      listenToCustomTemplatesChanges,
+      currentCustomTemplates,
+      listenToTemplateManifestChanges,
+      currentTemplateManifest,
+      listenToExportConfigSettingsChanges,
+      currentExportConfigSettings,
+      saveExportConfigSettings,
+      listenToAppSettingsChanges,
+      currentAppSettings,
+      saveAppSetting,
+      listenToUserSettingsChanges,
+      currentUserSettings,
+      listenToBackupsChanges,
+      currentBackups,
+    } = fileSystemModule(userDataPath, logger)
 
     webSocket.on('message', (message) => {
       try {
@@ -354,6 +421,506 @@ const setupListeners = (port, userDataPath) => {
                 logger.error('Error while reading offline files', payload, error)
                 replyWithErrorMessage(error.message)
               })
+            return
+          }
+          // ===File System APIs===
+          case CURRENT_TRIAL: {
+            logger.info('Getting the current trial info')
+            currentTrial()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the current trial', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case START_TRIAL: {
+            const { numDays } = payload
+            logger.info(`Starting trial for length: ${numDays}`)
+            startTrial(numDays)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while starting the trial', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case EXTEND_TRIAL_WITH_RESET: {
+            const { days } = payload
+            logger.info(`Attempting to extend trial with reset for days: ${days}`)
+            extendTrialWithReset(days)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while extending trial with reset', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_LICENSE: {
+            logger.info('Fetching the current license data')
+            currentLicense()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while extending trial with reset', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case DELETE_LICENSE: {
+            logger.info('Deleting the license')
+            deleteLicense()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while deleting the license', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case SAVE_LICENSE_INFO: {
+            const { newLicense } = payload
+            logger.info(
+              'Setting the license to a new one.  Not displaying because it is sensitive.'
+            )
+            saveLicenseInfo(newLicense)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while saving the license', error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_KNOWN_FILES: {
+            logger.info('Getting the current list of known files')
+            currentKnownFiles()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the current list of known files', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_TEMPLATES: {
+            logger.info('Getting the current list of (official) templates')
+            currentTemplates()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  'Error while getting the current list of (official) templates',
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_CUSTOM_TEMPLATES: {
+            logger.info('Getting the current list of custom templates')
+            currentCustomTemplates()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error getting the current list of custom templates', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_TEMPLATE_MANIFEST: {
+            logger.info('Getting the current template manifest')
+            currentTemplateManifest()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the current template manifest', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_EXPORT_CONFIG_SETTINGS: {
+            logger.info('Getting the current export configuration settings')
+            currentExportConfigSettings()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  'Error while getting the current export configuration settings',
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case SAVE_EXPORT_CONFIG_SETTINGS: {
+            const { key, value } = payload
+            logger.info(`Setting ${key} to ${value} in export settings`)
+            saveExportConfigSettings(key, value)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  `Error while setting ${key} to ${value} in export settings`,
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_APP_SETTINGS: {
+            currentAppSettings()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the current app settings', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case SAVE_APP_SETTING: {
+            const { key, value } = payload
+            logger.info(`Setting ${key} to ${value} in app settings`)
+            saveAppSetting(key, value)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  `Error while setting ${key} to ${value} in app settings`,
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_USER_SETTINGS: {
+            logger.info('Getting current user settings')
+            currentUserSettings()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the current user settings', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case CURRENT_BACKUPS: {
+            logger.info('Getting the current backups')
+            currentBackups()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting current backups', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          // Subscriptions
+          case LISTEN_TO_TRIAL_CHANGES: {
+            logger.info('Listening to trial changes')
+            const unsubscribe = listenToTrialChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_LICENSE_CHANGES: {
+            logger.info('Listening to license changes')
+            const unsubscribe = listenToLicenseChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_KNOWN_FILES_CHANGES: {
+            logger.info('Listening to known files changes')
+            const unsubscribe = listenToknownFilesChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_TEMPLATES_CHANGES: {
+            logger.info('Listening to known (official) templates changes')
+            const unsubscribe = listenToTemplatesChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_CUSTOM_TEMPLATES_CHANGES: {
+            logger.info('Listening to custom template changes')
+            const unsubscribe = listenToCustomTemplatesChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_TEMPLATE_MANIFEST_CHANGES: {
+            logger.info('Listening to template manifest changes')
+            const unsubscribe = listenToTemplateManifestChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES: {
+            logger.info('Listening to export config settings changes')
+            const unsubscribe = listenToExportConfigSettingsChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_APP_SETTINGS_CHANGES: {
+            logger.info('Listening to app settings changes')
+            const unsubscribe = listenToAppSettingsChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_USER_SETTINGS_CHANGES: {
+            logger.info('Listening to user settings changes')
+            const unsubscribe = listenToUserSettingsChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_BACKUPS_CHANGES: {
+            logger.info('Listening to backups changes')
+            const unsubscribe = listenToBackupsChanges((result) => {
+              webSocket.send(
+                JSON.stringify({
+                  type,
+                  messageId,
+                  result,
+                  payload,
+                })
+              )
+            })
+            unsubscribeFunctions.set(messageId, unsubscribe)
+            return
+          }
+          case LISTEN_TO_TRIAL_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_LICENSE_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_KNOWN_FILES_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_TEMPLATES_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_CUSTOM_TEMPLATES_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_TEMPLATE_MANIFEST_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_APP_SETTINGS_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_USER_SETTINGS_CHANGES_UNSUBSCRIBE:
+          case LISTEN_TO_BACKUPS_CHANGES_UNSUBSCRIBE: {
+            const unsubscribe = unsubscribeFunctions.get(messageId)
+            if (!unsubscribe) {
+              logger.error(
+                `Tried to unsubscribe from ${type} with a message id of ${messageId} but it's either already been done or never existed`
+              )
+              return
+            }
+            unsubscribe()
+            unsubscribeFunctions.delete(messageId)
+            return
           }
         }
       } catch (error) {

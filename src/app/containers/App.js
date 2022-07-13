@@ -205,11 +205,9 @@ const App = ({
         <React.StrictMode>
           <Body />
         </React.StrictMode>
-        {!isOnWeb && (
-          <React.StrictMode>
-            <UpdateNotifier />
-          </React.StrictMode>
-        )}
+        <React.StrictMode>
+          <UpdateNotifier />
+        </React.StrictMode>
       </main>
       <React.StrictMode>
         <Spinner />
@@ -231,7 +229,6 @@ App.propTypes = {
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
-  isOnWeb: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -242,7 +239,6 @@ function mapStateToProps(state) {
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
-    isOnWeb: selectors.isOnWebSelector(state.present),
   }
 }
 

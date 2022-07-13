@@ -23,5 +23,6 @@ module.exports = {
     beatHierarchy: false,
     enableOfflineMode: false,
     streamFriendly: false,
+    useSpellcheck: true,
   },
 }

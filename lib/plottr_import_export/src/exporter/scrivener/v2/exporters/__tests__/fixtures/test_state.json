@@ -1,6 +1,9 @@
 {
   "ui": {
-    "currentTimeline": 1
+    "currentTimeline": 1,
+    "timeline": {
+      "view": "default"
+    }
   },
   "books": {
     "1": {

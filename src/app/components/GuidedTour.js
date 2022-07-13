@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import Tour from 'reactour'
 
 import { t as i18n } from 'plottr_locales'
-
-import { fileSystemAPIs } from '../../api'
+import MainIntegrationContext from '../../mainIntegrationContext'
 
 export default class GuidedTour extends Component {
   state = {
@@ -70,24 +69,28 @@ export default class GuidedTour extends Component {
     },
   ]
 
-  closeTheTour = () => {
-    fileSystemAPIs.saveAppSetting('showTheTour', false)
+  closeTheTour = (saveAppSetting) => () => {
+    saveAppSetting('showTheTour', false)
     this.setState({ showTour: false })
   }
 
   render() {
     return (
-      <Tour
-        isOpen={this.state.showTour}
-        steps={this.steps}
-        accentColor="#f9703e"
-        className="tour-helper"
-        closeWithMask={false}
-        rounded={4}
-        onBeforeClose={this.closeTheTour}
-        onRequestClose={() => this.setState({ showTour: false })}
-        lastStepNextButton={<div className="btn btn-success">{i18n('Done')}</div>}
-      />
+      <MainIntegrationContext.Consumer>
+        {({ saveAppSetting }) => (
+          <Tour
+            isOpen={this.state.showTour}
+            steps={this.steps}
+            accentColor="#f9703e"
+            className="tour-helper"
+            closeWithMask={false}
+            rounded={4}
+            onBeforeClose={this.closeTheTour(saveAppSetting)}
+            onRequestClose={() => this.setState({ showTour: false })}
+            lastStepNextButton={<div className="btn btn-success">{i18n('Done')}</div>}
+          />
+        )}
+      </MainIntegrationContext.Consumer>
     )
   }
 }

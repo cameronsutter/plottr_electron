@@ -2,22 +2,19 @@ import request from 'request'
 import semverGt from 'semver/functions/gt'
 
 import { manifestStore, templatesStore, customTemplatesStore } from '../../file-system/stores'
-import { fileSystemAPIs } from '../../api'
+import { makeFileSystemAPIs } from '../../api'
+import { whenClientIsReady } from '../../../shared/socket-client'
 import { isDevelopment } from '../../isDevelopment'
 import log from '../../../shared/logger'
 
-const OLD_TEMPLATES_ROOT = 'templates'
-let env = 'prod'
-if (isDevelopment()) env = 'staging'
-const settings = fileSystemAPIs.currentAppSettings()
-if (settings.betatemplates) env = 'beta'
-const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
-const manifestURL = `${baseURL}/v2/manifest.json`
-
 export const MANIFEST_ROOT = 'manifest'
+const OLD_TEMPLATES_ROOT = 'templates'
 
 class TemplateFetcher {
-  constructor(props) {
+  constructor(baseURL, manifestURL) {
+    this.baseURL = baseURL
+    this.manifestURL = manifestURL
+
     // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
     const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
     if (templates) {
@@ -46,7 +43,7 @@ class TemplateFetcher {
 
   manifestReq = () => {
     return {
-      url: manifestURL,
+      url: this.manifestURL,
       json: true,
     }
   }
@@ -93,7 +90,7 @@ class TemplateFetcher {
   }
 
   fetchTemplate = (id, url) => {
-    const fullURL = `${baseURL}${url}`
+    const fullURL = `${this.baseURL}${url}`
     request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
       if (!err && resp && resp.statusCode == 200) {
         templatesStore.set(id, fetchedTemplate)
@@ -108,6 +105,23 @@ class TemplateFetcher {
   }
 }
 
-const TF = new TemplateFetcher()
+const makeTemplateFetcher = () => {
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  return fileSystemAPIs
+    .currentAppSettings()
+    .then((settings) => {
+      let env = 'prod'
+      if (isDevelopment()) env = 'staging'
+      if (settings.betatemplates) env = 'beta'
 
-export default TF
+      const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
+      const manifestURL = `${baseURL}/v2/manifest.json`
+
+      return new TemplateFetcher(baseURL, manifestURL)
+    })
+    .catch((error) => {
+      log.error('Could not construct the template fetcher!', error)
+    })
+}
+
+export default makeTemplateFetcher

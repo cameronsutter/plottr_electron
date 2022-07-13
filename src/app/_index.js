@@ -19,7 +19,7 @@ import { ActionCreators } from 'redux-undo'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
 import { TEMP_FILES_PATH } from '../file-system/config_paths'
 import { createFullErrorReport } from '../common/utils/full_error_report'
-import TemplateFetcher from '../common/utils/template_fetcher'
+import makeTemplateFetcher from '../common/utils/template_fetcher'
 import {
   openDashboard,
   closeDashboard,
@@ -28,7 +28,7 @@ import {
   openExistingProj,
 } from '../dashboard-events'
 import logger from '../../shared/logger'
-import { fileSystemAPIs } from '../api'
+import { makeFileSystemAPIs } from '../api'
 import { renderFile } from '../renderFile'
 import { setOS, isWindows } from '../isOS'
 import { uploadToFirebase } from '../upload-to-firebase'
@@ -93,7 +93,10 @@ createClient(
 )
 const { saveFile } = makeFileModule(whenClientIsReady)
 
-setupI18n(fileSystemAPIs.currentAppSettings(), { electron })
+const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+fileSystemAPIs.currentAppSettings().then((settings) => {
+  setupI18n(settings, { electron })
+})
 
 instrumentLongRunningTasks()
 
@@ -110,7 +113,14 @@ window.requestIdleCallback(() => {
   whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath }) => {
     return ensureBackupFullPath().then(ensureBackupTodayPath)
   })
-  TemplateFetcher.fetch()
+  makeTemplateFetcher()
+    .then((templateFetcher) => {
+      templateFetcher.fetch()
+    })
+    .catch((error) => {
+      // FIXME: retry?
+      logger.error(`Failed to fetch templates!`, error)
+    })
   initMixpanel()
 })
 
@@ -275,14 +285,15 @@ window.logger = function (which) {
 }
 
 ipcRenderer.once('send-launch', (event, version) => {
-  const settings = fileSystemAPIs.currentAppSettings()
-  const settingsWeCareAbout = {
-    auto_download: settings.user?.autoDownloadUpdate,
-    backup_on: settings.backup,
-    locale: settings.locale,
-    dark: settings.user?.dark,
-  }
-  MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
+  fileSystemAPIs.currentAppSettings().then((settings) => {
+    const settingsWeCareAbout = {
+      auto_download: settings.user?.autoDownloadUpdate,
+      backup_on: settings.backup,
+      locale: settings.locale,
+      dark: settings.user?.dark,
+    }
+    MPQ.push('Launch', { online: navigator.onLine, version: version, ...settingsWeCareAbout })
+  })
 })
 
 ipcRenderer.on('create-error-report', () => {
@@ -370,7 +381,9 @@ ipcRenderer.on('update-worker-port', (_event, newPort) => {
 })
 
 ipcRenderer.on('reload-dark-mode', (_event, newValue) => {
-  fileSystemAPIs.saveAppSetting('user.dark', newValue)
+  fileSystemAPIs.saveAppSetting('user.dark', newValue).catch((error) => {
+    logger.error(`Failed to set user.dark to ${newValue}`, error)
+  })
   store.dispatch(actions.settings.setDarkMode(newValue))
 })
 
@@ -394,7 +407,7 @@ ipcRenderer.on('import-scrivener-file', (_event, sourceFile, destinationFile) =>
 //
 // Could be important to do so because it might set up inotify
 // listeners and too many of those cause slow-downs.
-const _unsubscribeToPublishers = world.publishChangesToStore(store)
+const _unsubscribeToPublishers = world(whenClientIsReady).publishChangesToStore(store)
 
 const root = rootComponent()
 

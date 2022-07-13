@@ -11,7 +11,8 @@ import { t } from 'plottr_locales'
 import { store } from '../store'
 import { offlineFilePath } from '../../files'
 import logger from '../../../shared/logger'
-import { fileSystemAPIs, licenseServerAPIs } from '../../api'
+import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const Listener = ({
   hasPro,
@@ -47,6 +48,8 @@ const Listener = ({
   const [unsubscribeFunction, setUnsubscribeFunction] = useState(null)
 
   const wasOffline = useRef(isOffline)
+
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 
   useEffect(() => {
     if (isOffline) {

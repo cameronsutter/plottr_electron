@@ -1,4 +1,4 @@
-import fs, { lstatSync, mkdirSync } from 'fs'
+import fs from 'fs'
 import path from 'path'
 import { ipcRenderer } from 'electron'
 import { sortBy } from 'lodash'
@@ -14,236 +14,305 @@ import {
   SETTINGS,
   USER,
 } from '../file-system/stores'
-import { backupBasePath } from '../common/utils/backup'
 import logger from '../../shared/logger'
+import { BACKUP_BASE_PATH } from '../file-system/config_paths'
 
-const { readdir, lstat } = fs.promises
+const { readdir, lstat, mkdir } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
-function addDays(date, days) {
-  var result = new Date(date)
-  result.setDate(result.getDate() + days)
-  result.setHours(23, 59, 59, 999)
-  return result
-}
-
-function americanToYearFirst(dateString) {
-  const [month, day, year] = dateString.split('_')
-  return `${year}_${month}_${day}`
-}
-
-export const listenToTrialChanges = (cb) => {
-  cb(trialStore.store)
-  return trialStore.onDidAnyChange.bind(trialStore)(cb)
-}
-export const currentTrial = () => trialStore.store
-export const startTrial = (numDays = null) => {
-  const day = new Date()
-  const startsAt = day.getTime()
-  const end = addDays(startsAt, numDays || TRIAL_LENGTH)
-  const endsAt = end.getTime()
-  trialStore.set({ startsAt, endsAt, extensions: EXTENSIONS })
-}
-export const extendTrial = (days) => {
-  const newEnd = addDays(Date.now(), days)
-  const trialInfo = currentTrial()
-  const info = {
-    ...trialInfo,
-    endsAt: newEnd.getTime(),
-    extensions: --trialInfo.extensions,
-  }
-  trialStore.set(info)
-}
-export const extendTrialWithReset = (days) => {
-  const currentInfo = currentTrial()
-  if (currentInfo.hasBeenReset) return
-
-  const newEnd = addDays(currentInfo.endsAt, days)
-  trialStore.set('endsAt', newEnd.getTime())
-  trialStore.set('extensions', EXTENSIONS)
-  trialStore.set('hasBeenReset', true)
-}
-
-export const listenToLicenseChanges = (cb) => {
-  cb(licenseStore.store)
-  return licenseStore.onDidAnyChange.bind(licenseStore)
-}
-export const currentLicense = () => licenseStore.store
-// FIXME: known issue: if we remove the license, then the listener
-// stops firing.  This might be fixed in the next release.
-export const deleteLicense = () => {
-  licenseStore.clear()
-}
-export const saveLicenseInfo = (newLicense) => {
-  licenseStore.store = newLicense
-}
-
-export const listenToknownFilesChanges = (cb) => {
-  const transformStore = (store) =>
-    Object.entries(store).map(([key, file]) => ({
-      ...file,
-      fromFileSystem: true,
-      id: key,
-    }))
-
-  const withFileSystemAsSource = (files) => {
-    return cb(transformStore(files))
+const makeFileSystemAPIs = (socketClient) => {
+  function backupBasePath() {
+    return currentAppSettings().then((settings) => {
+      const configuredLocation = settings.user?.backupLocation
+      return (configuredLocation !== 'default' && configuredLocation) || BACKUP_BASE_PATH
+    })
   }
 
-  ipcRenderer.on('reload-recents', () => {
-    try {
-      cb(transformStore(JSON.parse(fs.readFileSync(knownFilesStore.path))))
-    } catch (e) {
-      logger.error('Failed to read known files after we were signalled to', e)
+  function addDays(date, days) {
+    var result = new Date(date)
+    result.setDate(result.getDate() + days)
+    result.setHours(23, 59, 59, 999)
+    return result
+  }
+
+  function americanToYearFirst(dateString) {
+    const [month, day, year] = dateString.split('_')
+    return `${year}_${month}_${day}`
+  }
+
+  const listenToTrialChanges = (cb) => {
+    cb(trialStore.store)
+    return trialStore.onDidAnyChange.bind(trialStore)(cb)
+  }
+  const currentTrial = () => {
+    return Promise.resolve(trialStore.store)
+  }
+  const startTrial = (numDays = null) => {
+    const day = new Date()
+    const startsAt = day.getTime()
+    const end = addDays(startsAt, numDays || TRIAL_LENGTH)
+    const endsAt = end.getTime()
+    trialStore.set({ startsAt, endsAt, extensions: EXTENSIONS })
+    return Promise.resolve(true)
+  }
+  const extendTrialWithReset = (days) => {
+    const currentInfo = currentTrial()
+    if (currentInfo.hasBeenReset) {
+      return Promise.resolve(true)
     }
-  })
-  cb(transformStore(knownFilesStore.store))
-  return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
-}
-export const currentKnownFiles = () =>
-  Object.entries(knownFilesStore.store).map(([key, file]) => ({
-    ...file,
+
+    const newEnd = addDays(currentInfo.endsAt, days)
+    trialStore.set('endsAt', newEnd.getTime())
+    trialStore.set('extensions', EXTENSIONS)
+    trialStore.set('hasBeenReset', true)
+    return Promise.resolve(true)
+  }
+
+  const listenToLicenseChanges = (cb) => {
+    cb(licenseStore.store)
+    return licenseStore.onDidAnyChange.bind(licenseStore)
+  }
+  const currentLicense = () => {
+    return Promise.resolve(licenseStore.store)
+  }
+  // FIXME: known issue: if we remove the license, then the listener
+  // stops firing.  This might be fixed in the next release.
+  const deleteLicense = () => {
+    licenseStore.clear()
+    return Promise.resolve(true)
+  }
+  const saveLicenseInfo = (newLicense) => {
+    licenseStore.store = newLicense
+    return Promise.resolve(true)
+  }
+
+  const listenToknownFilesChanges = (cb) => {
+    const transformStore = (store) =>
+      Object.entries(store).map(([key, file]) => ({
+        ...file,
+        fromFileSystem: true,
+        id: key,
+      }))
+
+    const withFileSystemAsSource = (files) => {
+      return cb(transformStore(files))
+    }
+
+    ipcRenderer.on('reload-recents', () => {
+      try {
+        cb(transformStore(JSON.parse(fs.readFileSync(knownFilesStore.path))))
+      } catch (e) {
+        logger.error('Failed to read known files after we were signalled to', e)
+      }
+    })
+    cb(transformStore(knownFilesStore.store))
+    return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
+  }
+  const currentKnownFiles = () => {
+    return Promise.resolve(
+      Object.entries(knownFilesStore.store).map(([key, file]) => ({
+        ...file,
+        fromFileSystem: true,
+        id: key,
+      }))
+    )
+  }
+
+  const listenToTemplatesChanges = (cb) => {
+    cb(templatesStore.store)
+    return templatesStore.onDidAnyChange.bind(templatesStore)(cb)
+  }
+  const currentTemplates = () => {
+    return Promise.resolve(templatesStore.store)
+  }
+
+  const listenToCustomTemplatesChanges = (cb) => {
+    const withTemplatesAsArray = (templates) => {
+      return cb(Object.values(templates))
+    }
+    cb(Object.values(customTemplatesStore.store))
+    return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
+  }
+  const currentCustomTemplates = () => {
+    return Promise.resolve(Object.values(customTemplatesStore.store))
+  }
+
+  const listenToTemplateManifestChanges = (cb) => {
+    cb(manifestStore.store)
+    return manifestStore.onDidAnyChange.bind(manifestStore)(cb)
+  }
+  const currentTemplateManifest = () => {
+    return Promise.resolve(manifestStore.store)
+  }
+
+  const listenToExportConfigSettingsChanges = (cb) => {
+    cb(exportConfigStore.store)
+    return exportConfigStore.onDidAnyChange.bind(exportConfigStore)(cb)
+  }
+  const currentExportConfigSettings = () => {
+    return Promise.resolve(exportConfigStore.store)
+  }
+  const saveExportConfigSettings = (key, value) => {
+    exportConfigStore.set(key, value)
+    return Promise.resolve(true)
+  }
+
+  const listenToAppSettingsChanges = (cb) => {
+    cb(SETTINGS.store)
+    return SETTINGS.onDidAnyChange.bind(SETTINGS)(cb)
+  }
+  const currentAppSettings = () => {
+    return Promise.resolve(SETTINGS.store)
+  }
+  const saveAppSetting = (key, value) => {
+    SETTINGS.set(key, value)
+    return Promise.resolve(true)
+  }
+
+  const listenToUserSettingsChanges = (cb) => {
+    cb(USER.store)
+    return USER.onDidAnyChange.bind(USER)(cb)
+  }
+  const currentUserSettings = () => {
+    return Promise.resolve(USER.store)
+  }
+
+  const withFromFileSystem = (backupFolder) => ({
+    ...backupFolder,
     fromFileSystem: true,
-    id: key,
-  }))
-
-export const listenToTemplatesChanges = (cb) => {
-  cb(templatesStore.store)
-  return templatesStore.onDidAnyChange.bind(templatesStore)(cb)
-}
-export const currentTemplates = () => templatesStore.store
-
-export const listenToCustomTemplatesChanges = (cb) => {
-  const withTemplatesAsArray = (templates) => {
-    return cb(Object.values(templates))
-  }
-  cb(Object.values(customTemplatesStore.store))
-  return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
-}
-export const currentCustomTemplates = () => Object.values(customTemplatesStore.store)
-
-export const listenToTemplateManifestChanges = (cb) => {
-  cb(manifestStore.store)
-  return manifestStore.onDidAnyChange.bind(manifestStore)(cb)
-}
-export const currentTemplateManifest = () => manifestStore.store
-
-export const listenToExportConfigSettingsChanges = (cb) => {
-  cb(exportConfigStore.store)
-  return exportConfigStore.onDidAnyChange.bind(exportConfigStore)(cb)
-}
-export const currentExportConfigSettings = () => exportConfigStore.store
-export const saveExportConfigSettings = (key, value) => exportConfigStore.set(key, value)
-
-export const listenToAppSettingsChanges = (cb) => {
-  cb(SETTINGS.store)
-  return SETTINGS.onDidAnyChange.bind(SETTINGS)(cb)
-}
-export const currentAppSettings = () => SETTINGS.store
-export const saveAppSetting = (key, value) => SETTINGS.set(key, value)
-
-export const listenToUserSettingsChanges = (cb) => {
-  cb(USER.store)
-  return USER.onDidAnyChange.bind(USER)(cb)
-}
-export const currentUserSettings = () => USER.store
-
-const withFromFileSystem = (backupFolder) => ({
-  ...backupFolder,
-  fromFileSystem: true,
-})
-
-const backupDirExists = () => {
-  try {
-    const stats = lstatSync(backupBasePath())
-    return stats.isDirectory()
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      throw error
-    }
-    return false
-  }
-}
-
-let _currentBackups = []
-export const listenToBackupsChanges = (cb) => {
-  let watcher = () => {}
-  readBackupsDirectory((initialBackups) => {
-    _currentBackups = initialBackups
-    cb(initialBackups)
-    if (!backupDirExists()) {
-      mkdirSync(backupBasePath())
-    }
-    watcher = fs.watch(backupBasePath(), (event, fileName) => {
-      // Do we care about event and fileName?
-      //
-      // NOTE: event could be 'changed' or 'renamed'.
-      readBackupsDirectory((newBackups) => {
-        _currentBackups = newBackups
-        cb(newBackups)
-      })
-    })
   })
 
-  return () => {
-    watcher.close()
-  }
-}
-export const currentBackups = () => {
-  readBackupsDirectory((newBackups) => {
-    _currentBackups = newBackups.map(withFromFileSystem)
-  })
-
-  return _currentBackups
-}
-
-const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
-
-function readBackupsDirectory(cb) {
-  readdir(backupBasePath())
-    .then((entries) => {
-      return Promise.all(
-        entries
-          .filter((d) => {
-            return d[0] !== '.' && !d.includes('.pltr') && d.match(BACKUP_FOLDER_REGEX)
-          })
-          .map((entry) => {
-            return lstat(path.join(backupBasePath(), entry)).then((fileStats) => {
-              return {
-                keep: fileStats.isDirectory(),
-                payload: entry,
-              }
-            })
-          })
-      ).then((results) => {
-        return results.filter(({ keep }) => keep).map(({ payload }) => payload)
+  const backupDirExists = () => {
+    return backupBasePath()
+      .then((basePath) => {
+        return lstat(basePath).then((stats) => {
+          return stats.isDirectory
+        })
       })
-    })
-    .then((directories) => {
-      return Promise.all(
-        directories.map((directory) => {
-          const thisPath = path.join(backupBasePath(), directory)
-          return readdir(thisPath).then((entries) => {
-            const files = entries.filter((entry) => {
-              return entry.endsWith('.pltr')
+      .catch((error) => {
+        if (error.code !== 'ENOENT') {
+          return Promise.reject(error)
+        }
+        return false
+      })
+  }
+
+  const listenToBackupsChanges = (cb) => {
+    let watcher = () => {}
+    readBackupsDirectory((initialBackups) => {
+      cb(initialBackups)
+      backupBasePath().then((basePath) => {
+        backupDirExists().then((backupDirDoesExist) => {
+          const makeIfNonExistant = !backupDirDoesExist ? mkdir(basePath) : Promise.resolve(true)
+          makeIfNonExistant.then(() => {
+            watcher = fs.watch(basePath, (event, fileName) => {
+              // Do we care about event and fileName?
+              //
+              // NOTE: event could be 'changed' or 'renamed'.
+              readBackupsDirectory((newBackups) => {
+                cb(newBackups)
+              })
             })
-            return {
-              path: thisPath,
-              date: americanToYearFirst(directory),
-              backups: files,
-            }
           })
         })
-      )
+      })
     })
-    .then((results) => {
-      cb(sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
+
+    return () => {
+      watcher.close()
+    }
+  }
+  const currentBackups = () => {
+    return new Promise((resolve, reject) => {
+      readBackupsDirectory((newBackups) => {
+        resolve(newBackups.map(withFromFileSystem))
+      })
     })
-    .catch((error) => {
-      logger.error('Error reading backup directory.', error)
-      cb([])
-      return
-    })
+  }
+
+  const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
+
+  function readBackupsDirectory(cb) {
+    backupBasePath()
+      .then((basePath) => {
+        return readdir(basePath)
+          .then((entries) => {
+            return Promise.all(
+              entries
+                .filter((d) => {
+                  return d[0] !== '.' && !d.includes('.pltr') && d.match(BACKUP_FOLDER_REGEX)
+                })
+                .map((entry) => {
+                  return lstat(path.join(basePath, entry)).then((fileStats) => {
+                    return {
+                      keep: fileStats.isDirectory(),
+                      payload: entry,
+                    }
+                  })
+                })
+            ).then((results) => {
+              return results.filter(({ keep }) => keep).map(({ payload }) => payload)
+            })
+          })
+          .then((directories) => {
+            return Promise.all(
+              directories.map((directory) => {
+                const thisPath = path.join(basePath, directory)
+                return readdir(thisPath).then((entries) => {
+                  const files = entries.filter((entry) => {
+                    return entry.endsWith('.pltr')
+                  })
+                  return {
+                    path: thisPath,
+                    date: americanToYearFirst(directory),
+                    backups: files,
+                  }
+                })
+              })
+            )
+          })
+      })
+      .then((results) => {
+        cb(sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
+      })
+      .catch((error) => {
+        logger.error('Error reading backup directory.', error)
+        cb([])
+        return
+      })
+  }
+
+  return {
+    backupBasePath,
+    listenToTrialChanges,
+    currentTrial,
+    startTrial,
+    extendTrialWithReset,
+    listenToLicenseChanges,
+    currentLicense,
+    deleteLicense,
+    saveLicenseInfo,
+    listenToknownFilesChanges,
+    currentKnownFiles,
+    listenToTemplatesChanges,
+    currentTemplates,
+    listenToCustomTemplatesChanges,
+    currentCustomTemplates,
+    listenToTemplateManifestChanges,
+    currentTemplateManifest,
+    listenToExportConfigSettingsChanges,
+    currentExportConfigSettings,
+    saveExportConfigSettings,
+    listenToAppSettingsChanges,
+    currentAppSettings,
+    saveAppSetting,
+    listenToUserSettingsChanges,
+    currentUserSettings,
+    listenToBackupsChanges,
+    currentBackups,
+  }
 }
+
+export default makeFileSystemAPIs

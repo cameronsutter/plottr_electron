@@ -46,7 +46,7 @@ import {
 } from './files'
 import logger from '../shared/logger'
 import { closeDashboard } from './dashboard-events'
-import { fileSystemAPIs, licenseServerAPIs } from './api'
+import { makeFileSystemAPIs, licenseServerAPIs } from './api'
 import { isWindows, isLinux, isMacOS } from './isOS'
 import { isDevelopment } from './isDevelopment'
 
@@ -85,6 +85,9 @@ export const rmRF = (path, ...args) => {
     return rmRf(path)
   })
 }
+
+const { saveAppSetting, startTrial, deleteLicense, saveLicenseInfo, saveExportConfigSettings } =
+  makeFileSystemAPIs(whenClientIsReady)
 
 export const openFile = (filePath, id, unknown) => {
   ipcRenderer.send('open-known-file', filePath, id, unknown)
@@ -296,10 +299,9 @@ const platform = {
     trial90days: licenseServerAPIs.trial90days,
     trial60days: licenseServerAPIs.trial60days,
     checkForPro: licenseServerAPIs.checkForPro,
-    startTrial: fileSystemAPIs.startTrial,
-    extendTrial: fileSystemAPIs.extendTrial,
-    deleteLicense: fileSystemAPIs.deleteLicense,
-    saveLicenseInfo: fileSystemAPIs.saveLicenseInfo,
+    startTrial,
+    deleteLicense,
+    saveLicenseInfo,
   },
   reloadMenu: () => {
     ipcRenderer.send('pls-reload-menu')
@@ -327,7 +329,7 @@ const platform = {
     },
   },
   settings: {
-    saveAppSetting: fileSystemAPIs.saveAppSetting,
+    saveAppSetting,
   },
   user: USER,
   os: () => (isWindows() ? 'windows' : isMacOS() ? 'macos' : isLinux() ? 'linux' : 'unknown'),
@@ -352,7 +354,7 @@ const platform = {
   export: {
     askToExport,
     export_config,
-    saveExportConfigSettings: fileSystemAPIs.saveExportConfigSettings,
+    saveExportConfigSettings,
     notifyUser,
     exportSaveDialog,
   },

@@ -3,24 +3,8 @@ import { groupBy, flatten } from 'lodash'
 import { selectors } from 'pltr/v2'
 import { plottrWorldAPI } from 'plottr_world'
 
-import { fileSystemAPIs, firebaseAPIs } from './api'
-
-const {
-  listenToTrialChanges,
-  currentTrial,
-  listenToLicenseChanges,
-  currentLicense,
-  listenToTemplatesChanges,
-  currentTemplates,
-  listenToTemplateManifestChanges,
-  currentTemplateManifest,
-  listenToExportConfigSettingsChanges,
-  currentExportConfigSettings,
-  listenToAppSettingsChanges,
-  currentAppSettings,
-  listenToUserSettingsChanges,
-  currentUserSettings,
-} = fileSystemAPIs
+import { makeFileSystemAPIs, firebaseAPIs } from './api'
+import logger from '../shared/logger'
 
 // From: https://github.com/reduxjs/redux/issues/303#issuecomment-125184409
 function observeStore(store, select, onChange) {
@@ -99,25 +83,6 @@ const combineCloudAndFileSystemSources =
 
 const mergeWithConcat = (source1, source2) => source1.concat(source2)
 
-const listenToknownFilesChanges = combineCloudAndFileSystemSources(
-  fileSystemAPIs.listenToknownFilesChanges,
-  firebaseAPIs.listenToKnownFiles,
-  mergeWithConcat
-)
-
-const currentKnownFiles = (cb) => {
-  return fileSystemAPIs.currentKnownFiles().concat(firebaseAPIs.currentKnownFiles())
-}
-
-const listenToCustomTemplatesChanges = combineCloudAndFileSystemSources(
-  fileSystemAPIs.listenToCustomTemplatesChanges,
-  firebaseAPIs.listenToCustomTemplates,
-  mergeWithConcat
-)
-const currentCustomTemplates = () => {
-  return fileSystemAPIs.currentCustomTemplates().concat(firebaseAPIs.currentCustomTemplates())
-}
-
 const mergeBackups = (firebaseFolders, localFolders) => {
   const allFolders = firebaseFolders.concat(localFolders)
   const grouped = groupBy(allFolders, 'date')
@@ -131,55 +96,89 @@ const mergeBackups = (firebaseFolders, localFolders) => {
   })
   return results
 }
-const listenToBackupsChanges = combineCloudAndFileSystemSources(
-  fileSystemAPIs.listenToBackupsChanges,
-  firebaseAPIs.listenToBackupsChanges,
-  mergeBackups,
-  true
-)
-
-const currentBackups = () => {
-  return mergeBackups(fileSystemAPIs.currentBackups(), firebaseAPIs.currentBackups())
-}
-
 const ignoringStore = (fn) => (store, cb) => fn(cb)
 
-const theWorld = {
-  license: {
-    listenToTrialChanges: ignoringStore(listenToTrialChanges),
-    currentTrial,
-    listenToLicenseChanges: ignoringStore(listenToLicenseChanges),
-    currentLicense,
-  },
-  session: {
-    listenForSessionChange: ignoringStore(firebaseAPIs.listenForSessionChange),
-  },
-  files: {
-    listenToknownFilesChanges,
-    currentKnownFiles,
-  },
-  backups: {
-    listenToBackupsChanges,
-    currentBackups,
-  },
-  templates: {
-    listenToTemplatesChanges: ignoringStore(listenToTemplatesChanges),
-    currentTemplates,
-    listenToCustomTemplatesChanges,
-    currentCustomTemplates,
-    listenToTemplateManifestChanges: ignoringStore(listenToTemplateManifestChanges),
-    currentTemplateManifest,
-  },
-  settings: {
-    listenToExportConfigSettingsChanges: ignoringStore(listenToExportConfigSettingsChanges),
-    currentExportConfigSettings,
-    listenToAppSettingsChanges: ignoringStore(listenToAppSettingsChanges),
-    currentAppSettings,
-    listenToUserSettingsChanges: ignoringStore(listenToUserSettingsChanges),
-    currentUserSettings,
-  },
+const theWorld = (socketClient) => {
+  const fileSystemAPIs = makeFileSystemAPIs(socketClient)
+
+  const listenToknownFilesChanges = combineCloudAndFileSystemSources(
+    fileSystemAPIs.listenToknownFilesChanges,
+    firebaseAPIs.listenToKnownFiles,
+    mergeWithConcat
+  )
+
+  const currentKnownFiles = () => {
+    return fileSystemAPIs.currentKnownFiles().then((fileSystemKnownFiles) => {
+      return fileSystemKnownFiles.concat(firebaseAPIs.currentKnownFiles())
+    })
+  }
+
+  const listenToCustomTemplatesChanges = combineCloudAndFileSystemSources(
+    fileSystemAPIs.listenToCustomTemplatesChanges,
+    firebaseAPIs.listenToCustomTemplates,
+    mergeWithConcat
+  )
+  const currentCustomTemplates = () => {
+    return fileSystemAPIs.currentCustomTemplates().then((fileSystemCustomTemplates) => {
+      return fileSystemCustomTemplates.concat(firebaseAPIs.currentCustomTemplates())
+    })
+  }
+
+  const listenToBackupsChanges = combineCloudAndFileSystemSources(
+    fileSystemAPIs.listenToBackupsChanges,
+    firebaseAPIs.listenToBackupsChanges,
+    mergeBackups,
+    true
+  )
+
+  const currentBackups = () => {
+    return fileSystemAPIs.currentBackups().then((fileSystemBackups) => {
+      return mergeBackups(fileSystemBackups, firebaseAPIs.currentBackups())
+    })
+  }
+
+  return {
+    logger,
+    license: {
+      listenToTrialChanges: ignoringStore(fileSystemAPIs.listenToTrialChanges),
+      currentTrial: fileSystemAPIs.currentTrial,
+      listenToLicenseChanges: ignoringStore(fileSystemAPIs.listenToLicenseChanges),
+      currentLicense: fileSystemAPIs.currentLicense,
+    },
+    session: {
+      listenForSessionChange: ignoringStore(firebaseAPIs.listenForSessionChange),
+    },
+    files: {
+      listenToknownFilesChanges,
+      currentKnownFiles,
+    },
+    backups: {
+      listenToBackupsChanges,
+      currentBackups,
+    },
+    templates: {
+      listenToTemplatesChanges: ignoringStore(fileSystemAPIs.listenToTemplatesChanges),
+      currentTemplates: fileSystemAPIs.currentTemplates,
+      listenToCustomTemplatesChanges,
+      currentCustomTemplates,
+      listenToTemplateManifestChanges: ignoringStore(
+        fileSystemAPIs.listenToTemplateManifestChanges
+      ),
+      currentTemplateManifest: fileSystemAPIs.currentTemplateManifest,
+    },
+    settings: {
+      listenToExportConfigSettingsChanges: ignoringStore(
+        fileSystemAPIs.listenToExportConfigSettingsChanges
+      ),
+      currentExportConfigSettings: fileSystemAPIs.currentExportConfigSettings,
+      listenToAppSettingsChanges: ignoringStore(fileSystemAPIs.listenToAppSettingsChanges),
+      currentAppSettings: fileSystemAPIs.currentAppSettings,
+      listenToUserSettingsChanges: ignoringStore(fileSystemAPIs.listenToUserSettingsChanges),
+      currentUserSettings: fileSystemAPIs.currentUserSettings,
+    },
+  }
 }
 
-const world = plottrWorldAPI(theWorld)
+const makeWorldAPI = (socketClient) => plottrWorldAPI(theWorld(socketClient))
 
-export default world
+export default makeWorldAPI

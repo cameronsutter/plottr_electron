@@ -2,14 +2,15 @@ import path from 'path'
 import { shell } from 'electron'
 import { app, dialog } from '@electron/remote'
 import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
-import { backupBasePath } from './backup'
 import { licenseStore, manifestStore } from '../../file-system/stores'
-import { fileSystemAPIs } from '../../api'
-
-const { saveAppSetting } = fileSystemAPIs
+import { makeFileSystemAPIs } from '../../api'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  const { saveAppSetting } = fileSystemAPIs
+
   switch (code) {
     case 'xsu7wb':
       // extend free trial (one time)
@@ -18,7 +19,9 @@ export function handleCustomerServiceCode(code) {
 
     case '941ff8':
       // view backups
-      shell.openPath(backupBasePath())
+      fileSystemAPIs.backupBasePath().then((basePath) => {
+        shell.openPath(basePath)
+      })
       break
 
     case '7c6a3a':

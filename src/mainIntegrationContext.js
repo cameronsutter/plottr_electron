@@ -31,6 +31,11 @@ const MainIntegrationContext = React.createContext({
       `Couldn't back-up an offline file to resume from the file.  Please wire up the MainIntegrationCentext provider.`
     )
   },
+  saveAppSetting: (key, value) => {
+    throw new Error(
+      `Couldn't save an app setting for ${key} to ${value}.  Please wire up the MainIntegrationContext provider`
+    )
+  },
 })
 
 export default MainIntegrationContext

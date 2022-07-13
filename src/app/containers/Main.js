@@ -22,6 +22,7 @@ import Dashboard from './Dashboard'
 import ProOnboarding from './ProOnboarding'
 import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const win = getCurrentWindow()
 
@@ -140,7 +141,7 @@ const Main = ({
         !!isInProMode === !!isCloudFile(filePath) ||
         (isInOfflineMode && isOfflineFile(filePath))
       ) {
-        bootFile(filePath, options, numOpenFiles, saveBackup)
+        bootFile(whenClientIsReady, filePath, options, numOpenFiles, saveBackup)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -340,7 +341,7 @@ const Main = ({
                       //
                       // FIXME: where should the options come from?
                       const newFilePath = `plottr://${fileId}`
-                      bootFile(newFilePath, {}, 2, saveBackup)
+                      bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
                       ipcRenderer.send('update-last-opened-file', newFilePath)
                     })
                   })

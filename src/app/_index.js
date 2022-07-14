@@ -91,7 +91,7 @@ createClient(
   },
   socketServerEventHandlers
 )
-const { saveFile } = makeFileModule(whenClientIsReady)
+const { saveFile, isTempFile } = makeFileModule(whenClientIsReady)
 
 const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 fileSystemAPIs.currentAppSettings().then((settings) => {
@@ -215,30 +215,32 @@ const ensureEndsInPltr = (filePath) => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
-  if (!present.file.fileName.includes(TEMP_FILES_PATH)) {
-    saveFile(present.file.fileName, present)
-    return
-  }
-  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-  const newFilePath = ensureEndsInPltr(
-    dialog.showSaveDialogSync(win, {
-      filters: filters,
-      title: t('Where would you like to save this file?'),
-    })
-  )
-  if (newFilePath) {
-    // change in redux
-    store.dispatch(actions.ui.editFileName(newFilePath))
-    // remove from tmp store
-    ipcRenderer.send('remove-from-temp-files-if-temp', present.file.fileName)
-    // update in known files
-    ipcRenderer.send('edit-known-file-path', present.file.fileName, newFilePath)
-    // change the window's title
-    win.setRepresentedFilename(newFilePath)
-    win.filePath = newFilePath
-    // send event to dashboard
-    ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
-  }
+  isTempFile(present).then((isTemp) => {
+    if (!isTemp) {
+      saveFile(present.file.fileName, present)
+      return
+    }
+    const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+    const newFilePath = ensureEndsInPltr(
+      dialog.showSaveDialogSync(win, {
+        filters: filters,
+        title: t('Where would you like to save this file?'),
+      })
+    )
+    if (newFilePath) {
+      // change in redux
+      store.dispatch(actions.ui.editFileName(newFilePath))
+      // remove from tmp store
+      ipcRenderer.send('remove-from-temp-files-if-temp', present.file.fileName)
+      // update in known files
+      ipcRenderer.send('edit-known-file-path', present.file.fileName, newFilePath)
+      // change the window's title
+      win.setRepresentedFilename(newFilePath)
+      win.filePath = newFilePath
+      // send event to dashboard
+      ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+    }
+  })
 })
 
 ipcRenderer.on('undo', (event) => {

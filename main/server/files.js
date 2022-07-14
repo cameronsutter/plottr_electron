@@ -16,6 +16,7 @@ const { lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const FileModule = (userDataPath, logger) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
+  const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
 
   const { saveBackup } = BackupModule(userDataPath, logger)
   const { readSettings } = SettingsModule(userDataPath)
@@ -422,6 +423,11 @@ const FileModule = (userDataPath, logger) => {
       })
   }
 
+  function isTempFile(file) {
+    logger.info(`Does ${file.file.fileName} include ${TEMP_FILES_PATH}?`)
+    return file.file.fileName.includes(TEMP_FILES_PATH)
+  }
+
   return {
     saveFile,
     saveOfflineFile,
@@ -431,6 +437,7 @@ const FileModule = (userDataPath, logger) => {
     fileExists,
     backupOfflineBackupForResume,
     readOfflineFiles,
+    isTempFile,
   }
 }
 

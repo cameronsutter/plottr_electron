@@ -84,7 +84,7 @@ class Store {
   }
 
   readStore = () => {
-    readFile(this.name).then((storeContents) => {
+    return readFile(this.path).then((storeContents) => {
       try {
         const previousValue = this.store
         this.store = JSON.parse(storeContents)
@@ -94,6 +94,10 @@ class Store {
         throw new Error(`Contents of store for ${this.name} are invalid`, error)
       }
     })
+  }
+
+  has = (key) => {
+    return !!this.store[key]
   }
 
   writeStore = () => {

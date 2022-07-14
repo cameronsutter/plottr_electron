@@ -43,7 +43,6 @@ import {
   LISTEN_TO_APP_SETTINGS_CHANGES,
   LISTEN_TO_USER_SETTINGS_CHANGES,
   LISTEN_TO_BACKUPS_CHANGES,
-  BACKUP_BASE_PATH,
   LISTEN_TO_TRIAL_CHANGES_UNSUBSCRIBE,
   LISTEN_TO_LICENSE_CHANGES_UNSUBSCRIBE,
   LISTEN_TO_KNOWN_FILES_CHANGES_UNSUBSCRIBE,
@@ -54,6 +53,7 @@ import {
   LISTEN_TO_APP_SETTINGS_CHANGES_UNSUBSCRIBE,
   LISTEN_TO_USER_SETTINGS_CHANGES_UNSUBSCRIBE,
   LISTEN_TO_BACKUPS_CHANGES_UNSUBSCRIBE,
+  IS_TEMP_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
@@ -74,9 +74,25 @@ const setupListeners = (port, userDataPath) => {
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
   const unsubscribeFunctions = new Map()
 
+  const testModules = () => {
+    const consoleLogger = {
+      info: (...args) => {
+        console.log(...args)
+      },
+      warn: (...args) => {
+        console.warn(...args)
+      },
+      error: (...args) => {
+        console.error(...args)
+      },
+    }
+    FileModule(userDataPath, consoleLogger)
+    BackupModule(userDataPath, consoleLogger)
+    fileSystemModule(userDataPath, consoleLogger)
+  }
+
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
-
     const {
       saveFile,
       saveOfflineFile,
@@ -86,6 +102,7 @@ const setupListeners = (port, userDataPath) => {
       fileExists,
       backupOfflineBackupForResume,
       readOfflineFiles,
+      isTempFile,
     } = FileModule(userDataPath, logger)
     const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
     const {
@@ -421,6 +438,23 @@ const setupListeners = (port, userDataPath) => {
                 logger.error('Error while reading offline files', payload, error)
                 replyWithErrorMessage(error.message)
               })
+            return
+          }
+          case IS_TEMP_FILE: {
+            const { file } = payload
+            logger.info('Checking whether file is a temp file (reduced payload): ', {
+              file: {
+                ...payload.file.file,
+              },
+            })
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                result: isTempFile(file),
+                payload,
+              })
+            )
             return
           }
           // ===File System APIs===
@@ -929,6 +963,7 @@ const setupListeners = (port, userDataPath) => {
     })
   })
 
+  testModules()
   process.send('ready')
 }
 

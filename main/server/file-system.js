@@ -2,8 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { sortBy } from 'lodash'
 
-import { BACKUP_BASE_PATH } from '../file-system/config_paths'
-import makeStores from './stores'
+import makeStores, { BACKUP_BASE_PATH } from './stores'
 
 const { readdir, mkdir, lstat } = fs.promises
 
@@ -12,7 +11,6 @@ const EXTENSIONS = 2
 
 const fileSystemModule = (userDataPath, logger) => {
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
-  const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
 
   const {
     trialStore,

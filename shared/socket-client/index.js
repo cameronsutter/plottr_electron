@@ -81,7 +81,7 @@ import {
   CURRENT_USER_SETTINGS,
   LISTEN_TO_BACKUPS_CHANGES,
   CURRENT_BACKUPS,
-  BACKUP_BASE_PATH,
+  IS_TEMP_FILE,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -238,6 +238,7 @@ const connect = (
             return
           }
           // Normal replies
+          case IS_TEMP_FILE:
           case CURRENT_TRIAL:
           case START_TRIAL:
           case EXTEND_TRIAL_WITH_RESET:
@@ -397,11 +398,11 @@ const connect = (
       return sendPromise(READ_OFFLINE_FILES)
     }
 
-    // ===File System APIs===
-
-    const backupBasePath = () => {
-      return sendPromise(BACKUP_BASE_PATH)
+    const isTempFile = (file) => {
+      return sendPromise(IS_TEMP_FILE, { file })
     }
+
+    // ===File System APIs===
 
     const currentTrial = () => {
       return sendPromise(CURRENT_TRIAL)
@@ -524,8 +525,8 @@ const connect = (
           fileExists,
           backupOfflineBackupForResume,
           readOfflineFiles,
+          isTempFile,
           // File system APIs
-          backupBasePath,
           currentTrial,
           startTrial,
           extendTrialWithReset,

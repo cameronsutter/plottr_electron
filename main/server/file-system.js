@@ -22,7 +22,7 @@ const fileSystemModule = (userDataPath, logger) => {
     exportConfigStore,
     SETTINGS,
     USER,
-  } = makeStores(userDataPath)
+  } = makeStores(userDataPath, logger)
 
   function setTemplate(id, template) {
     templatesStore.set(id, template)

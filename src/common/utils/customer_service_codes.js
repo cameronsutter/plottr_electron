@@ -1,6 +1,5 @@
 import { shell } from 'electron'
 import { app, dialog } from '@electron/remote'
-import { licenseStore, manifestStore } from '../../file-system/stores'
 import { makeFileSystemAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
 
@@ -66,7 +65,7 @@ export function handleCustomerServiceCode(code) {
 
     case '329fd4391c10d':
       // nuke the license info
-      licenseStore.store = {}
+      fileSystemAPIs.deleteLicense()
       break
 
     case '16329e':
@@ -82,11 +81,13 @@ export function handleCustomerServiceCode(code) {
       break
 
     case 'templates version':
-      dialog.showMessageBox({
-        title: 'Templates Version',
-        type: 'info',
-        message: manifestStore.get('manifest.version'),
-        detail: 'Templates Version',
+      fileSystemAPIs.currentTemplateManifest().then((manifest) => {
+        dialog.showMessageBox({
+          title: 'Templates Version',
+          type: 'info',
+          message: manifest.manifest.version,
+          detail: 'Templates Version',
+        })
       })
       break
 

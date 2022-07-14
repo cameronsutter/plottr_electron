@@ -1,7 +1,7 @@
 import request from 'request'
 import semverGt from 'semver/functions/gt'
+import { isDevelopment } from './isDevelopment'
 
-import { isDevelopment } from '../../isDevelopment'
 import makeStores from './stores'
 
 export const MANIFEST_ROOT = 'manifest'
@@ -11,8 +11,17 @@ class TemplateFetcher {
   constructor(baseURL, manifestURL, userDataPath, log) {
     this.baseURL = baseURL
     this.manifestURL = manifestURL
+    this.log = log
 
-    const { templatesStore, customTemplatesStore, manifestStore } = makeStores(userDataPath)
+    const basicLogger = {
+      info: log,
+      warn: log,
+      error: log,
+    }
+    const { templatesStore, customTemplatesStore, manifestStore } = makeStores(
+      userDataPath,
+      basicLogger
+    )
     this.templatesStore = templatesStore
     this.customTemplatesStore = customTemplatesStore
     this.manifestStore = manifestStore
@@ -108,7 +117,12 @@ class TemplateFetcher {
 }
 
 const makeTemplateFetcher = (userDataPath, logInfo) => {
-  const { SETTINGS } = makeStores(userDataPath)
+  const basicLogger = {
+    info: logInfo,
+    warn: logInfo,
+    error: logInfo,
+  }
+  const { SETTINGS } = makeStores(userDataPath, basicLogger)
   let env = 'prod'
   if (isDevelopment()) env = 'staging'
   if (SETTINGS.betatemplates) env = 'beta'

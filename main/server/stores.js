@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { isEqual, cloneDeep, set } from 'lodash'
+import { isEqual, cloneDeep, set, get } from 'lodash'
 
 import export_config from 'plottr_import_export/src/exporter/default_config'
 
@@ -38,29 +38,18 @@ class Store {
     this.watch = watch
     this.defaults = defaults
     this.logger = logger
-    this.path = path.join(userDataPath, name)
+    this.path = path.join(userDataPath, `${name}.json`)
 
-    this.readStore()
-      .catch((error) => {
-        if (error.code === 'ENOENT') {
-          // The store doesn't yet exist.  Create it.
-          this.store = {}
-          this.writeStore()
-          return
-        }
-        this.logger.error(`Failed to construct store for ${name}`, error)
-        throw new Error(`Failed to construct store for ${name}`, error)
-      })
-      .then(() => {
-        this.watchStore()
-      })
+    this.readStore().then(() => {
+      this.watchStore()
+    })
   }
 
   watchStore = () => {
     fs.watchFile(this.path, (currentFileStats, _previousFileStats) => {
       if (!currentFileStats.isFile()) {
         this.logger.warn(
-          `File for store connected to ${this.name} dissapeared.  Setting store to empty.`
+          `File for store connected to ${this.name} at ${path} dissapeared.  Setting store to empty.`
         )
         return
       }
@@ -84,16 +73,34 @@ class Store {
   }
 
   readStore = () => {
-    return readFile(this.path).then((storeContents) => {
-      try {
-        const previousValue = this.store
-        this.store = JSON.parse(storeContents)
-        return !isEqual(previousValue, this.store)
-      } catch (error) {
-        this.logger.error(`Contents of store for ${this.name} are invalid`, error)
-        throw new Error(`Contents of store for ${this.name} are invalid`, error)
-      }
-    })
+    return readFile(this.path)
+      .catch((error) => {
+        if (error.code === 'ENOENT') {
+          // The store doesn't yet exist.  Create it.
+          this.store = {}
+          return this.writeStore().then(() => {
+            return '{}'
+          })
+        }
+        this.logger.error(`Failed to construct store for ${this.name} at ${this.path}`, error)
+        throw new Error(`Failed to construct store for ${this.name} at ${this.path}`, error)
+      })
+      .then((storeContents) => {
+        try {
+          const previousValue = this.store
+          this.store = storeContents.toString() === '' ? {} : JSON.parse(storeContents)
+          return !isEqual(previousValue, this.store)
+        } catch (error) {
+          this.logger.error(
+            `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
+            error
+          )
+          throw new Error(
+            `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
+            error
+          )
+        }
+      })
   }
 
   has = (key) => {
@@ -101,7 +108,7 @@ class Store {
   }
 
   writeStore = () => {
-    writeFile(this.path, JSON.stringify(this.store)).catch((error) => {
+    return writeFile(this.path, JSON.stringify(this.store)).catch((error) => {
       this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
       throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
     })
@@ -110,18 +117,22 @@ class Store {
   set = (key, value) => {
     this.store = cloneDeep(this.store)
     set(this.store, key, value)
-    this.writeStore()
+    return this.writeStore()
   }
 
   clear = () => {
     this.store = {}
-    this.writeStore()
+    return this.writeStore()
   }
 
   delete = (id) => {
     this.store = cloneDeep(this.store)
     delete this.store[id]
-    this.writeStore()
+    return this.writeStore()
+  }
+
+  get = (key) => {
+    return get(this.store, key)
   }
 }
 

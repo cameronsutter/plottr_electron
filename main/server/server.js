@@ -76,9 +76,8 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const startupTasks = (userDataPath, logInfo) => {
-  return makeTemplateFetcher(userDataPath, logInfo).then((fetcher) => {
-    fetcher.fetch()
-  })
+  makeTemplateFetcher(userDataPath, logInfo).fetch()
+  return Promise.resolve()
 }
 
 const setupListeners = (port, userDataPath) => {

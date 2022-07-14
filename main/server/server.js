@@ -54,11 +54,17 @@ import {
   LISTEN_TO_USER_SETTINGS_CHANGES_UNSUBSCRIBE,
   LISTEN_TO_BACKUPS_CHANGES_UNSUBSCRIBE,
   IS_TEMP_FILE,
+  BACKUP_BASE_PATH,
+  SET_TEMPLATE,
+  SET_CUSTOM_TEMPLATE,
+  DELETE_CUSTOM_TEMPLATE,
+  DEFAULT_BACKUP_LOCATION,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import FileModule from './files'
 import BackupModule from './backup'
 import fileSystemModule from './file-system'
+import makeTemplateFetcher from './template_fetcher'
 
 const parseArgs = () => {
   return {
@@ -69,26 +75,29 @@ const parseArgs = () => {
 
 const { rm } = fs.promises
 
+const startupTasks = (userDataPath, logInfo) => {
+  return makeTemplateFetcher(userDataPath, logInfo).then((fetcher) => {
+    fetcher.fetch()
+  })
+}
+
 const setupListeners = (port, userDataPath) => {
   process.send(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port })
   const unsubscribeFunctions = new Map()
+  const logInfo = (...args) => {
+    process.send(`[Socket Server]: Basic Log Info ${args.join(', ')}`)
+  }
 
   const testModules = () => {
-    const consoleLogger = {
-      info: (...args) => {
-        console.log(...args)
-      },
-      warn: (...args) => {
-        console.warn(...args)
-      },
-      error: (...args) => {
-        console.error(...args)
-      },
+    const basicLogger = {
+      info: logInfo,
+      warn: logInfo,
+      error: logInfo,
     }
-    FileModule(userDataPath, consoleLogger)
-    BackupModule(userDataPath, consoleLogger)
-    fileSystemModule(userDataPath, consoleLogger)
+    FileModule(userDataPath, basicLogger)
+    BackupModule(userDataPath, basicLogger)
+    fileSystemModule(userDataPath, basicLogger)
   }
 
   webSocketServer.on('connection', (webSocket) => {
@@ -104,8 +113,12 @@ const setupListeners = (port, userDataPath) => {
       readOfflineFiles,
       isTempFile,
     } = FileModule(userDataPath, logger)
-    const { saveBackup, ensureBackupTodayPath } = BackupModule(userDataPath, logger)
+    const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = BackupModule(
+      userDataPath,
+      logger
+    )
     const {
+      backupBasePath,
       listenToTrialChanges,
       currentTrial,
       startTrial,
@@ -132,6 +145,9 @@ const setupListeners = (port, userDataPath) => {
       currentUserSettings,
       listenToBackupsChanges,
       currentBackups,
+      setCustomTemplate,
+      deleteCustomTemplate,
+      setTemplate,
     } = fileSystemModule(userDataPath, logger)
 
     webSocket.on('message', (message) => {
@@ -457,7 +473,106 @@ const setupListeners = (port, userDataPath) => {
             )
             return
           }
+          case SET_TEMPLATE: {
+            const { id, template } = payload
+            logger.info(`Setting a template with id ${id} to ${template}`)
+            setTemplate(id, template)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  `Error while setting a template with id ${id} to ${template}`,
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case SET_CUSTOM_TEMPLATE: {
+            const { id, template } = payload
+            logger.info(`Setting a custom template with id ${id} to ${template}`)
+            setCustomTemplate(id, template)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(
+                  `Error while setting a custom template with id ${id} to ${template}`,
+                  payload,
+                  error
+                )
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case DELETE_CUSTOM_TEMPLATE: {
+            const { id } = payload
+            logger.info(`Deleting a custom template with id ${id}`)
+            deleteCustomTemplate(id)
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error(`Error while deleting a custom template with id ${id}`, payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
+          case DEFAULT_BACKUP_LOCATION: {
+            logger.info('Getting the default backup location')
+            webSocket.send(
+              JSON.stringify({
+                type,
+                messageId,
+                defaultBackupPath,
+                payload,
+              })
+            )
+            return
+          }
           // ===File System APIs===
+          case BACKUP_BASE_PATH: {
+            logger.info('Getting the backup base path')
+            backupBasePath()
+              .then((result) => {
+                webSocket.send(
+                  JSON.stringify({
+                    type,
+                    messageId,
+                    result,
+                    payload,
+                  })
+                )
+              })
+              .catch((error) => {
+                logger.error('Error while getting the backup base path', payload, error)
+                replyWithErrorMessage(error.message)
+              })
+            return
+          }
           case CURRENT_TRIAL: {
             logger.info('Getting the current trial info')
             currentTrial()
@@ -964,7 +1079,9 @@ const setupListeners = (port, userDataPath) => {
   })
 
   testModules()
-  process.send('ready')
+  startupTasks(userDataPath, logInfo).then(() => {
+    process.send('ready')
+  })
 }
 
 const startServer = () => {

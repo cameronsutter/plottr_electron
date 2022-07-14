@@ -117,6 +117,12 @@ class Store {
     this.store = {}
     this.writeStore()
   }
+
+  delete = (id) => {
+    this.store = cloneDeep(this.store)
+    delete this.store[id]
+    this.writeStore()
+  }
 }
 
 const makeStores = (userDataPath, logger) => {

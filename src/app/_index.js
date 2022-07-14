@@ -17,9 +17,7 @@ import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'
 import { ActionCreators } from 'redux-undo'
 import { addNewCustomTemplate } from '../common/utils/custom_templates'
-import { TEMP_FILES_PATH } from '../file-system/config_paths'
 import { createFullErrorReport } from '../common/utils/full_error_report'
-import makeTemplateFetcher from '../common/utils/template_fetcher'
 import {
   openDashboard,
   closeDashboard,
@@ -101,7 +99,10 @@ fileSystemAPIs.currentAppSettings().then((settings) => {
 instrumentLongRunningTasks()
 
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
-const rollbar = setupRollbar('app.html')
+let rollbar
+setupRollbar('app.html').then((newRollbar) => {
+  rollbar = newRollbar
+})
 
 process.on('uncaughtException', (err) => {
   logger.error(err)
@@ -113,14 +114,6 @@ window.requestIdleCallback(() => {
   whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath }) => {
     return ensureBackupFullPath().then(ensureBackupTodayPath)
   })
-  makeTemplateFetcher()
-    .then((templateFetcher) => {
-      templateFetcher.fetch()
-    })
-    .catch((error) => {
-      // FIXME: retry?
-      logger.error(`Failed to fetch templates!`, error)
-    })
   initMixpanel()
 })
 

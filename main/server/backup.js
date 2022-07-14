@@ -317,6 +317,7 @@ const BackupModule = (userDataPath, logger) => {
   }
 
   return {
+    defaultBackupPath,
     backupBasePath,
     saveBackup,
     ensureBackupTodayPath,

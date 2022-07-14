@@ -24,6 +24,20 @@ const fileSystemModule = (userDataPath, logger) => {
     USER,
   } = makeStores(userDataPath)
 
+  function setTemplate(id, template) {
+    templatesStore.set(id, template)
+    return true
+  }
+
+  function setCustomTemplate(id, template) {
+    customTemplatesStore.set(id, template)
+    return true
+  }
+
+  function deleteCustomTemplate(id) {
+    customTemplatesStore.delete(id)
+  }
+
   function backupBasePath() {
     return currentAppSettings().then((settings) => {
       const configuredLocation = settings.user?.backupLocation
@@ -277,6 +291,9 @@ const fileSystemModule = (userDataPath, logger) => {
   }
 
   return {
+    setTemplate,
+    setCustomTemplate,
+    deleteCustomTemplate,
     backupBasePath,
     listenToTrialChanges,
     currentTrial,

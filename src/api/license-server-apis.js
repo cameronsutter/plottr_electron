@@ -10,8 +10,6 @@ import { isMacOS } from '../isOS'
 import { whenClientIsReady } from '../../shared/socket-client'
 import logger from '../../shared/logger'
 
-const rollbar = setupRollbar('license_checker')
-
 export const trial90days = ['nanoCAMP@90', 'infoSTACK90!']
 export const trial60days = ['infoSTACK60!']
 
@@ -34,11 +32,13 @@ export function checkForActiveLicense(licenseInfo, callback) {
     })
     .catch((err) => {
       log.error(err)
-      rollbar.warn(err)
-      // conscious choice not to turn premium off here
-      // User may be disconnected from internet or something else going on
-      log.info('[license_checker]', 'license check request failed')
-      callback(err, null)
+      setupRollbar('license_checker').then((rollbar) => {
+        rollbar.warn(err)
+        // conscious choice not to turn premium off here
+        // User may be disconnected from internet or something else going on
+        log.info('[license_checker]', 'license check request failed')
+        callback(err, null)
+      })
     })
 }
 

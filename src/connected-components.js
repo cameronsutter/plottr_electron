@@ -52,9 +52,6 @@ import { isDevelopment } from './isDevelopment'
 
 import { store } from './app/store'
 
-import { BACKUP_BASE_PATH, TEMP_FILES_PATH } from './file-system/config_paths'
-import { USER } from './file-system/stores'
-
 import extractImages from './common/extract_images'
 import { resizeImage } from './common/resizeImage'
 import { downloadStorageImage } from './common/downloadStorageImage'
@@ -106,7 +103,11 @@ const platform = {
   },
   electron: { ...electron, remote },
   appVersion: version,
-  defaultBackupLocation: BACKUP_BASE_PATH,
+  defaultBackupLocation: () => {
+    return whenClientIsReady(({ defaultBackupLocation }) => {
+      return defaultBackupLocation()
+    })
+  },
   setDarkMode: (value) => {
     ipcRenderer.send('pls-set-dark-setting', value)
   },
@@ -120,6 +121,11 @@ const platform = {
     ipcRenderer.send('pls-quit')
   },
   file: {
+    isTempFile: (file) => {
+      return whenClientIsReady(({ isTempFile }) => {
+        return isTempFile(file)
+      })
+    },
     createNew: (template, name) => {
       const state = store.getState()
       const {
@@ -173,7 +179,6 @@ const platform = {
         })
     },
     doesFileExist,
-    isTempFile: (filePath) => filePath.includes(TEMP_FILES_PATH),
     pathSep: path.sep,
     basename: path.basename,
     openKnownFile: (filePath, id, unknown) => {
@@ -331,7 +336,6 @@ const platform = {
   settings: {
     saveAppSetting,
   },
-  user: USER,
   os: () => (isWindows() ? 'windows' : isMacOS() ? 'macos' : isLinux() ? 'linux' : 'unknown'),
   isDevelopment: isDevelopment(),
   isWindows: () => !!isWindows(),
@@ -371,7 +375,6 @@ const platform = {
       }
     })
   },
-  tempFilesPath: TEMP_FILES_PATH,
   mpq: MPQ,
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
   templatesDisabled: false,

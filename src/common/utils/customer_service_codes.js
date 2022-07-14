@@ -1,7 +1,5 @@
-import path from 'path'
 import { shell } from 'electron'
 import { app, dialog } from '@electron/remote'
-import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
 import { licenseStore, manifestStore } from '../../file-system/stores'
 import { makeFileSystemAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
@@ -73,7 +71,9 @@ export function handleCustomerServiceCode(code) {
 
     case '16329e':
       // show the custom templates file
-      shell.showItemInFolder(path.join(app.getPath('userData'), `${CUSTOM_TEMPLATES_PATH}.json`))
+      fileSystemAPIs.customTemplatesPath().then((path) => {
+        shell.showItemInFolder(path.join(app.getPath('userData'), `${path}.json`))
+      })
       break
 
     case '8bb9de':

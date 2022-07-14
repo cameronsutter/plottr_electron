@@ -23,6 +23,7 @@ import {
   FILE_EXISTS,
   BACKUP_OFFLINE_BACKUP_FOR_RESUME,
   READ_OFFLINE_FILES,
+  SET_TEMPLATE,
 
   // Error reply types
   RM_RF_ERROR_REPLY,
@@ -53,6 +54,7 @@ import {
   SAVE_APP_SETTING_ERROR_REPLY,
   CURRENT_USER_SETTINGS_ERROR_REPLY,
   CURRENT_BACKUPS_ERROR_REPLY,
+  SET_TEMPLATE_ERROR_REPLY,
 
   // File system APIs
   LISTEN_TO_TRIAL_CHANGES,
@@ -82,8 +84,16 @@ import {
   LISTEN_TO_BACKUPS_CHANGES,
   CURRENT_BACKUPS,
   IS_TEMP_FILE,
+  BACKUP_BASE_PATH,
+  BACKUP_BASE_PATH_ERROR_REPLY,
+  CUSTOM_TEMPLATES_PATH_ERROR_REPLY,
+  SET_CUSTOM_TEMPLATE,
+  DELETE_CUSTOM_TEMPLATE,
+  DEFAULT_BACKUP_LOCATION,
+  DEFAULT_BACKUP_LOCATION_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
+import { CUSTOM_TEMPLATES_PATH } from '../../main/server/stores'
 
 const defer =
   typeof process === 'object' && process.type === 'renderer'
@@ -238,6 +248,10 @@ const connect = (
             return
           }
           // Normal replies
+          case DEFAULT_BACKUP_LOCATION:
+          case SET_TEMPLATE:
+          case CUSTOM_TEMPLATES_PATH:
+          case BACKUP_BASE_PATH:
           case IS_TEMP_FILE:
           case CURRENT_TRIAL:
           case START_TRIAL:
@@ -285,6 +299,10 @@ const connect = (
             return
           }
           // Error return types
+          case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
+          case SET_TEMPLATE_ERROR_REPLY:
+          case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
+          case BACKUP_BASE_PATH_ERROR_REPLY:
           case CURRENT_TRIAL_ERROR_REPLY:
           case START_TRIAL_ERROR_REPLY:
           case EXTEND_TRIAL_WITH_RESET_ERROR_REPLY:
@@ -402,7 +420,27 @@ const connect = (
       return sendPromise(IS_TEMP_FILE, { file })
     }
 
+    const setTemplate = (id, template) => {
+      return sendPromise(SET_TEMPLATE, { id, template })
+    }
+
+    const setCustomTemplate = (id, template) => {
+      return sendPromise(SET_CUSTOM_TEMPLATE, { id, template })
+    }
+
+    const deleteCustomTemplate = (id) => {
+      return sendPromise(DELETE_CUSTOM_TEMPLATE, { id })
+    }
+
+    const defaultBackupLocation = () => {
+      return sendPromise(DEFAULT_BACKUP_LOCATION)
+    }
+
     // ===File System APIs===
+
+    const backupBasePath = () => {
+      return sendPromise(BACKUP_BASE_PATH)
+    }
 
     const currentTrial = () => {
       return sendPromise(CURRENT_TRIAL)
@@ -526,7 +564,12 @@ const connect = (
           backupOfflineBackupForResume,
           readOfflineFiles,
           isTempFile,
+          setTemplate,
+          setCustomTemplate,
+          deleteCustomTemplate,
+          defaultBackupLocation,
           // File system APIs
+          backupBasePath,
           currentTrial,
           startTrial,
           extendTrialWithReset,

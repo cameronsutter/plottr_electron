@@ -20,7 +20,10 @@ import { makeFileModule } from './files'
 
 const clientId = machineIdSync()
 
-const rollbar = setupRollbar('app.html')
+let rollbar
+setupRollbar('app.html').then((newRollbar) => {
+  rollbar = newRollbar
+})
 
 const win = getCurrentWindow()
 

@@ -9,11 +9,15 @@
 //   })
 // }
 
-import { SETTINGS } from '../file-system/stores'
+import { whenClientIsReady } from '../../shared/socket-client'
 
 const electron = require('electron')
 const { setupI18n } = require('plottr_locales')
-setupI18n(SETTINGS, { electron })
-;(() => {
-  require('./_index.js')
-})()
+whenClientIsReady(({ currentAppSettings }) => {
+  return currentAppSettings().then((settings) => {
+    setupI18n(settings, { electron })
+    ;(() => {
+      require('./_index.js')
+    })()
+  })
+})

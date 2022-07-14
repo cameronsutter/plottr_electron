@@ -143,21 +143,25 @@ const connect = (
       const unsubscribe = () => {
         callbacks.delete(messageId)
         try {
-          clientConnection.send({
-            type: typeToUnsubscribeType(type),
-            messageId,
-            payload: {},
-          })
+          clientConnection.send(
+            JSON.stringify({
+              type: typeToUnsubscribeType(type),
+              messageId,
+              payload: {},
+            })
+          )
         } catch (error) {
           logger.error(`Error trying to unsubscribe from ${type} with payload: ${payload}`)
         }
       }
       try {
-        clientConnection.send({
-          type,
-          messageId,
-          payload,
-        })
+        clientConnection.send(
+          JSON.stringify({
+            type,
+            messageId,
+            payload,
+          })
+        )
         return unsubscribe
       } catch (error) {
         logger.error(`Error while registering a listener on ${type} with payload: ${payload}`)

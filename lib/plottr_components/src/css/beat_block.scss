@@ -8,6 +8,11 @@ $medium_width: 80px;
   width: $cell_width;
   padding-bottom: 45px;
 
+  &:not(.medium-timeline):not(.small-timeline) {
+    margin-top: 5px;
+    padding-bottom: 16px;
+  }
+
   &.medium-timeline {
     width: 90px;
     padding-bottom: 0;
@@ -77,9 +82,7 @@ $medium_width: 80px;
 
 .beat__body {
   @include sub-header-font;
-  padding: 30px 10px;
-  width: 150px + 6px; // +6px for the 3px border
-  margin: auto;
+  padding: 10px;
   text-align: center;
   transition: all 0.4s $cubic;
   border: 3px dashed transparent;
@@ -107,6 +110,7 @@ $medium_width: 80px;
     width: $medium_width + 6px; // +6px for the 3px border
     font-size: 14px;
     padding: 12px 4px;
+    margin: auto;
     .form-group {
       .control-label {
         font-size: 12px;
@@ -167,8 +171,8 @@ $medium_width: 80px;
     margin-top: 8px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
-    margin: 75px 0;
-    height: 16px;
+    height: 50px;
+    margin: 5px 2px;
   }
   .insert-beat-wrapper {
     .glyphicon {

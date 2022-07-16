@@ -43,10 +43,12 @@
     .note-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
 
       .note-list__item-buttons {
-        margin-left: auto;
         min-width: 71px;
+        position: absolute;
+        right: 0;
         visibility: hidden;
         &.visible {
           visibility: visible;

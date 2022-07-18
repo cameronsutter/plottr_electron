@@ -49,11 +49,14 @@
     .place-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
 
       .place-list__item-buttons {
         margin-left: auto;
         min-width: 71px;
         visibility: hidden;
+        position: absolute;
+        right: 0;
         &.visible {
           visibility: visible;
         }

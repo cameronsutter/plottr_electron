@@ -103,12 +103,12 @@ const fileSystemModule = (userDataPath) => (stores, logger) => {
 
   const listenToknownFilesChanges = (cb) => {
     const transformStore = (store) =>
-          Object.entries(store).map(([key, file]) => ({
-            ...file,
-            fromFileSystem: true,
-            isTempFile: file.path.includes(TEMP_FILES_PATH),
-            id: key,
-          }))
+      Object.entries(store).map(([key, file]) => ({
+        ...file,
+        fromFileSystem: true,
+        isTempFile: file.path.includes(TEMP_FILES_PATH),
+        id: key,
+      }))
 
     const withFileSystemAsSource = (files) => {
       return cb(transformStore(files))

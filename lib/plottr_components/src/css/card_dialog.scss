@@ -139,7 +139,7 @@
     }
   }
   textarea {
-    font-size: 20px;
+    @include rce-text-font;
   }
   .slate-editor__wrapper {
     height: 100%;
@@ -149,6 +149,7 @@
   .slate-editor__editor {
     height: calc(100% - 30px);
     overflow-y: auto;
+    @include rce-text-font;
   }
 }
 

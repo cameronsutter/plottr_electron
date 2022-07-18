@@ -98,6 +98,7 @@ const Main = ({
   finishUploadingFileToCloud,
   enableTestUtilities,
   saveBackup,
+  settings,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -234,6 +235,18 @@ const Main = ({
       window.removeEventListener('offline', offlineListener)
     }
   }, [setOffline])
+
+  useEffect(() => {
+    if (settings.user.font) {
+      window.document.documentElement.style.setProperty('--default-rce-font', settings.user.font)
+    }
+    if (settings.user.fontSize) {
+      window.document.documentElement.style.setProperty(
+        '--default-rce-font-size',
+        String(settings.user.fontSize) + 'px'
+      )
+    }
+  }, [settings.user])
 
   useEffect(() => {
     window.document.body.className = darkMode ? 'darkmode' : ''
@@ -458,6 +471,7 @@ Main.propTypes = {
   finishUploadingFileToCloud: PropTypes.func.isRequired,
   enableTestUtilities: PropTypes.func.isRequired,
   saveBackup: PropTypes.func.isRequired,
+  settings: PropTypes.object,
 }
 
 export default connect(
@@ -486,6 +500,7 @@ export default connect(
     uploadingFileToCloud: selectors.uploadingFileToCloudSelector(state.present),
     emailAddress: selectors.emailAddressSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    settings: selectors.appSettingsSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

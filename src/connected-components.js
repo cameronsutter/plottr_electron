@@ -121,11 +121,6 @@ const platform = {
     ipcRenderer.send('pls-quit')
   },
   file: {
-    isTempFile: (file) => {
-      return whenClientIsReady(({ isTempFile }) => {
-        return isTempFile(file)
-      })
-    },
     createNew: (template, name) => {
       const state = store.getState()
       const {

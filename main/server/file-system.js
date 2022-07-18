@@ -11,6 +11,7 @@ const EXTENSIONS = 2
 
 const fileSystemModule = (userDataPath, logger) => {
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
+  const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
 
   const {
     trialStore,
@@ -106,6 +107,7 @@ const fileSystemModule = (userDataPath, logger) => {
       Object.entries(store).map(([key, file]) => ({
         ...file,
         fromFileSystem: true,
+        isTempFile: file.path.includes(TEMP_FILES_PATH),
         id: key,
       }))
 
@@ -121,6 +123,7 @@ const fileSystemModule = (userDataPath, logger) => {
       Object.entries(knownFilesStore.store).map(([key, file]) => ({
         ...file,
         fromFileSystem: true,
+        isTempFile: file.path.includes(TEMP_FILES_PATH),
         id: key,
       }))
     )

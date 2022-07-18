@@ -248,7 +248,7 @@ const connect = (
             // We might get a late reply from the worker thread.  i.e. it
             // could reply after we unsubscribed on this side.  In that
             // case, there'll be no callback registered.
-            if (callback) callback(payload)
+            if (callback) callback(result)
             return
           }
           // Normal replies

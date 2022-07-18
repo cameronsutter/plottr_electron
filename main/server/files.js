@@ -4,8 +4,6 @@ import { isEqual } from 'lodash'
 
 import { emptyFile, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
-import SettingsModule from './settings'
-import BackupModule from './backup'
 import {
   AUTO_SAVE_BACKUP_ERROR,
   AUTO_SAVE_ERROR,
@@ -14,12 +12,12 @@ import {
 
 const { lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
-const FileModule = (userDataPath, logger) => {
+const fileModule = (userDataPath) => (backupModule, settingsModule, logger) => {
   const offlineFileFilesPath = path.join(userDataPath, 'offline')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
 
-  const { saveBackup } = BackupModule(userDataPath, logger)
-  const { readSettings } = SettingsModule(userDataPath)
+  const { saveBackup } = backupModule
+  const { readSettings } = settingsModule
 
   function escapeFileName(fileName) {
     return escape(fileName.replace(/[/\\]/g, '-'))
@@ -441,4 +439,4 @@ const FileModule = (userDataPath, logger) => {
   }
 }
 
-export default FileModule
+export default fileModule

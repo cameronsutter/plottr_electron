@@ -61,10 +61,12 @@ import {
   DEFAULT_BACKUP_LOCATION,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
-import FileModule from './files'
-import BackupModule from './backup'
-import fileSystemModule from './file-system'
-import makeTemplateFetcher from './template_fetcher'
+import wireupFileModule from './files'
+import wireupBackupModule from './backup'
+import wireupFileSystemModule from './file-system'
+import wireupTemplateFetcher from './template_fetcher'
+import makeStores from './stores'
+import makeSettinsgModule from './settings'
 
 const parseArgs = () => {
   return {
@@ -75,8 +77,8 @@ const parseArgs = () => {
 
 const { rm } = fs.promises
 
-const startupTasks = (userDataPath, logInfo) => {
-  makeTemplateFetcher(userDataPath, logInfo).fetch()
+const startupTasks = (userDataPath, stores, logInfo) => {
+  wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
   return Promise.resolve()
 }
 
@@ -88,19 +90,31 @@ const setupListeners = (port, userDataPath) => {
     process.send(`[Socket Server]: Basic Log Info ${args.join(', ')}`)
   }
 
+  const basicLogger = {
+    info: logInfo,
+    warn: logInfo,
+    error: logInfo,
+  }
+
+  const stores = makeStores(userDataPath, basicLogger)
+  const settings = makeSettinsgModule(stores)
+
+  const makeFileModule = wireupFileModule(userDataPath)
+  const makeBackupModule = wireupBackupModule(userDataPath)
+  const makeFileSystemModule = wireupFileSystemModule(userDataPath)
+  const makeTemplateFetcher = wireupTemplateFetcher(userDataPath)
+
   const testModules = () => {
-    const basicLogger = {
-      info: logInfo,
-      warn: logInfo,
-      error: logInfo,
-    }
-    FileModule(userDataPath, basicLogger)
-    BackupModule(userDataPath, basicLogger)
-    fileSystemModule(userDataPath, basicLogger)
+    const backupModule = makeBackupModule(settings, basicLogger)
+    makeFileSystemModule(stores, basicLogger)
+    makeTemplateFetcher(stores, basicLogger)
+    makeFileModule(backupModule, settings, basicLogger)
   }
 
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
+    const backupModule = makeBackupModule(settings, logger)
+    const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = backupModule
     const {
       saveFile,
       saveOfflineFile,
@@ -111,11 +125,7 @@ const setupListeners = (port, userDataPath) => {
       backupOfflineBackupForResume,
       readOfflineFiles,
       isTempFile,
-    } = FileModule(userDataPath, logger)
-    const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = BackupModule(
-      userDataPath,
-      logger
-    )
+    } = makeFileModule(backupModule, settings, logger)
     const {
       backupBasePath,
       listenToTrialChanges,
@@ -147,7 +157,7 @@ const setupListeners = (port, userDataPath) => {
       setCustomTemplate,
       deleteCustomTemplate,
       setTemplate,
-    } = fileSystemModule(userDataPath, logger)
+    } = makeFileSystemModule(stores, logger)
 
     webSocket.on('message', (message) => {
       try {
@@ -1072,13 +1082,19 @@ const setupListeners = (port, userDataPath) => {
           }
         }
       } catch (error) {
-        logger.error('Failed to handle message: ', message.toString().substring(0, 50), error)
+        logger.error(
+          'Failed to handle message: ',
+          message.toString().substring(0, 50),
+          error.message,
+          error.stack,
+          error
+        )
       }
     })
   })
 
   testModules()
-  startupTasks(userDataPath, logInfo).then(() => {
+  startupTasks(userDataPath, stores, logInfo).then(() => {
     process.send('ready')
   })
 }

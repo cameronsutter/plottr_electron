@@ -2,26 +2,17 @@ import request from 'request'
 import semverGt from 'semver/functions/gt'
 import { isDevelopment } from './isDevelopment'
 
-import makeStores from './stores'
-
 export const MANIFEST_ROOT = 'manifest'
 const OLD_TEMPLATES_ROOT = 'templates'
 
 class TemplateFetcher {
-  constructor(baseURL, manifestURL, userDataPath, log) {
+  constructor(baseURL, manifestURL, userDataPath, stores, log) {
     this.baseURL = baseURL
     this.manifestURL = manifestURL
     this.log = log
 
-    const basicLogger = {
-      info: log,
-      warn: log,
-      error: log,
-    }
-    const { templatesStore, customTemplatesStore, manifestStore } = makeStores(
-      userDataPath,
-      basicLogger
-    )
+    const { templatesStore, customTemplatesStore, manifestStore } = stores
+
     this.templatesStore = templatesStore
     this.customTemplatesStore = customTemplatesStore
     this.manifestStore = manifestStore
@@ -116,21 +107,18 @@ class TemplateFetcher {
   }
 }
 
-const makeTemplateFetcher = (userDataPath, logInfo) => {
-  const basicLogger = {
-    info: logInfo,
-    warn: logInfo,
-    error: logInfo,
-  }
-  const { SETTINGS } = makeStores(userDataPath, basicLogger)
+const makeTemplateFetcher = (userDataPath) => {
   let env = 'prod'
   if (isDevelopment()) env = 'staging'
-  if (SETTINGS.betatemplates) env = 'beta'
 
-  const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
-  const manifestURL = `${baseURL}/v2/manifest.json`
+  return (stores, logInfo) => {
+    if (stores.SETTINGS.betatemplates) env = 'beta'
 
-  return new TemplateFetcher(baseURL, manifestURL, userDataPath, logInfo)
+    const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
+    const manifestURL = `${baseURL}/v2/manifest.json`
+
+    return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+  }
 }
 
 export default makeTemplateFetcher

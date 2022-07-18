@@ -2,17 +2,16 @@ import path from 'path'
 import fs from 'fs'
 import { sortBy } from 'lodash'
 
-import makeStores, { BACKUP_BASE_PATH } from './stores'
+import { BACKUP_BASE_PATH } from './stores'
 
 const { readdir, mkdir, lstat } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
 
-const fileSystemModule = (userDataPath, logger) => {
+const fileSystemModule = (userDataPath) => (stores, logger) => {
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
-
   const {
     trialStore,
     licenseStore,
@@ -23,7 +22,7 @@ const fileSystemModule = (userDataPath, logger) => {
     exportConfigStore,
     SETTINGS,
     USER,
-  } = makeStores(userDataPath, logger)
+  } = stores
 
   function setTemplate(id, template) {
     templatesStore.set(id, template)
@@ -104,12 +103,12 @@ const fileSystemModule = (userDataPath, logger) => {
 
   const listenToknownFilesChanges = (cb) => {
     const transformStore = (store) =>
-      Object.entries(store).map(([key, file]) => ({
-        ...file,
-        fromFileSystem: true,
-        isTempFile: file.path.includes(TEMP_FILES_PATH),
-        id: key,
-      }))
+          Object.entries(store).map(([key, file]) => ({
+            ...file,
+            fromFileSystem: true,
+            isTempFile: file.path.includes(TEMP_FILES_PATH),
+            id: key,
+          }))
 
     const withFileSystemAsSource = (files) => {
       return cb(transformStore(files))

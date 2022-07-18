@@ -34,6 +34,8 @@ class Store {
   watchers = new Set()
 
   constructor(userDataPath, logger, { name, watch, defaults }) {
+    logger.info(`Constructing store for: ${name}`)
+
     this.name = name
     this.watch = watch
     this.defaults = defaults

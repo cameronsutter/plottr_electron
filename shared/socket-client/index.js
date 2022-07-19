@@ -257,6 +257,7 @@ const connect = (
           case OFFLINE_FILE_PATH:
           case DEFAULT_BACKUP_LOCATION:
           case SET_TEMPLATE:
+          case SET_CUSTOM_TEMPLATE:
           case CUSTOM_TEMPLATES_PATH:
           case BACKUP_BASE_PATH:
           case IS_TEMP_FILE:

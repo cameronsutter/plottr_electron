@@ -26,7 +26,6 @@ const makeFileModule = () => {
   const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
   const tempFilesStore = new Store(app.getPath('userData'), log, {
     name: tempPath,
-    cwd: 'tmp',
     watch: true,
   })
 

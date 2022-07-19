@@ -37,6 +37,9 @@ class Store {
         this.logger.warn(
           `File for store connected to ${this.name} at ${path} dissapeared.  Setting store to empty.`
         )
+        this.store = {}
+        this.writeStore()
+        this.publishChangesToWatchers()
         return
       }
       this.readStore().then((didChange) => {

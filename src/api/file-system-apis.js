@@ -44,7 +44,7 @@ const makeFileSystemAPIs = (socketClient) => {
   }
   const deleteLicense = () => {
     return socketClient(({ deleteLicense }) => {
-      deleteLicense()
+      return deleteLicense()
     })
   }
   const saveLicenseInfo = (newLicense) => {

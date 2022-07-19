@@ -60,6 +60,7 @@ import {
   DELETE_CUSTOM_TEMPLATE,
   DEFAULT_BACKUP_LOCATION,
   OFFLINE_FILE_PATH,
+  CUSTOM_TEMPLATES_PATH,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -159,6 +160,7 @@ const setupListeners = (port, userDataPath) => {
       setCustomTemplate,
       deleteCustomTemplate,
       setTemplate,
+      customTemplatesPath,
     } = makeFileSystemModule(stores, logger)
 
     webSocket.on('message', (message) => {
@@ -467,6 +469,13 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           // ===File System APIs===
+          case CUSTOM_TEMPLATES_PATH: {
+            return handleSync(
+              () => 'Getting the custom templates path',
+              () => customTemplatesPath,
+              () => 'Error getting the custom templates path'
+            )
+          }
           case BACKUP_BASE_PATH: {
             return handlePromise(
               () => 'Getting the backup base path',

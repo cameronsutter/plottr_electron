@@ -71,7 +71,7 @@ export function handleCustomerServiceCode(code) {
     case '16329e':
       // show the custom templates file
       fileSystemAPIs.customTemplatesPath().then((path) => {
-        shell.showItemInFolder(path.join(app.getPath('userData'), `${path}.json`))
+        shell.showItemInFolder(path)
       })
       break
 

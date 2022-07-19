@@ -2,7 +2,7 @@ import path from 'path'
 import fs from 'fs'
 import { sortBy } from 'lodash'
 
-import { BACKUP_BASE_PATH } from './stores'
+import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
 
 const { readdir, mkdir, lstat } = fs.promises
 
@@ -31,6 +31,7 @@ const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
 const fileSystemModule = (userDataPath) => {
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
+  const customTemplatesPath = path.join(userDataPath, `${CUSTOM_TEMPLATES_PATH}.json`)
 
   return (stores, logger) => {
     const {
@@ -324,6 +325,7 @@ const fileSystemModule = (userDataPath) => {
       currentUserSettings,
       listenToBackupsChanges,
       currentBackups,
+      customTemplatesPath,
     }
   }
 }

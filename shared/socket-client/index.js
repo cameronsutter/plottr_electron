@@ -93,9 +93,9 @@ import {
   DEFAULT_BACKUP_LOCATION_ERROR_REPLY,
   OFFLINE_FILE_PATH_ERROR_REPLY,
   OFFLINE_FILE_PATH,
+  CUSTOM_TEMPLATES_PATH,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
-import { CUSTOM_TEMPLATES_PATH } from '../../main/server/stores'
 
 const defer =
   typeof process === 'object' && process.type === 'renderer'
@@ -519,6 +519,10 @@ const connect = (
       return sendPromise(CURRENT_BACKUPS)
     }
 
+    const customTemplatesPath = () => {
+      return sendPromise(CUSTOM_TEMPLATES_PATH)
+    }
+
     // Subscriptions
     const listenToTrialChanges = (cb) => {
       return registerCallback(LISTEN_TO_TRIAL_CHANGES, {}, cb)
@@ -582,6 +586,7 @@ const connect = (
           deleteCustomTemplate,
           defaultBackupLocation,
           offlineFilePath,
+          customTemplatesPath,
           // File system APIs
           backupBasePath,
           currentTrial,

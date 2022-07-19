@@ -54,7 +54,6 @@
     "dotenv-stringify": "^2.0.6",
     "electron-context-menu": "^2.0.1",
     "electron-log": "^4.3.2",
-    "electron-store": "^8.0.1",
     "electron-updater": "4.3.9",
     "electron-util": "^0.17.2",
     "electron-window-state": "^5.0.3",

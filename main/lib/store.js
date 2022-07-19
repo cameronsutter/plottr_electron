@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { isEqual, cloneDeep, set, get } from 'lodash'
 
-const { readFile, writeFile } = fs.promises
+const { readFile, writeFile, lstat, mkdir } = fs.promises
 
 class Store {
   store = {}
@@ -15,6 +15,7 @@ class Store {
     this.watch = watch
     this.defaults = defaults || {}
     this.logger = logger
+    this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
 
     this.readStore().then(() => {
@@ -58,11 +59,23 @@ class Store {
     return readFile(this.path)
       .catch((error) => {
         if (error.code === 'ENOENT') {
-          // The store doesn't yet exist.  Create it.
-          this.store = {}
-          return this.writeStore().then(() => {
-            return '{}'
-          })
+          const createStore = () => {
+            // The store doesn't yet exist.  Create it.
+            this.store = {}
+            return this.writeStore().then(() => {
+              return '{}'
+            })
+          }
+          // Does the user data folder exist?
+          return lstat(this.userDataPath)
+            .then(createStore)
+            .catch((dataDirError) => {
+              // Use data folder doesn't exist.  Create it.
+              if (dataDirError.code === 'ENOENT') {
+                return mkdir(this.userDataPath, { recursive: true }).then(createStore)
+              }
+              return Promise.reject(dataDirError)
+            })
         }
         this.logger.error(`Failed to construct store for ${this.name} at ${this.path}`, error)
         throw new Error(`Failed to construct store for ${this.name} at ${this.path}`, error)

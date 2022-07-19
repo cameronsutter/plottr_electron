@@ -116,10 +116,14 @@ class Store {
   writeStore = () => {
     return writeFile(
       this.path,
-      JSON.stringify({
-        ...this.defaults,
-        ...this.store,
-      })
+      JSON.stringify(
+        {
+          ...this.defaults,
+          ...this.store,
+        },
+        null,
+        2
+      )
     ).catch((error) => {
       this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
       throw new Error(`Failed to write ${this.store} store for {this.path}`, error)

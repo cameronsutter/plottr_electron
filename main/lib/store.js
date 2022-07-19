@@ -94,7 +94,7 @@ class Store {
       .then((storeContents) => {
         try {
           const previousValue = this.store
-          this.store = storeContents.toString() === '' ? {} : JSON.parse(storeContents)
+          this.store = storeContents.toString() === '' ? this.defaults : JSON.parse(storeContents)
           return !isEqual(previousValue, this.store)
         } catch (error) {
           this.logger.error(

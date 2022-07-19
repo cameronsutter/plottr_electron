@@ -35,7 +35,7 @@ class Store {
     this.watcher = fs.watchFile(this.path, (currentFileStats, _previousFileStats) => {
       if (!currentFileStats.isFile()) {
         this.logger.warn(
-          `File for store connected to ${this.name} at ${path} dissapeared.  Setting store to empty.`
+          `File for store connected to ${this.name} at ${this.path} dissapeared.  Setting store to empty.`
         )
         this.store = {}
         this.writeStore()

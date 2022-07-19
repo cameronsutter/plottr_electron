@@ -119,18 +119,23 @@ class Store {
   set = (key, value) => {
     this.store = cloneDeep(this.store)
     set(this.store, key, value)
-    return this.writeStore()
+    return this.writeStore().then(() => true)
+  }
+
+  set = (store) => {
+    this.store = cloneDeep(store)
+    return this.writeStore().then(() => true)
   }
 
   clear = () => {
     this.store = {}
-    return this.writeStore()
+    return this.writeStore().then(() => true)
   }
 
   delete = (id) => {
     this.store = cloneDeep(this.store)
     delete this.store[id]
-    return this.writeStore()
+    return this.writeStore().then(() => true)
   }
 
   get = (key) => {

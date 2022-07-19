@@ -57,17 +57,15 @@ const fileSystemModule = (userDataPath) => {
     }
 
     function setTemplate(id, template) {
-      templatesStore.set(id, template)
-      return true
+      return templatesStore.set(id, template)
     }
 
     function setCustomTemplate(id, template) {
-      customTemplatesStore.set(id, template)
-      return true
+      return customTemplatesStore.set(id, template)
     }
 
     function deleteCustomTemplate(id) {
-      customTemplatesStore.delete(id)
+      return customTemplatesStore.delete(id)
     }
 
     const listenToTrialChanges = (cb) => {
@@ -82,20 +80,24 @@ const fileSystemModule = (userDataPath) => {
       const startsAt = day.getTime()
       const end = addDays(startsAt, numDays || TRIAL_LENGTH)
       const endsAt = end.getTime()
-      trialStore.set({ startsAt, endsAt, extensions: EXTENSIONS })
-      return Promise.resolve(true)
+      return trialStore.set({ startsAt, endsAt, extensions: EXTENSIONS })
     }
     const extendTrialWithReset = (days) => {
-      const currentInfo = currentTrial()
-      if (currentInfo.hasBeenReset) {
-        return Promise.resolve(true)
-      }
+      return currentTrial().then((currentInfo) => {
+        if (currentInfo.hasBeenReset) {
+          return true
+        }
 
-      const newEnd = addDays(currentInfo.endsAt, days)
-      trialStore.set('endsAt', newEnd.getTime())
-      trialStore.set('extensions', EXTENSIONS)
-      trialStore.set('hasBeenReset', true)
-      return Promise.resolve(true)
+        const newEnd = addDays(currentInfo.endsAt, days)
+        return trialStore
+          .set('endsAt', newEnd.getTime())
+          .then(() => {
+            return trialStore.set('extensions', EXTENSIONS)
+          })
+          .then(() => {
+            trialStore.set('hasBeenReset', true)
+          })
+      })
     }
 
     const listenToLicenseChanges = (cb) => {
@@ -106,8 +108,7 @@ const fileSystemModule = (userDataPath) => {
       return Promise.resolve(licenseStore.store)
     }
     const deleteLicense = () => {
-      licenseStore.clear()
-      return Promise.resolve(true)
+      return licenseStore.clear()
     }
     const saveLicenseInfo = (newLicense) => {
       licenseStore.store = newLicense
@@ -176,8 +177,7 @@ const fileSystemModule = (userDataPath) => {
       return Promise.resolve(exportConfigStore.store)
     }
     const saveExportConfigSettings = (key, value) => {
-      exportConfigStore.set(key, value)
-      return Promise.resolve(true)
+      return exportConfigStore.set(key, value)
     }
 
     const listenToAppSettingsChanges = (cb) => {
@@ -185,8 +185,7 @@ const fileSystemModule = (userDataPath) => {
       return SETTINGS.onDidAnyChange.bind(SETTINGS)(cb)
     }
     const saveAppSetting = (key, value) => {
-      SETTINGS.set(key, value)
-      return Promise.resolve(true)
+      return SETTINGS.set(key, value)
     }
 
     const listenToUserSettingsChanges = (cb) => {

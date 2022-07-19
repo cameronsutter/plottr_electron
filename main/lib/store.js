@@ -31,7 +31,9 @@ class Store {
         return
       }
       this.readStore().then((didChange) => {
-        this.publishChangesToWatchers()
+        if (didChange) {
+          this.publishChangesToWatchers()
+        }
       })
     })
   }

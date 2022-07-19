@@ -214,24 +214,25 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
   }
 
   const computeAndHandleResumeDirectives = (fileId, email, userId, json) => {
-    const settings = fileSystemAPIs.currentAppSettings()
-    if (!settings.user.enableOfflineMode) {
-      return Promise.resolve(false)
-    }
-    const offlinePath = offlineFilePath(json)
-    const exists = fs.existsSync(offlinePath)
-    // FIXME: the socket server now has a way to read files.  We don't
-    // want to depend on FS from the renderer because that'll call out
-    // to the main process.
-    const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-    if (!offlineFile.file) {
-      logger.warn(
-        `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
-      )
-      return Promise.resolve(false)
-    }
-    const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
-    return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+    return fileSystemAPIs.currentAppSettings().then((settings) => {
+      if (!settings.user.enableOfflineMode) {
+        return Promise.resolve(false)
+      }
+      const offlinePath = offlineFilePath(json)
+      const exists = fs.existsSync(offlinePath)
+      // FIXME: the socket server now has a way to read files.  We don't
+      // want to depend on FS from the renderer because that'll call out
+      // to the main process.
+      const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
+      if (!offlineFile.file) {
+        logger.warn(
+          `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
+        )
+        return Promise.resolve(false)
+      }
+      const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
+      return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+    })
   }
 
   const afterLoading = (userId, saveBackup) => (json) => {

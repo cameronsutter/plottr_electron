@@ -202,13 +202,13 @@ const setupListeners = (port, userDataPath) => {
                 type,
                 messageId,
                 payload,
-                result: handlePayload(payload),
+                result: handlePayload(),
               })
             )
           } catch (error) {
             const toLogAsError = logError(error)
             logger.error([
-              ...(Array.isArray(toLogAsError) ? toLogAsInfo : [toLogAsError]),
+              ...(Array.isArray(toLogAsError) ? toLogAsError : [toLogAsError]),
               error.message,
               error.stack,
             ])
@@ -233,7 +233,7 @@ const setupListeners = (port, userDataPath) => {
             .catch((error) => {
               const toLogAsError = logError(error)
               logger.error([
-                ...(Array.isArray(toLogAsError) ? toLogAsInfo : [toLogAsError]),
+                ...(Array.isArray(toLogAsError) ? toLogAsError : [toLogAsError]),
                 error.message,
                 error.stack,
               ])
@@ -248,7 +248,7 @@ const setupListeners = (port, userDataPath) => {
             if (error) {
               const toLogAsError = logError(error)
               logger.error([
-                ...(Array.isArray(toLogAsError) ? toLogAsInfo : [toLogAsError]),
+                ...(Array.isArray(toLogAsError) ? toLogAsError : [toLogAsError]),
                 error.message,
                 error.stack,
               ])

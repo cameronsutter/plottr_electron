@@ -30,9 +30,13 @@ export function editTemplateDetails(id, templateData, userId) {
   }
   const { currentCustomTemplates } = makeFileSystemAPIs(whenClientIsReady)
   currentCustomTemplates().then((templates) => {
-    if (templates.find((template) => template.id === id)) {
+    const templateFound = templates.find((template) => template.id === id)
+    if (templateFound) {
       whenClientIsReady(({ setCustomTemplate }) => {
-        setCustomTemplate(id, info)
+        setCustomTemplate(id, {
+          ...templateFound,
+          ...info,
+        })
       })
       return
     }

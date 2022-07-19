@@ -25,8 +25,14 @@ class Store {
     })
   }
 
+  stop = () => {
+    if (this.watcher && typeof this.watcher.close === 'function') {
+      this.watcher.close()
+    }
+  }
+
   watchStore = () => {
-    fs.watchFile(this.path, (currentFileStats, _previousFileStats) => {
+    this.watcher = fs.watchFile(this.path, (currentFileStats, _previousFileStats) => {
       if (!currentFileStats.isFile()) {
         this.logger.warn(
           `File for store connected to ${this.name} at ${path} dissapeared.  Setting store to empty.`

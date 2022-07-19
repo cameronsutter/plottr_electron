@@ -1,5 +1,9 @@
-import Store from 'electron-store'
-const trialStore = new Store({ name: 'trial_info' })
+import { app } from 'electron'
+import log from 'electron-log'
+
+import Store from '../lib/store'
+
+const trialStore = new Store(app.getPath('userData'), log, { name: 'trial_info', watch: true })
 
 function getTriaInfo() {
   return trialStore.get()

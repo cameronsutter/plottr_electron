@@ -23,6 +23,7 @@ import {
   FILE_EXISTS,
   BACKUP_OFFLINE_BACKUP_FOR_RESUME,
   READ_OFFLINE_FILES,
+  SET_TEMPLATE,
 
   // Error reply types
   RM_RF_ERROR_REPLY,
@@ -37,6 +38,64 @@ import {
   FILE_EXISTS_ERROR_REPLY,
   BACKUP_OFFLINE_BACKUP_FOR_RESUME_ERROR_REPLY,
   READ_OFFLINE_FILES_ERROR_REPLY,
+  CURRENT_TRIAL_ERROR_REPLY,
+  START_TRIAL_ERROR_REPLY,
+  EXTEND_TRIAL_WITH_RESET_ERROR_REPLY,
+  CURRENT_LICENSE_ERROR_REPLY,
+  DELETE_LICENSE_ERROR_REPLY,
+  SAVE_LICENSE_INFO_ERROR_REPLY,
+  CURRENT_KNOWN_FILES_ERROR_REPLY,
+  CURRENT_TEMPLATES_ERROR_REPLY,
+  CURRENT_CUSTOM_TEMPLATES_ERROR_REPLY,
+  CURRENT_TEMPLATE_MANIFEST_ERROR_REPLY,
+  CURRENT_EXPORT_CONFIG_SETTINGS_ERROR_REPLY,
+  SAVE_EXPORT_CONFIG_SETTINGS_ERROR_REPLY,
+  CURRENT_APP_SETTINGS_ERROR_REPLY,
+  SAVE_APP_SETTING_ERROR_REPLY,
+  CURRENT_USER_SETTINGS_ERROR_REPLY,
+  CURRENT_BACKUPS_ERROR_REPLY,
+  SET_TEMPLATE_ERROR_REPLY,
+
+  // File system APIs
+  LISTEN_TO_TRIAL_CHANGES,
+  CURRENT_TRIAL,
+  START_TRIAL,
+  EXTEND_TRIAL_WITH_RESET,
+  LISTEN_TO_LICENSE_CHANGES,
+  CURRENT_LICENSE,
+  DELETE_LICENSE,
+  SAVE_LICENSE_INFO,
+  LISTEN_TO_KNOWN_FILES_CHANGES,
+  CURRENT_KNOWN_FILES,
+  LISTEN_TO_TEMPLATES_CHANGES,
+  CURRENT_TEMPLATES,
+  LISTEN_TO_CUSTOM_TEMPLATES_CHANGES,
+  CURRENT_CUSTOM_TEMPLATES,
+  LISTEN_TO_TEMPLATE_MANIFEST_CHANGES,
+  CURRENT_TEMPLATE_MANIFEST,
+  LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES,
+  CURRENT_EXPORT_CONFIG_SETTINGS,
+  SAVE_EXPORT_CONFIG_SETTINGS,
+  LISTEN_TO_APP_SETTINGS_CHANGES,
+  CURRENT_APP_SETTINGS,
+  SAVE_APP_SETTING,
+  LISTEN_TO_USER_SETTINGS_CHANGES,
+  CURRENT_USER_SETTINGS,
+  LISTEN_TO_BACKUPS_CHANGES,
+  CURRENT_BACKUPS,
+  IS_TEMP_FILE,
+  BACKUP_BASE_PATH,
+  BACKUP_BASE_PATH_ERROR_REPLY,
+  CUSTOM_TEMPLATES_PATH_ERROR_REPLY,
+  SET_CUSTOM_TEMPLATE,
+  DELETE_CUSTOM_TEMPLATE,
+  DEFAULT_BACKUP_LOCATION,
+  DEFAULT_BACKUP_LOCATION_ERROR_REPLY,
+  OFFLINE_FILE_PATH_ERROR_REPLY,
+  OFFLINE_FILE_PATH,
+  CUSTOM_TEMPLATES_PATH,
+  ATTEMPT_TO_FETCH_TEMPLATES,
+  ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -61,6 +120,7 @@ const connect = (
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
     const promises = new Map()
+    const callbacks = new Map()
 
     const sendPromise = (type, payload) => {
       const messageId = uuidv4()
@@ -79,6 +139,38 @@ const connect = (
         }
       })
       return reply
+    }
+    const typeToUnsubscribeType = (type) => type + '_UNSUBSCRIBE'
+    const registerCallback = (type, payload, callback) => {
+      const messageId = uuidv4()
+      callbacks.set(messageId, callback)
+      const unsubscribe = () => {
+        callbacks.delete(messageId)
+        try {
+          clientConnection.send(
+            JSON.stringify({
+              type: typeToUnsubscribeType(type),
+              messageId,
+              payload: {},
+            })
+          )
+        } catch (error) {
+          logger.error(`Error trying to unsubscribe from ${type} with payload: ${payload}`)
+        }
+      }
+      try {
+        clientConnection.send(
+          JSON.stringify({
+            type,
+            messageId,
+            payload,
+          })
+        )
+        return unsubscribe
+      } catch (error) {
+        logger.error(`Error while registering a listener on ${type} with payload: ${payload}`)
+        throw error
+      }
     }
 
     clientConnection.on('message', (data) => {
@@ -145,7 +237,50 @@ const connect = (
             }
             return
           }
+          // Subscription replies
+          case LISTEN_TO_TRIAL_CHANGES:
+          case LISTEN_TO_LICENSE_CHANGES:
+          case LISTEN_TO_KNOWN_FILES_CHANGES:
+          case LISTEN_TO_TEMPLATES_CHANGES:
+          case LISTEN_TO_CUSTOM_TEMPLATES_CHANGES:
+          case LISTEN_TO_TEMPLATE_MANIFEST_CHANGES:
+          case LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES:
+          case LISTEN_TO_APP_SETTINGS_CHANGES:
+          case LISTEN_TO_USER_SETTINGS_CHANGES:
+          case LISTEN_TO_BACKUPS_CHANGES: {
+            const callback = callbacks.get(messageId)
+            // We might get a late reply from the worker thread.  i.e. it
+            // could reply after we unsubscribed on this side.  In that
+            // case, there'll be no callback registered.
+            if (callback) callback(result)
+            return
+          }
           // Normal replies
+          case ATTEMPT_TO_FETCH_TEMPLATES:
+          case DELETE_CUSTOM_TEMPLATE:
+          case OFFLINE_FILE_PATH:
+          case DEFAULT_BACKUP_LOCATION:
+          case SET_TEMPLATE:
+          case SET_CUSTOM_TEMPLATE:
+          case CUSTOM_TEMPLATES_PATH:
+          case BACKUP_BASE_PATH:
+          case IS_TEMP_FILE:
+          case CURRENT_TRIAL:
+          case START_TRIAL:
+          case EXTEND_TRIAL_WITH_RESET:
+          case CURRENT_LICENSE:
+          case DELETE_LICENSE:
+          case SAVE_LICENSE_INFO:
+          case CURRENT_KNOWN_FILES:
+          case CURRENT_TEMPLATES:
+          case CURRENT_CUSTOM_TEMPLATES:
+          case CURRENT_TEMPLATE_MANIFEST:
+          case CURRENT_EXPORT_CONFIG_SETTINGS:
+          case SAVE_EXPORT_CONFIG_SETTINGS:
+          case CURRENT_APP_SETTINGS:
+          case SAVE_APP_SETTING:
+          case CURRENT_USER_SETTINGS:
+          case CURRENT_BACKUPS:
           case READ_OFFLINE_FILES:
           case BACKUP_OFFLINE_BACKUP_FOR_RESUME:
           case FILE_EXISTS:
@@ -176,6 +311,28 @@ const connect = (
             return
           }
           // Error return types
+          case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
+          case OFFLINE_FILE_PATH_ERROR_REPLY:
+          case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
+          case SET_TEMPLATE_ERROR_REPLY:
+          case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
+          case BACKUP_BASE_PATH_ERROR_REPLY:
+          case CURRENT_TRIAL_ERROR_REPLY:
+          case START_TRIAL_ERROR_REPLY:
+          case EXTEND_TRIAL_WITH_RESET_ERROR_REPLY:
+          case CURRENT_LICENSE_ERROR_REPLY:
+          case DELETE_LICENSE_ERROR_REPLY:
+          case SAVE_LICENSE_INFO_ERROR_REPLY:
+          case CURRENT_KNOWN_FILES_ERROR_REPLY:
+          case CURRENT_TEMPLATES_ERROR_REPLY:
+          case CURRENT_CUSTOM_TEMPLATES_ERROR_REPLY:
+          case CURRENT_TEMPLATE_MANIFEST_ERROR_REPLY:
+          case CURRENT_EXPORT_CONFIG_SETTINGS_ERROR_REPLY:
+          case SAVE_EXPORT_CONFIG_SETTINGS_ERROR_REPLY:
+          case CURRENT_APP_SETTINGS_ERROR_REPLY:
+          case SAVE_APP_SETTING_ERROR_REPLY:
+          case CURRENT_USER_SETTINGS_ERROR_REPLY:
+          case CURRENT_BACKUPS_ERROR_REPLY:
           case BACKUP_OFFLINE_BACKUP_FOR_RESUME_ERROR_REPLY:
           case READ_OFFLINE_FILES_ERROR_REPLY:
           case RM_RF_ERROR_REPLY:
@@ -194,7 +351,11 @@ const connect = (
         }
 
         logger.error(
-          `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
+          `Unknown message type reply: ${type}, with payload: ${JSON.stringify(
+            payload,
+            null,
+            2
+          )} and id: ${messageId}`
         )
         rejectPromise()
       } catch (error) {
@@ -273,6 +434,149 @@ const connect = (
       return sendPromise(READ_OFFLINE_FILES)
     }
 
+    const isTempFile = (file) => {
+      return sendPromise(IS_TEMP_FILE, { file })
+    }
+
+    const setTemplate = (id, template) => {
+      return sendPromise(SET_TEMPLATE, { id, template })
+    }
+
+    const setCustomTemplate = (id, template) => {
+      return sendPromise(SET_CUSTOM_TEMPLATE, { id, template })
+    }
+
+    const deleteCustomTemplate = (id) => {
+      return sendPromise(DELETE_CUSTOM_TEMPLATE, { id })
+    }
+
+    const defaultBackupLocation = () => {
+      return sendPromise(DEFAULT_BACKUP_LOCATION)
+    }
+
+    const offlineFilePath = (filePath) => {
+      return sendPromise(OFFLINE_FILE_PATH, { filePath })
+    }
+
+    const attemptToFetchTemplates = () => {
+      return sendPromise(ATTEMPT_TO_FETCH_TEMPLATES)
+    }
+
+    // ===File System APIs===
+
+    const backupBasePath = () => {
+      return sendPromise(BACKUP_BASE_PATH)
+    }
+
+    const currentTrial = () => {
+      return sendPromise(CURRENT_TRIAL)
+    }
+
+    const startTrial = (numDays = null) => {
+      return sendPromise(START_TRIAL, { numDays })
+    }
+
+    const extendTrialWithReset = (days) => {
+      return sendPromise(EXTEND_TRIAL_WITH_RESET, { days })
+    }
+
+    const currentLicense = () => {
+      return sendPromise(CURRENT_LICENSE)
+    }
+
+    const deleteLicense = () => {
+      return sendPromise(DELETE_LICENSE)
+    }
+
+    const saveLicenseInfo = (newLicense) => {
+      return sendPromise(SAVE_LICENSE_INFO, { newLicense })
+    }
+
+    const currentKnownFiles = () => {
+      return sendPromise(CURRENT_KNOWN_FILES)
+    }
+
+    const currentTemplates = () => {
+      return sendPromise(CURRENT_TEMPLATES)
+    }
+
+    const currentCustomTemplates = () => {
+      return sendPromise(CURRENT_CUSTOM_TEMPLATES)
+    }
+
+    const currentTemplateManifest = () => {
+      return sendPromise(CURRENT_TEMPLATE_MANIFEST)
+    }
+
+    const currentExportConfigSettings = () => {
+      return sendPromise(CURRENT_EXPORT_CONFIG_SETTINGS)
+    }
+
+    const saveExportConfigSettings = (key, value) => {
+      return sendPromise(SAVE_EXPORT_CONFIG_SETTINGS, { key, value })
+    }
+
+    const currentAppSettings = () => {
+      return sendPromise(CURRENT_APP_SETTINGS)
+    }
+
+    const saveAppSetting = (key, value) => {
+      return sendPromise(SAVE_APP_SETTING, { key, value })
+    }
+
+    const currentUserSettings = () => {
+      return sendPromise(CURRENT_USER_SETTINGS)
+    }
+
+    const currentBackups = () => {
+      return sendPromise(CURRENT_BACKUPS)
+    }
+
+    const customTemplatesPath = () => {
+      return sendPromise(CUSTOM_TEMPLATES_PATH)
+    }
+
+    // Subscriptions
+    const listenToTrialChanges = (cb) => {
+      return registerCallback(LISTEN_TO_TRIAL_CHANGES, {}, cb)
+    }
+
+    const listenToLicenseChanges = (cb) => {
+      return registerCallback(LISTEN_TO_LICENSE_CHANGES, {}, cb)
+    }
+
+    const listenToknownFilesChanges = (cb) => {
+      return registerCallback(LISTEN_TO_KNOWN_FILES_CHANGES, {}, cb)
+    }
+
+    const listenToTemplatesChanges = (cb) => {
+      return registerCallback(LISTEN_TO_TEMPLATES_CHANGES, {}, cb)
+    }
+
+    const listenToCustomTemplatesChanges = (cb) => {
+      return registerCallback(LISTEN_TO_CUSTOM_TEMPLATES_CHANGES, {}, cb)
+    }
+
+    const listenToTemplateManifestChanges = (cb) => {
+      return registerCallback(LISTEN_TO_TEMPLATE_MANIFEST_CHANGES, {}, cb)
+    }
+
+    const listenToExportConfigSettingsChanges = (cb) => {
+      return registerCallback(LISTEN_TO_EXPORT_CONFIG_SETTINGS_CHANGES, {}, cb)
+    }
+
+    const listenToAppSettingsChanges = (cb) => {
+      return registerCallback(LISTEN_TO_APP_SETTINGS_CHANGES, {}, cb)
+    }
+
+    const listenToUserSettingsChanges = (cb) => {
+      return registerCallback(LISTEN_TO_USER_SETTINGS_CHANGES, {}, cb)
+    }
+
+    const listenToBackupsChanges = (cb) => {
+      return registerCallback(LISTEN_TO_BACKUPS_CHANGES, {}, cb)
+    }
+
     return new Promise((resolve, reject) => {
       clientConnection.on('open', () => {
         resolve({
@@ -289,6 +593,42 @@ const connect = (
           fileExists,
           backupOfflineBackupForResume,
           readOfflineFiles,
+          isTempFile,
+          setTemplate,
+          setCustomTemplate,
+          deleteCustomTemplate,
+          defaultBackupLocation,
+          offlineFilePath,
+          customTemplatesPath,
+          attemptToFetchTemplates,
+          // File system APIs
+          backupBasePath,
+          currentTrial,
+          startTrial,
+          extendTrialWithReset,
+          currentLicense,
+          deleteLicense,
+          saveLicenseInfo,
+          currentKnownFiles,
+          currentTemplates,
+          currentCustomTemplates,
+          currentTemplateManifest,
+          currentExportConfigSettings,
+          saveExportConfigSettings,
+          currentAppSettings,
+          saveAppSetting,
+          currentUserSettings,
+          currentBackups,
+          listenToTrialChanges,
+          listenToLicenseChanges,
+          listenToknownFilesChanges,
+          listenToTemplatesChanges,
+          listenToCustomTemplatesChanges,
+          listenToTemplateManifestChanges,
+          listenToExportConfigSettingsChanges,
+          listenToAppSettingsChanges,
+          listenToUserSettingsChanges,
+          listenToBackupsChanges,
           close: clientConnection.close.bind(clientConnection),
         })
       })

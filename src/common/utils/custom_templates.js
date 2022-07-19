@@ -5,8 +5,8 @@ import { app } from '@electron/remote'
 import { t } from 'plottr_locales'
 import { tree, helpers } from 'pltr/v2'
 
-import { customTemplatesStore } from '../../file-system/stores'
 import { saveCustomTemplate } from './templates_from_firestore'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
   let template = null
@@ -24,7 +24,9 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
   if (userId) {
     saveCustomTemplate(userId, template)
   } else {
-    customTemplatesStore.set(template.id, template)
+    whenClientIsReady(({ setCustomTemplate }) => {
+      setCustomTemplate(template.id, template)
+    })
   }
 
   try {

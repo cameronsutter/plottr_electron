@@ -2,11 +2,8 @@ import electron from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
-import Store from 'electron-store'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
-
-Store.initRenderer()
 
 initialize()
 setupI18n(SETTINGS, { electron })
@@ -56,6 +53,7 @@ import { config } from 'dotenv'
 import { broadcastToAllWindows } from './modules/broadcast'
 import { setDarkMode } from './modules/theme'
 config({ path: ENV_FILE_PATH })
+
 const rollbar = setupRollbar('main', {})
 
 // https://github.com/sindresorhus/electron-context-menu

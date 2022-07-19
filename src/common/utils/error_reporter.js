@@ -4,9 +4,10 @@ import fs from 'fs'
 import path from 'path'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
-import { USER } from '../../file-system/stores'
 
 import log from '../../../shared/logger'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
+import makeFileSystemAPIs from '../../api/file-system-apis'
 
 let previousAction = null
 
@@ -25,21 +26,24 @@ export function getPreviousAction() {
 }
 
 export function createErrorReport(error, errorInfo) {
-  const body = prepareErrorReport(error, errorInfo)
-  const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-  fs.writeFile(fileName, body, function (err) {
-    if (err) {
-      log.warn(err)
-      rollbar.warn(err)
-    } else {
-      notifyUser(fileName)
-    }
+  prepareErrorReport(error, errorInfo).then((body) => {
+    const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
+    fs.writeFile(fileName, body, function (err) {
+      if (err) {
+        log.warn(err)
+      } else {
+        notifyUser(fileName)
+      }
+    })
   })
 }
 
 function prepareErrorReport(error, errorInfo) {
-  const hasLicense = !!USER.get('licenseKey')
-  const report = `
+  const { currentUserSettings } = makeFileSystemAPIs(whenClientIsReady)
+
+  return currentUserSettings().then((user) => {
+    const hasLicense = !!user.licenseKey
+    const report = `
 ----------------------------------
 INFO
 ----------------------------------
@@ -59,7 +63,8 @@ PREVIOUS ACTION
 ----------------------------------
 ${JSON.stringify(previousAction)}
   `
-  return report
+    return report
+  })
 }
 
 function notifyUser(fileName) {

@@ -1,18 +1,12 @@
-import fs from 'fs'
-import path from 'path'
-
-const { readFile } = fs.promises
-
-const SettingsModule = (userDataPath) => {
-  const settingsFileName = process.env.NODE_ENV == 'development' ? 'config_dev.json' : 'config.json'
+const settingsModule = (stores) => {
+  const { SETTINGS } = stores
 
   const readSettings = () => {
-    return readFile(path.join(userDataPath, settingsFileName)).then((data) => {
-      return JSON.parse(data)
-    })
+    // Old API for legacy settings
+    return Promise.resolve(SETTINGS.store)
   }
 
   return { readSettings }
 }
 
-export default SettingsModule
+export default settingsModule

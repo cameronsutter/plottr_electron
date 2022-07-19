@@ -1,11 +1,16 @@
+import { app } from 'electron'
 import path from 'path'
 import log from 'electron-log'
-import Store from 'electron-store'
+
+import Store from '../lib/store'
 import { reloadRecents } from './dashboard'
 import { OFFLINE_FILE_FILES_PATH } from './offlineFilePath'
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'
 
-const knownFilesStore = new Store({ name: knownFilesPath })
+const knownFilesStore = new Store(app.getPath('userData'), log, {
+  name: knownFilesPath,
+  watch: true,
+})
 
 function getKnownFilesInfo() {
   return knownFilesStore.get()
@@ -49,7 +54,7 @@ function addToKnown(filePath) {
           [firstMatch[0]]: firstMatch[1],
         }
       )
-      knownFilesStore.store = withoutHits
+      knownFilesStore.set(withoutHits)
     } catch (error) {
       log.error('Failed to remove file', error)
     }

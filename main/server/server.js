@@ -66,7 +66,7 @@ import wireupBackupModule from './backup'
 import wireupFileSystemModule from './file-system'
 import wireupTemplateFetcher from './template_fetcher'
 import makeStores from './stores'
-import makeSettinsgModule from './settings'
+import makeSettingsModule from './settings'
 
 const parseArgs = () => {
   return {
@@ -97,7 +97,7 @@ const setupListeners = (port, userDataPath) => {
   }
 
   const stores = makeStores(userDataPath, basicLogger)
-  const settings = makeSettinsgModule(stores)
+  const settings = makeSettingsModule(stores)
 
   const makeFileModule = wireupFileModule(userDataPath)
   const makeBackupModule = wireupBackupModule(userDataPath)

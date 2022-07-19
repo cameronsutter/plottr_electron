@@ -38,13 +38,14 @@ const makeStores = (userDataPath, logger) => {
     watch: true,
     defaults: export_config,
   })
-  const manifestStore = new Store(userDataPath, logger, { name: manifestPath })
-  const USER = new Store(userDataPath, logger, { name: USER_INFO_PATH })
+  const manifestStore = new Store(userDataPath, logger, { name: manifestPath, watch: true })
+  const USER = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
 
   const settingsStorePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
   const SETTINGS = new Store(userDataPath, logger, {
     defaults: defaultSettings,
     name: settingsStorePath,
+    watch: true,
   })
 
   // ===Migrations===

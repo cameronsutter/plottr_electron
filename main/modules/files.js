@@ -24,7 +24,11 @@ const makeFileModule = () => {
   const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 
   const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
-  const tempFilesStore = new Store({ name: tempPath, cwd: 'tmp', watch: true })
+  const tempFilesStore = new Store(app.getPath('userData'), log, {
+    name: tempPath,
+    cwd: 'tmp',
+    watch: true,
+  })
 
   const saveFile = (filePath, jsonData) => {
     return whenClientIsReady(({ saveFile }) => {

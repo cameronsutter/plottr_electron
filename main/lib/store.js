@@ -131,7 +131,7 @@ class Store {
   }
 
   set = (storeOrKey, value) => {
-    if (value) {
+    if (typeof value !== 'undefined') {
       const key = storeOrKey
       this.store = cloneDeep(this.store)
       set(this.store, key, value)
@@ -155,7 +155,7 @@ class Store {
   }
 
   get = (key) => {
-    if (key) {
+    if (typeof key !== 'undefined') {
       return get(this.store, key) || get(this.defaults, key)
     }
 

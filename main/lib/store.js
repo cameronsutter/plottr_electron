@@ -72,6 +72,9 @@ class Store {
             .catch((dataDirError) => {
               // Use data folder doesn't exist.  Create it.
               if (dataDirError.code === 'ENOENT') {
+                this.logger.warn(
+                  `User data path doesn't exist at: ${this.userDataPath}.  Attempting to create it.`
+                )
                 return mkdir(this.userDataPath, { recursive: true }).then(createStore)
               }
               return Promise.reject(dataDirError)

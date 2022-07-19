@@ -111,8 +111,7 @@ const fileSystemModule = (userDataPath) => {
       return licenseStore.clear()
     }
     const saveLicenseInfo = (newLicense) => {
-      licenseStore.store = newLicense
-      return Promise.resolve(true)
+      return licenseStore.set(newLicense)
     }
 
     const listenToknownFilesChanges = (cb) => {

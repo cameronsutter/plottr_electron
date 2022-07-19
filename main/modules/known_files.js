@@ -54,7 +54,7 @@ function addToKnown(filePath) {
           [firstMatch[0]]: firstMatch[1],
         }
       )
-      knownFilesStore.store = withoutHits
+      knownFilesStore.set(withoutHits)
     } catch (error) {
       log.error('Failed to remove file', error)
     }

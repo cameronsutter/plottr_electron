@@ -9,7 +9,6 @@ import { listen, fetchFiles, getIdTokenResult, logOut } from 'wired-up-firebase'
 import { t } from 'plottr_locales'
 
 import { store } from '../store'
-import { offlineFilePath } from '../../files'
 import logger from '../../../shared/logger'
 import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'

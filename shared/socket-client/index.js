@@ -91,6 +91,8 @@ import {
   DELETE_CUSTOM_TEMPLATE,
   DEFAULT_BACKUP_LOCATION,
   DEFAULT_BACKUP_LOCATION_ERROR_REPLY,
+  OFFLINE_FILE_PATH_ERROR_REPLY,
+  OFFLINE_FILE_PATH,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 import { CUSTOM_TEMPLATES_PATH } from '../../main/server/stores'
@@ -252,6 +254,7 @@ const connect = (
             return
           }
           // Normal replies
+          case OFFLINE_FILE_PATH:
           case DEFAULT_BACKUP_LOCATION:
           case SET_TEMPLATE:
           case CUSTOM_TEMPLATES_PATH:
@@ -303,6 +306,7 @@ const connect = (
             return
           }
           // Error return types
+          case OFFLINE_FILE_PATH_ERROR_REPLY:
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
@@ -440,6 +444,10 @@ const connect = (
       return sendPromise(DEFAULT_BACKUP_LOCATION)
     }
 
+    const offlineFilePath = (filePath) => {
+      return sendPromise(OFFLINE_FILE_PATH, { filePath })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -572,6 +580,7 @@ const connect = (
           setCustomTemplate,
           deleteCustomTemplate,
           defaultBackupLocation,
+          offlineFilePath,
           // File system APIs
           backupBasePath,
           currentTrial,

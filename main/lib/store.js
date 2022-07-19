@@ -120,13 +120,15 @@ class Store {
     })
   }
 
-  set = (key, value) => {
-    this.store = cloneDeep(this.store)
-    set(this.store, key, value)
-    return this.writeStore().then(() => true)
-  }
+  set = (storeOrKey, value) => {
+    if (value) {
+      const key = storeOrKey
+      this.store = cloneDeep(this.store)
+      set(this.store, key, value)
+      return this.writeStore().then(() => true)
+    }
 
-  set = (store) => {
+    const store = storeOrKey
     this.store = cloneDeep(store)
     return this.writeStore().then(() => true)
   }
@@ -143,10 +145,10 @@ class Store {
   }
 
   get = (key) => {
-    return get(this.store, key) || get(this.defaults, key)
-  }
+    if (key) {
+      return get(this.store, key) || get(this.defaults, key)
+    }
 
-  get = () => {
     return {
       ...this.defaults,
       ...this.store,

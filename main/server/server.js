@@ -59,6 +59,7 @@ import {
   SET_CUSTOM_TEMPLATE,
   DELETE_CUSTOM_TEMPLATE,
   DEFAULT_BACKUP_LOCATION,
+  OFFLINE_FILE_PATH,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -125,6 +126,7 @@ const setupListeners = (port, userDataPath) => {
       backupOfflineBackupForResume,
       readOfflineFiles,
       isTempFile,
+      offlineFilesFilesPath,
     } = makeFileModule(backupModule, settings, logger)
     const {
       backupBasePath,
@@ -455,6 +457,13 @@ const setupListeners = (port, userDataPath) => {
               () => 'Getting the default backup location',
               () => defaultBackupPath,
               () => 'Error getting the default backup path'
+            )
+          }
+          case OFFLINE_FILE_PATH: {
+            return handleSync(
+              () => 'Getting the offline file path',
+              () => offlineFilesFilesPath,
+              () => 'Error getting the offline file path'
             )
           }
           // ===File System APIs===

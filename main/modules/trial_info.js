@@ -1,4 +1,5 @@
-import Store from 'electron-store'
+import Store from '../lib/store'
+
 const trialStore = new Store({ name: 'trial_info' })
 
 function getTriaInfo() {

@@ -1,4 +1,5 @@
-import Store from 'electron-store'
+import Store from '../lib/store'
+
 const licenseStore = new Store({ name: 'license_info' })
 
 function getLicenseInfo() {

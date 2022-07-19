@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import Store from 'electron-store'
+import Store from '../lib/store'
 import log from 'electron-log'
 import { app, ipcMain } from 'electron'
 import { v4 as uuidv4 } from 'uuid'

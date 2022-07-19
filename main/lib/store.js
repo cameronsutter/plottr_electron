@@ -116,6 +116,10 @@ class Store {
   get = (key) => {
     return get(this.store, key)
   }
+
+  get = () => {
+    return this.store
+  }
 }
 
 export default Store

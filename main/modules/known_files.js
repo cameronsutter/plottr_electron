@@ -1,6 +1,6 @@
 import path from 'path'
 import log from 'electron-log'
-import Store from 'electron-store'
+import Store from '../lib/store'
 import { reloadRecents } from './dashboard'
 import { OFFLINE_FILE_FILES_PATH } from './offlineFilePath'
 const knownFilesPath = process.env.NODE_ENV == 'development' ? 'known_files_dev' : 'known_files'

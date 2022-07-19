@@ -61,6 +61,7 @@ import {
   DEFAULT_BACKUP_LOCATION,
   OFFLINE_FILE_PATH,
   CUSTOM_TEMPLATES_PATH,
+  ATTEMPT_TO_FETCH_TEMPLATES,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -162,6 +163,9 @@ const setupListeners = (port, userDataPath) => {
       setTemplate,
       customTemplatesPath,
     } = makeFileSystemModule(stores, logger)
+    const attemptToFetchTemplates = () => {
+      wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
+    }
 
     webSocket.on('message', (message) => {
       try {
@@ -466,6 +470,14 @@ const setupListeners = (port, userDataPath) => {
               () => 'Getting the offline file path',
               () => offlineFilesFilesPath,
               () => 'Error getting the offline file path'
+            )
+          }
+          case ATTEMPT_TO_FETCH_TEMPLATES: {
+            return handleSync(
+              () =>
+                'Attempting to fetch latest templates (might not if the manifest is up to date)',
+              attemptToFetchTemplates,
+              () => 'Error attempting to fetch the latest templates'
             )
           }
           // ===File System APIs===

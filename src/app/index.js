@@ -126,8 +126,8 @@ process.on('uncaughtException', (err) => {
 
 // Secondary SETUP //
 window.requestIdleCallback(() => {
-  whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath }) => {
-    return ensureBackupFullPath().then(ensureBackupTodayPath)
+  whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath, attemptToFetchTemplates }) => {
+    return ensureBackupFullPath().then(ensureBackupTodayPath).then(attemptToFetchTemplates)
   })
   initMixpanel()
 })

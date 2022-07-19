@@ -94,6 +94,8 @@ import {
   OFFLINE_FILE_PATH_ERROR_REPLY,
   OFFLINE_FILE_PATH,
   CUSTOM_TEMPLATES_PATH,
+  ATTEMPT_TO_FETCH_TEMPLATES,
+  ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -254,6 +256,7 @@ const connect = (
             return
           }
           // Normal replies
+          case ATTEMPT_TO_FETCH_TEMPLATES:
           case DELETE_CUSTOM_TEMPLATE:
           case OFFLINE_FILE_PATH:
           case DEFAULT_BACKUP_LOCATION:
@@ -308,6 +311,7 @@ const connect = (
             return
           }
           // Error return types
+          case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
           case OFFLINE_FILE_PATH_ERROR_REPLY:
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
@@ -454,6 +458,10 @@ const connect = (
       return sendPromise(OFFLINE_FILE_PATH, { filePath })
     }
 
+    const attemptToFetchTemplates = () => {
+      return sendPromise(ATTEMPT_TO_FETCH_TEMPLATES)
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -592,6 +600,7 @@ const connect = (
           defaultBackupLocation,
           offlineFilePath,
           customTemplatesPath,
+          attemptToFetchTemplates,
           // File system APIs
           backupBasePath,
           currentTrial,

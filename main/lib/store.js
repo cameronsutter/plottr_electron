@@ -19,7 +19,9 @@ class Store {
     this.path = path.join(userDataPath, `${name}.json`)
 
     this.readStore().then(() => {
-      this.watchStore()
+      if (this.watch) {
+        this.watchStore()
+      }
     })
   }
 

@@ -13,7 +13,7 @@ class Store {
 
     this.name = name
     this.watch = watch
-    this.defaults = defaults
+    this.defaults = defaults || {}
     this.logger = logger
     this.path = path.join(userDataPath, `${name}.json`)
 
@@ -38,7 +38,10 @@ class Store {
 
   publishChangesToWatchers = () => {
     this.watchers.forEach((cb) => {
-      cb(this.store)
+      cb({
+        ...this.defaults,
+        ...this.store,
+      })
     })
   }
 
@@ -81,11 +84,17 @@ class Store {
   }
 
   has = (key) => {
-    return !!this.store[key]
+    return !!this.get(key)
   }
 
   writeStore = () => {
-    return writeFile(this.path, JSON.stringify(this.store)).catch((error) => {
+    return writeFile(
+      this.path,
+      JSON.stringify({
+        ...this.defaults,
+        ...this.store,
+      })
+    ).catch((error) => {
       this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
       throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
     })
@@ -114,11 +123,14 @@ class Store {
   }
 
   get = (key) => {
-    return get(this.store, key)
+    return get(this.store, key) || get(this.defaults, key)
   }
 
   get = () => {
-    return this.store
+    return {
+      ...this.defaults,
+      ...this.store,
+    }
   }
 }
 

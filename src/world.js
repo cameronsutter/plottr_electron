@@ -47,7 +47,7 @@ const combineCloudAndFileSystemSources =
     let _currentFileSystemResult = null
     let _currentCloudResult = null
 
-    const unsubscribeFromFileSystemSource = fileSystemSource((fileSystemResult) => {
+    const unsubscribeFromFileSystemSourceResult = fileSystemSource((fileSystemResult) => {
       _currentFileSystemResult = fileSystemResult
       afterSettingsLoad(store, () => {
         const previouslyLoggedIntoPro = selectors.previouslyLoggedIntoProSelector(
@@ -75,8 +75,21 @@ const combineCloudAndFileSystemSources =
       })
     })
 
+    // This is the recommended test for whether something is a promise /shrug
+    if (unsubscribeFromFileSystemSourceResult.then) {
+      return () => {
+        unsubscribeFromFileSystemSourceResult.then((unsubscribeFromFileSystemSource) => {
+          unsubscribeFromFileSystemSource()
+        })
+        unsubscribeFromCloudSource()
+      }
+    }
     return () => {
-      unsubscribeFromFileSystemSource()
+      if (typeof unsubscribeFromFileSystemSourceResult === 'function') {
+        unsubscribeFromFileSystemSourceResult()
+      } else {
+        logger.warn('Unsubscribe from file system source is not a promise or function.')
+      }
       unsubscribeFromCloudSource()
     }
   }

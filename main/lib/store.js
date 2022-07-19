@@ -1,6 +1,6 @@
 import fs from 'fs'
 import path from 'path'
-import { isEqual, cloneDeep, set, get } from 'lodash'
+import { cloneDeep, set, get } from 'lodash'
 
 const { readFile, writeFile, lstat, mkdir } = fs.promises
 
@@ -32,7 +32,12 @@ class Store {
   }
 
   watchStore = () => {
-    this.watcher = fs.watchFile(this.path, (currentFileStats, _previousFileStats) => {
+    this.watcher = fs.watchFile(this.path, (currentFileStats, previousFileStats) => {
+      if (currentFileStats.mtimeMs === previousFileStats.mtimeMs) {
+        // File didn't actually change.  It was probably just
+        // accessed.
+        return
+      }
       if (!currentFileStats.isFile()) {
         this.logger.warn(
           `File for store connected to ${this.name} at ${this.path} dissapeared.  Setting store to empty.`
@@ -42,10 +47,8 @@ class Store {
         this.publishChangesToWatchers()
         return
       }
-      this.readStore().then((didChange) => {
-        if (didChange) {
-          this.publishChangesToWatchers()
-        }
+      this.readStore().then(() => {
+        this.publishChangesToWatchers()
       })
     })
   }
@@ -96,9 +99,8 @@ class Store {
       })
       .then((storeContents) => {
         try {
-          const previousValue = this.store
           this.store = storeContents.toString() === '' ? this.defaults : JSON.parse(storeContents)
-          return !isEqual(previousValue, this.store)
+          return true
         } catch (error) {
           this.logger.error(
             `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
@@ -127,10 +129,14 @@ class Store {
         null,
         2
       )
-    ).catch((error) => {
-      this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
-      throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
-    })
+    )
+      .then(() => {
+        this.publishChangesToWatchers()
+      })
+      .catch((error) => {
+        this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
+        throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
+      })
   }
 
   set = (storeOrKey, value) => {
@@ -138,23 +144,39 @@ class Store {
       const key = storeOrKey
       this.store = cloneDeep(this.store)
       set(this.store, key, value)
-      return this.writeStore().then(() => true)
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
     }
 
     const store = storeOrKey
     this.store = cloneDeep(store)
-    return this.writeStore().then(() => true)
+    return this.writeStore()
+      .then(() => {
+        this.publishChangesToWatchers()
+      })
+      .then(() => true)
   }
 
   clear = () => {
     this.store = {}
-    return this.writeStore().then(() => true)
+    return this.writeStore()
+      .then(() => {
+        this.publishChangesToWatchers()
+      })
+      .then(() => true)
   }
 
   delete = (id) => {
     this.store = cloneDeep(this.store)
     delete this.store[id]
-    return this.writeStore().then(() => true)
+    return this.writeStore()
+      .then(() => {
+        this.publishChangesToWatchers()
+      })
+      .then(() => true)
   }
 
   get = (key) => {

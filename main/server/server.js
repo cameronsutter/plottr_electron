@@ -450,7 +450,7 @@ const setupListeners = (port, userDataPath) => {
             const { id } = payload
             return handlePromise(
               () => `Deleting a custom template with id ${id}`,
-              deleteCustomTemplate(id),
+              () => deleteCustomTemplate(id),
               () => [`Error while deleting a custom template with id ${id}`, payload]
             )
           }

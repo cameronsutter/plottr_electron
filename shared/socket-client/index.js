@@ -254,6 +254,7 @@ const connect = (
             return
           }
           // Normal replies
+          case DELETE_CUSTOM_TEMPLATE:
           case OFFLINE_FILE_PATH:
           case DEFAULT_BACKUP_LOCATION:
           case SET_TEMPLATE:
@@ -346,7 +347,11 @@ const connect = (
         }
 
         logger.error(
-          `Unknown message type reply: ${type}, with payload: ${payload} and id: ${messageId}`
+          `Unknown message type reply: ${type}, with payload: ${JSON.stringify(
+            payload,
+            null,
+            2
+          )} and id: ${messageId}`
         )
         rejectPromise()
       } catch (error) {

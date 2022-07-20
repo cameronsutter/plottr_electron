@@ -24,8 +24,6 @@ $medium_width: 80px;
 }
 
 .beat__heading-wrapper {
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 
 .beat__heading {
@@ -33,9 +31,13 @@ $medium_width: 80px;
   padding: 10px 10px;
   width: 150px + 6px; // +6px for the 3px border
   margin: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
   text-align: center;
   transition: all 0.4s $cubic;
   border: 3px dashed transparent;
+  background-color: $body-background-color !important;
+  outline: 5px solid $body-background-color;
   .form-group {
     text-align: left;
     .control-label {

@@ -22,6 +22,7 @@ import Dashboard from './Dashboard'
 import ProOnboarding from './ProOnboarding'
 import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const win = getCurrentWindow()
 
@@ -98,6 +99,7 @@ const Main = ({
   finishUploadingFileToCloud,
   enableTestUtilities,
   saveBackup,
+  settings,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -139,7 +141,7 @@ const Main = ({
         !!isInProMode === !!isCloudFile(filePath) ||
         (isInOfflineMode && isOfflineFile(filePath))
       ) {
-        bootFile(filePath, options, numOpenFiles, saveBackup)
+        bootFile(whenClientIsReady, filePath, options, numOpenFiles, saveBackup)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -236,6 +238,18 @@ const Main = ({
   }, [setOffline])
 
   useEffect(() => {
+    if (settings.user.font) {
+      window.document.documentElement.style.setProperty('--default-rce-font', settings.user.font)
+    }
+    if (settings.user.fontSize) {
+      window.document.documentElement.style.setProperty(
+        '--default-rce-font-size',
+        String(settings.user.fontSize) + 'px'
+      )
+    }
+  }, [settings.user])
+
+  useEffect(() => {
     window.document.body.className = darkMode ? 'darkmode' : ''
   }, [darkMode])
 
@@ -327,7 +341,7 @@ const Main = ({
                       //
                       // FIXME: where should the options come from?
                       const newFilePath = `plottr://${fileId}`
-                      bootFile(newFilePath, {}, 2, saveBackup)
+                      bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
                       ipcRenderer.send('update-last-opened-file', newFilePath)
                     })
                   })
@@ -458,6 +472,7 @@ Main.propTypes = {
   finishUploadingFileToCloud: PropTypes.func.isRequired,
   enableTestUtilities: PropTypes.func.isRequired,
   saveBackup: PropTypes.func.isRequired,
+  settings: PropTypes.object,
 }
 
 export default connect(
@@ -486,6 +501,7 @@ export default connect(
     uploadingFileToCloud: selectors.uploadingFileToCloudSelector(state.present),
     emailAddress: selectors.emailAddressSelector(state.present),
     userId: selectors.userIdSelector(state.present),
+    settings: selectors.appSettingsSelector(state.present),
   }),
   {
     setOffline: actions.project.setOffline,

@@ -1,15 +1,13 @@
-import path from 'path'
 import { shell } from 'electron'
 import { app, dialog } from '@electron/remote'
-import { USER_INFO_PATH, CUSTOM_TEMPLATES_PATH } from '../../file-system/config_paths'
-import { backupBasePath } from './backup'
-import { licenseStore, manifestStore } from '../../file-system/stores'
-import { fileSystemAPIs } from '../../api'
-
-const { saveAppSetting } = fileSystemAPIs
+import { makeFileSystemAPIs } from '../../api'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  const { saveAppSetting } = fileSystemAPIs
+
   switch (code) {
     case 'xsu7wb':
       // extend free trial (one time)
@@ -18,7 +16,9 @@ export function handleCustomerServiceCode(code) {
 
     case '941ff8':
       // view backups
-      shell.openPath(backupBasePath())
+      fileSystemAPIs.backupBasePath().then((basePath) => {
+        shell.openPath(basePath)
+      })
       break
 
     case '7c6a3a':
@@ -65,12 +65,14 @@ export function handleCustomerServiceCode(code) {
 
     case '329fd4391c10d':
       // nuke the license info
-      licenseStore.store = {}
+      fileSystemAPIs.deleteLicense()
       break
 
     case '16329e':
       // show the custom templates file
-      shell.showItemInFolder(path.join(app.getPath('userData'), `${CUSTOM_TEMPLATES_PATH}.json`))
+      fileSystemAPIs.customTemplatesPath().then((path) => {
+        shell.showItemInFolder(path)
+      })
       break
 
     case '8bb9de':
@@ -79,11 +81,13 @@ export function handleCustomerServiceCode(code) {
       break
 
     case 'templates version':
-      dialog.showMessageBox({
-        title: 'Templates Version',
-        type: 'info',
-        message: manifestStore.get('manifest.version'),
-        detail: 'Templates Version',
+      fileSystemAPIs.currentTemplateManifest().then((manifest) => {
+        dialog.showMessageBox({
+          title: 'Templates Version',
+          type: 'info',
+          message: manifest.manifest.version,
+          detail: 'Templates Version',
+        })
       })
       break
 

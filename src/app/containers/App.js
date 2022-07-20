@@ -17,6 +17,7 @@ import {
   ErrorBoundary,
   ExportDialog,
   ActsHelpModal,
+  UpdateNotifier,
 } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
@@ -202,6 +203,9 @@ const App = ({
       >
         <React.StrictMode>
           <Body />
+        </React.StrictMode>
+        <React.StrictMode>
+          <UpdateNotifier />
         </React.StrictMode>
       </main>
       <React.StrictMode>

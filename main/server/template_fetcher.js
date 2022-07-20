@@ -1,23 +1,22 @@
 import request from 'request'
 import semverGt from 'semver/functions/gt'
-
-import { manifestStore, templatesStore, customTemplatesStore } from '../../file-system/stores'
-import { fileSystemAPIs } from '../../api'
-import { isDevelopment } from '../../isDevelopment'
-import log from '../../../shared/logger'
-
-const OLD_TEMPLATES_ROOT = 'templates'
-let env = 'prod'
-if (isDevelopment()) env = 'staging'
-const settings = fileSystemAPIs.currentAppSettings()
-if (settings.betatemplates) env = 'beta'
-const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
-const manifestURL = `${baseURL}/v2/manifest.json`
+import { isDevelopment } from './isDevelopment'
 
 export const MANIFEST_ROOT = 'manifest'
+const OLD_TEMPLATES_ROOT = 'templates'
 
 class TemplateFetcher {
-  constructor(props) {
+  constructor(baseURL, manifestURL, userDataPath, stores, log) {
+    this.baseURL = baseURL
+    this.manifestURL = manifestURL
+    this.log = log
+
+    const { templatesStore, customTemplatesStore, manifestStore } = stores
+
+    this.templatesStore = templatesStore
+    this.customTemplatesStore = customTemplatesStore
+    this.manifestStore = manifestStore
+
     // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
     const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
     if (templates) {
@@ -34,7 +33,7 @@ class TemplateFetcher {
   }
 
   templates = (type) => {
-    const templatesById = templatesStore.get()
+    const templatesById = this.templatesStore.get()
     if (!type) return Object.values(templatesById)
 
     const ids = Object.keys(templatesById)
@@ -46,7 +45,7 @@ class TemplateFetcher {
 
   manifestReq = () => {
     return {
-      url: manifestURL,
+      url: this.manifestURL,
       json: true,
     }
   }
@@ -61,30 +60,30 @@ class TemplateFetcher {
   fetch = (force) => {
     // if (is.development) return
 
-    log.info('fetching template manifest')
+    this.log('fetching template manifest')
     request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {
         if (force || this.fetchedIsNewer(fetchedManifest.version)) {
-          log.info('new templates found', fetchedManifest.version)
-          manifestStore.set(MANIFEST_ROOT, fetchedManifest)
+          this.log('new templates found', fetchedManifest.version)
+          this.manifestStore.set(MANIFEST_ROOT, fetchedManifest)
           this.fetchTemplates(force)
         } else {
-          log.info('no new template manifest', fetchedManifest.version)
+          this.log('no new template manifest', fetchedManifest.version)
         }
       } else {
-        log.error(resp ? resp.statusCode : 'null template manifest response', err)
+        this.log(resp ? resp.statusCode : 'null template manifest response', err)
       }
     })
   }
 
   fetchedIsNewer = (fetchedVersion) => {
-    if (!manifestStore.get('manifest')) return true
+    if (!this.manifestStore.get('manifest')) return true
     // semverGt checks if 1st > 2nd
-    return semverGt(fetchedVersion, manifestStore.get('manifest.version'))
+    return semverGt(fetchedVersion, this.manifestStore.get('manifest.version'))
   }
 
   fetchTemplates = (force) => {
-    const templates = manifestStore.get('manifest.templates')
+    const templates = this.manifestStore.get('manifest.templates')
     templates.forEach((template) => {
       if (force || this.templateIsNewer(template.id, template.version)) {
         this.fetchTemplate(template.id, template.url)
@@ -93,21 +92,33 @@ class TemplateFetcher {
   }
 
   fetchTemplate = (id, url) => {
-    const fullURL = `${baseURL}${url}`
+    const fullURL = `${this.baseURL}${url}`
     request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
       if (!err && resp && resp.statusCode == 200) {
-        templatesStore.set(id, fetchedTemplate)
+        this.templatesStore.set(id, fetchedTemplate)
       }
     })
   }
 
   templateIsNewer = (templateId, manifestVersion) => {
-    const storedTemplate = templatesStore.get(templateId)
+    const storedTemplate = this.templatesStore.get(templateId)
     if (!storedTemplate) return true
     return semverGt(manifestVersion, storedTemplate.version) // is 1st param > 2nd?
   }
 }
 
-const TF = new TemplateFetcher()
+const makeTemplateFetcher = (userDataPath) => {
+  let env = 'prod'
+  if (isDevelopment()) env = 'staging'
 
-export default TF
+  return (stores, logInfo) => {
+    if (stores.SETTINGS.betatemplates) env = 'beta'
+
+    const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
+    const manifestURL = `${baseURL}/v2/manifest.json`
+
+    return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+  }
+}
+
+export default makeTemplateFetcher

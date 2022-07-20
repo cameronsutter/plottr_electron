@@ -9,7 +9,7 @@ const CONSOLE_LOGGER = () => ({
 })
 
 const { backupFiles, backupFolders, isABackupFile, sortFileNamesByDate, fileIsSoonerThan } =
-  BackupModule('/tmp/plottr-test-backups')
+  BackupModule('/tmp/plottr-test-backups')({}, CONSOLE_LOGGER)
 
 describe('isABackupFile', () => {
   describe('given an empty file name', () => {

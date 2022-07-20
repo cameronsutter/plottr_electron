@@ -1,20 +1,8 @@
-import axios from 'axios'
-import semverGt from 'semver/functions/gt'
 import {
   saveCustomTemplate as saveCustomTemplateToFirstore,
   deleteCustomTemplate as deleteCustomTemplateOnFirestore,
   editCustomTemplate as editCustomTemplateOnFirestore,
 } from 'wired-up-firebase'
-
-import { fileSystemAPIs } from '../../api'
-import { isDevelopment } from '../../isDevelopment'
-
-let env = 'prod'
-if (isDevelopment()) env = 'staging'
-const settings = fileSystemAPIs.currentAppSettings()
-if (settings.betatemplates) env = 'beta'
-const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
-const manifestURL = `${baseURL}/v2/manifest.json`
 
 const CUSTOM_TEMPLATE_PREFIX = 'custom_template__'
 const TEMPLATE_PREFIX = 'templates__'
@@ -27,98 +15,6 @@ const safeParse = (string) => {
     console.error(`Error parsing ${string} from JSON`, error)
     return null
   }
-}
-
-const sessionStorageValue = (key) => {
-  const valueString = window.sessionStorage.getItem(key)
-  if (!valueString) return null
-  return safeParse(valueString)
-}
-
-const manifest = () => {
-  return sessionStorageValue(TEMPLATE_MANIFEST_KEY)
-}
-
-const fetchedManifestIsNewer = (fetchedManifest) => {
-  const existingManifest = manifest()
-  if (!existingManifest) return true
-
-  return semverGt(fetchedManifest.version, existingManifest.version)
-}
-
-const templateKey = (templateId) => {
-  return `${TEMPLATE_PREFIX}${templateId}`
-}
-
-const saveTemplate = (template) => {
-  window.sessionStorage.setItem(templateKey(template.id), JSON.stringify(template))
-}
-
-const saveManifest = (manifest) => {
-  window.sessionStorage.setItem(TEMPLATE_MANIFEST_KEY, JSON.stringify(manifest))
-}
-
-export const seedTemplates = (force = false, projectStructureEnabled = false) => {
-  axios
-    .get(manifestURL)
-    .then((response) => {
-      if (response.status == 200) {
-        const manifest = response.data
-        if (force || fetchedManifestIsNewer(manifest)) {
-          saveManifest(manifest)
-          console.log('new templates found', manifest.version)
-          return fetchTemplates(force, manifest)
-        } else {
-          console.log('No new template manifest', manifest.version)
-          return []
-        }
-      } else {
-        return Promise.reject(`Non 200 response for fetching the manifest ${response}`)
-      }
-    })
-    .then((templates) => {
-      console.log(
-        'Fetched template with ids',
-        templates.map(({ id }) => id)
-      )
-      templates.forEach(saveTemplate)
-    })
-    .catch((error) => {
-      console.error('Error fetching templates', error)
-    })
-}
-
-const fetchTemplate = (id, url) => {
-  return axios.get(url).then((response) => {
-    if (response.status == 200) {
-      return response.data
-    } else {
-      return Promise.reject(`Non 200 code in ${response}`)
-    }
-  })
-}
-
-const templateById = (templateId) => {
-  return sessionStorageValue(templateKey(templateId))
-}
-
-const templateIsNewer = (templateId, templateVersion) => {
-  const existingTemplate = templateById(templateId)
-  if (!existingTemplate) return true
-
-  return semverGt(templateVersion, existingTemplate.version)
-}
-
-const fetchTemplates = (force, manifest) => {
-  return Promise.all(
-    manifest.templates.map((template) => {
-      if (force || templateIsNewer(template.id, template.version)) {
-        return fetchTemplate(template.id, template.url)
-      } else {
-        return templateById(template.id)
-      }
-    })
-  )
 }
 
 const isTemplateKey = (key) => {

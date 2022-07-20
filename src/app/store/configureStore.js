@@ -54,7 +54,7 @@ export function configureStore(whenClientIsReady, initialState) {
     saver(whenClientIsReady),
     firebaseSync,
     offlineRecorder(whenClientIsReady),
-    tracker,
+    tracker(whenClientIsReady),
     logger,
     reporter
   )

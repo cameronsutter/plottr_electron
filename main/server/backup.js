@@ -2,12 +2,10 @@ import path from 'path'
 import fs from 'fs'
 import { DateTime, Duration } from 'luxon'
 
-import SettingsModule from './settings'
-
 const { writeFile, readdir, lstat, rmdir, unlink, mkdir } = fs.promises
 
-const BackupModule = (userDataPath, logger) => {
-  const { readSettings } = SettingsModule(userDataPath)
+const BackupModule = (userDataPath) => (settings, logger) => {
+  const { readSettings } = settings
 
   const defaultBackupPath = path.join(userDataPath, 'backups')
   const backupBasePath = () => {
@@ -317,6 +315,7 @@ const BackupModule = (userDataPath, logger) => {
   }
 
   return {
+    defaultBackupPath,
     backupBasePath,
     saveBackup,
     ensureBackupTodayPath,

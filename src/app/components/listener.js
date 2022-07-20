@@ -9,9 +9,9 @@ import { listen, fetchFiles, getIdTokenResult, logOut } from 'wired-up-firebase'
 import { t } from 'plottr_locales'
 
 import { store } from '../store'
-import { offlineFilePath } from '../../files'
 import logger from '../../../shared/logger'
-import { fileSystemAPIs, licenseServerAPIs } from '../../api'
+import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
+import { whenClientIsReady } from '../../../shared/socket-client'
 
 const Listener = ({
   hasPro,
@@ -25,7 +25,6 @@ const Listener = ({
   fileLoaded,
   isOffline,
   isCloudFile,
-  offlineFilePath,
   filePath,
   originalFileName,
   cloudFilePath,
@@ -47,6 +46,8 @@ const Listener = ({
   const [unsubscribeFunction, setUnsubscribeFunction] = useState(null)
 
   const wasOffline = useRef(isOffline)
+
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 
   useEffect(() => {
     if (isOffline) {
@@ -126,16 +127,20 @@ const Listener = ({
   }, [isOffline, unsubscribeFunction])
 
   useEffect(() => {
-    // It's not valid to change a window with an falsy name or set our
+    // It's not valid to change a window with a falsey name or set our
     // name to set our name to something falsy.
-    if (!offlineFilePath || !cloudFilePath) return
+    whenClientIsReady((client) => {
+      client.offlineFilePath(filePath).then((offlineFilePath) => {
+        if (!offlineFilePath || !cloudFilePath) return
 
-    if (isOffline && !originalFileName) {
-      ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
-    } else if (!isOffline && originalFileName) {
-      ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
-    }
-  }, [isOffline, offlineFilePath, filePath, originalFileName, cloudFilePath])
+        if (isOffline && !originalFileName) {
+          ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
+        } else if (!isOffline && originalFileName) {
+          ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
+        }
+      })
+    })
+  }, [isOffline, filePath, originalFileName, cloudFilePath])
 
   const handleCheckPro = (uid, email, isLifetime, isAdmin) => (hasPro, info) => {
     if (hasPro) {
@@ -208,7 +213,6 @@ Listener.propTypes = {
   clientId: PropTypes.string,
   fileLoaded: PropTypes.bool,
   isOffline: PropTypes.bool,
-  offlineFilePath: PropTypes.string,
   filePath: PropTypes.string,
   originalFileName: PropTypes.string,
   cloudFilePath: PropTypes.string,
@@ -238,7 +242,6 @@ export default connect(
     clientId: selectors.clientIdSelector(state.present),
     fileLoaded: selectors.fileLoadedSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
-    offlineFilePath: offlineFilePath(state.present),
     filePath: selectors.filePathSelector(state.present),
     originalFileName: selectors.originalFileNameSelector(state.present),
     cloudFilePath: selectors.cloudFilePathSelector(state.present),

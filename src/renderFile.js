@@ -15,6 +15,7 @@ import Resume from './app/components/Resume'
 import MainIntegrationContext from './mainIntegrationContext'
 
 import { store } from './app/store'
+import makeFileSystemAPIs from './api/file-system-apis'
 
 export const renderFile = (root, whenClientIsReady) => {
   const saveFile = (filePath, file) => {
@@ -65,10 +66,20 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const { saveAppSetting } = makeFileSystemAPIs(whenClientIsReady)
+
   render(
     <Provider store={store}>
       <MainIntegrationContext.Provider
-        value={{ saveFile, basename, readFile, autoSave, saveBackup, backupOfflineBackupForResume }}
+        value={{
+          saveFile,
+          basename,
+          readFile,
+          autoSave,
+          saveBackup,
+          backupOfflineBackupForResume,
+          saveAppSetting,
+        }}
       >
         <Listener />
         <Renamer />

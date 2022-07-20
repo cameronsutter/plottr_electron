@@ -183,6 +183,7 @@
     "electronVersion": "18.3.0",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
+    "npmRebuild": false,
     "publish": [
       "github"
     ],

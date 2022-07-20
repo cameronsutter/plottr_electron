@@ -192,6 +192,26 @@ $medium_width: 80px;
     border: none;
     margin-right: 50px;
   }
+  .insert-missing-beat-wrapper {
+    .glyphicon {
+      margin-top: -1px;
+      margin-right: -1px;
+    }
+  }
+  .insert-missing-beat-wrapper.insert-beat {
+    &.large-timeline {
+      padding: 25px 76px;
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+    &.medium-timeline {
+      margin-top: 10px;
+      margin-right: 0px;
+      padding: 14px 35px;
+    }
+    color: $blue-5;
+    border: 3px dashed $blue-5;
+  }
   &.medium-timeline {
     height: 123px;
   }
@@ -220,6 +240,18 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
+    border: none;
+  }
+}
+
+.insert-missing-beat-wrapper:hover {
+  color: $blue-7;
+}
+
+.beat-list__insert:hover {
+  color: $blue-5;
+  .insert-missing-beat-wrapper.insert-beat {
+    margin-left: 3px;
     border: none;
   }
 }

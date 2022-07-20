@@ -58,7 +58,15 @@
     "regen:plottr_locales": "rimraf lib/plottr_locales/package-lock.json && npm --prefix lib/plottr_locales i",
     "regen:plottr_world": "rimraf lib/plottr_world/yarn.lock && yarn --cwd lib/plottr_world install",
     "regen:plottr_firebase": "rimraf lib/plottr_firebase/yarn.lock && yarn --cwd lib/plottr_firebase install",
-    "regen:plottr_import_export": "rimraf lib/plottr_import_export/package-lock.json && npm --prefix lib/plottr_import_export i"
+    "regen:plottr_import_export": "rimraf lib/plottr_import_export/package-lock.json && npm --prefix lib/plottr_import_export i",
+    "ci-all": "npm-run-all --serial ci:plottr_import_export ci:plottr_locales ci:plottr_world ci:pltr ci:plottr_components ci:plottr_firebase ci:this",
+    "ci:this": "npm ci",
+    "ci:plottr_components": "npm --prefix lib/plottr_components ci",
+    "ci:pltr": "npm --prefix lib/pltr ci",
+    "ci:plottr_locales": "npm --prefix lib/plottr_locales ci",
+    "ci:plottr_world": "yarn --cwd lib/plottr_world install",
+    "ci:plottr_firebase": "yarn --cwd lib/plottr_firebase install",
+    "ci:plottr_import_export": "npm --prefix lib/plottr_import_export ci"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",

@@ -1,23 +1,25 @@
-import Store from 'electron-store'
-import { deleteCustomTemplate, editCustomTemplate } from './templates_from_firestore'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
+import makeFileSystemAPIs from '../../api/file-system-apis'
+import {
+  deleteCustomTemplate as deleteCustomTemplateOnFirebase,
+  editCustomTemplate,
+} from './templates_from_firestore'
 
 const TEMPLATES_PATH = process.env.NODE_ENV == 'development' ? 'templates_dev' : 'templates'
 const CUSTOM_TEMPLATES_PATH =
   process.env.NODE_ENV == 'development' ? 'custom_templates_dev' : 'custom_templates'
-export const customTemplateStore = new Store({ name: CUSTOM_TEMPLATES_PATH })
-
-const isLocalTemplate = (id) => {
-  const customById = customTemplateStore.get()
-  return customById && customById[id]
-}
 
 export function deleteTemplate(id, userId) {
-  if (isLocalTemplate(id)) {
-    customTemplateStore.delete(id)
-    return
-  }
-
-  deleteCustomTemplate(id, userId)
+  const { currentCustomTemplates } = makeFileSystemAPIs(whenClientIsReady)
+  currentCustomTemplates().then((templates) => {
+    if (templates.find((template) => template.id === id)) {
+      whenClientIsReady(({ deleteCustomTemplate }) => {
+        deleteCustomTemplate(id)
+      })
+      return
+    }
+    deleteCustomTemplateOnFirebase(id, userId)
+  })
 }
 
 export function editTemplateDetails(id, templateData, userId) {
@@ -26,10 +28,18 @@ export function editTemplateDetails(id, templateData, userId) {
     description: templateData.description,
     link: templateData.link,
   }
-  if (isLocalTemplate(id)) {
-    customTemplateStore.set(id, info)
-    return
-  }
-
-  editCustomTemplate(userId, { ...templateData, id })
+  const { currentCustomTemplates } = makeFileSystemAPIs(whenClientIsReady)
+  currentCustomTemplates().then((templates) => {
+    const templateFound = templates.find((template) => template.id === id)
+    if (templateFound) {
+      whenClientIsReady(({ setCustomTemplate }) => {
+        setCustomTemplate(id, {
+          ...templateFound,
+          ...info,
+        })
+      })
+      return
+    }
+    editCustomTemplate(userId, { ...templateData, id })
+  })
 }

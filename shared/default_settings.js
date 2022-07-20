@@ -24,5 +24,7 @@ module.exports = {
     enableOfflineMode: false,
     streamFriendly: false,
     useSpellcheck: true,
+    font: 'Forum',
+    fontSize: 20,
   },
 }

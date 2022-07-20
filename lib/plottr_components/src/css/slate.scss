@@ -104,6 +104,7 @@
   padding: 10px 12px;
   font-size: 20px;
   cursor: text;
+  @include rce-text-font;
 
   &.readonly {
     border: none;

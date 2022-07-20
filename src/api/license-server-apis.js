@@ -5,10 +5,10 @@ import { getIdTokenResult } from 'wired-up-firebase'
 
 import log from '../../shared/logger'
 import setupRollbar from '../common/utils/rollbar'
-import { fileSystemAPIs } from './'
+import { makeFileSystemAPIs } from './'
 import { isMacOS } from '../isOS'
-
-const rollbar = setupRollbar('license_checker')
+import { whenClientIsReady } from '../../shared/socket-client'
+import logger from '../../shared/logger'
 
 export const trial90days = ['nanoCAMP@90', 'infoSTACK90!']
 export const trial60days = ['infoSTACK60!']
@@ -32,11 +32,13 @@ export function checkForActiveLicense(licenseInfo, callback) {
     })
     .catch((err) => {
       log.error(err)
-      rollbar.warn(err)
-      // conscious choice not to turn premium off here
-      // User may be disconnected from internet or something else going on
-      log.info('[license_checker]', 'license check request failed')
-      callback(err, null)
+      setupRollbar('license_checker').then((rollbar) => {
+        rollbar.warn(err)
+        // conscious choice not to turn premium off here
+        // User may be disconnected from internet or something else going on
+        log.info('[license_checker]', 'license check request failed')
+        callback(err, null)
+      })
     })
 }
 
@@ -155,8 +157,6 @@ const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mism
 
 const GRACE_PERIOD_DAYS = 30
 
-const { saveAppSetting } = fileSystemAPIs
-
 function licenseURL(action, productID, license) {
   let url = `${BASE_URL}`
   url += `?edd_action=${action}&item_id=${productID}&license=${license}`
@@ -191,6 +191,9 @@ function hasActivationsLeft(body) {
   return body.activations_left > 0
 }
 
+const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+const { saveAppSetting } = fileSystemAPIs
+
 function mapV2old(isActive) {
   if (isActive) {
     saveAppSetting('trialMode', false)
@@ -208,32 +211,37 @@ function mapV2old(isActive) {
 }
 
 function mapClassic(isActive) {
-  const currentAppSettings = fileSystemAPIs.currentAppSettings()
-
-  if (isActive) {
-    saveAppSetting('trialMode', false)
-    saveAppSetting('canGetUpdates', true)
-    saveAppSetting('isInGracePeriod', false)
-    saveAppSetting('canEdit', true)
-    saveAppSetting('canExport', true)
-  } else {
-    const timeStamp = Date.now()
-    if (currentAppSettings.isInGracePeriod && timeStamp > currentAppSettings.gracePeriodEnd) {
-      saveAppSetting('trialMode', false)
-      saveAppSetting('canGetUpdates', false)
-      saveAppSetting('isInGracePeriod', false)
-      saveAppSetting('canEdit', false)
-      saveAppSetting('canExport', false)
-    } else {
-      // just expired
-      saveAppSetting('trialMode', false)
-      saveAppSetting('canGetUpdates', false)
-      saveAppSetting('isInGracePeriod', true)
-      saveAppSetting('gracePeriodEnd', currentAppSettings.gracePeriodEnd || getGracePeriodEnd())
-      saveAppSetting('canEdit', true)
-      saveAppSetting('canExport', true)
-    }
-  }
+  fileSystemAPIs
+    .currentAppSettings()
+    .then((currentAppSettings) => {
+      if (isActive) {
+        saveAppSetting('trialMode', false)
+        saveAppSetting('canGetUpdates', true)
+        saveAppSetting('isInGracePeriod', false)
+        saveAppSetting('canEdit', true)
+        saveAppSetting('canExport', true)
+      } else {
+        const timeStamp = Date.now()
+        if (currentAppSettings.isInGracePeriod && timeStamp > currentAppSettings.gracePeriodEnd) {
+          saveAppSetting('trialMode', false)
+          saveAppSetting('canGetUpdates', false)
+          saveAppSetting('isInGracePeriod', false)
+          saveAppSetting('canEdit', false)
+          saveAppSetting('canExport', false)
+        } else {
+          // just expired
+          saveAppSetting('trialMode', false)
+          saveAppSetting('canGetUpdates', false)
+          saveAppSetting('isInGracePeriod', true)
+          saveAppSetting('gracePeriodEnd', currentAppSettings.gracePeriodEnd || getGracePeriodEnd())
+          saveAppSetting('canEdit', true)
+          saveAppSetting('canExport', true)
+        }
+      }
+    })
+    .catch((error) => {
+      logger.error(`Failed to map classic`, error)
+    })
 }
 
 function getGracePeriodEnd() {

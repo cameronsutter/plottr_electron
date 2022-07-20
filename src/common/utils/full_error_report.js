@@ -3,24 +3,28 @@ import { app, dialog } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { machineIdSync } from 'node-machine-id'
+
 import { t } from 'plottr_locales'
-import { SETTINGS, USER, trialStore } from '../../file-system/stores'
+
 import log from '../../../shared/logger'
 import { isDevelopment } from '../../isDevelopment'
 import { isWindows } from '../../isOS'
+import makeFileSystemAPIs from '../../api/file-system-apis'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
 
 const machineID = machineIdSync(true)
 
 export function createFullErrorReport() {
-  const body = prepareErrorReport()
-  const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-  fs.writeFile(fileName, body, function (err) {
-    if (err) {
-      log.warn(err)
-      dialog.showErrorBox(t('Error'), t('Error Creating Error Report'))
-    } else {
-      notifyUser(fileName)
-    }
+  prepareErrorReport().then((body) => {
+    const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
+    fs.writeFile(fileName, body, function (err) {
+      if (err) {
+        log.warn(err)
+        dialog.showErrorBox(t('Error'), t('Error Creating Error Report'))
+      } else {
+        notifyUser(fileName)
+      }
+    })
   })
 }
 
@@ -49,7 +53,13 @@ function prepareErrorReport() {
   } catch (e) {
     // no log file, no big deal
   }
-  const report = `
+  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  return Promise.all([
+    fileSystemAPIs.currentUserSettings(),
+    fileSystemAPIs.currentTrial(),
+    fileSystemAPIs.currentAppSettings(),
+  ]).then(([user, trial, settings]) => {
+    const report = `
 ----------------------------------
 INFO
 ----------------------------------
@@ -59,13 +69,13 @@ PLATFORM: ${process.platform}
 MACHINE ID: ${machineID}
 
 USER INFO:
-${JSON.stringify(USER.store)}
+${JSON.stringify(user)}
 
 TRIAL INFO:
-${JSON.stringify(trialStore.store)}
+${JSON.stringify(trial)}
 
 CONFIG:
-${JSON.stringify(SETTINGS.store)}
+${JSON.stringify(settings)}
 
 ----------------------------------
 ERROR LOG - MAIN
@@ -77,7 +87,8 @@ ERROR LOG - RENDERER
 ----------------------------------
 ${rendererLogContents}
   `
-  return report
+    return report
+  })
 }
 
 function notifyUser(fileName) {

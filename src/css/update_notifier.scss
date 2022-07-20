@@ -1,5 +1,5 @@
-@import "../colors";
-@import "../vars";
+@import "colors";
+@import "vars";
 
 @keyframes dot {
   0% { opacity: 0; }
@@ -14,7 +14,7 @@
   align-items: center;
   margin: 10px 20px;
   margin-bottom: 0;
-  z-index: 10;
+  z-index: 1001;
 
   .update-notifier__buttons {
     display: flex;
@@ -40,7 +40,7 @@
 
   &.floating {
     position: absolute;
-    top: 50px;
+    bottom: 10px;
     right: 10px;
     margin: 0;
   }

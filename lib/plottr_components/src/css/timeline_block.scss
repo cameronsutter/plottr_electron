@@ -1,5 +1,9 @@
 @import 'vars';
 
+.timeline-tabbed-view-body {
+  display: flex;
+}
+
 #timelineview__root {
   width: 100vw;
 

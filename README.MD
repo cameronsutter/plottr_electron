@@ -254,6 +254,11 @@ To debug a test:
 4. run the script (`npm run test:debug`),
 5. the dedicated debugger should detect the node process and launch a debugging process.
 
+# `clean-all` and `regen-all`
+These two handy commands can delete and re-install all the `node_modules` from scratch should the urge to do so take you.
+These commands depend on `rimraf` and `npm-run-all`, but we're also deleting node modules.
+Please install `rimraf` and `npm-run-all` globally to run these commands.
+
 # Copyright Notice
 
 Copyright 2016-2021 Fictional Devices LLC

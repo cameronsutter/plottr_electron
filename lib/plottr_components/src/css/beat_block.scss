@@ -176,6 +176,10 @@ $medium_width: 80px;
     height: 50px;
     margin: 5px 2px;
   }
+  &.insert-beat {
+    height: 50px;
+    margin: 5px 2px;
+  }
   .insert-beat-wrapper {
     .glyphicon {
       margin-top: -1px;
@@ -210,9 +214,6 @@ $medium_width: 80px;
     height: 100%;
     color: $blue-5;
     border: 3px dashed $blue-5;
-  }
-  &.medium-timeline {
-    height: 123px;
   }
 }
 

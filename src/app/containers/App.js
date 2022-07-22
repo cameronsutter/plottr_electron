@@ -203,8 +203,6 @@ const App = ({
       >
         <React.StrictMode>
           <Body />
-        </React.StrictMode>
-        <React.StrictMode>
           <UpdateNotifier />
         </React.StrictMode>
       </main>

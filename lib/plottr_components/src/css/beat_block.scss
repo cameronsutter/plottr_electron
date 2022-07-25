@@ -43,6 +43,12 @@ $medium_width: 80px;
   border: 3px dashed transparent;
   background-color: $body-background-color !important;
   outline: 5px solid $body-background-color;
+
+  &.darkmode {
+    background-color: $darkmode-background !important;
+    outline: 5px solid $darkmode-background;
+  }
+
   .form-group {
     text-align: left;
     .control-label {

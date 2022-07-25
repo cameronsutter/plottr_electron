@@ -9,8 +9,8 @@ $medium_width: 80px;
   padding-bottom: 45px;
 
   &:not(.medium-timeline):not(.small-timeline) {
-    margin-top: 5px;
-    padding-bottom: 16px;
+    margin-top: 20px;
+    padding-bottom: 40px;
   }
 
   &.medium-timeline {
@@ -173,7 +173,7 @@ $medium_width: 80px;
     margin-top: 8px;
   }
   &:first-child:not(.small-timeline):not(.medium-timeline) {
-    height: 50px;
+    height: 82.5px;
     margin: 5px 2px;
   }
   &.insert-beat {

@@ -92,12 +92,13 @@
             }
           }
 
-          .template-attr__description-label {
-            @include application-text;
-            font-size: 14px;
-            color: $gray-3;
-            margin-top: -4px;
-          }
+        }
+
+        .template-attr__description-label {
+          @include application-text;
+          font-size: 14px;
+          color: $neutral-gray-4;
+          margin-top: -4px;
         }
 
         .lock-icon__wrapper {

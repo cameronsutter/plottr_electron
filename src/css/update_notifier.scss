@@ -19,6 +19,7 @@
   .update-notifier__buttons {
     display: flex;
     align-items: center;
+    margin-left: 16px;
 
     .btn {
       border-radius: 100px;
@@ -31,6 +32,7 @@
   .progress {
     width: 50vw;
     margin-bottom: 0;
+    margin-left: 16px;
   }
 
   svg {

@@ -44,6 +44,30 @@
   .form-control[type='text'] {
     width: 50%;
   }
+  &.rce {
+    .dropdown {
+      button {
+        width: 180px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      ul {
+        max-height: 200px;
+        overflow: auto;
+      }
+
+      &.size-picker {
+        button {
+          width: 60px;
+        }
+        .dropdown-menu {
+          min-width: 60px;
+          width: 60px;
+        }
+      }
+    }
+  }
 }
 
 .dashboard__options-item-help {

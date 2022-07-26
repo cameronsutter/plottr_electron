@@ -111,12 +111,6 @@ const platform = {
   setDarkMode: (value) => {
     ipcRenderer.send('pls-set-dark-setting', value)
   },
-  setFontStyle: (value) => {
-    ipcRenderer.send('pls-set-new-font', value)
-  },
-  setFontSize: (value) => {
-    ipcRenderer.send('pls-set-new-font-size', value)
-  },
   appQuit: () => {
     ipcRenderer.send('pls-quit')
   },

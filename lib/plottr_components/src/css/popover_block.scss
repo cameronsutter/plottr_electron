@@ -29,3 +29,13 @@
     border-bottom: 1px solid #444;
   }
 }
+
+.darkmode .react-tiny-popover-container {
+  .btn-group__list-group-item .btn {
+    background-color: $darkmode-darker-border;
+
+  }
+  .btn-group__list-group-item .btn:hover {
+    background-color: $darkmode-background;
+  }
+}

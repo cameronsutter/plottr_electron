@@ -50,15 +50,6 @@
       display: flex;
       align-items: center;
 
-      .place-list__item-buttons {
-        margin-left: auto;
-        min-width: 71px;
-        visibility: hidden;
-        &.visible {
-          visibility: visible;
-        }
-      }
-
       .place-list__item-inner__image-wrapper {
         img {
           max-width: 75px;

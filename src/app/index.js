@@ -108,7 +108,7 @@ createClient(
   socketServerEventHandlers
 )
 
-const { saveFile, isTempFile, saveAs } = makeFileModule(whenClientIsReady)
+const { saveFile, isTempFile } = makeFileModule(whenClientIsReady)
 
 const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 fileSystemAPIs.currentAppSettings().then((settings) => {
@@ -193,7 +193,20 @@ ipcRenderer.on('save', () => {
 })
 
 ipcRenderer.on('save-as', () => {
-  saveAs()
+  const { present } = store.getState()
+  const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
+  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+  const fileName = dialog.showSaveDialogSync(win, {
+    filters,
+    title: t('Where would you like to save this copy?'),
+    defaultPath,
+  })
+  if (fileName) {
+    let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    saveFile(newFilePath, present).then(() => {
+      ipcRenderer.send('pls-open-window', newFilePath, true)
+    })
+  }
 })
 
 const ensureEndsInPltr = (filePath) => {

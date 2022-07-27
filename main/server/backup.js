@@ -54,7 +54,7 @@ const BackupModule = (userDataPath) => (settings, logger) => {
             })
 
           return ensureBackupTodayPath()
-            .then(backupPath)
+            .then(backupBasePath)
             .then((partialPath) => {
               const fileBaseName = path.basename(filePath)
               const startBaseName = `(start-session)-${fileBaseName}`

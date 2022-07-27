@@ -12,6 +12,7 @@ import { store } from '../store'
 import logger from '../../../shared/logger'
 import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeFileModule } from '../files'
 
 const Listener = ({
   hasPro,
@@ -48,6 +49,31 @@ const Listener = ({
   const wasOffline = useRef(isOffline)
 
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  const { saveAs } = makeFileModule(whenClientIsReady)
+
+  useEffect(() => {
+    if (filePath) {
+      fileSystemAPIs.backupBasePath().then((backupPath) => {
+        if (filePath.startsWith(backupPath)) {
+          saveAs(
+            t('This looks like a backup file.  Would you like to save a copy that you can change?')
+          ).then((saved) => {
+            if (saved) {
+              window.close()
+            } else {
+              dialog.showMessageBoxSync({
+                type: 'info',
+                buttons: [t('ok')],
+                message: t(
+                  'This is a backup file.  Use "Save as" to create a copy you can change.'
+                ),
+              })
+            }
+          })
+        }
+      })
+    }
+  }, [filePath])
 
   useEffect(() => {
     if (isOffline) {

@@ -49,7 +49,7 @@ const fileModule = (userDataPath) => {
   }
 
   return (backupModule, settingsModule, logger) => {
-    const { saveBackup } = backupModule
+    const { saveBackup, backupBasePath } = backupModule
     const { readSettings } = settingsModule
 
     const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileContents) => {
@@ -234,10 +234,17 @@ const fileModule = (userDataPath) => {
       }
 
       return function saveFile(filePath, jsonData) {
-        const withoutSystemKeys = removeSystemKeys(jsonData)
-        return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(
-          updateOrCreateSaveJob(filePath, withoutSystemKeys)
-        )
+        return backupBasePath().then((backupPath) => {
+          if (path.normalize(filePath).startsWith(path.normalize(backupPath))) {
+            const message = `Attempting to save a file that's in the backup folder (${filePath})!  Backups are in ${backupPath}`
+            logger.error(message)
+            return Promise.reject(message)
+          }
+          const withoutSystemKeys = removeSystemKeys(jsonData)
+          return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(
+            updateOrCreateSaveJob(filePath, withoutSystemKeys)
+          )
+        })
       }
     }
     const saveFile = fileSaver()

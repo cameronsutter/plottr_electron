@@ -17,64 +17,71 @@ const BackupModule = (userDataPath) => (settings, logger) => {
 
   function saveBackup(filePath, data) {
     logger.info(`Saving backup of: ${filePath}`)
-    return readSettings().then((settings) => {
-      try {
-        if (!settings.backup) {
-          logger.warn('Backups are disabled.')
-          return Promise.resolve()
-        }
-
-        const backupStrategy = settings.user.backupType || 'never-delete'
-        const amount =
-          backupStrategy === 'never-delete'
-            ? null
-            : backupStrategy === 'days'
-            ? settings.user.backupDays
-            : settings.user.numberOfBackups
-
-        // Don't involve deletion in the control flow of this function
-        // because it'll slow things down and we don't really mind if it
-        // fails.
-        deleteOldBackups(backupStrategy, amount)
-          .then((deleted) => {
-            if (deleted.length) {
-              logger.info('Deleted old backups: ', deleted)
-            } else {
-              // logger.info('No old backups to delete')
-            }
-          })
-          .catch((error) => {
-            logger.error('Error while deleting old backups', error)
-          })
-
-        return ensureBackupTodayPath()
-          .then(backupPath)
-          .then((partialPath) => {
-            const fileBaseName = path.basename(filePath)
-            const startBaseName = `(start-session)-${fileBaseName}`
-            const startFilePath = path.join(partialPath, startBaseName)
-            const SAVED_START_OF_SESSION_BACKUP = 'saved-start-of-session-backup'
-            return lstat(startFilePath)
-              .catch((error) => {
-                if (error.code === 'ENOENT') {
-                  return saveFile(startFilePath, data).then(() => {
-                    return SAVED_START_OF_SESSION_BACKUP
-                  })
-                }
-                return Promise.reject(error)
-              })
-              .then((result) => {
-                if (result === SAVED_START_OF_SESSION_BACKUP) {
-                  return result
-                }
-
-                const backupFilePath = path.join(partialPath, fileBaseName)
-                return saveFile(backupFilePath, data)
-              })
-          })
-      } catch (error) {
-        return Promise.reject(error)
+    return backupBasePath().then((backupPath) => {
+      if (path.normalize(filePath).startsWith(path.normalize(backupPath))) {
+        const message = `Attempting to save a backup of a file that's already a backup (${filePath})!  Backups are in ${backupPath}`
+        logger.error(message)
+        return Promise.reject(message)
       }
+      return readSettings().then((settings) => {
+        try {
+          if (!settings.backup) {
+            logger.warn('Backups are disabled.')
+            return Promise.resolve()
+          }
+
+          const backupStrategy = settings.user.backupType || 'never-delete'
+          const amount =
+            backupStrategy === 'never-delete'
+              ? null
+              : backupStrategy === 'days'
+              ? settings.user.backupDays
+              : settings.user.numberOfBackups
+
+          // Don't involve deletion in the control flow of this function
+          // because it'll slow things down and we don't really mind if it
+          // fails.
+          deleteOldBackups(backupStrategy, amount)
+            .then((deleted) => {
+              if (deleted.length) {
+                logger.info('Deleted old backups: ', deleted)
+              } else {
+                // logger.info('No old backups to delete')
+              }
+            })
+            .catch((error) => {
+              logger.error('Error while deleting old backups', error)
+            })
+
+          return ensureBackupTodayPath()
+            .then(backupPath)
+            .then((partialPath) => {
+              const fileBaseName = path.basename(filePath)
+              const startBaseName = `(start-session)-${fileBaseName}`
+              const startFilePath = path.join(partialPath, startBaseName)
+              const SAVED_START_OF_SESSION_BACKUP = 'saved-start-of-session-backup'
+              return lstat(startFilePath)
+                .catch((error) => {
+                  if (error.code === 'ENOENT') {
+                    return saveFile(startFilePath, data).then(() => {
+                      return SAVED_START_OF_SESSION_BACKUP
+                    })
+                  }
+                  return Promise.reject(error)
+                })
+                .then((result) => {
+                  if (result === SAVED_START_OF_SESSION_BACKUP) {
+                    return result
+                  }
+
+                  const backupFilePath = path.join(partialPath, fileBaseName)
+                  return saveFile(backupFilePath, data)
+                })
+            })
+        } catch (error) {
+          return Promise.reject(error)
+        }
+      })
     })
   }
 

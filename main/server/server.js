@@ -175,7 +175,7 @@ const setupListeners = (port, userDataPath) => {
           try {
             webSocket.send(
               JSON.stringify({
-                messageType,
+                type: messageType,
                 messageId,
                 result: args,
                 payload,

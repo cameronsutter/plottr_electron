@@ -562,4 +562,4 @@ const sceneAttrMapping = {
 
 const sceneAttrOrder = ['location', 'paragraph']
 
-export { Importer }
+export default Importer

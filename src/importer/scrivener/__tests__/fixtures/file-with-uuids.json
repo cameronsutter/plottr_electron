@@ -1,0 +1,1865 @@
+{
+  "file": {
+    "fileName": "/home/edward/wip/plottr_electron/lib/plottr_import_export/src/importer/scrivener/__tests__/fixtures/file-with-uuids.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2022.4.6-beta.4",
+    "id": null,
+    "appliedMigrations": [],
+    "initialVersion": "2022.4.6-beta.4",
+    "isCloudFile": false,
+    "timeStamp": "2022-04-05T08:17:42.690Z",
+    "versionStamp": "2a22e254-8144-4a8c-9e24-13275b14159f"
+  },
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 106
+    },
+    "timeline": {
+      "size": "large"
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": true
+  },
+  "series": {
+    "name": "Three Little Pigs",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "Three Little Pigs",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [
+      1
+    ]
+  },
+  "beats": {
+    "1": {
+      "children": {
+        "null": [
+          "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+          "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+          "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+          "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+          "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+          "A0256906-7005-4C0A-92E9-D9975FA84E59",
+          "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+          "9282D488-7992-485F-91BC-69D2CB02A383",
+          "7DE9B243-6E99-48CB-A980-1EA48445357D",
+          "C5806E77-F751-44D8-865E-55BE0943F482"
+        ],
+        "6D3D7B07-5006-4646-842E-E1A9DF2D1C20": [],
+        "7B2B51ED-671E-462D-B19A-5BF4A890F73E": [],
+        "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245": [],
+        "3EDE5450-EA37-4C3A-B071-93B248E3714B": [],
+        "953F3A9A-98CF-485E-B29E-40E6E0B4685A": [],
+        "A0256906-7005-4C0A-92E9-D9975FA84E59": [],
+        "26FDE6CB-3E37-4D85-82AE-0090A33461ED": [],
+        "9282D488-7992-485F-91BC-69D2CB02A383": [],
+        "7DE9B243-6E99-48CB-A980-1EA48445357D": [],
+        "C5806E77-F751-44D8-865E-55BE0943F482": []
+      },
+      "heap": {
+        "6D3D7B07-5006-4646-842E-E1A9DF2D1C20": null,
+        "7B2B51ED-671E-462D-B19A-5BF4A890F73E": null,
+        "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245": null,
+        "3EDE5450-EA37-4C3A-B071-93B248E3714B": null,
+        "953F3A9A-98CF-485E-B29E-40E6E0B4685A": null,
+        "A0256906-7005-4C0A-92E9-D9975FA84E59": null,
+        "26FDE6CB-3E37-4D85-82AE-0090A33461ED": null,
+        "9282D488-7992-485F-91BC-69D2CB02A383": null,
+        "7DE9B243-6E99-48CB-A980-1EA48445357D": null,
+        "C5806E77-F751-44D8-865E-55BE0943F482": null
+      },
+      "index": {
+        "6D3D7B07-5006-4646-842E-E1A9DF2D1C20": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+          "position": 0,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 1"
+        },
+        "7B2B51ED-671E-462D-B19A-5BF4A890F73E": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+          "position": 1,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 2"
+        },
+        "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+          "position": 2,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 3"
+        },
+        "3EDE5450-EA37-4C3A-B071-93B248E3714B": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+          "position": 3,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 4"
+        },
+        "953F3A9A-98CF-485E-B29E-40E6E0B4685A": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+          "position": 4,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 5"
+        },
+        "A0256906-7005-4C0A-92E9-D9975FA84E59": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "A0256906-7005-4C0A-92E9-D9975FA84E59",
+          "position": 5,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 6"
+        },
+        "26FDE6CB-3E37-4D85-82AE-0090A33461ED": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+          "position": 6,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 7"
+        },
+        "9282D488-7992-485F-91BC-69D2CB02A383": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "9282D488-7992-485F-91BC-69D2CB02A383",
+          "position": 7,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 8"
+        },
+        "7DE9B243-6E99-48CB-A980-1EA48445357D": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+          "position": 8,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 9"
+        },
+        "C5806E77-F751-44D8-865E-55BE0943F482": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": "C5806E77-F751-44D8-865E-55BE0943F482",
+          "position": 9,
+          "time": 0,
+          "expanded": true,
+          "title": "Chapter 10"
+        }
+      }
+    },
+    "series": {
+      "children": {
+        "null": []
+      },
+      "heap": {},
+      "index": {}
+    }
+  },
+  "cards": [
+    {
+      "id": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "title": "Three little pigs leave home for the big world",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Their mother is old and doesn't have enough food at home to feed all of them, so she sends them out to experience the world and seek out their own fortunes."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "title": "Scene with the Wolf",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Description"
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "F833886B-B7E8-474C-8879-D8A2B566D3D2",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "6D3D7B07-5006-4646-842E-E1A9DF2D1C20",
+      "title": "Scene 2",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "5ADD89F2-CB5F-4B7C-BAF3-DBBBD37977D3",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "title": "The pigs build themselves homes",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Each pig takes his own approach to building a home. \nPig #1 and #2 take the easy way out and spend most of the day singing, dancing, and playing.\nPig #3 works hard all day to build a strong, safe house."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "lineId": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "beatId": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "title": "Makes house out of straw",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Pig #1 is lazy and doesn't want to work much, so he builds his home out of straw."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "4CF04610-4031-4745-A237-EFA271EF2469",
+      "lineId": "4CF04610-4031-4745-A237-EFA271EF2469",
+      "beatId": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "title": "Makes house out of sticks",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Pig #2 works a bit harder, but still doesn't want to work much, so he builds his home out of sticks."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "lineId": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "beatId": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7B2B51ED-671E-462D-B19A-5BF4A890F73E",
+      "title": "Makes house out of bricks",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "This pig works hard all day and builds a fine house complete with a fireplace and chimney that looks like it can withstand strong winds."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "7434EAAD-E3A3-42EC-AF6B-400B1D220E86",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+      "title": "A wolf passes by the pigs' homes",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "He arrives at the lane where the pigs have just built their houses."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "2FF85AAB-E6AB-4AC3-9999-B1D7A30C9033",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7DA403DA-57FA-4D5C-83AF-D22E4B6EE245",
+      "title": "Smells pigs nearby",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The wolf is hungry and can smell a meal is close."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "3563C994-2FF5-4B85-B54A-66EFC19F7CE0",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "title": "Wolf visits straw home of Pig #1",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Little pigs! Little pigs! Let me in! Let me in!\" \nPig #1: \"No! No! No! Not by the hairs on my chinny chin chin!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "AEB7DC03-E538-40D6-9B30-5ED9CBF64BD5",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "title": "Blows house away",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Then I'll huff and I'll puff and I'll blow your house down!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "7BCE336F-39C0-4CE9-9EB7-008A7FFE59F8",
+      "lineId": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "beatId": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "3EDE5450-EA37-4C3A-B071-93B248E3714B",
+      "title": "Runs to home of Pig #2",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "After the wolf blows down his house, Pig #1 runs to the house of Pig #2 for safety."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "6A7D6112-8867-422F-9608-58032BA27E2C",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "title": "Wolf visits stick home of Pig #2",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Little pigs! Little pigs! Let me in! Let me in!\" \nPig #2: \"No! No! No! Not by the hairs on my chinny chin chin!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "B3E389F5-2570-494F-9189-720A64EDA0BB",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "title": "Blows house away",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Then I'll huff and I'll puff and I'll blow your house down!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "D284E61D-4783-422A-BE49-284BBA33F4EE",
+      "lineId": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "beatId": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "title": "Runs to home of Pig #3",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "After the wolf blows down the house of Pig #2, Pig #1 runs to the house of Pig #3 for safety."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "47A52EA4-4AC4-457F-B7B5-55133E4FAFE3",
+      "lineId": "4CF04610-4031-4745-A237-EFA271EF2469",
+      "beatId": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "953F3A9A-98CF-485E-B29E-40E6E0B4685A",
+      "title": "Runs to home of Pig #3",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "After the wolf blows down his house, Pig #2 runs to the house of Pig #3 for safety."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "63F1BD0C-2897-4BE4-A80D-468B83E5D7CC",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "A0256906-7005-4C0A-92E9-D9975FA84E59",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "A0256906-7005-4C0A-92E9-D9975FA84E59",
+      "title": "Wolf visits brick home of Pig #3",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Little pigs! Little pigs! Let me in! Let me in!\" \nPig #3: \"No! No! No! Not by the hairs on my chinny chin chin!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "239C3A15-3BA2-4522-BCE5-E5E4F7764986",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "A0256906-7005-4C0A-92E9-D9975FA84E59",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "A0256906-7005-4C0A-92E9-D9975FA84E59",
+      "title": "Can't blow house away",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf: \"Then I'll huff and I'll puff and I'll blow your house down!\""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "F5F74AD1-6983-4975-9211-C96EB82CF457",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+      "title": "Wolf pauses briefly to rethink his plan",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Doesn't stop for long."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "02B6A9B4-BF30-4CDA-A15D-9FA2021CB57D",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "26FDE6CB-3E37-4D85-82AE-0090A33461ED",
+      "title": "Quickly becomes angry and enraged",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Frustrated, doesn't want to spend time thinking."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "E6EE7AFF-09A9-4EA4-8053-908ACF7E2BF4",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "title": "Wolf decides to climb up chimney",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Makes impulsive decision to eat the pigs by sneaking into their home."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "76FCCD8F-7916-440C-89A3-7EB4C1D37E11",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "title": "Angry he can't blow house away",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "04A19D4F-A72B-4FA2-AE51-FCFC78E1F15A",
+      "lineId": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "beatId": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "9282D488-7992-485F-91BC-69D2CB02A383",
+      "title": "Makes blazing fire under chimney",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "4EA418AB-5E89-4F33-8371-88ACCB49EE3E",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "title": "Wolf falls down chimney",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Wolf doesn't realize Pig #3 has made a pot of boiling water in the fireplace."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "68C18B39-9109-4F66-A884-DEBC688730DC",
+      "lineId": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "beatId": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "title": "Lands in boiling pot of soup",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "5A141291-926E-4342-A057-53D1C3AB320B",
+      "lineId": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "beatId": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "7DE9B243-6E99-48CB-A980-1EA48445357D",
+      "title": "Boils the wolf to make dinner",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "555B4B65-9A12-4CC5-B57F-60844A01D2C9",
+      "lineId": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "beatId": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "title": "Three little pigs enjoy a great meal",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "After a long and frightful day, the pigs earn their revenge on the wolf thanks to the hard work and forethought of Pig #3."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "682BBA82-CBD5-4861-BE37-C9D2642EA336",
+      "lineId": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "beatId": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "title": "Lives happily ever after",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "CB26D1AD-A011-4011-AA7F-CA559FA1AD19",
+      "lineId": "4CF04610-4031-4745-A237-EFA271EF2469",
+      "beatId": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "title": "Lives happily ever after",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": "0B9ACB28-8433-4D1A-9DFC-7599FD85ECF0",
+      "lineId": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "beatId": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "bookId": 1,
+      "positionWithinLine": 0,
+      "positionInBeat": "C5806E77-F751-44D8-865E-55BE0943F482",
+      "title": "Lives happily ever after",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    }
+  ],
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ]
+  },
+  "characters": [
+    {
+      "id": 1,
+      "name": "Mother Pig",
+      "description": "Mother of the three pigs",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": ["43AA33B0-6767-4CAA-A998-71DBEFB9DA2A"],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        1
+      ],
+      "categoryId": 3,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Role": "Ally",
+      "Gender": "Female",
+      "Primary Characteristic": "Caring",
+      "Primary Trait": "Optimistic"
+    },
+    {
+      "id": 2,
+      "name": "Pig #1",
+      "description": "Builds house of straw",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        2
+      ],
+      "categoryId": 2,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Type of House": "Straw",
+      "Gender": "Male",
+      "Primary Characteristic": "Lazy",
+      "Primary Trait": "Lazy"
+    },
+    {
+      "id": 3,
+      "name": "Pig #2",
+      "description": "Builds house of sticks",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "categoryId": 2,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Type of House": "Sticks",
+      "Gender": "Male",
+      "Primary Characteristic": "Lazy",
+      "Primary Trait": "Lazy"
+    },
+    {
+      "id": 4,
+      "name": "Pig #3",
+      "description": "Builds house of bricks",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        3,
+        4
+      ],
+      "categoryId": 1,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Type of House": "Bricks",
+      "Role": "Protagonist",
+      "Gender": "Male",
+      "Primary Characteristic": "Hardworking",
+      "Primary Trait": "Hard worker"
+    },
+    {
+      "id": 5,
+      "name": "Wolf",
+      "description": "Wants to eat the pigs",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        5
+      ],
+      "categoryId": 1,
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Role": "Antagonist",
+      "Gender": "Male",
+      "Primary Characteristic": "Hungry",
+      "Primary Desire": "Hungry",
+      "Primary Trait": "Hungry"
+    }
+  ],
+  "customAttributes": {
+    "characters": [
+      {
+        "name": "Role",
+        "type": "text"
+      },
+      {
+        "name": "Gender",
+        "type": "text"
+      },
+      {
+        "name": "Primary Characteristic",
+        "type": "text"
+      },
+      {
+        "name": "Primary Trait",
+        "type": "text"
+      },
+      {
+        "name": "Type of House",
+        "type": "text"
+      },
+      {
+        "name": "Primary Desire",
+        "type": "text"
+      }
+    ],
+    "places": [
+      {
+        "name": "Owner",
+        "type": "text"
+      },
+      {
+        "name": "Symbolizes",
+        "type": "text"
+      },
+      {
+        "name": "Blown Away",
+        "type": "text"
+      },
+      {
+        "name": "Blows Away",
+        "type": "text"
+      }
+    ],
+    "scenes": [],
+    "lines": [],
+    "notes": []
+  },
+  "lines": [
+    {
+      "id": "43AA33B0-6767-4CAA-A998-71DBEFB9DA2A",
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Main Plot  ",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": "72CF7C0C-FD08-40FA-AA75-C7EE1FB5DB15",
+      "bookId": 1,
+      "color": "#78be20",
+      "title": "Wolf",
+      "position": 1,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": "48B03211-461B-44EB-9771-E4FF3E490127",
+      "bookId": 1,
+      "color": "#e5554f",
+      "title": "Pig #1",
+      "position": 2,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": "4CF04610-4031-4745-A237-EFA271EF2469",
+      "bookId": 1,
+      "color": "#ff7f32",
+      "title": "Pig #2",
+      "position": 3,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": "9E7FDBC5-F3C2-4EBE-9173-6C2912BFA9C0",
+      "bookId": 1,
+      "color": "#ffc72c",
+      "title": "Pig #3",
+      "position": 4,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "notes": [
+    {
+      "id": 1,
+      "title": "House materials",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "House materials"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tBrick "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tClay "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tConcrete "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tStraw "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tStick "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "•\tStone "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Animal ideas ",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Animal ideas "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Source: @macrovector via Freepik "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Hard Work vs Laziness",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Hard Work vs Laziness"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "While Pig #1 and #2 build their homes quickly to spend their time idly dancing and playing, Pig #3 carefully labors to construct a secure home."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The results speak for themselves, as the intelligence, hard work, and dedication of Pig #3 — symbolized by the brick house he builds — proves to save him and his siblings from certain demise at the hands of the Wolf, who would otherwise devour them all. "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "At the end of the story, readers should understand to follow the model of hard work represented by Pig #3."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 4,
+      "title": "The end of the wolf",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The end of the wolf"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "When the wolf falls down the chimney into the boiling pot at the end, should he simply burn his behind and run away... OR be eaten by the pigs?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Should the pigs run away or be eaten when the wolf arrives?",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Should the pigs run away or be eaten when the wolf arrives?"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "It would be more dramatic for the pigs to be eaten by the wolf when he destroys their homes, but perhaps a bit graphic for children."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Narrative point of view",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Narrative point of view"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Third person POV, told from the perspective of the pigs."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "title": "The Chimney",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The Chimney"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "When the wolf realizes he can't blow down the Brick House, he impulsively jumps down the chimney in a rage... good for the pigs, bad for the wolf."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Safety vs Danger",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Safety vs Danger"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "After the pigs leave the safety of their childhood home, they go through a series of dangerous escapades with the wolf before returning to safety again at the end of the story."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The hardest working characters (Mother and Pig #3) are responsible for producing that sense of safety, while the lazy (emotionally driven) thinking of Pig #1 and #2 lead them to dangerous circumstances; they want to dance and play, not build safe, secure homes."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "For the wolf's part, his own lazy, emotionally driven thinking (hunger and, later, pride) works in his favor when facing the equal laziness of the first two pigs, but leads to his demise when facing the hard work and intelligent forethought of Pig #3."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Title",
+      "content": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Title"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "Description"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "lastEdited": null,
+      "templates": [],
+      "imageId": null,
+      "bookIds": [
+        1
+      ]
+    }
+  ],
+  "places": [
+    {
+      "id": 1,
+      "name": "Mother's House",
+      "description": "The three pigs' childhood home",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": ["68C18B39-9109-4F66-A884-DEBC688730DC"],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        1
+      ],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Owner": "Mother Pig",
+      "Symbolizes": "Safety"
+    },
+    {
+      "id": 2,
+      "name": "Stick House",
+      "description": "Made of sticks",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        2
+      ],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Owner": "Pig #2",
+      "Blown Away": "Yes",
+      "Blows Away": "Yes",
+      "Symbolizes": "Laziness"
+    },
+    {
+      "id": 3,
+      "name": "Straw House",
+      "description": "Made of straw",
+      "notes": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "..."
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [],
+      "noteIds": [],
+      "templates": [],
+      "tags": [
+        2
+      ],
+      "imageId": null,
+      "bookIds": [
+        1
+      ],
+      "Owner": "Pig #1",
+      "Blown Away": "Yes",
+      "Blows Away": "Yes",
+      "Symbolizes": "Laziness"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1,
+      "title": "Theme: Safety",
+      "color": null
+    },
+    {
+      "id": 2,
+      "title": "Theme: Laziness",
+      "color": null
+    },
+    {
+      "id": 3,
+      "title": "Theme: Hard Work",
+      "color": null
+    },
+    {
+      "id": 4,
+      "title": " Stage: Climax",
+      "color": null
+    },
+    {
+      "id": 5,
+      "title": "Theme: Danger",
+      "color": null
+    }
+  ],
+  "hierarchyLevels": {
+    "0": {
+      "name": "Chapter",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#0b1117",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#0b1117"
+      }
+    }
+  },
+  "tour": {
+    "showTour": false,
+    "feature": {
+      "name": "acts",
+      "id": 1,
+      "endStep": 8
+    },
+    "run": true,
+    "stepIndex": 0,
+    "steps": [],
+    "loading": false,
+    "action": "start",
+    "transitioning": false,
+    "b2bTransition": false,
+    "toursTaken": {}
+  },
+  "images": {},
+  "editors": {}
+}

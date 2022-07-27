@@ -11,21 +11,33 @@ export default function askToExport(
   logger,
   saveDialog,
   mpq,
+  rm,
+  userId,
+  downloadStorageImage,
   cb
 ) {
   const fileName = saveDialog ? saveDialog(defaultPath, type) : defaultPath
+  console.log('In exporter...')
   if (fileName) {
+    console.log('MPQ event about to be logged...')
     mpq.push('Export', { export_type: type, options: options })
 
     try {
       switch (type) {
-        case 'scrivener':
-          ScrivenerExporter(fullState, fileName, options, isWindows, notifyUser, logger)
-          cb(null, true)
+        case 'scrivener': {
+          ScrivenerExporter(fullState, fileName, options, isWindows, notifyUser, logger, rm)
+            .then(() => {
+              cb(null, true)
+            })
+            .catch((error) => {
+              cb(error, false)
+            })
           break
+        }
         case 'word':
         default:
-          WordExporter(fullState, fileName, options, notifyUser)
+          console.log('About to export to word...')
+          WordExporter(fullState, fileName, options, notifyUser, userId, downloadStorageImage)
             .then((filePath) => {
               cb(null, filePath)
             })
@@ -40,6 +52,10 @@ export default function askToExport(
       cb(error, false)
     }
   } else {
-    cb(new Error('No file name'), false)
+    if (saveDialog) {
+      cb(null, false)
+    } else {
+      cb(new Error('No file name'), false)
+    }
   }
 }

@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash'
-import { unlinkSync } from 'fs'
 import { t as i18n } from 'plottr_locales'
 import binderItem from './binderItem.json'
 import bareScrivx from './bare_scrivx.json'
@@ -204,8 +203,11 @@ export function isPropertyEmpty(property) {
   return false
 }
 
-export function remove(exportPath) {
-  unlinkSync(exportPath)
+export function remove(exportPath, rm) {
+  if (!exportPath || exportPath === '' || exportPath === '/') {
+    throw new Error(`Can't delete invalid, empty or root paths.  Trying to delete: <${exportPath}>`)
+  }
+  return rm(exportPath, { force: true, recursive: true })
 }
 
 // This function will create a copy of the bare_scrivx.json to start

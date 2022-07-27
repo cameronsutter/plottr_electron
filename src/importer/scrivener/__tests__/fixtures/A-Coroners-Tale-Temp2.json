@@ -1,0 +1,2569 @@
+{
+    "_declaration": {
+        "_attributes": {
+            "version": "1.0",
+            "encoding": "UTF-8"
+        }
+    },
+    "ScrivenerProject": {
+        "_attributes": {
+            "Identifier": "2E69AEF5-59B6-4092-BB9D-083A69BAFB36",
+            "Version": "2.0",
+            "Creator": "SCRMAC-3.2.3-14869",
+            "Device": "jeanas-Stuff",
+            "Author": "",
+            "Modified": "2022-06-03 13:36:55 +0800",
+            "ModID": "360941FA-D557-49C1-B681-C0D61C86DD6D"
+        },
+        "Binder": {
+            "BinderItem": [
+                {
+                    "_attributes": {
+                        "UUID": "4D4DD58E-2FB6-4B35-AEA5-54422A2A4A34",
+                        "Type": "DraftFolder",
+                        "Created": "2022-02-10 05:20:18 +0800",
+                        "Modified": "2021-08-19 05:29:07 +0800"
+                    },
+                    "Title": {
+                        "_text": "Thief Catcher"
+                    },
+                    "Children": {
+                        "BinderItem": [
+                            {
+                                "_attributes": {
+                                    "UUID": "9D367D6E-1F6E-4C68-B333-9416B12C94D1",
+                                    "Type": "Text",
+                                    "Created": "2022-02-10 05:20:18 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah is burgled"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "0D453A28-04F8-45C3-B57A-2618D14E1A16",
+                                    "Type": "Text",
+                                    "Created": "2021-08-17 23:02:33 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg sees Edwin arrive at the magistrate's house"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "2BEC05CD-6E6E-4BCB-B374-311A34CC64F7",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin talks to magistrate"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "0,31"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "59206F96-6CA5-4D3B-AF4C-2F00AB9C7F58",
+                                    "Type": "Text",
+                                    "Created": "2021-09-19 14:55:31 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin sees Sarah"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "3BAC2FE2-39E3-4CAC-99E9-F3163EF73151",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg meets Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "87A57C3A-DDD3-4074-A329-88232CF13097",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg asks Edwin to help her become a thief-taker"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "8FBA3A0B-5392-45E7-B1C3-109D63AC53FD",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah receives blackmail message"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "C87BAB0A-03DE-4E3B-8227-585F804E72AF",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg follows Joseph and Walter"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "DB9EDA27-3853-4E28-938A-9881ED6CE99D",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin receives a message"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "200A72FC-5B52-4B10-BFB4-4CF946CFEB11",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg reports back to Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "656,0"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "424CDF34-6D1C-42AD-BE47-FAA4B7F315D0",
+                                    "Type": "Text",
+                                    "Created": "2021-11-29 14:10:15 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah asks Meg for help"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "54F2E946-58B7-44F3-B8E0-A563E17AC0B9",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah approaches Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "203,0"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "DDEAB260-2544-451C-8D27-A1CA6050BF26",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin talks to thief-taker Zeb Garbutt"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "E9800CCF-85BE-4AB1-9577-64DF84C84741",
+                                    "Type": "Text",
+                                    "Created": "2021-11-19 03:04:37 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin asks Meg to take a message to Sarah"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "6A55518E-F0A9-4FA3-8E02-D10F20AFE451",
+                                    "Type": "Text",
+                                    "Created": "2021-11-19 03:32:03 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin cautions Sarah not to use other thief-taker"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "74549244-E2DA-48AC-88FC-C43415708659",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin asks Meg to help with burglary investigation"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "DD935EDA-BDCB-4F73-828A-3C84ACD18409",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg sees Sarah's footman meet Ben Steps"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "55C05BE3-ED78-44CE-8A5B-9074720030C0",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg follows Geoffrey"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "9826DB63-5A49-42F8-9DFD-BA4EAF397BCA",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin hears of Matthew Kemp"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "D4667EC7-D9E4-4EBC-93A3-CD831BC580FE",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin finds Kemp"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "4559D351-1E17-4361-8ADC-62EEC6F77441",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 20:58:22 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg challenges Joseph"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "48A370C3-2BF3-492E-97B1-618EF12EB09B",
+                                    "Type": "Text",
+                                    "Created": "2022-03-31 03:12:45 +0800",
+                                    "Modified": "2022-04-14 03:07:23 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin receives a second message"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "F229EFEF-2DD4-47D7-83B4-D46A58A7AB32",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 03:07:27 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg watches meeting place 1"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "28,0"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "78B51FBC-D797-4CFC-A3C6-189E78EBB676",
+                                    "Type": "Text",
+                                    "Created": "2022-04-10 15:37:49 +0800",
+                                    "Modified": "2022-04-14 03:07:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg watches meeting place 2"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "A2A538CB-3FDD-4004-9F0C-B5C46263AD60",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 03:07:37 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin meets Ben Steps for the first time"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "F3C0CAD7-881F-4AA3-8CAF-A4DD1046344B",
+                                    "Type": "Text",
+                                    "Created": "2022-04-11 15:16:06 +0800",
+                                    "Modified": "2022-04-14 03:07:41 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg follows Ben Steps"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "9D066476-60D7-4F07-BDC4-0E907AB4EF1E",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-14 03:07:44 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin investigates Sarah"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "9396835D-8CCA-41EC-B3F0-81C0C602470A",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-09 03:58:23 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin investigates Ben Steps"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "18C41EEB-682D-4117-9287-B8A5FC0BE215",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "EXPAND ON INVESTIGATION OF BURGLARY"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "7084460B-DCD4-43AB-BD20-95B94DED1939",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 13:14:17 +0800",
+                                    "Modified": "2022-04-14 03:07:48 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah goes to confront Ben Steps part 1"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "28,0"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "179E830D-2EF9-4194-AF2F-9D962421E9F4",
+                                    "Type": "Text",
+                                    "Created": "2022-03-17 16:34:08 +0800",
+                                    "Modified": "2022-04-14 03:07:51 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah goes to confront Ben Steps part 2"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "D5DB5A0A-3D5F-4579-96F3-A8A7EEE18FBF",
+                                    "Type": "Text",
+                                    "Created": "2021-09-10 03:29:15 +0800",
+                                    "Modified": "2022-04-14 03:07:56 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Ben Steps is found dead/is murdered"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "3"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    },
+                                    "NotesTextSelection": {
+                                        "_text": "83,0"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "A463E7FC-32E0-4D09-ACC0-951FC4E93BBB",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "The Coroner examines the body"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "3"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "8207B47E-54A5-430F-AD8E-19AB1FFC3DB1",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin returns the stolen items"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "BE8A80BE-680B-439E-9EEF-4C3528FA6215",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin is accused"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "44066A4C-360D-42D7-BC18-40B992EDA86A",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin is interviewed by the magistrate"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "BF312E49-84FB-4DE7-BAAD-0FE25986252E",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin returns for his money"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "273B74C3-4AAC-4B91-A1E0-B09457280253",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-04-10 15:23:07 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg questions Edwin about Ben's killing"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "C13419F6-4B9B-400B-B272-276C652E2E75",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg thinks about Edwin as suspect"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "9F49B93E-FFA7-4FB7-8B1F-B1AE00FCF863",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah apologises to Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "2C235EBE-1994-40C4-AD37-0C82D673961C",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin pays Meg out of his savings."
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "DD103C5B-98B9-440F-B3B7-EE9CDB5E4039",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin challenges Sarah - did she kill Steps?"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "F3DB6EBF-DDC5-4BED-BFC6-4FBD91FA427E",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "EXPLAIN ABOUT Meg'S INVESTIGATION"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "8157411E-8ED6-493C-87F5-7B750D954C19",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg watches Edwin follow Sarah"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "0C434AB8-32EA-4BFE-8E60-0DC36EAA834A",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin finds a note in Ben's lodgings"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "3A48F2FE-3C34-4A56-BF96-4DD7F0E76CB1",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin bumps into Sarah in town"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "07162E64-2CC1-47C7-9183-91DD0F9D4583",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin talks to Seth Green"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "119373D3-3779-4D69-A18F-5F900EE254E7",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin and Sarah agree to meet each day"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "06ECDC0F-E6F5-4706-9593-B4B1DDDB1B72",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin is introduced to Ralf"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "0A1C0493-5803-4C05-87BD-8B8847945A4C",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:17 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Seth Green contacts Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "30B032DD-1D90-4017-BEE5-17ACAB63A2F3",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin finds Jacob Trussle"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "9ED7C6F2-7EC0-4C58-8DD2-7407DEA81386",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Sarah tells Edwin she told Ralf about them"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "1"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "1609FD8A-271C-444A-9963-8808BFAAEB15",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin interviews Trussle's wife"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "19054CD6-74E8-4FBC-A766-D7E162346940",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Ralf threatens Edwin"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "E9E11665-2FE3-42B2-B1A9-9DA35D05B25E",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Joseph reveals she told Sarah where Ben lived"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "E9D033A3-32BC-47B5-94FA-5644CF867E1F",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Joseph points a finger at Ralf"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "1F0421FA-3713-4C3A-8001-C2F0EFD7724F",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin talks to tavern owner"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "EFBEE415-6BD5-48CE-AE41-2F104F3ECB9B",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin discusses Geoffrey with Sarah"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "AC03F7D2-C70F-426D-8D41-094F6069A78C",
+                                    "Type": "Text",
+                                    "Created": "2021-09-03 14:00:48 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin sees Walter and confronts him"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "6CE7245C-574D-4A8C-9402-F9EFC34544B4",
+                                    "Type": "Text",
+                                    "Created": "2021-09-03 14:27:51 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin confronts Geoffrey about false name"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "71CE35B4-F803-42BE-863A-1A09073C52C2",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin and Meg go through murder suspects"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "6FECEA26-BB8D-46FA-BD15-6CB94FCC46F0",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin identifies the killer"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "E33384E5-56B5-4B00-BA8C-8E6D99F7C75B",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin accuses Ralf"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "EA72D4A3-B3BB-4C38-A6E4-D7260FB33F3F",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin explains to the magistrate"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "1E30AF3A-7337-457B-9196-38FA16470523",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Ralf leaves on a ship"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "3"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "F185DED3-6A35-4127-9303-D06CF758EE3E",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "EXPAND ON EDWIN AND SARAH STORY."
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "364B7373-9406-4C4E-8F3A-204B97A7E947",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Edwin and Sarah story concludes"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "2"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            },
+                            {
+                                "_attributes": {
+                                    "UUID": "C67FE51B-2654-4DCB-991C-C17A782B754A",
+                                    "Type": "Text",
+                                    "Created": "2021-09-02 00:14:18 +0800",
+                                    "Modified": "2022-03-28 15:09:34 +0800"
+                                },
+                                "Title": {
+                                    "_text": "Meg 'officially' becomes Edwin's assistant"
+                                },
+                                "MetaData": {
+                                    "SectionType": {
+                                        "_text": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                                    },
+                                    "LabelID": {
+                                        "_text": "0"
+                                    },
+                                    "IncludeInCompile": {
+                                        "_text": "Yes"
+                                    }
+                                },
+                                "TextSettings": {
+                                    "TextSelection": {
+                                        "_text": "0,0"
+                                    },
+                                    "Target": {
+                                        "_attributes": {
+                                            "Type": "Words",
+                                            "Notify": "No"
+                                        },
+                                        "_text": "1000"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                },
+                {
+                    "_attributes": {
+                        "UUID": "02F732DA-81AE-4219-A2CD-D0948C03C387",
+                        "Type": "Folder",
+                        "Created": "2022-04-14 15:15:37 +0800",
+                        "Modified": "2022-04-14 15:15:49 +0800"
+                    },
+                    "Title": {
+                        "_text": "Research and notes"
+                    },
+                    "MetaData": {
+                        "IncludeInCompile": {
+                            "_text": "Yes"
+                        }
+                    },
+                    "TextSettings": {
+                        "TextSelection": {
+                            "_text": "0,0"
+                        }
+                    },
+                    "Children": {
+                        "BinderItem": {
+                            "_attributes": {
+                                "UUID": "C9C1BA2D-AC44-48AA-AF1C-D22D4981CABA",
+                                "Type": "Text",
+                                "Created": "2022-02-15 23:10:41 +0800",
+                                "Modified": "2022-03-07 14:50:48 +0800"
+                            },
+                            "Title": {
+                                "_text": "Project Notes"
+                            },
+                            "TextSettings": {
+                                "TextSelection": {
+                                    "_text": "358,0"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "_attributes": {
+                        "UUID": "56A85348-B06C-4946-ACB9-B8F615A08831",
+                        "Type": "ResearchFolder",
+                        "Created": "2022-02-10 05:20:18 +0800",
+                        "Modified": "2022-06-01 22:47:48 +0800"
+                    },
+                    "Title": {
+                        "_text": "Notes"
+                    }
+                },
+                {
+                    "_attributes": {
+                        "UUID": "9214B8F4-319B-4C1B-9266-D4C72084A58F",
+                        "Type": "TrashFolder",
+                        "Created": "2022-02-10 05:20:18 +0800",
+                        "Modified": "2022-06-01 22:47:48 +0800"
+                    },
+                    "Title": {
+                        "_text": "Trash"
+                    }
+                }
+            ]
+        },
+        "Collections": {
+            "Collection": [
+                {
+                    "_attributes": {
+                        "Type": "Binder",
+                        "ID": "52195833-9932-4F6D-AA89-27344544EF06",
+                        "Color": "1.0 1.0 1.0"
+                    },
+                    "Title": {
+                        "_text": "Binder"
+                    }
+                },
+                {
+                    "_attributes": {
+                        "Type": "RecentSearch",
+                        "ID": "65BD1403-6C79-4ED5-BD07-02E18C9933EE",
+                        "Color": "0.922176 0.818589 0.999618"
+                    },
+                    "Title": {
+                        "_text": "Search Results"
+                    },
+                    "SearchSettings": {
+                        "_attributes": {
+                            "Operator": "Any",
+                            "Type": "All",
+                            "CaseSensitive": "No",
+                            "IgnoreDiacritics": "No"
+                        },
+                        "_text": "black"
+                    }
+                },
+                {
+                    "_attributes": {
+                        "Type": "Arbitrary",
+                        "ID": "213FED4A-25B2-464E-BEE3-6C2E3C927C36",
+                        "Color": "0.992157 0.972549 0.819608"
+                    },
+                    "Title": {
+                        "_text": "Synced Documents"
+                    }
+                }
+            ]
+        },
+        "SectionTypes": {
+            "TypeDefinitions": {
+                "Type": [
+                    {
+                        "_attributes": {
+                            "ID": "A5768764-1BB1-4D3B-AF6A-2B31C2F302D8"
+                        },
+                        "_text": "Chapter-CG"
+                    },
+                    {
+                        "_attributes": {
+                            "ID": "BBB358DF-53D5-4449-B1F3-3ED167CF9203"
+                        },
+                        "_text": "Scene-CG"
+                    }
+                ]
+            },
+            "LevelTypes": {
+                "Folders": {
+                    "Type": {
+                        "_text": "A5768764-1BB1-4D3B-AF6A-2B31C2F302D8"
+                    }
+                },
+                "Containers": {
+                    "Type": {
+                        "_text": "A5768764-1BB1-4D3B-AF6A-2B31C2F302D8"
+                    }
+                },
+                "Files": {
+                    "Type": {
+                        "_text": "A5768764-1BB1-4D3B-AF6A-2B31C2F302D8"
+                    }
+                }
+            }
+        },
+        "LabelSettings": {
+            "Title": {
+                "_text": "Label"
+            },
+            "DefaultLabelID": {
+                "_text": "-1"
+            },
+            "Labels": {
+                "Label": [
+                    {
+                        "_attributes": {
+                            "ID": "-1"
+                        },
+                        "_text": "No Label"
+                    },
+                    {
+                        "_attributes": {
+                            "ID": "0",
+                            "Color": "1.0 0.0 0.0"
+                        },
+                        "_text": "POV: Meg"
+                    },
+                    {
+                        "_attributes": {
+                            "ID": "1",
+                            "Color": "0.333333 0.0 1.0"
+                        },
+                        "_text": "POV: Sarah"
+                    },
+                    {
+                        "_attributes": {
+                            "ID": "2",
+                            "Color": "0.388235 0.772549 0.0"
+                        },
+                        "_text": "POV: Edwin"
+                    },
+                    {
+                        "_attributes": {
+                            "ID": "3",
+                            "Color": "1.0 1.0 0.0"
+                        },
+                        "_text": "POV: General narrator"
+                    }
+                ]
+            }
+        },
+        "StatusSettings": {
+            "Title": {
+                "_text": "Status"
+            },
+            "DefaultStatusID": {
+                "_text": "-1"
+            },
+            "StatusItems": {
+                "Status": {
+                    "_attributes": {
+                        "ID": "-1"
+                    },
+                    "_text": "No Status"
+                }
+            }
+        },
+        "ProjectTargets": {
+            "_attributes": {
+                "Notify": "No"
+            },
+            "DraftTarget": {
+                "_attributes": {
+                    "Type": "Words",
+                    "CountIncludedOnly": "No",
+                    "CurrentCompileGroupOnly": "No",
+                    "Deadline": "2022-06-01 22:47:48 +0800",
+                    "IgnoreDeadline": "Yes"
+                },
+                "_text": "70000"
+            },
+            "SessionTarget": {
+                "_attributes": {
+                    "Type": "Words",
+                    "CountDraftOnly": "No",
+                    "AllowNegatives": "No",
+                    "NextResetDate": "2022-06-04 00:00:00 +0800",
+                    "ResetType": "Time",
+                    "ResetTime": "00:00",
+                    "DeterminedFromDeadline": "No",
+                    "WritingDays": "",
+                    "CanWriteOnDeadlineDate": "No"
+                },
+                "_text": "0"
+            },
+            "PreviousSession": {
+                "_attributes": {
+                    "Words": "0",
+                    "Characters": "0",
+                    "Date": "2022-06-03 13:05:30 +0800"
+                }
+            }
+        },
+        "RecentWritingHistory": {
+            "_attributes": {
+                "Date": "2022-06-03 00:00:00 +0800"
+            },
+            "DraftWordCount": {
+                "_text": "0"
+            },
+            "DraftCharCount": {
+                "_text": "0"
+            },
+            "OtherWordCount": {
+                "_text": "0"
+            },
+            "OtherCharCount": {
+                "_text": "0"
+            }
+        },
+        "PrintSettings": {
+            "_attributes": {
+                "PaperSize": "595.0,842.0",
+                "LeftMargin": "72.0",
+                "RightMargin": "72.0",
+                "TopMargin": "72.0",
+                "BottomMargin": "72.0",
+                "PaperType": "iso-a4",
+                "Orientation": "Portrait",
+                "HorizontalPagination": "Clip",
+                "VerticalPagination": "Auto",
+                "ScaleFactor": "1.0",
+                "HorizontallyCentered": "Yes",
+                "VerticallyCentered": "Yes",
+                "Collates": "No",
+                "PagesAcross": "1",
+                "PagesDown": "1"
+            }
+        }
+    }
+}

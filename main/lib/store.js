@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { cloneDeep, set, get } from 'lodash'
 
-const { readFile, writeFile, lstat, mkdir } = fs.promises
+const { readFile, open, writeFile, lstat, mkdir } = fs.promises
 
 class Store {
   store = {}
@@ -17,6 +17,7 @@ class Store {
     this.logger = logger
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
+    this.activeWrite = null
 
     this.readStore().then(() => {
       if (this.watch) {
@@ -29,6 +30,10 @@ class Store {
     if (this.watcher && typeof this.watcher.close === 'function') {
       this.watcher.close()
     }
+  }
+
+  activeWriteRequest = () => {
+    return this.activeWrite || Promise.resolve(true)
   }
 
   watchStore = () => {
@@ -119,24 +124,37 @@ class Store {
   }
 
   writeStore = () => {
-    return writeFile(
-      this.path,
-      JSON.stringify(
-        {
-          ...this.defaults,
-          ...this.store,
-        },
-        null,
-        2
-      )
-    )
-      .then(() => {
-        this.publishChangesToWatchers()
-      })
-      .catch((error) => {
-        this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
-        throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
-      })
+    return this.activeWriteRequest().then(() => {
+      this.activeWrite = open(this.path, 'w+')
+        .then((fileHandle) => {
+          return writeFile(
+            fileHandle,
+            JSON.stringify(
+              {
+                ...this.defaults,
+                ...this.store,
+              },
+              null,
+              2
+            )
+          )
+            .then(() => {
+              return fileHandle.sync().then(() => {
+                return fileHandle.close()
+              })
+            })
+            .then(() => {
+              this.publishChangesToWatchers()
+            })
+        })
+        .catch((error) => {
+          this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
+          throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
+        })
+        .finally(() => {
+          this.activeWrite = null
+        })
+    })
   }
 
   set = (storeOrKey, value) => {

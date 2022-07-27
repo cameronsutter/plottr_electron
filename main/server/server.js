@@ -62,6 +62,7 @@ import {
   OFFLINE_FILE_PATH,
   CUSTOM_TEMPLATES_PATH,
   ATTEMPT_TO_FETCH_TEMPLATES,
+  SAVE_AS_TEMP_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -129,6 +130,7 @@ const setupListeners = (port, userDataPath) => {
       readOfflineFiles,
       isTempFile,
       offlineFilesFilesPath,
+      saveTempFile,
     } = makeFileModule(backupModule, settings, logger)
     const {
       backupBasePath,
@@ -478,6 +480,28 @@ const setupListeners = (port, userDataPath) => {
                 'Attempting to fetch latest templates (might not if the manifest is up to date)',
               attemptToFetchTemplates,
               () => 'Error attempting to fetch the latest templates'
+            )
+          }
+          case SAVE_AS_TEMP_FILE: {
+            const { file } = payload
+            return handlePromise(
+              () => [
+                'Saving file to temp folder: ',
+                {
+                  file: {
+                    ...payload.file.file,
+                  },
+                },
+              ],
+              () => saveTempFile(file),
+              () => [
+                'Error saving file to temp folder: ',
+                {
+                  file: {
+                    ...payload.file.file,
+                  },
+                },
+              ]
             )
           }
           // ===File System APIs===

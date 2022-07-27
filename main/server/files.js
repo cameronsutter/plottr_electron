@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { isEqual } from 'lodash'
+import { v4 as uuidv4 } from 'uuid'
 
 import { emptyFile, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
@@ -434,6 +435,30 @@ const fileModule = (userDataPath) => {
       return file.file.fileName.includes(TEMP_FILES_PATH)
     }
 
+    function saveTempFile(file) {
+      const fileBasename = basename(file.file.fileName)
+      const newFilepath = `${TEMP_FILES_PATH}/${fileBasename}`
+      logger.info(`Saving ${file.file.fileName} to ${TEMP_FILES_PATH}`)
+      // We don't want to overwrite an existing file.
+      return lstat(newFilepath)
+        .then(() => {
+          // We'll assume that one file, generated with a UUID in the name, is good enough.
+          const baseNameWithoutExtension = basename(file.file.fileName, '.pltr')
+          return `${TEMP_FILES_PATH}/${baseNameWithoutExtension}-${uuidv4()}.pltr`
+        })
+        .catch((error) => {
+          if (error.code === 'ENOENT') {
+            return Promise.resolve(newFilepath)
+          }
+          return Promise.reject(error)
+        })
+        .then((filePath) => {
+          return saveFile(filePath, file).then(() => {
+            return filePath
+          })
+        })
+    }
+
     return {
       saveFile,
       saveOfflineFile,
@@ -445,6 +470,7 @@ const fileModule = (userDataPath) => {
       readOfflineFiles,
       isTempFile,
       offlineFileFilesPath,
+      saveTempFile,
     }
   }
 }

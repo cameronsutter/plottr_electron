@@ -51,7 +51,20 @@ const makeFileModule = (whenClientIsReady) => {
     return Promise.resolve(false)
   }
 
-  return { saveFile, backupOfflineBackupForResume, readOfflineFiles, isTempFile, saveAs }
+  const saveAsTempFile = (file) => {
+    return whenClientIsReady(({ saveAsTempFile }) => {
+      return saveAsTempFile(file)
+    })
+  }
+
+  return {
+    saveFile,
+    backupOfflineBackupForResume,
+    readOfflineFiles,
+    isTempFile,
+    saveAs,
+    saveAsTempFile,
+  }
 }
 
 export { makeFileModule }

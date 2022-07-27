@@ -49,26 +49,17 @@ const Listener = ({
   const wasOffline = useRef(isOffline)
 
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
-  const { saveAs } = makeFileModule(whenClientIsReady)
+  const { saveAsTempFile } = makeFileModule(whenClientIsReady)
 
   useEffect(() => {
     if (filePath) {
       fileSystemAPIs.backupBasePath().then((backupPath) => {
         if (filePath.startsWith(backupPath)) {
-          saveAs(
-            t('This looks like a backup file.  Would you like to save a copy that you can change?')
-          ).then((saved) => {
-            if (saved) {
+          withFullFileState((state) => {
+            saveAsTempFile(state.present).then((newFilePath) => {
+              ipcRenderer.send('pls-open-window', newFilePath, true)
               window.close()
-            } else {
-              dialog.showMessageBoxSync({
-                type: 'info',
-                buttons: [t('ok')],
-                message: t(
-                  'This is a backup file.  Use "Save as" to create a copy you can change.'
-                ),
-              })
-            }
+            })
           })
         }
       })

@@ -54,3 +54,47 @@
     }
   }
 }
+
+.dashboard__help__search-docs {
+  display: flex;
+  justify-content: center;
+  & > div {
+    width: 620px;
+    text-align: center;
+    padding: 2em;
+    position: relative;
+
+    p {
+      color: $neutral-gray-5;
+    }
+  }
+  input {
+    height: 55px;
+    border: white;
+    border-radius: 5px;
+    font-size: 18px;
+    line-height: 22px;
+    width: 100%;
+    padding: 4px 14px;
+  }
+  button, button:active, button:focus {
+    color: #fff;
+    background: #ff5000;
+    border-radius: 0 5px 5px 0;
+    border: 1px solid #ff4500;
+    transition: color .2s;
+    text-shadow: none;
+    font-size: 18px;
+    padding: 0 1.5em;
+    height: 55px;
+    position: absolute;
+    top: 32px;
+    right: 32px;
+
+    &:hover {
+      background: #ff4500;
+      color: white;
+    }
+  }
+}
+

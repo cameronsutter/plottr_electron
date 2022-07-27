@@ -17,9 +17,9 @@ const BackupModule = (userDataPath) => (settings, logger) => {
 
   function saveBackup(filePath, data) {
     logger.info(`Saving backup of: ${filePath}`)
-    return backupBasePath().then((backupPath) => {
-      if (path.normalize(filePath).startsWith(path.normalize(backupPath))) {
-        const message = `Attempting to save a backup of a file that's already a backup (${filePath})!  Backups are in ${backupPath}`
+    return backupBasePath().then((basePath) => {
+      if (path.normalize(filePath).startsWith(path.normalize(basePath))) {
+        const message = `Attempting to save a backup of a file that's already a backup (${filePath})!  Backups are in ${basePath}`
         logger.error(message)
         return Promise.reject(message)
       }
@@ -54,7 +54,7 @@ const BackupModule = (userDataPath) => (settings, logger) => {
             })
 
           return ensureBackupTodayPath()
-            .then(backupBasePath)
+            .then(backupPath)
             .then((partialPath) => {
               const fileBaseName = path.basename(filePath)
               const startBaseName = `(start-session)-${fileBaseName}`

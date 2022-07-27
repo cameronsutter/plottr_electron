@@ -24,8 +24,10 @@ import {
   BACKUP_OFFLINE_BACKUP_FOR_RESUME,
   READ_OFFLINE_FILES,
   SET_TEMPLATE,
+  SAVE_AS_TEMP_FILE,
 
   // Error reply types
+  SAVE_AS_TEMP_FILE_ERROR_REPLY,
   RM_RF_ERROR_REPLY,
   SAVE_FILE_ERROR_REPLY,
   SAVE_OFFLINE_FILE_ERROR_REPLY,
@@ -256,6 +258,7 @@ const connect = (
             return
           }
           // Normal replies
+          case SAVE_AS_TEMP_FILE:
           case ATTEMPT_TO_FETCH_TEMPLATES:
           case DELETE_CUSTOM_TEMPLATE:
           case OFFLINE_FILE_PATH:
@@ -311,6 +314,7 @@ const connect = (
             return
           }
           // Error return types
+          case SAVE_AS_TEMP_FILE_ERROR_REPLY:
           case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
           case OFFLINE_FILE_PATH_ERROR_REPLY:
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
@@ -462,6 +466,10 @@ const connect = (
       return sendPromise(ATTEMPT_TO_FETCH_TEMPLATES)
     }
 
+    const saveAsTempFile = (file) => {
+      return sendPromise(SAVE_AS_TEMP_FILE, { file })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -601,6 +609,7 @@ const connect = (
           offlineFilePath,
           customTemplatesPath,
           attemptToFetchTemplates,
+          saveAsTempFile,
           // File system APIs
           backupBasePath,
           currentTrial,

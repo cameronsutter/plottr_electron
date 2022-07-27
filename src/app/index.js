@@ -203,14 +203,9 @@ ipcRenderer.on('save-as', () => {
   })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    saveFile(newFilePath, present)
-    const listener = (event, fileSaved) => {
-      if (fileSaved === newFilePath) {
-        ipcRenderer.send('pls-open-window', newFilePath, true)
-        ipcRenderer.removeListener('file-saved', listener)
-      }
-    }
-    ipcRenderer.on('file-saved', listener)
+    saveFile(newFilePath, present).then(() => {
+      ipcRenderer.send('pls-open-window', newFilePath, true)
+    })
   }
 })
 

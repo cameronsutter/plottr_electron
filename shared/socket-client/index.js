@@ -25,8 +25,16 @@ import {
   READ_OFFLINE_FILES,
   SET_TEMPLATE,
   SAVE_AS_TEMP_FILE,
+  REMOVE_FROM_KNOWN_FILES,
+  ADD_KNOWN_FILE,
+  EDIT_KNOWN_FILE_PATH,
+  UPDATE_LAST_OPENED_DATE,
 
   // Error reply types
+  REMOVE_FROM_KNOWN_FILES_ERROR_REPLY,
+  ADD_KNOWN_FILE_ERROR_REPLY,
+  EDIT_KNOWN_FILE_PATH_ERROR_REPLY,
+  UPDATE_LAST_OPENED_DATE_ERROR_REPLY,
   SAVE_AS_TEMP_FILE_ERROR_REPLY,
   RM_RF_ERROR_REPLY,
   SAVE_FILE_ERROR_REPLY,
@@ -98,6 +106,8 @@ import {
   CUSTOM_TEMPLATES_PATH,
   ATTEMPT_TO_FETCH_TEMPLATES,
   ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY,
+  ADD_KNOWN_FILE_WITH_FIX,
+  ADD_KNOWN_FILE_WITH_FIX_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -258,6 +268,11 @@ const connect = (
             return
           }
           // Normal replies
+          case REMOVE_FROM_KNOWN_FILES:
+          case ADD_KNOWN_FILE_WITH_FIX:
+          case ADD_KNOWN_FILE:
+          case EDIT_KNOWN_FILE_PATH:
+          case UPDATE_LAST_OPENED_DATE:
           case SAVE_AS_TEMP_FILE:
           case ATTEMPT_TO_FETCH_TEMPLATES:
           case DELETE_CUSTOM_TEMPLATE:
@@ -314,6 +329,11 @@ const connect = (
             return
           }
           // Error return types
+          case REMOVE_FROM_KNOWN_FILES_ERROR_REPLY:
+          case ADD_KNOWN_FILE_WITH_FIX_ERROR_REPLY:
+          case ADD_KNOWN_FILE_ERROR_REPLY:
+          case EDIT_KNOWN_FILE_PATH_ERROR_REPLY:
+          case UPDATE_LAST_OPENED_DATE_ERROR_REPLY:
           case SAVE_AS_TEMP_FILE_ERROR_REPLY:
           case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
           case OFFLINE_FILE_PATH_ERROR_REPLY:
@@ -470,6 +490,26 @@ const connect = (
       return sendPromise(SAVE_AS_TEMP_FILE, { file })
     }
 
+    const removeFromKnownFiles = (id) => {
+      return sendPromise(REMOVE_FROM_KNOWN_FILES, { id })
+    }
+
+    const addKnownFile = (filePath) => {
+      return sendPromise(ADD_KNOWN_FILE, { filePath })
+    }
+
+    const addKnownFileWithFix = (filePath) => {
+      return sendPromise(ADD_KNOWN_FILE_WITH_FIX, { filePath })
+    }
+
+    const editKnownFilePath = (oldFilePath, newFilePath) => {
+      return sendPromise(EDIT_KNOWN_FILE_PATH, { oldFilePath, newFilePath })
+    }
+
+    const updateLastOpenedDate = (id) => {
+      return sendPromise(UPDATE_LAST_OPENED_DATE, { id })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -610,6 +650,11 @@ const connect = (
           customTemplatesPath,
           attemptToFetchTemplates,
           saveAsTempFile,
+          removeFromKnownFiles,
+          addKnownFile,
+          addKnownFileWithFix,
+          editKnownFilePath,
+          updateLastOpenedDate,
           // File system APIs
           backupBasePath,
           currentTrial,

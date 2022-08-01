@@ -8,6 +8,7 @@ import { buildHelpMenu } from './help'
 import { buildFileMenu } from './file'
 import { buildViewMenu } from './view'
 import { getWindowById } from '../windows'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
 
 ipcMain.on('pls-reload-menu', () => {
   log.info('Menu reload requested.')
@@ -29,20 +30,28 @@ function buildMenu() {
       filePath = winObj.filePath
     }
   }
-  return buildFileMenu(filePath).then((fileMenu) => {
-    return [
-      buildPlottrMenu(buildMenu),
-      fileMenu,
-      buildEditMenu(),
-      buildViewMenu(),
-      buildWindowMenu(),
-      buildHelpMenu(),
-    ]
-  })
+
+  const getTrialInfo = () =>
+    whenClientIsReady(({ currentTrial }) => {
+      return currentTrial()
+    })
+
+  return Promise.all([buildPlottrMenu(buildMenu), buildFileMenu(filePath, getTrialInfo)]).then(
+    ([plottrMenu, fileMenu]) => {
+      return [
+        plottrMenu,
+        fileMenu,
+        buildEditMenu(),
+        buildViewMenu(),
+        buildWindowMenu(),
+        buildHelpMenu(),
+      ]
+    }
+  )
 }
 
 function loadMenu() {
-  buildMenu().then((template) => {
+  return buildMenu().then((template) => {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
   })

@@ -182,6 +182,9 @@ class Store {
     }
 
     const store = storeOrKey
+    if (typeof store !== 'object') {
+      return Promise.reject(`Tried to set store to non-object: ${store}`)
+    }
     this.store = cloneDeep(store)
     return this.writeStore()
       .then(() => {

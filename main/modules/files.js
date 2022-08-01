@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
 
-import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
+import { addToKnownFiles, addToKnown } from './known_files'
 import { importFromSnowflake, importFromScrivener } from 'plottr_import_export'
 
 import { emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
@@ -16,6 +16,7 @@ import { shell } from 'electron'
 import { broadcastToAllWindows } from './broadcast'
 import { OFFLINE_FILE_FILES_PATH, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
+import logger from '../../shared/logger'
 
 const { lstat, writeFile } = fs.promises
 
@@ -54,33 +55,9 @@ const makeFileModule = () => {
     }
   }
 
-  function removeFromKnownFiles(id) {
-    knownFilesStore.delete(id)
-  }
-
-  function deleteKnownFile(id, filePath) {
-    if (!filePath) {
-      filePath = knownFilesStore.get(`${id}.path`)
-    }
-    try {
-      removeFromKnownFiles(id)
-      shell.trashItem(filePath, true)
-      if (filePath.includes(TEMP_FILES_PATH)) {
-        removeFromTempFiles(filePath, false)
-      }
-    } catch (error) {
-      log.warn(error)
-    }
-  }
-
   function editKnownFilePath(oldPath, newPath) {
-    const key = Object.keys(knownFilesStore.store).find(
-      (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath)
-    )
-    const file = knownFilesStore.get(key)
-    knownFilesStore.set(key, {
-      ...file,
-      path: newPath,
+    return whenClientIsReady(({ editKnownFilePath }) => {
+      return editKnownFilePath(oldPath, newPath)
     })
   }
 
@@ -151,13 +128,23 @@ const makeFileModule = () => {
       }
       const filePath = await saveToTempFile(templateFileJSON, name)
       const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+      try {
+        await openKnownFile(filePath, fileId)
+      } catch (error) {
+        log.error('Failed to create a new file', name, error)
+        throw error
+      }
     } else {
       const fileName = name || t('Untitled')
       const emptyPlottrFile = emptyFile(fileName, app.getVersion())
       const filePath = await saveToTempFile(emptyPlottrFile, name)
       const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+      try {
+        await openKnownFile(filePath, fileId)
+      } catch (error) {
+        log.error('Failed to create a new file', name, error)
+        throw error
+      }
     }
   }
 
@@ -178,7 +165,12 @@ const makeFileModule = () => {
 
     const filePath = await saveToTempFile(importedJson, storyName)
     const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
+    try {
+      await openKnownFile(filePath, fileId)
+    } catch (error) {
+      log.error('Failed to create file from snowflake', error)
+      throw error
+    }
     return true
   }
 
@@ -231,11 +223,21 @@ const makeFileModule = () => {
         return saveToTempFile(importedJson, storyName)
           .then((filePath) => {
             const fileId = addToKnownFiles(filePath)
-            openKnownFile(filePath, fileId)
-            sender.send('finish-creating-local-scrivener-imported-file')
+            return openKnownFile(filePath, fileId)
+              .then(() => {
+                log.info('Opened file from imported scrivener data', storyName)
+                sender.send('finish-creating-local-scrivener-imported-file')
+                return true
+              })
+              .catch((error) => {
+                sender.send('error-importing-scrivener', error)
+                log.error('Failed to open a known file after importing from scrivener', error)
+                return Promise.reject(error)
+              })
           })
           .catch((error) => {
-            return sender.send('error-importing-scrivener', error)
+            log.error('Failed to save imported scrivener file', error)
+            sender.send('error-importing-scrivener', error)
           })
       }
     })
@@ -249,12 +251,26 @@ const makeFileModule = () => {
           log.info('Opening offline file', filePath)
           return
         }
-        knownFilesStore.set(`${id}.lastOpened`, Date.now())
-        broadcastToAllWindows('reload-recents')
+        whenClientIsReady(({ updateLastOpenedDate }) => {
+          return updateLastOpenedDate(id)
+        })
+          .then(() => {
+            broadcastToAllWindows('reload-recents')
+          })
+          .catch((error) => {
+            logger.error('Failed to update a known files last opened date', id, filePath, error)
+          })
       }, 500)
     }
-    openProjectWindow(filePath)
-    if (unknown) addToKnown(filePath)
+    return openProjectWindow(filePath)
+      .then(() => {
+        log.info('Opened known file for', filePath)
+        if (unknown) addToKnown(filePath)
+      })
+      .catch((error) => {
+        log.error('Failed to open a project window for know file', filePath)
+        return Promise.reject(error)
+      })
   }
 
   return {
@@ -264,8 +280,6 @@ const makeFileModule = () => {
     saveFile,
     editKnownFilePath,
     removeFromTempFiles,
-    removeFromKnownFiles,
-    deleteKnownFile,
     createNew,
     createFromSnowflake,
     createFromScrivener,
@@ -280,8 +294,6 @@ const {
   saveFile,
   editKnownFilePath,
   removeFromTempFiles,
-  removeFromKnownFiles,
-  deleteKnownFile,
   createNew,
   createFromSnowflake,
   createFromScrivener,
@@ -295,8 +307,6 @@ export {
   saveFile,
   editKnownFilePath,
   removeFromTempFiles,
-  removeFromKnownFiles,
-  deleteKnownFile,
   createNew,
   createFromSnowflake,
   createFromScrivener,

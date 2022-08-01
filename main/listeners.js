@@ -1,5 +1,5 @@
 import electron, { shell, Notification } from 'electron'
-import SETTINGS from './modules/settings'
+import currentSettings, { saveAppSetting } from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import https from 'https'
 import fs from 'fs'
@@ -11,9 +11,12 @@ import './modules/updater_events'
 import { loadMenu } from './modules/menus'
 import { getWindowById, numberOfWindows } from './modules/windows'
 import { setDarkMode } from './modules/theme'
-import { newFileOptions } from './modules/new_file_options'
 import { addToKnownFiles } from './modules/known_files'
-import { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy } from './modules/feature_flags'
+import {
+  broadcastSetBeatHierarchy,
+  broadcastUnsetBeatHierarchy,
+  featureFlags,
+} from './modules/feature_flags'
 import { reloadAllWindows } from './modules/windows'
 import { openLoginPopupWindow } from './modules/windows/login'
 import { broadcastToAllWindows } from './modules/broadcast'
@@ -41,14 +44,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
     const win = getWindowById(id)
     const filePath = win.filePath || lastFile
     if (win) {
-      event.sender.send(
-        'state-fetched',
-        filePath,
-        newFileOptions(),
-        numberOfWindows(),
-        win.filePath,
-        processSwitches.serialise()
-      )
+      featureFlags().then((flags) => {
+        event.sender.send(
+          'state-fetched',
+          filePath,
+          flags,
+          numberOfWindows(),
+          win.filePath,
+          processSwitches.serialise()
+        )
+      })
     }
   })
 
@@ -58,7 +63,14 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
 
   ipcMain.on('pls-set-dark-setting', (event, newValue) => {
     setDarkMode(newValue)
-    broadcastToAllWindows('reload-dark-mode', SETTINGS.store.user.dark)
+      .then(() => {
+        return currentSettings().then((settings) => {
+          broadcastToAllWindows('reload-dark-mode', settings.user.dark)
+        })
+      })
+      .catch((error) => {
+        log.error('Failed to set dark mode setting from main listener', error)
+      })
   })
 
   ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
@@ -70,11 +82,18 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   })
 
   ipcMain.on('pls-update-language', (_event, newLanguage) => {
-    SETTINGS.set('locale', newLanguage)
-    setupI18n(SETTINGS, { electron })
-    loadMenu().then(() => {
-      reloadAllWindows()
-    })
+    saveAppSetting('locale', newLanguage)
+      .then(() => {
+        currentSettings().then((settings) => {
+          setupI18n(settings, { electron })
+          return loadMenu().then(() => {
+            reloadAllWindows()
+          })
+        })
+      })
+      .catch((error) => {
+        log.error('Error updating language', error)
+      })
   })
 
   ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
@@ -84,7 +103,14 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   ipcMain.on('add-to-known-files-and-open', (_event, file) => {
     if (!file || file === '') return
     const id = addToKnownFiles(file)
+    log.info('Adding to known files and opening', file)
     openKnownFile(file, id, false)
+      .then(() => {
+        log.info('Opened file', file)
+      })
+      .catch((error) => {
+        log.error('Error opening file and adding to known', file, error)
+      })
   })
 
   ipcMain.on('create-new-file', (event, template, name) => {
@@ -117,7 +143,14 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   })
 
   ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {
+    log.info('Opening known file', filePath, id, unknown, headerBarFileName)
     openKnownFile(filePath, id, unknown, headerBarFileName)
+      .then(() => {
+        log.info('Opened file', filePath)
+      })
+      .catch((error) => {
+        log.error('Error opening known file', filePath, error)
+      })
   })
 
   ipcMain.on('remove-from-temp-files-if-temp', (_event, filePath) => {

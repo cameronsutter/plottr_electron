@@ -1,15 +1,15 @@
-import { app } from 'electron'
-import log from 'electron-log'
+import { whenClientIsReady } from '../../shared/socket-client/index'
 
-import Store from '../lib/store'
-import defaultSettings from '../../shared/default_settings'
+const currentSettings = () => {
+  return whenClientIsReady(({ currentAppSettings }) => {
+    return currentAppSettings()
+  })
+}
 
-const storePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
+export const saveAppSetting = (key, value) => {
+  return whenClientIsReady(({ saveAppSetting }) => {
+    return saveAppSetting(key, value)
+  })
+}
 
-const SETTINGS = new Store(app.getPath('userData'), log, {
-  defaults: defaultSettings,
-  name: storePath,
-  watch: true,
-})
-
-export default SETTINGS
+export default currentSettings

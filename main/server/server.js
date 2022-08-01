@@ -63,6 +63,11 @@ import {
   CUSTOM_TEMPLATES_PATH,
   ATTEMPT_TO_FETCH_TEMPLATES,
   SAVE_AS_TEMP_FILE,
+  REMOVE_FROM_KNOWN_FILES,
+  ADD_KNOWN_FILE,
+  EDIT_KNOWN_FILE_PATH,
+  UPDATE_LAST_OPENED_DATE,
+  ADD_KNOWN_FILE_WITH_FIX,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -71,6 +76,7 @@ import wireupFileSystemModule from './file-system'
 import wireupTemplateFetcher from './template_fetcher'
 import makeStores from './stores'
 import makeSettingsModule from './settings'
+import makeKnownFilesModule from './knownFiles'
 
 const parseArgs = () => {
   return {
@@ -119,6 +125,7 @@ const setupListeners = (port, userDataPath) => {
     const logger = makeLogger(webSocket)
     const backupModule = makeBackupModule(settings, logger)
     const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = backupModule
+    const fileModule = makeFileModule(backupModule, settings, logger)
     const {
       saveFile,
       saveOfflineFile,
@@ -131,7 +138,7 @@ const setupListeners = (port, userDataPath) => {
       isTempFile,
       offlineFilesFilesPath,
       saveTempFile,
-    } = makeFileModule(backupModule, settings, logger)
+    } = fileModule
     const {
       backupBasePath,
       listenToTrialChanges,
@@ -165,6 +172,13 @@ const setupListeners = (port, userDataPath) => {
       setTemplate,
       customTemplatesPath,
     } = makeFileSystemModule(stores, logger)
+    const {
+      removeFromKnownFiles,
+      addKnownFile,
+      addKnownFileWithFix,
+      editKnownFilePath,
+      updateLastOpenedDate,
+    } = makeKnownFilesModule(stores, fileModule, logger)
     const attemptToFetchTemplates = () => {
       wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
     }
@@ -502,6 +516,46 @@ const setupListeners = (port, userDataPath) => {
                   },
                 },
               ]
+            )
+          }
+          case REMOVE_FROM_KNOWN_FILES: {
+            const { id } = payload
+            return handlePromise(
+              () => `Removing entry with id ${id} from known files`,
+              () => removeFromKnownFiles(id),
+              () => `Error removing entry with id ${id} from known files`
+            )
+          }
+          case ADD_KNOWN_FILE_WITH_FIX: {
+            const { filePath } = payload
+            return handlePromise(
+              () => `Adding ${filePath} to known files and fixing the store`,
+              () => addKnownFileWithFix(filePath),
+              () => `Error adding ${filePath} to known files and fixing the store`
+            )
+          }
+          case ADD_KNOWN_FILE: {
+            const { filePath } = payload
+            return handlePromise(
+              () => `Adding ${filePath} to known files`,
+              () => addKnownFile(filePath),
+              () => `Error adding ${filePath} to known files`
+            )
+          }
+          case EDIT_KNOWN_FILE_PATH: {
+            const { oldFilePath, newFilePath } = payload
+            return handlePromise(
+              () => `Editing a known file's path from ${oldFilePath} to ${newFilePath}`,
+              () => editKnownFilePath(oldFilePath, newFilePath),
+              () => `Error editing a known file's path from ${oldFilePath} to ${newFilePath}`
+            )
+          }
+          case UPDATE_LAST_OPENED_DATE: {
+            const { id } = payload
+            return handlePromise(
+              () => `Updating the last opened date for file with id ${id}`,
+              () => updateLastOpenedDate(id),
+              () => `Error updating the last opened date for file with id ${id}`
             )
           }
           // ===File System APIs===

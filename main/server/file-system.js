@@ -135,7 +135,7 @@ const fileSystemModule = (userDataPath) => {
     }
     const currentKnownFiles = () => {
       return knownFilesStore.currentStore().then((fileIndex) => {
-        Object.entries(fileIndex).map(([key, file]) => ({
+        return Object.entries(fileIndex).map(([key, file]) => ({
           ...file,
           fromFileSystem: true,
           isTempFile: file.path.includes(TEMP_FILES_PATH),
@@ -215,8 +215,13 @@ const fileSystemModule = (userDataPath) => {
 
     const listenToBackupsChanges = (cb) => {
       let watcher = () => {}
-      readBackupsDirectory((initialBackups) => {
-        cb(initialBackups)
+      readBackupsDirectory((error, initialBackups) => {
+        if (error) {
+          logger.error('Error listening to backups changes', error)
+          cb([])
+        } else {
+          cb(initialBackups)
+        }
         backupBasePath().then((basePath) => {
           backupDirExists().then((backupDirDoesExist) => {
             const makeIfNonExistant = !backupDirDoesExist ? mkdir(basePath) : Promise.resolve(true)
@@ -225,7 +230,11 @@ const fileSystemModule = (userDataPath) => {
                 // Do we care about event and fileName?
                 //
                 // NOTE: event could be 'changed' or 'renamed'.
-                readBackupsDirectory((newBackups) => {
+                readBackupsDirectory((error, newBackups) => {
+                  if (error) {
+                    logger.error('Failed to read backups directory', error)
+                    return
+                  }
                   cb(newBackups)
                 })
               })
@@ -240,10 +249,14 @@ const fileSystemModule = (userDataPath) => {
     }
     const currentBackups = () => {
       return new Promise((resolve, reject) => {
-        readBackupsDirectory((newBackups) => {
+        logger.info('Reading current backups')
+        readBackupsDirectory((error, newBackups) => {
+          if (error) {
+            logger.error('Error reading the current backups', error)
+            reject(error)
+            return
+          }
           resolve(newBackups.map(withFromFileSystem))
-        }).catch((error) => {
-          reject(error)
         })
       })
     }
@@ -289,11 +302,11 @@ const fileSystemModule = (userDataPath) => {
             })
         })
         .then((results) => {
-          cb(sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
+          cb(null, sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
         })
         .catch((error) => {
           logger.error('Error reading backup directory.', error)
-          cb([])
+          cb(error, [])
           return
         })
     }

@@ -1,0 +1,7 @@
+@import 'vars';
+
+.item-list__book-tabs-wrapper {
+  & > div {
+    @include application-text;
+  }
+}

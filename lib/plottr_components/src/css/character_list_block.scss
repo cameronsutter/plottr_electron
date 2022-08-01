@@ -43,6 +43,21 @@
     .character-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
+
+      .character-list__item-buttons {
+        min-width: 71px;
+        position: absolute;
+        right: 0;
+        visibility: hidden;
+        &:hover {
+          visibility: visible;
+        }
+
+        button {
+          padding: 4px 8px;
+        }
+      }
 
       .character-list__item-inner__image-wrapper {
         img {

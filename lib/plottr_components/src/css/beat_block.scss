@@ -9,7 +9,7 @@ $medium_width: 80px;
   padding-bottom: 45px;
 
   &:not(.medium-timeline):not(.small-timeline) {
-    margin-top: 20px;
+    margin-top: 25px;
     padding-bottom: 40px;
   }
 
@@ -194,17 +194,23 @@ $medium_width: 80px;
   }
   .insert-beat-wrapper.append-beat {
     &.large-timeline {
-      padding: 30px 70px;
+      padding: 11px 70px 10px 70px;
       margin-left: 35px;
+      margin-bottom: 3px;
     }
     &.medium-timeline {
       margin-top: 10px;
-      margin-right: 0px;
+      margin-right: 8px;
       padding: 14px 35px;
     }
     color: $blue-5;
     border: none;
     margin-right: 50px;
+    border: 3px dotted $blue-8;
+    &:hover {
+      border: 3px dotted $blue-8;
+      background-color: $blue-8;
+    }
   }
   .insert-missing-beat-wrapper {
     .glyphicon {
@@ -246,7 +252,6 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
-    border: none;
   }
 }
 

@@ -309,7 +309,7 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     } catch (error) {
       logger.error(error)
       rollbar.error(error)
-      return Promise.reject('bootLocalFile001: json-parse')
+      return Promise.reject(`bootLocalFile001: json-parse (${filePath})`)
     }
     saveBackup(filePath, json)
     return new Promise((resolve, reject) => {
@@ -323,7 +323,7 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
             rollbar.error(err)
             logger.error(err)
             // We... still load the file!?
-            return reject('bootLocalFile002: migration')
+            return reject(`bootLocalFile002: migration (${filePath})`)
           }
           store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 

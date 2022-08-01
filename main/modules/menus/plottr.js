@@ -1,9 +1,20 @@
 import electron from 'electron'
+import log from 'electron-log'
 const { app } = electron
 import { is } from 'electron-util'
 import { t, localeNames, setupI18n } from 'plottr_locales'
 import SETTINGS from '../settings'
 import { reloadAllWindows } from '../windows'
+
+const reloadMenuForLanguageChangeSuccessHandler = () => {
+  log.info('Menu reloaded after language change')
+  reloadAllWindows()
+}
+
+const reloadMenuForLanguageChangeFailureHandler = (error) => {
+  log.error('Failed to reload menu for language change', error)
+  return Promise.reject(error)
+}
 
 function buildPlottrMenu(loadMenu) {
   const isPro = SETTINGS.get('user.frbId')
@@ -17,7 +28,8 @@ function buildPlottrMenu(loadMenu) {
         SETTINGS.set('locale', 'en')
         setupI18n(SETTINGS, { electron })
         loadMenu()
-        reloadAllWindows()
+          .then(reloadMenuForLanguageChangeSuccessHandler)
+          .catch(reloadMenuForLanguageChangeFailureHandler)
       },
     },
     {
@@ -29,7 +41,8 @@ function buildPlottrMenu(loadMenu) {
         SETTINGS.set('locale', locale)
         setupI18n(SETTINGS, { electron })
         loadMenu()
-        reloadAllWindows()
+          .then(reloadMenuForLanguageChangeSuccessHandler)
+          .catch(reloadMenuForLanguageChangeFailureHandler)
       },
     })),
   ]

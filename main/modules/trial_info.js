@@ -6,7 +6,7 @@ import Store from '../lib/store'
 const trialStore = new Store(app.getPath('userData'), log, { name: 'trial_info', watch: true })
 
 function getTriaInfo() {
-  return trialStore.get()
+  return Promise.resolve(trialStore.get())
 }
 
 export { getTriaInfo }

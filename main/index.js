@@ -123,6 +123,11 @@ const broadcastPortChange = (port) => {
   broadcastToAllWindows('update-worker-port', port)
 }
 
+const loadMenuFailureHandler = (error) => {
+  log.error('Failed to load menu.', error)
+  return Promise.reject(error)
+}
+
 app.whenReady().then(() => {
   startServer(log, broadcastPortChange, app.getPath('userData'))
     .then((port) => {
@@ -134,7 +139,13 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      loadMenu()
+      return loadMenu()
+        .then(() => {
+          return port
+        })
+        .catch(loadMenuFailureHandler)
+    })
+    .then((port) => {
       const yargv = parseArguments(process.argv)
       log.info('yargv', yargv)
       const processSwitches = ProcessSwitches(yargv)
@@ -194,9 +205,12 @@ app.whenReady().then(() => {
         app.on('second-instance', (_event, argv) => {
           log.info('second-instance')
           loadMenu()
-          const newFileToLoad = fileToLoad(argv)
-          if (newFileToLoad) addToKnown(newFileToLoad)
-          openProjectWindow(newFileToLoad)
+            .then(() => {
+              const newFileToLoad = fileToLoad(argv)
+              if (newFileToLoad) addToKnown(newFileToLoad)
+              openProjectWindow(newFileToLoad)
+            })
+            .catch(loadMenuFailureHandler)
         })
 
         app.on('window-all-closed', () => {

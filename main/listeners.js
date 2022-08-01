@@ -72,8 +72,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   ipcMain.on('pls-update-language', (_event, newLanguage) => {
     SETTINGS.set('locale', newLanguage)
     setupI18n(SETTINGS, { electron })
-    loadMenu()
-    reloadAllWindows()
+    loadMenu().then(() => {
+      reloadAllWindows()
+    })
   })
 
   ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {

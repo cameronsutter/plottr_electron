@@ -104,7 +104,7 @@ function makeBrowserWindow(filePath) {
         }
       )
 
-      if (is.development || settings.get('forceDevTools')) {
+      if (is.development || settings.forceDevTools) {
         newWindow.openDevTools()
       }
 

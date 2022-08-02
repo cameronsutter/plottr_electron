@@ -109,6 +109,7 @@ class Store {
               }
               return Promise.reject(dataDirError)
             })
+            .then(createStore)
         }
         this.logger.error(`Failed to construct store for ${this.name} at ${this.path}`, error)
         throw new Error(`Failed to construct store for ${this.name} at ${this.path}`, error)

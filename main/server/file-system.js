@@ -119,7 +119,7 @@ const fileSystemModule = (userDataPath) => {
       const transformStore = (store) => {
         return Object.entries(store)
           .filter(([key, file]) => {
-            return typeof file.path === 'string' && typeof file.lastOpened === 'number'
+            return typeof file.path === 'string' && file.lastOpened
           })
           .map(([key, file]) => {
             return {

@@ -18,6 +18,7 @@ import {
   ExportDialog,
   ActsHelpModal,
   UpdateNotifier,
+  NewProjectInputModal,
 } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
@@ -33,6 +34,7 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
+  isNewProjectModalVisible,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -204,6 +206,7 @@ const App = ({
         <React.StrictMode>
           <Body />
           <UpdateNotifier />
+          <NewProjectInputModal visible={isNewProjectModalVisible} />
         </React.StrictMode>
       </main>
       <React.StrictMode>
@@ -226,6 +229,7 @@ App.propTypes = {
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
+  isNewProjectModalVisible: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -236,6 +240,7 @@ function mapStateToProps(state) {
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
+    isNewProjectModalVisible: selectors.showNewProjectInputModalSelector(state.present),
   }
 }
 

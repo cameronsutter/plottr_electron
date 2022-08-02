@@ -312,6 +312,7 @@ const fileSystemModule = (userDataPath) => {
     }
 
     return {
+      TEMP_FILES_PATH,
       setTemplate,
       setCustomTemplate,
       deleteCustomTemplate,

@@ -68,6 +68,9 @@ import {
   EDIT_KNOWN_FILE_PATH,
   UPDATE_LAST_OPENED_DATE,
   ADD_KNOWN_FILE_WITH_FIX,
+  DELETE_KNOWN_FILE,
+  REMOVE_FROM_TEMP_FILES,
+  SAVE_TO_TEMP_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -77,6 +80,7 @@ import wireupTemplateFetcher from './template_fetcher'
 import makeStores from './stores'
 import makeSettingsModule from './settings'
 import makeKnownFilesModule from './knownFiles'
+import makeTempFilesModule from './tempFiles'
 
 const parseArgs = () => {
   return {
@@ -139,6 +143,7 @@ const setupListeners = (port, userDataPath) => {
       offlineFilesFilesPath,
       saveTempFile,
     } = fileModule
+    const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
       backupBasePath,
       listenToTrialChanges,
@@ -171,14 +176,17 @@ const setupListeners = (port, userDataPath) => {
       deleteCustomTemplate,
       setTemplate,
       customTemplatesPath,
-    } = makeFileSystemModule(stores, logger)
+    } = fileSystemModule
+    const tempFilesModule = makeTempFilesModule(userDataPath, stores, fileModule, logger)
+    const { removeFromTempFiles, saveToTempFile } = tempFilesModule
     const {
       removeFromKnownFiles,
       addKnownFile,
       addKnownFileWithFix,
       editKnownFilePath,
       updateLastOpenedDate,
-    } = makeKnownFilesModule(stores, fileModule, logger)
+      deleteKnownFile,
+    } = makeKnownFilesModule(stores, fileModule, fileSystemModule, tempFilesModule, logger)
     const attemptToFetchTemplates = () => {
       wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
     }
@@ -524,6 +532,44 @@ const setupListeners = (port, userDataPath) => {
               () => `Removing entry with id ${id} from known files`,
               () => removeFromKnownFiles(id),
               () => `Error removing entry with id ${id} from known files`
+            )
+          }
+          case DELETE_KNOWN_FILE: {
+            const { id, filePath } = payload
+            return handlePromise(
+              () => `Deleting a known file with id ${id} and filePath ${filePath}`,
+              () => deleteKnownFile(id, filePath),
+              () => `Error deleting a known file with id ${id} and filePath ${filePath}`
+            )
+          }
+          case REMOVE_FROM_TEMP_FILES: {
+            const { filePath, doDelete } = payload
+            return handlePromise(
+              () => `Removing ${filePath} from temp files (deleting? ${doDelete})`,
+              () => removeFromTempFiles(filePath, doDelete),
+              () => `Error removing ${filePath} from temp files (deleting? ${doDelete})`
+            )
+          }
+          case SAVE_TO_TEMP_FILE: {
+            const { json, name } = payload
+            return handlePromise(
+              () => [
+                `Saving to temp file named ${name} (reduced payload)`,
+                {
+                  file: {
+                    ...json.file,
+                  },
+                },
+              ],
+              () => saveToTempFile(json, name),
+              () => [
+                `Error saving to temp file named ${name} (reduced payload)`,
+                {
+                  file: {
+                    ...json.file,
+                  },
+                },
+              ]
             )
           }
           case ADD_KNOWN_FILE_WITH_FIX: {

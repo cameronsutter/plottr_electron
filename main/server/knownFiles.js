@@ -1,11 +1,34 @@
 import path from 'path'
+import trash from 'trash'
 
-const makeKnownFilesModule = (stores, fileModule, logger) => {
+const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesModule, logger) => {
   const { knownFilesStore } = stores
   const { offlineFilesFilesPath } = fileModule
+  const { TEMP_FILES_PATH } = fileSystemModule
+  const { removeFromTempFiles } = tempFilesModule
 
   const removeFromKnownFiles = (id) => {
     return knownFilesStore.delete(id)
+  }
+
+  const deleteKnownFile = (id, filePath) => {
+    if (!filePath) {
+      filePath = knownFilesStore.get(`${id}.path`)
+    }
+    try {
+      return removeFromKnownFiles(id)
+        .then(() => {
+          return trash(filePath)
+        })
+        .then(() => {
+          if (filePath.includes(TEMP_FILES_PATH)) {
+            removeFromTempFiles(filePath, false)
+          }
+        })
+    } catch (error) {
+      logger.warn(error)
+      return Promise.reject(error)
+    }
   }
 
   const addKnownFileWithFix = (filePath) => {
@@ -141,6 +164,7 @@ const makeKnownFilesModule = (stores, fileModule, logger) => {
     addKnownFile,
     editKnownFilePath,
     updateLastOpenedDate,
+    deleteKnownFile,
   }
 }
 

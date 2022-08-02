@@ -108,6 +108,12 @@ import {
   ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY,
   ADD_KNOWN_FILE_WITH_FIX,
   ADD_KNOWN_FILE_WITH_FIX_ERROR_REPLY,
+  DELETE_KNOWN_FILE,
+  DELETE_KNOWN_FILE_ERROR_REPLY,
+  SAVE_TO_TEMP_FILE,
+  REMOVE_FROM_TEMP_FILES,
+  REMOVE_FROM_TEMP_FILES_ERROR_REPLY,
+  SAVE_TO_TEMP_FILE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -269,6 +275,9 @@ const connect = (
           }
           // Normal replies
           case REMOVE_FROM_KNOWN_FILES:
+          case SAVE_TO_TEMP_FILE:
+          case DELETE_KNOWN_FILE:
+          case REMOVE_FROM_KNOWN_FILES:
           case ADD_KNOWN_FILE_WITH_FIX:
           case ADD_KNOWN_FILE:
           case EDIT_KNOWN_FILE_PATH:
@@ -329,6 +338,9 @@ const connect = (
             return
           }
           // Error return types
+          case REMOVE_FROM_TEMP_FILES_ERROR_REPLY:
+          case SAVE_TO_TEMP_FILE_ERROR_REPLY:
+          case DELETE_KNOWN_FILE_ERROR_REPLY:
           case REMOVE_FROM_KNOWN_FILES_ERROR_REPLY:
           case ADD_KNOWN_FILE_WITH_FIX_ERROR_REPLY:
           case ADD_KNOWN_FILE_ERROR_REPLY:
@@ -488,6 +500,18 @@ const connect = (
 
     const saveAsTempFile = (file) => {
       return sendPromise(SAVE_AS_TEMP_FILE, { file })
+    }
+
+    const deleteKnownFile = (id, filePath) => {
+      return sendPromise(DELETE_KNOWN_FILE, { id, filePath })
+    }
+
+    const removeFromTempFiles = (filePath, doDelete) => {
+      return sendPromise(REMOVE_FROM_TEMP_FILES, { filePath, doDelete })
+    }
+
+    const saveToTempFile = (json, name) => {
+      return sendPromise(SAVE_TO_TEMP_FILE, { json, name })
     }
 
     const removeFromKnownFiles = (id) => {
@@ -651,6 +675,9 @@ const connect = (
           attemptToFetchTemplates,
           saveAsTempFile,
           removeFromKnownFiles,
+          deleteKnownFile,
+          removeFromTempFiles,
+          saveToTempFile,
           addKnownFile,
           addKnownFileWithFix,
           editKnownFilePath,

@@ -115,8 +115,8 @@ class Store {
             storeContents.toString() === ''
               ? this.defaults
               : {
-                  ...JSON.parse(storeContents),
                   ...this.defaults,
+                  ...JSON.parse(storeContents),
                 }
           return true
         } catch (error) {

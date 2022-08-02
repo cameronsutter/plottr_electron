@@ -16,7 +16,6 @@ import { shell } from 'electron'
 import { broadcastToAllWindows } from './broadcast'
 import { OFFLINE_FILE_FILES_PATH, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
-import logger from '../../shared/logger'
 
 const { lstat, writeFile } = fs.promises
 
@@ -258,7 +257,7 @@ const makeFileModule = () => {
             broadcastToAllWindows('reload-recents')
           })
           .catch((error) => {
-            logger.error('Failed to update a known files last opened date', id, filePath, error)
+            log.error('Failed to update a known files last opened date', id, filePath, error)
           })
       }, 500)
     }

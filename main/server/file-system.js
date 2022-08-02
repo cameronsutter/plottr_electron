@@ -116,15 +116,20 @@ const fileSystemModule = (userDataPath) => {
     }
 
     const listenToknownFilesChanges = (cb) => {
-      const transformStore = (store) =>
-        Object.entries(store).map(([key, file]) => {
-          return {
-            ...file,
-            fromFileSystem: true,
-            isTempFile: file.path.includes(TEMP_FILES_PATH),
-            id: key,
-          }
-        })
+      const transformStore = (store) => {
+        return Object.entries(store)
+          .filter(([key, file]) => {
+            return typeof file.path === 'string' && typeof file.lastOpened === 'number'
+          })
+          .map(([key, file]) => {
+            return {
+              ...file,
+              fromFileSystem: true,
+              isTempFile: file.path.includes(TEMP_FILES_PATH),
+              id: key,
+            }
+          })
+      }
 
       const withFileSystemAsSource = (files) => {
         return cb(transformStore(files))

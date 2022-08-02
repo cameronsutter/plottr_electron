@@ -91,9 +91,9 @@ class Store {
         if (error.code === 'ENOENT') {
           const createStore = () => {
             // The store doesn't yet exist.  Create it.
-            this.store = {}
+            this.store = this.defaults
             return this.writeStore().then(() => {
-              return '{}'
+              return JSON.stringify(this.store)
             })
           }
           // Does the user data folder exist?

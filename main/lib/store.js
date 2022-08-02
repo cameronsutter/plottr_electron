@@ -18,7 +18,6 @@ class Store {
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
     this.activeWrite = null
-    this.hasReadStore = false
 
     this.readStore().then(() => {
       if (this.watch) {
@@ -76,10 +75,6 @@ class Store {
   }
 
   currentStore = () => {
-    if (this.hasReadStore) {
-      return Promise.resolve(this.store)
-    }
-
     return this.readStore().then(() => {
       return this.store
     })
@@ -116,8 +111,13 @@ class Store {
       })
       .then((storeContents) => {
         try {
-          this.store = storeContents.toString() === '' ? this.defaults : JSON.parse(storeContents)
-          this.hasReadStore = true
+          this.store =
+            storeContents.toString() === ''
+              ? this.defaults
+              : {
+                  ...JSON.parse(storeContents),
+                  ...this.defaults,
+                }
           return true
         } catch (error) {
           this.logger.error(

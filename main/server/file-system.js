@@ -103,7 +103,7 @@ const fileSystemModule = (userDataPath) => {
 
     const listenToLicenseChanges = (cb) => {
       cb(licenseStore.store)
-      return licenseStore.onDidAnyChange.bind(licenseStore)
+      return licenseStore.onDidAnyChange.bind(licenseStore)(cb)
     }
     const currentLicense = () => {
       return licenseStore.currentStore()

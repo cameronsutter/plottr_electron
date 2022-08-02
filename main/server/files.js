@@ -436,26 +436,37 @@ const fileModule = (userDataPath) => {
     }
 
     function saveTempFile(file) {
-      const fileBasename = basename(file.file.fileName)
-      const newFilepath = `${TEMP_FILES_PATH}/${fileBasename}`
-      logger.info(`Saving ${file.file.fileName} to ${TEMP_FILES_PATH}`)
-      // We don't want to overwrite an existing file.
-      return lstat(newFilepath)
-        .then(() => {
-          // We'll assume that one file, generated with a UUID in the name, is good enough.
-          const baseNameWithoutExtension = basename(file.file.fileName, '.pltr')
-          return `${TEMP_FILES_PATH}/${baseNameWithoutExtension}-${uuidv4()}.pltr`
-        })
+      // Does the tmp file directory exist?
+      lstat(TEMP_FILES_PATH)
         .catch((error) => {
+          logger.info(`Temp file directory ${TEMP_FILES_PATH} doesn't exist.  Creating it.`)
           if (error.code === 'ENOENT') {
-            return Promise.resolve(newFilepath)
+            return mkdir(TEMP_FILES_PATH, { recursive: true })
           }
           return Promise.reject(error)
         })
-        .then((filePath) => {
-          return saveFile(filePath, file).then(() => {
-            return filePath
-          })
+        .then(() => {
+          const fileBasename = basename(file.file.fileName)
+          const newFilepath = `${TEMP_FILES_PATH}/${fileBasename}`
+          logger.info(`Saving ${file.file.fileName} to ${TEMP_FILES_PATH}`)
+          // We don't want to overwrite an existing file.
+          return lstat(newFilepath)
+            .then(() => {
+              // We'll assume that one file, generated with a UUID in the name, is good enough.
+              const baseNameWithoutExtension = basename(file.file.fileName, '.pltr')
+              return `${TEMP_FILES_PATH}/${baseNameWithoutExtension}-${uuidv4()}.pltr`
+            })
+            .catch((error) => {
+              if (error.code === 'ENOENT') {
+                return Promise.resolve(newFilepath)
+              }
+              return Promise.reject(error)
+            })
+            .then((filePath) => {
+              return saveFile(filePath, file).then(() => {
+                return filePath
+              })
+            })
         })
     }
 

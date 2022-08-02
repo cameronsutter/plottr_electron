@@ -7,7 +7,7 @@ import { t } from 'plottr_locales'
 
 import { TEMP_FILES_PATH } from './stores'
 
-const { lstat } = fs.promises
+const { lstat, mkdir } = fs.promises
 
 const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 10
 
@@ -31,6 +31,16 @@ const makeTempFilesModule = (userDataPath, stores, fileModule, logger) => {
   }
 
   async function saveToTempFile(json, name) {
+    // Does the tmp file directory exist?
+    try {
+      await lstat(tempFilesFullPath)
+    } catch (error) {
+      logger.info(`Temp file directory ${tempFilesFullPath} doesn't exist.  Creating it.`)
+      if (error.code === 'ENOENT') {
+        await mkdir(tempFilesFullPath, { recursive: true })
+      }
+    }
+
     const maxKey = Object.keys(tempFilesStore.store)
       .map((x) => parseInt(x))
       .reduce((acc, next) => Math.max(next, acc), 0)

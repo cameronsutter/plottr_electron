@@ -218,30 +218,35 @@ const fileSystemModule = (userDataPath) => {
         })
     }
 
+    const ensureBackupDirExists = () => {
+      return backupDirExists().then((backupDirDoesExist) => {
+        return backupBasePath().then((basePath) => {
+          return !backupDirDoesExist ? mkdir(basePath, { recursive: true }) : Promise.resolve(true)
+        })
+      })
+    }
+
     const listenToBackupsChanges = (cb) => {
       let watcher = () => {}
-      readBackupsDirectory((error, initialBackups) => {
-        if (error) {
-          logger.error('Error listening to backups changes', error)
-          cb([])
-        } else {
-          cb(initialBackups)
-        }
-        backupBasePath().then((basePath) => {
-          backupDirExists().then((backupDirDoesExist) => {
-            const makeIfNonExistant = !backupDirDoesExist ? mkdir(basePath) : Promise.resolve(true)
-            makeIfNonExistant.then(() => {
-              watcher = fs.watch(basePath, (event, fileName) => {
-                // Do we care about event and fileName?
-                //
-                // NOTE: event could be 'changed' or 'renamed'.
-                readBackupsDirectory((error, newBackups) => {
-                  if (error) {
-                    logger.error('Failed to read backups directory', error)
-                    return
-                  }
-                  cb(newBackups)
-                })
+      ensureBackupDirExists().then(() => {
+        readBackupsDirectory((error, initialBackups) => {
+          if (error) {
+            logger.error('Error listening to backups changes', error)
+            cb([])
+          } else {
+            cb(initialBackups)
+          }
+          backupBasePath().then((basePath) => {
+            watcher = fs.watch(basePath, (event, fileName) => {
+              // Do we care about event and fileName?
+              //
+              // NOTE: event could be 'changed' or 'renamed'.
+              readBackupsDirectory((error, newBackups) => {
+                if (error) {
+                  logger.error('Failed to read backups directory', error)
+                  return
+                }
+                cb(newBackups)
               })
             })
           })
@@ -267,44 +272,46 @@ const fileSystemModule = (userDataPath) => {
     }
 
     function readBackupsDirectory(cb) {
-      backupBasePath()
-        .then((basePath) => {
-          return readdir(basePath)
-            .then((entries) => {
-              return Promise.all(
-                entries
-                  .filter((d) => {
-                    return d[0] !== '.' && !d.includes('.pltr') && d.match(BACKUP_FOLDER_REGEX)
-                  })
-                  .map((entry) => {
-                    return lstat(path.join(basePath, entry)).then((fileStats) => {
+      ensureBackupDirExists()
+        .then(() => {
+          return backupBasePath().then((basePath) => {
+            return readdir(basePath)
+              .then((entries) => {
+                return Promise.all(
+                  entries
+                    .filter((d) => {
+                      return d[0] !== '.' && !d.includes('.pltr') && d.match(BACKUP_FOLDER_REGEX)
+                    })
+                    .map((entry) => {
+                      return lstat(path.join(basePath, entry)).then((fileStats) => {
+                        return {
+                          keep: fileStats.isDirectory(),
+                          payload: entry,
+                        }
+                      })
+                    })
+                ).then((results) => {
+                  return results.filter(({ keep }) => keep).map(({ payload }) => payload)
+                })
+              })
+              .then((directories) => {
+                return Promise.all(
+                  directories.map((directory) => {
+                    const thisPath = path.join(basePath, directory)
+                    return readdir(thisPath).then((entries) => {
+                      const files = entries.filter((entry) => {
+                        return entry.endsWith('.pltr')
+                      })
                       return {
-                        keep: fileStats.isDirectory(),
-                        payload: entry,
+                        path: thisPath,
+                        date: americanToYearFirst(directory),
+                        backups: files,
                       }
                     })
                   })
-              ).then((results) => {
-                return results.filter(({ keep }) => keep).map(({ payload }) => payload)
+                )
               })
-            })
-            .then((directories) => {
-              return Promise.all(
-                directories.map((directory) => {
-                  const thisPath = path.join(basePath, directory)
-                  return readdir(thisPath).then((entries) => {
-                    const files = entries.filter((entry) => {
-                      return entry.endsWith('.pltr')
-                    })
-                    return {
-                      path: thisPath,
-                      date: americanToYearFirst(directory),
-                      backups: files,
-                    }
-                  })
-                })
-              )
-            })
+          })
         })
         .then((results) => {
           cb(null, sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())

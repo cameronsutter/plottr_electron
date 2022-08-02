@@ -52,7 +52,7 @@ const App = ({
     alreadyClosingOrRefreshing.current = true
     if (isTryingToReload.current) {
       console.log('Trying to reload')
-      location.reload()
+      window.location.reload()
     } else {
       console.log('Trying to close')
       if (shouldClose) window.close()

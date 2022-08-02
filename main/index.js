@@ -54,7 +54,16 @@ import { broadcastToAllWindows } from './modules/broadcast'
 import { setDarkMode } from './modules/theme'
 config({ path: ENV_FILE_PATH })
 
-const rollbar = setupRollbar('main', {})
+let rollbar = {
+  error: () => {},
+}
+setupRollbar('main', {})
+  .then((instance) => {
+    rollbar = instance
+  })
+  .catch((error) => {
+    log.error('Failed to set up rollbar for main', error)
+  })
 
 // https://github.com/sindresorhus/electron-context-menu
 contextMenu({
@@ -123,6 +132,11 @@ const broadcastPortChange = (port) => {
   broadcastToAllWindows('update-worker-port', port)
 }
 
+const loadMenuFailureHandler = (error) => {
+  log.error('Failed to load menu.', error)
+  return Promise.reject(error)
+}
+
 app.whenReady().then(() => {
   startServer(log, broadcastPortChange, app.getPath('userData'))
     .then((port) => {
@@ -134,7 +148,13 @@ app.whenReady().then(() => {
       app.quit()
     })
     .then((port) => {
-      loadMenu()
+      return loadMenu()
+        .then(() => {
+          return port
+        })
+        .catch(loadMenuFailureHandler)
+    })
+    .then((port) => {
       const yargv = parseArguments(process.argv)
       log.info('yargv', yargv)
       const processSwitches = ProcessSwitches(yargv)
@@ -146,15 +166,21 @@ app.whenReady().then(() => {
       if (importFromScrivener) {
         const { sourceFile, destinationFile } = importFromScrivener
         log.info(`Importing ${sourceFile} to ${destinationFile}`)
-        const newWindow = openProjectWindow(null)
-        if (!newWindow) {
-          throw new Error('Could not create window to export with.')
-        }
-        newWindow.on('ready-to-show', () => {
-          ipcMain.once('listeners-registered', () => {
-            newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+        openProjectWindow(null)
+          .then((newWindow) => {
+            if (!newWindow) {
+              throw new Error('Could not create window to export with.')
+            }
+            newWindow.on('ready-to-show', () => {
+              ipcMain.once('listeners-registered', () => {
+                newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+              })
+            })
           })
-        })
+          .catch((error) => {
+            log.error('Failed to create window to export with', error)
+            return Promise.reject(error)
+          })
       } else {
         // Wait a little bit in case the app was launched by double clicking
         // on a file.
@@ -164,7 +190,13 @@ app.whenReady().then(() => {
             log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
             try {
               openProjectWindow(fileLaunchedOn)
-              if (fileLaunchedOn) addToKnown(fileLaunchedOn)
+                .then((newWindow) => {
+                  log.info('Created the project window')
+                  if (fileLaunchedOn) addToKnown(fileLaunchedOn)
+                })
+                .catch((error) => {
+                  log.error('Error creating the project window to boot a file from', error)
+                })
             } catch (error) {
               log.error('Error booting file: ', error)
             }
@@ -177,7 +209,10 @@ app.whenReady().then(() => {
           if (win) win.toggleDevTools()
         })
 
-        setDarkMode(SETTINGS.store.user.dark)
+        // When given no argument, it'll look up the current one.
+        setDarkMode().catch((error) => {
+          log.error('Error setting initial theme', error)
+        })
 
         if (process.env.NODE_ENV != 'dev') {
           app.setAsDefaultProtocolClient('plottr')
@@ -187,16 +222,32 @@ app.whenReady().then(() => {
           if (hasWindows()) {
             focusFirstWindow()
           } else {
+            log.info('Opening project window for', fileLaunchedOn)
             openProjectWindow(fileLaunchedOn)
+              .then(() => {
+                log.info('Opened a project window for', fileLaunchedOn)
+              })
+              .catch((error) => {
+                log.error('Failed to open project window for', fileLaunchedOn, error)
+              })
           }
         })
 
         app.on('second-instance', (_event, argv) => {
           log.info('second-instance')
           loadMenu()
-          const newFileToLoad = fileToLoad(argv)
-          if (newFileToLoad) addToKnown(newFileToLoad)
-          openProjectWindow(newFileToLoad)
+            .then(() => {
+              const newFileToLoad = fileToLoad(argv)
+              if (newFileToLoad) addToKnown(newFileToLoad)
+              openProjectWindow(newFileToLoad)
+                .then(() => {
+                  log.info('Opened a second instance for a file', newFileToLoad)
+                })
+                .catch((error) => {
+                  log.error('Eror opening the second instance project window', error)
+                })
+            })
+            .catch(loadMenuFailureHandler)
         })
 
         app.on('window-all-closed', () => {
@@ -239,7 +290,13 @@ app.on('open-file', (event, filePath) => {
   // mac/linux open-file event handler
   app.whenReady().then(() => {
     openProjectWindow(filePath)
-    addToKnown(filePath)
+      .then(() => {
+        log.info('Project window opened for ', filePath)
+        addToKnown(filePath)
+      })
+      .catch((error) => {
+        log.error('Failed to open a project window the second instance', filePath, error)
+      })
   })
 })
 

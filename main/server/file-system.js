@@ -47,7 +47,7 @@ const fileSystemModule = (userDataPath) => {
     } = stores
 
     const currentAppSettings = () => {
-      return Promise.resolve(SETTINGS.store)
+      return SETTINGS.currentStore()
     }
 
     function backupBasePath() {
@@ -74,7 +74,7 @@ const fileSystemModule = (userDataPath) => {
       return trialStore.onDidAnyChange.bind(trialStore)(cb)
     }
     const currentTrial = () => {
-      return Promise.resolve(trialStore.store)
+      return trialStore.currentStore()
     }
     const startTrial = (numDays = null) => {
       const day = new Date()
@@ -106,7 +106,7 @@ const fileSystemModule = (userDataPath) => {
       return licenseStore.onDidAnyChange.bind(licenseStore)
     }
     const currentLicense = () => {
-      return Promise.resolve(licenseStore.store)
+      return licenseStore.currentStore()
     }
     const deleteLicense = () => {
       return licenseStore.clear()
@@ -134,14 +134,14 @@ const fileSystemModule = (userDataPath) => {
       return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
     }
     const currentKnownFiles = () => {
-      return Promise.resolve(
-        Object.entries(knownFilesStore.store).map(([key, file]) => ({
+      return knownFilesStore.currentStore().then((fileIndex) => {
+        return Object.entries(fileIndex).map(([key, file]) => ({
           ...file,
           fromFileSystem: true,
           isTempFile: file.path.includes(TEMP_FILES_PATH),
           id: key,
         }))
-      )
+      })
     }
 
     const listenToTemplatesChanges = (cb) => {
@@ -149,7 +149,7 @@ const fileSystemModule = (userDataPath) => {
       return templatesStore.onDidAnyChange.bind(templatesStore)(cb)
     }
     const currentTemplates = () => {
-      return Promise.resolve(templatesStore.store)
+      return templatesStore.currentStore()
     }
 
     const listenToCustomTemplatesChanges = (cb) => {
@@ -160,7 +160,7 @@ const fileSystemModule = (userDataPath) => {
       return customTemplatesStore.onDidAnyChange.bind(customTemplatesStore)(withTemplatesAsArray)
     }
     const currentCustomTemplates = () => {
-      return Promise.resolve(Object.values(customTemplatesStore.store))
+      return customTemplatesStore.currentStore()
     }
 
     const listenToTemplateManifestChanges = (cb) => {
@@ -168,7 +168,7 @@ const fileSystemModule = (userDataPath) => {
       return manifestStore.onDidAnyChange.bind(manifestStore)(cb)
     }
     const currentTemplateManifest = () => {
-      return Promise.resolve(manifestStore.store)
+      return manifestStore.currentStore()
     }
 
     const listenToExportConfigSettingsChanges = (cb) => {
@@ -176,7 +176,7 @@ const fileSystemModule = (userDataPath) => {
       return exportConfigStore.onDidAnyChange.bind(exportConfigStore)(cb)
     }
     const currentExportConfigSettings = () => {
-      return Promise.resolve(exportConfigStore.store)
+      return exportConfigStore.currentStore()
     }
     const saveExportConfigSettings = (key, value) => {
       return exportConfigStore.set(key, value)
@@ -195,7 +195,7 @@ const fileSystemModule = (userDataPath) => {
       return USER.onDidAnyChange.bind(USER)(cb)
     }
     const currentUserSettings = () => {
-      return Promise.resolve(USER.store)
+      return USER.currentStore()
     }
 
     const backupDirExists = () => {
@@ -215,8 +215,13 @@ const fileSystemModule = (userDataPath) => {
 
     const listenToBackupsChanges = (cb) => {
       let watcher = () => {}
-      readBackupsDirectory((initialBackups) => {
-        cb(initialBackups)
+      readBackupsDirectory((error, initialBackups) => {
+        if (error) {
+          logger.error('Error listening to backups changes', error)
+          cb([])
+        } else {
+          cb(initialBackups)
+        }
         backupBasePath().then((basePath) => {
           backupDirExists().then((backupDirDoesExist) => {
             const makeIfNonExistant = !backupDirDoesExist ? mkdir(basePath) : Promise.resolve(true)
@@ -225,7 +230,11 @@ const fileSystemModule = (userDataPath) => {
                 // Do we care about event and fileName?
                 //
                 // NOTE: event could be 'changed' or 'renamed'.
-                readBackupsDirectory((newBackups) => {
+                readBackupsDirectory((error, newBackups) => {
+                  if (error) {
+                    logger.error('Failed to read backups directory', error)
+                    return
+                  }
                   cb(newBackups)
                 })
               })
@@ -240,7 +249,13 @@ const fileSystemModule = (userDataPath) => {
     }
     const currentBackups = () => {
       return new Promise((resolve, reject) => {
-        readBackupsDirectory((newBackups) => {
+        logger.info('Reading current backups')
+        readBackupsDirectory((error, newBackups) => {
+          if (error) {
+            logger.error('Error reading the current backups', error)
+            reject(error)
+            return
+          }
           resolve(newBackups.map(withFromFileSystem))
         })
       })
@@ -287,16 +302,17 @@ const fileSystemModule = (userDataPath) => {
             })
         })
         .then((results) => {
-          cb(sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
+          cb(null, sortBy(results, (folder) => new Date(folder.date.replace(/_/g, '-'))).reverse())
         })
         .catch((error) => {
           logger.error('Error reading backup directory.', error)
-          cb([])
+          cb(error, [])
           return
         })
     }
 
     return {
+      TEMP_FILES_PATH,
       setTemplate,
       setCustomTemplate,
       deleteCustomTemplate,

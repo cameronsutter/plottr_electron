@@ -1,33 +1,25 @@
 import path from 'path'
 import fs from 'fs'
-import Store from '../lib/store'
 import log from 'electron-log'
 import { app, ipcMain } from 'electron'
 import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
 
-import { knownFilesStore, addToKnownFiles, addToKnown } from './known_files'
+import { addToKnownFiles, addToKnown } from './known_files'
 import { importFromSnowflake, importFromScrivener } from 'plottr_import_export'
 
 import { emptyFile, tree, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 import { openProjectWindow } from './windows/projects'
-import { shell } from 'electron'
 import { broadcastToAllWindows } from './broadcast'
 import { OFFLINE_FILE_FILES_PATH, isOfflineFile } from './offlineFilePath'
 import { whenClientIsReady } from '../../shared/socket-client'
 
-const { lstat, writeFile } = fs.promises
+const { writeFile } = fs.promises
 
 const makeFileModule = () => {
   const TMP_PATH = 'tmp'
   const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
-
-  const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
-  const tempFilesStore = new Store(app.getPath('userData'), log, {
-    name: tempPath,
-    watch: true,
-  })
 
   const saveFile = (filePath, jsonData) => {
     return whenClientIsReady(({ saveFile }) => {
@@ -35,97 +27,34 @@ const makeFileModule = () => {
     })
   }
 
-  const fileExists = (filePath) => {
-    return whenClientIsReady(({ fileExists }) => {
-      return fileExists(filePath)
+  function removeFromTempFiles(filePath, doDelete) {
+    return whenClientIsReady(({ removeFromTempFiles }) => {
+      return removeFromTempFiles(filePath, doDelete)
     })
-  }
-
-  function removeFromTempFiles(filePath, doDelete = true) {
-    const tmpFiles = tempFilesStore.get()
-    const key = Object.keys(tmpFiles).find((id) => tmpFiles[id].filePath == filePath)
-    tempFilesStore.delete(key)
-    // delete the real file
-    try {
-      if (doDelete) shell.trashItem(filePath, true)
-      broadcastToAllWindows('reload-recents')
-    } catch (error) {
-      log.warn(error)
-    }
   }
 
   function removeFromKnownFiles(id) {
-    knownFilesStore.delete(id)
-  }
-
-  function deleteKnownFile(id, filePath) {
-    if (!filePath) {
-      filePath = knownFilesStore.get(`${id}.path`)
-    }
-    try {
-      removeFromKnownFiles(id)
-      shell.trashItem(filePath, true)
-      if (filePath.includes(TEMP_FILES_PATH)) {
-        removeFromTempFiles(filePath, false)
-      }
-    } catch (error) {
-      log.warn(error)
-    }
-  }
-
-  function editKnownFilePath(oldPath, newPath) {
-    const key = Object.keys(knownFilesStore.store).find(
-      (id) => path.normalize(knownFilesStore.store[id].path) == path.normalize(oldPath)
-    )
-    const file = knownFilesStore.get(key)
-    knownFilesStore.set(key, {
-      ...file,
-      path: newPath,
+    return whenClientIsReady(({ removeFromKnownFiles }) => {
+      return removeFromKnownFiles(id)
     })
   }
 
-  const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 10
+  function deleteKnownFile(id, filePath) {
+    return whenClientIsReady(({ deleteKnownFile }) => {
+      return deleteKnownFile(id, filePath)
+    })
+  }
 
-  async function saveToTempFile(json, name) {
-    const maxKey = Object.keys(tempFilesStore.store)
-      .map((x) => parseInt(x))
-      .reduce((acc, next) => Math.max(next, acc), 0)
-    const tempId = maxKey + 1
-    const fileName = name || `${t('Untitled')}${tempId == 1 ? '' : tempId}`
-    const tempName = `${fileName}.pltr`
-    let counter = 1
-    let filePath = path.join(TEMP_FILES_PATH, tempName)
-    let exists = await fileExists(filePath)
-    while (exists) {
-      log.warn(`Temp file exists at ${filePath}.  Attempting to create a new name`)
-      const tempName = `${fileName}-${uuidv4()}.pltr`
-      filePath = path.join(TEMP_FILES_PATH, tempName)
-      if (counter > MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME) {
-        const errorMessage = `We couldn't save your file to ${filePath}`
-        log.error(errorMessage, 'reached max attempts to find unique file name')
-        throw new Error(errorMessage)
-      }
-      counter++
-      exists = await fileExists(filePath)
-    }
-    let stats
-    try {
-      stats = await lstat(filePath)
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        const errorMessage = `We couldn't save your file to ${filePath}.`
-        log.error(errorMessage, `file doesn't exist after creating it`)
-        throw new Error(errorMessage)
-      }
-    }
-    if (stats && stats.isFile(filePath)) {
-      const errorMessage = `File: ${filePath} already exists.`
-      log.error(errorMessage)
-      throw new Error(errorMessage)
-    }
-    tempFilesStore.set(`${tempId}`, { filePath })
-    await saveFile(filePath, json)
-    return filePath
+  function editKnownFilePath(oldPath, newPath) {
+    return whenClientIsReady(({ editKnownFilePath }) => {
+      return editKnownFilePath(oldPath, newPath)
+    })
+  }
+
+  function saveToTempFile(json, name) {
+    return whenClientIsReady(({ saveToTempFile }) => {
+      return saveToTempFile(json, name)
+    })
   }
 
   function newFileFromTemplate(template, name) {
@@ -149,15 +78,25 @@ const makeFileModule = () => {
       if (templateFileJSON.books[1]) {
         templateFileJSON.books[1].title = fileName
       }
-      const filePath = await saveToTempFile(templateFileJSON, name)
-      const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+      try {
+        const filePath = await saveToTempFile(templateFileJSON, name)
+        const fileId = await addToKnownFiles(filePath)
+        await openKnownFile(filePath, fileId)
+      } catch (error) {
+        log.error('Failed to create a new file', name, error)
+        throw error
+      }
     } else {
       const fileName = name || t('Untitled')
       const emptyPlottrFile = emptyFile(fileName, app.getVersion())
-      const filePath = await saveToTempFile(emptyPlottrFile, name)
-      const fileId = addToKnownFiles(filePath)
-      openKnownFile(filePath, fileId)
+      try {
+        const filePath = await saveToTempFile(emptyPlottrFile, name)
+        const fileId = await addToKnownFiles(filePath)
+        await openKnownFile(filePath, fileId)
+      } catch (error) {
+        log.error('Failed to create a new file', name, error)
+        throw error
+      }
     }
   }
 
@@ -176,9 +115,14 @@ const makeFileModule = () => {
       return Promise.resolve()
     }
 
-    const filePath = await saveToTempFile(importedJson, storyName)
-    const fileId = addToKnownFiles(filePath)
-    openKnownFile(filePath, fileId)
+    try {
+      const filePath = await saveToTempFile(importedJson, storyName)
+      const fileId = await addToKnownFiles(filePath)
+      await openKnownFile(filePath, fileId)
+    } catch (error) {
+      log.error('Failed to create file from snowflake', error)
+      throw error
+    }
     return true
   }
 
@@ -230,12 +174,23 @@ const makeFileModule = () => {
       } else {
         return saveToTempFile(importedJson, storyName)
           .then((filePath) => {
-            const fileId = addToKnownFiles(filePath)
-            openKnownFile(filePath, fileId)
-            sender.send('finish-creating-local-scrivener-imported-file')
+            return addToKnownFiles(filePath).then((fileId) => {
+              return openKnownFile(filePath, fileId)
+                .then(() => {
+                  log.info('Opened file from imported scrivener data', storyName)
+                  sender.send('finish-creating-local-scrivener-imported-file')
+                  return true
+                })
+                .catch((error) => {
+                  sender.send('error-importing-scrivener', error)
+                  log.error('Failed to open a known file after importing from scrivener', error)
+                  return Promise.reject(error)
+                })
+            })
           })
           .catch((error) => {
-            return sender.send('error-importing-scrivener', error)
+            log.error('Failed to save imported scrivener file', error)
+            sender.send('error-importing-scrivener', error)
           })
       }
     })
@@ -249,56 +204,67 @@ const makeFileModule = () => {
           log.info('Opening offline file', filePath)
           return
         }
-        knownFilesStore.set(`${id}.lastOpened`, Date.now())
-        broadcastToAllWindows('reload-recents')
+        whenClientIsReady(({ updateLastOpenedDate }) => {
+          return updateLastOpenedDate(id)
+        })
+          .then(() => {
+            broadcastToAllWindows('reload-recents')
+          })
+          .catch((error) => {
+            log.error('Failed to update a known files last opened date', id, filePath, error)
+          })
       }, 500)
     }
-    openProjectWindow(filePath)
-    if (unknown) addToKnown(filePath)
+    return openProjectWindow(filePath)
+      .then(() => {
+        log.info('Opened known file for', filePath)
+        if (unknown) addToKnown(filePath)
+      })
+      .catch((error) => {
+        log.error('Failed to open a project window for know file', filePath)
+        return Promise.reject(error)
+      })
   }
 
   return {
     TMP_PATH,
     TEMP_FILES_PATH,
-    tempFilesStore,
     saveFile,
     editKnownFilePath,
     removeFromTempFiles,
-    removeFromKnownFiles,
-    deleteKnownFile,
     createNew,
     createFromSnowflake,
     createFromScrivener,
     openKnownFile,
+    deleteKnownFile,
+    removeFromKnownFiles,
   }
 }
 
 const {
   TMP_PATH,
   TEMP_FILES_PATH,
-  tempFilesStore,
   saveFile,
   editKnownFilePath,
   removeFromTempFiles,
-  removeFromKnownFiles,
-  deleteKnownFile,
   createNew,
   createFromSnowflake,
   createFromScrivener,
   openKnownFile,
+  deleteKnownFile,
+  removeFromKnownFiles,
 } = makeFileModule()
 
 export {
   TMP_PATH,
   TEMP_FILES_PATH,
-  tempFilesStore,
   saveFile,
   editKnownFilePath,
   removeFromTempFiles,
-  removeFromKnownFiles,
-  deleteKnownFile,
   createNew,
   createFromSnowflake,
   createFromScrivener,
   openKnownFile,
+  deleteKnownFile,
+  removeFromKnownFiles,
 }

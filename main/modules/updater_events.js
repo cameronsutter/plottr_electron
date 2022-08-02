@@ -1,13 +1,22 @@
 import { ipcMain } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import log from 'electron-log'
-import SETTINGS from './settings'
 import { broadcastToAllWindows } from './broadcast'
+import currentSettings from './settings'
 
 log.transports.file.level = 'info'
 autoUpdater.logger = log
-autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
-autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
+autoUpdater.allowPrerelease = false
+autoUpdater.autoDownload = false
+
+currentSettings()
+  .then((settings) => {
+    autoUpdater.allowPrerelease = settings.allowPrerelease
+    autoUpdater.autoDownload = settings.user?.autoDownloadUpdate
+  })
+  .catch((error) => {
+    log.error('Error setting initial update settings', error)
+  })
 
 ////////////////////
 // RECEIVE EVENTS //
@@ -21,9 +30,15 @@ ipcMain.on('pls-quit-and-install', () => {
 })
 
 ipcMain.on('pls-check-for-updates', () => {
-  autoUpdater.allowPrerelease = SETTINGS.get('allowPrerelease')
-  autoUpdater.autoDownload = SETTINGS.get('user.autoDownloadUpdate')
-  autoUpdater.checkForUpdates()
+  currentSettings()
+    .then((settings) => {
+      autoUpdater.allowPrerelease = settings.allowPrerelease
+      autoUpdater.autoDownload = settings.user?.autoDownloadUpdate
+      autoUpdater.checkForUpdates()
+    })
+    .catch((error) => {
+      log.error('Error checking for updates', error)
+    })
 })
 
 /////////////////

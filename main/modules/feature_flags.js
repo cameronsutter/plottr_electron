@@ -1,5 +1,7 @@
 import { BrowserWindow } from 'electron'
-import SETTINGS from './settings'
+import log from 'electron-log'
+
+import currentSettings from './settings'
 
 const broadcastSetBeatHierarchy = () => {
   BrowserWindow.getAllWindows().forEach((bw) => {
@@ -13,8 +15,17 @@ const broadcastUnsetBeatHierarchy = () => {
   })
 }
 
-const featureFlags = () => ({
-  beatHierarchy: SETTINGS.get('user.beatHierarchy'),
-})
+const featureFlags = () => {
+  return currentSettings()
+    .then((settings) => {
+      return {
+        beatHierarchy: settings.user.beatHierarchy,
+      }
+    })
+    .catch((error) => {
+      log.error('Could not read current settings when trying to get beatHierarchy', error)
+      return Promise.reject(error)
+    })
+}
 
 export { broadcastSetBeatHierarchy, broadcastUnsetBeatHierarchy, featureFlags }

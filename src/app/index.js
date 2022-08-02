@@ -210,6 +210,8 @@ ipcRenderer.on('save-as', () => {
 })
 
 const ensureEndsInPltr = (filePath) => {
+  if (!filePath) return null
+
   if (!filePath.endsWith('.pltr')) {
     return `${filePath}.pltr`
   }

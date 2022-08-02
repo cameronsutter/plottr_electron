@@ -18,6 +18,7 @@ class Store {
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
     this.activeWrite = null
+    this.hasReadStore = false
 
     this.readStore().then(() => {
       if (this.watch) {
@@ -74,6 +75,16 @@ class Store {
     }
   }
 
+  currentStore = () => {
+    if (this.hasReadStore) {
+      return Promise.resolve(this.store)
+    }
+
+    return this.readStore().then(() => {
+      return this.store
+    })
+  }
+
   readStore = () => {
     return readFile(this.path)
       .catch((error) => {
@@ -105,6 +116,7 @@ class Store {
       .then((storeContents) => {
         try {
           this.store = storeContents.toString() === '' ? this.defaults : JSON.parse(storeContents)
+          this.hasReadStore = true
           return true
         } catch (error) {
           this.logger.error(
@@ -170,6 +182,9 @@ class Store {
     }
 
     const store = storeOrKey
+    if (typeof store !== 'object') {
+      return Promise.reject(`Tried to set store to non-object: ${store}`)
+    }
     this.store = cloneDeep(store)
     return this.writeStore()
       .then(() => {

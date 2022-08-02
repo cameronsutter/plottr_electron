@@ -1,3 +1,10 @@
+/**
+ * NOTE: it's fine to keep this store on the main process for now
+ * because the server and renderers don't touch it.  If that
+ * assumption changes, please ensure that only one process is
+ * responsible for writing to the last opened file store.
+ */
+
 import { app } from 'electron'
 import log from 'electron-log'
 

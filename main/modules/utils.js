@@ -7,8 +7,8 @@ import log from 'electron-log'
 import { enable } from '@electron/remote/main'
 
 import { hasWindows } from './windows'
-import SETTINGS from './settings'
 import { is } from 'electron-util'
+import currentSettings from './settings'
 
 function gracefullyNotSave() {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
@@ -43,72 +43,77 @@ function makeBrowserWindow(filePath) {
     file: stateKeeprFile.slice(-numFileLetters),
   })
 
-  let config = {
-    x: stateKeeper.x,
-    y: stateKeeper.y,
-    width: stateKeeper.width,
-    height: stateKeeper.height,
-    fullscreen: stateKeeper.isFullScreen || null,
-    show: false,
-    fullscreenable: true,
-    webPreferences: {
-      nodeIntegration: true,
-      spellcheck:
-        SETTINGS.get('user.useSpellcheck') === undefined
-          ? true
-          : SETTINGS.get('user.useSpellcheck'),
-      webviewTag: true,
-      contextIsolation: false,
-    },
-  }
+  return currentSettings()
+    .then((settings) => {
+      let config = {
+        x: stateKeeper.x,
+        y: stateKeeper.y,
+        width: stateKeeper.width,
+        height: stateKeeper.height,
+        fullscreen: stateKeeper.isFullScreen || null,
+        show: false,
+        fullscreenable: true,
+        webPreferences: {
+          nodeIntegration: true,
+          spellcheck:
+            settings.user?.useSpellcheck === undefined ? true : settings.user?.useSpellcheck,
+          webviewTag: true,
+          contextIsolation: false,
+        },
+      }
 
-  config.backgroundColor = '#f7f7f7'
+      config.backgroundColor = '#f7f7f7'
 
-  // Create the browser window
-  let newWindow = new BrowserWindow(config)
-  // Enable the remote module.
-  enable(newWindow.webContents)
+      // Create the browser window
+      let newWindow = new BrowserWindow(config)
+      // Enable the remote module.
+      enable(newWindow.webContents)
 
-  // register listeners on the window
-  stateKeeper.manage(newWindow)
+      // register listeners on the window
+      stateKeeper.manage(newWindow)
 
-  newWindow.once('ready-to-show', () => {
-    newWindow.show()
-  })
+      newWindow.once('ready-to-show', () => {
+        newWindow.show()
+      })
 
-  newWindow.webContents.on('did-finish-load', () => {
-    if (!newWindow.isVisible()) newWindow.show()
-  })
+      newWindow.webContents.on('did-finish-load', () => {
+        if (!newWindow.isVisible()) newWindow.show()
+      })
 
-  newWindow.webContents.on('unresponsive', () => {
-    log.warn('webContents became unresponsive')
-    newWindow.webContents.reload()
-  })
-  newWindow.webContents.on('responsive', () => {
-    log.info('webContents responsive again')
-  })
+      newWindow.webContents.on('unresponsive', () => {
+        log.warn('webContents became unresponsive')
+        newWindow.webContents.reload()
+      })
+      newWindow.webContents.on('responsive', () => {
+        log.info('webContents responsive again')
+      })
 
-  newWindow.on('unresponsive', () => {
-    log.warn('window became unresponsive')
-    newWindow.webContents.reload()
-  })
+      newWindow.on('unresponsive', () => {
+        log.warn('window became unresponsive')
+        newWindow.webContents.reload()
+      })
 
-  newWindow.on('responsive', () => {
-    log.info('window responsive again')
-  })
+      newWindow.on('responsive', () => {
+        log.info('window responsive again')
+      })
 
-  newWindow.webContents.on(
-    'new-window',
-    (event, url, frameName, disposition, options, additionalFeatures) => {
-      event.preventDefault()
-    }
-  )
+      newWindow.webContents.on(
+        'new-window',
+        (event, url, frameName, disposition, options, additionalFeatures) => {
+          event.preventDefault()
+        }
+      )
 
-  if (is.development || SETTINGS.get('forceDevTools')) {
-    newWindow.openDevTools()
-  }
+      if (is.development || settings.forceDevTools) {
+        newWindow.openDevTools()
+      }
 
-  return newWindow
+      return newWindow
+    })
+    .catch((error) => {
+      log.error('Error creating a new window', error)
+      return Promise.reject(error)
+    })
 }
 
 export { gracefullyNotSave, gracefullyQuit, makeBrowserWindow }

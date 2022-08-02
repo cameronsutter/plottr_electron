@@ -133,7 +133,7 @@ const theWorld = (socketClient) => {
   )
   const currentCustomTemplates = () => {
     return fileSystemAPIs.currentCustomTemplates().then((fileSystemCustomTemplates) => {
-      return fileSystemCustomTemplates.concat(firebaseAPIs.currentCustomTemplates())
+      return Object.values(fileSystemCustomTemplates).concat(firebaseAPIs.currentCustomTemplates())
     })
   }
 

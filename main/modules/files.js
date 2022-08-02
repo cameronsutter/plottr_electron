@@ -27,21 +27,15 @@ const makeFileModule = () => {
     })
   }
 
-  function editKnownFilePath(oldPath, newPath) {
-    return whenClientIsReady(({ editKnownFilePath }) => {
-      return editKnownFilePath(oldPath, newPath)
-    })
-  }
-
-  function saveToTempFile(json, name) {
-    return whenClientIsReady(({ saveToTempFile }) => {
-      return saveToTempFile(json, name)
-    })
-  }
-
   function removeFromTempFiles(filePath, doDelete) {
     return whenClientIsReady(({ removeFromTempFiles }) => {
       return removeFromTempFiles(filePath, doDelete)
+    })
+  }
+
+  function removeFromKnownFiles(id) {
+    return whenClientIsReady(({ removeFromKnownFiles }) => {
+      return removeFromKnownFiles(id)
     })
   }
 
@@ -51,9 +45,15 @@ const makeFileModule = () => {
     })
   }
 
-  function removeFromKnownFiles(id) {
-    return whenClientIsReady(({ removeFromKnownFiles }) => {
-      return removeFromKnownFiles(id)
+  function editKnownFilePath(oldPath, newPath) {
+    return whenClientIsReady(({ editKnownFilePath }) => {
+      return editKnownFilePath(oldPath, newPath)
+    })
+  }
+
+  function saveToTempFile(json, name) {
+    return whenClientIsReady(({ saveToTempFile }) => {
+      return saveToTempFile(json, name)
     })
   }
 

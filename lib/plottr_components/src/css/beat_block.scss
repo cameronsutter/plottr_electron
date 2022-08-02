@@ -164,6 +164,21 @@ $medium_width: 80px;
   }
 }
 
+.insert-beat-cell:not(.vertical):not(.small-timeline) {
+  &:not(.medium-timeline) {
+    margin-top: 25px;
+    padding-bottom: 40px;
+  }
+  &:not(.medium-timeline):not(.insert-child) {
+    margin-top: 38px;
+    padding-bottom: 40px;
+  }
+  &.medium-timeline:not(.insert-child) {
+    margin-top: 16px;
+    padding-bottom: 0px;
+  }
+}
+
 .beat-list__insert {
   height: 75px;
   display: flex;

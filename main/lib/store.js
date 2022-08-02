@@ -160,8 +160,8 @@ class Store {
             })
         })
         .catch((error) => {
-          this.logger.error(`Failed to write ${this.store} store for {this.path}`, error)
-          throw new Error(`Failed to write ${this.store} store for {this.path}`, error)
+          this.logger.error(`Failed to write ${this.store} store for ${this.path}`, error)
+          throw new Error(`Failed to write ${this.store} store for ${this.path}`, error)
         })
         .finally(() => {
           this.activeWrite = null

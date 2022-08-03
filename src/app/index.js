@@ -354,7 +354,7 @@ window.addEventListener('load', reloadMenu)
 window.addEventListener('focus', reloadMenu)
 
 ipcRenderer.on('new-project', () => {
-  store.dispatch(actions.project.setShowNewProjectInputModal(true))
+  store.dispatch(actions.project.startCreatingNewProject(true))
 })
 ipcRenderer.on('open-existing', () => openExistingProj())
 ipcRenderer.on('from-template', () => {

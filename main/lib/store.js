@@ -18,8 +18,10 @@ class Store {
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
     this.activeWrite = null
+    this.initialReadComplete = false
 
-    this._readStore().then((initialValue) => {
+    this._readStore().then(() => {
+      this.initialReadComplete = true
       if (this.watch) {
         this.watchStore()
       }
@@ -82,8 +84,12 @@ class Store {
 
   currentStore = () => {
     return this.afterActiveWrite(() => {
-      return this._readStore().then((store) => {
-        return store
+      if (this.initialReadComplete) {
+        return this.store
+      }
+
+      return this._readStore().then(() => {
+        return this.store
       })
     })
   }

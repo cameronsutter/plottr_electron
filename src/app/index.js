@@ -353,7 +353,9 @@ const reloadMenu = () => ipcRenderer.send('pls-reload-menu')
 window.addEventListener('load', reloadMenu)
 window.addEventListener('focus', reloadMenu)
 
-ipcRenderer.on('new-project', () => createBlankProj())
+ipcRenderer.on('new-project', () => {
+  store.dispatch(actions.project.startCreatingNewProject())
+})
 ipcRenderer.on('open-existing', () => openExistingProj())
 ipcRenderer.on('from-template', () => {
   openDashboard()

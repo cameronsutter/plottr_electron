@@ -18,6 +18,7 @@ import {
   ExportDialog,
   ActsHelpModal,
   UpdateNotifier,
+  NewProjectInputModal,
 } from 'connected-components'
 import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
@@ -204,6 +205,7 @@ const App = ({
         <React.StrictMode>
           <Body />
           <UpdateNotifier />
+          <NewProjectInputModal />
         </React.StrictMode>
       </main>
       <React.StrictMode>

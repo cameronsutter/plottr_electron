@@ -123,7 +123,7 @@ const setupListeners = (port, userDataPath) => {
     const backupModule = makeBackupModule(settings, basicLogger)
     makeFileSystemModule(stores, basicLogger)
     makeFileModule(backupModule, settings, basicLogger)
-    return makeTemplateFetcher(stores, basicLogger)
+    return makeTemplateFetcher(stores, logInfo)
   }
 
   webSocketServer.on('connection', (webSocket) => {

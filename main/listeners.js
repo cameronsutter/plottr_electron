@@ -102,15 +102,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
 
   ipcMain.on('add-to-known-files-and-open', (_event, file) => {
     if (!file || file === '') return
-    const id = addToKnownFiles(file)
-    log.info('Adding to known files and opening', file)
-    openKnownFile(file, id, false)
-      .then(() => {
-        log.info('Opened file', file)
-      })
-      .catch((error) => {
-        log.error('Error opening file and adding to known', file, error)
-      })
+    addToKnownFiles(file).then((id) => {
+      log.info('Adding to known files and opening', file)
+      openKnownFile(file, id, false)
+        .then(() => {
+          log.info('Opened file', file)
+        })
+        .catch((error) => {
+          log.error('Error opening file and adding to known', file, error)
+        })
+    })
   })
 
   ipcMain.on('create-new-file', (event, template, name) => {

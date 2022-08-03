@@ -115,11 +115,15 @@ const fileSystemModule = (userDataPath) => {
       return licenseStore.set(newLicense)
     }
 
+    const isValidKnownFile = (file) => {
+      return typeof file.path === 'string' && file.lastOpened
+    }
+
     const listenToknownFilesChanges = (cb) => {
       const transformStore = (store) => {
         return Object.entries(store)
           .filter(([key, file]) => {
-            return typeof file.path === 'string' && file.lastOpened
+            return isValidKnownFile(file)
           })
           .map(([key, file]) => {
             return {
@@ -140,12 +144,16 @@ const fileSystemModule = (userDataPath) => {
     }
     const currentKnownFiles = () => {
       return knownFilesStore.currentStore().then((fileIndex) => {
-        return Object.entries(fileIndex).map(([key, file]) => ({
-          ...file,
-          fromFileSystem: true,
-          isTempFile: file.path.includes(TEMP_FILES_PATH),
-          id: key,
-        }))
+        return Object.entries(fileIndex)
+          .filter(([key, file]) => {
+            return isValidKnownFile(file)
+          })
+          .map(([key, file]) => ({
+            ...file,
+            fromFileSystem: true,
+            isTempFile: file.path.includes(TEMP_FILES_PATH),
+            id: key,
+          }))
       })
     }
 

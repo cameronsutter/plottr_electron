@@ -18,8 +18,10 @@ class Store {
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
     this.activeWrite = null
+    this.initialReadComplete = false
 
-    this.readStore().then(() => {
+    this._readStore().then(() => {
+      this.initialReadComplete = true
       if (this.watch) {
         this.watchStore()
       }
@@ -52,7 +54,7 @@ class Store {
         this.publishChangesToWatchers()
         return
       }
-      this.readStore().then(() => {
+      this._readStore().then(() => {
         this.publishChangesToWatchers()
       })
     })
@@ -74,13 +76,28 @@ class Store {
     }
   }
 
-  currentStore = () => {
-    return this.readStore().then(() => {
-      return this.store
+  afterActiveWrite = (f) => {
+    return this.activeWriteRequest().then(() => {
+      return f()
     })
   }
 
-  readStore = () => {
+  currentStore = () => {
+    return this.afterActiveWrite(() => {
+      if (this.initialReadComplete) {
+        return this.store
+      }
+
+      return this._readStore().then(() => {
+        return this.store
+      })
+    })
+  }
+
+  // This doesn't need to wait for active writes because it's
+  // internal.  Please don't use it externally, That will lead to race
+  // conditions.  Use `currentStore` instead!!
+  _readStore = () => {
     return readFile(this.path)
       .catch((error) => {
         if (error.code === 'ENOENT') {
@@ -118,7 +135,7 @@ class Store {
                   ...this.defaults,
                   ...JSON.parse(storeContents),
                 }
-          return true
+          return this.store
         } catch (error) {
           this.logger.error(
             `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
@@ -171,46 +188,52 @@ class Store {
   }
 
   set = (storeOrKey, value) => {
-    if (typeof value !== 'undefined') {
-      const key = storeOrKey
-      this.store = cloneDeep(this.store)
-      set(this.store, key, value)
+    return this.afterActiveWrite(() => {
+      if (typeof value !== 'undefined') {
+        const key = `${storeOrKey}`
+        this.store = cloneDeep(this.store)
+        set(this.store, key, value)
+        return this.writeStore()
+          .then(() => {
+            this.publishChangesToWatchers()
+          })
+          .then(() => true)
+      }
+
+      const store = storeOrKey
+      if (typeof store !== 'object') {
+        return Promise.reject(`Tried to set store to non-object: ${store}`)
+      }
+      this.store = cloneDeep(store)
       return this.writeStore()
         .then(() => {
           this.publishChangesToWatchers()
         })
         .then(() => true)
-    }
-
-    const store = storeOrKey
-    if (typeof store !== 'object') {
-      return Promise.reject(`Tried to set store to non-object: ${store}`)
-    }
-    this.store = cloneDeep(store)
-    return this.writeStore()
-      .then(() => {
-        this.publishChangesToWatchers()
-      })
-      .then(() => true)
+    })
   }
 
   clear = () => {
-    this.store = {}
-    return this.writeStore()
-      .then(() => {
-        this.publishChangesToWatchers()
-      })
-      .then(() => true)
+    return this.afterActiveWrite(() => {
+      this.store = {}
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
   }
 
   delete = (id) => {
-    this.store = cloneDeep(this.store)
-    delete this.store[id]
-    return this.writeStore()
-      .then(() => {
-        this.publishChangesToWatchers()
-      })
-      .then(() => true)
+    return this.afterActiveWrite(() => {
+      this.store = cloneDeep(this.store)
+      delete this.store[id]
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
   }
 
   get = (key) => {

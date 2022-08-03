@@ -239,10 +239,10 @@ const Main = ({
   }, [setOffline])
 
   useEffect(() => {
-    if (settings.user.font) {
+    if (settings.user?.font) {
       window.document.documentElement.style.setProperty('--default-rce-font', settings.user.font)
     }
-    if (settings.user.fontSize) {
+    if (settings.user?.fontSize) {
       window.document.documentElement.style.setProperty(
         '--default-rce-font-size',
         String(settings.user.fontSize) + 'px'

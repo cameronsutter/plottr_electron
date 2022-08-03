@@ -1,4 +1,4 @@
-import electron from 'electron'
+import electron, { dialog } from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import { initialize } from '@electron/remote/main'
@@ -138,14 +138,29 @@ const loadMenuFailureHandler = (error) => {
 }
 
 app.whenReady().then(() => {
-  startServer(log, broadcastPortChange, app.getPath('userData'))
+  startServer(log, broadcastPortChange, app.getPath('userData'), (error) => {
+    log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
+    dialog.showErrorBox(
+      'Error',
+      "Plottr ran into a problem and can't start.  Please contact support."
+    )
+    setTimeout(() => {
+      app.quit()
+    }, 5000)
+  })
     .then((port) => {
       log.info(`Socket worker started on ${port}`)
       return port
     })
     .catch((error) => {
       log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
-      app.quit()
+      dialog.showErrorBox(
+        'Error',
+        "Plottr ran into a problem and can't start.  Please contact support."
+      )
+      setTimeout(() => {
+        app.quit()
+      }, 5000)
     })
     .then((port) => {
       return loadMenu()

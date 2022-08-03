@@ -92,8 +92,9 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const startupTasks = (userDataPath, stores, logInfo) => {
-  wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
-  return Promise.resolve()
+  return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
+    return templateFetcher.fetch()
+  })
 }
 
 const setupListeners = (port, userDataPath) => {
@@ -121,8 +122,8 @@ const setupListeners = (port, userDataPath) => {
   const testModules = () => {
     const backupModule = makeBackupModule(settings, basicLogger)
     makeFileSystemModule(stores, basicLogger)
-    makeTemplateFetcher(stores, basicLogger)
     makeFileModule(backupModule, settings, basicLogger)
+    return makeTemplateFetcher(stores, logInfo)
   }
 
   webSocketServer.on('connection', (webSocket) => {
@@ -188,7 +189,9 @@ const setupListeners = (port, userDataPath) => {
       deleteKnownFile,
     } = makeKnownFilesModule(stores, fileModule, fileSystemModule, tempFilesModule, logger)
     const attemptToFetchTemplates = () => {
-      wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
+      return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
+        return templateFetcher.fetch()
+      })
     }
 
     webSocket.on('message', (message) => {
@@ -497,7 +500,7 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case ATTEMPT_TO_FETCH_TEMPLATES: {
-            return handleSync(
+            return handlePromise(
               () =>
                 'Attempting to fetch latest templates (might not if the manifest is up to date)',
               attemptToFetchTemplates,
@@ -843,9 +846,10 @@ const setupListeners = (port, userDataPath) => {
     })
   })
 
-  testModules()
-  startupTasks(userDataPath, stores, logInfo).then(() => {
-    process.send('ready')
+  testModules().then(() => {
+    startupTasks(userDataPath, stores, logInfo).then(() => {
+      process.send('ready')
+    })
   })
 }
 

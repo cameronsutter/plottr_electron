@@ -172,6 +172,7 @@ $medium_width: 80px;
   &:not(.medium-timeline):not(.insert-child) {
     margin-top: 38px;
     padding-bottom: 40px;
+    margin-left: 1px;
   }
   &.medium-timeline:not(.insert-child) {
     margin-top: 16px;
@@ -211,7 +212,7 @@ $medium_width: 80px;
     &.large-timeline {
       padding: 11px 70px 10px 70px;
       margin-left: 35px;
-      margin-bottom: 3px;
+      margin-top: 5px;
     }
     &.medium-timeline {
       margin-top: 10px;

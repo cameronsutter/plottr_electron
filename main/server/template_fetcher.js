@@ -170,7 +170,7 @@ const makeTemplateFetcher = (userDataPath) => {
 
     logInfo('Migrating templates')
     return migrateCustomTemplates(customTemplatesStore, logInfo).then(() => {
-      migrateTemplates(templatesStore, manifestStore, logInfo).then(() => {
+      return migrateTemplates(templatesStore, manifestStore, logInfo).then(() => {
         return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
       })
     })

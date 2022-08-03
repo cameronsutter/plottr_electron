@@ -5,6 +5,67 @@ import { isDevelopment } from './isDevelopment'
 export const MANIFEST_ROOT = 'manifest'
 const OLD_TEMPLATES_ROOT = 'templates'
 
+const migrateTemplates = (templatesStore, manifestStore, log) => {
+  // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
+  log('Migrating built-in templates')
+  return templatesStore.currentStore().then(() => {
+    const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
+    if (templates) {
+      return templatesStore
+        .clear()
+        .then(() => {
+          return templatesStore.set(templates)
+        })
+        .then(() => {
+          log('Migrated templates')
+        })
+        .catch((error) => {
+          log('ERROR: Failed to migrate templates, emptying template and manifest stores', error)
+          return templatesStore
+            .clear()
+            .then(() => {
+              return manifestStore.clear()
+            })
+            .catch(() => {
+              // If we failed to clear the template store, still clear
+              // the manifest store.
+              return manifestStore.clear()
+            })
+            .then(() => {
+              log('Cleared built-in template stores')
+            })
+        })
+    }
+
+    log('No templates to migrate')
+    return Promise.resolve()
+  })
+}
+
+const migrateCustomTemplates = (customTemplatesStore, log) => {
+  // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
+  log('Migrating custom templates')
+  return customTemplatesStore.currentStore().then(() => {
+    const customTemplates = customTemplatesStore.get(OLD_TEMPLATES_ROOT)
+    if (customTemplates) {
+      return customTemplatesStore
+        .clear()
+        .then(() => {
+          return customTemplatesStore.set(customTemplates)
+        })
+        .then(() => {
+          log('Migrated custom templates')
+        })
+        .catch((error) => {
+          log('ERROR: Failed to migrate custom templates, ignoring error and continuing', error)
+        })
+    }
+
+    log('No custom templates to migrate')
+    return Promise.resolve
+  })
+}
+
 class TemplateFetcher {
   constructor(baseURL, manifestURL, userDataPath, stores, log) {
     this.baseURL = baseURL
@@ -16,20 +77,6 @@ class TemplateFetcher {
     this.templatesStore = templatesStore
     this.customTemplatesStore = customTemplatesStore
     this.manifestStore = manifestStore
-
-    // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
-    const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
-    if (templates) {
-      templatesStore.clear()
-      templatesStore.set(templates)
-    }
-
-    // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
-    const customTemplates = customTemplatesStore.get(OLD_TEMPLATES_ROOT)
-    if (customTemplates) {
-      customTemplatesStore.clear()
-      customTemplatesStore.set(customTemplates)
-    }
   }
 
   templates = (type) => {
@@ -117,7 +164,14 @@ const makeTemplateFetcher = (userDataPath) => {
     const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
     const manifestURL = `${baseURL}/v2/manifest.json`
 
-    return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+    const { templatesStore, customTemplatesStore, manifestStore } = stores
+
+    logInfo('Migrating templates')
+    return migrateCustomTemplates(customTemplatesStore, logInfo).then(() => {
+      migrateTemplates(templatesStore, manifestStore, logInfo).then(() => {
+        return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+      })
+    })
   }
 }
 

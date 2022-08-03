@@ -108,17 +108,20 @@ class TemplateFetcher {
     // if (is.development) return
 
     this.log('fetching template manifest')
-    request(this.manifestReq(), (err, resp, fetchedManifest) => {
+    return request(this.manifestReq(), (err, resp, fetchedManifest) => {
       if (!err && resp && resp.statusCode == 200) {
         if (force || this.fetchedIsNewer(fetchedManifest.version)) {
           this.log('new templates found', fetchedManifest.version)
-          this.manifestStore.set(MANIFEST_ROOT, fetchedManifest)
-          this.fetchTemplates(force)
+          return this.manifestStore.set(MANIFEST_ROOT, fetchedManifest).then(() => {
+            return this.fetchTemplates(force)
+          })
         } else {
           this.log('no new template manifest', fetchedManifest.version)
+          return Promise.resolve()
         }
       } else {
         this.log(resp ? resp.statusCode : 'null template manifest response', err)
+        return Promise.resolev()
       }
     })
   }
@@ -131,19 +134,22 @@ class TemplateFetcher {
 
   fetchTemplates = (force) => {
     const templates = this.manifestStore.get('manifest.templates')
-    templates.forEach((template) => {
+    const templateRequests = templates.map((template) => {
       if (force || this.templateIsNewer(template.id, template.version)) {
-        this.fetchTemplate(template.id, template.url)
+        return this.fetchTemplate(template.id, template.url)
       }
+      return Promise.resolve()
     })
+    return Promise.all(templateRequests)
   }
 
   fetchTemplate = (id, url) => {
     const fullURL = `${this.baseURL}${url}`
-    request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
+    return request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
       if (!err && resp && resp.statusCode == 200) {
-        this.templatesStore.set(id, fetchedTemplate)
+        return this.templatesStore.set(id, fetchedTemplate)
       }
+      return Promise.resolve()
     })
   }
 

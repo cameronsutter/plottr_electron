@@ -1,4 +1,4 @@
-import request from 'request'
+import fetch from 'node-fetch'
 import semverGt from 'semver/functions/gt'
 import { isDevelopment } from './isDevelopment'
 
@@ -62,7 +62,7 @@ const migrateCustomTemplates = (customTemplatesStore, log) => {
     }
 
     log('No custom templates to migrate')
-    return Promise.resolve
+    return Promise.resolve()
   })
 }
 
@@ -90,40 +90,28 @@ class TemplateFetcher {
     }, [])
   }
 
-  manifestReq = () => {
-    return {
-      url: this.manifestURL,
-      json: true,
-    }
-  }
-
-  templateReq = (url) => {
-    return {
-      url: url,
-      json: true,
-    }
-  }
-
   fetch = (force) => {
     // if (is.development) return
 
-    this.log('fetching template manifest')
-    return request(this.manifestReq(), (err, resp, fetchedManifest) => {
-      if (!err && resp && resp.statusCode == 200) {
+    this.log('Fetching template manifest')
+    return fetch(this.manifestURL)
+      .then((resp) => {
+        if (!resp.ok) {
+          return Promise.reject(new Error(`Failed to fetch manifest.  HTTP code: ${resp.status}`))
+        }
+        return resp.json()
+      })
+      .then((fetchedManifest) => {
         if (force || this.fetchedIsNewer(fetchedManifest.version)) {
-          this.log('new templates found', fetchedManifest.version)
+          this.log('New templates to fetch', fetchedManifest.version)
           return this.manifestStore.set(MANIFEST_ROOT, fetchedManifest).then(() => {
             return this.fetchTemplates(force)
           })
         } else {
-          this.log('no new template manifest', fetchedManifest.version)
+          this.log('No new templates', fetchedManifest.version)
           return Promise.resolve()
         }
-      } else {
-        this.log(resp ? resp.statusCode : 'null template manifest response', err)
-        return Promise.resolev()
-      }
-    })
+      })
   }
 
   fetchedIsNewer = (fetchedVersion) => {
@@ -145,12 +133,20 @@ class TemplateFetcher {
 
   fetchTemplate = (id, url) => {
     const fullURL = `${this.baseURL}${url}`
-    return request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
-      if (!err && resp && resp.statusCode == 200) {
+    return fetch(fullURL)
+      .then((resp) => {
+        if (!resp.ok) {
+          return Promise.reject(
+            new Error(
+              `Failed to fetch template with id ${id} from ${url}.  HTTP code: ${resp.status}`
+            )
+          )
+        }
+        return resp.json()
+      })
+      .then((fetchedTemplate) => {
         return this.templatesStore.set(id, fetchedTemplate)
-      }
-      return Promise.resolve()
-    })
+      })
   }
 
   templateIsNewer = (templateId, manifestVersion) => {

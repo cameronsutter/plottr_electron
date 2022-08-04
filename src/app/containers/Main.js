@@ -395,19 +395,27 @@ const Main = ({
               {errorMessage}
             </h5>
           </div>
-          <div className="error-boundary__options" style={{ width: '50%' }}>
-            <Button bsSize="lg" onClick={goToSupport}>
-              {t('Contact Support')}
-            </Button>
-            {isInProMode ? null : (
-              <Button bsSize="lg" onClick={showFile}>
-                {t('Show File')}
+          {errorIsUpdateError ? (
+            <div className="error-boundary__options" style={{ width: '50%' }}>
+              <Button bsSize="lg" onClick={goToSupport}>
+                {t('Contact Support')}
               </Button>
-            )}
-            <Button bsSize="lg" onClick={viewBackups}>
-              {t('View Backups')}
-            </Button>
-          </div>
+            </div>
+          ) : (
+            <div className="error-boundary__options" style={{ width: '50%' }}>
+              <Button bsSize="lg" onClick={goToSupport}>
+                {t('Contact Support')}
+              </Button>
+              {isInProMode ? null : (
+                <Button bsSize="lg" onClick={showFile}>
+                  {t('Show File')}
+                </Button>
+              )}
+              <Button bsSize="lg" onClick={viewBackups}>
+                {t('View Backups')}
+              </Button>
+            </div>
+          )}
         </div>
       </>
     ) : (

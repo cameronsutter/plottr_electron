@@ -24,6 +24,7 @@ import UnconnectedNoteItem from './NoteItem'
 import UnconnectedCustomAttributeModal from '../dialogs/CustomAttributeModal'
 import UnconnectedNoteCategoriesModal from './NoteCategoriesModal'
 import UnconnectedSortList from '../SortList'
+import UnconnectedExportNavItem from '../export/ExportNavItem'
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
 
@@ -66,6 +67,12 @@ const NoteListViewConnector = (connector) => {
   const NoteItem = UnconnectedNoteItem(connector)
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const CustomAttributeModal = UnconnectedCustomAttributeModal(connector)
+  const ExportNavItem = UnconnectedExportNavItem(connector)
+
+  const {
+    platform: { exportDisabled },
+  } = connector
+  checkDependencies({ exportDisabled })
 
   const NoteListView = ({
     categories,
@@ -188,7 +195,7 @@ const NoteListViewConnector = (connector) => {
 
     const renderSubNav = () => {
       const popover = () => (
-        <Popover id="filter">
+        <Popover id="filter" noMaxWidth>
           <CustomAttrFilterList type="notes" />
         </Popover>
       )
@@ -284,6 +291,11 @@ const NoteListViewConnector = (connector) => {
               />
             </NavItem>
           </Nav>
+          {!exportDisabled && (
+            <Nav pullRight>
+              <ExportNavItem />
+            </Nav>
+          )}
         </SubNav>
       )
     }

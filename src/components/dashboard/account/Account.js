@@ -62,8 +62,8 @@ const AccountConnector = (connector) => {
     const hideProButton = os() == 'unknown' || hasCurrentProLicense
 
     const _deleteLicense = () => {
-      mpq.push('btn_remove_license_confirm')
-      deleteLicense()
+      // mpq.push('btn_remove_license_confirm')
+      return deleteLicense()
     }
 
     const AllAccountInfo = () => {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { FaOutdent } from 'react-icons/fa'
 
 import Button from '../Button'
@@ -44,7 +43,7 @@ const DedentParagraphButton = ({ editor, logger }) => {
   )
 
   return (
-    <Button bsStyle={cx('default', { disabled: !blockIsActive })} onMouseDown={handleClick}>
+    <Button disabled={!blockIsActive} onMouseDown={handleClick}>
       <FaOutdent />
     </Button>
   )

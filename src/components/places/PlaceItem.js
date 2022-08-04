@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { FiCopy } from 'react-icons/fi'
 
 import { t as i18n } from 'plottr_locales'
 
@@ -76,6 +77,22 @@ const PlaceItemConnector = (connector) => {
       )
     }
 
+    const renderHoverOptions = () => {
+      return (
+        <ButtonGroup className="place-list__item-buttons">
+          <Button bsSize="small" onClick={startEditing}>
+            <Glyphicon glyph="edit" />
+          </Button>
+          <Button bsSize="small" onClick={handleDuplicate}>
+            <FiCopy />
+          </Button>
+          <Button bsSize="small" onClick={handleDelete}>
+            <Glyphicon glyph="trash" />
+          </Button>
+        </ButtonGroup>
+      )
+    }
+
     let img = null
     if (place.imageId) {
       img = (
@@ -84,10 +101,9 @@ const PlaceItemConnector = (connector) => {
         </div>
       )
     }
-    const klasses = cx('list-group-item', { selected: selected })
-    const buttonKlasses = cx('place-list__item-buttons', { visible: selected })
+
     return (
-      <div className={klasses} ref={ref} onClick={selectPlace}>
+      <div className="list-group-item" ref={ref} onClick={selectPlace}>
         {renderDelete()}
         <div className="place-list__item-inner">
           {img}
@@ -97,17 +113,7 @@ const PlaceItemConnector = (connector) => {
             </h6>
             <p className="list-group-item-text">{place.description.substr(0, 100)}</p>
           </div>
-          <ButtonGroup className={buttonKlasses}>
-            <Button bsSize="small" onClick={startEditing}>
-              <Glyphicon glyph="edit" />
-            </Button>
-            <Button bsSize="small" onClick={handleDuplicate}>
-              <Glyphicon glyph="duplicate" />
-            </Button>
-            <Button bsSize="small" onClick={handleDelete}>
-              <Glyphicon glyph="trash" />
-            </Button>
-          </ButtonGroup>
+          {renderHoverOptions()}
         </div>
       </div>
     )

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import cx from 'classnames'
 import { FaIndent } from 'react-icons/fa'
 import { Transforms, Editor } from 'slate'
 
@@ -95,7 +94,7 @@ const IndentParagraphButton = ({ editor, logger }) => {
   )
 
   return (
-    <Button bsStyle={cx('default', { disabled: !blockIsActive })} onMouseDown={handleClick}>
+    <Button disabled={!blockIsActive} onMouseDown={handleClick}>
       <FaIndent />
     </Button>
   )

@@ -7,6 +7,8 @@ import Glyphicon from '../Glyphicon'
 import Button from '../Button'
 import UnconnectedPlottrModal from '../PlottrModal'
 import DeleteConfirmModal from './DeleteConfirmModal'
+import DropdownButton from '../DropdownButton'
+import MenuItem from '../MenuItem'
 import UnconnectedHierarchyLevel from './HierarchyLevel'
 import { checkDependencies } from '../checkDependencies'
 
@@ -38,8 +40,9 @@ const ActsConfigModalConnector = (connector) => {
         featureFlags: { gatedByBeatHierarchy },
       },
     },
+    platform: { isDevelopment },
   } = connector
-  checkDependencies({ newHierarchyLevel, gatedByBeatHierarchy })
+  checkDependencies({ newHierarchyLevel, gatedByBeatHierarchy, isDevelopment })
 
   const ActsConfigModal = ({
     closeDialog,
@@ -47,8 +50,9 @@ const ActsConfigModalConnector = (connector) => {
     hierarchyLevels,
     setHierarchyLevels,
     isDarkMode,
-    tourNext,
     featureFlags,
+    timelineView,
+    setTimelineView,
   }) => {
     const [stagedHierarchyLevels, setStagedHierarchyLevels] = useState(null)
 
@@ -110,17 +114,46 @@ const ActsConfigModalConnector = (connector) => {
             <div className="acts-modal__header">
               <div>
                 <h3>{t('Timeline Structure')}</h3>
-                <Button onClick={closeDialog} className="acts-tour-step5">
-                  {t('Close')}
-                </Button>
+                <Button onClick={closeDialog}>{t('Close')}</Button>
               </div>
               <hr />
             </div>
             <div className="acts-modal__body">
               {viewByFlag(() => (
-                <div className="acts-modal__hierarchy-count-wrapper">
+                <div className="acts-modal__timeline-controls-wrapper">
+                  {isDevelopment ? (
+                    <div className="acts-modal__timeline-view-controls">
+                      <h5>{t('View')}</h5>
+                      <div className="acts-modal__timeline-view-dropdown">
+                        <DropdownButton
+                          id="select-timeline-view"
+                          className="acts-modal__select-line"
+                          title={timelineView}
+                        >
+                          <MenuItem key={'default'} onSelect={() => setTimelineView('default')}>
+                            <div className="acts-modal__timeline-view-selector">{t('Default')}</div>
+                          </MenuItem>
+                          <MenuItem
+                            disabled={hierarchyLevels.length < 2}
+                            key={'tabbed'}
+                            onSelect={() => setTimelineView('tabbed')}
+                            title={
+                              hierarchyLevels.length < 2
+                                ? t('At least two levels of hierarchy required to view as tabs')
+                                : t('View timeline ith tabs for the highest level')
+                            }
+                          >
+                            <div className="acts-modal__timeline-view-selector">{t('Tabbed')}</div>
+                          </MenuItem>
+                          <MenuItem key={'stacked'} onSelect={() => setTimelineView('stacked')}>
+                            <div className="acts-modal__timeline-view-selector">{t('Stacked')}</div>
+                          </MenuItem>
+                        </DropdownButton>
+                      </div>
+                    </div>
+                  ) : null}
                   <h5>{t('Levels')}</h5>
-                  <div className="acts-modal__hierarchy-count-controls acts-tour-step2 acts-tour-step3">
+                  <div className="acts-modal__hierarchy-count-controls">
                     {hierarchyLevels.length > 1 ? (
                       <button
                         className="acts-modal__hierarchy-count-adjustment-control"
@@ -198,8 +231,9 @@ const ActsConfigModalConnector = (connector) => {
     hierarchyLevels: PropTypes.array.isRequired,
     isDarkMode: PropTypes.bool.isRequired,
     featureFlags: PropTypes.object.isRequired,
-    tourNext: PropTypes.func.isRequired,
     setHierarchyLevels: PropTypes.func.isRequired,
+    timelineView: PropTypes.string.isRequired,
+    setTimelineView: PropTypes.func.isRequired,
   }
 
   const { redux } = connector
@@ -213,17 +247,17 @@ const ActsConfigModalConnector = (connector) => {
     const { hierarchyLevelCount, sortedHierarchyLevels } = selectors
     const {
       hierarchyLevels: { setHierarchyLevels },
-      tour: { tourNext },
+      ui: { setTimelineView },
     } = actions
 
     return connect(
       (state) => ({
         levelsOfHierarchy: hierarchyLevelCount(state.present),
         hierarchyLevels: sortedHierarchyLevels(state.present),
-        tourState: selectors.tourSelector(state.present),
         featureFlags: selectors.featureFlags(state.present),
+        timelineView: selectors.timelineViewSelector(state.present),
       }),
-      { setHierarchyLevels, tourNext }
+      { setHierarchyLevels, setTimelineView }
     )(ActsConfigModal)
   }
 

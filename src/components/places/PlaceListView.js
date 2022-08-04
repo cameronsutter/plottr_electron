@@ -25,6 +25,7 @@ import UnconnectedSubNav from '../containers/SubNav'
 import UnconnectedPlaceView from './PlaceView'
 import UnconnectedPlaceItem from './PlaceItem'
 import UnconnectedFloater from '../PlottrFloater'
+import UnconnectedExportNavItem from '../export/ExportNavItem'
 
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
@@ -56,6 +57,13 @@ const PlaceListViewConnector = (connector) => {
   const PlaceView = UnconnectedPlaceView(connector)
   const PlaceItem = UnconnectedPlaceItem(connector)
   const Floater = UnconnectedFloater(connector)
+  const ExportNavItem = UnconnectedExportNavItem(connector)
+
+  const {
+    platform: { exportDisabled },
+  } = connector
+
+  checkDependencies({ exportDisabled })
 
   const PlaceListView = ({
     visiblePlacesByCategory,
@@ -118,7 +126,7 @@ const PlaceListViewConnector = (connector) => {
 
     const renderSubNav = () => {
       const filterPopover = () => (
-        <Popover id="filter">
+        <Popover id="filter" noMaxWidth>
           <CustomAttrFilterList type="places" />
         </Popover>
       )
@@ -211,6 +219,11 @@ const PlaceListViewConnector = (connector) => {
               />
             </NavItem>
           </Nav>
+          {!exportDisabled && (
+            <Nav pullRight>
+              <ExportNavItem />
+            </Nav>
+          )}
         </SubNav>
       )
     }

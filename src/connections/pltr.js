@@ -90,6 +90,7 @@ import {
   ChoiceView as UnconnectedChoiceView,
   ExpiredView as UnconnectedExpiredView,
   ProOnboarding as UnconnectedProOnboarding,
+  UpdateNotifier as UnconnectedUpdateNotifier,
 } from '../components'
 
 const connector = {
@@ -121,14 +122,13 @@ const pltrTypeSpecs = {
   redo: PropTypes.func.isRequired,
   electron: PropTypes.object,
   appVersion: PropTypes.string.isRequired,
-  defaultBackupLocation: PropTypes.string.isRequired,
+  defaultBackupLocation: PropTypes.func.isRequired,
   setDarkMode: PropTypes.func.isRequired,
   file: PropTypes.shape({
     sortAndSearch: PropTypes.func.isRequired,
     createNew: PropTypes.func.isRequired,
     openExistingFile: PropTypes.func.isRequired,
     doesFileExist: PropTypes.func.isRequired,
-    isTempFile: PropTypes.func.isRequired,
     pathSep: PropTypes.string.isRequired,
     basename: PropTypes.func.isRequired,
     openKnownFile: PropTypes.func.isRequired,
@@ -164,7 +164,6 @@ const pltrTypeSpecs = {
     trial90days: PropTypes.array.isRequired,
     checkForPro: PropTypes.func.isRequired,
     startTrial: PropTypes.func.isRequired,
-    extendTrial: PropTypes.func.isRequired,
     deleteLicense: PropTypes.func.isRequired,
     saveLicenseInfo: PropTypes.func.isRequired,
   }),
@@ -178,7 +177,6 @@ const pltrTypeSpecs = {
   settings: PropTypes.shape({
     saveAppSetting: PropTypes.func.isRequired,
   }),
-  user: PropTypes.object.isRequired,
   os: PropTypes.func.isRequired,
   isDevelopment: PropTypes.bool.isRequired,
   isWindows: PropTypes.func.isRequired,
@@ -211,7 +209,6 @@ const pltrTypeSpecs = {
   }),
   moveFromTemp: PropTypes.func.isRequired,
   showItemInFolder: PropTypes.func.isRequired,
-  tempFilesPath: PropTypes.string.isRequired,
   mpq: PropTypes.object.isRequired,
   rootElementSelectors: PropTypes.array.isRequired,
   templatesDisabled: PropTypes.bool.isRequired,
@@ -236,6 +233,7 @@ const pltrTypeSpecs = {
     resolveToPublicUrl: PropTypes.func.isRequired,
     saveImageToStorageBlob: PropTypes.func.isRequired,
     saveImageToStorageFromURL: PropTypes.func.isRequired,
+    downloadStorageImage: PropTypes.func.isRequired,
   }),
 }
 
@@ -336,5 +334,6 @@ export default (platform) => {
     ChoiceView: UnconnectedChoiceView(connectorObject),
     ExpiredView: UnconnectedExpiredView(connectorObject),
     ProOnboarding: UnconnectedProOnboarding(connectorObject),
+    UpdateNotifier: UnconnectedUpdateNotifier(connectorObject),
   }
 }

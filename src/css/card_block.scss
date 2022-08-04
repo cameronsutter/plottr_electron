@@ -129,6 +129,8 @@
   background-color: white;
   padding: 8px;
   border-radius: 4px;
+  max-height: calc(0.8 * 100vh);
+  overflow-y: auto;
   .card__body-wrapper {
     margin-bottom: 6px;
     &.lastOne {
@@ -286,10 +288,11 @@
 
 .card__popover-description {
   min-width: 250px;
-  @include body-text-font;
+  @include rce-text-font;
 
   .slate-editor__editor {
     text-align: justify;
+    @include rce-text-font;
   }
 }
 

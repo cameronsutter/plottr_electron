@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { FiCopy } from 'react-icons/fi'
 
 import { t as i18n } from 'plottr_locales'
 
@@ -16,7 +17,7 @@ const CharacterItemConnector = (connector) => {
   const Image = UnconnectedImage(connector)
 
   class CharacterItem extends Component {
-    state = { deleting: false }
+    state = { deleting: false, hovering: false }
 
     constructor(props) {
       super(props)
@@ -85,8 +86,32 @@ const CharacterItemConnector = (connector) => {
       )
     }
 
+    renderHoverOptions = () => {
+      return (
+        <ButtonGroup className="character-list__item-buttons">
+          <Button bsSize="small" onClick={this.startEditing}>
+            <Glyphicon glyph="edit" />
+          </Button>
+          <Button bsSize="small" onClick={this.handleDuplicate}>
+            <FiCopy />
+          </Button>
+          <Button bsSize="small" onClick={this.handleDelete}>
+            <Glyphicon glyph="trash" />
+          </Button>
+        </ButtonGroup>
+      )
+    }
+
+    startHovering = () => {
+      this.setState({ hovering: true })
+    }
+
+    stopHovering = () => {
+      this.setState({ hovering: false })
+    }
+
     render() {
-      const { character, selected } = this.props
+      const { character } = this.props
       let img = null
       if (character.imageId) {
         img = (
@@ -95,10 +120,9 @@ const CharacterItemConnector = (connector) => {
           </div>
         )
       }
-      const klasses = cx('list-group-item', { selected: selected })
-      const buttonKlasses = cx('character-list__item-buttons', { visible: selected })
+
       return (
-        <div className={klasses} ref={this.ref} onClick={this.selectCharacter}>
+        <div className="list-group-item" ref={this.ref} onClick={this.selectCharacter}>
           <div className="character-list__item-inner">
             {img}
             <div>
@@ -107,12 +131,12 @@ const CharacterItemConnector = (connector) => {
               </h6>
               <p className="list-group-item-text">{character.description.substr(0, 100)}</p>
             </div>
-            <ButtonGroup className={buttonKlasses}>
+            <ButtonGroup className="character-list__item-buttons">
               <Button bsSize="small" onClick={this.startEditing}>
                 <Glyphicon glyph="edit" />
               </Button>
               <Button bsSize="small" onClick={this.handleDuplicate}>
-                <Glyphicon glyph="duplicate" />
+                <FiCopy />
               </Button>
               <Button bsSize="small" onClick={this.handleDelete}>
                 <Glyphicon glyph="trash" />

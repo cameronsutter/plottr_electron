@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import { Row, Cell } from 'react-sticky-table'
 
@@ -6,10 +6,13 @@ import { helpers } from 'pltr/v2'
 
 import Glyphicon from '../Glyphicon'
 import UnconnectedBeatTitleCell from './BeatTitleCell'
+import UnconnectedBeatHeadingCell from './BeatHeadingCell'
 import UnconnectedLineTitleCell from './LineTitleCell'
 import UnconnectedBeatInsertCell from './BeatInsertCell'
 import UnconnectedAddLineColumn from './AddLineColumn'
 import { checkDependencies } from '../checkDependencies'
+import MousePositionContext from './MousePositionContext'
+import { isEqual } from 'lodash'
 
 const {
   beats: { nextId, hasChildren },
@@ -19,105 +22,99 @@ const {
 
 const TopRowConnector = (connector) => {
   const BeatTitleCell = UnconnectedBeatTitleCell(connector)
+  const BeatHeadingCell = UnconnectedBeatHeadingCell(connector)
   const LineTitleCell = UnconnectedLineTitleCell(connector)
   const BeatInsertCell = UnconnectedBeatInsertCell(connector)
   const AddLineColumn = UnconnectedAddLineColumn(connector)
 
-  class TopRow extends Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        hovering: null,
+  const TopRow = (props) => {
+    const [mouseXY, setMouseXY] = useState({ x: null, y: null })
+
+    const firstCell = useRef(null)
+
+    useEffect(() => {
+      if (firstCell.current) {
+        firstCell.current.style.zIndex = 101
       }
-
-      this.firstCell = null
-    }
-
-    componentDidMount() {
-      if (this.firstCell) {
-        this.firstCell.style.zIndex = 101
+      if (timelineViewIsStacked) {
+        let lastMoveTimeout = null
+        const mouseMoveListener = document.addEventListener('mousemove', (event) => {
+          if (lastMoveTimeout) {
+            clearTimeout(lastMoveTimeout)
+          }
+          lastMoveTimeout = setTimeout(() => {
+            const newMouseXY = {
+              x: event.pageX,
+              y: event.pageY,
+            }
+            if (!isEqual(mouseXY, newMouseXY)) {
+              setMouseXY(newMouseXY)
+            }
+          }, 10)
+        })
+        return () => {
+          document.removeEventListener('mousemove', mouseMoveListener)
+          clearTimeout(lastMoveTimeout)
+        }
       }
-    }
+    }, [])
 
-    handleReorderBeats = (droppedPositionId, originalPositionId) => {
-      const { currentTimeline, beatActions } = this.props
+    const handleReorderBeats = (droppedPositionId, originalPositionId) => {
+      const { currentTimeline, beatActions } = props
       beatActions.reorderBeats(originalPositionId, droppedPositionId, currentTimeline)
     }
 
-    handleReorderLines = (originalPosition, droppedPosition) => {
-      const { currentTimeline, lineActions, lines } = this.props
+    const handleReorderLines = (originalPosition, droppedPosition) => {
+      const { currentTimeline, lineActions, lines } = props
       const newLines = reorderList(originalPosition, droppedPosition, lines)
       lineActions.reorderLines(newLines, currentTimeline)
     }
 
-    startHovering = (beat) => {
-      this.setState({ hovering: beat })
-      return beat
-    }
-
-    stopHovering = () => {
-      this.setState({ hovering: null })
-      return null
-    }
-
-    handleInsertNewBeat = (peerBeatId) => {
-      const { currentTimeline, beatActions } = this.props
+    const handleInsertNewBeat = (peerBeatId) => {
+      const { currentTimeline, beatActions } = props
       beatActions.insertBeat(currentTimeline, peerBeatId)
     }
 
-    handleInsertChildBeat = (beatToLeftId) => {
-      const { currentTimeline, beatActions } = this.props
+    const handleInsertChildBeat = (beatToLeftId) => {
+      const { currentTimeline, beatActions } = props
       beatActions.expandBeat(beatToLeftId, currentTimeline)
       beatActions.addBeat(currentTimeline, beatToLeftId)
     }
 
-    handleAppendBeat = () => {
-      const { currentTimeline, beatActions } = this.props
+    const handleAppendBeat = () => {
+      const { currentTimeline, beatActions, beats, timelineViewIsTabbed, activeTab } = props
+      if (timelineViewIsTabbed) {
+        if (beats.length === 0) {
+          handleInsertChildBeat(activeTab, currentTimeline)
+          return
+        } else {
+          handleInsertNewBeat(beats[beats.length - 1].id)
+          return
+        }
+      }
       beatActions.addBeat(currentTimeline)
     }
 
-    handleAppendLine = () => {
-      const { currentTimeline, lineActions } = this.props
+    const handleAppendLine = () => {
+      const { currentTimeline, lineActions } = props
       lineActions.addLine(currentTimeline)
     }
 
-    renderSecondLastInsertBeatCell() {
-      const { currentTimeline, orientation, isLarge, isMedium, booksBeats, beats, beatActions } =
-        this.props
+    const renderSecondLastInsertBeatCell = () => {
+      const { timelineViewIsStacked, timelineViewIsTabbed, isLarge, isMedium } = props
       if (!isLarge && !isMedium) return null
+      if (timelineViewIsTabbed || timelineViewIsStacked) {
+        return <Cell key={`placeholder-beat-second-last-insert`} />
+      }
 
-      const lastBeat = !beats || beats.length === 0 ? null : beats[beats.length - 1]
-      return (
-        <BeatInsertCell
-          key="second-last-insert"
-          isInBeatList={true}
-          handleInsert={this.handleInsertNewBeat}
-          beatToLeft={lastBeat}
-          handleInsertChild={
-            lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-              ? undefined
-              : this.handleInsertChildBeat
-          }
-          expanded={lastBeat && lastBeat.expanded}
-          toggleExpanded={() => {
-            if (lastBeat && lastBeat.expanded) {
-              beatActions.collapseBeat(lastBeat.id, currentTimeline)
-            } else beatActions.expandBeat(lastBeat.id, currentTimeline)
-          }}
-          orientation={orientation}
-          hovering={this.state.hovering}
-          onMouseEnter={() => this.startHovering(lastBeat.id)}
-          onMouseLeave={this.stopHovering}
-        />
-      )
+      return timelineViewIsStacked ? null : <Cell key={`placeholder-beat-last-insert`} />
     }
 
-    renderLastInsertBeatCell() {
-      const { orientation } = this.props
+    const renderLastInsertBeatCell = () => {
       return (
         <BeatInsertCell
           key="last-insert"
-          handleInsert={this.handleAppendBeat}
+          handleInsert={handleAppendBeat}
           isInBeatList={true}
           isLast={true}
           orientation={orientation}
@@ -125,96 +122,76 @@ const TopRowConnector = (connector) => {
       )
     }
 
-    renderBeats() {
-      const {
-        currentTimeline,
-        orientation,
-        booksBeats,
-        beats,
-        beatActions,
-        isLarge,
-        isMedium,
-        isSmall,
-      } = this.props
-      const beatToggler = (beat) => () => {
-        if (!beat) return
-        if (beat.expanded) beatActions.collapseBeat(beat.id, currentTimeline)
-        else beatActions.expandBeat(beat.id, currentTimeline)
-      }
+    const renderBeats = () => {
+      const { orientation, booksBeats, beats, isLarge, isMedium, isSmall } = props
       const renderedBeats = beats.flatMap((beat, idx) => {
         const lastBeat = beats[idx - 1]
         const cells = []
-        if (isLarge || (isMedium && idx === 0)) {
+        if (beat.isInsertChildCell) {
           cells.push(
             <BeatInsertCell
-              isFirst={idx === 0}
-              key={`beatId-${beat.id}-insert`}
+              key={`beatId-${beat.id}-insert-child`}
               isInBeatList={true}
-              beatToLeft={lastBeat}
-              handleInsert={this.handleInsertNewBeat}
-              handleInsertChild={this.handleInsertChildBeat}
-              expanded={lastBeat && lastBeat.expanded}
-              toggleExpanded={beatToggler(lastBeat)}
+              isInsertChildCell
+              handleInsert={handleInsertChildBeat}
+              beatToLeft={beat}
               orientation={orientation}
-              // this hovering state is the id of the card the user is currently hovering over
-              hovering={this.state.hovering}
-              onMouseEnter={() => this.startHovering(beat.id)}
-              onMouseLeave={this.stopHovering}
+            />
+          )
+        } else {
+          cells.push(
+            <BeatTitleCell
+              isFirst={idx === 0}
+              key={`beatId-${beat.id}`}
+              beatId={beat.id}
+              handleReorder={handleReorderBeats}
+              handleInsert={handleInsertNewBeat}
+              handleInsertChild={
+                lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
+                  ? undefined
+                  : handleInsertChildBeat
+              }
             />
           )
         }
-        cells.push(
-          <BeatTitleCell
-            isFirst={idx === 0}
-            key={`beatId-${beat.id}`}
-            beatId={beat.id}
-            handleReorder={this.handleReorderBeats}
-            handleInsert={this.handleInsertNewBeat}
-            handleInsertChild={
-              lastBeat && hasChildren(booksBeats, lastBeat && lastBeat.id)
-                ? undefined
-                : this.handleInsertChildBeat
-            }
-            hovering={this.state.hovering}
-            onMouseEnter={() => this.startHovering(beat.id)}
-            onMouseLeave={this.stopHovering}
-          />
-        )
         return cells
       })
       if (isSmall) {
-        return [...renderedBeats, this.renderLastInsertBeatCell()]
+        return [...renderedBeats, renderLastInsertBeatCell()]
       } else if (!beats.length) {
         return [
           <Cell
             key="placeholder"
             ref={(ref) => {
-              this.firstCell = ref
+              firstCell.current = ref
             }}
           />,
-          this.renderLastInsertBeatCell(),
+          renderLastInsertBeatCell(),
         ]
       } else {
         return [
           <Cell
+            style={{ zIndex: 101 }}
             key="placeholder"
             ref={(ref) => {
-              this.firstCell = ref
+              firstCell.current = ref
             }}
           />,
+          isMedium || isLarge ? <Cell style={{ zIndex: 101 }} key="placeholder-2" /> : null,
           ...renderedBeats,
-          this.renderSecondLastInsertBeatCell(),
+          renderSecondLastInsertBeatCell(),
+          renderLastInsertBeatCell(),
         ]
       }
     }
 
-    renderLines() {
-      const { lines, currentTimeline, orientation, isSmall, isMedium, isLarge } = this.props
+    const renderLines = () => {
+      const { lines, currentTimeline, orientation, isSmall, isMedium, isLarge } = props
       const renderedLines = lines.map((line, index) => (
         <LineTitleCell
           key={`line-${line.id}`}
           line={line}
-          handleReorder={this.handleReorderLines}
+          handleReorder={handleReorderLines}
           bookId={currentTimeline}
           zIndex={100 - index}
         />
@@ -222,7 +199,7 @@ const TopRowConnector = (connector) => {
       const insertLineDiv = (
         <div
           className={orientedClassName('line-list__append-line--small', orientation)}
-          onClick={this.handleAppendLine}
+          onClick={handleAppendLine}
         >
           <div className={orientedClassName('line-list__append-line-wrapper--small', orientation)}>
             <Glyphicon glyph="plus" />
@@ -239,7 +216,11 @@ const TopRowConnector = (connector) => {
         return [...renderedLines, insertLineTH]
       }
 
-      let finalArray = [<Cell key="placeholder" />, ...renderedLines]
+      let finalArray = [
+        <Cell key="placeholder" style={{ zIndex: 101 }} />,
+        <Cell key="placeholder-2" style={{ zIndex: 101 }} />,
+        ...renderedLines,
+      ]
       if (isLarge || isMedium) {
         const insertLineCell = (
           <Row key="insert-line">
@@ -251,24 +232,91 @@ const TopRowConnector = (connector) => {
       return finalArray
     }
 
-    render() {
-      const { orientation, isSmall } = this.props
-      let body = null
-      if (orientation === 'horizontal') body = this.renderBeats()
-      else body = this.renderLines()
-
-      if (isSmall) {
-        return (
-          <thead>
-            <tr>
-              <th></th>
-              {body}
-            </tr>
-          </thead>
+    const renderPaddingCells = (beatId, count) => {
+      const { isLarge } = props
+      const paddingCells = []
+      for (let i = 0; i < count; ++i) {
+        paddingCells.push(
+          <Cell key={`padding-cell-${beatId}-${i}-1`} className="beat__heading-spacer" />
         )
-      } else {
-        return <Row>{body}</Row>
+        if (isLarge) {
+          paddingCells.push(
+            <Cell key={`padding-cell-${beatId}-${i}-2`} className="beat__heading-spacer" />
+          )
+        }
       }
+      return paddingCells
+    }
+
+    const renderTieredBeats = (beats, leavesPerBeat, hierarchyLevelConfig) => {
+      const { isLarge } = props
+      return [
+        <Cell key="placeholder" style={{ zIndex: 101 }} />,
+        ...beats.flatMap((beat, index) => {
+          const beatLeaves = leavesPerBeat.get(beat.id)
+          return [
+            isLarge ? <Cell key={`place-holder${index}`} /> : null,
+            <BeatHeadingCell
+              key={`beatId-${beat.id || 'idx-' + index}`}
+              span={beatLeaves}
+              beatId={beat.id}
+            />,
+            ...renderPaddingCells(beat.id, beatLeaves - 1),
+          ]
+        }),
+      ]
+    }
+
+    const {
+      orientation,
+      isSmall,
+      timelineViewIsStacked,
+      topTierBeats,
+      secondTierBeats,
+      hierarchyLevels,
+      leavesPerBeat,
+      isMedium,
+    } = props
+    let body = null
+    if (orientation === 'horizontal') body = renderBeats()
+    else body = renderLines()
+
+    if (isSmall) {
+      return (
+        <thead>
+          <tr>
+            <th></th>
+            {body}
+          </tr>
+        </thead>
+      )
+    } else {
+      if (timelineViewIsStacked) {
+        return (
+          <MousePositionContext.Provider value={mouseXY}>
+            {[
+              topTierBeats.length ? (
+                <Row key="3rd-level-row">
+                  {isMedium ? <Cell style={{ zIndex: 101 }} key="top-placeholder-2" /> : null}
+                  {renderTieredBeats(topTierBeats, leavesPerBeat, hierarchyLevels[0])}
+                </Row>
+              ) : null,
+              secondTierBeats.length ? (
+                <Row key="2nd-level-row">
+                  {isMedium ? (
+                    <Cell style={{ zIndex: 101 }} key="second-tier-placeholder-2" />
+                  ) : null}
+                  {renderTieredBeats(secondTierBeats, leavesPerBeat, hierarchyLevels[0])}
+                </Row>
+              ) : null,
+              <Row id="table-beat-row" key="beats-title-row">
+                {body}
+              </Row>,
+            ]}
+          </MousePositionContext.Provider>
+        )
+      }
+      return <Row id="table-beat-row">{body}</Row>
     }
   }
 
@@ -286,6 +334,13 @@ const TopRowConnector = (connector) => {
     lines: PropTypes.array,
     lineActions: PropTypes.object,
     beatActions: PropTypes.object,
+    timelineViewIsStacked: PropTypes.bool,
+    topTierBeats: PropTypes.array,
+    secondTierBeats: PropTypes.array,
+    hierarchyLevels: PropTypes.array.isRequired,
+    leavesPerBeat: PropTypes.object.isRequired,
+    timelineViewIsTabbed: PropTypes.bool,
+    activeTab: PropTypes.number.isRequired,
   }
 
   const {
@@ -298,7 +353,7 @@ const TopRowConnector = (connector) => {
   const BeatActions = actions.beat
 
   const {
-    visibleSortedBeatsByBookSelector,
+    visibleSortedBeatsForTimelineByBookSelector,
     sortedLinesByBookSelector,
     beatsByBookSelector,
     isSeriesSelector,
@@ -307,6 +362,13 @@ const TopRowConnector = (connector) => {
     isSmallSelector,
     currentTimelineSelector,
     orientationSelector,
+    timelineViewIsStackedSelector,
+    topTierBeatsInThreeTierArrangementSelector,
+    secondTierBeatsInAtLeastTwoTierArrangementSelector,
+    sortedHierarchyLevels,
+    leavesPerBeatSelector,
+    timelineViewIsTabbedSelector,
+    timelineActiveTabSelector,
   } = selectors
 
   if (redux) {
@@ -323,10 +385,17 @@ const TopRowConnector = (connector) => {
           isSmall: isSmallSelector(state.present),
           isMedium: isMediumSelector(state.present),
           isLarge: isLargeSelector(state.present),
-          beats: visibleSortedBeatsByBookSelector(state.present),
+          beats: visibleSortedBeatsForTimelineByBookSelector(state.present),
           booksBeats: beatsByBookSelector(state.present),
           nextBeatId: nextBeatId,
           lines: sortedLinesByBookSelector(state.present),
+          timelineViewIsStacked: timelineViewIsStackedSelector(state.present),
+          topTierBeats: topTierBeatsInThreeTierArrangementSelector(state.present),
+          secondTierBeats: secondTierBeatsInAtLeastTwoTierArrangementSelector(state.present),
+          hierarchyLevels: sortedHierarchyLevels(state.present),
+          leavesPerBeat: leavesPerBeatSelector(state.present),
+          timelineViewIsTabbed: timelineViewIsTabbedSelector(state.present),
+          activeTab: timelineActiveTabSelector(state.present),
         }
       },
       (dispatch) => {

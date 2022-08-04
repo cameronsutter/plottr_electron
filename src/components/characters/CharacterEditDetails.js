@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { FiCopy } from 'react-icons/fi'
 
 import { t } from 'plottr_locales'
 
@@ -321,6 +322,10 @@ const CharacterEditDetailsConnector = (connector) => {
       })
     }
 
+    const handleDuplicate = () => {
+      actions.duplicateCharacter(character.id)
+    }
+
     return (
       <div className="character-list__character-wrapper">
         {renderDelete()}
@@ -396,7 +401,12 @@ const CharacterEditDetailsConnector = (connector) => {
             <Button bsStyle="success" onClick={finishEditing}>
               {t('Close')}
             </Button>
-            <Button className="card-dialog__delete" onClick={handleDelete}>
+            <Button className="card-dialog__duplicate" onClick={handleDuplicate}>
+              <FiCopy />
+              {' ' + t('Duplicate')}
+            </Button>
+            <Button onClick={handleDelete}>
+              <Glyphicon glyph="trash" />
               {t('Delete')}
             </Button>
           </ButtonToolbar>
@@ -413,7 +423,7 @@ const CharacterEditDetailsConnector = (connector) => {
     customAttributes: PropTypes.array.isRequired,
     darkMode: PropTypes.bool,
     finishEditing: PropTypes.func.isRequired,
-    selection: PropTypes.object.isRequired,
+    selection: PropTypes.object,
     editorPath: PropTypes.string.isRequired,
     getTemplateById: PropTypes.func.isRequired,
     templateAttributeValue: PropTypes.func.isRequired,

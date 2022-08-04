@@ -62,6 +62,7 @@ const RichTextEditorConnector = (connector) => {
     onFocus,
     imageCache,
     cacheImage,
+    useSpellcheck,
   }) => {
     const editor = useMemo(() => {
       return createEditor(log)
@@ -171,12 +172,6 @@ const RichTextEditorConnector = (connector) => {
       }
     }
 
-    useEffect(() => {
-      return () => {
-        onValueChanged(null, null)
-      }
-    }, [])
-
     const handleClickEditable = (event) => {
       if (!editorWrapperRef) return
       if (editorWrapperRef.firstChild.contains(event.target)) return
@@ -202,7 +197,7 @@ const RichTextEditorConnector = (connector) => {
             className={cx('slate-editor__editor', { darkmode: darkMode })}
           >
             <Editable
-              spellCheck
+              spellCheck={useSpellcheck === undefined ? true : useSpellcheck}
               {...otherProps}
               renderLeaf={renderLeaf}
               renderElement={renderElement}
@@ -235,6 +230,7 @@ const RichTextEditorConnector = (connector) => {
     onFocus: PropTypes.func,
     imageCache: PropTypes.object.isRequired,
     cacheImage: PropTypes.func.isRequired,
+    useSpellcheck: PropTypes.bool,
   }
 
   const {
@@ -253,6 +249,8 @@ const RichTextEditorConnector = (connector) => {
         fileId: selectors.selectedFileIdSelector(state.present),
         darkMode: selectors.isDarkModeSelector(state.present),
         imageCache: selectors.imageCacheSelector(state.present),
+        useSpellcheck: selectors.useSpellcheckSelector(state.present),
+        settings: selectors.appSettingsSelector(state.present),
       }),
       { cacheImage: actions.imageCache.cacheImage }
     )(

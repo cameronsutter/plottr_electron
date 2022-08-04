@@ -43,13 +43,19 @@
     .character-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
 
       .character-list__item-buttons {
-        margin-left: auto;
         min-width: 71px;
+        position: absolute;
+        right: 0;
         visibility: hidden;
-        &.visible {
+        &:hover {
           visibility: visible;
+        }
+
+        button {
+          padding: 4px 8px;
         }
       }
 
@@ -201,12 +207,12 @@
       & > .tab-pane {
         .card-dialog__custom-attributes__wrapper {
           margin-bottom: 16px;
-          .template-attr__description-label {
-            @include application-text;
-            font-size: 14px;
-            color: $gray-3;
-            margin-top: -4px;
-          }
+        }
+        .template-attr__description-label {
+          @include application-text;
+          font-size: 14px;
+          color: $neutral-gray-4;
+          margin-top: -4px;
         }
       }
       & > .tab-pane .template-picker__link {

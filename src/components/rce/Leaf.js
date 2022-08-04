@@ -24,7 +24,7 @@ const Leaf = ({ attributes, children, leaf }) => {
   }
 
   if (leaf.font) {
-    const fontStyle = { fontFamily: `${leaf.font}, Forum, sans-serif` }
+    const fontStyle = { fontFamily: `${leaf.font}, --default-rce-font, Forum, sans-serif` }
     attributes.style = attributes.style ? { ...attributes.style, ...fontStyle } : fontStyle
   }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import prettydate from 'pretty-date'
+import { FiCopy } from 'react-icons/fi'
 
 import { t as i18n } from 'plottr_locales'
 
@@ -16,7 +17,7 @@ const NoteItemConnector = (connector) => {
   const Image = UnconnectedImage(connector)
 
   class NoteItem extends Component {
-    state = { deleting: false }
+    state = { deleting: false, hovering: false }
 
     constructor(props) {
       super(props)
@@ -63,6 +64,14 @@ const NoteItemConnector = (connector) => {
       }
     }
 
+    startHovering = () => {
+      this.setState({ hovering: true })
+    }
+
+    stopHovering = () => {
+      this.setState({ hovering: false })
+    }
+
     startEditing = (e) => {
       e.stopPropagation()
       this.props.select(this.props.note.id)
@@ -85,8 +94,24 @@ const NoteItemConnector = (connector) => {
       )
     }
 
+    renderHoverOptions = () => {
+      return (
+        <ButtonGroup className="note-list__item-buttons">
+          <Button bsSize="small" onClick={this.startEditing}>
+            <Glyphicon glyph="edit" />
+          </Button>
+          <Button bsSize="small" onClick={this.handleDuplicate}>
+            <FiCopy />
+          </Button>
+          <Button bsSize="small" onClick={this.handleDelete}>
+            <Glyphicon glyph="trash" />
+          </Button>
+        </ButtonGroup>
+      )
+    }
+
     render() {
-      const { note, selected } = this.props
+      const { note } = this.props
       let img = null
       if (note.imageId) {
         img = (
@@ -103,10 +128,9 @@ const NoteItemConnector = (connector) => {
           </p>
         )
       }
-      const klasses = cx('list-group-item', { selected: selected })
-      const buttonKlasses = cx('note-list__item-buttons', { visible: selected })
+
       return (
-        <div className={klasses} ref={this.ref} onClick={this.selectNote}>
+        <div className="list-group-item" ref={this.ref} onClick={this.selectNote}>
           {this.renderDelete()}
           <div className="note-list__item-inner">
             {img}
@@ -116,17 +140,7 @@ const NoteItemConnector = (connector) => {
               </h6>
               {lastEdited}
             </div>
-            <ButtonGroup className={buttonKlasses}>
-              <Button bsSize="small" onClick={this.startEditing}>
-                <Glyphicon glyph="edit" />
-              </Button>
-              <Button bsSize="small" onClick={this.handleDuplicate}>
-                <Glyphicon glyph="duplicate" />
-              </Button>
-              <Button bsSize="small" onClick={this.handleDelete}>
-                <Glyphicon glyph="trash" />
-              </Button>
-            </ButtonGroup>
+            {this.renderHoverOptions()}
           </div>
         </div>
       )

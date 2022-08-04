@@ -46,10 +46,11 @@ const UnconnectedToolBar = (connector) => {
   const underlineIcon = <FaUnderline />
   const strikeThroughIcon = <FaStrikethrough />
 
-  const ToolBar = ({ editor, darkMode }) => {
+  const ToolBar = ({ editor, darkMode, settings }) => {
     const [showColorPicker, toggleColorPicker] = useState(false)
     const [fonts, setFonts] = useState(null)
-    const [recentFonts, setRecentFonts] = useState(null)
+    const [recentFonts, setRecentFonts] = useState(settings.user.font ? [settings.user.font] : null)
+    const defaultFontSize = settings.user.fontSize
 
     const changeColor = useCallback(
       (color) => {
@@ -61,8 +62,8 @@ const UnconnectedToolBar = (connector) => {
 
     useEffect(() => {
       if (!fonts) setFonts(getFonts(os()))
-      if (!recentFonts) setRecentFonts(getRecent())
-    }, [])
+      setRecentFonts(getRecent())
+    }, [settings.user.font])
 
     const closeColorPicker = useCallback(() => {
       toggleColorPicker(false)
@@ -77,13 +78,14 @@ const UnconnectedToolBar = (connector) => {
         <ButtonToolbar>
           <ButtonGroup>
             <FontsButton
+              currentSetting={settings.user.font}
               fonts={fonts || []}
               recentFonts={recentFonts || []}
               addRecent={addRecent}
               editor={editor}
               logger={log}
             />
-            <FontSizeChooser editor={editor} />
+            <FontSizeChooser editor={editor} defaultFontSize={defaultFontSize} />
             <MarkButton mark="bold" icon={boldIcon} editor={editor} logger={log} />
             <MarkButton mark="italic" icon={italicIcon} editor={editor} logger={log} />
             <MarkButton mark="underline" icon={underlineIcon} editor={editor} logger={log} />
@@ -124,6 +126,7 @@ const UnconnectedToolBar = (connector) => {
   ToolBar.propTypes = {
     editor: PropTypes.object.isRequired,
     darkMode: PropTypes.bool,
+    settings: PropTypes.object.isRequired,
   }
 
   const {
@@ -137,6 +140,7 @@ const UnconnectedToolBar = (connector) => {
     return React.memo(
       connect((state) => ({
         darkMode: selectors.isDarkModeSelector(state.present),
+        settings: selectors.appSettingsSelector(state.present),
       }))(ToolBar)
     )
   }

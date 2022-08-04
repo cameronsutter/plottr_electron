@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { FiCopy } from 'react-icons/fi'
 
 import { t } from 'plottr_locales'
 
@@ -154,6 +155,10 @@ const PlaceViewConnector = (connector) => {
       )
     }
 
+    const handleDuplicate = () => {
+      actions.duplicatePlace(place.id)
+    }
+
     const renderEditingCustomAttributes = () => {
       return customAttributes.map((attr, index) => {
         const editorPath = helpers.editors.placeCustomAttributeEditorPath(place.id, attr.name)
@@ -229,7 +234,12 @@ const PlaceViewConnector = (connector) => {
               <Button bsStyle="success" onClick={saveEdit}>
                 {t('Save')}
               </Button>
-              <Button className="card-dialog__delete" onClick={handleDelete}>
+              <Button className="card-dialog__duplicate" onClick={handleDuplicate}>
+                <FiCopy />
+                {' ' + t('Duplicate')}
+              </Button>
+              <Button onClick={handleDelete}>
+                <Glyphicon glyph="trash" />
                 {t('Delete')}
               </Button>
             </ButtonToolbar>

@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { isEqual } from 'lodash'
+
 import { t } from 'plottr_locales'
-import { Row } from 'react-sticky-table'
+import { Row, Cell } from 'react-sticky-table'
+
 import UnconnectedCardCell from './CardCell'
 import UnconnectedBlankCard from './BlankCard'
 import UnconnectedLineTitleCell from './LineTitleCell'
@@ -30,9 +33,16 @@ const TimelineTableConnector = (connector) => {
   const AddLineRow = UnconnectedAddLineRow(connector)
 
   class TimelineTable extends Component {
-    state = {
-      tableLength: 0,
-      hovering: null,
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        tableLength: 0,
+        mouseXY: { x: null, y: null },
+      }
+
+      this.lastMoveTimeout = null
+      this.mouseMoveListener = null
     }
 
     setLength = () => {
@@ -42,18 +52,19 @@ const TimelineTableConnector = (connector) => {
       if (!tableRef) return
       let newLength = 0
       if (orientation === 'horizontal') {
-        const row = tableRef.querySelector('.sticky-table-row')
+        const row = document.querySelector('#table-beat-row')
         if (row) {
           newLength = Array.from(row.children)
-            .slice(1, -1) // The first table cell is note above the line
+            .slice(1) // The first table cell is note above the line
             .reduce((acc, nextNode) => {
               return acc + nextNode.clientWidth
             }, 0)
+          if (isMedium) newLength -= 8 // give it a little buffer
         }
       } else {
-        const row = tableRef.querySelectorAll('.sticky-table-row')
-        if (row) {
-          newLength = Array.from(row)
+        const column = document.querySelectorAll('.sticky-table-row')
+        if (column) {
+          newLength = Array.from(column)
             .slice(2, isMedium ? undefined : -1) // The first table cell is note above the line
             .reduce((acc, nextNode) => {
               return acc + nextNode.clientHeight
@@ -80,6 +91,35 @@ const TimelineTableConnector = (connector) => {
         this.setLength()
       }, 50)
 
+      const { timelineViewIsStacked } = this.props
+
+      if (timelineViewIsStacked) {
+        if (this.mouseMoveListener) {
+          document.removeEventListener('mousemove', this.mouseMoveListener)
+        }
+        if (this.lastMoveTimeout) {
+          clearTimeout(this.lastMoveTimeout)
+        }
+
+        this.lastMoveTimeout = null
+        this.mouseMoveListener = document.addEventListener('mousemove', (event) => {
+          if (this.lastMoveTimeout) {
+            clearTimeout(this.lastMoveTimeout)
+          }
+          this.lastMoveTimeout = setTimeout(() => {
+            const newMouseXY = {
+              x: event.pageX,
+              y: event.pageY,
+            }
+            if (!isEqual(newMouseXY, this.state.mouseXY)) {
+              this.setState({
+                mouseXY: newMouseXY,
+              })
+            }
+          }, 10)
+        })
+      }
+
       const { visible } = this.props.toast
 
       if (visible) {
@@ -100,16 +140,6 @@ const TimelineTableConnector = (connector) => {
     handleReorderLines = (originalPosition, droppedPosition) => {
       const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
       this.props.lineActions.reorderLines(lines, this.props.currentTimeline)
-    }
-
-    startHovering = (beat) => {
-      this.setState({ hovering: beat })
-      return beat
-    }
-
-    stopHovering = () => {
-      this.setState({ hovering: null })
-      return null
     }
 
     // TODO: this should be a selector
@@ -136,6 +166,11 @@ const TimelineTableConnector = (connector) => {
     }
 
     handleAppendBeat = () => {
+      const { timelineViewIsTabbed, beats } = this.props
+      if (timelineViewIsTabbed) {
+        this.handleInsertNewBeat(beats[beats.length - 1].id)
+        return
+      }
       this.props.beatActions.addBeat(this.props.currentTimeline)
     }
 
@@ -150,7 +185,6 @@ const TimelineTableConnector = (connector) => {
             line={line}
             handleReorder={this.handleReorderLines}
             bookId={currentTimeline}
-            zIndex={100 - index}
           />
         )
         const cards = this.renderHorizontalCards(line, beatMapping, beatMapKeys)
@@ -188,17 +222,14 @@ const TimelineTableConnector = (connector) => {
     renderVertical() {
       const lineMap = this.lineMapping()
       const lineMapKeys = Object.keys(lineMap)
-      const { beats, beatActions, currentTimeline, isSmall, isLarge, isMedium, beatPositions } =
-        this.props
-
-      const beatToggler = (beat) => () => {
-        if (!beat) return
-        if (beat.expanded) beatActions.collapseBeat(beat.id, currentTimeline)
-        else beatActions.expandBeat(beat.id, currentTimeline)
-      }
+      const { beats, isSmall, isLarge, isMedium, beatPositions, timelineViewIsTabbed } = this.props
 
       const renderedBeats = beats.map((beat, idx) => {
-        let inserts = []
+        let inserts = [
+          <Cell key={`controls-placeholder-${beat.id}`}>
+            <div></div>
+          </Cell>,
+        ]
         if (isLarge || isMedium || idx === 0) {
           inserts = lineMapKeys.flatMap((linePosition) => {
             const line = lineMap[linePosition]
@@ -212,23 +243,12 @@ const TimelineTableConnector = (connector) => {
                 color={line.color}
                 showLine={beatPosition == 0}
                 tableLength={this.state.tableLength}
-                hovering={this.state.hovering}
-                onMouseEnter={() => this.startHovering(beat.id)}
-                onMouseLeave={this.stopHovering}
               />
             )
           })
         }
 
-        const beatTitle = (
-          <BeatTitleCell
-            beatId={beat.id}
-            handleReorder={this.handleReorderBeats}
-            hovering={this.state.hovering}
-            onMouseEnter={() => this.startHovering(beat.id)}
-            onMouseLeave={this.stopHovering}
-          />
-        )
+        const beatTitle = <BeatTitleCell beatId={beat.id} handleReorder={this.handleReorderBeats} />
 
         if (isSmall) {
           return (
@@ -238,23 +258,17 @@ const TimelineTableConnector = (connector) => {
             </tr>
           )
         } else {
-          const lastBeat = beats[idx - 1]
           return [
             <Row key={`beatId-${beat.id}`}>
-              {isLarge || isMedium || idx === 0 ? (
-                <BeatInsertCell
-                  isFirst={idx === 0}
-                  isInBeatList={true}
-                  beatToLeft={beats[idx - 1]}
-                  handleInsertChild={() => this.handleInsertChildBeat(beats[idx - 1].id)}
-                  expanded={lastBeat && lastBeat.expanded}
-                  toggleExpanded={beatToggler(lastBeat)}
-                  handleInsert={this.handleInsertNewBeat}
-                  hovering={this.state.hovering}
-                  onMouseEnter={() => this.startHovering(beat.id)}
-                  onMouseLeave={this.stopHovering}
-                />
-              ) : null}
+              <Cell key={`beatId-${beat.id}-insert-controls-place-holder`}>
+                <div></div>
+              </Cell>
+              <Cell
+                key={`beatId-${beat.id}-insert-controls-place-holder-2`}
+                className="sticky-table-controls-spacer"
+              >
+                <div></div>
+              </Cell>
               {inserts}
             </Row>,
             <Row key={`beatId-${beat.id}-insert`}>
@@ -283,22 +297,30 @@ const TimelineTableConnector = (connector) => {
         const lastBeat = beats[beats.length - 1]
         finalRows = []
         if (isLarge) {
-          finalRows.push(
-            <Row key="second-last-insert">
-              <BeatInsertCell
-                isInBeatList={true}
-                handleInsert={this.handleInsertNewBeat}
-                beatToLeft={lastBeat}
-                handleInsertChild={() => this.handleInsertChildBeat(lastBeat.id)}
-                expanded={lastBeat && lastBeat.expanded}
-                toggleExpanded={beatToggler(lastBeat)}
-                hovering={this.state.hovering}
-                onMouseEnter={() => this.startHovering(lastBeat.id)}
-                onMouseLeave={this.stopHovering}
-                isEmpty={!beats.length}
-              />
-            </Row>
-          )
+          if (timelineViewIsTabbed) {
+            // Cell has height to accomodate hover controls
+            finalRows.push(
+              <Row>
+                <Cell
+                  key={`beatId-second-last-insert-controls-place-holder`}
+                  style={{ height: '40px' }}
+                >
+                  <div>&nbsp;</div>
+                </Cell>
+              </Row>
+            )
+          } else {
+            finalRows.push(
+              <Row key="second-last-insert">
+                <BeatInsertCell
+                  isInBeatList={true}
+                  handleInsert={this.handleInsertNewBeat}
+                  beatToLeft={lastBeat}
+                  isEmpty={!beats.length}
+                />
+              </Row>
+            )
+          }
         }
       }
 
@@ -371,25 +393,22 @@ const TimelineTableConnector = (connector) => {
     }
 
     renderHorizontalCards(line, beatMap, beatMapKeys) {
-      const { beats, cardMap, isLarge, isMedium, beatHasChildrenMap } = this.props
+      const { beats, cardMap, beatHasChildrenMap } = this.props
       return beatMapKeys.flatMap((beatPosition) => {
         const cells = []
         const beatId = beatMap[beatPosition]
         const beat = beats[beatPosition]
-        if (isLarge || (isMedium && beatPosition == 0)) {
-          cells.push(
-            <BeatInsertCell
-              key={`${beatPosition}-insert`}
-              isInBeatList={false}
-              lineId={line.id}
-              handleInsert={this.handleInsertNewBeat}
-              beatToLeft={beats[beatPosition - 1]}
-              showLine={beatPosition == 0}
-              color={line.color}
-              tableLength={this.state.tableLength}
-            />
-          )
-        }
+        cells.push(
+          <BeatInsertCell
+            key={`${beatPosition}-insert`}
+            isInBeatList={false}
+            handleInsert={this.handleInsertNewBeat}
+            beatToLeft={beats[beatPosition - 1]}
+            showLine={beatPosition == 0}
+            color={line.color}
+            tableLength={this.state.tableLength}
+          />
+        )
         const cards = cardMap[`${line.id}-${beatId}`]
         const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
         if (cards) {
@@ -397,7 +416,7 @@ const TimelineTableConnector = (connector) => {
             <CardCell
               key={key}
               cards={cards}
-              beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
+              beatIsExpanded={beat && (beat.expanded || !beatHasChildrenMap.get(beat.id))}
               beatId={beatId}
               lineId={line.id}
               beatPosition={beatPosition}
@@ -425,7 +444,7 @@ const TimelineTableConnector = (connector) => {
             <CardCell
               key={key}
               cards={cards}
-              beatIsExpanded={(beat && beat.expanded) || !beatHasChildrenMap.get(beat.id)}
+              beatIsExpanded={beat && (beat.expanded || !beatHasChildrenMap.get(beat.id))}
               beatId={beat.id}
               lineId={line.id}
               beatPosition={beatPosition}
@@ -483,7 +502,6 @@ const TimelineTableConnector = (connector) => {
     nextBeatId: PropTypes.number,
     beats: PropTypes.array,
     beatHasChildrenMap: PropTypes.instanceOf(Map).isRequired,
-    booksBeats: PropTypes.object,
     beatMapping: PropTypes.object,
     lines: PropTypes.array,
     cardMap: PropTypes.object.isRequired,
@@ -505,6 +523,9 @@ const TimelineTableConnector = (connector) => {
     beatPositions: PropTypes.object.isRequired,
     setTableRef: PropTypes.func,
     message: PropTypes.string,
+    activeTab: PropTypes.number.isRequired,
+    timelineViewIsTabbed: PropTypes.bool,
+    timelineViewIsStacked: PropTypes.bool,
   }
 
   const {
@@ -517,13 +538,12 @@ const TimelineTableConnector = (connector) => {
     const { connect, bindActionCreators } = redux
 
     return connect(
-      (state) => {
+      (state, { activeTab }) => {
         return {
-          beats: selectors.visibleSortedBeatsByBookSelector(state.present),
+          beats: selectors.visibleSortedBeatsForTimelineByBookSelector(state.present),
           books: state.present.books,
-          booksBeats: selectors.beatsByBookSelector(state.present),
           beatHasChildrenMap: selectors.beatHasChildrenSelector(state.present),
-          beatMapping: selectors.sparceBeatMap(state.present),
+          beatMapping: selectors.timelineSparceBeatMap(state.present, activeTab),
           nextBeatId: nextId(state.present.beats),
           lines: selectors.sortedLinesByBookSelector(state.present),
           cardMap: selectors.searchedCardMetaDataMapSelector(state.present),
@@ -537,6 +557,8 @@ const TimelineTableConnector = (connector) => {
           toast: selectors.toastNotificationSelector(state.present),
           beatPositions: selectors.visibleBeatPositions(state.present),
           message: selectors.messageSelector(state.present),
+          timelineViewIsTabbed: selectors.timelineViewIsTabbedSelector(state.present),
+          timelineViewIsStacked: selectors.timelineViewIsStackedSelector(state.present),
         }
       },
       (dispatch) => {

@@ -62,7 +62,7 @@ const HierarchyLevelConnector = (connector) => {
     }
 
     return (
-      <div className="acts-modal__levels-table-row acts-tour-step4">
+      <div className="acts-modal__levels-table-row">
         <EditOrDisplay
           id={`hierarchy-level-name-config-${level}`}
           type="text"

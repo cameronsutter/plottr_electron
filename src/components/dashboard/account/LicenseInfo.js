@@ -35,9 +35,10 @@ const LicenseInfoConnector = (connector) => {
           notSubmit
           customText={t('Are you sure you want to remove your license?')}
           onDelete={() => {
-            deleteLicense()
-            setDeleting(false)
-            window.location.reload()
+            deleteLicense().then(() => {
+              setDeleting(false)
+              window.location.reload()
+            })
           }}
           onCancel={() => setDeleting(false)}
         />

@@ -11,9 +11,9 @@ import { makeErrorWindow } from '../errorWindow'
 
 const RCEBoundaryConnector = (connector) => {
   const {
-    platform: { appVersion, log, user },
+    platform: { appVersion, log },
   } = connector
-  checkDependencies({ appVersion, log, user })
+  checkDependencies({ appVersion, log })
 
   const selectionErrorMessages = [
     'Cannot resolve a DOM point from Slate point',
@@ -38,6 +38,7 @@ const RCEBoundaryConnector = (connector) => {
       resetChildren: PropTypes.func,
       createErrorReport: PropTypes.func.isRequired,
       openExternal: PropTypes.func.isRequired,
+      user: PropTypes.object.isRequired,
     }
 
     static getDerivedStateFromError(error) {
@@ -50,7 +51,7 @@ const RCEBoundaryConnector = (connector) => {
       setupRollbar(
         'ErrorBoundary',
         appVersion,
-        user,
+        this.props.user,
         (process.env.NEXT_PUBLIC_NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV) === 'development'
           ? 'development'
           : 'production',
@@ -157,6 +158,7 @@ const RCEBoundaryConnector = (connector) => {
   RCEBoundary.propTypes = {
     proInfo: PropTypes.object,
     trialInfo: PropTypes.object,
+    user: PropTypes.object.isRequired,
   }
 
   const {
@@ -170,6 +172,7 @@ const RCEBoundaryConnector = (connector) => {
     return connect((state) => ({
       proInfo: selectors.proInfoSelector(state.present),
       trialInfo: selectors.trialInfoSelector(state.present),
+      user: selectors.userSettingsSelector(state.present),
     }))(RCEBoundary)
   }
 

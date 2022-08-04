@@ -6,13 +6,16 @@ import { checkDependencies } from '../../checkDependencies'
 
 const safelyDecodeURI = (str) => {
   try {
-    return decodeURI(str)
+    return decodeURIComponent(str)
   } catch (error) {
     return str
   }
 }
 
 const truncateTitle = (title) => {
+  if (!title) {
+    return t('Untitled')
+  }
   if (title.length > 80) {
     return `${title.slice(0, 80)}...`
   }
@@ -31,7 +34,7 @@ const BackupFilesConnector = (connector) => {
 
   const BackupFiles = ({ folder, searchTerm }) => {
     const openInFolder = (filePath) => {
-      mpq.push('btn_open_backup')
+      // mpq.push('btn_open_backup')
       showItemInFolder(filePath)
     }
 
@@ -87,7 +90,7 @@ const BackupFilesConnector = (connector) => {
       return acc
     }, [])
 
-    if (renderedFiles.length) {
+    if (renderedFiles && renderedFiles.length) {
       return renderedFiles
     }
     return <p>{t('No Matches')}</p>

@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FiXCircle } from 'react-icons/fi'
 
 import SafeAnchor from './SafeAnchor'
 import createChainedFunction from './utils/createChainedFunction'
@@ -15,11 +16,13 @@ const propTypes = {
   eventKey: PropTypes.any,
   className: PropTypes.string,
   style: PropTypes.object,
+  onClose: PropTypes.func,
 }
 
 const defaultProps = {
   active: false,
   disabled: false,
+  draggable: false,
 }
 
 class NavItem extends React.Component {
@@ -41,7 +44,9 @@ class NavItem extends React.Component {
   }
 
   render() {
-    const { active, disabled, onClick, className, style, ...props } = this.props
+    const { onClose, active, disabled, onClick, className, style, ...props } = this.props
+
+    const key = props.activeKey
 
     delete props.onSelect
     delete props.eventKey
@@ -62,9 +67,24 @@ class NavItem extends React.Component {
       <li role="presentation" className={classNames(className, { active, disabled })} style={style}>
         <SafeAnchor
           {...props}
+          draggable={props.draggable}
           disabled={disabled}
           onClick={createChainedFunction(onClick, this.handleClick)}
-        />
+        >
+          {onClose && active ? (
+            <div className="nav-with-cross">
+              {props.children}
+              &nbsp;
+              <FiXCircle
+                onClick={() => {
+                  onClose(key)
+                }}
+              />
+            </div>
+          ) : (
+            props.children
+          )}
+        </SafeAnchor>
       </li>
     )
   }

@@ -51,7 +51,7 @@ const FilesHomeConnector = (connector) => {
   function scrivenerImportDialog(errorActions) {
     const title = t('Choose your Scrivener project')
     const filters = [{ name: t('Scrivener file'), extensions: ['scriv'] }]
-    const properties = ['openFile', 'createDirectory', 'openDirectory']
+    const properties = ['openFile', 'openDirectory']
     const files = showOpenDialogSync({ title, filters, properties })
     if (files && files[0]) {
       if (files[0].toLowerCase().includes('.scriv')) {
@@ -68,7 +68,7 @@ const FilesHomeConnector = (connector) => {
     const [template, setTemplate] = useState(null)
 
     const createWithTemplate = (template, name) => {
-      mpq.push('btn_create_with_template')
+      mpq.push('btn_create_with_template', { template_name: template.name })
       try {
         createNew(template, name)
       } catch (error) {

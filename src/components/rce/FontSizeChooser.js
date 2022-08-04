@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { Editor } from 'slate'
-import { ReactEditor } from 'slate-react'
+import { ReactEditor, useSlate } from 'slate-react'
 
 import DropdownButton from '../DropdownButton'
 import MenuItem from '../MenuItem'
 
-const UnMemoisedFontSizeChooser = ({ editor }) => {
-  const [currentSize, setCurrentSize] = useState(getCurrentSize(editor))
+const UnMemoisedFontSizeChooser = ({ editor, defaultFontSize }) => {
+  const [currentSize, setCurrentSize] = useState(getCurrentSize(editor, defaultFontSize))
+
+  const _editor = useSlate()
 
   useEffect(() => {
     if (ReactEditor.isFocused(editor)) {
@@ -23,6 +25,10 @@ const UnMemoisedFontSizeChooser = ({ editor }) => {
     }
     return () => {}
   }, [editor.selection])
+
+  useEffect(() => {
+    setCurrentSize(getCurrentSize(editor, defaultFontSize))
+  }, [defaultFontSize])
 
   const changeSize = (size) => {
     setCurrentSize(Number(size))
@@ -56,16 +62,17 @@ const UnMemoisedFontSizeChooser = ({ editor }) => {
 
 UnMemoisedFontSizeChooser.propTypes = {
   editor: PropTypes.object.isRequired,
+  defaultFontSize: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 
 export const FontSizeChooser = React.memo(UnMemoisedFontSizeChooser)
 
-const getCurrentSize = (editor) => {
+const getCurrentSize = (editor, defaultFontSize) => {
   const [node] = Editor.nodes(editor, { match: (n) => n.fontSize })
   if (node) {
     return node[0].fontSize
   } else {
-    return 20
+    return defaultFontSize || 20
   }
 }
 

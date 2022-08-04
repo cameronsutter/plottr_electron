@@ -8,10 +8,15 @@ import Tab from '../../Tab'
 import Tabs from '../../Tabs'
 import Button from '../../Button'
 import Switch from '../../Switch'
+import ButtonGroup from '../../ButtonGroup'
 import UnconnectedLanguagePicker from '../../LanguagePicker'
 import UnconnectedDarkOptionsSelect from './DarkOptionsSelect'
 import UnconnectedBackupOptions from './BackupOptions'
 import { checkDependencies } from '../../checkDependencies'
+import { addRecent, getFonts, getRecent } from '../../rce/fonts'
+import { FontSettingDropdown } from './FontSettingDropdown'
+import { FontSizeSettingDropdown } from './FontSizeSettingDropdown'
+import RichTextSettingsViewer from './RichTextSettingsViewer'
 
 const OptionsHomeConnector = (connector) => {
   const {
@@ -23,6 +28,7 @@ const OptionsHomeConnector = (connector) => {
       updateLanguage,
       updateBeatHierarchyFlag,
       os,
+      log,
       settings: { saveAppSetting },
     },
   } = connector
@@ -42,6 +48,13 @@ const OptionsHomeConnector = (connector) => {
 
   const OptionsHome = ({ hasCurrentProLicense, settings, shouldBeInPro }) => {
     const [activeTab, setActiveTab] = useState(1)
+    const [fonts, setFonts] = useState(null)
+    const [recentFonts, setRecentFonts] = useState(settings.user.font ? [settings.user.font] : null)
+    const [defaultBackupPath, setDefaultBackupPath] = useState('')
+
+    useEffect(() => {
+      defaultBackupLocation().then(setDefaultBackupPath)
+    }, [])
 
     useEffect(() => {
       setupI18n(settings, { electron })
@@ -53,11 +66,16 @@ const OptionsHomeConnector = (connector) => {
       }
     }
 
+    useEffect(() => {
+      if (!fonts) setFonts(getFonts(os()))
+      setRecentFonts(getRecent())
+    }, [settings.user.font])
+
     const osIsUnknown = os() === 'unknown'
 
     const onChangeBackupLocation = () => {
       const title = t('Choose your backup location')
-      const properties = ['openDirectory']
+      const properties = ['openDirectory', 'createDirectory']
       const files = showOpenDialogSync({ title, properties })
       if (files && files.length) {
         let folderPath = files[0]
@@ -83,12 +101,23 @@ const OptionsHomeConnector = (connector) => {
       return (!osIsUnknown && !hasCurrentProLicense) || (!osIsUnknown && settings.user.localBackups)
     }
 
-    const dashboardFirstText = settings.user.openDashboardFirst
+    const dashboardAtFirstIsOn =
+      settings.user.openDashboardFirst === undefined ? true : settings.user.openDashboardFirst
+
+    const dashboardFirstText = dashboardAtFirstIsOn
       ? t("When Plottr opens, the first thing you'll see is the dashboard")
       : t('Plottr opens your most recent project at start')
 
-    const dashboardFirstIsOn =
-      settings.user.openDashboardFirst === undefined ? true : settings.user.openDashboardFirst
+    const spellCheckAtFirstIsOn =
+      settings.user.useSpellcheck === undefined ? true : settings.user.useSpellcheck
+
+    const spellCheckText = spellCheckAtFirstIsOn ? t('Enabled') : t('Disabled')
+
+    // TODO: pull the default values from the right place (default_settings)
+    const rceFontIsDefault = settings.user.font === undefined || settings.user.font === 'Forum'
+    const rceFontSizeIsDefault =
+      settings.user.fontSize === undefined || settings.user.fontSize === 20
+    const rceIsDefault = rceFontIsDefault && rceFontSizeIsDefault
 
     const handleSelectLanguage = useCallback(
       (newLanguage) => {
@@ -97,6 +126,12 @@ const OptionsHomeConnector = (connector) => {
       },
       [saveAppSetting, updateLanguage]
     )
+
+    const setFontDefaults = useCallback(() => {
+      saveAppSetting('user.font', 'Forum')
+      addRecent('Forum')
+      saveAppSetting('user.fontSize', 20)
+    }, [saveAppSetting])
 
     return (
       <div className="dashboard__options">
@@ -124,15 +159,66 @@ const OptionsHomeConnector = (connector) => {
                 <h4>{t('Language')}</h4>
                 <LanguagePicker onSelectLanguage={handleSelectLanguage} />
               </div>
+              <div className="dashboard__options__item">
+                <h4>{t('Spell Check')}</h4>
+                <Switch
+                  isOn={spellCheckAtFirstIsOn}
+                  handleToggle={() => {
+                    const newVal =
+                      settings.user.useSpellcheck === undefined
+                        ? false
+                        : !settings.user.useSpellcheck
+                    saveAppSetting('user.useSpellcheck', newVal)
+                  }}
+                  labelText={spellCheckText}
+                />
+                <p>{t('Requires you to restart plottr')}</p>
+              </div>
+              <div className="dashboard__options__item rce">
+                <h4>{t('Font Default: Text Editor')}</h4>
+                <ButtonGroup>
+                  <FontSettingDropdown
+                    activeFont={settings.user.font}
+                    fonts={fonts || []}
+                    recentFonts={recentFonts || []}
+                    addRecent={addRecent}
+                    onChange={(newFont) => {
+                      saveAppSetting('user.font', newFont)
+                    }}
+                  />
+                  <FontSizeSettingDropdown
+                    defaultFontSize={settings.user.fontSize}
+                    onChange={(newSize) => {
+                      saveAppSetting('user.fontSize', newSize)
+                    }}
+                  />
+                </ButtonGroup>
+                {rceIsDefault ? null : (
+                  <Button style={{ marginLeft: '16px' }} onClick={setFontDefaults}>
+                    {t('Restore Defaults')}
+                  </Button>
+                )}
+                <p style={{ paddingTop: '8px', margin: 0 }}>{t('Preview:')}</p>
+                <div style={{ width: '50%' }}>
+                  <RichTextSettingsViewer
+                    log={log}
+                    fontFamily={settings.user.font}
+                    fontSize={settings.user.fontSize}
+                  />
+                </div>
+              </div>
             </Tab>
             <Tab eventKey={2} title={t('Dashboard')}>
               <div className="dashboard__options__item">
                 <h4>{t('Always Open Dashboard First')}</h4>
                 <Switch
-                  isOn={dashboardFirstIsOn}
-                  handleToggle={(event) => {
-                    event.stopPropagation()
-                    saveAppSetting('user.openDashboardFirst', !settings.user.openDashboardFirst)
+                  isOn={dashboardAtFirstIsOn}
+                  handleToggle={() => {
+                    const newVal =
+                      settings.user.openDashboardFirst === undefined
+                        ? false
+                        : !settings.user.openDashboardFirst
+                    saveAppSetting('user.openDashboardFirst', newVal)
                   }}
                   labelText={dashboardFirstText}
                 />
@@ -181,7 +267,7 @@ const OptionsHomeConnector = (connector) => {
                       <Button onClick={onChangeBackupLocation}>{t('Choose...')}</Button>
                       {'  '}
                       {!settings.user.backupLocation || settings.user.backupLocation === 'default'
-                        ? defaultBackupLocation
+                        ? defaultBackupPath
                         : settings.user.backupLocation}
                     </p>
                     {settings.user.backupLocation !== 'default' ? (

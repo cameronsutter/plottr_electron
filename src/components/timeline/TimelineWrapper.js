@@ -7,6 +7,8 @@ import { VscSymbolStructure } from 'react-icons/vsc'
 import { t } from 'plottr_locales'
 import { helpers } from 'pltr/v2'
 
+import Tabs from '../Tabs'
+import Tab from '../Tab'
 import UnconnectedPlottrFloater from '../PlottrFloater'
 import Popover from '../PlottrPopover'
 import MenuItem from '../MenuItem'
@@ -58,8 +60,6 @@ const TimelineWrapperConnector = (connector) => {
   const TimelineWrapper = ({
     timelineBundle,
     bookId,
-    tour,
-    tourActions,
     cardsExistOnTimeline,
     actions,
     featureFlags,
@@ -67,12 +67,22 @@ const TimelineWrapperConnector = (connector) => {
     projectActions,
     isOnWeb,
     timelineSearchTerm,
+    timelineView,
+    timelineTabs,
+    activeTab,
+    timelineViewIsStacked,
+    timelineViewIsTabbed,
+    hierarchyLevels,
+    topLevelBeatName,
+    beatActions,
+    timelineTabBeatIds,
   }) => {
     const [mounted, setMounted] = useState(false)
     const [beatConfigIsOpen, setBeatConfigIsOpen] = useState(false)
     const [clearing, setClearing] = useState(false)
     const [isSmallerThanToolbar, setIsSmallerThanToolbar] = useState(false)
     const [filterIsOpen, setFilterIsOpen] = useState(false)
+    const [beatToDelete, setBeatToDelete] = useState(null)
 
     const scrollTimeoutRef = useRef(null)
     const tableRef = useRef(null)
@@ -171,12 +181,10 @@ const TimelineWrapperConnector = (connector) => {
 
     const closeBeatConfig = () => {
       setBeatConfigIsOpen(false)
-      if (tour.run && tour.stepIndex === 4) tourActions.tourNext('next')
     }
 
     const openBeatConfig = () => {
       setBeatConfigIsOpen(true)
-      if (tour.run && tour.stepIndex === 0) tourActions.tourNext('next')
     }
 
     // ///////////////
@@ -223,7 +231,7 @@ const TimelineWrapperConnector = (connector) => {
 
     const scrollLeft = () => {
       if (!tableRef.current) return
-      mpq.push('btn_scroll_left')
+      // mpq.push('btn_scroll_left')
       const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
       const current =
         timelineBundle?.orientation === 'vertical' ? element.scrollTop : element.scrollLeft
@@ -232,7 +240,7 @@ const TimelineWrapperConnector = (connector) => {
 
     const scrollRight = () => {
       if (!tableRef.current) return
-      mpq.push('btn_scroll_right')
+      // mpq.push('btn_scroll_right')
       const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
       const current =
         timelineBundle?.orientation === 'vertical' ? element.scrollTop : element.scrollLeft
@@ -240,13 +248,13 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     const scrollBeginning = () => {
-      mpq.push('btn_scroll_beginning')
+      // mpq.push('btn_scroll_beginning')
       scrollTo(0)
     }
 
     const scrollMiddle = () => {
       if (!tableRef.current) return
-      mpq.push('btn_scroll_middle')
+      // mpq.push('btn_scroll_middle')
       const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
       const target =
         timelineBundle?.orientation === 'vertical'
@@ -256,7 +264,7 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     const scrollEnd = () => {
-      mpq.push('btn_scroll_end')
+      // mpq.push('btn_scroll_end')
       const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
       const target =
         timelineBundle.orientation === 'vertical' ? element.scrollHeight : element.scrollWidth
@@ -295,8 +303,42 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     // ///////////////
+    //   structure  //
+    // ///////////////
+
+    const handleSetActiveTab = (x) => {
+      if (typeof x === 'number') {
+        actions.setTimelineActiveTab(x)
+      }
+    }
+
+    // ///////////////
+    //  beat tabs   //
+    // ///////////////
+
+    const deleteBeat = (beatId) => {
+      setBeatToDelete(beatId)
+    }
+
+    // ///////////////
     //  rendering   //
     // //////////////
+
+    const renderDeleteBeat = () => {
+      if (!beatToDelete) return null
+
+      return (
+        <DeleteConfirmModal
+          onDelete={() => {
+            beatActions.deleteBeat(beatToDelete, bookId)
+            setBeatToDelete(null)
+          }}
+          onCancel={() => setBeatToDelete(null)}
+          customText="Are you sure you want to delete this tab and all it's beats and cards?"
+          notSubmit
+        />
+      )
+    }
 
     const renderDelete = () => {
       if (!clearing) return null
@@ -322,7 +364,7 @@ const TimelineWrapperConnector = (connector) => {
         scrollDirectionSecond = 'menu-down'
       }
       const renderPopover = () => (
-        <Popover id="filter">
+        <Popover id="filter" noMaxWidth>
           <CustomAttrFilterList type="cards" showColor={true} />
         </Popover>
       )
@@ -339,7 +381,7 @@ const TimelineWrapperConnector = (connector) => {
 
       const rightItems = [
         <NavItem key="right-1">
-          <Button bsSize="small" onClick={openBeatConfig} className="acts-tour-step1">
+          <Button bsSize="small" onClick={openBeatConfig}>
             <VscSymbolStructure
               size={16}
               style={{ verticalAlign: 'text-bottom', marginRight: '4px' }}
@@ -400,7 +442,11 @@ const TimelineWrapperConnector = (connector) => {
               {filterDeclaration}
             </NavItem>
             <NavItem>
-              <Button bsSize="small" onClick={flipOrientation}>
+              <Button
+                bsSize="small"
+                onClick={flipOrientation}
+                disabled={timelineViewIsStacked && !timelineBundle.isSmall}
+              >
                 <Glyphicon glyph={glyph} /> {t('Flip')}
               </Button>
             </NavItem>
@@ -481,30 +527,112 @@ const TimelineWrapperConnector = (connector) => {
       )
     }
 
+    const renderAddTopLevel = () => {
+      const addTopLevelbeatTitle = (
+        <Glyphicon
+          glyph="plus"
+          title={t(`Add ${topLevelBeatName}`)}
+          onClick={() => {
+            beatActions.appendTopLevelBeat(bookId)
+          }}
+        />
+      )
+
+      return <Tab key="add-top-level-beat-tab" title={addTopLevelbeatTitle} />
+    }
+
     const renderBody = () => {
       if (timelineBundle.isSmall) {
-        return (
-          <TimelineTable
-            setTableRef={(ref) => {
-              tableRef.current = ref
-            }}
-            tableRef={tableRef.current}
-          />
-        )
+        if (timelineView === 'tabbed') {
+          return (
+            <Tabs activeKey={activeTab} onSelect={handleSetActiveTab} onCloseTab={deleteBeat}>
+              {[
+                ...timelineTabs.map((tabName, index) => {
+                  return (
+                    <Tab
+                      key={timelineTabBeatIds[index]}
+                      eventKey={timelineTabBeatIds[index]}
+                      title={tabName}
+                    >
+                      <TimelineTable
+                        setTableRef={(ref) => {
+                          tableRef.current = ref
+                        }}
+                        tableRef={tableRef.current}
+                        activeTab={activeTab}
+                      />
+                    </Tab>
+                  )
+                }),
+                renderAddTopLevel(),
+              ]}
+            </Tabs>
+          )
+        } else {
+          return (
+            <TimelineTable
+              setTableRef={(ref) => {
+                tableRef.current = ref
+              }}
+              tableRef={tableRef.current}
+              activeTab={activeTab}
+            />
+          )
+        }
       } else {
-        return (
-          <StickyTable
-            leftColumnZ={5}
-            headerZ={5}
-            wrapperRef={(ref) => (tableRef.current = ref)}
-            className={cx({
-              darkmode: timelineBundle.darkMode,
-              vertical: timelineBundle.orientation == 'vertical',
-            })}
-          >
-            {mounted ? <TimelineTable tableRef={tableRef.current} /> : <FunSpinner />}
-          </StickyTable>
-        )
+        if (timelineView === 'tabbed') {
+          return (
+            <Tabs activeKey={activeTab} onSelect={handleSetActiveTab} onCloseTab={deleteBeat}>
+              {[
+                ...timelineTabs.map((tabName, index) => {
+                  return (
+                    <Tab
+                      key={timelineTabBeatIds[index]}
+                      eventKey={timelineTabBeatIds[index]}
+                      title={tabName}
+                    >
+                      <StickyTable
+                        leftColumnZ={5}
+                        headerZ={5}
+                        wrapperRef={(ref) => (tableRef.current = ref)}
+                        className={cx({
+                          darkmode: timelineBundle.darkMode,
+                          vertical: timelineBundle.orientation == 'vertical',
+                        })}
+                      >
+                        {mounted ? (
+                          <TimelineTable activeTab={activeTab} tableRef={tableRef.current} />
+                        ) : (
+                          <FunSpinner />
+                        )}
+                      </StickyTable>
+                    </Tab>
+                  )
+                }),
+                renderAddTopLevel(),
+              ]}
+            </Tabs>
+          )
+        } else {
+          return (
+            <StickyTable
+              leftColumnZ={5}
+              headerZ={5}
+              wrapperRef={(ref) => (tableRef.current = ref)}
+              stickyHeaderCount={timelineViewIsStacked ? hierarchyLevels.length : 1}
+              className={cx({
+                darkmode: timelineBundle.darkMode,
+                vertical: timelineBundle.orientation == 'vertical',
+              })}
+            >
+              {mounted ? (
+                <TimelineTable tableRef={tableRef.current} activeTab={activeTab} />
+              ) : (
+                <FunSpinner />
+              )}
+            </StickyTable>
+          )
+        }
       }
     }
 
@@ -525,18 +653,24 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     return (
-      <div
-        id="timelineview__container"
-        className={cx('container-with-sub-nav', { darkmode: timelineBundle.darkMode })}
-      >
-        {renderSubNav()}
-        {renderCustomAttributes()}
-        {renderBeatConfig()}
-        {renderDelete()}
-        <div id="timelineview__root" className="tab-body">
-          {renderBody()}
+      <>
+        <div
+          id="timelineview__container"
+          className={cx('container-with-sub-nav', { darkmode: timelineBundle.darkMode })}
+        >
+          {renderSubNav()}
+          {renderCustomAttributes()}
+          {renderBeatConfig()}
+          {renderDelete()}
+          <div
+            id="timelineview__root"
+            className={cx('tab-body', { 'timeline-tabbed-view-body': timelineViewIsTabbed })}
+          >
+            {renderBody()}
+          </div>
         </div>
-      </div>
+        {renderDeleteBeat()}
+      </>
     )
   }
 
@@ -546,12 +680,19 @@ const TimelineWrapperConnector = (connector) => {
     timelineBundle: PropTypes.object.isRequired,
     featureFlags: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    tourActions: PropTypes.object.isRequired,
-    tour: PropTypes.object.isRequired,
     testingAndDiagnosisEnabled: PropTypes.bool,
     projectActions: PropTypes.object.isRequired,
     isOnWeb: PropTypes.bool,
     timelineSearchTerm: PropTypes.string,
+    timelineView: PropTypes.string.isRequired,
+    timelineTabs: PropTypes.array.isRequired,
+    activeTab: PropTypes.number.isRequired,
+    timelineViewIsStacked: PropTypes.bool,
+    timelineViewIsTabbed: PropTypes.bool,
+    hierarchyLevels: PropTypes.array.isRequired,
+    topLevelBeatName: PropTypes.string.isRequired,
+    beatActions: PropTypes.object.isRequired,
+    timelineTabBeatIds: PropTypes.array.isRequired,
   }
 
   const {
@@ -570,17 +711,24 @@ const TimelineWrapperConnector = (connector) => {
           bookId: selectors.currentTimelineSelector(state.present),
           timelineBundle: selectors.timelineBundleSelector(state.present),
           featureFlags: selectors.featureFlags(state.present),
-          tour: selectors.tourSelector(state.present),
           testingAndDiagnosisEnabled: selectors.testingAndDiagnosisEnabledSelector(state.present),
           isOnWeb: selectors.isOnWebSelector(state.present),
           timelineSearchTerm: selectors.timelineSearchTermSelector(state.present),
+          timelineView: selectors.timelineViewSelector(state.present),
+          timelineTabs: selectors.timelineTabsSelector(state.present),
+          timelineTabBeatIds: selectors.timelineTabBeatIdsSelector(state.present),
+          activeTab: selectors.timelineActiveTabSelector(state.present),
+          timelineViewIsStacked: selectors.timelineViewIsStackedSelector(state.present),
+          timelineViewIsTabbed: selectors.timelineViewIsTabbedSelector(state.present),
+          hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
+          topLevelBeatName: selectors.topLevelBeatNameSelector(state.present),
         }
       },
       (dispatch) => {
         return {
           actions: bindActionCreators(actions.ui, dispatch),
-          tourActions: bindActionCreators(actions.tour, dispatch),
           projectActions: bindActionCreators(actions.project, dispatch),
+          beatActions: bindActionCreators(actions.beat, dispatch),
         }
       }
     )(TimelineWrapper)

@@ -14,6 +14,7 @@ $medium_width: 80px;
   }
 
   &.medium-timeline {
+    margin-top: 20px;
     width: 90px;
     padding-bottom: 0;
   }
@@ -155,14 +156,14 @@ $medium_width: 80px;
   visibility: hidden;
 }
 
-.medium-lower-hover-options {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0 10px;
-  button {
-    width: 27px;
-  }
-}
+// .medium-lower-hover-options {
+//   display: flex;
+//   justify-content: center;
+//   margin: 5px 0 10px;
+//   button {
+//     width: 27px;
+//   }
+// }
 
 .insert-beat-cell:not(.vertical):not(.small-timeline) {
   &:not(.medium-timeline) {
@@ -386,8 +387,8 @@ $medium_width: 80px;
   cursor: pointer;
   margin: -5px 11px 0 52px;
   button {
-    width: 41px;
-    height: 35px;
+    // width: 41px;
+    // height: 35px;
   }
   .vertical-insert-beat-wrapper {
     .large-timeline {
@@ -405,7 +406,7 @@ $medium_width: 80px;
 
   &.medium-timeline {
     width: $medium_width;
-    margin-left: 35px;
+    margin-left: 33px;
   }
 }
 

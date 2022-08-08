@@ -77,6 +77,7 @@ const Main = ({
   cantShowFile,
   loadingState,
   errorLoadingFile,
+  errorIsUpdateError,
   selectedFileIsCloudFile,
   startCheckingFileToLoad,
   finishCheckingFileToLoad,
@@ -238,10 +239,10 @@ const Main = ({
   }, [setOffline])
 
   useEffect(() => {
-    if (settings.user.font) {
+    if (settings.user?.font) {
       window.document.documentElement.style.setProperty('--default-rce-font', settings.user.font)
     }
-    if (settings.user.fontSize) {
+    if (settings.user?.fontSize) {
       window.document.documentElement.style.setProperty(
         '--default-rce-font-size',
         String(settings.user.fontSize) + 'px'
@@ -361,7 +362,7 @@ const Main = ({
     // interesting loading component for users and let them know what
     // we're loading based on the `applicationState` key in Redux ^_^
 
-    const errorMessage = isInProMode
+    let errorMessage = isInProMode
       ? t(
           'Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
         )
@@ -369,32 +370,52 @@ const Main = ({
           'Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.'
         )
 
+    errorMessage = errorIsUpdateError
+      ? t(
+          'It looks like your version of Plottr is older than this project. Please update Plottr to avoid any issues'
+        )
+      : errorMessage
+
     const body = errorLoadingFile ? (
       <>
         <div className="error-boundary">
           <div className="text-center">
             <IoIosAlert />
-            <h1>{t('Something went wrong,')}</h1>
-            <h2>{t("but don't worry!")}</h2>
+            <h1>
+              {errorIsUpdateError ? t('You need to update Plottr') : t('Something went wrong,')}
+            </h1>
+            <h2>
+              {errorIsUpdateError
+                ? t("but don't panic, you haven't lost anything")
+                : t("but don't worry!")}
+            </h2>
           </div>
           <div className="error-boundary__view-error well text-center">
             <h5 className="error-boundary-title" style={{ lineHeight: 1.75 }}>
               {errorMessage}
             </h5>
           </div>
-          <div className="error-boundary__options" style={{ width: '50%' }}>
-            <Button bsSize="lg" onClick={goToSupport}>
-              {t('Contact Support')}
-            </Button>
-            {isInProMode ? null : (
-              <Button bsSize="lg" onClick={showFile}>
-                {t('Show File')}
+          {errorIsUpdateError ? (
+            <div className="error-boundary__options" style={{ width: '50%' }}>
+              <Button bsSize="lg" onClick={goToSupport}>
+                {t('Contact Support')}
               </Button>
-            )}
-            <Button bsSize="lg" onClick={viewBackups}>
-              {t('View Backups')}
-            </Button>
-          </div>
+            </div>
+          ) : (
+            <div className="error-boundary__options" style={{ width: '50%' }}>
+              <Button bsSize="lg" onClick={goToSupport}>
+                {t('Contact Support')}
+              </Button>
+              {isInProMode ? null : (
+                <Button bsSize="lg" onClick={showFile}>
+                  {t('Show File')}
+                </Button>
+              )}
+              <Button bsSize="lg" onClick={viewBackups}>
+                {t('View Backups')}
+              </Button>
+            </div>
+          )}
         </div>
       </>
     ) : (
@@ -455,6 +476,7 @@ Main.propTypes = {
   emailAddress: PropTypes.string,
   userId: PropTypes.string,
   errorLoadingFile: PropTypes.bool.isRequired,
+  errorIsUpdateError: PropTypes.bool.isRequired,
   setOffline: PropTypes.func.isRequired,
   startCheckingFileToLoad: PropTypes.func.isRequired,
   finishCheckingFileToLoad: PropTypes.func.isRequired,
@@ -490,6 +512,7 @@ export default connect(
     selectedFileIsCloudFile: selectors.isCloudFileSelector(state.present),
     loadingState: selectors.loadingStateSelector(state.present),
     errorLoadingFile: selectors.errorLoadingFileSelector(state.present) || false,
+    errorIsUpdateError: selectors.errorIsUpdateErrorSelector(state.present) || false,
     loadingProgress: selectors.loadingProgressSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),

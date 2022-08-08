@@ -1,12 +1,9 @@
-import { app } from 'electron'
-import log from 'electron-log'
-
-import Store from '../lib/store'
-
-const licenseStore = new Store(app.getPath('userData'), log, { name: 'license_info', watch: true })
+import { whenClientIsReady } from '../../shared/socket-client/index'
 
 function getLicenseInfo() {
-  return licenseStore.get()
+  return whenClientIsReady(({ currentLicense }) => {
+    return currentLicense()
+  })
 }
 
 export { getLicenseInfo }

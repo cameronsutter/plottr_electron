@@ -1,8 +1,8 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import log from 'electron-log'
 import { openBuyWindow } from './buy'
-import { newFileOptions } from '../new_file_options'
 import { offlineFilePath } from '../offlineFilePath'
+import { featureFlags } from '../feature_flags'
 
 ipcMain.on('open-buy-window', (event) => {
   openBuyWindow()
@@ -91,12 +91,9 @@ function focusIfOpen(filePath) {
     win.browserWindow.webContents.send('close-dashboard')
     // If it's this window and we're trying to open a new file, then
     // we need to refresh the contents.
-    win.browserWindow.webContents.send(
-      'reload-from-file',
-      filePath,
-      newFileOptions(),
-      numberOfWindows()
-    )
+    featureFlags().then((flags) => {
+      win.browserWindow.webContents.send('reload-from-file', filePath, flags, numberOfWindows())
+    })
     return true
   } else {
     return false

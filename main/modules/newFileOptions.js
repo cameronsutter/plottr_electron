@@ -1,3 +1,0 @@
-const newFileOptions = () => ({})
-
-export { newFileOptions }

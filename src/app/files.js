@@ -23,7 +23,13 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
-  return { saveFile, backupOfflineBackupForResume, readOfflineFiles, isTempFile }
+  const saveAsTempFile = (file) => {
+    return whenClientIsReady(({ saveAsTempFile }) => {
+      return saveAsTempFile(file)
+    })
+  }
+
+  return { saveFile, backupOfflineBackupForResume, readOfflineFiles, isTempFile, saveAsTempFile }
 }
 
 export { makeFileModule }

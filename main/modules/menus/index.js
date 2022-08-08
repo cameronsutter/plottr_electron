@@ -1,4 +1,5 @@
 import { Menu, ipcMain, BrowserWindow } from 'electron'
+import log from 'electron-log'
 
 import { buildPlottrMenu } from './plottr'
 import { buildEditMenu } from './edit'
@@ -7,8 +8,18 @@ import { buildHelpMenu } from './help'
 import { buildFileMenu } from './file'
 import { buildViewMenu } from './view'
 import { getWindowById } from '../windows'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
 
-ipcMain.on('pls-reload-menu', () => loadMenu())
+ipcMain.on('pls-reload-menu', () => {
+  log.info('Menu reload requested.')
+  loadMenu()
+    .catch((error) => {
+      log.error('Error reloading menu', error)
+    })
+    .then(() => {
+      log.info('Reloaded menu')
+    })
+})
 
 function buildMenu() {
   const win = BrowserWindow.getFocusedWindow()
@@ -19,20 +30,31 @@ function buildMenu() {
       filePath = winObj.filePath
     }
   }
-  return [
-    buildPlottrMenu(buildMenu),
-    buildFileMenu(filePath),
-    buildEditMenu(),
-    buildViewMenu(),
-    buildWindowMenu(),
-    buildHelpMenu(),
-  ]
+
+  const getTrialInfo = () =>
+    whenClientIsReady(({ currentTrial }) => {
+      return currentTrial()
+    })
+
+  return Promise.all([buildPlottrMenu(buildMenu), buildFileMenu(filePath, getTrialInfo)]).then(
+    ([plottrMenu, fileMenu]) => {
+      return [
+        plottrMenu,
+        fileMenu,
+        buildEditMenu(),
+        buildViewMenu(),
+        buildWindowMenu(),
+        buildHelpMenu(),
+      ]
+    }
+  )
 }
 
 function loadMenu() {
-  const template = buildMenu()
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
+  return buildMenu().then((template) => {
+    const menu = Menu.buildFromTemplate(template)
+    Menu.setApplicationMenu(menu)
+  })
 }
 
 export { loadMenu }

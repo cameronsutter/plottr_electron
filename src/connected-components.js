@@ -515,3 +515,4 @@ export const ChoiceView = components.ChoiceView
 export const ExpiredView = components.ExpiredView
 export const ProOnboarding = components.ProOnboarding
 export const UpdateNotifier = components.UpdateNotifier
+export const NewProjectInputModal = components.NewProjectInputModal

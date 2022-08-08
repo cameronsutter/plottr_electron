@@ -24,6 +24,9 @@
         color: $darkmode-link-text;
       }
     }
+    .template-picker__link.dark {
+      color: $darkmode-link-text;
+    }
   }
   .card-dialog__left-side {
     border-color: $darkmode-border;
@@ -129,6 +132,9 @@
         cursor: pointer;
         margin-left: 4px;
         vertical-align: middle;
+        &.dark {
+          color: $gray-2;
+        }
       }
       & > .tab-pane .template-tab__details {
         display: flex;

@@ -43,6 +43,21 @@
     .character-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
+
+      .character-list__item-buttons {
+        min-width: 71px;
+        position: absolute;
+        right: 0;
+        visibility: hidden;
+        &:hover {
+          visibility: visible;
+        }
+
+        button {
+          padding: 4px 8px;
+        }
+      }
 
       .character-list__item-inner__image-wrapper {
         img {
@@ -204,6 +219,9 @@
         cursor: pointer;
         margin-left: 4px;
         vertical-align: middle;
+        &.dark {
+          color: $gray-2;
+        }
       }
       & > .tab-pane .template-tab__details {
         display: flex;
@@ -260,6 +278,9 @@
       }
       > .active {
         position: relative !important;
+      }
+      .template-picker__link.dark {
+        color: $darkmode-link-text;
       }
     }
   }

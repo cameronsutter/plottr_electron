@@ -9,11 +9,12 @@ $medium_width: 80px;
   padding-bottom: 45px;
 
   &:not(.medium-timeline):not(.small-timeline) {
-    margin-top: 20px;
+    margin-top: 25px;
     padding-bottom: 40px;
   }
 
   &.medium-timeline {
+    margin-top: 20px;
     width: 90px;
     padding-bottom: 0;
   }
@@ -155,12 +156,28 @@ $medium_width: 80px;
   visibility: hidden;
 }
 
-.medium-lower-hover-options {
-  display: flex;
-  justify-content: center;
-  margin: 5px 0 10px;
-  button {
-    width: 27px;
+// .medium-lower-hover-options {
+//   display: flex;
+//   justify-content: center;
+//   margin: 5px 0 10px;
+//   button {
+//     width: 27px;
+//   }
+// }
+
+.insert-beat-cell:not(.vertical):not(.small-timeline) {
+  &:not(.medium-timeline) {
+    margin-top: 25px;
+    padding-bottom: 40px;
+  }
+  &:not(.medium-timeline):not(.insert-child) {
+    margin-top: 38px;
+    padding-bottom: 40px;
+    margin-left: 1px;
+  }
+  &.medium-timeline:not(.insert-child) {
+    margin-top: 16px;
+    padding-bottom: 0px;
   }
 }
 
@@ -194,17 +211,23 @@ $medium_width: 80px;
   }
   .insert-beat-wrapper.append-beat {
     &.large-timeline {
-      padding: 30px 70px;
+      padding: 11px 70px 10px 70px;
       margin-left: 35px;
+      margin-top: 5px;
     }
     &.medium-timeline {
       margin-top: 10px;
-      margin-right: 0px;
+      margin-right: 8px;
       padding: 14px 35px;
     }
     color: $blue-5;
     border: none;
     margin-right: 50px;
+    border: 3px dotted $blue-8;
+    &:hover {
+      border: 3px dotted $blue-8;
+      background-color: $blue-8;
+    }
   }
   .insert-missing-beat-wrapper {
     .glyphicon {
@@ -246,7 +269,6 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-beat-wrapper.append-beat {
-    border: none;
   }
 }
 
@@ -365,8 +387,8 @@ $medium_width: 80px;
   cursor: pointer;
   margin: -5px 11px 0 52px;
   button {
-    width: 41px;
-    height: 35px;
+    // width: 41px;
+    // height: 35px;
   }
   .vertical-insert-beat-wrapper {
     .large-timeline {
@@ -384,7 +406,7 @@ $medium_width: 80px;
 
   &.medium-timeline {
     width: $medium_width;
-    margin-left: 35px;
+    margin-left: 33px;
   }
 }
 

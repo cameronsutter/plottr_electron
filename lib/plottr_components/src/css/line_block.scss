@@ -222,8 +222,8 @@ $medium_width: 80px;
 
   &.medium-timeline {
     min-height: 60px;
-    width: 110px;
-    text-align: right;
+    width: 121px;
+    text-align: center;
   }
 }
 
@@ -250,9 +250,10 @@ $medium_width: 80px;
   }
 
   &.medium-timeline {
-    width: $medium_width + 6px; // +6px for the 3px border
+    width: 99px;
     font-size: 14px;
     padding: 12px 6px;
+    margin-left: 22px;
     .form-group {
       .control-label {
         font-size: 12px;

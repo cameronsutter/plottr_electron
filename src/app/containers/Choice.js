@@ -6,9 +6,7 @@ import cx from 'classnames'
 import { selectors, actions } from 'pltr/v2'
 import { ChoiceView } from 'connected-components'
 
-const reload = () => {
-  window.location.reload()
-}
+const reload = () => {}
 
 const Choice = ({ darkMode, startProOnboardingFromRoot }) => {
   return (

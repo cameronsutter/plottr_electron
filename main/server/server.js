@@ -62,6 +62,15 @@ import {
   OFFLINE_FILE_PATH,
   CUSTOM_TEMPLATES_PATH,
   ATTEMPT_TO_FETCH_TEMPLATES,
+  SAVE_AS_TEMP_FILE,
+  REMOVE_FROM_KNOWN_FILES,
+  ADD_KNOWN_FILE,
+  EDIT_KNOWN_FILE_PATH,
+  UPDATE_LAST_OPENED_DATE,
+  ADD_KNOWN_FILE_WITH_FIX,
+  DELETE_KNOWN_FILE,
+  REMOVE_FROM_TEMP_FILES,
+  SAVE_TO_TEMP_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -70,6 +79,8 @@ import wireupFileSystemModule from './file-system'
 import wireupTemplateFetcher from './template_fetcher'
 import makeStores from './stores'
 import makeSettingsModule from './settings'
+import makeKnownFilesModule from './knownFiles'
+import makeTempFilesModule from './tempFiles'
 
 const parseArgs = () => {
   return {
@@ -81,8 +92,9 @@ const parseArgs = () => {
 const { rm } = fs.promises
 
 const startupTasks = (userDataPath, stores, logInfo) => {
-  wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
-  return Promise.resolve()
+  return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
+    return templateFetcher.fetch()
+  })
 }
 
 const setupListeners = (port, userDataPath) => {
@@ -110,14 +122,15 @@ const setupListeners = (port, userDataPath) => {
   const testModules = () => {
     const backupModule = makeBackupModule(settings, basicLogger)
     makeFileSystemModule(stores, basicLogger)
-    makeTemplateFetcher(stores, basicLogger)
     makeFileModule(backupModule, settings, basicLogger)
+    return makeTemplateFetcher(stores, logInfo)
   }
 
   webSocketServer.on('connection', (webSocket) => {
     const logger = makeLogger(webSocket)
     const backupModule = makeBackupModule(settings, logger)
     const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = backupModule
+    const fileModule = makeFileModule(backupModule, settings, logger)
     const {
       saveFile,
       saveOfflineFile,
@@ -129,7 +142,9 @@ const setupListeners = (port, userDataPath) => {
       readOfflineFiles,
       isTempFile,
       offlineFilesFilesPath,
-    } = makeFileModule(backupModule, settings, logger)
+      saveTempFile,
+    } = fileModule
+    const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
       backupBasePath,
       listenToTrialChanges,
@@ -162,9 +177,21 @@ const setupListeners = (port, userDataPath) => {
       deleteCustomTemplate,
       setTemplate,
       customTemplatesPath,
-    } = makeFileSystemModule(stores, logger)
+    } = fileSystemModule
+    const tempFilesModule = makeTempFilesModule(userDataPath, stores, fileModule, logger)
+    const { removeFromTempFiles, saveToTempFile } = tempFilesModule
+    const {
+      removeFromKnownFiles,
+      addKnownFile,
+      addKnownFileWithFix,
+      editKnownFilePath,
+      updateLastOpenedDate,
+      deleteKnownFile,
+    } = makeKnownFilesModule(stores, fileModule, fileSystemModule, tempFilesModule, logger)
     const attemptToFetchTemplates = () => {
-      wireupTemplateFetcher(userDataPath)(stores, logInfo).fetch()
+      return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
+        return templateFetcher.fetch()
+      })
     }
 
     webSocket.on('message', (message) => {
@@ -175,7 +202,7 @@ const setupListeners = (port, userDataPath) => {
           try {
             webSocket.send(
               JSON.stringify({
-                messageType,
+                type: messageType,
                 messageId,
                 result: args,
                 payload,
@@ -473,11 +500,111 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case ATTEMPT_TO_FETCH_TEMPLATES: {
-            return handleSync(
+            return handlePromise(
               () =>
                 'Attempting to fetch latest templates (might not if the manifest is up to date)',
               attemptToFetchTemplates,
               () => 'Error attempting to fetch the latest templates'
+            )
+          }
+          case SAVE_AS_TEMP_FILE: {
+            const { file } = payload
+            return handlePromise(
+              () => [
+                'Saving file to temp folder: ',
+                {
+                  file: {
+                    ...payload.file.file,
+                  },
+                },
+              ],
+              () => saveTempFile(file),
+              () => [
+                'Error saving file to temp folder: ',
+                {
+                  file: {
+                    ...payload.file.file,
+                  },
+                },
+              ]
+            )
+          }
+          case REMOVE_FROM_KNOWN_FILES: {
+            const { id } = payload
+            return handlePromise(
+              () => `Removing entry with id ${id} from known files`,
+              () => removeFromKnownFiles(id),
+              () => `Error removing entry with id ${id} from known files`
+            )
+          }
+          case DELETE_KNOWN_FILE: {
+            const { id, filePath } = payload
+            return handlePromise(
+              () => `Deleting a known file with id ${id} and filePath ${filePath}`,
+              () => deleteKnownFile(id, filePath),
+              () => `Error deleting a known file with id ${id} and filePath ${filePath}`
+            )
+          }
+          case REMOVE_FROM_TEMP_FILES: {
+            const { filePath, doDelete } = payload
+            return handlePromise(
+              () => `Removing ${filePath} from temp files (deleting? ${doDelete})`,
+              () => removeFromTempFiles(filePath, doDelete),
+              () => `Error removing ${filePath} from temp files (deleting? ${doDelete})`
+            )
+          }
+          case SAVE_TO_TEMP_FILE: {
+            const { json, name } = payload
+            return handlePromise(
+              () => [
+                `Saving to temp file named ${name} (reduced payload)`,
+                {
+                  file: {
+                    ...json.file,
+                  },
+                },
+              ],
+              () => saveToTempFile(json, name),
+              () => [
+                `Error saving to temp file named ${name} (reduced payload)`,
+                {
+                  file: {
+                    ...json.file,
+                  },
+                },
+              ]
+            )
+          }
+          case ADD_KNOWN_FILE_WITH_FIX: {
+            const { filePath } = payload
+            return handlePromise(
+              () => `Adding ${filePath} to known files and fixing the store`,
+              () => addKnownFileWithFix(filePath),
+              () => `Error adding ${filePath} to known files and fixing the store`
+            )
+          }
+          case ADD_KNOWN_FILE: {
+            const { filePath } = payload
+            return handlePromise(
+              () => `Adding ${filePath} to known files`,
+              () => addKnownFile(filePath),
+              () => `Error adding ${filePath} to known files`
+            )
+          }
+          case EDIT_KNOWN_FILE_PATH: {
+            const { oldFilePath, newFilePath } = payload
+            return handlePromise(
+              () => `Editing a known file's path from ${oldFilePath} to ${newFilePath}`,
+              () => editKnownFilePath(oldFilePath, newFilePath),
+              () => `Error editing a known file's path from ${oldFilePath} to ${newFilePath}`
+            )
+          }
+          case UPDATE_LAST_OPENED_DATE: {
+            const { id } = payload
+            return handlePromise(
+              () => `Updating the last opened date for file with id ${id}`,
+              () => updateLastOpenedDate(id),
+              () => `Error updating the last opened date for file with id ${id}`
             )
           }
           // ===File System APIs===
@@ -719,9 +846,10 @@ const setupListeners = (port, userDataPath) => {
     })
   })
 
-  testModules()
-  startupTasks(userDataPath, stores, logInfo).then(() => {
-    process.send('ready')
+  testModules().then(() => {
+    startupTasks(userDataPath, stores, logInfo).then(() => {
+      process.send('ready')
+    })
   })
 }
 

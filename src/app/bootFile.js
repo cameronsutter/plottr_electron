@@ -96,8 +96,10 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
       (error, migrated, data) => {
         if (error) {
           rollbar.error(error)
-          reject(error)
-          return
+          if (error === 'Plottr behind file') {
+            return reject('Need to update Plottr')
+          }
+          return reject(error)
         }
         if (migrated) {
           logger.info(
@@ -309,7 +311,7 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     } catch (error) {
       logger.error(error)
       rollbar.error(error)
-      return Promise.reject('bootLocalFile001: json-parse')
+      return Promise.reject(`bootLocalFile001: json-parse (${filePath})`)
     }
     saveBackup(filePath, json)
     return new Promise((resolve, reject) => {
@@ -322,8 +324,10 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
           if (err) {
             rollbar.error(err)
             logger.error(err)
-            // We... still load the file!?
-            return reject('bootLocalFile002: migration')
+            if (err === 'Plottr behind file') {
+              return reject('Need to update Plottr')
+            }
+            return reject(`bootLocalFile002: migration (${filePath})`)
           }
           store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
 
@@ -374,9 +378,10 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
           store.dispatch(actions.applicationState.finishLoadingFile())
         })
         .catch((error) => {
+          console.log('caught error', error)
           logger.error(error)
           rollbar.error(error)
-          store.dispatch(actions.applicationState.errorLoadingFile())
+          store.dispatch(actions.applicationState.errorLoadingFile(true))
         })
     } catch (error) {
       logger.error(error)

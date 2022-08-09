@@ -54,7 +54,11 @@ export const newFile = (
   name
 ) => {
   const fileName = newFileName(fileList, name)
-  const file = Object.assign(newEmptyFile(fileName, version, fullState.present), template || {})
+  const newFile = newEmptyFile(fileName, version, fullState.present)
+  const file = Object.assign({}, newFile, template || {})
+  if (!file.beats.series) {
+    file.beats.series = newFile.beats.series
+  }
   return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
     const fileId = response.data.fileId
     openFile(`plottr://${fileId}`, fileId, false)

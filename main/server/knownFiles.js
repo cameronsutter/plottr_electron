@@ -77,12 +77,12 @@ const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesMod
 
   const addKnownFile = (filePath) => {
     // We also don't want to track recent files that don't have a path.
-    if (!filePath || filePath === '') return
+    if (!filePath || filePath === '') return Promise.resolve()
 
     // We don't want to track recent files when they're offline files.
-    if (filePath.startsWith(offlineFilesFilesPath)) return
+    if (filePath.startsWith(offlineFilesFilesPath)) return Promise.resolve()
 
-    knownFilesStore
+    return knownFilesStore
       .currentStore()
       .then((files) => {
         const matches = Object.values(files)

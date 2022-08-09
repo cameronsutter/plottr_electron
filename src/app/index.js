@@ -203,18 +203,15 @@ ipcRenderer.on('save-as', () => {
   })
   if (fileName) {
     let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    saveFile(newFilePath, present)
-    const listener = (event, fileSaved) => {
-      if (fileSaved === newFilePath) {
-        ipcRenderer.send('pls-open-window', newFilePath, true)
-        ipcRenderer.removeListener('file-saved', listener)
-      }
-    }
-    ipcRenderer.on('file-saved', listener)
+    saveFile(newFilePath, present).then(() => {
+      ipcRenderer.send('pls-open-window', newFilePath, true)
+    })
   }
 })
 
 const ensureEndsInPltr = (filePath) => {
+  if (!filePath) return null
+
   if (!filePath.endsWith('.pltr')) {
     return `${filePath}.pltr`
   }
@@ -356,7 +353,9 @@ const reloadMenu = () => ipcRenderer.send('pls-reload-menu')
 window.addEventListener('load', reloadMenu)
 window.addEventListener('focus', reloadMenu)
 
-ipcRenderer.on('new-project', () => createBlankProj())
+ipcRenderer.on('new-project', () => {
+  store.dispatch(actions.project.startCreatingNewProject())
+})
 ipcRenderer.on('open-existing', () => openExistingProj())
 ipcRenderer.on('from-template', () => {
   openDashboard()

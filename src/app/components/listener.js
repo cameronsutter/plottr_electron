@@ -12,6 +12,7 @@ import { store } from '../store'
 import logger from '../../../shared/logger'
 import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeFileModule } from '../files'
 
 const Listener = ({
   hasPro,
@@ -48,6 +49,22 @@ const Listener = ({
   const wasOffline = useRef(isOffline)
 
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+  const { saveAsTempFile } = makeFileModule(whenClientIsReady)
+
+  useEffect(() => {
+    if (filePath) {
+      fileSystemAPIs.backupBasePath().then((backupPath) => {
+        if (filePath.startsWith(backupPath)) {
+          withFullFileState((state) => {
+            saveAsTempFile(state.present).then((newFilePath) => {
+              ipcRenderer.send('pls-open-window', newFilePath, true)
+              window.close()
+            })
+          })
+        }
+      })
+    }
+  }, [filePath])
 
   useEffect(() => {
     if (isOffline) {

@@ -49,6 +49,21 @@
     .place-list__item-inner {
       display: flex;
       align-items: center;
+      position: relative;
+
+      .place-list__item-buttons {
+        min-width: 71px;
+        position: absolute;
+        right: 0;
+        visibility: hidden;
+        &:hover {
+          visibility: visible;
+        }
+
+        button {
+          padding: 4px 8px;
+        }
+      }
 
       .place-list__item-inner__image-wrapper {
         img {

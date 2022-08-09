@@ -12,7 +12,9 @@ export const TEMPLATES_PATH = 'templates'
 export const CUSTOM_TEMPLATES_PATH = 'custom_templates'
 export const TMP_PATH = 'tmp'
 export const EXPORT_CONFIG_PATH = 'export_config'
+export const TEMP_FILES_PATH = 'tmp'
 
+const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
 const knownFilesPath =
   process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
 const templatesPath =
@@ -28,6 +30,10 @@ const makeStores = (userDataPath, logger) => {
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
   const knownFilesStore = new Store(userDataPath, logger, { name: knownFilesPath, watch: true })
+  const tempFilesStore = new Store(userDataPath, logger, {
+    name: tempPath,
+    watch: true,
+  })
   const templatesStore = new Store(userDataPath, logger, { name: templatesPath, watch: true })
   const customTemplatesStore = new Store(userDataPath, logger, {
     name: customTemplatesPath,
@@ -88,6 +94,7 @@ const makeStores = (userDataPath, logger) => {
     manifestStore,
     USER,
     SETTINGS,
+    tempFilesStore,
   }
 }
 

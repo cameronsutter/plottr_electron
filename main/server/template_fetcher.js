@@ -1,9 +1,70 @@
-import request from 'request'
+import fetch from 'node-fetch'
 import semverGt from 'semver/functions/gt'
 import { isDevelopment } from './isDevelopment'
 
 export const MANIFEST_ROOT = 'manifest'
 const OLD_TEMPLATES_ROOT = 'templates'
+
+const migrateTemplates = (templatesStore, manifestStore, log) => {
+  // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
+  log('Migrating built-in templates')
+  return templatesStore.currentStore().then(() => {
+    const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
+    if (templates) {
+      return templatesStore
+        .clear()
+        .then(() => {
+          return templatesStore.set(templates)
+        })
+        .then(() => {
+          log('Migrated templates')
+        })
+        .catch((error) => {
+          log('ERROR: Failed to migrate templates, emptying template and manifest stores', error)
+          return templatesStore
+            .clear()
+            .then(() => {
+              return manifestStore.clear()
+            })
+            .catch(() => {
+              // If we failed to clear the template store, still clear
+              // the manifest store.
+              return manifestStore.clear()
+            })
+            .then(() => {
+              log('Cleared built-in template stores')
+            })
+        })
+    }
+
+    log('No templates to migrate')
+    return Promise.resolve()
+  })
+}
+
+const migrateCustomTemplates = (customTemplatesStore, log) => {
+  // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
+  log('Migrating custom templates')
+  return customTemplatesStore.currentStore().then(() => {
+    const customTemplates = customTemplatesStore.get(OLD_TEMPLATES_ROOT)
+    if (customTemplates) {
+      return customTemplatesStore
+        .clear()
+        .then(() => {
+          return customTemplatesStore.set(customTemplates)
+        })
+        .then(() => {
+          log('Migrated custom templates')
+        })
+        .catch((error) => {
+          log('ERROR: Failed to migrate custom templates, ignoring error and continuing', error)
+        })
+    }
+
+    log('No custom templates to migrate')
+    return Promise.resolve()
+  })
+}
 
 class TemplateFetcher {
   constructor(baseURL, manifestURL, userDataPath, stores, log) {
@@ -16,20 +77,6 @@ class TemplateFetcher {
     this.templatesStore = templatesStore
     this.customTemplatesStore = customTemplatesStore
     this.manifestStore = manifestStore
-
-    // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
-    const templates = templatesStore.get(OLD_TEMPLATES_ROOT)
-    if (templates) {
-      templatesStore.clear()
-      templatesStore.set(templates)
-    }
-
-    // SAME FOR CUSTOM TEMPLATES (needed after 2020.12.1 for the dashboard)
-    const customTemplates = customTemplatesStore.get(OLD_TEMPLATES_ROOT)
-    if (customTemplates) {
-      customTemplatesStore.clear()
-      customTemplatesStore.set(customTemplates)
-    }
   }
 
   templates = (type) => {
@@ -43,37 +90,28 @@ class TemplateFetcher {
     }, [])
   }
 
-  manifestReq = () => {
-    return {
-      url: this.manifestURL,
-      json: true,
-    }
-  }
-
-  templateReq = (url) => {
-    return {
-      url: url,
-      json: true,
-    }
-  }
-
   fetch = (force) => {
     // if (is.development) return
 
-    this.log('fetching template manifest')
-    request(this.manifestReq(), (err, resp, fetchedManifest) => {
-      if (!err && resp && resp.statusCode == 200) {
-        if (force || this.fetchedIsNewer(fetchedManifest.version)) {
-          this.log('new templates found', fetchedManifest.version)
-          this.manifestStore.set(MANIFEST_ROOT, fetchedManifest)
-          this.fetchTemplates(force)
-        } else {
-          this.log('no new template manifest', fetchedManifest.version)
+    this.log('Fetching template manifest')
+    return fetch(this.manifestURL)
+      .then((resp) => {
+        if (!resp.ok) {
+          return Promise.reject(new Error(`Failed to fetch manifest.  HTTP code: ${resp.status}`))
         }
-      } else {
-        this.log(resp ? resp.statusCode : 'null template manifest response', err)
-      }
-    })
+        return resp.json()
+      })
+      .then((fetchedManifest) => {
+        if (force || this.fetchedIsNewer(fetchedManifest.version)) {
+          this.log('New templates to fetch', fetchedManifest.version)
+          return this.manifestStore.set(MANIFEST_ROOT, fetchedManifest).then(() => {
+            return this.fetchTemplates(force)
+          })
+        } else {
+          this.log('No new templates', fetchedManifest.version)
+          return Promise.resolve()
+        }
+      })
   }
 
   fetchedIsNewer = (fetchedVersion) => {
@@ -84,20 +122,31 @@ class TemplateFetcher {
 
   fetchTemplates = (force) => {
     const templates = this.manifestStore.get('manifest.templates')
-    templates.forEach((template) => {
+    const templateRequests = templates.map((template) => {
       if (force || this.templateIsNewer(template.id, template.version)) {
-        this.fetchTemplate(template.id, template.url)
+        return this.fetchTemplate(template.id, template.url)
       }
+      return Promise.resolve()
     })
+    return Promise.all(templateRequests)
   }
 
   fetchTemplate = (id, url) => {
     const fullURL = `${this.baseURL}${url}`
-    request(this.templateReq(fullURL), (err, resp, fetchedTemplate) => {
-      if (!err && resp && resp.statusCode == 200) {
-        this.templatesStore.set(id, fetchedTemplate)
-      }
-    })
+    return fetch(fullURL)
+      .then((resp) => {
+        if (!resp.ok) {
+          return Promise.reject(
+            new Error(
+              `Failed to fetch template with id ${id} from ${url}.  HTTP code: ${resp.status}`
+            )
+          )
+        }
+        return resp.json()
+      })
+      .then((fetchedTemplate) => {
+        return this.templatesStore.set(id, fetchedTemplate)
+      })
   }
 
   templateIsNewer = (templateId, manifestVersion) => {
@@ -117,7 +166,14 @@ const makeTemplateFetcher = (userDataPath) => {
     const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
     const manifestURL = `${baseURL}/v2/manifest.json`
 
-    return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+    const { templatesStore, customTemplatesStore, manifestStore } = stores
+
+    logInfo('Migrating templates')
+    return migrateCustomTemplates(customTemplatesStore, logInfo).then(() => {
+      return migrateTemplates(templatesStore, manifestStore, logInfo).then(() => {
+        return new TemplateFetcher(baseURL, manifestURL, userDataPath, stores, logInfo)
+      })
+    })
   }
 }
 

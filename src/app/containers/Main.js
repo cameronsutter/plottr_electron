@@ -23,6 +23,7 @@ import ProOnboarding from './ProOnboarding'
 import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { logger } from '../../../shared/logger'
 
 const win = getCurrentWindow()
 
@@ -101,6 +102,7 @@ const Main = ({
   enableTestUtilities,
   saveBackup,
   settings,
+  generalError,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -327,24 +329,36 @@ const Main = ({
                 filePath={fileToUpload}
                 onUploadFile={() => {
                   readFile(fileToUpload).then((data) => {
+                    let file
+                    try {
+                      file = JSON.parse(data)
+                    } catch (error) {
+                      logger.error('Error uploading file to Pro', error)
+                      generalError("We couldn't read your file.  Please try again.")
+                      return
+                    }
                     startUploadingFileToCloud()
-                    uploadProject(data, emailAddress, userId).then((response) => {
-                      const { fileId } = response.data || {}
-                      if (!fileId) {
-                        // FIXME: Use the new error loading file component
-                        // here when its merged.
-                        return
-                      }
-                      finishUploadingFileToCloud()
-                      dismissPromptToUploadFile()
-                      // Lie about the number of open files to avoid opening
-                      // the dashboard when we double click a file.
-                      //
-                      // FIXME: where should the options come from?
-                      const newFilePath = `plottr://${fileId}`
-                      bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
-                      ipcRenderer.send('update-last-opened-file', newFilePath)
-                    })
+                    uploadProject(file, emailAddress, userId)
+                      .then((response) => {
+                        const { fileId } = response.data || {}
+                        if (!fileId) {
+                          // FIXME: Use the new error loading file component
+                          // here when its merged.
+                          return
+                        }
+                        finishUploadingFileToCloud()
+                        dismissPromptToUploadFile()
+                        // Lie about the number of open files to avoid opening
+                        // the dashboard when we double click a file.
+                        //
+                        // FIXME: where should the options come from?
+                        const newFilePath = `plottr://${fileId}`
+                        bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
+                        ipcRenderer.send('update-last-opened-file', newFilePath)
+                      })
+                      .catch((error) => {
+                        
+                      })
                   })
                 }}
                 onCancel={dismissPromptToUploadFile}
@@ -495,6 +509,7 @@ Main.propTypes = {
   enableTestUtilities: PropTypes.func.isRequired,
   saveBackup: PropTypes.func.isRequired,
   settings: PropTypes.object,
+  generalError: PropTypes.func,
 }
 
 export default connect(
@@ -537,5 +552,6 @@ export default connect(
     startUploadingFileToCloud: actions.applicationState.startUploadingFileToCloud,
     finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
     enableTestUtilities: actions.testingAndDiagnosis.enableTestUtilities,
+    generalError: actions.error.generalError,
   }
 )(Main)

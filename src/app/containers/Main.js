@@ -23,7 +23,7 @@ import ProOnboarding from './ProOnboarding'
 import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
-import { logger } from '../../../shared/logger'
+import logger from '../../../shared/logger'
 
 const win = getCurrentWindow()
 

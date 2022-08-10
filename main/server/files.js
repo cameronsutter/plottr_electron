@@ -475,11 +475,17 @@ const fileModule = (userDataPath) => {
         })
     }
 
+    const readFileToString = (filePath) => {
+      return readFile(filePath).then((data) => {
+        return data.toString()
+      })
+    }
+
     return {
       saveFile,
       saveOfflineFile,
       basename,
-      readFile,
+      readFile: readFileToString,
       autoSave,
       fileExists,
       backupOfflineBackupForResume,

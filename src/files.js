@@ -59,6 +59,12 @@ export const newFile = (
   if (!file.beats.series) {
     file.beats.series = newFile.beats.series
   }
+  if (file.books[1]) {
+    file.books[1].title = fileName
+  }
+  if (fileName) {
+    file.series.name = fileName
+  }
   return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
     const fileId = response.data.fileId
     openFile(`plottr://${fileId}`, fileId, false)

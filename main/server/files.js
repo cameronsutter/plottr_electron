@@ -292,6 +292,11 @@ const fileModule = (userDataPath) => {
                 if (backupError) {
                   send(AUTO_SAVE_BACKUP_ERROR, backupFilePath, backupError.message)
                 }
+              }).catch((error) => {
+                // Sending the error to the renderer is handled above.
+                // This catches other errors so they don't hit the
+                // rootand kill the node process.
+                logger.error('Error saving backup', error)
               })
             }
             backupTimeout = null
@@ -437,7 +442,7 @@ const fileModule = (userDataPath) => {
 
     function saveTempFile(file) {
       // Does the tmp file directory exist?
-      lstat(TEMP_FILES_PATH)
+      return lstat(TEMP_FILES_PATH)
         .catch((error) => {
           logger.info(`Temp file directory ${TEMP_FILES_PATH} doesn't exist.  Creating it.`)
           if (error.code === 'ENOENT') {
@@ -470,11 +475,17 @@ const fileModule = (userDataPath) => {
         })
     }
 
+    const readFileToString = (filePath) => {
+      return readFile(filePath).then((data) => {
+        return data.toString()
+      })
+    }
+
     return {
       saveFile,
       saveOfflineFile,
       basename,
-      readFile,
+      readFile: readFileToString,
       autoSave,
       fileExists,
       backupOfflineBackupForResume,

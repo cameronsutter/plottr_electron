@@ -97,7 +97,7 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
         if (error) {
           rollbar.error(error)
           if (error === 'Plottr behind file') {
-            return reject('Need to update Plottr')
+            return reject(new Error('Need to update Plottr'))
           }
           return reject(error)
         }
@@ -378,10 +378,11 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
           store.dispatch(actions.applicationState.finishLoadingFile())
         })
         .catch((error) => {
-          console.log('caught error', error)
           logger.error(error)
           rollbar.error(error)
-          store.dispatch(actions.applicationState.errorLoadingFile(true))
+          store.dispatch(
+            actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
+          )
         })
     } catch (error) {
       logger.error(error)

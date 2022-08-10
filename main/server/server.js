@@ -327,7 +327,7 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case RM_RF: {
-            const path = payload
+            const { path } = payload
             return handlePromise(
               () => ['Deleting: ', payload],
               () => rm(path, { recursive: true }),

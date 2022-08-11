@@ -33,7 +33,6 @@ import { createFullErrorReport } from '../common/utils/full_error_report'
 import {
   openDashboard,
   closeDashboard,
-  createBlankProj,
   createFromTemplate,
   openExistingProj,
 } from '../dashboard-events'

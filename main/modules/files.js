@@ -73,8 +73,8 @@ const makeFileModule = () => {
 
   async function createNew(template, name) {
     if (template) {
-      const templateFileJSON = newFileFromTemplate(template, name)
       const fileName = name || t('Untitled')
+      const templateFileJSON = newFileFromTemplate(template, fileName)
       if (templateFileJSON.books[1]) {
         templateFileJSON.books[1].title = fileName
       }

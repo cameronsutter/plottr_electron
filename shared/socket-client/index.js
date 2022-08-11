@@ -277,7 +277,6 @@ const connect = (
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
           case DELETE_KNOWN_FILE:
-          case REMOVE_FROM_KNOWN_FILES:
           case ADD_KNOWN_FILE_WITH_FIX:
           case ADD_KNOWN_FILE:
           case EDIT_KNOWN_FILE_PATH:

@@ -323,11 +323,19 @@ const setupListeners = (port, userDataPath) => {
                 },
               ],
               () => saveFile(filePath, file),
-              (error) => ['Error while saving file ', payload]
+              (error) => [
+                'Error while saving file ',
+                {
+                  file: {
+                    ...payload?.file?.file,
+                  },
+                  filePath: filePath,
+                },
+              ]
             )
           }
           case RM_RF: {
-            const path = payload
+            const { path } = payload
             return handlePromise(
               () => ['Deleting: ', payload],
               () => rm(path, { recursive: true }),
@@ -346,7 +354,14 @@ const setupListeners = (port, userDataPath) => {
                 },
               ],
               () => saveOfflineFile(file),
-              (error) => ['Error while saving offline ', payload]
+              (error) => [
+                'Error while saving offline ',
+                {
+                  file: {
+                    ...file?.file,
+                  },
+                },
+              ]
             )
           }
           case FILE_BASENAME: {
@@ -378,7 +393,7 @@ const setupListeners = (port, userDataPath) => {
                 },
               ],
               () => saveBackup(filePath, file),
-              () => ['Error while saving a backup ', payload.file.file]
+              () => ['Error while saving a backup ', payload?.file?.file]
             )
           }
           case AUTO_SAVE_FILE: {
@@ -398,7 +413,19 @@ const setupListeners = (port, userDataPath) => {
                 },
               ],
               () => autoSave(send, filePath, file, userId, previousFile),
-              () => ['Error while auto saving', payload]
+              () => [
+                'Error while auto saving',
+                {
+                  file: {
+                    ...file?.file,
+                  },
+                  filePath,
+                  previousFile: {
+                    ...previousFile?.file,
+                  },
+                  userId,
+                },
+              ]
             )
           }
           case ENSURE_BACKUP_FULL_PATH: {
@@ -436,7 +463,14 @@ const setupListeners = (port, userDataPath) => {
                 },
               ],
               () => backupOfflineBackupForResume(file),
-              () => ['Error while saving offline backup file for resuming', payload]
+              () => [
+                'Error while saving offline backup file for resuming',
+                {
+                  file: {
+                    ...payload?.file?.file,
+                  },
+                },
+              ]
             )
           }
           case READ_OFFLINE_FILES: {
@@ -453,7 +487,7 @@ const setupListeners = (port, userDataPath) => {
                 'Checking whether file is a temp file (reduced payload): ',
                 {
                   file: {
-                    ...payload.file.file,
+                    ...payload?.file?.file,
                   },
                 },
               ],
@@ -523,7 +557,7 @@ const setupListeners = (port, userDataPath) => {
                 'Error saving file to temp folder: ',
                 {
                   file: {
-                    ...payload.file.file,
+                    ...payload?.file?.file,
                   },
                 },
               ]
@@ -569,7 +603,7 @@ const setupListeners = (port, userDataPath) => {
                 `Error saving to temp file named ${name} (reduced payload)`,
                 {
                   file: {
-                    ...json.file,
+                    ...json?.file,
                   },
                 },
               ]

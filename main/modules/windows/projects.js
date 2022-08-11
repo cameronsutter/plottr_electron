@@ -23,7 +23,7 @@ ipcMain.on('pls-open-window', (event, filePath, unknown) => {
 function openProjectWindow(filePath) {
   if (focusIfOpen(filePath)) {
     log.info(`Project window for ${filePath} is already oepen, focussing it.`)
-    return null
+    return Promise.resolve()
   }
   log.info('Opening new browserWindow for', filePath)
   return makeBrowserWindow(filePath)

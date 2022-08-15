@@ -356,9 +356,7 @@ const Main = ({
                         bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
                         ipcRenderer.send('update-last-opened-file', newFilePath)
                       })
-                      .catch((error) => {
-                        
-                      })
+                      .catch((error) => {})
                   })
                 }}
                 onCancel={dismissPromptToUploadFile}

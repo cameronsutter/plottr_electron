@@ -161,7 +161,7 @@ const makeTemplateFetcher = (userDataPath) => {
   if (isDevelopment()) env = 'staging'
 
   return (stores, logInfo) => {
-    if (stores.SETTINGS.betatemplates) env = 'beta'
+    if (stores.SETTINGS.get('betatemplates')) env = 'beta'
 
     const baseURL = `https://raw.githubusercontent.com/Plotinator/plottr_templates/${env}`
     const manifestURL = `${baseURL}/v2/manifest.json`

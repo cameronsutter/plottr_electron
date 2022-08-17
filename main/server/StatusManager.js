@@ -12,7 +12,7 @@ class StatusManager {
   }
 
   constructor(logger) {
-    this.logger = logger
+    if (logger) this.logger = logger
   }
 
   acceptConnection(webSocket) {

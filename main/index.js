@@ -125,6 +125,12 @@ const broadcastPortChange = (port) => {
             `Couldn't save a backup at ${backupFilePath} during auto-save because ${backupErrorMessage}`
           )
         },
+        onBusy: () => {
+          console.warn('TODO')
+        },
+        onDone: () => {
+          console.warn('TODO')
+        },
       }
     )
   }

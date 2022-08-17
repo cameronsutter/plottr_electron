@@ -114,6 +114,8 @@ import {
   REMOVE_FROM_TEMP_FILES,
   REMOVE_FROM_TEMP_FILES_ERROR_REPLY,
   SAVE_TO_TEMP_FILE_ERROR_REPLY,
+  BUSY,
+  DONE,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -133,6 +135,8 @@ const connect = (
     onAutoSaveError,
     onAutoSaveWorkedThisTime,
     onAutoSaveBackupError,
+    onBusy,
+    onDone,
   }
 ) => {
   try {
@@ -321,6 +325,14 @@ const connect = (
           case RM_RF:
           case PING: {
             resolvePromise()
+            return
+          }
+          case BUSY: {
+            onBusy()
+            return
+          }
+          case DONE: {
+            onDone()
             return
           }
           // Logging

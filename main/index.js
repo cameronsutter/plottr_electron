@@ -25,6 +25,7 @@ import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
 import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
 import ProcessSwitches from './modules/processSwitches'
+import makeSafelyExitModule from './modules/safelyExit'
 
 const { ipcMain } = electron
 
@@ -85,8 +86,14 @@ if (!is.development) {
   })
   // ensure only 1 instance is running
   const gotTheLock = app.requestSingleInstanceLock()
+  const attemptToQuit = () => {
+    if (!safelyExitModule.quit()) {
+      dialog.showErrorBox('Error', 'Plottr ran into a problem shutting down.')
+      setTimeout(attemptToQuit, 5000)
+    }
+  }
   if (!gotTheLock) {
-    app.quit()
+    attemptToQuit()
   }
 }
 
@@ -97,6 +104,8 @@ app.userAgentFallback =
 // event (rather than by args).  So we want to make sure that when the
 // app boots, it only opens a window corresponding to that event.
 let openedFile = false
+
+const safelyExitModule = makeSafelyExitModule(log)
 
 const broadcastPortChange = (port) => {
   if (!isInitialised()) {
@@ -126,10 +135,10 @@ const broadcastPortChange = (port) => {
           )
         },
         onBusy: () => {
-          console.warn('TODO')
+          safelyExitModule.busy()
         },
         onDone: () => {
-          console.warn('TODO')
+          safelyExitModule.done()
         },
       }
     )

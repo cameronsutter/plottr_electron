@@ -89,10 +89,10 @@ const socketServerEventHandlers = {
     rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
   },
   onBusy: () => {
-    console.warn('TODO')
+    store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
   },
   onDone: () => {
-    console.warn('TODO')
+    store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
   },
 }
 

@@ -12,6 +12,7 @@ import Renamer from './app/components/Renamer'
 import SaveAs from './app/components/SaveAs'
 import Error from './app/components/Error'
 import Resume from './app/components/Resume'
+import Busy from './app/components/Busy'
 import MainIntegrationContext from './mainIntegrationContext'
 
 import { store } from './app/store'
@@ -86,6 +87,7 @@ export const renderFile = (root, whenClientIsReady) => {
         <SaveAs />
         <Error />
         <Resume backupOfflineBackupForResume={backupOfflineBackupForResume} />
+        <Busy />
         <Main saveBackup={saveBackup} />
       </MainIntegrationContext.Provider>
     </Provider>,

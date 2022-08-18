@@ -44,6 +44,6 @@
     "react-proptypes": "^1.0.0",
     "react-modal": "^3.8.1",
     "rollbar": "^2.19.4",
-    "react-scripts": "4.0.3"
+    "react-scripts": "5.0.1"
   }
 }

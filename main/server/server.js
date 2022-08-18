@@ -127,7 +127,10 @@ const setupListeners = (port, userDataPath) => {
     return makeTemplateFetcher(stores, logInfo)
   }
 
+  const statusManager = new StatusManager(basicLogger)
+
   webSocketServer.on('connection', (webSocket) => {
+    statusManager.acceptConnection(webSocket)
     const logger = makeLogger(webSocket)
     const backupModule = makeBackupModule(settings, logger)
     const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = backupModule
@@ -194,7 +197,6 @@ const setupListeners = (port, userDataPath) => {
         return templateFetcher.fetch()
       })
     }
-    const statusManager = new StatusManager(logger)
 
     webSocket.on('message', (message) => {
       try {

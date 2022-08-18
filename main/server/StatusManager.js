@@ -23,7 +23,7 @@ class StatusManager {
     this.notifyBusy()
     const thisWorkId = uuid()
     this.tasks.push({ workId: thisWorkId, name })
-    work.then(() => {
+    return work.then(() => {
       this.tasks = this.tasks.filter(({ workId }) => {
         return workId !== thisWorkId
       })

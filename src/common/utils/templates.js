@@ -12,7 +12,7 @@ const CUSTOM_TEMPLATES_PATH =
 export function deleteTemplate(id, userId) {
   const { currentCustomTemplates } = makeFileSystemAPIs(whenClientIsReady)
   currentCustomTemplates().then((templates) => {
-    if (templates.find((template) => template.id === id)) {
+    if (Object.values(templates).find((template) => template.id === id)) {
       whenClientIsReady(({ deleteCustomTemplate }) => {
         deleteCustomTemplate(id)
       })
@@ -30,7 +30,7 @@ export function editTemplateDetails(id, templateData, userId) {
   }
   const { currentCustomTemplates } = makeFileSystemAPIs(whenClientIsReady)
   currentCustomTemplates().then((templates) => {
-    const templateFound = templates.find((template) => template.id === id)
+    const templateFound = Object.values(templates).find((template) => template.id === id)
     if (templateFound) {
       whenClientIsReady(({ setCustomTemplate }) => {
         setCustomTemplate(id, {

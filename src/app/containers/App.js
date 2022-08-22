@@ -107,7 +107,9 @@ const App = ({
     )
     if (applicationIsBusyAndCannotBeQuit) {
       logger.info('The socket server is busy and we cannot quit')
-      event.preventDefault()
+      if (event.preventDefault && typeof event.preventDefault === 'function') {
+        event.preventDefault()
+      }
       event.returnValue = 'nope'
       return
     }

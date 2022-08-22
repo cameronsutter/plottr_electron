@@ -14,7 +14,7 @@ function gracefullyNotSave() {
   dialog.showErrorBox(i18n('Saving failed'), i18n("Saving your file didn't work. Try again."))
 }
 
-function gracefullyQuit() {
+function gracefullyQuit(safelyExit) {
   if (!app.isReady() || !hasWindows()) {
     dialog.showMessageBoxSync({
       type: 'info',
@@ -22,7 +22,7 @@ function gracefullyQuit() {
       message: i18n('Plottr ran into a problem. Try opening Plottr again.'),
       detail: i18n('If you keep seeing this problem, email us at support@plottr.com'),
     })
-    app.quit()
+    safelyExit.quitWhenDone()
   }
 }
 

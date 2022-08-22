@@ -18,14 +18,25 @@ const makeSafelyExitModule = (logger) => {
       )
       return false
     }
+    logger.info('Socket server is not busy.  Quitting Plottr now!')
     app.quit()
     return true
+  }
+
+  const quitWhenDone = () => {
+    const attemptToQuit = () => {
+      if (!quit()) {
+        setTimeout(attemptToQuit, 5000)
+      }
+    }
+    attemptToQuit()
   }
 
   return {
     busy,
     done,
     quit,
+    quitWhenDone,
   }
 }
 

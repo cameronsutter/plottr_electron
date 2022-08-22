@@ -38,7 +38,7 @@ import {
   setFilePathForWindowWithId,
 } from './modules/windows/index'
 
-export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
+export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
     const lastFile = lastOpenedFile()
     const win = getWindowById(id)
@@ -86,7 +86,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
       .then(() => {
         currentSettings().then((settings) => {
           setupI18n(settings, { electron })
-          return loadMenu().then(() => {
+          return loadMenu(safelyExitModule).then(() => {
             reloadAllWindows()
           })
         })
@@ -185,7 +185,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches) => {
   })
 
   ipcMain.on('pls-quit', () => {
-    app.quit()
+    safelyExitModule.quitWhenDone()
   })
 
   ipcMain.on('tell-me-what-os-i-am-on', (event) => {

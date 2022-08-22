@@ -76,7 +76,7 @@ if (!is.development) {
     console.error('Uncaught exception.  Quitting...', error)
     log.error('Uncaught exception.  Quitting...', error)
     rollbar.error(error, function (sendErr, data) {
-      gracefullyQuit()
+      gracefullyQuit(safelyExitModule)
     })
   })
   process.on('unhandledRejection', function (error) {
@@ -86,14 +86,8 @@ if (!is.development) {
   })
   // ensure only 1 instance is running
   const gotTheLock = app.requestSingleInstanceLock()
-  const attemptToQuit = () => {
-    if (!safelyExitModule.quit()) {
-      dialog.showErrorBox('Error', 'Plottr ran into a problem shutting down.')
-      setTimeout(attemptToQuit, 5000)
-    }
-  }
   if (!gotTheLock) {
-    attemptToQuit()
+    safelyExitModule.quitWhenDone()
   }
 }
 
@@ -178,7 +172,7 @@ app.whenReady().then(() => {
       }, 5000)
     })
     .then((port) => {
-      return loadMenu()
+      return loadMenu(safelyExitModule)
         .then(() => {
           return port
         })
@@ -190,7 +184,7 @@ app.whenReady().then(() => {
       const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
 
-      listenOnIPCMain(() => getPort(), processSwitches)
+      listenOnIPCMain(() => getPort(), processSwitches, safelyExitModule)
 
       const importFromScrivener = processSwitches.importFromScrivener()
       if (importFromScrivener) {
@@ -265,7 +259,7 @@ app.whenReady().then(() => {
 
         app.on('second-instance', (_event, argv) => {
           log.info('second-instance')
-          loadMenu()
+          loadMenu(safelyExitModule)
             .then(() => {
               const newFileToLoad = fileToLoad(argv)
               if (newFileToLoad) addToKnown(newFileToLoad)
@@ -281,7 +275,7 @@ app.whenReady().then(() => {
         })
 
         app.on('window-all-closed', () => {
-          if (is.windows) app.quit()
+          if (is.windows) safelyExitModule.quitWhenDone()
         })
 
         app.on('will-quit', () => {

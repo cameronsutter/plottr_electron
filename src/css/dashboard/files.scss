@@ -193,8 +193,18 @@
       .dashboard__recent-files__file-actions {
         margin-left: auto;
         visibility: hidden;
-        button .glyphicon {
+        button .glyphicon, button svg {
           vertical-align: middle;
+        }
+
+        .btn-group {
+          button svg {
+            font-size: 18px;
+          }
+          .dropdown.btn-group button {
+            height: 33.5px;
+            padding: 5px 10px;
+          }
         }
       }
     }

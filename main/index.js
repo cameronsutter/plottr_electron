@@ -71,6 +71,8 @@ contextMenu({
   prepend: (defaultActions, params, browserWindow) => [],
 })
 
+const safelyExitModule = makeSafelyExitModule(log)
+
 if (!is.development) {
   process.on('uncaughtException', function (error) {
     console.error('Uncaught exception.  Quitting...', error)
@@ -98,8 +100,6 @@ app.userAgentFallback =
 // event (rather than by args).  So we want to make sure that when the
 // app boots, it only opens a window corresponding to that event.
 let openedFile = false
-
-const safelyExitModule = makeSafelyExitModule(log)
 
 const broadcastPortChange = (port) => {
   if (!isInitialised()) {

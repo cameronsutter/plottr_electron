@@ -24,6 +24,7 @@ import { hasPreviousAction } from '../../common/utils/error_reporter'
 import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import MainIntegrationContext from '../../mainIntegrationContext'
+import logger from '../../../shared/logger'
 
 const App = ({
   forceProjectDashboard,
@@ -34,6 +35,7 @@ const App = ({
   userNeedsToLogin,
   sessionChecked,
   clickOnDom,
+  applicationIsBusyAndCannotBeQuit,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -60,6 +62,39 @@ const App = ({
     }
   }
 
+  useEffect(() => {
+    if (
+      !isResuming &&
+      !userId &&
+      isCloudFile &&
+      !userNeedsToLogin &&
+      !isOffline &&
+      sessionChecked
+    ) {
+      log.error('Attempting to open a cloud file locally without being logged in.')
+      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
+    }
+  }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
+
+  useEffect(() => {
+    ipcRenderer.on('save-as-template-start', (event, type) => {
+      setType(type)
+      setShowTemplateCreate(true)
+    })
+    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
+      setShowExportDialog(true)
+    })
+    ipcRenderer.on('turn-on-acts-help', () => {
+      setShowActsGuideHelp(true)
+    })
+
+    return () => {
+      ipcRenderer.removeAllListeners('save-as-template-start')
+      ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
+      ipcRenderer.removeAllListeners('turn-on-acts-help')
+    }
+  }, [])
+
   const askToSave = (event) => {
     console.log(
       'In ask to save.',
@@ -67,8 +102,17 @@ const App = ({
       isTryingToClose.current,
       isTryingToReload.current,
       blockClosing,
-      alreadyClosingOrRefreshing.current
+      alreadyClosingOrRefreshing.current,
+      applicationIsBusyAndCannotBeQuit
     )
+    if (applicationIsBusyAndCannotBeQuit) {
+      logger.info('The socket server is busy and we cannot quit')
+      if (event.preventDefault && typeof event.preventDefault === 'function') {
+        event.preventDefault()
+      }
+      event.returnValue = 'nope'
+      return
+    }
     if (alreadyClosingOrRefreshing.current) return
     if (!blockClosing) return
     if (process.env.NODE_ENV == 'development') {
@@ -95,24 +139,6 @@ const App = ({
   }
 
   useEffect(() => {
-    if (
-      !isResuming &&
-      !userId &&
-      isCloudFile &&
-      !userNeedsToLogin &&
-      !isOffline &&
-      sessionChecked
-    ) {
-      log.error('Attempting to open a cloud file locally without being logged in.')
-      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
-    }
-  }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
-
-  useEffect(() => {
-    ipcRenderer.on('save-as-template-start', (event, type) => {
-      setType(type)
-      setShowTemplateCreate(true)
-    })
     ipcRenderer.on('reload', () => {
       isTryingToReload.current = true
       askToSave({})
@@ -122,23 +148,13 @@ const App = ({
       isTryingToClose.current = true
       askToSave({})
     })
-    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
-      setShowExportDialog(true)
-    })
-    ipcRenderer.on('turn-on-acts-help', () => {
-      setShowActsGuideHelp(true)
-    })
     window.addEventListener('beforeunload', askToSave)
-
     return () => {
-      ipcRenderer.removeAllListeners('save-as-template-start')
       ipcRenderer.removeAllListeners('reload')
       ipcRenderer.removeAllListeners('wants-to-close')
-      ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
-      ipcRenderer.removeAllListeners('turn-on-acts-help')
       window.removeEventListener('beforeunload', askToSave)
     }
-  }, [])
+  }, [blockClosing, applicationIsBusyAndCannotBeQuit, closeOrRefresh])
 
   const dontSaveAndClose = () => {
     setBlockClosing(false)
@@ -228,6 +244,7 @@ App.propTypes = {
   userNeedsToLogin: PropTypes.bool,
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
+  applicationIsBusyAndCannotBeQuit: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -238,6 +255,9 @@ function mapStateToProps(state) {
     isResuming: selectors.isResumingSelector(state.present),
     userNeedsToLogin: selectors.userNeedsToLoginSelector(state.present),
     sessionChecked: selectors.sessionCheckedSelector(state.present),
+    applicationIsBusyAndCannotBeQuit: selectors.busyWithWorkThatPreventsQuittingSelector(
+      state.present
+    ),
   }
 }
 

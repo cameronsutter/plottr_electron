@@ -30,7 +30,7 @@ const setLocale = (locale) => {
     })
 }
 
-function buildPlottrMenu(loadMenu) {
+function buildPlottrMenu(loadMenu, safelyExit) {
   return currentSettings()
     .then((settings) => {
       const isPro = settings.user?.frbId
@@ -41,7 +41,7 @@ function buildPlottrMenu(loadMenu) {
           label: 'English',
           click: () => {
             setLocale('en').then(() => {
-              return loadMenu()
+              return loadMenu(safelyExit)
                 .then(reloadMenuForLanguageChangeSuccessHandler)
                 .catch(reloadMenuForLanguageChangeFailureHandler)
             })
@@ -54,7 +54,7 @@ function buildPlottrMenu(loadMenu) {
           label: name,
           click: () => {
             setLocale(locale).then(() => {
-              return loadMenu()
+              return loadMenu(safelyExit)
                 .then(reloadMenuForLanguageChangeSuccessHandler)
                 .catch(reloadMenuForLanguageChangeFailureHandler)
             })
@@ -91,8 +91,8 @@ function buildPlottrMenu(loadMenu) {
           {
             label: t('Quit'),
             accelerator: 'Cmd+Q',
-            click: function () {
-              app.quit()
+            click: () => {
+              safelyExit.quitWhenDone()
             },
           }
         )
@@ -100,8 +100,8 @@ function buildPlottrMenu(loadMenu) {
         submenu.push({
           label: t('Close'),
           accelerator: 'Alt+F4',
-          click: function () {
-            app.quit()
+          click: () => {
+            safelyExit.quitWhenDone()
           },
         })
       }

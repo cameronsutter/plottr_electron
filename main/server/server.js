@@ -81,6 +81,7 @@ import makeStores from './stores'
 import makeSettingsModule from './settings'
 import makeKnownFilesModule from './knownFiles'
 import makeTempFilesModule from './tempFiles'
+import StatusManager from './StatusManager'
 
 const parseArgs = () => {
   return {
@@ -126,7 +127,10 @@ const setupListeners = (port, userDataPath) => {
     return makeTemplateFetcher(stores, logInfo)
   }
 
+  const statusManager = new StatusManager(basicLogger)
+
   webSocketServer.on('connection', (webSocket) => {
+    statusManager.acceptConnection(webSocket)
     const logger = makeLogger(webSocket)
     const backupModule = makeBackupModule(settings, logger)
     const { defaultBackupPath, saveBackup, ensureBackupTodayPath } = backupModule
@@ -322,7 +326,7 @@ const setupListeners = (port, userDataPath) => {
                   filePath: filePath,
                 },
               ],
-              () => saveFile(filePath, file),
+              () => statusManager.registerTask(saveFile(filePath, file), SAVE_FILE),
               (error) => [
                 'Error while saving file ',
                 {
@@ -338,7 +342,7 @@ const setupListeners = (port, userDataPath) => {
             const { path } = payload
             return handlePromise(
               () => ['Deleting: ', payload],
-              () => rm(path, { recursive: true }),
+              () => statusManager.registerTask(rm(path, { recursive: true }), RM_RF),
               (error) => ['Error while deleting ', payload]
             )
           }
@@ -353,7 +357,7 @@ const setupListeners = (port, userDataPath) => {
                   },
                 },
               ],
-              () => saveOfflineFile(file),
+              () => statusManager.registerTask(saveOfflineFile(file), SAVE_OFFLINE_FILE),
               (error) => [
                 'Error while saving offline ',
                 {
@@ -392,7 +396,7 @@ const setupListeners = (port, userDataPath) => {
                   filePath: filePath,
                 },
               ],
-              () => saveBackup(filePath, file),
+              () => statusManager.registerTask(saveBackup(filePath, file), BACKUP_FILE),
               () => ['Error while saving a backup ', payload?.file?.file]
             )
           }
@@ -412,7 +416,11 @@ const setupListeners = (port, userDataPath) => {
                   userId,
                 },
               ],
-              () => autoSave(send, filePath, file, userId, previousFile),
+              () =>
+                statusManager.registerTask(
+                  autoSave(send, filePath, file, userId, previousFile),
+                  AUTO_SAVE_FILE
+                ),
               () => [
                 'Error while auto saving',
                 {
@@ -462,7 +470,11 @@ const setupListeners = (port, userDataPath) => {
                   },
                 },
               ],
-              () => backupOfflineBackupForResume(file),
+              () =>
+                statusManager.registerTask(
+                  backupOfflineBackupForResume(file),
+                  BACKUP_OFFLINE_BACKUP_FOR_RESUME
+                ),
               () => [
                 'Error while saving offline backup file for resuming',
                 {
@@ -499,7 +511,7 @@ const setupListeners = (port, userDataPath) => {
             const { id, template } = payload
             return handlePromise(
               () => `Setting a template with id ${id} to ${template}`,
-              () => setTemplate(id, template),
+              () => statusManager.registerTask(setTemplate(id, template), SET_TEMPLATE),
               () => [`Error while setting a template with id ${id} to ${template}`, payload]
             )
           }
@@ -507,7 +519,8 @@ const setupListeners = (port, userDataPath) => {
             const { id, template } = payload
             return handlePromise(
               () => `Setting a custom template with id ${id} to ${template}`,
-              () => setCustomTemplate(id, template),
+              () =>
+                statusManager.registerTask(setCustomTemplate(id, template), SET_CUSTOM_TEMPLATE),
               () => [`Error while setting a custom template with id ${id} to ${template}`, payload]
             )
           }
@@ -515,7 +528,7 @@ const setupListeners = (port, userDataPath) => {
             const { id } = payload
             return handlePromise(
               () => `Deleting a custom template with id ${id}`,
-              () => deleteCustomTemplate(id),
+              () => statusManager.registerTask(deleteCustomTemplate(id), DELETE_CUSTOM_TEMPLATE),
               () => [`Error while deleting a custom template with id ${id}`, payload]
             )
           }
@@ -552,7 +565,7 @@ const setupListeners = (port, userDataPath) => {
                   },
                 },
               ],
-              () => saveTempFile(file),
+              () => statusManager.registerTask(saveTempFile(file), SAVE_AS_TEMP_FILE),
               () => [
                 'Error saving file to temp folder: ',
                 {
@@ -567,7 +580,7 @@ const setupListeners = (port, userDataPath) => {
             const { id } = payload
             return handlePromise(
               () => `Removing entry with id ${id} from known files`,
-              () => removeFromKnownFiles(id),
+              () => statusManager.registerTask(removeFromKnownFiles(id), REMOVE_FROM_KNOWN_FILES),
               () => `Error removing entry with id ${id} from known files`
             )
           }
@@ -575,7 +588,7 @@ const setupListeners = (port, userDataPath) => {
             const { id, filePath } = payload
             return handlePromise(
               () => `Deleting a known file with id ${id} and filePath ${filePath}`,
-              () => deleteKnownFile(id, filePath),
+              () => statusManager.registerTask(deleteKnownFile(id, filePath), DELETE_KNOWN_FILE),
               () => `Error deleting a known file with id ${id} and filePath ${filePath}`
             )
           }
@@ -583,7 +596,11 @@ const setupListeners = (port, userDataPath) => {
             const { filePath, doDelete } = payload
             return handlePromise(
               () => `Removing ${filePath} from temp files (deleting? ${doDelete})`,
-              () => removeFromTempFiles(filePath, doDelete),
+              () =>
+                statusManager.registerTask(
+                  removeFromTempFiles(filePath, doDelete),
+                  REMOVE_FROM_TEMP_FILES
+                ),
               () => `Error removing ${filePath} from temp files (deleting? ${doDelete})`
             )
           }
@@ -598,7 +615,7 @@ const setupListeners = (port, userDataPath) => {
                   },
                 },
               ],
-              () => saveToTempFile(json, name),
+              () => statusManager.registerTask(saveToTempFile(json, name), SAVE_TO_TEMP_FILE),
               () => [
                 `Error saving to temp file named ${name} (reduced payload)`,
                 {
@@ -613,7 +630,8 @@ const setupListeners = (port, userDataPath) => {
             const { filePath } = payload
             return handlePromise(
               () => `Adding ${filePath} to known files and fixing the store`,
-              () => addKnownFileWithFix(filePath),
+              () =>
+                statusManager.registerTask(addKnownFileWithFix(filePath), ADD_KNOWN_FILE_WITH_FIX),
               () => `Error adding ${filePath} to known files and fixing the store`
             )
           }
@@ -621,7 +639,7 @@ const setupListeners = (port, userDataPath) => {
             const { filePath } = payload
             return handlePromise(
               () => `Adding ${filePath} to known files`,
-              () => addKnownFile(filePath),
+              () => statusManager.registerTask(addKnownFile(filePath), ADD_KNOWN_FILE),
               () => `Error adding ${filePath} to known files`
             )
           }
@@ -629,7 +647,11 @@ const setupListeners = (port, userDataPath) => {
             const { oldFilePath, newFilePath } = payload
             return handlePromise(
               () => `Editing a known file's path from ${oldFilePath} to ${newFilePath}`,
-              () => editKnownFilePath(oldFilePath, newFilePath),
+              () =>
+                statusManager.registerTask(
+                  editKnownFilePath(oldFilePath, newFilePath),
+                  EDIT_KNOWN_FILE_PATH
+                ),
               () => `Error editing a known file's path from ${oldFilePath} to ${newFilePath}`
             )
           }
@@ -637,7 +659,7 @@ const setupListeners = (port, userDataPath) => {
             const { id } = payload
             return handlePromise(
               () => `Updating the last opened date for file with id ${id}`,
-              () => updateLastOpenedDate(id),
+              () => statusManager.registerTask(updateLastOpenedDate(id), UPDATE_LAST_OPENED_DATE),
               () => `Error updating the last opened date for file with id ${id}`
             )
           }
@@ -667,7 +689,7 @@ const setupListeners = (port, userDataPath) => {
             const { numDays } = payload
             return handlePromise(
               () => `Starting trial for length: ${numDays}`,
-              () => startTrial(numDays),
+              () => statusManager.registerTask(startTrial(numDays), START_TRIAL),
               () => ['Error while starting the trial', payload]
             )
           }
@@ -675,7 +697,7 @@ const setupListeners = (port, userDataPath) => {
             const { days } = payload
             return handlePromise(
               () => `Attempting to extend trial with reset for days: ${days}`,
-              () => extendTrialWithReset(days),
+              () => statusManager.registerTask(extendTrialWithReset(days), EXTEND_TRIAL_WITH_RESET),
               () => ['Error while extending trial with reset', payload]
             )
           }
@@ -697,7 +719,7 @@ const setupListeners = (port, userDataPath) => {
             const { newLicense } = payload
             return handlePromise(
               () => 'Setting the license to a new one.  Not displaying because it is sensitive.',
-              () => saveLicenseInfo(newLicense),
+              () => statusManager.registerTask(saveLicenseInfo(newLicense), SAVE_LICENSE_INFO),
               () => 'Error while saving the license'
             )
           }
@@ -740,7 +762,11 @@ const setupListeners = (port, userDataPath) => {
             const { key, value } = payload
             return handlePromise(
               () => `Setting ${key} to ${value} in export settings`,
-              () => saveExportConfigSettings(key, value),
+              () =>
+                statusManager.registerTask(
+                  saveExportConfigSettings(key, value),
+                  SAVE_EXPORT_CONFIG_SETTINGS
+                ),
               () => `Error while setting ${key} to ${value} in export settings`
             )
           }
@@ -755,7 +781,7 @@ const setupListeners = (port, userDataPath) => {
             const { key, value } = payload
             return handlePromise(
               () => `Setting ${key} to ${value} in app settings`,
-              () => saveAppSetting(key, value),
+              () => statusManager.registerTask(saveAppSetting(key, value), SAVE_APP_SETTING),
               () => `Error while setting ${key} to ${value} in app settings`
             )
           }

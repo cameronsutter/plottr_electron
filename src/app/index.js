@@ -88,6 +88,12 @@ const socketServerEventHandlers = {
     rollbar.error({ message: 'BACKUP failed' })
     rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
   },
+  onBusy: () => {
+    store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
+  },
+  onDone: () => {
+    store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+  },
 }
 
 createClient(

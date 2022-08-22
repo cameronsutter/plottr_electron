@@ -25,6 +25,7 @@ import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
 import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
 import ProcessSwitches from './modules/processSwitches'
+import makeSafelyExitModule from './modules/safelyExit'
 
 const { ipcMain } = electron
 
@@ -70,12 +71,14 @@ contextMenu({
   prepend: (defaultActions, params, browserWindow) => [],
 })
 
+const safelyExitModule = makeSafelyExitModule(log)
+
 if (!is.development) {
   process.on('uncaughtException', function (error) {
     console.error('Uncaught exception.  Quitting...', error)
     log.error('Uncaught exception.  Quitting...', error)
     rollbar.error(error, function (sendErr, data) {
-      gracefullyQuit()
+      gracefullyQuit(safelyExitModule)
     })
   })
   process.on('unhandledRejection', function (error) {
@@ -86,7 +89,7 @@ if (!is.development) {
   // ensure only 1 instance is running
   const gotTheLock = app.requestSingleInstanceLock()
   if (!gotTheLock) {
-    app.quit()
+    safelyExitModule.quitWhenDone()
   }
 }
 
@@ -124,6 +127,12 @@ const broadcastPortChange = (port) => {
           log.error(
             `Couldn't save a backup at ${backupFilePath} during auto-save because ${backupErrorMessage}`
           )
+        },
+        onBusy: () => {
+          safelyExitModule.busy()
+        },
+        onDone: () => {
+          safelyExitModule.done()
         },
       }
     )
@@ -163,7 +172,7 @@ app.whenReady().then(() => {
       }, 5000)
     })
     .then((port) => {
-      return loadMenu()
+      return loadMenu(safelyExitModule)
         .then(() => {
           return port
         })
@@ -175,7 +184,7 @@ app.whenReady().then(() => {
       const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
 
-      listenOnIPCMain(() => getPort(), processSwitches)
+      listenOnIPCMain(() => getPort(), processSwitches, safelyExitModule)
 
       const importFromScrivener = processSwitches.importFromScrivener()
       if (importFromScrivener) {
@@ -250,7 +259,7 @@ app.whenReady().then(() => {
 
         app.on('second-instance', (_event, argv) => {
           log.info('second-instance')
-          loadMenu()
+          loadMenu(safelyExitModule)
             .then(() => {
               const newFileToLoad = fileToLoad(argv)
               if (newFileToLoad) addToKnown(newFileToLoad)
@@ -266,7 +275,7 @@ app.whenReady().then(() => {
         })
 
         app.on('window-all-closed', () => {
-          if (is.windows) app.quit()
+          if (is.windows) safelyExitModule.quitWhenDone()
         })
 
         app.on('will-quit', () => {

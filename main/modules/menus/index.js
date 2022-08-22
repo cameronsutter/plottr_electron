@@ -10,9 +10,15 @@ import { buildViewMenu } from './view'
 import { getWindowById } from '../windows'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 
+let safelyExitModule = null
+
 ipcMain.on('pls-reload-menu', () => {
   log.info('Menu reload requested.')
-  loadMenu()
+  if (!safelyExitModule) {
+    log.error('Requesting a menu reload, but we have not built them before.')
+    return
+  }
+  loadMenu(safelyExitModule)
     .catch((error) => {
       log.error('Error reloading menu', error)
     })
@@ -21,7 +27,8 @@ ipcMain.on('pls-reload-menu', () => {
     })
 })
 
-function buildMenu() {
+function buildMenu(safelyExit) {
+  safelyExitModule = safelyExit
   const win = BrowserWindow.getFocusedWindow()
   let filePath = null
   if (win) {
@@ -36,22 +43,23 @@ function buildMenu() {
       return currentTrial()
     })
 
-  return Promise.all([buildPlottrMenu(buildMenu), buildFileMenu(filePath, getTrialInfo)]).then(
-    ([plottrMenu, fileMenu]) => {
-      return [
-        plottrMenu,
-        fileMenu,
-        buildEditMenu(),
-        buildViewMenu(),
-        buildWindowMenu(),
-        buildHelpMenu(),
-      ]
-    }
-  )
+  return Promise.all([
+    buildPlottrMenu(buildMenu, safelyExit),
+    buildFileMenu(filePath, getTrialInfo),
+  ]).then(([plottrMenu, fileMenu]) => {
+    return [
+      plottrMenu,
+      fileMenu,
+      buildEditMenu(),
+      buildViewMenu(),
+      buildWindowMenu(),
+      buildHelpMenu(),
+    ]
+  })
 }
 
-function loadMenu() {
-  return buildMenu().then((template) => {
+function loadMenu(safelyExit) {
+  return buildMenu(safelyExit).then((template) => {
     const menu = Menu.buildFromTemplate(template)
     Menu.setApplicationMenu(menu)
   })

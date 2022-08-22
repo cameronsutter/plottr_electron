@@ -1,0 +1,13 @@
+.busy {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  animation: Pulsate 2s linear infinite;
+  z-index: 999999;
+}
+
+@keyframes Pulsate {
+  from { opacity: 1; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}

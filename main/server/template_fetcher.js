@@ -4,6 +4,19 @@ import { isDevelopment } from './isDevelopment'
 
 export const MANIFEST_ROOT = 'manifest'
 const OLD_TEMPLATES_ROOT = 'templates'
+const DEPRECATED_TEMPLATE_IDS = ['pl6', 'pl12']
+
+const sequencePromises = (promiseThunks) => {
+  if (promiseThunks.length === 0) {
+    return Promise.resolve()
+  }
+
+  const currentPromise = promiseThunks[0]
+  const rest = promiseThunks.slice(1)
+  return currentPromise().then(() => {
+    return sequencePromises(rest)
+  })
+}
 
 const migrateTemplates = (templatesStore, manifestStore, log) => {
   // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
@@ -112,6 +125,42 @@ class TemplateFetcher {
           return Promise.resolve()
         }
       })
+      .then(this.removeDeprecatedTemplates)
+  }
+
+  removeDeprecatedTemplates = () => {
+    return sequencePromises(
+      DEPRECATED_TEMPLATE_IDS.map((templateId) => {
+        return () => {
+          const manifestTemplates = this.manifestStore.get('manifest.templates')
+          const manifestHasTemplate = manifestTemplates.some(({ id }) => {
+            return id === templateId
+          })
+          if (manifestHasTemplate) {
+            this.log(`Found deprecated template in manifest (${templateId}).  Deleting it.`)
+          }
+          const oldManifest = this.manifestStore.get()
+          const newManifest = {
+            manifest: {
+              ...oldManifest.manifest,
+              templates: oldManifest.manifest.templates.filter(({ id }) => {
+                return id !== templateId
+              }),
+            },
+          }
+          const removeManifestEntry = manifestHasTemplate
+            ? this.manifestStore.set(newManifest)
+            : Promise.resolve()
+          if (this.templatesStore.has(templateId)) {
+            this.log(`Found deprecated template (${templateId}).  Deleting it.`)
+          }
+          const removeTemplateStoreEntry = this.templatesStore.has(templateId)
+            ? this.templatesStore.delete(templateId)
+            : Promise.resolve()
+          return Promise.all([removeManifestEntry, removeTemplateStoreEntry])
+        }
+      })
+    )
   }
 
   fetchedIsNewer = (fetchedVersion) => {

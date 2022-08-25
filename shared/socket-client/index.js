@@ -278,6 +278,7 @@ const connect = (
             return
           }
           // Normal replies
+          case REMOVE_FROM_TEMP_FILES:
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
           case DELETE_KNOWN_FILE:

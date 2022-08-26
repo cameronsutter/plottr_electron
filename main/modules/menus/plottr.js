@@ -1,6 +1,5 @@
 import electron from 'electron'
 import log from 'electron-log'
-const { app } = electron
 import { is } from 'electron-util'
 import { t, localeNames, setupI18n } from 'plottr_locales'
 import currentSettings, { saveAppSetting } from '../settings'

@@ -105,6 +105,8 @@
   font-size: 20px;
   cursor: text;
   @include rce-text-font;
+  max-height: 400px;
+  overflow-y: auto;
 
   &.readonly {
     border: none;

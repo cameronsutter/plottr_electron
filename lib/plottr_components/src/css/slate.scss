@@ -105,7 +105,7 @@
   font-size: 20px;
   cursor: text;
   @include rce-text-font;
-  max-height: 400px;
+  max-height: 70vh;
   overflow-y: auto;
 
   &.readonly {

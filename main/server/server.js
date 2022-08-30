@@ -93,7 +93,11 @@ const { rm } = fs.promises
 
 const startupTasks = (userDataPath, stores, logInfo) => {
   return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
-    return templateFetcher.fetch()
+    return templateFetcher.fetch().catch((error) => {
+      logInfo(
+        `ERROR: couldn't fetch templates at startup.  Continueing anyway.  Error message: ${error.message}.\n${error.stack}`
+      )
+    })
   })
 }
 

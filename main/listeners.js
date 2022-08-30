@@ -40,21 +40,33 @@ import {
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
-    const lastFile = lastOpenedFile()
-    const win = getWindowById(id)
-    const filePath = win.filePath || lastFile
-    if (win) {
-      featureFlags().then((flags) => {
-        event.sender.send(
-          'state-fetched',
-          filePath,
-          flags,
-          numberOfWindows(),
-          win.filePath,
-          processSwitches.serialise()
-        )
+    lastOpenedFile()
+      .catch((error) => {
+        return null
       })
-    }
+      .then((lastFile) => {
+        return currentSettings().then((settings) => {
+          // If the user asked for dashboard first, then never reply
+          // with the last known file.
+          return (settings?.user?.openDashboardFirst && null) || lastFile
+        })
+      })
+      .then((lastFile) => {
+        const win = getWindowById(id)
+        const filePath = win.filePath || lastFile
+        if (win) {
+          featureFlags().then((flags) => {
+            event.sender.send(
+              'state-fetched',
+              filePath,
+              flags,
+              numberOfWindows(),
+              win.filePath,
+              processSwitches.serialise()
+            )
+          })
+        }
+      })
   })
 
   ipcMain.on('pls-tell-me-the-socket-worker-port', (event) => {

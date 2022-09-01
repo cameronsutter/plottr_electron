@@ -295,4 +295,54 @@ const socketServerConfig = {
   optimization: { splitChunks: false },
 }
 
-module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig]
+const webWorkerConfig = {
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+  watch: process.env.NODE_ENV === 'dev',
+  context: path.resolve(__dirname, 'src'),
+  entry: {
+    app: path.resolve('.', 'lib', 'plottr_firebase', 'worker', '_firebase-worker.js'),
+  },
+  output: {
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: 'firebase_worker.bundle.js',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.scss$/,
+        loader: 'sass-loader',
+        include: path.resolve(__dirname, 'src', 'css'),
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'url-loader',
+      },
+    ],
+  },
+  resolve: {
+    extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
+    modules: ['node_modules', 'src/app', 'test'],
+  },
+  target: 'web',
+  plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  optimization: { splitChunks: false },
+}
+
+module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig, webWorkerConfig]

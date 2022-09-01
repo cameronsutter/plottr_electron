@@ -1,13 +1,37 @@
-# Stuff that we ignore
-node_modules
+# For editors
+.dir-locals.el
+.dumbjump
+setup.el
+jsconfig.json
+
+# Built/bundled
+bin/electron_main.js
+bin/323.bundle.js.LICENSE.txt
+bin/3bd4d476bb1e0e985412
+bin/app.bundle.js.LICENSE.txt
+bin/appDependencies.bundle.js.LICENSE.txt
+bin/c0f60a30d0e6cd83c6a1.exe
+bin/electron_main.js.LICENSE.txt
+bin/glyphicons-halflings-regular.woff2
+bin/loginApp.bundle.js.LICENSE.txt
 *.bundle.js
 *.bundle.js.map
-screenshots/*
+*.map
+
+# New examples (use git add with force flag to add another)
+examples/**/*
+
+# Dependencies
+node_modules
+
+# Per machine
 .env
+
+# Misc
+screenshots/*
 .DS_Store
 data/*
-*.map
 .prev
-bin/electron_main.js
 dist/
 lib/plottr_components/src/css/components.css.map
+

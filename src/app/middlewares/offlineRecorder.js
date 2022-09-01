@@ -1,4 +1,5 @@
 import { selectors } from 'pltr/v2'
+import { shouldIgnoreAction } from './shouldIgnoreAction'
 
 const offlineRecorder = (whenClientIsReady) => {
   let saveTimeout = null
@@ -37,6 +38,7 @@ const offlineRecorder = (whenClientIsReady) => {
 
     const state = store.getState().present
     if (
+      !shouldIgnoreAction(action) &&
       selectors.isCloudFileSelector(state) &&
       !selectors.isOfflineSelector(state) &&
       !selectors.isResumingSelector(state)

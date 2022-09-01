@@ -176,6 +176,27 @@ const rendererConfig = {
       'react-redux': path.resolve('./node_modules/react-redux'),
       redux: path.resolve('./node_modules/redux'),
       plottr_locales: path.resolve('./node_modules/plottr_locales'),
+      // Force firebase to use the browser builds rather than node builds
+      '@firebase/auth/internal': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/internal.js'
+      ),
+      '@firebase/auth': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/index.js'
+      ),
+      '@firebase/app': path.resolve(
+        __dirname,
+        'node_modules/@firebase/app/dist/esm/index.esm2017.js'
+      ),
+      '@firebase/firestore': path.resolve(
+        __dirname,
+        'node_modules/@firebase/firestore/dist/index.esm2017.js'
+      ),
+      '@firebase/storage': path.resolve(
+        __dirname,
+        'node_modules/@firebase/storage/dist/index.esm2017.js'
+      ),
     },
   },
   target: 'electron-renderer',
@@ -246,6 +267,27 @@ const loginPopupConfig = {
       'react-redux': path.resolve('./node_modules/react-redux'),
       redux: path.resolve('./node_modules/redux'),
       plottr_locales: path.resolve('./node_modules/plottr_locales'),
+      // Force firebase to use the browser builds rather than node builds
+      '@firebase/auth/internal': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/internal.js'
+      ),
+      '@firebase/auth': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/index.js'
+      ),
+      '@firebase/app': path.resolve(
+        __dirname,
+        'node_modules/@firebase/app/dist/esm/index.esm2017.js'
+      ),
+      '@firebase/firestore': path.resolve(
+        __dirname,
+        'node_modules/@firebase/firestore/dist/index.esm2017.js'
+      ),
+      '@firebase/storage': path.resolve(
+        __dirname,
+        'node_modules/@firebase/storage/dist/index.esm2017.js'
+      ),
     },
   },
   target: 'electron-renderer',

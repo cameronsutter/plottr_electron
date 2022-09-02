@@ -33,10 +33,10 @@ const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesMod
 
   const addKnownFileWithFix = (filePath) => {
     // We also don't want to track recent files that don't have a path.
-    if (!filePath || filePath === '') return null
+    if (!filePath || filePath === '') return Promise.resolve()
 
     // We don't want to track recent files when they're offline files.
-    if (filePath.startsWith(offlineFilesFilesPath)) return null
+    if (filePath.startsWith(offlineFilesFilesPath)) return Promise.rosolve()
 
     const normalisedPath = path.normalize(filePath)
     return knownFilesStore
@@ -62,11 +62,14 @@ const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesMod
           if (newId < 1 || !Object.keys(knownFiles).length) {
             newId = 1
           }
-          knownFilesStore.set(`${newId}`, {
-            path: filePath,
-            lastOpened: Date.now(),
-          })
-          return newId
+          return knownFilesStore
+            .set(`${newId}`, {
+              path: filePath,
+              lastOpened: Date.now(),
+            })
+            .then(() => {
+              return newId
+            })
         }
       })
       .catch((error) => {

@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 export const exportSettingsSelector = (state) => state.settings.exportSettings
 export const userSettingsSelector = (state) => state.settings.userSettings
 export const appSettingsSelector = (state) => state.settings.appSettings
-export const appUserSettingsSelector = createSelector(appSettingsSelector, ({ user }) => user)
+export const appUserSettingsSelector = createSelector(appSettingsSelector, ({ user }) => user || {})
 export const previouslyLoggedIntoProSelector = createSelector(
   appSettingsSelector,
   (appSettings) => {
@@ -29,4 +29,13 @@ export const actStructureEnabled = createSelector(
 export const localBackupsEnabledSelector = createSelector(
   appUserSettingsSelector,
   ({ localBackups }) => localBackups
+)
+export const useSpellcheckSelector = createSelector(
+  appUserSettingsSelector,
+  ({ useSpellcheck }) => useSpellcheck
+)
+export const trialModeSelector = createSelector(appSettingsSelector, ({ trialMode }) => trialMode)
+export const canGetUpdatesSelector = createSelector(
+  appSettingsSelector,
+  ({ canGetUpdates }) => canGetUpdates
 )

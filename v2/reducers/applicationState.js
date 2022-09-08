@@ -33,6 +33,13 @@ import {
   FINISH_IMPORTING_SCRIVENER,
   PROMPT_TO_UPLOAD_FILE,
   DISMISS_PROMPT_TO_UPLOAD_FILE,
+  REQUEST_CHECK_FOR_UPDATE,
+  PROCESS_RESPONSE_TO_REQUEST_UPDATE,
+  DISMISS_UPDATE_NOTIFIER,
+  SET_UPDATE_DOWNLOAD_PROGRESS,
+  AUTO_CHECK_FOR_UPDATES,
+  BUSY_WITH_WORK_THAT_PREVENTS_QUITTING,
+  DONE_WITH_WORK_THAT_PREVENTS_QUITTING,
 } from '../constants/ActionTypes'
 
 const INITIAL_STATE = {
@@ -76,6 +83,19 @@ const INITIAL_STATE = {
     isOnboarding: false,
     isOnboardingFromRoot: false,
     onboardingStep: null,
+  },
+  update: {
+    requestedCheck: false,
+    shouldCheck: true,
+    checking: false,
+    available: false,
+    percentDownloaded: 0,
+    error: null,
+    info: null,
+    notifierHidden: true,
+  },
+  work: {
+    busy: false,
   },
 }
 
@@ -299,6 +319,7 @@ function applicationStateReducer(state = INITIAL_STATE, action) {
         file: {
           ...state.file,
           errorLoadingFile: true,
+          errorIsUpdateError: action.errorIsUpdateError,
           loadingFile: true,
           fileLoaded: false,
         },
@@ -514,6 +535,85 @@ function applicationStateReducer(state = INITIAL_STATE, action) {
         project: {
           ...state.project,
           isImportingNewProject: false,
+        },
+      }
+    }
+    case REQUEST_CHECK_FOR_UPDATE: {
+      return {
+        ...state,
+        update: {
+          ...state.update,
+          requestedCheck: true,
+          checking: true,
+          shouldCheck: false,
+          notifierHidden: false,
+        },
+      }
+    }
+    case AUTO_CHECK_FOR_UPDATES: {
+      return {
+        ...state,
+        update: {
+          ...state.update,
+          checking: true,
+          shouldCheck: false,
+          notifierHidden: false,
+        },
+      }
+    }
+    case PROCESS_RESPONSE_TO_REQUEST_UPDATE: {
+      const { available, error, info } = action
+
+      return {
+        ...state,
+        update: {
+          ...state.update,
+          checking: false,
+          available,
+          error,
+          info,
+        },
+      }
+    }
+    case DISMISS_UPDATE_NOTIFIER: {
+      return {
+        ...state,
+        update: {
+          ...state.update,
+          notifierHidden: true,
+          error: null,
+          info: null,
+        },
+      }
+    }
+    case SET_UPDATE_DOWNLOAD_PROGRESS: {
+      const { percent } = action
+      if (percent === state.update.percentDownloaded) {
+        return state
+      }
+
+      return {
+        ...state,
+        update: {
+          ...state.update,
+          percentDownloaded: percent,
+          downloadInProgress: percent < 100,
+        },
+      }
+    }
+    case BUSY_WITH_WORK_THAT_PREVENTS_QUITTING: {
+      return {
+        ...state,
+        work: {
+          busy: true,
+        },
+      }
+    }
+    case DONE_WITH_WORK_THAT_PREVENTS_QUITTING: {
+      return {
+        ...state,
+        work: {
+          busy: false,
         },
       }
     }

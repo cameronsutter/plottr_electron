@@ -69,6 +69,8 @@ export const ui = {
   },
   timeline: {
     size: 'large',
+    view: 'default',
+    actTab: 0,
   },
   searchTerms: {
     notes: null,
@@ -78,7 +80,15 @@ export const ui = {
     outline: null,
     timeline: null,
   },
+  attributeTabs: {
+    characters: null,
+  },
+  characterTab: {
+    selectedCharacter: null,
+  },
 }
+
+export const attributes = []
 
 export const notifications = {
   message: null,

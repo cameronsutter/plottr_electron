@@ -81,5 +81,5 @@ export function load(patching, notes) {
 }
 
 export function duplicateNote(id) {
-  return { type: DUPLICATE_NOTE, id }
+  return { type: DUPLICATE_NOTE, id, lastEdited: new Date().getTime() }
 }

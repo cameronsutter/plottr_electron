@@ -39,6 +39,11 @@ import {
   ADD_TAG,
   ADD_CARD,
   ADD_CREATED_TAG,
+  SET_ACTIVE_TIMELINE_TAB,
+  SET_TIMELINE_VIEW,
+  DELETE_BEAT,
+  SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB,
+  SELECT_CHARACTER,
 } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
@@ -160,7 +165,7 @@ const ui =
       }
 
       case FILE_LOADED:
-        return action.data.ui
+        return action.data.ui || newFileUI
 
       case NEW_FILE:
         return newFileUI
@@ -300,6 +305,56 @@ const ui =
             ...state.searchTerms,
             outline: null,
             timeline: null,
+          },
+        }
+      }
+
+      case SET_ACTIVE_TIMELINE_TAB: {
+        return {
+          ...state,
+          timeline: {
+            ...state.timeline,
+            actTab: action.activeTab,
+          },
+        }
+      }
+
+      case SET_TIMELINE_VIEW: {
+        return {
+          ...state,
+          timeline: {
+            ...state.timeline,
+            view: action.timelineView,
+          },
+        }
+      }
+
+      case DELETE_BEAT: {
+        return {
+          ...state,
+          timeline: {
+            ...state.timeline,
+            actTab: action.actTab || state.timeline.actTab,
+          },
+        }
+      }
+
+      case SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB: {
+        return {
+          ...state,
+          attributeTabs: {
+            ...state.attributeTabs,
+            characters: action.bookId,
+          },
+        }
+      }
+
+      case SELECT_CHARACTER: {
+        return {
+          ...state,
+          characterTab: {
+            ...state.characterTab,
+            selectedCharacter: action.id,
           },
         }
       }

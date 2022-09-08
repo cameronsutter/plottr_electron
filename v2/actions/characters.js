@@ -13,9 +13,15 @@ import {
   REMOVE_TAG_FROM_CHARACTER,
   EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
   DUPLICATE_CHARACTER,
+  CREATE_CHARACTER_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE_VALUE,
 } from '../constants/ActionTypes'
 import { editorMetadataIfPresent } from '../helpers/editors'
+import { characterAttributesForCurrentBookSelector } from '../selectors/attributes'
 import { character } from '../store/initialState'
+import { escapeBracesInAttributeName } from './customAttributes'
+import { attrIfPresent } from '../helpers/editors'
 
 export function addCharacter(name) {
   return {
@@ -90,3 +96,30 @@ export function load(patching, characters) {
 export function duplicateCharacter(id) {
   return { type: DUPLICATE_CHARACTER, id }
 }
+
+export function createCharacterAttribute(attribute) {
+  return {
+    type: CREATE_CHARACTER_ATTRIBUTE,
+    attribute: escapeBracesInAttributeName(attribute),
+  }
+}
+
+export const editCharacterAttributeValue =
+  (characterId, attributeId, value) => (dispatch, getState) => {
+    const state = getState().present
+    const characterAttributesForBook = characterAttributesForCurrentBookSelector(state)
+    const isANewAttribute = characterAttributesForBook.some((attribute) => {
+      return attribute.id === attributeId
+    })
+    if (isANewAttribute) {
+      dispatch({
+        type: EDIT_CHARACTER_ATTRIBUTE_VALUE,
+        characterId,
+        attributeId,
+        value,
+      })
+      return
+    }
+
+    dispatch(editCharacter(characterId, attrIfPresent(attributeId, value), null, null))
+  }

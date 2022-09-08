@@ -130,6 +130,9 @@ const INITIAL_STATE = {
       email: 'test@test.com',
       beatHierarchy: false,
       enableOfflineMode: false,
+      useSpellcheck: true,
+      font: 'Forum',
+      fontSize: 20,
     },
   },
   userSettings: {

@@ -27,6 +27,10 @@ import {
   REMOVE_TEMPLATE_FROM_CHARACTER,
   EDIT_CHARACTER_TEMPLATE_ATTRIBUTE,
   DUPLICATE_CHARACTER,
+  CREATE_CHARACTER_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE_VALUE,
+  EDIT_CHARACTER_ATTRIBUTE_METADATA,
+  DELETE_CHARACTER_ATTRIBUTE,
 } from '../constants/ActionTypes'
 import { character as defaultCharacter } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
@@ -35,6 +39,19 @@ import { applyToCustomAttributes } from './applyToCustomAttributes'
 import { repairIfPresent } from './repairIfPresent'
 
 const initialState = [defaultCharacter]
+
+const firstParagraphText = (children) => {
+  if (!Array.isArray(children) || children.length === 0) {
+    return ''
+  }
+
+  const firstElement = children[0]
+  if (typeof firstElement.text === 'string') {
+    return firstElement.text
+  }
+
+  return firstParagraphText(firstElement.children)
+}
 
 const characters =
   (dataRepairers) =>
@@ -326,6 +343,80 @@ const characters =
           id: nextId(state),
         }
         return [...state, { ...duplicated }]
+      }
+
+      case CREATE_CHARACTER_ATTRIBUTE: {
+        return state.map((character) => {
+          const attributes = character.attributes || []
+
+          return {
+            ...character,
+            attributes: [
+              ...attributes,
+              { value: action.attribute.value, id: action.nextAttributeId },
+            ],
+          }
+        })
+      }
+
+      case EDIT_CHARACTER_ATTRIBUTE_VALUE: {
+        return state.map((character) => {
+          if (character.id === action.characterId) {
+            const attributes = character.attributes || []
+            return {
+              ...character,
+              attributes: [
+                ...attributes.map((attribute) => {
+                  if (attribute.id === action.attributeId) {
+                    return {
+                      ...attribute,
+                      value: action.value,
+                    }
+                  }
+
+                  return attribute
+                }),
+              ],
+            }
+          }
+
+          return character
+        })
+      }
+
+      case EDIT_CHARACTER_ATTRIBUTE_METADATA: {
+        return state.map((character) => {
+          const attributes = character.attributes || []
+          return {
+            ...character,
+            attributes: attributes.map((attribute) => {
+              if (attribute.id === action.id) {
+                const newValue =
+                  action.attributeType === 'text' && typeof attribute.value !== 'string'
+                    ? firstParagraphText(attribute.value)
+                    : attribute.value
+                return {
+                  ...attribute,
+                  value: newValue,
+                }
+              }
+
+              return attribute
+            }),
+          }
+        })
+      }
+
+      case DELETE_CHARACTER_ATTRIBUTE: {
+        return state.map((character) => {
+          const attributes = character.attributes || []
+          return {
+            ...character,
+            attributes: attributes.filter((attribute) => {
+              return attribute.id !== action.id
+            }),
+          }
+        })
       }
 
       default:

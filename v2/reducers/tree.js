@@ -30,10 +30,10 @@ export const addNode = (idProp) => (tree, parentId, node) => {
       children: {
         ...tree.children,
         ...(parentChildren ? { [parentId]: [...tree.children[parentId], node[idProp]] } : {}),
-        [node[idProp]]: [],
+        [node[idProp]]: []
       },
       heap: { ...heap, [node[idProp]]: parentId },
-      index: { ...tree.index, [node[idProp]]: node },
+      index: { ...tree.index, [node[idProp]]: node }
     }
   }
 
@@ -46,6 +46,14 @@ export const findNode = ({ index }, nodeId) => {
 
 export const nodeParent = ({ heap }, nodeId) => {
   return heap[nodeId]
+}
+
+export const rootParentId = (tree, nodeId) => {
+  let rootParent = nodeId
+  while (nodeParent(tree, rootParent) !== null) {
+    rootParent = nodeParent(tree, rootParent)
+  }
+  return rootParent
 }
 
 export const depth = ({ heap, index }, nodeId) => {
@@ -69,10 +77,10 @@ export const deleteNode = (tree, nodeId) => {
       ...tree.children,
       ...(parentId !== undefined
         ? { [parentId]: tree.children[parentId].filter((id) => id !== nodeId) }
-        : {}),
+        : {})
     }),
     heap: clone(tree.heap),
-    index: clone(tree.index),
+    index: clone(tree.index)
   }
   const toDelete = [nodeId]
   while (toDelete.length) {
@@ -106,13 +114,13 @@ export const moveNode = (tree, nodeId, newParent) => {
     index,
     heap: {
       ...heap,
-      [nodeId]: newParent,
+      [nodeId]: newParent
     },
     children: {
       ...children,
       [newParent]: [...children[newParent], nodeId],
-      [oldParentId]: [...children[oldParentId]].filter((x) => x !== nodeId),
-    },
+      [oldParentId]: [...children[oldParentId]].filter((x) => x !== nodeId)
+    }
   }
 }
 
@@ -129,7 +137,7 @@ export const nextId =
 export const newTree = (idProp, ...rootEntities) => {
   const tree = {
     children: {
-      null: rootEntities.map((x) => x[idProp]),
+      null: rootEntities.map((x) => x[idProp])
       // Children to be added...
     },
     heap: {
@@ -137,7 +145,7 @@ export const newTree = (idProp, ...rootEntities) => {
     },
     index: {
       // Items to be added
-    },
+    }
   }
 
   rootEntities.forEach((entity) => {
@@ -162,9 +170,9 @@ export const editNode = (tree, nodeId, newAttributes) => {
       ...index,
       [nodeId]: {
         ...index[nodeId],
-        ...newAttributes,
-      },
-    },
+        ...newAttributes
+      }
+    }
   }
 }
 
@@ -178,8 +186,8 @@ export const replaceNode = (tree, nodeId, newNode) => {
     heap,
     index: {
       ...index,
-      [nodeId]: newNode,
-    },
+      [nodeId]: newNode
+    }
   }
 }
 
@@ -187,6 +195,13 @@ export const map = (tree, f) => {
   return Object.keys(tree.index).reduce((acc, nodeId) => {
     const node = findNode(acc, nodeId)
     return replaceNode(acc, nodeId, f(node))
+  }, tree)
+}
+
+export const forEach = (tree, f) => {
+  return Object.keys(tree.index).forEach((nodeId) => {
+    const node = findNode(tree, nodeId)
+    f(node)
   }, tree)
 }
 

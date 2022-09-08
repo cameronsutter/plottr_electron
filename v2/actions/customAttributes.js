@@ -20,11 +20,11 @@ import {
   LOAD_CUSTOM_ATTRIBUTES,
 } from '../constants/ActionTypes'
 
-const escapeBraces = (name) => {
+export const escapeBraces = (name) => {
   return name?.replace(/[{}]/g, '')
 }
 
-const escapeBracesInAttributeName = (attribute) => {
+export const escapeBracesInAttributeName = (attribute) => {
   if (attribute) {
     return {
       name: escapeBraces(attribute.name),

@@ -16,13 +16,25 @@ const convertFromNanosAndSeconds = (nanosAndSecondsObject) => {
   )
 }
 
+const VERY_OLD_DATE = new Date(0)
+
 function getDateValue(fileObj) {
+  if (!fileObj.lastOpened) {
+    return VERY_OLD_DATE
+  }
+
   // At some point, we stored a timestamp in this field.  Now it's a
   // `seconds`, and `nanoseconds` object.
   const lastOpenedIsString = typeof fileObj.lastOpened === 'string'
+  const lastOpenedIsObject = typeof fileObj.lastOpened === 'object'
+  const lastOpenedIsNumber = typeof fileObj.lastOpened === 'number'
 
-  if (!lastOpenedIsString && fileObj.lastOpened) {
+  if (!lastOpenedIsString && fileObj.lastOpened && lastOpenedIsObject) {
     return convertFromNanosAndSeconds(fileObj.lastOpened) || new Date()
+  }
+
+  if (lastOpenedIsNumber) {
+    return new Date(fileObj.lastOpened)
   }
 
   if (lastOpenedIsString) {
@@ -118,5 +130,55 @@ export const sortedKnownFilesSelector = createSelector(
     const sortedIds = sortBy(filteredFileIds, (id) => getDateValue(files[`${id}`])).reverse()
 
     return [sortedIds, files]
+  }
+)
+
+export const filepathSelector = (state, path) => {
+  return path
+}
+
+export const isTempFileSelector = createSelector(
+  fileSystemKnownFilesSelector,
+  filepathSelector,
+  (files, path) => {
+    const file = files.find((file) => {
+      return file.path === path
+    })
+    return file && file.isTempFile
+  }
+)
+
+export const sortedProKnownFilesByIdSelector = createSelector(
+  cloudFileListSelector,
+  searchTermSelector,
+  (files, searchTerm) => {
+    const filteredFileIds = files
+      .filter((f) => {
+        if (searchTerm && searchTerm.length > 1) {
+          return (f.fileName || f.path).toLowerCase().includes(searchTerm.toLowerCase())
+        } else {
+          return true
+        }
+      })
+      .map(({ id }) => {
+        return id
+      })
+    const sortedIds = sortBy(filteredFileIds, (id) =>
+      getDateValue(files.find((file) => file.id === id))
+    ).reverse()
+    const filesById = files.reduce((acc, nextFile) => {
+      return {
+        ...acc,
+        [nextFile.id]: nextFile,
+      }
+    }, {})
+    return [sortedIds, filesById]
+  }
+)
+
+export const sortedFlatProKnownFilesByIdSelector = createSelector(
+  sortedProKnownFilesByIdSelector,
+  (proFiles) => {
+    return proFiles[0].map((id) => proFiles[1][id])
   }
 )

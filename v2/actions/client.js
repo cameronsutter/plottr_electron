@@ -2,6 +2,7 @@ import {
   SET_USER_ID,
   SET_CLIENT_ID,
   SET_EMAIL_ADDRESS,
+  SET_HAS_ONBOARDED,
   SET_HAS_PRO,
   SET_IS_ON_WEB,
   SET_CURRENT_APP_STATE,
@@ -20,6 +21,11 @@ export const setClientId = (clientId) => ({
 export const setEmailAddress = (emailAddress) => ({
   type: SET_EMAIL_ADDRESS,
   emailAddress,
+})
+
+export const setHasOnboarded = (hasOnboarded) => ({
+  type: SET_HAS_ONBOARDED,
+  hasOnboarded,
 })
 
 export const setHasPro = (hasPro) => ({

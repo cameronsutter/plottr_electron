@@ -14,7 +14,6 @@ import * as uiActions from './actions/ui'
 import * as undoActions from './actions/undo'
 import * as hierarchyActions from './actions/hierarchy'
 import * as featureFlagActions from './actions/featureFlags'
-import * as tourActions from './actions/tours'
 import * as errorActions from './actions/error'
 import * as permissionActions from './actions/permission'
 import * as projectActions from './actions/project'
@@ -30,6 +29,7 @@ import * as imageCacheActions from './actions/imageCache'
 import * as notificationActions from './actions/notifications'
 import * as domEventActions from './actions/domEvents'
 import * as testingAndDiagnosisActions from './actions/testingAndDiagnosis'
+import * as attributeActions from './actions/attributes'
 
 import * as ActionTypes from './constants/ActionTypes'
 import * as LoadActions from './constants/loadActions'
@@ -68,7 +68,6 @@ import * as uiSelectors from './selectors/ui'
 import * as hierarchySelectors from './selectors/hierarchy'
 import * as hierarchyLevelSelectors from './selectors/hierarchyLevel'
 import * as featureFlagSelectors from './selectors/featureFlags'
-import * as tourSelector from './selectors/tours'
 import * as errorSelectors from './selectors/error'
 import * as permissionSelectors from './selectors/permission'
 import * as projectSelectors from './selectors/project'
@@ -86,6 +85,7 @@ import * as imageCacheSelectors from './selectors/imageCache'
 import * as notificationSelectors from './selectors/notifications'
 import * as domEventsSelectors from './selectors/domEvents'
 import * as testingAndDiagnosisSelectors from './selectors/testingAndDiagnosis'
+import * as attributesSelectors from './selectors/attributes'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
@@ -110,7 +110,6 @@ import fileReducer from './reducers/file'
 import uiReducer from './reducers/ui'
 import hierarchyReducer from './reducers/hierarchy'
 import featureFlagReducer from './reducers/featureFlags'
-import tourReducer from './reducers/tours'
 import errorReducer from './reducers/error'
 import permissionReducer from './reducers/permission'
 import clientReducer from './reducers/client'
@@ -141,7 +140,6 @@ import * as tree from './reducers/tree'
 // Slate serialisers
 import serializeToRTF from './slate_serializers/to_rtf'
 import { serialize as serializeToPlain } from './slate_serializers/to_plain_text'
-import serializeToWord from './slate_serializers/to_word'
 
 const reducers = {
   customAttributes: customAttributesReducer,
@@ -160,7 +158,6 @@ const reducers = {
   ui: uiReducer,
   hierarchyLevels: hierarchyReducer,
   featureFlags: featureFlagReducer,
-  tour: tourReducer,
   error: errorReducer,
   permission: permissionReducer,
   client: clientReducer,
@@ -193,7 +190,6 @@ const selectors = {
   ...hierarchySelectors,
   ...hierarchyLevelSelectors,
   ...featureFlagSelectors,
-  ...tourSelector,
   ...errorSelectors,
   ...permissionSelectors,
   ...projectSelectors,
@@ -211,6 +207,7 @@ const selectors = {
   ...notificationSelectors,
   ...domEventsSelectors,
   ...testingAndDiagnosisSelectors,
+  ...attributesSelectors,
 }
 
 const actions = {
@@ -230,7 +227,6 @@ const actions = {
   undo: undoActions,
   hierarchyLevels: hierarchyActions,
   featureFlags: featureFlagActions,
-  tour: tourActions,
   error: errorActions,
   permission: permissionActions,
   project: projectActions,
@@ -246,6 +242,7 @@ const actions = {
   notifications: notificationActions,
   domEvents: domEventActions,
   testingAndDiagnosis: testingAndDiagnosisActions,
+  attributes: attributeActions,
 }
 
 const helpers = {
@@ -265,7 +262,6 @@ const helpers = {
 
 const slate = {
   rtf: { serialize: serializeToRTF },
-  word: { serialize: serializeToWord },
   plain: { serialize: serializeToPlain },
 }
 

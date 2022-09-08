@@ -64,7 +64,7 @@ const notes =
           ...cloneDeep(itemToDuplicate),
           id: nextId(state),
         }
-        return [...state, { ...duplicated }]
+        return [...state, { ...duplicated, lastEdited: action.lastEdited }]
       }
 
       case EDIT_NOTE_TEMPLATE_ATTRIBUTE: {

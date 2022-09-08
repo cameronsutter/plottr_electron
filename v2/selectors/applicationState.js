@@ -91,6 +91,10 @@ export const errorLoadingFileSelector = createSelector(
   fileStateSelector,
   ({ errorLoadingFile }) => errorLoadingFile
 )
+export const errorIsUpdateErrorSelector = createSelector(
+  fileStateSelector,
+  ({ errorIsUpdateError }) => errorIsUpdateError
+)
 export const deletingFileSelector = createSelector(
   fileStateSelector,
   ({ deletingFile }) => deletingFile
@@ -481,3 +485,66 @@ export const cantShowFileSelector = createSelector(
     )
   }
 )
+
+const updateStateSelector = createSelector(applicationStateSelector, ({ update }) => {
+  return update
+})
+
+export const shouldCheckForUpdatesSelector = createSelector(
+  updateStateSelector,
+  ({ shouldCheck }) => {
+    return shouldCheck
+  }
+)
+
+export const updateAvailableSelector = createSelector(updateStateSelector, ({ available }) => {
+  return available
+})
+
+export const downloadInProgressSelector = createSelector(
+  updateStateSelector,
+  ({ percentDownloaded }) => {
+    return percentDownloaded > 0 && percentDownloaded < 100
+  }
+)
+
+export const percentDownloadedSelector = createSelector(
+  updateStateSelector,
+  ({ percentDownloaded }) => {
+    return percentDownloaded
+  }
+)
+
+export const finishedDownloadingSelector = createSelector(
+  updateStateSelector,
+  ({ percentDownloaded }) => {
+    return percentDownloaded === 100
+  }
+)
+
+export const updateErrorSelector = createSelector(updateStateSelector, ({ error }) => {
+  return error
+})
+
+export const updateInfoSelector = createSelector(updateStateSelector, ({ info }) => {
+  return info
+})
+
+export const updateNotificationHiddenSelector = createSelector(
+  updateStateSelector,
+  ({ notifierHidden }) => {
+    return notifierHidden
+  }
+)
+
+export const checkingForUpdatesSelector = createSelector(updateStateSelector, ({ checking }) => {
+  return checking
+})
+
+const workSelector = createSelector(applicationStateSelector, ({ work }) => {
+  return work
+})
+
+export const busyWithWorkThatPreventsQuittingSelector = createSelector(workSelector, ({ busy }) => {
+  return busy
+})

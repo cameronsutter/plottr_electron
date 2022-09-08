@@ -32,6 +32,10 @@ import {
   SET_TAGS_SEARCH_TERM,
   SET_OUTLINE_SEARCH_TERM,
   SET_TIMELINE_SEARCH_TERM,
+  SET_ACTIVE_TIMELINE_TAB,
+  SET_TIMELINE_VIEW,
+  SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB,
+  SELECT_CHARACTER,
 } from '../constants/ActionTypes'
 
 export function changeCurrentView(view) {
@@ -160,4 +164,20 @@ export function setTimelineSearchTerm(searchTerm) {
 
 export function patchFile(patching, file) {
   return { type: LOAD_FILE, patching, file }
+}
+
+export function setTimelineActiveTab(activeTab) {
+  return { type: SET_ACTIVE_TIMELINE_TAB, activeTab }
+}
+
+export function setTimelineView(timelineView) {
+  return { type: SET_TIMELINE_VIEW, timelineView }
+}
+
+export function selectCharacterAttributeBookTab(bookId) {
+  return { type: SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB, bookId }
+}
+
+export function selectCharacter(id) {
+  return { type: SELECT_CHARACTER, id }
 }

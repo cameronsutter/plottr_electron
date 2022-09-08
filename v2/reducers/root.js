@@ -9,19 +9,32 @@ import {
   MOVE_CARD_TO_BOOK,
   DUPLICATE_LINE,
   MOVE_LINE,
+  ADD_BEAT,
+  INSERT_BEAT,
+  DELETE_BEAT,
+  CREATE_CHARACTER_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE_VALUE,
+  EDIT_CHARACTER_ATTRIBUTE_METADATA,
+  DELETE_CHARACTER_ATTRIBUTE,
+  REORDER_CHARACTER_ATTRIBUTE_METADATA,
 } from '../constants/ActionTypes'
-import { isSeriesSelector } from '../selectors/ui'
+import { characterAttributeTabSelector, isSeriesSelector } from '../selectors/ui'
 import { reduce, beatsByPosition, nextId as nextBeatId } from '../helpers/beats'
 import { nextId, objectId } from '../store/newIds'
 import * as tree from './tree'
 import { beat as defaultBeat } from '../store/initialState'
 import { cloneDeep } from 'lodash'
 import { firstLineForBookSelector } from '../selectors/lines'
+import { timelineViewIsTabbedSelector } from '../selectors/ui'
 import {
   sortedBeatsForAnotherBookSelector,
   firstVisibleBeatForBookSelector,
+  timelineTabBeatIdsSelector,
+  timelineActiveTabSelector,
 } from '../selectors/beats'
 import { addBeat } from '../actions/beats'
+import { setTimelineView } from '../actions/ui'
+import { characterAttributesForBookSelector } from '../selectors/attributes'
 
 /**
  * `dataRepairers` is an object which contains various repairs to be
@@ -41,6 +54,49 @@ const root = (dataRepairers) => (state, action) => {
   const isSeries = action.type.includes('@@') ? false : isSeriesSelector(state)
   const mainReducer = unrepairedMainReducer(dataRepairers)
   switch (action.type) {
+    // Actions for new attributes need the current book.
+    case REORDER_CHARACTER_ATTRIBUTE_METADATA:
+    case DELETE_CHARACTER_ATTRIBUTE:
+    case EDIT_CHARACTER_ATTRIBUTE_METADATA:
+    case EDIT_CHARACTER_ATTRIBUTE_VALUE:
+    case CREATE_CHARACTER_ATTRIBUTE: {
+      const bookId = characterAttributeTabSelector(state)
+      const characterAttributes = characterAttributesForBookSelector(state)
+      const nextAttributeId = nextId(characterAttributes)
+      const newAction = {
+        ...action,
+        bookId,
+        nextAttributeId,
+      }
+      return mainReducer(state, newAction)
+    }
+    case DELETE_BEAT: {
+      const topLevelbeatIds = timelineTabBeatIdsSelector(state)
+      const position = topLevelbeatIds.indexOf(action.id)
+      if (position !== -1) {
+        if (topLevelbeatIds.length > 1) {
+          if (position === 0) {
+            return mainReducer(state, { ...action, actTab: topLevelbeatIds[1] })
+          } else {
+            return mainReducer(state, { ...action, actTab: topLevelbeatIds[position - 1] })
+          }
+        } else {
+          const withDefaultView = mainReducer(state, setTimelineView('default'))
+          return mainReducer(withDefaultView, { ...action, actTab: topLevelbeatIds[position - 1] })
+        }
+      }
+      return mainReducer(state, action)
+    }
+
+    case INSERT_BEAT: {
+      const timelineViewIsTabbed = timelineViewIsTabbedSelector(state)
+      if (timelineViewIsTabbed) {
+        const activeParentId = timelineActiveTabSelector(state)
+        return mainReducer(state, { ...action, parentId: activeParentId })
+      }
+      return mainReducer(state, action)
+    }
+
     case ADD_BOOK:
       return mainReducer(state, { ...action, newBookId: objectId(state.books.allIds) })
 

@@ -32,6 +32,13 @@ import {
   START_UPLOADING_FILE_TO_CLOUD,
   PROMPT_TO_UPLOAD_FILE,
   DISMISS_PROMPT_TO_UPLOAD_FILE,
+  REQUEST_CHECK_FOR_UPDATE,
+  PROCESS_RESPONSE_TO_REQUEST_UPDATE,
+  DISMISS_UPDATE_NOTIFIER,
+  SET_UPDATE_DOWNLOAD_PROGRESS,
+  AUTO_CHECK_FOR_UPDATES,
+  BUSY_WITH_WORK_THAT_PREVENTS_QUITTING,
+  DONE_WITH_WORK_THAT_PREVENTS_QUITTING,
 } from '../constants/ActionTypes'
 
 // Project states
@@ -67,8 +74,9 @@ export const startLoadingFile = () => ({
 export const finishLoadingFile = () => ({
   type: FINISH_LOADING_FILE,
 })
-export const errorLoadingFile = () => ({
+export const errorLoadingFile = (needToUpdate) => ({
   type: ERROR_LOADING_FILE,
+  errorIsUpdateError: needToUpdate,
 })
 export const startRenamingFile = () => ({
   type: START_RENAMING_FILE,
@@ -153,4 +161,37 @@ export const promptToUploadFile = (filePath) => ({
 
 export const dismissPromptToUploadFile = () => ({
   type: DISMISS_PROMPT_TO_UPLOAD_FILE,
+})
+
+// Updates
+export const requestCheckForUpdates = () => ({
+  type: REQUEST_CHECK_FOR_UPDATE,
+})
+
+export const autoCheckForUpdates = () => ({
+  type: AUTO_CHECK_FOR_UPDATES,
+})
+
+export const processResponseToRequestUpdate = (available, error, info) => ({
+  type: PROCESS_RESPONSE_TO_REQUEST_UPDATE,
+  available,
+  error,
+  info,
+})
+
+export const dismissUpdateNotifier = () => ({
+  type: DISMISS_UPDATE_NOTIFIER,
+})
+
+export const setUpdateDownloadProgress = (percent) => ({
+  type: SET_UPDATE_DOWNLOAD_PROGRESS,
+  percent,
+})
+
+export const startWorkThatPreventsQuitting = () => ({
+  type: BUSY_WITH_WORK_THAT_PREVENTS_QUITTING,
+})
+
+export const finishWorkThatPreventsQuitting = () => ({
+  type: DONE_WITH_WORK_THAT_PREVENTS_QUITTING,
 })

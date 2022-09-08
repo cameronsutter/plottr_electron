@@ -18,3 +18,7 @@ export const sortedHierarchyLevels = createSelector(
     return sortedLevels
   }
 )
+
+export const topLevelBeatNameSelector = createSelector(sortedHierarchyLevels, (levels) => {
+  return levels[0].name
+})

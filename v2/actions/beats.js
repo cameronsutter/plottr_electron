@@ -8,6 +8,7 @@ import {
   EXPAND_BEAT,
   COLLAPSE_BEAT,
   LOAD_BEATS,
+  APPEND_TOP_LEVEL_BEAT,
 } from '../constants/ActionTypes'
 import { beat } from '../store/initialState'
 
@@ -41,6 +42,10 @@ export function expandBeat(id, bookId) {
 
 export function collapseBeat(id, bookId) {
   return { type: COLLAPSE_BEAT, id, bookId }
+}
+
+export function appendTopLevelBeat(bookId) {
+  return { type: APPEND_TOP_LEVEL_BEAT, bookId }
 }
 
 export function load(patching, beats) {

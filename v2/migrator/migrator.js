@@ -42,7 +42,8 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
   this.startMigrations = function (callback) {
     let migrations = this.getMigrations()
     migrations.forEach((m) => {
-      this.data = migrators[m](this.data)
+      const cleaned = m.replace('*', '')
+      this.data = migrators[cleaned](this.data)
       if (!this.data.file.appliedMigrations) {
         this.data.file.appliedMigrations = []
       }
@@ -58,7 +59,15 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
   }
 
   this.plottrBehindFile = function () {
-    return semverGt(this.fileVersion, this.appVersion) // file version is greater than app
+    // file version is greater than app
+    if (semverGt(this.fileVersion, this.appVersion)) {
+      // check if the file has a breaking migration that is ahead of the current version
+      const appliedMigrations = this.data.file.appliedMigrations || []
+      const breakingMigrations = appliedMigrations.filter((mig) => mig.includes('*'))
+      return breakingMigrations.some((mig) => semverGt(toSemver(mig), this.appVersion))
+    } else {
+      return false
+    }
   }
 
   this.getMigrations = function () {
@@ -69,9 +78,8 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
     this.migrations = migrationsList.filter((version) => {
       if (!this.fileVersion) return true
       const initialVersion = this.data.file.initialVersion
-      return (
-        semverLte(toSemver(version), this.appVersion) && semverGt(toSemver(version), initialVersion)
-      )
+      const semVerVersion = toSemver(version)
+      return semverLte(semVerVersion, this.appVersion) && semverGt(semVerVersion, initialVersion)
     })
     const appliedMigrations = this.data.file.appliedMigrations
     this.migrations = difference(this.migrations, appliedMigrations)

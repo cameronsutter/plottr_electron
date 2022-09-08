@@ -5,6 +5,7 @@ import cards from './cards'
 import categories from './categories'
 import characters from './characters'
 import customAttributes from './customAttributes'
+import attributes from './attributes'
 import file from './file'
 import images from './images'
 import lines from './lines'
@@ -15,7 +16,6 @@ import tags from './tags'
 import ui from './ui'
 import hierarchyLevels from './hierarchy'
 import featureFlags from './featureFlags'
-import tour from './tours'
 import editors from './editors'
 import error from './error'
 import permission from './permission'
@@ -48,12 +48,12 @@ const mainReducer = (dataRepairers) =>
     categories: categories(dataRepairers),
     characters: characters(dataRepairers),
     customAttributes: customAttributes(dataRepairers),
+    attributes: attributes(dataRepairers),
     lines: lines(dataRepairers),
     notes: notes(dataRepairers),
     places: places(dataRepairers),
     tags: tags(dataRepairers),
     hierarchyLevels: hierarchyLevels(dataRepairers),
-    tour: tour(dataRepairers),
     images: images(dataRepairers),
     error: error(dataRepairers),
     permission: permission(dataRepairers),

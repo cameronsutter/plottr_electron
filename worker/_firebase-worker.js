@@ -116,8 +116,8 @@ self.onmessage = (event) => {
           messageId,
         })
       } catch (error) {
-        console.error('Error posting message back', error)
-        logger.error('Error posting message back', error.message)
+        console.error('Error posting message back', type, error)
+        logger.error('Error posting message back', type, error.message)
         try {
           self.postMessage({
             type: errorTypeToReplyType(type),

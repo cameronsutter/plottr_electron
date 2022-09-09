@@ -40,7 +40,7 @@ const saver = (whenClientIsReady) => {
     }
   }
 
-  function saveFile(filePath, jsonData, isOffline) {
+  function saveFile(fileURL, jsonData, isOffline) {
     if (saveTimeout) {
       clearTimeout(saveTimeout)
       resetCount++
@@ -51,7 +51,7 @@ const saver = (whenClientIsReady) => {
     const forceSave = (previousFile) => () => {
       const userId = selectors.userIdSelector(jsonData)
       whenClientIsReady(({ autoSave }) => {
-        return autoSave(filePath, jsonData, userId, previousFile)
+        return autoSave(fileURL, jsonData, userId, previousFile)
       })
       resetCount = 0
       saveTimeout = null
@@ -78,17 +78,14 @@ const saver = (whenClientIsReady) => {
 
     // save and backup
     const isOffline = selectors.isOfflineSelector(state)
-    const fileName = selectors.fileNameSelector(state)
     const offlineModeEnabled = selectors.offlineModeEnabledSelector(state)
     // If we're working on a cloud file, are offline and offline mode
     // isn't enabled, don't save the file.
     if (selectors.isCloudFileSelector(state) && isOffline && !offlineModeEnabled) {
       return result
-    } else if (selectors.isCloudFileSelector(state) && !isOffline) {
-      const fileId = selectors.fileIdSelector(state)
-      saveFile(fileId, state, isOffline)
-    } else if (fileName !== '') {
-      saveFile(fileName, state, isOffline)
+    } else if (!isOffline) {
+      const fileURL = selectors.fileURLSelector(state)
+      saveFile(fileURL, state, isOffline)
     }
     return result
   }

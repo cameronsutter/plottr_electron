@@ -4,6 +4,9 @@ import { setupI18n } from 'plottr_locales'
 import https from 'https'
 import fs from 'fs'
 const { app, ipcMain } = electron
+
+import { helpers } from 'pltr/v2'
+
 import path from 'path'
 import log from 'electron-log'
 import { is } from 'electron-util'
@@ -21,7 +24,7 @@ import { reloadAllWindows } from './modules/windows'
 import { openLoginPopupWindow } from './modules/windows/login'
 import { broadcastToAllWindows } from './modules/broadcast'
 import {
-  openKnownFile,
+  openFile,
   createNew,
   createFromSnowflake,
   TEMP_FILES_PATH,
@@ -52,13 +55,17 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         })
       })
       .then((lastFile) => {
+        const lastFileURL =
+          (lastFile && !helpers.file.isProtocolString(lastFile)
+            ? helpers.file.filePathToFileURL(lastFile)
+            : lastFile) || null
         const win = getWindowById(id)
-        const filePath = win.filePath || lastFile
+        const fileURL = win.fileURL || lastFileURL
         if (win) {
           featureFlags().then((flags) => {
             event.sender.send(
               'state-fetched',
-              filePath,
+              fileURL,
               flags,
               numberOfWindows(),
               win.filePath,
@@ -112,16 +119,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('add-to-known-files-and-open', (_event, file) => {
-    if (!file || file === '') return
-    addToKnownFiles(file).then((id) => {
-      log.info('Adding to known files and opening', file)
-      openKnownFile(file, id, false)
+  ipcMain.on('add-to-known-files-and-open', (_event, fileURL) => {
+    if (!fileURL || fileURL === '') return
+    addToKnownFiles(fileURL).then(() => {
+      log.info('Adding to known files and opening', fileURL)
+      openFile(fileURL, false)
         .then(() => {
-          log.info('Opened file', file)
+          log.info('Opened file', fileURL)
         })
         .catch((error) => {
-          log.error('Error opening file and adding to known', file, error)
+          log.error('Error opening file and adding to known', fileURL, error)
         })
     })
   })
@@ -155,20 +162,20 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     )
   })
 
-  ipcMain.on('open-known-file', (_event, filePath, id, unknown, headerBarFileName) => {
-    log.info('Opening known file', filePath, id, unknown, headerBarFileName)
-    openKnownFile(filePath, id, unknown, headerBarFileName)
+  ipcMain.on('open-known-file', (_event, fileURL, unknown) => {
+    log.info('Opening known file', fileURL, unknown)
+    openFile(fileURL, unknown)
       .then(() => {
-        log.info('Opened file', filePath)
+        log.info('Opened file', fileURL)
       })
       .catch((error) => {
-        log.error('Error opening known file', filePath, error)
+        log.error('Error opening known file', fileURL, error)
       })
   })
 
-  ipcMain.on('remove-from-temp-files-if-temp', (_event, filePath) => {
-    if (filePath.includes(TEMP_FILES_PATH)) {
-      removeFromTempFiles(filePath, false)
+  ipcMain.on('remove-from-temp-files-if-temp', (_event, fileURL) => {
+    if (fileURL.includes(TEMP_FILES_PATH)) {
+      removeFromTempFiles(fileURL, false)
     }
   })
 
@@ -176,24 +183,24 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     broadcastToAllWindows('reload-options')
   })
 
-  ipcMain.on('remove-from-known-files', (_event, fileId) => {
-    removeFromKnownFiles(fileId)
+  ipcMain.on('remove-from-known-files', (_event, fileURL) => {
+    removeFromKnownFiles(fileURL)
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('delete-known-file', (_event, id, filePath) => {
-    deleteKnownFile(id, filePath)
+  ipcMain.on('delete-known-file', (_event, fileURL) => {
+    deleteKnownFile(fileURL)
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('edit-known-file-path', (_event, oldFilePath, newFilePath) => {
-    editKnownFilePath(oldFilePath, newFilePath)
-    editWindowPath(oldFilePath, newFilePath)
+  ipcMain.on('edit-known-file-path', (_event, oldFileURL, newFileURL) => {
+    editKnownFilePath(oldFileURL, newFileURL)
+    editWindowPath(oldFileURL, newFileURL)
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('set-my-file-path', (_event, oldFilePath, newFilePath) => {
-    setFilePathForWindowWithFilePath(oldFilePath, newFilePath)
+  ipcMain.on('set-my-file-path', (_event, oldFileURL, newFileURL) => {
+    setFilePathForWindowWithFilePath(oldFileURL, newFileURL)
   })
 
   ipcMain.on('pls-quit', () => {
@@ -233,12 +240,12 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       })
   })
 
-  ipcMain.on('show-item-in-folder', (_event, fileName) => {
-    shell.showItemInFolder(fileName)
+  ipcMain.on('show-item-in-folder', (_event, fileURL) => {
+    shell.showItemInFolder(helpers.file.withoutProtocol(fileURL))
   })
 
-  ipcMain.on('pls-set-my-file-path', (event, filePath) => {
-    setFilePathForWindowWithId(event.sender.getOwnerBrowserWindow().id, filePath)
+  ipcMain.on('pls-set-my-file-path', (event, fileURL) => {
+    setFilePathForWindowWithId(event.sender.getOwnerBrowserWindow().id, fileURL)
   })
 
   ipcMain.on('pls-open-login-popup', () => {
@@ -262,7 +269,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     }
   })
 
-  ipcMain.on('update-last-opened-file', (_event, newFilePath) => {
-    setLastOpenedFilePath(newFilePath)
+  ipcMain.on('update-last-opened-file', (_event, newFileURL) => {
+    setLastOpenedFilePath(newFileURL)
   })
 }

@@ -71,6 +71,8 @@ import {
   DELETE_KNOWN_FILE,
   REMOVE_FROM_TEMP_FILES,
   SAVE_TO_TEMP_FILE,
+  COPY_FILE,
+  UPDATE_KNOWN_FILE_NAME,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -82,6 +84,7 @@ import makeSettingsModule from './settings'
 import makeKnownFilesModule from './knownFiles'
 import makeTempFilesModule from './tempFiles'
 import StatusManager from './StatusManager'
+import makeTrashModule from './trash'
 
 const parseArgs = () => {
   return {
@@ -185,8 +188,16 @@ const setupListeners = (port, userDataPath) => {
       deleteCustomTemplate,
       setTemplate,
       customTemplatesPath,
+      copyFile,
     } = fileSystemModule
-    const tempFilesModule = makeTempFilesModule(userDataPath, stores, fileModule, logger)
+    const trashModule = makeTrashModule(userDataPath, logger)
+    const tempFilesModule = makeTempFilesModule(
+      userDataPath,
+      stores,
+      fileModule,
+      trashModule,
+      logger
+    )
     const { removeFromTempFiles, saveToTempFile } = tempFilesModule
     const {
       removeFromKnownFiles,
@@ -195,7 +206,15 @@ const setupListeners = (port, userDataPath) => {
       editKnownFilePath,
       updateLastOpenedDate,
       deleteKnownFile,
-    } = makeKnownFilesModule(stores, fileModule, fileSystemModule, tempFilesModule, logger)
+      updateKnownFileName,
+    } = makeKnownFilesModule(
+      stores,
+      fileModule,
+      fileSystemModule,
+      tempFilesModule,
+      trashModule,
+      logger
+    )
     const attemptToFetchTemplates = () => {
       return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
         return templateFetcher.fetch()
@@ -319,7 +338,7 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case SAVE_FILE: {
-            const { filePath, file } = payload
+            const { fileURL, file } = payload
             return handlePromise(
               () => [
                 'Saving (reduced payload): ',
@@ -327,17 +346,17 @@ const setupListeners = (port, userDataPath) => {
                   file: {
                     ...payload.file.file,
                   },
-                  filePath: filePath,
+                  fileURL: fileURL,
                 },
               ],
-              () => statusManager.registerTask(saveFile(filePath, file), SAVE_FILE),
+              () => statusManager.registerTask(saveFile(fileURL, file), SAVE_FILE),
               (error) => [
                 'Error while saving file ',
                 {
                   file: {
                     ...payload?.file?.file,
                   },
-                  filePath: filePath,
+                  fileURL: fileURL,
                 },
               ]
             )
@@ -405,7 +424,7 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case AUTO_SAVE_FILE: {
-            const { filePath, file, userId, previousFile } = payload
+            const { fileURL, file, userId, previousFile } = payload
             return handlePromise(
               () => [
                 'Auto-saving file (reduced payload): ',
@@ -413,7 +432,7 @@ const setupListeners = (port, userDataPath) => {
                   file: {
                     ...file.file,
                   },
-                  filePath,
+                  fileURL,
                   previousFile: {
                     ...previousFile.file,
                   },
@@ -422,7 +441,7 @@ const setupListeners = (port, userDataPath) => {
               ],
               () =>
                 statusManager.registerTask(
-                  autoSave(send, filePath, file, userId, previousFile),
+                  autoSave(send, fileURL, file, userId, previousFile),
                   AUTO_SAVE_FILE
                 ),
               () => [
@@ -431,7 +450,7 @@ const setupListeners = (port, userDataPath) => {
                   file: {
                     ...file?.file,
                   },
-                  filePath,
+                  fileURL,
                   previousFile: {
                     ...previousFile?.file,
                   },
@@ -581,31 +600,44 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case REMOVE_FROM_KNOWN_FILES: {
-            const { id } = payload
+            const { fileURL } = payload
             return handlePromise(
-              () => `Removing entry with id ${id} from known files`,
-              () => statusManager.registerTask(removeFromKnownFiles(id), REMOVE_FROM_KNOWN_FILES),
-              () => `Error removing entry with id ${id} from known files`
+              () => `Removing entry with fileURL ${fileURL} from known files`,
+              () =>
+                statusManager.registerTask(removeFromKnownFiles(fileURL), REMOVE_FROM_KNOWN_FILES),
+              () => `Error removing entry with fileURL ${fileURL} from known files`
             )
           }
           case DELETE_KNOWN_FILE: {
-            const { id, filePath } = payload
+            const { fileURL } = payload
             return handlePromise(
-              () => `Deleting a known file with id ${id} and filePath ${filePath}`,
-              () => statusManager.registerTask(deleteKnownFile(id, filePath), DELETE_KNOWN_FILE),
-              () => `Error deleting a known file with id ${id} and filePath ${filePath}`
+              () => `Deleting a known file with fileURL ${fileURL}`,
+              () => statusManager.registerTask(deleteKnownFile(fileURL), DELETE_KNOWN_FILE),
+              () => `Error deleting a known file with fileURL ${fileURL}`
+            )
+          }
+          case UPDATE_KNOWN_FILE_NAME: {
+            const { fileURL, newName } = payload
+            return handlePromise(
+              () => `Updating file name of known file record: ${fileURL} to ${newName}`,
+              () =>
+                statusManager.registerTask(
+                  updateKnownFileName(fileURL, newName),
+                  UPDATE_KNOWN_FILE_NAME
+                ),
+              () => `Error updating file name of known file record: ${fileURL} to ${newName}`
             )
           }
           case REMOVE_FROM_TEMP_FILES: {
-            const { filePath, doDelete } = payload
+            const { fileURL, doDelete } = payload
             return handlePromise(
-              () => `Removing ${filePath} from temp files (deleting? ${doDelete})`,
+              () => `Removing ${fileURL} from temp files (deleting? ${doDelete})`,
               () =>
                 statusManager.registerTask(
-                  removeFromTempFiles(filePath, doDelete),
+                  removeFromTempFiles(fileURL, doDelete),
                   REMOVE_FROM_TEMP_FILES
                 ),
-              () => `Error removing ${filePath} from temp files (deleting? ${doDelete})`
+              () => `Error removing ${fileURL} from temp files (deleting? ${doDelete})`
             )
           }
           case SAVE_TO_TEMP_FILE: {
@@ -631,40 +663,41 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case ADD_KNOWN_FILE_WITH_FIX: {
-            const { filePath } = payload
+            const { fileURL } = payload
             return handlePromise(
-              () => `Adding ${filePath} to known files and fixing the store`,
+              () => `Adding ${fileURL} to known files and fixing the store`,
               () =>
-                statusManager.registerTask(addKnownFileWithFix(filePath), ADD_KNOWN_FILE_WITH_FIX),
-              () => `Error adding ${filePath} to known files and fixing the store`
+                statusManager.registerTask(addKnownFileWithFix(fileURL), ADD_KNOWN_FILE_WITH_FIX),
+              () => `Error adding ${fileURL} to known files and fixing the store`
             )
           }
           case ADD_KNOWN_FILE: {
-            const { filePath } = payload
+            const { fileURL } = payload
             return handlePromise(
-              () => `Adding ${filePath} to known files`,
-              () => statusManager.registerTask(addKnownFile(filePath), ADD_KNOWN_FILE),
-              () => `Error adding ${filePath} to known files`
+              () => `Adding ${fileURL} to known files`,
+              () => statusManager.registerTask(addKnownFile(fileURL), ADD_KNOWN_FILE),
+              () => `Error adding ${fileURL} to known files`
             )
           }
           case EDIT_KNOWN_FILE_PATH: {
-            const { oldFilePath, newFilePath } = payload
+            const { oldFileURL, newFileURL } = payload
             return handlePromise(
-              () => `Editing a known file's path from ${oldFilePath} to ${newFilePath}`,
+              () => `Editing a known file's path from ${oldFileURL} to ${newFileURL}`,
               () =>
                 statusManager.registerTask(
-                  editKnownFilePath(oldFilePath, newFilePath),
+                  editKnownFilePath(oldFileURL, newFileURL),
                   EDIT_KNOWN_FILE_PATH
                 ),
-              () => `Error editing a known file's path from ${oldFilePath} to ${newFilePath}`
+              () => `Error editing a known file's path from ${oldFileURL} to ${newFileURL}`
             )
           }
           case UPDATE_LAST_OPENED_DATE: {
-            const { id } = payload
+            const { fileURL } = payload
             return handlePromise(
-              () => `Updating the last opened date for file with id ${id}`,
-              () => statusManager.registerTask(updateLastOpenedDate(id), UPDATE_LAST_OPENED_DATE),
-              () => `Error updating the last opened date for file with id ${id}`
+              () => `Updating the last opened date for file with id ${fileURL}`,
+              () =>
+                statusManager.registerTask(updateLastOpenedDate(fileURL), UPDATE_LAST_OPENED_DATE),
+              () => `Error updating the last opened date for file with id ${fileURL}`
             )
           }
           // ===File System APIs===
@@ -673,6 +706,14 @@ const setupListeners = (port, userDataPath) => {
               () => 'Getting the custom templates path',
               () => customTemplatesPath,
               () => 'Error getting the custom templates path'
+            )
+          }
+          case COPY_FILE: {
+            const { sourceFileURL, newFileURL } = payload
+            return handlePromise(
+              () => `Copying file from ${sourceFileURL} to ${newFileURL}`,
+              () => copyFile(sourceFileURL, newFileURL),
+              () => `Error copying file from ${sourceFileURL} to ${newFileURL}`
             )
           }
           case BACKUP_BASE_PATH: {

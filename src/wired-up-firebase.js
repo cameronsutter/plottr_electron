@@ -8,6 +8,7 @@ const mintSessionClientId = machineIdSync
 const worker = firebaseWorker(logger, mintSessionClientId)
 
 export const editFileName = worker.editFileName
+export const updateAuthFileName = worker.updateAuthFileName
 export const listen = worker.listen
 export const overwriteAllKeys = worker.overwriteAllKeys
 export const initialFetch = worker.initialFetch

@@ -4,7 +4,7 @@ import { sortBy } from 'lodash'
 
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
 
-const { readdir, mkdir, lstat } = fs.promises
+const { readdir, mkdir, lstat, cp } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -116,7 +116,7 @@ const fileSystemModule = (userDataPath) => {
     }
 
     const isValidKnownFile = (file) => {
-      return typeof file.path === 'string' && file.lastOpened
+      return typeof file.fileURL === 'string' && file.lastOpened
     }
 
     const listenToknownFilesChanges = (cb) => {
@@ -127,10 +127,10 @@ const fileSystemModule = (userDataPath) => {
           })
           .map(([key, file]) => {
             return {
-              ...file,
-              fromFileSystem: true,
-              isTempFile: file.path.includes(TEMP_FILES_PATH),
-              id: key,
+              fileURL: file.fileURL,
+              fileName: file.fileName,
+              lastOpened: file.lastOpened,
+              isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
             }
           })
       }
@@ -142,6 +142,7 @@ const fileSystemModule = (userDataPath) => {
       cb(transformStore(knownFilesStore.store))
       return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
     }
+
     const currentKnownFiles = () => {
       return knownFilesStore.currentStore().then((fileIndex) => {
         return Object.entries(fileIndex)
@@ -149,10 +150,10 @@ const fileSystemModule = (userDataPath) => {
             return isValidKnownFile(file)
           })
           .map(([key, file]) => ({
-            ...file,
-            fromFileSystem: true,
-            isTempFile: file.path.includes(TEMP_FILES_PATH),
-            id: key,
+            fileURL: file.fileURL,
+            fileName: file.fileName,
+            lastOpened: file.lastOpened,
+            isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
           }))
       })
     }
@@ -331,6 +332,10 @@ const fileSystemModule = (userDataPath) => {
         })
     }
 
+    const copyFile = (sourceFileURL, newFileURL) => {
+      return cp(sourceFileURL, newFileURL)
+    }
+
     return {
       TEMP_FILES_PATH,
       setTemplate,
@@ -364,6 +369,7 @@ const fileSystemModule = (userDataPath) => {
       listenToBackupsChanges,
       currentBackups,
       customTemplatesPath,
+      copyFile,
     }
   }
 }

@@ -1,9 +1,9 @@
 import fs from 'fs'
 import path from 'path'
-import trash from 'trash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
+import { helpers } from 'pltr/v2'
 
 import { TEMP_FILES_PATH } from './stores'
 
@@ -11,23 +11,17 @@ const { lstat, mkdir } = fs.promises
 
 const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 10
 
-const makeTempFilesModule = (userDataPath, stores, fileModule, logger) => {
+const makeTempFilesModule = (userDataPath, stores, fileModule, trashModule, logger) => {
   const { tempFilesStore } = stores
   const { fileExists, saveFile } = fileModule
+  const { trash } = trashModule
 
   const tempFilesFullPath = path.join(userDataPath, TEMP_FILES_PATH)
 
-  function removeFromTempFiles(filePath, doDelete = true) {
-    const tmpFiles = tempFilesStore.get()
-    const key = Object.keys(tmpFiles).find((id) => tmpFiles[id].filePath == filePath)
-    tempFilesStore.delete(key)
-    // delete the real file
-    try {
-      return doDelete ? trash(filePath) : Promise.resolve()
-    } catch (error) {
-      logger.warn(error)
-      return Promise.reject(error)
-    }
+  function removeFromTempFiles(fileURL, doDelete = true) {
+    return tempFilesStore.delete(fileURL).then(() => {
+      return doDelete ? trash(helpers.file.withoutProtocol(fileURL)) : Promise.resolve(true)
+    })
   }
 
   async function saveToTempFile(json, name) {
@@ -39,13 +33,23 @@ const makeTempFilesModule = (userDataPath, stores, fileModule, logger) => {
       if (error.code === 'ENOENT') {
         await mkdir(tempFilesFullPath, { recursive: true })
       }
+      logger.error('Could not create temp file path', error)
+      throw error
     }
 
-    const maxKey = Object.keys(tempFilesStore.store)
-      .map((x) => parseInt(x))
+    const store = await tempFilesStore.currentStore()
+    const maxCount = Object.values(store)
+      .map(({ fileName }) => {
+        const digits = fileName.match(/[0-9]+$/)
+        if (digits && digits[0]) {
+          return [parseInt(digits[0])]
+        }
+        return []
+      })
+      .flatMap((x) => x)
       .reduce((acc, next) => Math.max(next, acc), 0)
-    const tempId = maxKey + 1
-    const fileName = name || `${t('Untitled')}${tempId == 1 ? '' : tempId}`
+    const tempFileCount = maxCount + 1
+    const fileName = name || `${t('Untitled')}${tempFileCount == 1 ? '' : tempFileCount}`
     const tempName = `${fileName}.pltr`
     let counter = 1
     let filePath = path.join(tempFilesFullPath, tempName)
@@ -77,9 +81,15 @@ const makeTempFilesModule = (userDataPath, stores, fileModule, logger) => {
       logger.error(errorMessage)
       throw new Error(errorMessage)
     }
-    tempFilesStore.set(`${tempId}`, { filePath })
-    await saveFile(filePath, json)
-    return filePath
+    const fileURL = helpers.file.filePathToFileURL(filePath)
+    if (!fileURL) {
+      const message = `Couldn't compute a file URL for temp file that we're trying to save to ${filePath}`
+      logger.error(message)
+      throw new Error(message)
+    }
+    await tempFilesStore.set(fileURL, { fileURL })
+    await saveFile(fileURL, json)
+    return fileURL
   }
 
   return {

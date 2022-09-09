@@ -1,7 +1,7 @@
 const makeFileModule = (whenClientIsReady) => {
-  const saveFile = (filePath, jsonData) => {
+  const saveFile = (fileURL, jsonData) => {
     return whenClientIsReady(({ saveFile }) => {
-      return saveFile(filePath, jsonData)
+      return saveFile(fileURL, jsonData)
     })
   }
 

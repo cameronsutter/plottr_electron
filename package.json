@@ -97,7 +97,6 @@
     "slate": "^0.80.0",
     "slate-hyperscript": "^0.77.0",
     "tiny-invariant": "^1.0.6",
-    "trash": "^8.1.0",
     "utf-8-validate": "^5.0.9",
     "ws": "^8.5.0",
     "yargs": "^17.5.1"

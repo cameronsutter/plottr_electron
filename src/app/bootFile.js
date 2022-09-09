@@ -3,13 +3,20 @@ import { ipcRenderer } from 'electron'
 import { dialog, app, getCurrentWindow } from '@electron/remote'
 import { machineIdSync } from 'node-machine-id'
 
-import { SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, featureFlags, emptyFile } from 'pltr/v2'
+import {
+  helpers,
+  SYSTEM_REDUCER_KEYS,
+  actions,
+  migrateIfNeeded,
+  featureFlags,
+  emptyFile,
+} from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
-import { offlineFilePath } from '../files'
+import { offlineFileURLFromFile } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { resumeDirective } from '../resume'
 import logger from '../../shared/logger'
@@ -59,13 +66,15 @@ function waitForUser() {
   })
 }
 
+// NOTE: Only for cloud files.
 const loadFileIntoRedux = (data, fileId) => {
   store.dispatch(
     actions.ui.loadFile(
       data.file.fileName,
       false,
       Object.assign({}, emptyFile(data.file.fileName, data.file.version), withFileId(fileId, data)),
-      data.file.version
+      data.file.version,
+      helpers.file.fileIdToPlottrCloudFileURL(fileId)
     )
   )
   store.dispatch(
@@ -76,7 +85,7 @@ const loadFileIntoRedux = (data, fileId) => {
   )
 }
 
-function removeSystemKeys(jsonData) {
+export function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
     if (SYSTEM_REDUCER_KEYS.indexOf(key) >= 0) return
@@ -91,7 +100,7 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
     migrateIfNeeded(
       app.getVersion(),
       json,
-      json.file.fileName,
+      helpers.file.fileIdToPlottrCloudFileURL(fileId),
       null,
       (error, migrated, data) => {
         if (error) {
@@ -123,7 +132,7 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
   })
 }
 
-export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, saveBackup) {
+export function bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup) {
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 
   const { backupOfflineBackupForResume } = makeFileModule(whenClientIsReady)
@@ -186,31 +195,29 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     })
   }
 
-  function handleNoFileId(fileId, filePath) {
+  function handleNoFileId(fileId, fileURL) {
     const errorObject = new Error('Could not open cloud file.')
     rollbar.error(
-      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      `Attempted to open ${fileURL} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
       errorObject
     )
     logger.error(
-      `Attempted to open ${filePath} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
+      `Attempted to open ${fileURL} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
       errorObject
     )
     dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-    return Promise.reject(
-      new Error(`Cannot open file with id: ${fileId} from filePath: ${filePath}`)
-    )
+    return Promise.reject(new Error(`Cannot open file with id: ${fileId} from fileURL: ${fileURL}`))
   }
 
-  function handleNoUserId(filePath) {
-    const errorMessage = `Tried to boot plottr cloud file (${filePath}) without a user id.`
+  function handleNoUserId(fileURL) {
+    const errorMessage = `Tried to boot plottr cloud file (${fileURL}) without a user id.`
     rollbar.error(errorMessage)
     return Promise.reject(new Error(errorMessage))
   }
 
-  const handleEroneousUserStates = (filePath) => (user) => {
+  const handleEroneousUserStates = (fileURL) => (user) => {
     if (!user.uid) {
-      return handleNoUserId(filePath)
+      return handleNoUserId(fileURL)
     }
     return user
   }
@@ -220,8 +227,13 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
       if (!settings.user.enableOfflineMode) {
         return Promise.resolve(false)
       }
-      const offlinePath = offlineFilePath(json)
-      const exists = fs.existsSync(offlinePath)
+      const offlineURL = offlineFileURLFromFile(json)
+      if (!offlineURL) {
+        logger.warn(`Could not compute an offline path for file: ${json?.file}`)
+        return Promise.resolve(json)
+      }
+      const offlinePath = helpers.file.withoutProtocol(offlineURL)
+      const exists = offlinePath && fs.existsSync(offlinePath)
       // FIXME: the socket server now has a way to read files.  We don't
       // want to depend on FS from the renderer because that'll call out
       // to the main process.
@@ -281,24 +293,24 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     return Promise.reject(error)
   }
 
-  function bootCloudFile(filePath, beatHierarchy, saveBackup) {
-    const fileId = filePath.split('plottr://')[1]
+  function bootCloudFile(fileURL, beatHierarchy, saveBackup) {
+    const fileId = fileURL.split('plottr://')[1]
     if (!fileId) {
-      return handleNoFileId(fileId, filePath)
+      return handleNoFileId(fileId, fileURL)
     }
 
     return waitForUser()
-      .then(handleEroneousUserStates(filePath))
+      .then(handleEroneousUserStates(fileURL))
       .then(bootWithUser(fileId, beatHierarchy, saveBackup))
       .catch(handleErrorBootingFile(fileId))
   }
 
-  function bootLocalFile(filePath, numOpenFiles, beatHierarchy, saveBackup) {
+  function bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup) {
     win.setTitle('Plottr')
-    win.setRepresentedFilename(filePath)
+    win.setRepresentedFilename(helpers.file.withoutProtocol(fileURL))
     let json
     try {
-      json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+      json = JSON.parse(fs.readFileSync(helpers.file.withoutProtocol(fileURL), 'utf-8'))
       // In case this file was downloaded and we want to open it while
       // logged out, we need to reset the cloud flag.  (This is usually
       // set when we receive the file from Firebase, but it gets
@@ -311,14 +323,14 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     } catch (error) {
       logger.error(error)
       rollbar.error(error)
-      return Promise.reject(`bootLocalFile001: json-parse (${filePath})`)
+      return Promise.reject(`bootLocalFile001: json-parse (${fileURL})`)
     }
-    saveBackup(filePath, json)
+    saveBackup(fileURL, json)
     return new Promise((resolve, reject) => {
       migrateIfNeeded(
         app.getVersion(),
         json,
-        filePath,
+        fileURL,
         null,
         (err, didMigrate, state) => {
           if (err) {
@@ -327,9 +339,17 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
             if (err === 'Plottr behind file') {
               return reject('Need to update Plottr')
             }
-            return reject(`bootLocalFile002: migration (${filePath})`)
+            return reject(`bootLocalFile002: migration (${fileURL})`)
           }
-          store.dispatch(actions.ui.loadFile(filePath, didMigrate, state, state.file.version))
+          store.dispatch(
+            actions.ui.loadFile(
+              state.file.fileName || helpers.file.withoutProtocol(fileURL),
+              didMigrate,
+              state,
+              state.file.version,
+              fileURL
+            )
+          )
 
           MPQ.projectEventStats(
             'open_file',
@@ -358,21 +378,21 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     })
   }
 
-  function _bootFile(filePath, options, numOpenFiles, saveBackup) {
+  function _bootFile(fileURL, options, numOpenFiles, saveBackup) {
     // Now that we know what the file path for this window should be,
     // tell the main process.
-    ipcRenderer.send('pls-set-my-file-path', filePath)
+    ipcRenderer.send('pls-set-my-file-path', fileURL)
 
     // And then boot the file.
     const { beatHierarchy } = options
-    const isCloudFile = isPlottrCloudFile(filePath)
+    const isCloudFile = isPlottrCloudFile(fileURL)
 
     try {
       store.dispatch(actions.applicationState.startLoadingFile())
       return (
         isCloudFile
-          ? bootCloudFile(filePath, beatHierarchy, saveBackup)
-          : bootLocalFile(filePath, numOpenFiles, beatHierarchy, saveBackup)
+          ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
+          : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
       )
         .then(() => {
           store.dispatch(actions.applicationState.finishLoadingFile())
@@ -392,5 +412,5 @@ export function bootFile(whenClientIsReady, filePath, options, numOpenFiles, sav
     }
   }
 
-  _bootFile(filePath, options, numOpenFiles, saveBackup)
+  _bootFile(fileURL, options, numOpenFiles, saveBackup)
 }

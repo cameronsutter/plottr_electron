@@ -10,7 +10,7 @@ import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
 import { askToExport } from 'plottr_import_export'
 import export_config from 'plottr_import_export/src/exporter/default_config'
-import { actions, selectors } from 'pltr/v2'
+import { actions, selectors, helpers } from 'pltr/v2'
 import {
   publishRCEOperations,
   fetchRCEOperations,
@@ -61,12 +61,7 @@ import { createFullErrorReport } from './common/utils/full_error_report'
 import { createErrorReport } from './common/utils/error_reporter'
 import MPQ from './common/utils/MPQ'
 import { openExistingFile as _openExistingFile } from './common/utils/window_manager'
-import {
-  doesFileExist,
-  removeFromKnownFiles,
-  listOfflineFiles,
-  sortAndSearch,
-} from './common/utils/files'
+import { doesFileExist, removeFromKnownFiles, listOfflineFiles } from './common/utils/files'
 import { handleCustomerServiceCode } from './common/utils/customer_service_codes'
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
@@ -86,12 +81,8 @@ export const rmRF = (path, ...args) => {
 const { saveAppSetting, startTrial, deleteLicense, saveLicenseInfo, saveExportConfigSettings } =
   makeFileSystemAPIs(whenClientIsReady)
 
-export const openFile = (filePath, id, unknown) => {
-  ipcRenderer.send('open-known-file', filePath, id, unknown)
-}
-
-const idFromPath = (filePath) => {
-  return filePath?.replace(/^plottr:\/\//, '')
+export const openFile = (fileURL, unknown) => {
+  ipcRenderer.send('open-known-file', fileURL, unknown)
 }
 
 const platform = {
@@ -170,33 +161,29 @@ const platform = {
     doesFileExist,
     pathSep: path.sep,
     basename: path.basename,
-    openKnownFile: (filePath, id, unknown) => {
-      const state = store.getState()
-      const {
-        project: { selectedFile },
-      } = state.present
-      const fileId = selectedFile?.id
-      if (filePath === selectedFile?.path || fileId === idFromPath(filePath)) {
+    // FIXME: this is very poorly named.  Esp. since the second
+    // parametor is a flag for whether the file is known XD
+    openKnownFile: (fileURL, unknown) => {
+      const state = store.getState().present
+      const loadedFileURL = selectors.fileURLSelector(state)
+      if (fileURL === loadedFileURL) {
         closeDashboard()
       } else {
-        openFile(filePath, id, unknown)
+        openFile(fileURL, unknown)
       }
     },
-    deleteKnownFile: (id, path) => {
-      const state = store.getState()
-      const {
-        present: {
-          project: { selectedFile },
-          client: { userId, clientId },
-        },
-      } = state
-      const isLoggedIn = selectors.isLoggedInSelector(state.present)
-      const file = isLoggedIn && selectors.fileFromFileIdSelector(state.present, id)
+    deleteKnownFile: (fileURL) => {
+      const state = store.getState().present
+      const selectedFile = selectors.selectedFileSelector(state)
+      const userId = selectors.userIdSelector(state)
+      const clientId = selectors.clientIdSelector(state)
+      const isLoggedIn = selectors.isLoggedInSelector(state)
+      const file = isLoggedIn && selectors.fileFromFileURLSelector(state, fileURL)
       const isOnCloud = file?.isCloudFile
       if (isLoggedIn && isOnCloud) {
         if (!file) {
           logger.error(
-            `Error deleting file at path: ${path} with id: ${id}.  File is not known to Plottr`
+            `Error deleting file at path: ${path} with url: ${fileURL}.  File is not known to Plottr`
           )
           store.dispatch(actions.error.generalError('file-not-found'))
           store.dispatch(actions.project.showLoader(false))
@@ -206,12 +193,23 @@ const platform = {
         const { fileName } = file
         store.dispatch(actions.project.showLoader(true))
         store.dispatch(actions.applicationState.startDeletingFile())
-        deleteCloudBackupFile(fileName)
+        const id = helpers.file.fileIdFromPlottrProFile(fileURL)
+        const isOffline = selectors.isOfflineSelector(state)
+        const isOfflineModeEnabled = selectors.offlineModeEnabledSelector(state)
+
+        // We can just delete the offline backup.  For now, we'll
+        // leave it to the user to propogate that change to the cloud
+        // if they do it while offline.  In the opposite direction,
+        // the file will be cleaned up the next time we record an
+        // offline file.
+        if (isOffline && isOfflineModeEnabled) {
+          deleteCloudBackupFile(fileName)
+          return
+        }
+
+        deleteFile(id, userId, clientId)
           .then(() => {
-            return deleteFile(id, userId, clientId)
-          })
-          .then(() => {
-            if (selectedFile?.id === idFromPath(path)) {
+            if (selectedFile?.fileURL === fileURL) {
               store.dispatch(actions.project.selectFile(null))
             }
             logger.info(`Deleted file at path: ${path}`)
@@ -224,7 +222,7 @@ const platform = {
             store.dispatch(actions.applicationState.finishDeletingFile())
           })
       } else {
-        ipcRenderer.send('delete-known-file', id, path, userId, clientId)
+        ipcRenderer.send('delete-known-file', fileURL)
       }
     },
     editKnownFilePath,
@@ -246,7 +244,6 @@ const platform = {
     },
     joinPath: path.join,
     listOfflineFiles,
-    sortAndSearch,
   },
   update: {
     quitToInstall: () => {
@@ -355,12 +352,12 @@ const platform = {
     const win = getCurrentWindow()
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   },
-  showItemInFolder: (fileName) => {
-    isStorageURL(fileName).then((storageURL) => {
+  showItemInFolder: (fileURL) => {
+    isStorageURL(fileURL).then((storageURL) => {
       if (!storageURL) {
-        ipcRenderer.send('show-item-in-folder', fileName)
+        ipcRenderer.send('show-item-in-folder', fileURL)
       } else {
-        backupPublicURL(fileName).then((url) => ipcRenderer.send('download-file-and-show', url))
+        backupPublicURL(fileURL).then((url) => ipcRenderer.send('download-file-and-show', url))
       }
     })
   },

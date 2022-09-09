@@ -166,7 +166,7 @@ const App = ({
     setBlockClosing(false)
     setShowAskToSave(false)
     const { present } = store.getState()
-    saveFile(present.file.fileName, present)
+    saveFile(present.project.fileURL, present)
     closeOrRefresh(true)
   }
 

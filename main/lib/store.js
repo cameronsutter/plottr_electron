@@ -236,6 +236,70 @@ class Store {
     })
   }
 
+  filter = (predicate) => {
+    return this.afterActiveWrite(() => {
+      this.store = Object.entries(cloneDeep(this.store)).reduce((acc, next) => {
+        const [key, value] = next
+        if (predicate(value, key)) {
+          return {
+            ...acc,
+            [key]: value,
+          }
+        }
+        return acc
+      }, {})
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
+  }
+
+  mapValues = (f) => {
+    return this.afterActiveWrite(() => {
+      this.store = Object.entries(cloneDeep(this.store)).reduce((acc, next) => {
+        const [key, value] = next
+        return {
+          ...acc,
+          [key]: f(value),
+        }
+      }, {})
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
+  }
+
+  map = (f) => {
+    return this.afterActiveWrite(() => {
+      this.store = Object.entries(cloneDeep(this.store)).reduce((acc, next) => {
+        const [key, value] = next
+        const newKeyValue = f(value, key)
+        return {
+          ...acc,
+          ...newKeyValue,
+        }
+      }, {})
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
+  }
+
+  some = (predicate) => {
+    console.log('In Some...')
+    return this.afterActiveWrite(() => {
+      return Object.entries(this.store).some(([key, value]) => {
+        return predicate(value, key)
+      })
+    })
+  }
+
   get = (key) => {
     if (typeof key !== 'undefined') {
       return get(this.store, key) || get(this.defaults, key)

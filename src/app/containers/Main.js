@@ -7,7 +7,7 @@ import path from 'path'
 import { IoIosAlert } from 'react-icons/io'
 
 import { t } from 'plottr_locales'
-import { actions, selectors } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 import { Button } from 'plottr_components'
 
 import { bootFile } from '../bootFile'
@@ -127,7 +127,7 @@ const Main = ({
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 
-    const load = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const load = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       // We wont load a file at all on boot if this is supposed to be
       // the dashboard.
       if (!windowOpenedWithKnownPath && showDashboard && numOpenFiles <= 1) {
@@ -135,16 +135,13 @@ const Main = ({
         return
       }
 
-      setPathToProject(filePath)
+      setPathToProject(fileURL)
 
       // To boot the file automatically: we must either be running pro
       // and it's a cloud file, or we must be running classic mode and
       // it's not a cloud file.
-      if (
-        !!isInProMode === !!isCloudFile(filePath) ||
-        (isInOfflineMode && isOfflineFile(filePath))
-      ) {
-        bootFile(whenClientIsReady, filePath, options, numOpenFiles, saveBackup)
+      if (!!isInProMode === !!isCloudFile(fileURL) || (isInOfflineMode && isOfflineFile(fileURL))) {
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -159,13 +156,13 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const reloadListener = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       const lastFileIsClassicAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
+        isInProMode && helpers.file.isDeviceFileURL(fileURL) && !isOfflineFile(fileURL)
       if (lastFileIsClassicAndWeAreInPro) {
-        promptToUploadFile(filePath)
+        promptToUploadFile(fileURL)
       } else {
-        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
     ipcRenderer.on('reload-from-file', reloadListener)
@@ -178,23 +175,23 @@ const Main = ({
 
     const stateFetchedListener = (
       event,
-      filePath,
+      fileURL,
       options,
       numOpenFiles,
       windowOpenedWithKnownPath,
       processSwitches
     ) => {
       const lastFileIsClassicAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
-      // There are valid possibilities for filePath to be null.
+        isInProMode && helpers.file.isDeviceFileURL(fileURL) && !isOfflineFile(fileURL)
+      // There are valid possibilities for fileURL to be null.
       //
       // i.e. no file has ever been opened or the last opened file was
       // in a mode that doesn't match current. e.g. it's a pro file
       // and we're in classic mode.
       if (lastFileIsClassicAndWeAreInPro) {
-        promptToUploadFile(filePath)
-      } else if (filePath) {
-        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+        promptToUploadFile(fileURL)
+      } else if (fileURL) {
+        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
       }
@@ -297,7 +294,7 @@ const Main = ({
   }
 
   const showFile = () => {
-    shell.showItemInFolder(pathToProject)
+    shell.showItemInFolder(helpers.file.withoutProtocol(pathToProject))
   }
 
   // IMPORTANT: the order of these return statements is significant.
@@ -326,7 +323,7 @@ const Main = ({
             <>
               <LoadingSplash />
               <UploadOfflineFile
-                filePath={fileToUpload}
+                fileURL={fileToUpload}
                 onUploadFile={() => {
                   readFile(fileToUpload).then((data) => {
                     let file
@@ -352,9 +349,9 @@ const Main = ({
                         // the dashboard when we double click a file.
                         //
                         // FIXME: where should the options come from?
-                        const newFilePath = `plottr://${fileId}`
-                        bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
-                        ipcRenderer.send('update-last-opened-file', newFilePath)
+                        const newFileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
+                        bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup)
+                        ipcRenderer.send('update-last-opened-file', newFileURL)
                       })
                       .catch((error) => {})
                   })

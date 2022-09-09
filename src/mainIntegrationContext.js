@@ -1,9 +1,9 @@
 import React from 'react'
 
 const MainIntegrationContext = React.createContext({
-  saveFile: (filePath, data) => {
+  saveFile: (fileURL, data) => {
     throw new Error(
-      `Couldn't save file at ${filePath} with data: ${data}.  Please wire up the MainIntegrationContext provider.`
+      `Couldn't save file at ${fileURL} with data: ${data}.  Please wire up the MainIntegrationContext provider.`
     )
   },
   basename: (filePath) => {
@@ -16,9 +16,9 @@ const MainIntegrationContext = React.createContext({
       `Couldn't read file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
     )
   },
-  autoSave: (filePath, file, userId, previousFile) => {
+  autoSave: (fileURL, file, userId, previousFile) => {
     throw new Error(
-      `Couldn't auto save file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
+      `Couldn't auto save file at ${fileURL}.  Please wire up the MainIntegrationContext provider.`
     )
   },
   saveBackup: (filePath, file) => {

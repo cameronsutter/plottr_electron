@@ -7,12 +7,21 @@ import { connect } from 'react-redux'
 import { selectors, actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
-import { editFileName } from 'wired-up-firebase'
-import { renameCloudBackupFile } from '../../files'
+import { editFileName as editFileNameOnFirebase } from 'wired-up-firebase'
 
 import logger from '../../../shared/logger'
+import { whenClientIsReady } from '../../../shared/socket-client/index'
 
-const Renamer = ({ userId, showLoader, fileList, startRenamingFile, finishRenamingFile }) => {
+const Renamer = ({
+  userId,
+  showLoader,
+  fileList,
+  startRenamingFile,
+  finishRenamingFile,
+  isOffline,
+  isOfflineModeEnabled,
+  editFileName,
+}) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
   const renameOpenFile = useRef(false)
@@ -24,14 +33,21 @@ const Renamer = ({ userId, showLoader, fileList, startRenamingFile, finishRenami
     }
     startRenamingFile()
     showLoader(true)
-    const fileName = fileList.find(({ id }) => id === fileId)?.fileName
 
-    ;(fileName ? renameCloudBackupFile(fileName, newName) : Promise.resolve(true))
-      .then(() => {
-        return editFileName(userId, fileId, newName).then((result) => {
-          finishRenamingFile()
-          return result
-        })
+    // If we're offline, just edit the offline file.  All changes will
+    // propogate when we go online.  In the other direction, Plottr
+    // updates the offline file when it records it in offlineRecorder.
+    if (isOffline && isOfflineModeEnabled) {
+      whenClientIsReady(({ updateKnownFileName }) => {
+        return editFileName(updateKnownFileName, newName)
+      })
+      return
+    }
+
+    editFileNameOnFirebase(userId, fileId, newName)
+      .then((result) => {
+        finishRenamingFile()
+        return result
       })
       .then(() => {
         logger.info(`Renamed file with id ${fileId} to ${newName}`)
@@ -90,6 +106,9 @@ Renamer.propTypes = {
   fileList: PropTypes.array.isRequired,
   startRenamingFile: PropTypes.func.isRequired,
   finishRenamingFile: PropTypes.func.isRequired,
+  isOffline: PropTypes.bool.isRequired,
+  isOfflineModeEnabled: PropTypes.bool.isRequired,
+  editFileName: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -97,10 +116,13 @@ export default connect(
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     fileList: selectors.knownFilesSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
+    isOfflineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     showLoader: actions.project.showLoader,
     startRenamingFile: actions.applicationState.startRenamingFile,
     finishRenamingFile: actions.applicationState.finishRenamingFile,
+    editFileName: actions.ui.editFileName,
   }
 )(Renamer)

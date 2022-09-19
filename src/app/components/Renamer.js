@@ -44,7 +44,7 @@ const Renamer = ({
       return
     }
 
-    editFileNameOnFirebase(userId, fileId, newName)
+    editFileNameOnFirebase(fileId, newName)
       .then((result) => {
         finishRenamingFile()
         return result

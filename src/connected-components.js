@@ -212,12 +212,12 @@ const platform = {
             if (selectedFile?.fileURL === fileURL) {
               store.dispatch(actions.project.selectFile(null))
             }
-            logger.info(`Deleted file at path: ${path}`)
+            logger.info(`Deleted file at path: ${fileURL}`)
             store.dispatch(actions.project.showLoader(false))
             store.dispatch(actions.applicationState.finishDeletingFile())
           })
           .catch((error) => {
-            logger.error(`Error deleting file at path: ${path}`, error)
+            logger.error(`Error deleting file at path: ${fileURL}`, error)
             store.dispatch(actions.project.showLoader(false))
             store.dispatch(actions.applicationState.finishDeletingFile())
           })

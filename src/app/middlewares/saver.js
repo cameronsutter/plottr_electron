@@ -75,6 +75,10 @@ const saver = (whenClientIsReady) => {
 
     const state = store.getState().present
     if (selectors.isResumingSelector(state)) return result
+    const fileURL = selectors.fileURLSelector(state)
+    if (!fileURL) {
+      return result
+    }
 
     // save and backup
     const isOffline = selectors.isOfflineSelector(state)

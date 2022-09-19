@@ -459,7 +459,7 @@ const fileModule = (userDataPath) => {
             .then(() => {
               // We'll assume that one file, generated with a UUID in the name, is good enough.
               const baseNameWithoutExtension = basename(file.file.fileName, '.pltr')
-              return `${TEMP_FILES_PATH}/${baseNameWithoutExtension}-${uuidv4()}.pltr`
+              return path.join(TEMP_FILES_PATH, `${baseNameWithoutExtension}-${uuidv4()}.pltr`)
             })
             .catch((error) => {
               if (error.code === 'ENOENT') {

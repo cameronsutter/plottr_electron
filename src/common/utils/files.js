@@ -24,6 +24,8 @@ export function listOfflineFiles() {
   return readOfflineFiles()
 }
 
-export const isOfflineFile = (fileURL) => {
-  return helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)
+export function offlineFileURL(fileURL) {
+  return helpers.file.filePathToFileURL(
+    path.join(OFFLINE_FILE_FILES_PATH, helpers.file.withoutProtocol(fileURL))
+  )
 }

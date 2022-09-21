@@ -24,6 +24,7 @@ import { store } from 'store'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import { makeFileModule } from './files'
+import { offlineFileURL } from '../common/utils/files'
 
 const clientId = machineIdSync()
 
@@ -132,7 +133,14 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
   })
 }
 
-export function bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup) {
+export function bootFile(
+  whenClientIsReady,
+  fileURL,
+  options,
+  numOpenFiles,
+  saveBackup,
+  bootingOfflineFile
+) {
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 
   const { backupOfflineBackupForResume } = makeFileModule(whenClientIsReady)
@@ -310,7 +318,10 @@ export function bootFile(whenClientIsReady, fileURL, options, numOpenFiles, save
     win.setRepresentedFilename(helpers.file.withoutProtocol(fileURL))
     let json
     try {
-      json = JSON.parse(fs.readFileSync(helpers.file.withoutProtocol(fileURL), 'utf-8'))
+      const filePath = helpers.file.withoutProtocol(
+        bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
+      )
+      json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
       // In case this file was downloaded and we want to open it while
       // logged out, we need to reset the cloud flag.  (This is usually
       // set when we receive the file from Firebase, but it gets
@@ -345,10 +356,23 @@ export function bootFile(whenClientIsReady, fileURL, options, numOpenFiles, save
             actions.ui.loadFile(
               state.file.fileName || helpers.file.withoutProtocol(fileURL),
               didMigrate,
-              state,
+              {
+                ...state,
+                file: {
+                  ...state.file,
+                  originalVersionStamp: state.file.originalVersionStamp || state.file.versionStamp,
+                },
+              },
               state.file.version,
               fileURL
             )
+          )
+          store.dispatch(
+            actions.project.selectFile({
+              ...state.file,
+              fileURL,
+              id: helpers.file.fileIdFromPlottrProFile(fileURL),
+            })
           )
 
           MPQ.projectEventStats(
@@ -379,13 +403,20 @@ export function bootFile(whenClientIsReady, fileURL, options, numOpenFiles, save
   }
 
   function _bootFile(fileURL, options, numOpenFiles, saveBackup) {
+    if (!helpers.file.isProtocolString(fileURL)) {
+      const message = `Can't boot a file without a protocol: ${fileURL}`
+      logger.error(message)
+      store.dispatch(actions.applicationState.errorLoadingFile())
+      return Promise.reject(new Error(message))
+    }
+
     // Now that we know what the file path for this window should be,
     // tell the main process.
     ipcRenderer.send('pls-set-my-file-path', fileURL)
 
     // And then boot the file.
     const { beatHierarchy } = options
-    const isCloudFile = isPlottrCloudFile(fileURL)
+    const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
     try {
       store.dispatch(actions.applicationState.startLoadingFile())

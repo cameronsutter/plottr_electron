@@ -1,6 +1,11 @@
 import React from 'react'
 
 const MainIntegrationContext = React.createContext({
+  saveOfflineFile: (fileURL, data) => {
+    throw new Error(
+      `Couldn't save offline file of ${fileURL} with data: ${data}.  Please wire up the MainIntegrationContext provider.`
+    )
+  },
   saveFile: (fileURL, data) => {
     throw new Error(
       `Couldn't save file at ${fileURL} with data: ${data}.  Please wire up the MainIntegrationContext provider.`

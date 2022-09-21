@@ -18,26 +18,6 @@ function allWindows() {
   return windows
 }
 
-function setFilePathForWindowWithFilePath(oldFileURL, newFileURL) {
-  const window = allWindows().find((window) => {
-    return window.fileURL === oldFileURL
-  })
-
-  if (window) {
-    window.oldFileURL = window.fileURL
-    window.fileURL = newFileURL
-    log.info('Renaming window with path: ', oldFileURL, ' to: ', newFileURL)
-  } else {
-    log.warn(
-      'Attempting to rename window with path: ',
-      oldFileURL,
-      ' to: ',
-      newFileURL,
-      'but could not find the window'
-    )
-  }
-}
-
 function setFilePathForWindowWithId(id, fileURL) {
   const window = allWindows().find((window) => {
     return window.id === id
@@ -122,7 +102,6 @@ function closeWindow(id) {
 }
 
 export {
-  setFilePathForWindowWithFilePath,
   addNewWindow,
   allWindows,
   reloadWindow,

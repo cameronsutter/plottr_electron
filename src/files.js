@@ -124,8 +124,15 @@ export const offlineFileURLFromFile = (file) => {
 }
 
 export const renameFile = (fileURL) => {
+  const present = store.getState().present
+  const isCloudFile = selectors.isCloudFileSelector(present)
+  const isOffline = selectors.isOfflineSelector(present)
+  if (isOffline && isCloudFile) {
+    logger.info('Tried to save-as a file, but it is offline', fileURL)
+    return
+  }
   if (helpers.file.urlPointsToPlottrCloud(fileURL)) {
-    const fileList = selectors.knownFilesSelector(store.getState().present)
+    const fileList = selectors.knownFilesSelector(present)
     const fileId = fileURL.replace(/^plottr:\/\//, '')
     if (!fileList.find(({ id }) => id === fileId)) {
       logger.error(`Coludn't find file with id: ${fileId} to rename`)

@@ -11,7 +11,6 @@ import { helpers, actions, selectors } from 'pltr/v2'
 import { Button } from 'plottr_components'
 
 import { bootFile } from '../bootFile'
-import { isOfflineFile } from '../../common/utils/files'
 
 import MainIntegrationContext from '../../mainIntegrationContext'
 import App from './App'
@@ -138,10 +137,15 @@ const Main = ({
       setPathToProject(fileURL)
 
       // To boot the file automatically: we must either be running pro
-      // and it's a cloud file, or we must be running classic mode and
-      // it's not a cloud file.
-      if (!!isInProMode === !!isCloudFile(fileURL) || (isInOfflineMode && isOfflineFile(fileURL))) {
+      // and it's a cloud file, we must be running classic mode and
+      // it's not a cloud file, or we must be running pro with offline
+      // mode enabled, in which case we use convention to determine
+      // the offline file counterpart.
+      if (!!isInProMode === !!isCloudFile(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup)
+      }
+      if (isInOfflineMode && isCloudFile(fileURL)) {
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -157,8 +161,7 @@ const Main = ({
     // it to make sure that we have destinct lambdas to de-register
     // later.
     const reloadListener = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
-      const lastFileIsClassicAndWeAreInPro =
-        isInProMode && helpers.file.isDeviceFileURL(fileURL) && !isOfflineFile(fileURL)
+      const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
       if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(fileURL)
       } else {
@@ -181,8 +184,7 @@ const Main = ({
       windowOpenedWithKnownPath,
       processSwitches
     ) => {
-      const lastFileIsClassicAndWeAreInPro =
-        isInProMode && helpers.file.isDeviceFileURL(fileURL) && !isOfflineFile(fileURL)
+      const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
       // There are valid possibilities for fileURL to be null.
       //
       // i.e. no file has ever been opened or the last opened file was

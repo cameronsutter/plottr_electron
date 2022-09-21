@@ -114,7 +114,8 @@ createClient(
   socketServerEventHandlers
 )
 
-const { saveFile, isTempFile, basename, copyFile, readFile } = makeFileModule(whenClientIsReady)
+const { saveOfflineFile, saveFile, isTempFile, basename, copyFile } =
+  makeFileModule(whenClientIsReady)
 
 const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 fileSystemAPIs.currentAppSettings().then((settings) => {
@@ -195,11 +196,24 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
 
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
-  saveFile(present.project.fileURL, present)
+  const isOffline = selectors.isOfflineSelector(present)
+  const isOfflineModeEnabled = selectors.offlineModeEnabledSelector(present)
+  const isCloudFile = selectors.isCloudFileSelector(present)
+  if (isCloudFile && isOffline && isOfflineModeEnabled) {
+    saveOfflineFile(present)
+  } else if (!isCloudFile) {
+    saveFile(present.project.fileURL, present)
+  }
 })
 
 ipcRenderer.on('save-as', () => {
   const { present } = store.getState()
+  const isInOfflineMode = selectors.isInOfflineModeSelector(present)
+  if (isInOfflineMode) {
+    logger.info('Tried to save-as a file, but it is offline')
+    return
+  }
+
   const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const fileName = dialog.showSaveDialogSync(win, {
@@ -227,6 +241,11 @@ const ensureEndsInPltr = (filePath) => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
+  const isCloudFile = selectors.isCloudFileSelector(present)
+  if (isCloudFile) {
+    return
+  }
+
   isTempFile(present).then((isTemp) => {
     const oldFileURL = selectors.fileURLSelector(present)
     if (!oldFileURL) {

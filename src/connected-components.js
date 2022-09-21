@@ -174,7 +174,7 @@ const platform = {
     },
     deleteKnownFile: (fileURL) => {
       const state = store.getState().present
-      const selectedFile = selectors.selectedFileSelector(state)
+      const currentFileURL = selectors.fileURLSelector(state)
       const userId = selectors.userIdSelector(state)
       const clientId = selectors.clientIdSelector(state)
       const isLoggedIn = selectors.isLoggedInSelector(state)
@@ -209,7 +209,7 @@ const platform = {
 
         deleteFile(id, userId, clientId)
           .then(() => {
-            if (selectedFile?.fileURL === fileURL) {
+            if (currentFileURL === fileURL) {
               store.dispatch(actions.project.selectFile(null))
             }
             logger.info(`Deleted file at path: ${fileURL}`)
@@ -395,11 +395,9 @@ const platform = {
     resolveToPublicUrl: (storageUrl) => {
       if (!storageUrl) return null
       const state = store.getState()
-      const {
-        client: { userId },
-        project: { selectedFile },
-      } = state.present
-      const fileId = selectedFile?.id
+
+      const fileId = selectors.fileIdSelector(state.present)
+      const userId = selectors.userIdSelector(state.present)
       if (!fileId || !userId) {
         return Promise.reject(
           'No file or you are not logged in.  Either way we cannot fetch a picture.'

@@ -35,11 +35,7 @@ import {
   createFromScrivener,
 } from './modules/files'
 import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
-import {
-  editWindowPath,
-  setFilePathForWindowWithFilePath,
-  setFilePathForWindowWithId,
-} from './modules/windows/index'
+import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
@@ -68,7 +64,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
               fileURL,
               flags,
               numberOfWindows(),
-              win.filePath,
+              win.fileURL,
               processSwitches.serialise()
             )
           })
@@ -197,10 +193,6 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     editKnownFilePath(oldFileURL, newFileURL)
     editWindowPath(oldFileURL, newFileURL)
     broadcastToAllWindows('reload-recents')
-  })
-
-  ipcMain.on('set-my-file-path', (_event, oldFileURL, newFileURL) => {
-    setFilePathForWindowWithFilePath(oldFileURL, newFileURL)
   })
 
   ipcMain.on('pls-quit', () => {

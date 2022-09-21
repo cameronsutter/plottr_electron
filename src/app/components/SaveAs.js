@@ -20,6 +20,7 @@ const SaveAs = ({
   clientId,
   userId,
   fileList,
+  isOfflineMode,
   startSavingFileAs,
   finishSavingFileAs,
   withFullState,
@@ -67,19 +68,16 @@ const SaveAs = ({
 
   useEffect(() => {
     ipcRenderer.on('save-as--pro', (event, fileId) => {
+      if (isOfflineMode) return
+
       setVisible(true)
       setFileId(fileId)
       saveFileAs.current = true
     })
-    const renameListener = document.addEventListener('save-as--pro', (event) => {
-      setVisible(true)
-      setFileId(event.fileId)
-    })
     return () => {
-      document.removeEventListener('save-as--pro', renameListener)
       ipcRenderer.removeAllListeners('save-as--pro')
     }
-  }, [])
+  }, [isOfflineMode])
 
   const hideRenamer = () => {
     setVisible(false)
@@ -103,6 +101,7 @@ SaveAs.propTypes = {
   userId: PropTypes.string,
   clientId: PropTypes.string,
   fileList: PropTypes.array.isRequired,
+  isOfflineMode: PropTypes.bool,
   startSavingFileAs: PropTypes.func.isRequired,
   finishSavingFileAs: PropTypes.func.isRequired,
   withFullState: PropTypes.func.isRequired,
@@ -113,6 +112,7 @@ export default connect(
     userId: selectors.userIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
     fileList: selectors.knownFilesSelector(state.present),
+    isOfflineMode: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     startSavingFileAs: actions.applicationState.startSavingFileAs,

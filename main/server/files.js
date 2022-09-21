@@ -11,6 +11,7 @@ import {
   AUTO_SAVE_WORKED_THIS_TIME,
   OFFLINE_FILE_PATH,
 } from '../../shared/socket-server-message-types'
+import { isDeviceFileURL } from '../../lib/pltr/v2/helpers/file'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
@@ -251,7 +252,8 @@ const fileModule = (userDataPath) => {
       }
 
       return function saveFile(fileURL, jsonData) {
-        if (!helpers.file.isDeviceFileURL(fileURL)) {
+        const isDeviceFile = helpers.file.isDeviceFileURL(fileURL)
+        if (!isDeviceFile) {
           const message = `Attempted to save non-device file to device: ${fileURL}`
           logger.error(message)
           return Promise.reject(new Error(message))
@@ -372,12 +374,13 @@ const fileModule = (userDataPath) => {
           files.map((filePath) => {
             return readFile(filePath).then((jsonString) => {
               try {
+                const fileId = basename(filePath, 'pltr')
                 const fileData = JSON.parse(jsonString).file
                 return [
                   {
-                    fileURL: `device://${filePath}`,
+                    fileURL: `plottr://${fileId}`,
                     lastOpened: fileData.timeStamp,
-                    fileName: fileData.fileName || basename(filePath, 'pltr'),
+                    fileName: fileData.fileName,
                     isOfflineBackup: true,
                   },
                 ]
@@ -394,15 +397,19 @@ const fileModule = (userDataPath) => {
     function cleanOfflineBackups(knownFiles) {
       const expectedOfflineFiles = knownFiles
         .filter(({ isCloudFile, fileURL }) => isCloudFile && fileURL)
-        .map(({ fileURL }) => offlineFileURL(fileURL))
+        .map(({ fileURL }) => fileURL)
         .filter((x) => x)
+      // It's cleaning them up here...
+      logger.info('Expected files', expectedOfflineFiles)
       return listOfflineFiles().then((files) => {
+        logger.info('Actual files', files)
         const filesToClean = files.filter((filePath) => {
           if (isResumeBackup(filePath)) {
             logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)
             return false
           }
-          return expectedOfflineFiles.indexOf(filePath) === -1
+          const fileURL = helpers.file.fileIdToPlottrCloudFileURL(basename(filePath))
+          return expectedOfflineFiles.indexOf(fileURL) === -1
         })
         return Promise.all(
           filesToClean.map((filePath) => {

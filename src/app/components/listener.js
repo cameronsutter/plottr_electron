@@ -162,7 +162,7 @@ const Listener = ({
     })
     if (knownFileRecord && knownFileRecord.fileName !== fileName) {
       const fileId = helpers.file.withoutProtocol(fileURL)
-      updateAuthFileName(userId, fileId, fileName)
+      updateAuthFileName(fileId, fileName)
     }
   }, [knownFiles, fileURL, fileName])
 

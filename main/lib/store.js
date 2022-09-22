@@ -292,7 +292,6 @@ class Store {
   }
 
   some = (predicate) => {
-    console.log('In Some...')
     return this.afterActiveWrite(() => {
       return Object.entries(this.store).some(([key, value]) => {
         return predicate(value, key)

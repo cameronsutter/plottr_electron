@@ -398,10 +398,7 @@ const fileModule = (userDataPath) => {
         .filter(({ isCloudFile, fileURL }) => isCloudFile && fileURL)
         .map(({ fileURL }) => fileURL)
         .filter((x) => x)
-      // It's cleaning them up here...
-      logger.info('Expected files', expectedOfflineFiles)
       return listOfflineFiles().then((files) => {
-        logger.info('Actual files', files)
         const filesToClean = files.filter((filePath) => {
           if (isResumeBackup(filePath)) {
             logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)

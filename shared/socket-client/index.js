@@ -116,6 +116,10 @@ import {
   SAVE_TO_TEMP_FILE_ERROR_REPLY,
   BUSY,
   DONE,
+  LAST_OPENED_FILE,
+  LAST_OPENED_FILE_ERROR_REPLY,
+  SET_LAST_OPENED_FILE,
+  SET_LAST_OPENED_FILE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -392,6 +396,8 @@ const connect = (
           case AUTO_SAVE_FILE_ERROR_REPLY:
           case ENSURE_BACKUP_FULL_PATH_ERROR_REPLY:
           case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
+          case LAST_OPENED_FILE_ERROR_REPLY:
+          case SET_LAST_OPENED_FILE_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -544,6 +550,14 @@ const connect = (
 
     const updateLastOpenedDate = (id) => {
       return sendPromise(UPDATE_LAST_OPENED_DATE, { id })
+    }
+
+    const lastOpenedFile = () => {
+      return sendPromise(LAST_OPENED_FILE)
+    }
+
+    const setLastOpenedFilePath = (filePath) => {
+      return sendPromise(SET_LAST_OPENED_FILE, { filePath })
     }
 
     // ===File System APIs===
@@ -722,6 +736,8 @@ const connect = (
           listenToAppSettingsChanges,
           listenToUserSettingsChanges,
           listenToBackupsChanges,
+          lastOpenedFile,
+          setLastOpenedFilePath,
           close: clientConnection.close.bind(clientConnection),
         })
       })

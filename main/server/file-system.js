@@ -3,6 +3,7 @@ import fs from 'fs'
 import { sortBy } from 'lodash'
 
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
+import { isOfflineFile } from '../modules/offlineFilePath'
 
 const { readdir, mkdir, lstat } = fs.promises
 
@@ -44,7 +45,33 @@ const fileSystemModule = (userDataPath) => {
       exportConfigStore,
       SETTINGS,
       USER,
+      lastOpenedFileStore,
     } = stores
+
+    // const lastOpenedFile = async () => {
+    //   const lastFile = lastOpenedFileStore.get('lastOpenedFilePath')
+
+    //   if (isOfflineFile(lastFile)) {
+    //     return Promise.resolve(null)
+    //   }
+
+    //   return lstat(lastFile)
+    //     .then(() => {
+    //       return lastFile
+    //     })
+    //     .catch((error) => {
+    //       if (error.code === 'ENOENT') {
+    //         return null
+    //       }
+    //       logger.error('Error finding last opened file.  Refusing to open it.', error)
+    //       return null
+    //     })
+    // }
+
+    // const setLastOpenedFilePath = (filePath) => {
+    //   if (isOfflineFile(filePath)) return
+    //   lastOpenedFileStore.set('lastOpenedFilePath', filePath)
+    // }
 
     const currentAppSettings = () => {
       return SETTINGS.currentStore()
@@ -364,6 +391,8 @@ const fileSystemModule = (userDataPath) => {
       listenToBackupsChanges,
       currentBackups,
       customTemplatesPath,
+      // lastOpenedFile,
+      // setLastOpenedFilePath,
     }
   }
 }

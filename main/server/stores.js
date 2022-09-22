@@ -25,6 +25,7 @@ const manifestPath =
   process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
 const exportPath =
   process.env.NODE_ENV == 'development' ? `${EXPORT_CONFIG_PATH}_dev` : EXPORT_CONFIG_PATH
+const LAST_OPENED_NAME = process.env.NODE_ENV == 'development' ? 'last_opened_dev' : 'last_opened'
 
 const makeStores = (userDataPath, logger) => {
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
@@ -51,6 +52,10 @@ const makeStores = (userDataPath, logger) => {
   const SETTINGS = new Store(userDataPath, logger, {
     defaults: defaultSettings,
     name: settingsStorePath,
+    watch: true,
+  })
+  const lastOpenedFileStore = new Store(userDataPath, logger, {
+    name: LAST_OPENED_NAME,
     watch: true,
   })
 
@@ -95,6 +100,7 @@ const makeStores = (userDataPath, logger) => {
     USER,
     SETTINGS,
     tempFilesStore,
+    lastOpenedFileStore,
   }
 }
 

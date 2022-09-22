@@ -71,6 +71,8 @@ import {
   DELETE_KNOWN_FILE,
   REMOVE_FROM_TEMP_FILES,
   SAVE_TO_TEMP_FILE,
+  LAST_OPENED_FILE,
+  SET_LAST_OPENED_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -185,6 +187,8 @@ const setupListeners = (port, userDataPath) => {
       deleteCustomTemplate,
       setTemplate,
       customTemplatesPath,
+      lastOpenedFile,
+      setLastOpenedFilePath,
     } = fileSystemModule
     const tempFilesModule = makeTempFilesModule(userDataPath, stores, fileModule, logger)
     const { removeFromTempFiles, saveToTempFile } = tempFilesModule
@@ -801,6 +805,22 @@ const setupListeners = (port, userDataPath) => {
               () => 'Getting the current backups',
               currentBackups,
               () => 'Error while getting current backups'
+            )
+          }
+          case LAST_OPENED_FILE: {
+            return handlePromise(
+              () => 'Getting the last opened file',
+              () => lastOpenedFile,
+              () => 'Error while getting last opened file'
+            )
+          }
+          case SET_LAST_OPENED_FILE: {
+            const { filePath } = payload
+            return handlePromise(
+              () => 'Setting the last opened file',
+              () =>
+                statusManager.registerTask(setLastOpenedFilePath(filePath), SET_LAST_OPENED_FILE),
+              () => 'Error while setting last opened file'
             )
           }
           // Subscriptions

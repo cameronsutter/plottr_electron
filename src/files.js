@@ -67,7 +67,7 @@ export const newFile = (
   }
   return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
     const fileId = response.data.fileId
-    const fileURL = helpers.file.fileIdFromPlottrProFile(fileId)
+    const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
     openFile(fileURL, false)
     closeDashboard()
     return fileId

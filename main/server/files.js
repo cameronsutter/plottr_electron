@@ -11,7 +11,6 @@ import {
   AUTO_SAVE_WORKED_THIS_TIME,
   OFFLINE_FILE_PATH,
 } from '../../shared/socket-server-message-types'
-import { isDeviceFileURL } from '../../lib/pltr/v2/helpers/file'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 

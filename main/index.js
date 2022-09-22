@@ -311,7 +311,10 @@ function fileToLoad(argv) {
   return null
 }
 
-app.on('open-file', (event, fileURL) => {
+// macOS only.  Open file from finder.
+app.on('open-file', (event, filePath) => {
+  // Convert to a Plottr URL.
+  const fileURL = helpers.file.filePathToFileURL(filePath)
   // Prevent the app from opening a default window as well as the file.
   openedFile = true
   log.info(`Opening <${fileURL}> from open file`)

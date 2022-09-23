@@ -26,12 +26,14 @@ import logger from '../../../shared/logger'
 
 const win = getCurrentWindow()
 
-const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
-
-function displayFileName(filePath, isCloudFile, displayFilePath) {
+function displayFileName(fileName, fileURL, displayFilePath) {
+  const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
+  const computedFileName = isOnCloud
+    ? fileName
+    : path.basename(helpers.file.withoutProtocol(fileURL))
   const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = displayFilePath ? ` - ${path.basename(filePath)}` : ''
-  const plottr = isCloudFile ? 'Plottr Pro' : 'Plottr'
+  const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
+  const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
   try {
     const decodedFileName = decodeURIComponent(baseFileName)
     return `${plottr}${decodedFileName}${devMessage}`
@@ -90,6 +92,7 @@ const Main = ({
   isInOfflineMode,
   currentAppStateIsDashboard,
   fileName,
+  fileURL,
   isOnboardingFromRoot,
   isOnboarding,
   setCurrentAppStateToDashboard,
@@ -113,15 +116,15 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, isInProMode, false))
+        win.setTitle(displayFileName(fileName, fileURL, false))
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, isInProMode, true))
+        win.setTitle(displayFileName(fileName, fileURL, true))
       }
     }
-  }, [fileName, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
+  }, [fileName, fileURL, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
 
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
@@ -141,10 +144,10 @@ const Main = ({
       // it's not a cloud file, or we must be running pro with offline
       // mode enabled, in which case we use convention to determine
       // the offline file counterpart.
-      if (!!isInProMode === !!isCloudFile(fileURL)) {
+      if (!!isInProMode === !!helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup)
       }
-      if (isInOfflineMode && isCloudFile(fileURL)) {
+      if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true)
       }
       // We only want to obey the setting to show the dashboard on
@@ -495,6 +498,7 @@ Main.propTypes = {
   isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.bool.isRequired,
   fileName: PropTypes.string,
+  fileURL: PropTypes.string,
   isOnboardingFromRoot: PropTypes.bool,
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
@@ -530,6 +534,7 @@ export default connect(
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
     fileName: selectors.fileNameSelector(state.present),
+    fileURL: selectors.fileURLSelector(state.present),
     isOnboardingFromRoot: selectors.isOnboardingToProFromRootSelector(state.present),
     isOnboarding: selectors.isOnboardingToProSelector(state.present),
     fileToUpload: selectors.filePathToUploadSelector(state.present),

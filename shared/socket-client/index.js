@@ -118,6 +118,7 @@ import {
   DONE,
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
+  COPY_FILE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -280,6 +281,7 @@ const connect = (
             return
           }
           // Normal replies
+          case COPY_FILE:
           case REMOVE_FROM_TEMP_FILES:
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
@@ -366,6 +368,7 @@ const connect = (
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
+          case COPY_FILE_ERROR_REPLY:
           case BACKUP_BASE_PATH_ERROR_REPLY:
           case CURRENT_TRIAL_ERROR_REPLY:
           case START_TRIAL_ERROR_REPLY:

@@ -24,72 +24,81 @@ const makeTempFilesModule = (userDataPath, stores, fileModule, trashModule, logg
     })
   }
 
-  async function saveToTempFile(json, name) {
-    // Does the tmp file directory exist?
-    try {
-      await lstat(tempFilesFullPath)
-    } catch (error) {
-      logger.info(`Temp file directory ${tempFilesFullPath} doesn't exist.  Creating it.`)
-      if (error.code === 'ENOENT') {
-        await mkdir(tempFilesFullPath, { recursive: true })
-      }
-      logger.error('Could not create temp file path', error)
-      throw error
-    }
-
-    const store = await tempFilesStore.currentStore()
-    const maxCount = Object.values(store)
-      .map(({ fileName }) => {
-        const digits = fileName.match(/[0-9]+$/)
-        if (digits && digits[0]) {
-          return [parseInt(digits[0])]
-        }
-        return []
-      })
-      .flatMap((x) => x)
-      .reduce((acc, next) => Math.max(next, acc), 0)
-    const tempFileCount = maxCount + 1
-    const fileName = name || `${t('Untitled')}${tempFileCount == 1 ? '' : tempFileCount}`
-    const tempName = `${fileName}.pltr`
-    let counter = 1
-    let filePath = path.join(tempFilesFullPath, tempName)
-    let exists = await fileExists(filePath)
-    while (exists) {
-      logger.warn(`Temp file exists at ${filePath}.  Attempting to create a new name`)
-      const tempName = `${fileName}-${uuidv4()}.pltr`
-      filePath = path.join(tempFilesFullPath, tempName)
+  function uniqueTempFilePath(fileName) {
+    function iter(counter, filePath) {
       if (counter > MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME) {
         const errorMessage = `We couldn't save your file to ${filePath}`
         logger.error(errorMessage, 'reached max attempts to find unique file name')
-        throw new Error(errorMessage)
+        return Promise.reject(new Error(errorMessage))
       }
-      counter++
-      exists = await fileExists(filePath)
+      return fileExists(filePath).then((exists) => {
+        if (exists) {
+          logger.warn(`Temp file exists at ${filePath}.  Attempting to create a new name`)
+          const tempName = `${fileName}-${uuidv4()}.pltr`
+          return iter(counter + 1, path.join(tempFilesFullPath, tempName))
+        }
+
+        return filePath
+      })
     }
-    let stats
-    try {
-      stats = await lstat(filePath)
-    } catch (error) {
-      if (error.code !== 'ENOENT') {
-        const errorMessage = `We couldn't save your file to ${filePath}.`
-        logger.error(errorMessage, `file doesn't exist after creating it`)
-        throw new Error(errorMessage)
+
+    return iter(0, path.join(tempFilesFullPath, `${fileName}.pltr`)).then((filePath) => {
+      return lstat(filePath)
+        .then(() => {
+          const errorMessage = `File: ${filePath} already exists.`
+          logger.error(errorMessage)
+          return Promise.reject(new Error(errorMessage))
+        })
+        .catch((error) => {
+          if (error.code === 'ENOENT') {
+            return filePath
+          }
+
+          const message = `Couldn't create a unique path for temp file ${fileName}`
+          logger.error(message, error)
+          return Promise.reject(error)
+        })
+    })
+  }
+
+  function ensureTempFilesDirectoryExists() {
+    // Does the tmp file directory exist?
+    return lstat(tempFilesFullPath).catch((error) => {
+      logger.info(`Temp file directory ${tempFilesFullPath} doesn't exist.  Creating it.`)
+      if (error.code === 'ENOENT') {
+        return mkdir(tempFilesFullPath, { recursive: true })
       }
-    }
-    if (stats && stats.isFile(filePath)) {
-      const errorMessage = `File: ${filePath} already exists.`
-      logger.error(errorMessage)
-      throw new Error(errorMessage)
-    }
-    const fileURL = helpers.file.filePathToFileURL(filePath)
-    if (!fileURL) {
-      const message = `Couldn't compute a file URL for temp file that we're trying to save to ${filePath}`
-      logger.error(message)
-      throw new Error(message)
-    }
-    await tempFilesStore.set(fileURL, { fileURL })
-    await saveFile(fileURL, json)
-    return fileURL
+
+      logger.error('Could not create temp file path', error)
+      return Promise.reject(error)
+    })
+  }
+
+  function saveToTempFile(json, name) {
+    return ensureTempFilesDirectoryExists()
+      .then(() => {
+        const fileName = name || t('Untitled')
+        return fileName
+      })
+      .then((fileName) => {
+        return uniqueTempFilePath(fileName).then((filePath) => {
+          const fileURL = helpers.file.filePathToFileURL(filePath)
+          if (!fileURL) {
+            const message = `Couldn't compute a file URL for temp file that we're trying to save to ${filePath}`
+            logger.error(message)
+            return Promise.reject(Error(message))
+          }
+          return tempFilesStore
+            .setRawKey(fileURL, { fileURL })
+            .then(() => {
+              return saveFile(fileURL, json) // Need to make sure these are added to known files
+            })
+            .then(() => {
+              logger.info('Adding to temp file store: ', fileURL, { fileURL })
+              return fileURL
+            })
+        })
+      })
   }
 
   return {

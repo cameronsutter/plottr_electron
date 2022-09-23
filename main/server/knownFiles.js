@@ -1,4 +1,4 @@
-import path, { basename } from 'path'
+import { basename } from 'path'
 
 import { helpers } from 'pltr/v2'
 
@@ -48,9 +48,9 @@ const makeKnownFilesModule = (
       return Promise.resolve()
     }
 
-    const fileName = basename(helpers.file.withoutProtocol(fileURL), 'pltr')
+    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
     return knownFilesStore
-      .set(fileURL, {
+      .setRawKey(fileURL, {
         fileURL,
         fileName,
         lastOpened: Date.now(),
@@ -70,9 +70,9 @@ const makeKnownFilesModule = (
       return Promise.resolve()
     }
 
-    const fileName = basename(helpers.file.withoutProtocol(fileURL), 'pltr')
+    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
     return knownFilesStore
-      .set(fileURL, {
+      .setRawKey(fileURL, {
         fileURL,
         fileName,
         lastOpened: Date.now(),
@@ -83,35 +83,43 @@ const makeKnownFilesModule = (
       })
   }
 
-  const editKnownFilePath = (oldFilePath, newFilePath) => {
-    if (!oldFilePath || !newFilePath) {
-      const message = `Tried to edit a known file's path from ${oldFilePath} to ${newFilePath}`
+  const editKnownFilePath = (oldFileURL, newFileURL) => {
+    if (!oldFileURL || !newFileURL) {
+      const message = `Tried to edit a known file's path from ${oldFileURL} to ${newFileURL}`
       logger.error(message)
       return Promise.reject(new Error(message))
     }
-    const oldFileURL = helpers.file.filePathToFileURL(oldFilePath)
-    const newFileURL = helpers.file.filePathToFileURL(newFilePath)
-    const fileRecord = knownFilesStore.get(oldFileURL)
+    const fileRecord = knownFilesStore.getRawKey(oldFileURL)
+    logger.info('HERE', oldFileURL, newFileURL, fileRecord)
     return knownFilesStore
       .delete(oldFileURL)
       .then(() => {
-        return knownFilesStore.set(newFileURL, {
+        return knownFilesStore.setRawKey(newFileURL, {
           ...fileRecord,
           fileURL: newFileURL,
+          fileName: basename(helpers.file.withoutProtocol(newFileURL), '.pltr'),
         })
       })
       .catch((error) => {
-        logger.error(`Error editing known file path from ${oldFilePath} to ${newFilePath}: `, error)
+        logger.error(`Error editing known file path from ${oldFileURL} to ${newFileURL}: `, error)
         return Promise.reject(error)
       })
   }
 
   const updateLastOpenedDate = (fileURL) => {
-    return knownFilesStore.set(`${fileURL}.lastOpened`, Date.now())
+    const currentValue = knownFilesStore.getRawKey(fileURL)
+    return knownFilesStore.setRawKey(fileURL, {
+      ...currentValue,
+      lastOpened: Date.now(),
+    })
   }
 
   const updateKnownFileName = (fileURL, newName) => {
-    return knownFilesStore.set(`${fileURL}.fileName`, newName)
+    const currentValue = knownFilesStore.getRawKey(fileURL)
+    return knownFilesStore.setRawKey(fileURL, {
+      ...currentValue,
+      fileName: newName,
+    })
   }
 
   return {

@@ -35,6 +35,18 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
+  const copyFile = (sourceFileURL, newFileURL) => {
+    return whenClientIsReady(({ copyFile }) => {
+      return copyFile(sourceFileURL, newFileURL)
+    })
+  }
+
+  const basename = (fileURL) => {
+    return whenClientIsReady(({ basename }) => {
+      return basename(fileURL)
+    })
+  }
+
   return {
     saveOfflineFile,
     saveFile,
@@ -42,6 +54,8 @@ const makeFileModule = (whenClientIsReady) => {
     readOfflineFiles,
     isTempFile,
     saveAsTempFile,
+    copyFile,
+    basename,
   }
 }
 

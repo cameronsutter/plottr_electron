@@ -213,6 +213,25 @@ class Store {
     })
   }
 
+  // Use this if you have full stops in your key that you don't want
+  // the store to interpret as nested objects.
+  setRawKey = (key, value) => {
+    if (!key) {
+      const message = `Attempted to set key: ${key} to ${value} but (as you can see, there's no key)`
+      this.logger.error(message)
+      return Promise.reject(new Error(message))
+    }
+    return this.afterActiveWrite(() => {
+      this.store = cloneDeep(this.store)
+      this.store[key] = value
+      return this.writeStore()
+        .then(() => {
+          this.publishChangesToWatchers()
+        })
+        .then(() => true)
+    })
+  }
+
   clear = () => {
     return this.afterActiveWrite(() => {
       this.store = {}
@@ -302,6 +321,17 @@ class Store {
   get = (key) => {
     if (typeof key !== 'undefined') {
       return get(this.store, key) || get(this.defaults, key)
+    }
+
+    return {
+      ...this.defaults,
+      ...this.store,
+    }
+  }
+
+  getRawKey = (key) => {
+    if (typeof key !== 'undefined') {
+      return this.store[key] || this.defaults[key]
     }
 
     return {

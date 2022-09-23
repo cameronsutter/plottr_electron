@@ -123,7 +123,7 @@ const makeStores = (userDataPath, logger) => {
                 return {
                   [fileURL]: {
                     fileURL: fileURL,
-                    fileName: basename(helpers.file.withoutProtocol(fileURL), 'pltr'),
+                    fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
                     lastOpened: value.lastOpened,
                   },
                 }
@@ -165,7 +165,7 @@ const makeStores = (userDataPath, logger) => {
               return {
                 [fileURL]: {
                   fileURL,
-                  fileName: basename(helpers.file.withoutProtocol(fileURL), 'pltr'),
+                  fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
                 },
               }
             })

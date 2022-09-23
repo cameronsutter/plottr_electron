@@ -214,7 +214,7 @@ ipcRenderer.on('save-as', () => {
     return
   }
 
-  const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
+  const defaultPath = path.basename(present.file.fileName, '.pltr')
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const fileName = dialog.showSaveDialogSync(win, {
     filters,

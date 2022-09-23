@@ -373,7 +373,7 @@ const fileModule = (userDataPath) => {
           files.map((filePath) => {
             return readFile(filePath).then((jsonString) => {
               try {
-                const fileId = basename(filePath, 'pltr')
+                const fileId = basename(filePath, '.pltr')
                 const fileData = JSON.parse(jsonString).file
                 return [
                   {

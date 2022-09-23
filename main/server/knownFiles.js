@@ -90,7 +90,6 @@ const makeKnownFilesModule = (
       return Promise.reject(new Error(message))
     }
     const fileRecord = knownFilesStore.getRawKey(oldFileURL)
-    logger.info('HERE', oldFileURL, newFileURL, fileRecord)
     return knownFilesStore
       .delete(oldFileURL)
       .then(() => {

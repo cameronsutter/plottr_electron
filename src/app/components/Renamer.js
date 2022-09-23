@@ -10,7 +10,6 @@ import { InputModal } from 'connected-components'
 import { editFileName as editFileNameOnFirebase } from 'wired-up-firebase'
 
 import logger from '../../../shared/logger'
-import { whenClientIsReady } from '../../../shared/socket-client/index'
 
 const Renamer = ({
   userId,
@@ -19,7 +18,6 @@ const Renamer = ({
   startRenamingFile,
   finishRenamingFile,
   isOffline,
-  isOfflineModeEnabled,
   editFileName,
 }) => {
   const [visible, setVisible] = useState(false)
@@ -28,21 +26,11 @@ const Renamer = ({
 
   const renameFile = (newName) => {
     // This component is for renaming cloud files only.
-    if (!userId) {
+    if (!userId || isOffline) {
       return
     }
     startRenamingFile()
     showLoader(true)
-
-    // If we're offline, just edit the offline file.  All changes will
-    // propogate when we go online.  In the other direction, Plottr
-    // updates the offline file when it records it in offlineRecorder.
-    if (isOffline && isOfflineModeEnabled) {
-      whenClientIsReady(({ updateKnownFileName }) => {
-        return editFileName(updateKnownFileName, newName)
-      })
-      return
-    }
 
     editFileNameOnFirebase(fileId, newName)
       .then((result) => {
@@ -107,7 +95,6 @@ Renamer.propTypes = {
   startRenamingFile: PropTypes.func.isRequired,
   finishRenamingFile: PropTypes.func.isRequired,
   isOffline: PropTypes.bool.isRequired,
-  isOfflineModeEnabled: PropTypes.bool.isRequired,
   editFileName: PropTypes.func.isRequired,
 }
 
@@ -117,7 +104,6 @@ export default connect(
     isCloudFile: selectors.isCloudFileSelector(state.present),
     fileList: selectors.knownFilesSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
-    isOfflineModeEnabled: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     showLoader: actions.project.showLoader,

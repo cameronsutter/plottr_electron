@@ -329,6 +329,8 @@ class Store {
     }
   }
 
+  // Use this if you have full stops in your key that you don't want
+  // the store to interpret as nested objects.
   getRawKey = (key) => {
     if (typeof key !== 'undefined') {
       return this.store[key] || this.defaults[key]

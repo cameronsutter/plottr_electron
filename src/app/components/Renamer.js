@@ -7,31 +7,35 @@ import { connect } from 'react-redux'
 import { selectors, actions } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
-import { editFileName } from 'wired-up-firebase'
-import { renameCloudBackupFile } from '../../files'
+import { editFileName as editFileNameOnFirebase } from 'wired-up-firebase'
 
 import logger from '../../../shared/logger'
 
-const Renamer = ({ userId, showLoader, fileList, startRenamingFile, finishRenamingFile }) => {
+const Renamer = ({
+  userId,
+  showLoader,
+  fileList,
+  startRenamingFile,
+  finishRenamingFile,
+  isOffline,
+  editFileName,
+}) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
   const renameOpenFile = useRef(false)
 
   const renameFile = (newName) => {
     // This component is for renaming cloud files only.
-    if (!userId) {
+    if (!userId || isOffline) {
       return
     }
     startRenamingFile()
     showLoader(true)
-    const fileName = fileList.find(({ id }) => id === fileId)?.fileName
 
-    ;(fileName ? renameCloudBackupFile(fileName, newName) : Promise.resolve(true))
-      .then(() => {
-        return editFileName(userId, fileId, newName).then((result) => {
-          finishRenamingFile()
-          return result
-        })
+    editFileNameOnFirebase(fileId, newName)
+      .then((result) => {
+        finishRenamingFile()
+        return result
       })
       .then(() => {
         logger.info(`Renamed file with id ${fileId} to ${newName}`)
@@ -90,6 +94,8 @@ Renamer.propTypes = {
   fileList: PropTypes.array.isRequired,
   startRenamingFile: PropTypes.func.isRequired,
   finishRenamingFile: PropTypes.func.isRequired,
+  isOffline: PropTypes.bool.isRequired,
+  editFileName: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -97,10 +103,12 @@ export default connect(
     userId: selectors.userIdSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     fileList: selectors.knownFilesSelector(state.present),
+    isOffline: selectors.isOfflineSelector(state.present),
   }),
   {
     showLoader: actions.project.showLoader,
     startRenamingFile: actions.applicationState.startRenamingFile,
     finishRenamingFile: actions.applicationState.finishRenamingFile,
+    editFileName: actions.ui.editFileName,
   }
 )(Renamer)

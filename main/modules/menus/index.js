@@ -30,11 +30,11 @@ ipcMain.on('pls-reload-menu', () => {
 function buildMenu(safelyExit) {
   safelyExitModule = safelyExit
   const win = BrowserWindow.getFocusedWindow()
-  let filePath = null
+  let fileURL = null
   if (win) {
     const winObj = getWindowById(win.id)
     if (winObj) {
-      filePath = winObj.filePath
+      fileURL = winObj.fileURL
     }
   }
 
@@ -45,7 +45,7 @@ function buildMenu(safelyExit) {
 
   return Promise.all([
     buildPlottrMenu(buildMenu, safelyExit),
-    buildFileMenu(filePath, getTrialInfo),
+    buildFileMenu(fileURL, getTrialInfo),
   ]).then(([plottrMenu, fileMenu]) => {
     return [
       plottrMenu,

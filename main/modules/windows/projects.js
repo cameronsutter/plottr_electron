@@ -9,24 +9,24 @@ import { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } from '.'
 import { addToKnown } from '../known_files'
 import { setLastOpenedFilePath } from '../lastOpened'
 
-ipcMain.on('pls-open-window', (event, filePath, unknown) => {
-  log.info('Received command to open window for', filePath)
-  openProjectWindow(filePath)
+ipcMain.on('pls-open-window', (event, fileURL, unknown) => {
+  log.info('Received command to open window for', fileURL)
+  openProjectWindow(fileURL)
     .then(() => {
-      if (unknown) addToKnown(filePath)
+      if (unknown) addToKnown(fileURL)
     })
     .catch((error) => {
       log.error('Error opening a new window', error)
     })
 })
 
-function openProjectWindow(filePath) {
-  if (focusIfOpen(filePath)) {
-    log.info(`Project window for ${filePath} is already oepen, focussing it.`)
+function openProjectWindow(fileURL) {
+  if (focusIfOpen(fileURL)) {
+    log.info(`Project window for ${fileURL} is already oepen, focussing it.`)
     return Promise.resolve()
   }
-  log.info('Opening new browserWindow for', filePath)
-  return makeBrowserWindow(filePath)
+  log.info('Opening new browserWindow for', fileURL)
+  return makeBrowserWindow(fileURL)
     .then((newWindow) => {
       const entryFile = filePrefix(path.join(__dirname, 'app.html'))
       newWindow.loadURL(entryFile)
@@ -34,21 +34,21 @@ function openProjectWindow(filePath) {
       newWindow.on('close', function (e) {
         const win = getWindowById(this.id) || e.sender // depends on 'this' being the window
         if (win) {
-          updateOpenFiles(win.filePath)
+          updateOpenFiles(win.fileURL)
           dereferenceWindow(win)
           win.browserWindow.webContents.destroy()
         }
       })
 
       try {
-        if (filePath) {
-          app.addRecentDocument(filePath)
-          setLastOpenedFilePath(filePath)
+        if (fileURL) {
+          app.addRecentDocument(fileURL)
+          setLastOpenedFilePath(fileURL)
         }
-        addNewWindow(newWindow, filePath)
+        addNewWindow(newWindow, fileURL)
       } catch (err) {
         log.warn(err)
-        rollbar.warn(err, { filePath: filePath })
+        rollbar.warn(err, { fileURL })
         newWindow.destroy()
       }
       return newWindow

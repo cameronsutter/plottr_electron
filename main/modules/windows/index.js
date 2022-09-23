@@ -1,7 +1,7 @@
 import { BrowserWindow, ipcMain } from 'electron'
 import log from 'electron-log'
 import { openBuyWindow } from './buy'
-import { offlineFilePath } from '../offlineFilePath'
+import { offlineFileURL } from '../offlineFilePath'
 import { featureFlags } from '../feature_flags'
 
 ipcMain.on('open-buy-window', (event) => {
@@ -18,45 +18,25 @@ function allWindows() {
   return windows
 }
 
-function setFilePathForWindowWithFilePath(oldFilePath, newFilePath) {
-  const window = allWindows().find((window) => {
-    return window.filePath === oldFilePath
-  })
-
-  if (window) {
-    window.oldFilePath = window.filePath
-    window.filePath = newFilePath
-    log.info('Renaming window with path: ', oldFilePath, ' to: ', newFilePath)
-  } else {
-    log.warn(
-      'Attempting to rename window with path: ',
-      oldFilePath,
-      ' to: ',
-      newFilePath,
-      'but could not find the window'
-    )
-  }
-}
-
-function setFilePathForWindowWithId(id, filePath) {
+function setFilePathForWindowWithId(id, fileURL) {
   const window = allWindows().find((window) => {
     return window.id === id
   })
 
   if (window) {
-    window.oldFilePath = window.filePath
-    window.filePath = filePath
-    log.info(`Setting file path for window with id: ${id} to: ${filePath}`)
+    window.oldFileURL = window.fileURL
+    window.fileURL = fileURL
+    log.info(`Setting file path for window with id: ${id} to: ${fileURL}`)
   } else {
-    log.error(`Could not find window with id: ${id} to set to path: ${filePath}`)
+    log.error(`Could not find window with id: ${id} to set to path: ${fileURL}`)
   }
 }
 
-function addNewWindow(browserWindow, filePath) {
+function addNewWindow(browserWindow, fileURL) {
   windows.push({
     id: browserWindow.id,
     browserWindow: browserWindow,
-    filePath: filePath,
+    fileURL: fileURL,
   })
 }
 
@@ -74,25 +54,27 @@ function numberOfWindows() {
   return windows.length
 }
 
-function editWindowPath(oldFilePath, newFilePath) {
-  const win = windows.find((w) => w.filePath == oldFilePath)
+function editWindowPath(oldFileURL, newFileURL) {
+  const win = windows.find((w) => w.fileURL == oldFileURL)
   if (win) {
-    win.filePath = newFilePath
+    win.fileURL = newFileURL
   }
 }
 
-function focusIfOpen(filePath) {
-  if (!filePath) return false
+function focusIfOpen(fileURL) {
+  if (!fileURL) return false
 
-  const offlinePath = offlineFilePath(filePath)
-  const win = windows.find((w) => w.filePath == filePath || w.filePath === offlinePath)
+  const offlineURL = offlineFileURL(fileURL)
+  const win = windows.find(
+    (w) => w.fileURL == fileURL || (offlineURL !== null && w.fileURL === offlineURL)
+  )
   if (win) {
     win.browserWindow.focus()
     win.browserWindow.webContents.send('close-dashboard')
     // If it's this window and we're trying to open a new file, then
     // we need to refresh the contents.
     featureFlags().then((flags) => {
-      win.browserWindow.webContents.send('reload-from-file', filePath, flags, numberOfWindows())
+      win.browserWindow.webContents.send('reload-from-file', fileURL, flags, numberOfWindows())
     })
     return true
   } else {
@@ -120,7 +102,6 @@ function closeWindow(id) {
 }
 
 export {
-  setFilePathForWindowWithFilePath,
   addNewWindow,
   allWindows,
   reloadWindow,

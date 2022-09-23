@@ -116,6 +116,9 @@ import {
   SAVE_TO_TEMP_FILE_ERROR_REPLY,
   BUSY,
   DONE,
+  COPY_FILE,
+  UPDATE_KNOWN_FILE_NAME,
+  COPY_FILE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -278,6 +281,7 @@ const connect = (
             return
           }
           // Normal replies
+          case COPY_FILE:
           case REMOVE_FROM_TEMP_FILES:
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
@@ -364,6 +368,7 @@ const connect = (
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
+          case COPY_FILE_ERROR_REPLY:
           case BACKUP_BASE_PATH_ERROR_REPLY:
           case CURRENT_TRIAL_ERROR_REPLY:
           case START_TRIAL_ERROR_REPLY:
@@ -438,8 +443,8 @@ const connect = (
       return sendPromise(RM_RF, { path })
     }
 
-    const saveFile = (filePath, file) => {
-      return sendPromise(SAVE_FILE, { filePath, file })
+    const saveFile = (fileURL, file) => {
+      return sendPromise(SAVE_FILE, { fileURL, file })
     }
 
     const saveOfflineFile = (file) => {
@@ -454,8 +459,8 @@ const connect = (
       return sendPromise(READ_FILE, { filePath })
     }
 
-    const autoSave = (filePath, file, userId, previousFile) => {
-      return sendPromise(AUTO_SAVE_FILE, { filePath, file, userId, previousFile })
+    const autoSave = (fileURL, file, userId, previousFile) => {
+      return sendPromise(AUTO_SAVE_FILE, { fileURL, file, userId, previousFile })
     }
 
     const saveBackup = (filePath, file) => {
@@ -502,8 +507,8 @@ const connect = (
       return sendPromise(DEFAULT_BACKUP_LOCATION)
     }
 
-    const offlineFilePath = (filePath) => {
-      return sendPromise(OFFLINE_FILE_PATH, { filePath })
+    const offlineFileURL = (fileURL) => {
+      return sendPromise(OFFLINE_FILE_PATH, { fileURL })
     }
 
     const attemptToFetchTemplates = () => {
@@ -514,36 +519,40 @@ const connect = (
       return sendPromise(SAVE_AS_TEMP_FILE, { file })
     }
 
-    const deleteKnownFile = (id, filePath) => {
-      return sendPromise(DELETE_KNOWN_FILE, { id, filePath })
+    const deleteKnownFile = (fileURL) => {
+      return sendPromise(DELETE_KNOWN_FILE, { fileURL })
     }
 
-    const removeFromTempFiles = (filePath, doDelete) => {
-      return sendPromise(REMOVE_FROM_TEMP_FILES, { filePath, doDelete })
+    const updateKnownFileName = (fileURL, newName) => {
+      return sendPromise(UPDATE_KNOWN_FILE_NAME, { fileURL, newName })
+    }
+
+    const removeFromTempFiles = (fileURL, doDelete) => {
+      return sendPromise(REMOVE_FROM_TEMP_FILES, { fileURL, doDelete })
     }
 
     const saveToTempFile = (json, name) => {
       return sendPromise(SAVE_TO_TEMP_FILE, { json, name })
     }
 
-    const removeFromKnownFiles = (id) => {
-      return sendPromise(REMOVE_FROM_KNOWN_FILES, { id })
+    const removeFromKnownFiles = (fileURL) => {
+      return sendPromise(REMOVE_FROM_KNOWN_FILES, { fileURL })
     }
 
-    const addKnownFile = (filePath) => {
-      return sendPromise(ADD_KNOWN_FILE, { filePath })
+    const addKnownFile = (fileURL) => {
+      return sendPromise(ADD_KNOWN_FILE, { fileURL })
     }
 
-    const addKnownFileWithFix = (filePath) => {
-      return sendPromise(ADD_KNOWN_FILE_WITH_FIX, { filePath })
+    const addKnownFileWithFix = (fileURL) => {
+      return sendPromise(ADD_KNOWN_FILE_WITH_FIX, { fileURL })
     }
 
-    const editKnownFilePath = (oldFilePath, newFilePath) => {
-      return sendPromise(EDIT_KNOWN_FILE_PATH, { oldFilePath, newFilePath })
+    const editKnownFilePath = (oldFileURL, newFileURL) => {
+      return sendPromise(EDIT_KNOWN_FILE_PATH, { oldFileURL, newFileURL })
     }
 
-    const updateLastOpenedDate = (id) => {
-      return sendPromise(UPDATE_LAST_OPENED_DATE, { id })
+    const updateLastOpenedDate = (fileURL) => {
+      return sendPromise(UPDATE_LAST_OPENED_DATE, { fileURL })
     }
 
     // ===File System APIs===
@@ -620,6 +629,10 @@ const connect = (
       return sendPromise(CUSTOM_TEMPLATES_PATH)
     }
 
+    const copyFile = (sourceFileURL, newFileURL) => {
+      return sendPromise(COPY_FILE, { sourceFileURL, newFileURL })
+    }
+
     // Subscriptions
     const listenToTrialChanges = (cb) => {
       return registerCallback(LISTEN_TO_TRIAL_CHANGES, {}, cb)
@@ -682,12 +695,14 @@ const connect = (
           setCustomTemplate,
           deleteCustomTemplate,
           defaultBackupLocation,
-          offlineFilePath,
+          offlineFileURL,
           customTemplatesPath,
+          copyFile,
           attemptToFetchTemplates,
           saveAsTempFile,
           removeFromKnownFiles,
           deleteKnownFile,
+          updateKnownFileName,
           removeFromTempFiles,
           saveToTempFile,
           addKnownFile,

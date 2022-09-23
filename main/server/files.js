@@ -3,21 +3,18 @@ import path from 'path'
 import { isEqual } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-import { emptyFile, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { emptyFile, selectors, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'
 
 import {
   AUTO_SAVE_BACKUP_ERROR,
   AUTO_SAVE_ERROR,
   AUTO_SAVE_WORKED_THIS_TIME,
+  OFFLINE_FILE_PATH,
 } from '../../shared/socket-server-message-types'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const basename = path.basename
-
-function escapeFileName(fileName) {
-  return escape(fileName.replace(/[/\\]/g, '-'))
-}
 
 function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
@@ -29,12 +26,31 @@ function removeSystemKeys(jsonData) {
 }
 
 const fileModule = (userDataPath) => {
-  const offlineFileFilesPath = path.join(userDataPath, 'offline')
+  const OFFLINE_FILE_FILES_PATH = path.join(userDataPath, 'offline')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
 
-  function offlineFilePath(filePath) {
-    const fileName = escapeFileName(filePath)
-    return path.join(offlineFileFilesPath, fileName)
+  function offlineFileURL(fileURL) {
+    if (!helpers.file.urlPointsToPlottrCloud(fileURL)) {
+      return null
+    }
+
+    const fileId = helpers.file.fileIdFromPlottrProFile(fileURL)
+    return helpers.file.filePathToFileURL(path.join(OFFLINE_FILE_FILES_PATH, fileId))
+  }
+
+  function isOfflineFileURL(fileURL) {
+    return (
+      helpers.file.isDeviceFileURL(fileURL) &&
+      helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_PATH)
+    )
+  }
+
+  function offlineFileBackupForResumeURL(fileName) {
+    if (!fileName) {
+      return null
+    }
+
+    return helpers.file.filePathToFileURL(path.join(OFFLINE_FILE_FILES_PATH, fileName))
   }
 
   const fileExists = (filePath) => {
@@ -234,8 +250,15 @@ const fileModule = (userDataPath) => {
         return newJob
       }
 
-      return function saveFile(filePath, jsonData) {
+      return function saveFile(fileURL, jsonData) {
+        const isDeviceFile = helpers.file.isDeviceFileURL(fileURL)
+        if (!isDeviceFile) {
+          const message = `Attempted to save non-device file to device: ${fileURL}`
+          logger.error(message)
+          return Promise.reject(new Error(message))
+        }
         return backupBasePath().then((backupPath) => {
+          const filePath = helpers.file.withoutProtocol(fileURL)
           if (path.normalize(filePath).startsWith(path.normalize(backupPath))) {
             const message = `Attempting to save a file that's in the backup folder (${filePath})!  Backups are in ${backupPath}`
             logger.error(message)
@@ -257,20 +280,16 @@ const fileModule = (userDataPath) => {
       let resetCount = 0
       const MAX_ATTEMPTS = 200
 
-      return async function autoSave(send, inputFilePath, file, userId, previousFile) {
+      return async function autoSave(send, inputFileURL, file, userId, previousFile) {
         // Don't auto save while resolving resuming the connection
         if (selectors.isResumingSelector(file)) return
 
-        const onCloud = selectors.isCloudFileSelector(file)
-        const isOffline = selectors.isOfflineSelector(file)
-        const offlineModeEnabled = selectors.offlineModeEnabledSelector(file)
-        const filePath =
-          onCloud && isOffline && offlineModeEnabled
-            ? offlineFilePath(inputFilePath)
-            : inputFilePath
-        if (!onCloud || isOffline) {
+        const onCloud = helpers.file.urlPointsToPlottrCloud(inputFileURL)
+        const isOfflineBackupFile = isOfflineFileURL(inputFileURL)
+        const isDeviceFile = helpers.file.isDeviceFileURL(inputFileURL)
+        if (isDeviceFile) {
           try {
-            await saveFile(filePath, file)
+            await saveFile(inputFileURL, file)
             // didn't work last time, but it did this time
             if (!itWorkedLastTime) {
               itWorkedLastTime = true
@@ -278,16 +297,20 @@ const fileModule = (userDataPath) => {
             }
           } catch (saveError) {
             itWorkedLastTime = false
-            send(AUTO_SAVE_ERROR, filePath, saveError.message)
+            send(AUTO_SAVE_ERROR, inputFileURL, saveError.message)
           }
         }
-        // either way, save a backup
+        // either way, save a backup (unless we're working with an
+        // offline mode backup)
+        if (isOfflineBackupFile) {
+          return
+        }
         function forceBackup() {
-          logger.info('Saving a backup from auto save for file at', inputFilePath)
+          logger.info('Saving a backup from auto save for file at', inputFileURL)
           // save local backup if: 1) not cloud file OR 2) localBackups is on
           readSettings().then((settings) => {
             if (!onCloud || (onCloud && settings.user.localBackups)) {
-              const backupFilePath = onCloud ? `${file.file.fileName}.pltr` : filePath
+              const backupFilePath = helpers.file.withoutProtocol(inputFileURL)
               saveBackup(backupFilePath, previousFile || file, (backupError) => {
                 if (backupError) {
                   send(AUTO_SAVE_BACKUP_ERROR, backupFilePath, backupError.message)
@@ -313,7 +336,7 @@ const fileModule = (userDataPath) => {
         }
         // NOTE: We want to backup every 60 seconds, but saves only happen
         // every 10 seconds.
-        logger.info('59 seconds later, a backup will be taken for file with path', filePath)
+        logger.info('59 seconds later, a backup will be taken for file with path', inputFileURL)
         backupTimeout = setTimeout(forceBackup, 59000)
       }
     }
@@ -324,19 +347,22 @@ const fileModule = (userDataPath) => {
     }
 
     function listOfflineFiles() {
-      return readdir(offlineFileFilesPath)
+      return readdir(OFFLINE_FILE_FILES_PATH)
         .then((entries) => {
           return Promise.all(
             entries.map((entry) => {
-              return lstat(path.join(offlineFileFilesPath, entry)).then((folder) => ({
+              return lstat(path.join(OFFLINE_FILE_FILES_PATH, entry)).then((folder) => ({
                 keep: folder.isFile() && !isResumeBackup(entry),
-                payload: path.join(offlineFileFilesPath, entry),
+                payload: path.join(OFFLINE_FILE_FILES_PATH, entry),
               }))
             })
           ).then((results) => results.filter(({ keep }) => keep).map(({ payload }) => payload))
         })
         .catch((error) => {
-          logger.error(`Couldn't list the offline files directory: ${offlineFileFilesPath}`, error)
+          logger.error(
+            `Couldn't list the offline files directory: ${OFFLINE_FILE_FILES_PATH}`,
+            error
+          )
           return Promise.reject(error)
         })
     }
@@ -344,18 +370,21 @@ const fileModule = (userDataPath) => {
     function readOfflineFiles() {
       return listOfflineFiles().then((files) => {
         return Promise.all(
-          files.map((file) => {
-            return readFile(file).then((jsonString) => {
+          files.map((filePath) => {
+            return readFile(filePath).then((jsonString) => {
               try {
+                const fileId = basename(filePath, '.pltr')
                 const fileData = JSON.parse(jsonString).file
                 return [
                   {
-                    ...fileData,
-                    path: file,
+                    fileURL: `plottr://${fileId}`,
+                    lastOpened: fileData.timeStamp,
+                    fileName: fileData.fileName,
+                    isOfflineBackup: true,
                   },
                 ]
               } catch (error) {
-                logger.error(`Error reading offline file: ${file}`, error)
+                logger.error(`Error reading offline file: ${filePath}`, error)
                 return []
               }
             })
@@ -366,15 +395,17 @@ const fileModule = (userDataPath) => {
 
     function cleanOfflineBackups(knownFiles) {
       const expectedOfflineFiles = knownFiles
-        .filter(({ isCloudFile, fileName }) => isCloudFile && fileName)
-        .map(({ fileName }) => offlineFilePath(fileName))
+        .filter(({ isCloudFile, fileURL }) => isCloudFile && fileURL)
+        .map(({ fileURL }) => fileURL)
+        .filter((x) => x)
       return listOfflineFiles().then((files) => {
         const filesToClean = files.filter((filePath) => {
           if (isResumeBackup(filePath)) {
             logger.info(`Not cleaning file at ${filePath} because it's a resume backup.`)
             return false
           }
-          return expectedOfflineFiles.indexOf(filePath) === -1
+          const fileURL = helpers.file.fileIdToPlottrCloudFileURL(basename(filePath))
+          return expectedOfflineFiles.indexOf(fileURL) === -1
         })
         return Promise.all(
           filesToClean.map((filePath) => {
@@ -390,16 +421,16 @@ const fileModule = (userDataPath) => {
     }
 
     function ensureOfflineBackupPathExists() {
-      return lstat(offlineFileFilesPath).catch((error) => {
+      return lstat(OFFLINE_FILE_FILES_PATH).catch((error) => {
         if (error.code === 'ENOENT') {
-          return mkdir(offlineFileFilesPath, { recursive: true })
+          return mkdir(OFFLINE_FILE_FILES_PATH, { recursive: true })
         }
         return Promise.reject(error)
       })
     }
 
     function checkForFileRecord(file) {
-      if (!file || !file.file || !file.file.fileName) {
+      if (!file || !file.file || !file.file.fileName || !file.project || !file.project.fileURL) {
         logger.error('Trying to save a file but there is no file record on it.', file)
         return Promise.reject(
           new Error(`Trying to save a file (${file.file}) but there is no file record on it.`)
@@ -411,9 +442,14 @@ const fileModule = (userDataPath) => {
     function saveOfflineFile(file) {
       return ensureOfflineBackupPathExists().then(() => {
         return checkForFileRecord(file).then(() => {
-          const filePath = offlineFilePath(file.file.fileName)
+          const fileURL = offlineFileURL(file.project.fileURL)
+          if (!fileURL) {
+            const message = `Attempting to save offline file but we couldn't compute the offline url: ${file.project.fileURL}`
+            logger.error(message)
+            return Promise.reject(new Error(message))
+          }
           return cleanOfflineBackups(file.knownFiles).then(() => {
-            return saveFile(filePath, file)
+            return saveFile(fileURL, file)
           })
         })
       })
@@ -423,21 +459,28 @@ const fileModule = (userDataPath) => {
       return ensureOfflineBackupPathExists().then(() => {
         return checkForFileRecord(file).then(() => {
           const date = new Date()
-          const filePath = `${offlineFilePath(
+          const fileURL = offlineFileBackupForResumeURL(
             `_resume-backup_${
               date.getMonth() + 1
             }-${date.getDate()}-${date.getFullYear()}-${date.getHours()}h${date.getMinutes()}m${date.getSeconds()}_${
               file.file.fileName
             }`
-          )}`
-          return saveFile(filePath, file)
+          )
+          if (!fileURL) {
+            const message = `Failed to create fileURL for resume backup for ${file.file.fileName}`
+            logger.error(message)
+            return Promise.reject(new Error(message))
+          }
+          return saveFile(fileURL, file)
         })
       })
     }
 
     function isTempFile(file) {
-      logger.info(`Does ${file.file.fileName} include ${TEMP_FILES_PATH}?`)
-      return file.file.fileName.includes(TEMP_FILES_PATH)
+      logger.info(
+        `Does ${file.project.fileURL} include ${TEMP_FILES_PATH} when we strip the URL from it?`
+      )
+      return helpers.file.withoutProtocol(file.project.fileURL).includes(TEMP_FILES_PATH)
     }
 
     function saveTempFile(file) {
@@ -451,6 +494,8 @@ const fileModule = (userDataPath) => {
           return Promise.reject(error)
         })
         .then(() => {
+          // It's fine to use the fileName to derive a path/URL here
+          // because we're *creating* the temp file.
           const fileBasename = basename(file.file.fileName)
           const newFilepath = `${TEMP_FILES_PATH}/${fileBasename}`
           logger.info(`Saving ${file.file.fileName} to ${TEMP_FILES_PATH}`)
@@ -468,8 +513,9 @@ const fileModule = (userDataPath) => {
               return Promise.reject(error)
             })
             .then((filePath) => {
-              return saveFile(filePath, file).then(() => {
-                return filePath
+              const fileURL = helpers.file.filePathToFileURL(filePath)
+              return saveFile(fileURL, file).then(() => {
+                return fileURL
               })
             })
         })
@@ -491,7 +537,7 @@ const fileModule = (userDataPath) => {
       backupOfflineBackupForResume,
       readOfflineFiles,
       isTempFile,
-      offlineFileFilesPath,
+      OFFLINE_FILE_FILES_PATH,
       saveTempFile,
     }
   }

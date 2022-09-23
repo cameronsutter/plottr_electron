@@ -62,7 +62,6 @@ const Resume = ({
               })
               .then((cloudFile) => {
                 return new Promise((resolve, reject) => {
-                  const originalTimeStamp = new Date(offlineFile.file.originalTimeStamp)
                   const [uploadOurs, backupOurs, doNothing] = resumeDirective(
                     offlineFile,
                     cloudFile
@@ -94,7 +93,7 @@ const Resume = ({
                     })
                   } else if (backupOurs) {
                     logger.info(
-                      `Detected that file ${fileId} has changes since ${originalTimeStamp}.  Backing up the offline file and switching to the online file.`
+                      `Detected that file ${fileId} has changes.  Backing up the offline file and switching to the online file.`
                     )
                     const date = new Date()
                     uploadProject(

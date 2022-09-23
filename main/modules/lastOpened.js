@@ -20,15 +20,15 @@ const lastOpenedFileStore = new Store(app.getPath('userData'), log, {
 })
 
 function lastOpenedFile() {
-  const lastFile = lastOpenedFileStore.get('lastOpenedFilePath')
+  const lastFileURL = lastOpenedFileStore.get('lastOpenedFileURL')
 
-  if (isOfflineFile(lastFile)) {
+  if (isOfflineFile(lastFileURL)) {
     return Promise.resolve(null)
   }
 
-  return lstat(lastFile)
+  return lstat(lastFileURL)
     .then(() => {
-      return lastFile
+      return lastFileURL
     })
     .catch((error) => {
       if (error.code === 'ENOENT') {
@@ -39,10 +39,10 @@ function lastOpenedFile() {
     })
 }
 
-function setLastOpenedFilePath(filePath) {
-  if (isOfflineFile(filePath)) return
+function setLastOpenedFilePath(fileURL) {
+  if (isOfflineFile(fileURL)) return
 
-  lastOpenedFileStore.set('lastOpenedFilePath', filePath)
+  lastOpenedFileStore.set('lastOpenedFileURL', fileURL)
 }
 
 export { lastOpenedFile, setLastOpenedFilePath }

@@ -27,12 +27,12 @@ export function getPreviousAction() {
 
 export function createErrorReport(error, errorInfo) {
   prepareErrorReport(error, errorInfo).then((body) => {
-    const fileName = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-    fs.writeFile(fileName, body, function (err) {
+    const filePath = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
+    fs.writeFile(filePath, body, function (err) {
       if (err) {
         log.warn(err)
       } else {
-        notifyUser(fileName)
+        notifyUser(filePath)
       }
     })
   })
@@ -67,18 +67,18 @@ ${JSON.stringify(previousAction)}
   })
 }
 
-function notifyUser(fileName) {
+function notifyUser(filePath) {
   try {
     ipcRenderer.send(
       'notify',
       i18n('Error Report created'),
-      i18n('Plottr created a file named {fileName} in your Documents folder', {
-        fileName: path.basename(fileName),
+      i18n('Plottr created a file named {filePath} in your Documents folder', {
+        filePath: path.basename(filePath),
       })
     )
   } catch (error) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work
   }
-  shell.showItemInFolder(fileName)
+  shell.showItemInFolder(filePath)
 }

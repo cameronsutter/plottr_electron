@@ -1,7 +1,13 @@
 const makeFileModule = (whenClientIsReady) => {
-  const saveFile = (filePath, jsonData) => {
+  const saveOfflineFile = (jsonData) => {
+    return whenClientIsReady(({ saveOfflineFile }) => {
+      return saveOfflineFile(jsonData)
+    })
+  }
+
+  const saveFile = (fileURL, jsonData) => {
     return whenClientIsReady(({ saveFile }) => {
-      return saveFile(filePath, jsonData)
+      return saveFile(fileURL, jsonData)
     })
   }
 
@@ -29,7 +35,28 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
-  return { saveFile, backupOfflineBackupForResume, readOfflineFiles, isTempFile, saveAsTempFile }
+  const copyFile = (sourceFileURL, newFileURL) => {
+    return whenClientIsReady(({ copyFile }) => {
+      return copyFile(sourceFileURL, newFileURL)
+    })
+  }
+
+  const basename = (fileURL) => {
+    return whenClientIsReady(({ basename }) => {
+      return basename(fileURL)
+    })
+  }
+
+  return {
+    saveOfflineFile,
+    saveFile,
+    backupOfflineBackupForResume,
+    readOfflineFiles,
+    isTempFile,
+    saveAsTempFile,
+    copyFile,
+    basename,
+  }
 }
 
 export { makeFileModule }

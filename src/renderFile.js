@@ -19,9 +19,15 @@ import { store } from './app/store'
 import makeFileSystemAPIs from './api/file-system-apis'
 
 export const renderFile = (root, whenClientIsReady) => {
-  const saveFile = (filePath, file) => {
+  const saveOfflineFile = (file) => {
+    return whenClientIsReady(({ saveOfflineFile }) => {
+      return saveOfflineFile(file)
+    })
+  }
+
+  const saveFile = (fileURL, file) => {
     return whenClientIsReady(({ saveFile }) => {
-      return saveFile(filePath, file)
+      return saveFile(fileURL, file)
     })
   }
 
@@ -37,9 +43,9 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
-  const autoSave = (filePath, file, userId, previousFile) => {
+  const autoSave = (fileURL, file, userId, previousFile) => {
     return whenClientIsReady(({ autoSave }) => {
-      return autoSave(filePath, file, userId, previousFile)
+      return autoSave(fileURL, file, userId, previousFile)
     })
   }
 
@@ -73,6 +79,7 @@ export const renderFile = (root, whenClientIsReady) => {
     <Provider store={store}>
       <MainIntegrationContext.Provider
         value={{
+          saveOfflineFile,
           saveFile,
           basename,
           readFile,

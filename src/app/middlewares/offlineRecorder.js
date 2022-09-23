@@ -13,14 +13,7 @@ const offlineRecorder = (whenClientIsReady) => {
     }
     const forceSave = () => {
       whenClientIsReady(({ saveOfflineFile }) => {
-        return saveOfflineFile({
-          ...jsonData,
-          file: {
-            ...jsonData.file,
-            originalTimeStamp: jsonData.file.timeStamp,
-            originalVersionStamp: jsonData.file.versionStamp,
-          },
-        })
+        return saveOfflineFile(jsonData)
       })
       resetCount = 0
       saveTimeout = null

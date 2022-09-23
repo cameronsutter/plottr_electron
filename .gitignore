@@ -14,6 +14,8 @@ bin/c0f60a30d0e6cd83c6a1.exe
 bin/electron_main.js.LICENSE.txt
 bin/glyphicons-halflings-regular.woff2
 bin/loginApp.bundle.js.LICENSE.txt
+bin/792.bundle.js.LICENSE.txt
+bin/socketServer.bundle.js.LICENSE.txt
 *.bundle.js
 *.bundle.js.map
 *.map

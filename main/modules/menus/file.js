@@ -3,6 +3,9 @@ import { t } from 'plottr_locales'
 import log from 'electron-log'
 import { app, shell } from 'electron'
 import { is } from 'electron-util'
+
+import { helpers } from 'pltr/v2'
+
 import { getWindowById, numberOfWindows } from '../windows'
 import { NODE_ENV } from '../constants'
 import { getLicenseInfo } from '../license_info'
@@ -15,9 +18,9 @@ if (is.macos) {
   showInMessage = t('Show in Finder')
 }
 
-function buildFileMenu(filePath, getTrialInfo) {
-  const isCloudFile = filePath && filePath.startsWith('plottr://')
-  const isTemp = filePath && filePath.includes(TEMP_FILES_PATH)
+function buildFileMenu(fileURL, getTrialInfo) {
+  const isCloudFile = helpers.file.urlPointsToPlottrCloud(fileURL)
+  const isTemp = fileURL && fileURL.includes(TEMP_FILES_PATH)
   return Promise.all([getTrialInfo(), getLicenseInfo(), buildRecents()]).then(
     ([trialInfo, licenseInfo, recents]) => {
       let submenu = [
@@ -52,7 +55,7 @@ function buildFileMenu(filePath, getTrialInfo) {
         {
           label: t('Save'),
           accelerator: 'CmdOrCtrl+S',
-          visible: !!filePath,
+          visible: !!fileURL,
           click: function (event, focusedWindow) {
             if (isTemp) {
               focusedWindow.webContents.send('move-from-temp')
@@ -64,10 +67,10 @@ function buildFileMenu(filePath, getTrialInfo) {
         {
           label: t('Save as') + '...',
           accelerator: 'CmdOrCtrl+Shift+S',
-          visible: !!filePath,
+          visible: !!fileURL,
           click: function (event, focusedWindow) {
             if (isCloudFile) {
-              focusedWindow.webContents.send('save-as--pro', filePath.replace(/^plottr:\/\//, ''))
+              focusedWindow.webContents.send('save-as--pro', fileURL)
             } else {
               focusedWindow.webContents.send('save-as')
             }
@@ -77,13 +80,13 @@ function buildFileMenu(filePath, getTrialInfo) {
           label: showInMessage,
           visible: !isCloudFile && !isTemp,
           click: function () {
-            shell.showItemInFolder(filePath)
+            shell.showItemInFolder(helpers.file.withoutProtocol(fileURL))
           },
         },
         {
           label: t('Close'),
           accelerator: 'CmdOrCtrl+W',
-          visible: !!filePath,
+          visible: !!fileURL,
           click: function (event, focusedWindow) {
             log.info('sending wants-to-close')
             focusedWindow.webContents.send('wants-to-close')
@@ -94,7 +97,7 @@ function buildFileMenu(filePath, getTrialInfo) {
         },
         {
           label: t('Export'),
-          visible: !!filePath,
+          visible: !!fileURL,
           enabled:
             (trialInfo && !trialInfo.expired && trialInfo.startsAt) ||
             (licenseInfo && Object.keys(licenseInfo).length > 0),
@@ -123,14 +126,14 @@ function buildFileMenu(filePath, getTrialInfo) {
         },
         {
           label: t('Reload from File'),
-          visible: NODE_ENV === 'development' && !!filePath,
+          visible: NODE_ENV === 'development' && !!fileURL,
           click: (event, focusedWindow) => {
             const winObj = getWindowById(focusedWindow.id)
             if (winObj) {
               featureFlags().then((flags) => {
                 focusedWindow.webContents.send(
                   'reload-from-file',
-                  winObj.filePath,
+                  winObj.fileURL,
                   flags,
                   numberOfWindows()
                 )

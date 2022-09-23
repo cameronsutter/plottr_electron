@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 
+import { helpers } from 'pltr/v2'
 import { t } from 'plottr_locales'
 
 import MainIntegrationContext from '../../mainIntegrationContext'
@@ -34,14 +35,14 @@ const preventDefault = (event) => {
   event.preventDefault()
 }
 
-const UploadFile = ({ filePath, onUploadFile, onCancel, busy, basename }) => {
+const UploadFile = ({ fileURL, onUploadFile, onCancel, busy, basename }) => {
   const [fileBasename, setFileBasename] = useState(null)
 
   useEffect(() => {
     if (fileBasename || !basename) return
 
-    basename(filePath).then(setFileBasename)
-  }, [filePath, basename, setFileBasename, fileBasename])
+    basename(helpers.file.withoutProtocol(fileURL)).then(setFileBasename)
+  }, [fileURL, basename, setFileBasename, fileBasename])
 
   if (!fileBasename) return <FunSpinner />
 
@@ -56,7 +57,7 @@ const UploadFile = ({ filePath, onUploadFile, onCancel, busy, basename }) => {
         </h6>
         <h6>
           {t('({ thing }).', {
-            thing: filePath,
+            thing: helpers.file.withoutProtocol(fileURL),
           })}
         </h6>
       </ModalBody>
@@ -81,20 +82,20 @@ const UploadFile = ({ filePath, onUploadFile, onCancel, busy, basename }) => {
 }
 
 UploadFile.propTypes = {
-  filePath: PropTypes.string.isRequired,
+  fileURL: PropTypes.string.isRequired,
   onUploadFile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   busy: PropTypes.bool,
   basename: PropTypes.func.isRequired,
 }
 
-const UploadOfflineFile = ({ filePath, onUploadFile, onCancel, busy }) => {
+const UploadOfflineFile = ({ fileURL, onUploadFile, onCancel, busy }) => {
   return (
     <MainIntegrationContext.Consumer>
       {({ basename }) => {
         return (
           <UploadFile
-            filePath={filePath}
+            fileURL={fileURL}
             onUploadFile={onUploadFile}
             onCancel={onCancel}
             busy={busy}
@@ -107,7 +108,7 @@ const UploadOfflineFile = ({ filePath, onUploadFile, onCancel, busy }) => {
 }
 
 UploadOfflineFile.propTypes = {
-  filePath: PropTypes.string.isRequired,
+  fileURL: PropTypes.string.isRequired,
   onUploadFile: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   busy: PropTypes.bool,

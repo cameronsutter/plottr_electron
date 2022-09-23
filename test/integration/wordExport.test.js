@@ -6,7 +6,7 @@ import undoable from 'redux-undo'
 
 import default_config from 'plottr_import_export/src/exporter/default_config'
 import { wordExporter } from 'plottr_import_export'
-import { actions, rootReducer } from 'pltr/v2'
+import { helpers, actions, rootReducer } from 'pltr/v2'
 
 import { readExample3, copyCurrent, exportedPath, prevExportedPath, EXAMPLE_3 } from './common'
 
@@ -28,7 +28,15 @@ describe('wordExporter', () => {
   const example3 = readExample3()
   const reducer = undoable(rootReducer, { limit: 10, ignoreInitialState: true })
   const store = createStore(reducer)
-  store.dispatch(actions.ui.loadFile(EXAMPLE_3, false, example3, example3.file.version))
+  store.dispatch(
+    actions.ui.loadFile(
+      EXAMPLE_3,
+      false,
+      example3,
+      example3.file.version,
+      helpers.file.filePathToFileURL(EXAMPLE_3)
+    )
+  )
   const oldExportedDocument = prevExportedPath('example3.docx')
   const targetPath = exportedPath('example3.docx')
   wordExporter(example3, targetPath, default_config.word)

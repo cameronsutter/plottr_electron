@@ -332,6 +332,8 @@ const connect = (
           case SAVE_OFFLINE_FILE:
           case SAVE_FILE:
           case RM_RF:
+          case LAST_OPENED_FILE:
+          case SET_LAST_OPENED_FILE:
           case PING: {
             resolvePromise()
             return

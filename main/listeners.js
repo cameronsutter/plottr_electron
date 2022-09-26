@@ -38,16 +38,20 @@ import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/in
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, lastFile, proMode) {
+    const lastFileURL =
+      (lastFile && !helpers.file.isProtocolString(lastFile)
+        ? helpers.file.filePathToFileURL(lastFile)
+        : lastFile) || null
     const win = getWindowById(id)
-    const filePath = win.filePath || lastFile
+    const fileURL = win.fileURL || lastFileURL
     if (win) {
       featureFlags().then((flags) => {
         event.sender.send(
           'state-fetched',
-          filePath,
+          fileURL,
           flags,
           numberOfWindows(),
-          win.filePath,
+          win.fileURL,
           processSwitches.serialise()
         )
       })

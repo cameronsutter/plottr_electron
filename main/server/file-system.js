@@ -3,7 +3,6 @@ import fs from 'fs'
 import { sortBy } from 'lodash'
 
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
-import { isOfflineFile } from '../modules/offlineFilePath'
 
 import { helpers } from 'pltr/v2'
 
@@ -31,7 +30,12 @@ const withFromFileSystem = (backupFolder) => ({
 
 const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
 
+function isOfflineFile(fileURL, offlineFileFilesPath) {
+  return fileURL && helpers.file.withoutProtocol(fileURL).startsWith(offlineFileFilesPath)
+}
+
 const fileSystemModule = (userDataPath) => {
+  const OFFLINE_FILE_FILES_PATH = path.join(userDataPath, 'offline')
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
   const customTemplatesPath = path.join(userDataPath, `${CUSTOM_TEMPLATES_PATH}.json`)
@@ -53,7 +57,7 @@ const fileSystemModule = (userDataPath) => {
     const lastOpenedFile = async () => {
       const lastFile = lastOpenedFileStore.get('lastOpenedFilePath')
 
-      if (isOfflineFile(lastFile)) {
+      if (isOfflineFile(lastFile, OFFLINE_FILE_FILES_PATH)) {
         return Promise.resolve(null)
       }
 

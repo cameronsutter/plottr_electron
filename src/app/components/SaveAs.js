@@ -4,15 +4,15 @@ import { useState, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
-import { selectors, actions } from 'pltr/v2'
+import { selectors, actions, helpers } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { InputModal } from 'connected-components'
 import { uploadToFirebase } from '../../upload-to-firebase'
 
 import logger from '../../../shared/logger'
 
-export const openFile = (filePath, id, unknown) => {
-  ipcRenderer.send('open-known-file', filePath, id, unknown)
+export const openFile = (fileURL, unknown) => {
+  ipcRenderer.send('open-known-file', fileURL, unknown)
 }
 
 const SaveAs = ({
@@ -20,6 +20,7 @@ const SaveAs = ({
   clientId,
   userId,
   fileList,
+  isOfflineMode,
   startSavingFileAs,
   finishSavingFileAs,
   withFullState,
@@ -39,9 +40,11 @@ const SaveAs = ({
       return uploadToFirebase(emailAddress, userId, fullState.present, newName)
         .then((response) => {
           const fileId = response.data.fileId
-          return fileId
-        })
-        .then((fileId) => {
+          if (!fileId) {
+            const message = 'Uploaded file for saveAs but we did not receive a fileId back'
+            logger.error(message)
+            return Promise.reject(new Error(message))
+          }
           return fileId
         })
         .then((fileId) => {
@@ -53,7 +56,8 @@ const SaveAs = ({
           return fileId
         })
         .then((fileId) => {
-          ipcRenderer.send('pls-open-window', `plottr://${fileId}`, true)
+          ipcRenderer.send('pls-open-window', helpers.file.fileIdToPlottrCloudFileURL(fileId), true)
+          window.close()
         })
         .catch((error) => {
           logger.error(`Error saving file with id ${fileId} as ${newName}`, error)
@@ -64,19 +68,16 @@ const SaveAs = ({
 
   useEffect(() => {
     ipcRenderer.on('save-as--pro', (event, fileId) => {
+      if (isOfflineMode) return
+
       setVisible(true)
       setFileId(fileId)
       saveFileAs.current = true
     })
-    const renameListener = document.addEventListener('save-as--pro', (event) => {
-      setVisible(true)
-      setFileId(event.fileId)
-    })
     return () => {
-      document.removeEventListener('save-as--pro', renameListener)
       ipcRenderer.removeAllListeners('save-as--pro')
     }
-  }, [])
+  }, [isOfflineMode])
 
   const hideRenamer = () => {
     setVisible(false)
@@ -100,6 +101,7 @@ SaveAs.propTypes = {
   userId: PropTypes.string,
   clientId: PropTypes.string,
   fileList: PropTypes.array.isRequired,
+  isOfflineMode: PropTypes.bool,
   startSavingFileAs: PropTypes.func.isRequired,
   finishSavingFileAs: PropTypes.func.isRequired,
   withFullState: PropTypes.func.isRequired,
@@ -110,6 +112,7 @@ export default connect(
     userId: selectors.userIdSelector(state.present),
     clientId: selectors.clientIdSelector(state.present),
     fileList: selectors.knownFilesSelector(state.present),
+    isOfflineMode: selectors.offlineModeEnabledSelector(state.present),
   }),
   {
     startSavingFileAs: actions.applicationState.startSavingFileAs,

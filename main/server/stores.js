@@ -1,4 +1,8 @@
+import { basename } from 'path'
+
 import export_config from 'plottr_import_export/src/exporter/default_config'
+
+import { helpers } from 'pltr/v2'
 
 import defaultSettings from '../../shared/default_settings'
 import Store from '../lib/store'
@@ -61,7 +65,7 @@ const makeStores = (userDataPath, logger) => {
 
   // ===Migrations===
 
-  function migrateKnownFileStore() {
+  function oldMigration() {
     // MIGRATE ONE TIME (needed after 2020.12.1 for the dashboard)
     const needsMigration = knownFilesStore.has('byIds') || knownFilesStore.has('allIds')
     if (needsMigration) {
@@ -82,12 +86,102 @@ const makeStores = (userDataPath, logger) => {
         }
         return acc
       }, {})
-      knownFilesStore.clear()
-      knownFilesStore.set(fileObjects)
+      return knownFilesStore.clear().then(() => {
+        return knownFilesStore.set(fileObjects)
+      })
     }
+
+    return Promise.resolve()
+  }
+
+  function migrateKnownFileStore() {
+    return knownFilesStore
+      .currentStore()
+      .then(oldMigration)
+      .then(() => {
+        return knownFilesStore
+          .some((value, key) => {
+            return typeof key !== 'string' || !helpers.file.isProtocolString(key)
+          })
+          .then((needsToBeReKeyed) => {
+            if (needsToBeReKeyed) {
+              logger.info(
+                'Migrating the known files store because we found a key that is not a file URL.'
+              )
+              return knownFilesStore.map((value, key) => {
+                logger.info('Migrating known file entry', value, key)
+                if (!value.path && !value.fileURL) {
+                  return {
+                    [key]: value,
+                  }
+                }
+                const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+                if (!fileURL) {
+                  logger.info(
+                    `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
+                    value,
+                    key
+                  )
+                  return {}
+                }
+
+                return {
+                  [fileURL]: {
+                    fileURL: fileURL,
+                    fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
+                    lastOpened: value.lastOpened,
+                  },
+                }
+              })
+            }
+            return true
+          })
+      })
+  }
+
+  function migrateTempFilesStore() {
+    return tempFilesStore.currentStore().then(() => {
+      return tempFilesStore
+        .some((value, key) => {
+          return typeof key !== 'string' || !helpers.file.isProtocolString(key)
+        })
+        .then((needsToBeReKeyed) => {
+          if (needsToBeReKeyed) {
+            logger.info(
+              'Migrating the temp files store because we found a key that is not a file URL.'
+            )
+            return tempFilesStore.map((value, key) => {
+              logger.info('Migrating temp file entry', value, key)
+              if (!value.filePath && !value.fileURL) {
+                return {
+                  [key]: value,
+                }
+              }
+              const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+              if (!fileURL) {
+                logger.info(
+                  `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
+                  value,
+                  key
+                )
+                return {}
+              }
+
+              return {
+                [fileURL]: {
+                  fileURL,
+                  fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
+                },
+              }
+            })
+          }
+          return true
+        })
+    })
   }
 
   migrateKnownFileStore()
+  migrateTempFilesStore()
 
   return {
     trialStore,

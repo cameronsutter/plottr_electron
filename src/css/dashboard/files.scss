@@ -85,6 +85,10 @@
   padding: calc(15 * 0.1vw) calc(11 * 0.1vw);
   height: 20vh;
 
+  &.disabled {
+    cursor: not-allowed;
+  }
+
   &.icon {
     svg {
       font-size: calc(50 * 0.1vw);

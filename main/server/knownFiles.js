@@ -1,29 +1,37 @@
-import path from 'path'
-import trash from 'trash'
+import { basename } from 'path'
 
-const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesModule, logger) => {
+import { helpers } from 'pltr/v2'
+
+const makeKnownFilesModule = (
+  stores,
+  fileModule,
+  fileSystemModule,
+  tempFilesModule,
+  trashModule,
+  logger
+) => {
   const { knownFilesStore } = stores
   const { offlineFilesFilesPath } = fileModule
   const { TEMP_FILES_PATH } = fileSystemModule
   const { removeFromTempFiles } = tempFilesModule
+  const { trash } = trashModule
 
-  const removeFromKnownFiles = (id) => {
-    return knownFilesStore.delete(id)
+  const removeFromKnownFiles = (fileURL) => {
+    return knownFilesStore.delete(fileURL)
   }
 
-  const deleteKnownFile = (id, filePath) => {
-    if (!filePath) {
-      filePath = knownFilesStore.get(`${id}.path`)
-    }
+  const deleteKnownFile = (fileURL) => {
     try {
-      return removeFromKnownFiles(id)
+      const filePath = helpers.file.withoutProtocol(fileURL)
+      return removeFromKnownFiles(fileURL)
         .then(() => {
           return trash(filePath)
         })
         .then(() => {
           if (filePath.includes(TEMP_FILES_PATH)) {
-            removeFromTempFiles(filePath, false)
+            return removeFromTempFiles(fileURL, false)
           }
+          return true
         })
     } catch (error) {
       logger.warn(error)
@@ -31,134 +39,86 @@ const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesMod
     }
   }
 
-  const addKnownFileWithFix = (filePath) => {
+  const addKnownFileWithFix = (fileURL) => {
     // We also don't want to track recent files that don't have a path.
-    if (!filePath || filePath === '') return Promise.resolve()
+    if (!fileURL || fileURL === '') return Promise.resolve()
 
     // We don't want to track recent files when they're offline files.
-    if (filePath.startsWith(offlineFilesFilesPath)) return Promise.rosolve()
+    if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilesFilesPath)) {
+      return Promise.resolve()
+    }
 
-    const normalisedPath = path.normalize(filePath)
+    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
     return knownFilesStore
-      .currentStore()
-      .then((knownFiles) => {
-        const existingId = Object.keys(knownFiles).find((id) => {
-          const existingPath = knownFiles[id].path
-          const existingNormalisedPath = existingPath && path.normalize(existingPath)
-          return existingNormalisedPath === normalisedPath
-        })
-        if (existingId) {
-          return existingId
-        } else {
-          // for some reason, .size doesn't work in prod here (but it does in temp_files.js)
-          // in prod, it doesn't update in time
-          let newId = Math.max(...Object.keys(knownFiles).map(Number)) + 1
-          // FIX UP: some people's known_files got into a bad state and this fixes that
-          if (knownFilesStore.has('-Infinity')) {
-            let badData = knownFilesStore.get('-Infinity')
-            knownFilesStore.set('1', badData)
-          }
-          // and this prevents it
-          if (newId < 1 || !Object.keys(knownFiles).length) {
-            newId = 1
-          }
-          return knownFilesStore
-            .set(`${newId}`, {
-              path: filePath,
-              lastOpened: Date.now(),
-            })
-            .then(() => {
-              return newId
-            })
-        }
+      .setRawKey(fileURL, {
+        fileURL,
+        fileName,
+        lastOpened: Date.now(),
       })
       .catch((error) => {
-        logger.error('Error getting the current store to add a known file', filePath)
+        logger.error('Error getting the current store to add a known file', fileURL)
         return Promise.reject(error)
       })
   }
 
-  const addKnownFile = (filePath) => {
+  const addKnownFile = (fileURL) => {
     // We also don't want to track recent files that don't have a path.
-    if (!filePath || filePath === '') return Promise.resolve()
+    if (!fileURL || fileURL === '') return Promise.resolve()
 
     // We don't want to track recent files when they're offline files.
-    if (filePath.startsWith(offlineFilesFilesPath)) return Promise.resolve()
+    if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilesFilesPath)) {
+      return Promise.resolve()
+    }
 
+    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
     return knownFilesStore
-      .currentStore()
-      .then((files) => {
-        const matches = Object.values(files)
-          .filter(({ path }) => path)
-          .filter((value) => path.normalize(value.path) == path.normalize(filePath))
-        if (matches.length > 1) {
-          logger.info(
-            `Found <${matches.length}> matches for known files for path: ${filePath}.  Eliminating all but one.`
-          )
-          const firstMatch = Object.entries(files).find((entry) => {
-            return entry[1].path === filePath
-          })
-          try {
-            const withoutHits = Object.entries(files).reduce(
-              (acc, entry) => {
-                const key = entry[0]
-                const value = entry[1]
-                if (path.normalize(value.path) === path.normalize(filePath)) {
-                  return acc
-                }
-                return {
-                  ...acc,
-                  [key]: value,
-                }
-              },
-              {
-                [firstMatch[0]]: firstMatch[1],
-              }
-            )
-            knownFilesStore.set(withoutHits)
-          } catch (error) {
-            logger.error('Failed to remove file', error)
-          }
-        } else if (matches.length > 0) {
-          const fileEntry = Object.entries(files).find(
-            (entry) => path.normalize(entry[1].path) == path.normalize(filePath)
-          )
-          knownFilesStore.set(`${fileEntry[0]}.lastOpened`, Date.now())
-        } else {
-          let nextKey = Math.max(...Object.keys(files).map(Number)) + 1
-          knownFilesStore.set(`${nextKey}`, {
-            path: filePath,
-            lastOpened: Date.now(),
-          })
-        }
+      .setRawKey(fileURL, {
+        fileURL,
+        fileName,
+        lastOpened: Date.now(),
       })
       .catch((error) => {
-        logger.error('Error reading the known files store to add a known file', filePath, error)
+        logger.error('Error reading the known files store to add a known file', fileURL, error)
         return Promise.reject(error)
       })
   }
 
-  const editKnownFilePath = (oldFilePath, newFilePath) => {
+  const editKnownFilePath = (oldFileURL, newFileURL) => {
+    if (!oldFileURL || !newFileURL) {
+      const message = `Tried to edit a known file's path from ${oldFileURL} to ${newFileURL}`
+      logger.error(message)
+      return Promise.reject(new Error(message))
+    }
+    const fileRecord = knownFilesStore.getRawKey(oldFileURL)
     return knownFilesStore
-      .currentStore()
-      .then((knownFiles) => {
-        const key = Object.keys(knownFiles).find(
-          (id) => path.normalize(knownFiles[id].path) == path.normalize(oldFilePath)
-        )
-        const file = knownFilesStore.get(key)
-        return knownFilesStore.set(key, {
-          ...file,
-          path: newFilePath,
+      .delete(oldFileURL)
+      .then(() => {
+        return knownFilesStore.setRawKey(newFileURL, {
+          ...fileRecord,
+          fileURL: newFileURL,
+          fileName: basename(helpers.file.withoutProtocol(newFileURL), '.pltr'),
         })
       })
       .catch((error) => {
-        logger.error('Error editing known file path: ')
+        logger.error(`Error editing known file path from ${oldFileURL} to ${newFileURL}: `, error)
         return Promise.reject(error)
       })
   }
 
-  const updateLastOpenedDate = (id) => {
-    return knownFilesStore.set(`${id}.lastOpened`, Date.now())
+  const updateLastOpenedDate = (fileURL) => {
+    const currentValue = knownFilesStore.getRawKey(fileURL)
+    return knownFilesStore.setRawKey(fileURL, {
+      ...currentValue,
+      lastOpened: Date.now(),
+    })
+  }
+
+  const updateKnownFileName = (fileURL, newName) => {
+    const currentValue = knownFilesStore.getRawKey(fileURL)
+    return knownFilesStore.setRawKey(fileURL, {
+      ...currentValue,
+      fileName: newName,
+    })
   }
 
   return {
@@ -168,6 +128,7 @@ const makeKnownFilesModule = (stores, fileModule, fileSystemModule, tempFilesMod
     editKnownFilePath,
     updateLastOpenedDate,
     deleteKnownFile,
+    updateKnownFileName,
   }
 }
 

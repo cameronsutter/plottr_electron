@@ -117,7 +117,7 @@ class TemplateFetcher {
       .then((fetchedManifest) => {
         if (force || this.fetchedIsNewer(fetchedManifest.version)) {
           this.log('New templates to fetch', fetchedManifest.version)
-          return this.manifestStore.set(MANIFEST_ROOT, fetchedManifest).then(() => {
+          return this.manifestStore.setRawKey(MANIFEST_ROOT, fetchedManifest).then(() => {
             return this.fetchTemplates(force)
           })
         } else {
@@ -194,7 +194,7 @@ class TemplateFetcher {
         return resp.json()
       })
       .then((fetchedTemplate) => {
-        return this.templatesStore.set(id, fetchedTemplate)
+        return this.templatesStore.setRawKey(id, fetchedTemplate)
       })
   }
 

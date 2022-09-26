@@ -7,11 +7,10 @@ import path from 'path'
 import { IoIosAlert } from 'react-icons/io'
 
 import { t } from 'plottr_locales'
-import { actions, selectors } from 'pltr/v2'
+import { helpers, actions, selectors } from 'pltr/v2'
 import { Button } from 'plottr_components'
 
 import { bootFile } from '../bootFile'
-import { isOfflineFile } from '../../common/utils/files'
 
 import MainIntegrationContext from '../../mainIntegrationContext'
 import App from './App'
@@ -27,12 +26,14 @@ import logger from '../../../shared/logger'
 
 const win = getCurrentWindow()
 
-const isCloudFile = (filePath) => filePath && filePath.startsWith('plottr://')
-
-function displayFileName(filePath, isCloudFile, displayFilePath) {
+function displayFileName(fileName, fileURL, displayFilePath) {
+  const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
+  const computedFileName = isOnCloud
+    ? fileName
+    : path.basename(helpers.file.withoutProtocol(fileURL))
   const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = displayFilePath ? ` - ${path.basename(filePath)}` : ''
-  const plottr = isCloudFile ? 'Plottr Pro' : 'Plottr'
+  const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
+  const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
   try {
     const decodedFileName = decodeURIComponent(baseFileName)
     return `${plottr}${decodedFileName}${devMessage}`
@@ -91,6 +92,7 @@ const Main = ({
   isInOfflineMode,
   currentAppStateIsDashboard,
   fileName,
+  fileURL,
   isOnboardingFromRoot,
   isOnboarding,
   setCurrentAppStateToDashboard,
@@ -114,20 +116,20 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, isInProMode, false))
+        win.setTitle(displayFileName(fileName, fileURL, false))
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, isInProMode, true))
+        win.setTitle(displayFileName(fileName, fileURL, true))
       }
     }
-  }, [fileName, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
+  }, [fileName, fileURL, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
 
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 
-    const load = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const load = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       // We wont load a file at all on boot if this is supposed to be
       // the dashboard.
       if (!windowOpenedWithKnownPath && showDashboard && numOpenFiles <= 1) {
@@ -135,16 +137,18 @@ const Main = ({
         return
       }
 
-      setPathToProject(filePath)
+      setPathToProject(fileURL)
 
       // To boot the file automatically: we must either be running pro
-      // and it's a cloud file, or we must be running classic mode and
-      // it's not a cloud file.
-      if (
-        !!isInProMode === !!isCloudFile(filePath) ||
-        (isInOfflineMode && isOfflineFile(filePath))
-      ) {
-        bootFile(whenClientIsReady, filePath, options, numOpenFiles, saveBackup)
+      // and it's a cloud file, we must be running classic mode and
+      // it's not a cloud file, or we must be running pro with offline
+      // mode enabled, in which case we use convention to determine
+      // the offline file counterpart.
+      if (!!isInProMode === !!helpers.file.urlPointsToPlottrCloud(fileURL)) {
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup)
+      }
+      if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true)
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -159,13 +163,12 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, filePath, options, numOpenFiles, windowOpenedWithKnownPath) => {
-      const lastFileIsClassicAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
+    const reloadListener = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
+      const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
       if (lastFileIsClassicAndWeAreInPro) {
-        promptToUploadFile(filePath)
+        promptToUploadFile(fileURL)
       } else {
-        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
     ipcRenderer.on('reload-from-file', reloadListener)
@@ -178,23 +181,22 @@ const Main = ({
 
     const stateFetchedListener = (
       event,
-      filePath,
+      fileURL,
       options,
       numOpenFiles,
       windowOpenedWithKnownPath,
       processSwitches
     ) => {
-      const lastFileIsClassicAndWeAreInPro =
-        isInProMode && filePath && !filePath.startsWith('plottr://') && !isOfflineFile(filePath)
-      // There are valid possibilities for filePath to be null.
+      const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
+      // There are valid possibilities for fileURL to be null.
       //
       // i.e. no file has ever been opened or the last opened file was
       // in a mode that doesn't match current. e.g. it's a pro file
       // and we're in classic mode.
       if (lastFileIsClassicAndWeAreInPro) {
-        promptToUploadFile(filePath)
-      } else if (filePath) {
-        load(event, filePath, options, numOpenFiles, windowOpenedWithKnownPath)
+        promptToUploadFile(fileURL)
+      } else if (fileURL) {
+        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
       }
@@ -297,7 +299,7 @@ const Main = ({
   }
 
   const showFile = () => {
-    shell.showItemInFolder(pathToProject)
+    shell.showItemInFolder(helpers.file.withoutProtocol(pathToProject))
   }
 
   // IMPORTANT: the order of these return statements is significant.
@@ -326,7 +328,7 @@ const Main = ({
             <>
               <LoadingSplash />
               <UploadOfflineFile
-                filePath={fileToUpload}
+                fileURL={fileToUpload}
                 onUploadFile={() => {
                   readFile(fileToUpload).then((data) => {
                     let file
@@ -352,9 +354,9 @@ const Main = ({
                         // the dashboard when we double click a file.
                         //
                         // FIXME: where should the options come from?
-                        const newFilePath = `plottr://${fileId}`
-                        bootFile(whenClientIsReady, newFilePath, {}, 2, saveBackup)
-                        ipcRenderer.send('update-last-opened-file', newFilePath)
+                        const newFileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
+                        bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup)
+                        ipcRenderer.send('update-last-opened-file', newFileURL)
                       })
                       .catch((error) => {})
                   })
@@ -496,6 +498,7 @@ Main.propTypes = {
   isInOfflineMode: PropTypes.bool,
   currentAppStateIsDashboard: PropTypes.bool.isRequired,
   fileName: PropTypes.string,
+  fileURL: PropTypes.string,
   isOnboardingFromRoot: PropTypes.bool,
   isOnboarding: PropTypes.bool,
   setCurrentAppStateToDashboard: PropTypes.func.isRequired,
@@ -531,6 +534,7 @@ export default connect(
     isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
     currentAppStateIsDashboard: selectors.currentAppStateIsDashboardSelector(state.present),
     fileName: selectors.fileNameSelector(state.present),
+    fileURL: selectors.fileURLSelector(state.present),
     isOnboardingFromRoot: selectors.isOnboardingToProFromRootSelector(state.present),
     isOnboarding: selectors.isOnboardingToProSelector(state.present),
     fileToUpload: selectors.filePathToUploadSelector(state.present),

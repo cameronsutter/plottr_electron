@@ -40,7 +40,7 @@ const saver = (whenClientIsReady) => {
     }
   }
 
-  function saveFile(filePath, jsonData, isOffline) {
+  function saveFile(fileURL, jsonData, isOffline, autoSave) {
     if (saveTimeout) {
       clearTimeout(saveTimeout)
       resetCount++
@@ -50,9 +50,7 @@ const saver = (whenClientIsReady) => {
     }
     const forceSave = (previousFile) => () => {
       const userId = selectors.userIdSelector(jsonData)
-      whenClientIsReady(({ autoSave }) => {
-        return autoSave(filePath, jsonData, userId, previousFile)
-      })
+      autoSave(fileURL, jsonData, userId, previousFile)
       resetCount = 0
       saveTimeout = null
       if (!isOffline) {
@@ -75,20 +73,30 @@ const saver = (whenClientIsReady) => {
 
     const state = store.getState().present
     if (selectors.isResumingSelector(state)) return result
+    const fileURL = selectors.fileURLSelector(state)
+    if (!fileURL) {
+      return result
+    }
 
     // save and backup
     const isOffline = selectors.isOfflineSelector(state)
-    const fileName = selectors.fileNameSelector(state)
     const offlineModeEnabled = selectors.offlineModeEnabledSelector(state)
     // If we're working on a cloud file, are offline and offline mode
     // isn't enabled, don't save the file.
     if (selectors.isCloudFileSelector(state) && isOffline && !offlineModeEnabled) {
       return result
-    } else if (selectors.isCloudFileSelector(state) && !isOffline) {
-      const fileId = selectors.fileIdSelector(state)
-      saveFile(fileId, state, isOffline)
-    } else if (fileName !== '') {
-      saveFile(fileName, state, isOffline)
+    } else if (!isOffline) {
+      const fileURL = selectors.fileURLSelector(state)
+      whenClientIsReady(({ autoSave }) => {
+        saveFile(fileURL, state, isOffline, autoSave)
+      })
+    } else if (isOffline && offlineModeEnabled) {
+      const fileURL = selectors.fileURLSelector(state)
+      whenClientIsReady(({ saveOfflineFile }) => {
+        saveFile(fileURL, state, isOffline, (fileURL, file) => {
+          saveOfflineFile(file)
+        })
+      })
     }
     return result
   }

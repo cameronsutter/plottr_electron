@@ -4,8 +4,8 @@ import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
-import { actions, selectors } from 'pltr/v2'
-import { listen, fetchFiles, getIdTokenResult, logOut } from 'wired-up-firebase'
+import { helpers, actions, selectors } from 'pltr/v2'
+import { listen, fetchFiles, getIdTokenResult, logOut, updateAuthFileName } from 'wired-up-firebase'
 import { t } from 'plottr_locales'
 
 import { store } from '../store'
@@ -20,18 +20,19 @@ const Listener = ({
   emailAddress,
   selectedFile,
   setPermission,
+  knownFiles,
   setFileLoaded,
   patchFile,
   clientId,
   fileLoaded,
   isOffline,
   isCloudFile,
-  filePath,
+  fileURL,
+  fileName,
   originalFileName,
-  cloudFilePath,
+  cloudFileURL,
   selectFile,
   offlineModeIsEnabled,
-  setResuming,
   resuming,
   withFullFileState,
   isLoggedIn,
@@ -44,120 +45,51 @@ const Listener = ({
   startLoadingALicenseType,
   finishLoadingALicenseType,
 }) => {
-  const [unsubscribeFunction, setUnsubscribeFunction] = useState(null)
-
-  const wasOffline = useRef(isOffline)
-
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
   const { saveAsTempFile } = makeFileModule(whenClientIsReady)
 
+  // Prevent users from changing backups by closing the backup and
+  // opening a temp version instead.
   useEffect(() => {
-    if (filePath) {
+    if (fileURL) {
       fileSystemAPIs.backupBasePath().then((backupPath) => {
-        if (filePath.startsWith(backupPath)) {
+        if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
           withFullFileState((state) => {
-            saveAsTempFile(state.present).then((newFilePath) => {
-              ipcRenderer.send('pls-open-window', newFilePath, true)
+            saveAsTempFile(state.present).then((newFileURL) => {
+              ipcRenderer.send('pls-open-window', newFileURL, true)
               window.close()
             })
           })
         }
       })
     }
-  }, [filePath])
+  }, [fileURL])
 
-  useEffect(() => {
-    if (isOffline) {
-      wasOffline.current = true
-    }
-  }, [isOffline])
+  // ====Listen to the file on Plottr Cloud====
 
+  // Logic to resume the current file
   useEffect(() => {
-    if (isOffline && isCloudFile && !selectedFile) {
-      withFullFileState((state) => {
-        selectFile(state.present.file)
-      })
-    }
-  }, [isOffline, isCloudFile, selectedFile])
+    const weDontHaveBasicInfo = !userId || !clientId || !fileURL
+    const fileIsntACloudFile = !helpers.file.urlPointsToPlottrCloud(fileURL)
+    const weAreResuming = offlineModeIsEnabled && resuming
 
-  useEffect(() => {
-    if (!userId || !selectedFile || !selectedFile.id || selectedFile.permission) return
-    fetchFiles(userId).then((fileList) => {
-      const fileInList = fileList.find(({ id }) => selectedFile.id === id)
-      if (fileInList) {
-        setPermission(fileInList.permission)
-        selectFile(fileInList)
-      }
-    })
-  }, [selectedFile, userId])
-
-  useEffect(() => {
-    if (!userId || !clientId || !selectedFile || !selectedFile.id || isOffline) {
+    if (weDontHaveBasicInfo || fileIsntACloudFile || isOffline || weAreResuming) {
       return () => {}
     }
 
-    if (offlineModeIsEnabled && wasOffline.current) {
-      logger.info(
-        `Resuming online with file: ${selectedFile.id}, user: ${userId} and clientId: ${clientId}`
-      )
-      setResuming(true)
-      wasOffline.current = false
-      return () => {}
-    }
-
-    if (offlineModeIsEnabled && resuming) {
-      return () => {}
-    }
-
-    let unsubscribeFunction = null
+    let unsubscribeFunction = () => {}
     if (fileLoaded) {
-      setUnsubscribeFunction({
-        unsubscribe: listen(store, userId, selectedFile.id, clientId, selectedFile.version),
-      })
+      const fileId = helpers.file.fileIdFromPlottrProFile(fileURL)
+      unsubscribeFunction = listen(store, userId, fileId, clientId, selectedFile.version)
       setPermission(selectedFile.permission)
     } else {
       setFileLoaded()
     }
 
-    return () => {
-      if (unsubscribeFunction && unsubscribeFunction.unsubscribe) {
-        unsubscribeFunction.unsubscribe()
-        setUnsubscribeFunction(null)
-      }
-    }
-  }, [
-    offlineModeIsEnabled,
-    selectedFile,
-    userId,
-    clientId,
-    fileLoaded,
-    isOffline,
-    resuming,
-    setResuming,
-  ])
+    return unsubscribeFunction
+  }, [offlineModeIsEnabled, selectedFile, userId, clientId, fileLoaded, isOffline, resuming])
 
-  useEffect(() => {
-    if (isOffline && unsubscribeFunction && unsubscribeFunction.unsubscribe) {
-      unsubscribeFunction.unsubscribe()
-      setUnsubscribeFunction(null)
-    }
-  }, [isOffline, unsubscribeFunction])
-
-  useEffect(() => {
-    // It's not valid to change a window with a falsey name or set our
-    // name to set our name to something falsy.
-    whenClientIsReady((client) => {
-      client.offlineFilePath(filePath).then((offlineFilePath) => {
-        if (!offlineFilePath || !cloudFilePath) return
-
-        if (isOffline && !originalFileName) {
-          ipcRenderer.send('set-my-file-path', cloudFilePath, offlineFilePath)
-        } else if (!isOffline && originalFileName) {
-          ipcRenderer.send('set-my-file-path', offlineFilePath, cloudFilePath)
-        }
-      })
-    })
-  }, [isOffline, filePath, originalFileName, cloudFilePath])
+  // ====Pro Session====
 
   const handleCheckPro = (uid, email, isLifetime, isAdmin) => (hasPro, info) => {
     if (hasPro) {
@@ -182,6 +114,7 @@ const Listener = ({
     }
   }
 
+  // Handle session changes.
   useEffect(() => {
     if (checkedSession && isLoggedIn && !hasPro && !checkingProSubscription) {
       startLoadingALicenseType('proSubscription')
@@ -216,6 +149,23 @@ const Listener = ({
     }
   }, [isLoggedIn, checkedSession, userId, emailAddress, hasPro, checkingProSubscription])
 
+  // ====Synchronising data file name to known file name====
+  useEffect(() => {
+    if (!fileURL || !fileName || knownFiles.length === 0) return
+
+    if (!helpers.file.urlPointsToPlottrCloud(fileURL)) {
+      return
+    }
+
+    const knownFileRecord = knownFiles.find((file) => {
+      return file.fileURL === fileURL
+    })
+    if (knownFileRecord && knownFileRecord.fileName !== fileName) {
+      const fileId = helpers.file.withoutProtocol(fileURL)
+      updateAuthFileName(fileId, fileName)
+    }
+  }, [knownFiles, fileURL, fileName])
+
   return null
 }
 
@@ -224,17 +174,18 @@ Listener.propTypes = {
   userId: PropTypes.string,
   emailAddress: PropTypes.string,
   setPermission: PropTypes.func.isRequired,
+  knownFiles: PropTypes.array.isRequired,
   selectedFile: PropTypes.object,
   setFileLoaded: PropTypes.func.isRequired,
   patchFile: PropTypes.func.isRequired,
   clientId: PropTypes.string,
   fileLoaded: PropTypes.bool,
   isOffline: PropTypes.bool,
-  filePath: PropTypes.string,
+  fileURL: PropTypes.string,
+  fileName: PropTypes.string,
   originalFileName: PropTypes.string,
-  cloudFilePath: PropTypes.string,
+  cloudFileURL: PropTypes.string,
   selectFile: PropTypes.func.isRequired,
-  setResuming: PropTypes.func.isRequired,
   resuming: PropTypes.bool,
   isCloudFile: PropTypes.bool,
   withFullFileState: PropTypes.func.isRequired,
@@ -259,21 +210,22 @@ export default connect(
     clientId: selectors.clientIdSelector(state.present),
     fileLoaded: selectors.fileLoadedSelector(state.present),
     isOffline: selectors.isOfflineSelector(state.present),
-    filePath: selectors.filePathSelector(state.present),
+    fileURL: selectors.fileURLSelector(state.present),
+    fileName: selectors.fileNameSelector(state.present),
     originalFileName: selectors.originalFileNameSelector(state.present),
-    cloudFilePath: selectors.cloudFilePathSelector(state.present),
+    cloudFileURL: selectors.cloudFilePathSelector(state.present),
     resuming: selectors.isResumingSelector(state.present),
     isCloudFile: selectors.isCloudFileSelector(state.present),
     isLoggedIn: selectors.isLoggedInSelector(state.present),
     checkedSession: selectors.sessionCheckedSelector(state.present),
     offlineModeIsEnabled: selectors.offlineModeEnabledSelector(state.present),
     checkingProSubscription: selectors.checkingProSubscriptionSelector(state.present),
+    knownFiles: selectors.knownFilesSelector(state.present),
   }),
   {
     setPermission: actions.permission.setPermission,
     patchFile: actions.ui.patchFile,
     setFileLoaded: actions.project.setFileLoaded,
-    setResuming: actions.project.setResuming,
     selectFile: actions.project.selectFile,
     withFullFileState: actions.project.withFullFileState,
     setHasPro: actions.client.setHasPro,

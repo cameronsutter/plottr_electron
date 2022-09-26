@@ -11,17 +11,19 @@ function getKnownFilesInfo() {
 // The difference between `addtoKnown` and `addToKnownFiles` seems to
 // be that `addToKnownFiles` does some fixing to broken stores and
 // `addToKnown` sets the last opened date.
-function addToKnown(filePath) {
+function addToKnown(fileURL) {
   return whenClientIsReady(({ addKnownFile }) => {
-    return addKnownFile(filePath).then(() => {
-      reloadRecents()
+    return addKnownFile(fileURL).then(() => {
+      return reloadRecents()
     })
   })
 }
 
-function addToKnownFiles(filePath) {
+function addToKnownFiles(fileURL) {
   return whenClientIsReady(({ addKnownFileWithFix }) => {
-    return addKnownFileWithFix(filePath)
+    return addKnownFileWithFix(fileURL).then(() => {
+      return reloadRecents()
+    })
   })
 }
 

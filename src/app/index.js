@@ -16,7 +16,7 @@ import { dialog, getCurrentWindow } from '@electron/remote'
 import path from 'path'
 import { store } from 'store'
 
-import { actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
@@ -48,6 +48,7 @@ import { rootComponent } from './rootComponent'
 import { makeFileModule } from './files'
 import { createClient, getPort, whenClientIsReady, setPort } from '../../shared/socket-client'
 import logger from '../../shared/logger'
+import { removeSystemKeys } from './bootFile'
 
 const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
@@ -113,7 +114,8 @@ createClient(
   socketServerEventHandlers
 )
 
-const { saveFile, isTempFile } = makeFileModule(whenClientIsReady)
+const { saveOfflineFile, saveFile, isTempFile, basename, copyFile } =
+  makeFileModule(whenClientIsReady)
 
 const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
 fileSystemAPIs.currentAppSettings().then((settings) => {
@@ -194,12 +196,25 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
 
 ipcRenderer.on('save', () => {
   const { present } = store.getState()
-  saveFile(present.file.fileName, present)
+  const isOffline = selectors.isOfflineSelector(present)
+  const isOfflineModeEnabled = selectors.offlineModeEnabledSelector(present)
+  const isCloudFile = selectors.isCloudFileSelector(present)
+  if (isCloudFile && isOffline && isOfflineModeEnabled) {
+    saveOfflineFile(present)
+  } else if (!isCloudFile) {
+    saveFile(present.project.fileURL, present)
+  }
 })
 
 ipcRenderer.on('save-as', () => {
   const { present } = store.getState()
-  const defaultPath = path.basename(present.file.fileName).replace('.pltr', '')
+  const isInOfflineMode = selectors.isInOfflineModeSelector(present)
+  if (isInOfflineMode) {
+    logger.info('Tried to save-as a file, but it is offline')
+    return
+  }
+
+  const defaultPath = path.basename(present.file.fileName, '.pltr')
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
   const fileName = dialog.showSaveDialogSync(win, {
     filters,
@@ -207,9 +222,10 @@ ipcRenderer.on('save-as', () => {
     defaultPath,
   })
   if (fileName) {
-    let newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    saveFile(newFilePath, present).then(() => {
-      ipcRenderer.send('pls-open-window', newFilePath, true)
+    const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+    const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+    saveFile(newFileURL, present).then(() => {
+      ipcRenderer.send('pls-open-window', newFileURL, true)
     })
   }
 })
@@ -225,9 +241,19 @@ const ensureEndsInPltr = (filePath) => {
 
 ipcRenderer.on('move-from-temp', () => {
   const { present } = store.getState()
+  const isCloudFile = selectors.isCloudFileSelector(present)
+  if (isCloudFile) {
+    return
+  }
+
   isTempFile(present).then((isTemp) => {
+    const oldFileURL = selectors.fileURLSelector(present)
+    if (!oldFileURL) {
+      logger.error(`Tried to move the current file from temp but we couldn't compute its URL.`)
+      return
+    }
     if (!isTemp) {
-      saveFile(present.file.fileName, present)
+      saveFile(oldFileURL, present)
       return
     }
     const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
@@ -238,17 +264,37 @@ ipcRenderer.on('move-from-temp', () => {
       })
     )
     if (newFilePath) {
-      // change in redux
-      store.dispatch(actions.ui.editFileName(newFilePath))
-      // remove from tmp store
-      ipcRenderer.send('remove-from-temp-files-if-temp', present.file.fileName)
-      // update in known files
-      ipcRenderer.send('edit-known-file-path', present.file.fileName, newFilePath)
-      // change the window's title
-      win.setRepresentedFilename(newFilePath)
-      win.filePath = newFilePath
-      // send event to dashboard
-      ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+      // Point at the new file
+      const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+      const oldFileURL = selectors.fileURLSelector(present)
+      if (!newFilePath || !newFileURL) {
+        logger.error(`Tried to move file at ${oldFileURL} to ${newFilePath} (path: ${newFilePath})`)
+        return
+      }
+      copyFile(oldFileURL, newFileURL).then(() => {
+        return basename(newFilePath).then((newFileName) => {
+          // load the new file: the only way to set a new
+          // `project.fileURL`(!)
+          store.dispatch(
+            actions.ui.loadFile(
+              newFileName,
+              false,
+              removeSystemKeys(present),
+              present.file.version,
+              newFileURL
+            )
+          )
+          // remove from tmp store
+          ipcRenderer.send('remove-from-temp-files-if-temp', oldFileURL)
+          // update in known files
+          ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
+          // change the window's title
+          win.setRepresentedFilename(newFilePath)
+          win.fileURL = newFileURL
+          // send event to dashboard
+          ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+        })
+      })
     }
   })
 })
@@ -323,7 +369,13 @@ ipcRenderer.on('create-plottr-cloud-file', (event, json, fileName, isScrivenerFi
   uploadToFirebase(emailAddress, userId, json, fileName)
     .then((response) => {
       const fileId = response.data.fileId
-      openFile(`plottr://${fileId}`, fileId, false)
+      if (!fileId) {
+        const message = `Tried to create cloud file for ${fileName} but we didn't get a fileId back`
+        logger.error(message)
+        return Promise.reject(new Error(message))
+      }
+      const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
+      openFile(fileURL, false)
 
       if (isScrivenerFile) {
         store.dispatch(actions.applicationState.finishScrivenerImporter())

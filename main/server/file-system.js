@@ -5,7 +5,9 @@ import { sortBy } from 'lodash'
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
 import { isOfflineFile } from '../modules/offlineFilePath'
 
-const { readdir, mkdir, lstat } = fs.promises
+import { helpers } from 'pltr/v2'
+
+const { readdir, mkdir, lstat, cp } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -85,11 +87,11 @@ const fileSystemModule = (userDataPath) => {
     }
 
     function setTemplate(id, template) {
-      return templatesStore.set(id, template)
+      return templatesStore.setRawKey(id, template)
     }
 
     function setCustomTemplate(id, template) {
-      return customTemplatesStore.set(id, template)
+      return customTemplatesStore.setRawKey(id, template)
     }
 
     function deleteCustomTemplate(id) {
@@ -118,12 +120,12 @@ const fileSystemModule = (userDataPath) => {
 
         const newEnd = addDays(currentInfo.endsAt, days)
         return trialStore
-          .set('endsAt', newEnd.getTime())
+          .setRawKey('endsAt', newEnd.getTime())
           .then(() => {
-            return trialStore.set('extensions', EXTENSIONS)
+            return trialStore.setRawKey('extensions', EXTENSIONS)
           })
           .then(() => {
-            trialStore.set('hasBeenReset', true)
+            trialStore.setRawKey('hasBeenReset', true)
           })
       })
     }
@@ -143,7 +145,7 @@ const fileSystemModule = (userDataPath) => {
     }
 
     const isValidKnownFile = (file) => {
-      return typeof file.path === 'string' && file.lastOpened
+      return typeof file.fileURL === 'string' && file.lastOpened
     }
 
     const listenToknownFilesChanges = (cb) => {
@@ -154,10 +156,10 @@ const fileSystemModule = (userDataPath) => {
           })
           .map(([key, file]) => {
             return {
-              ...file,
-              fromFileSystem: true,
-              isTempFile: file.path.includes(TEMP_FILES_PATH),
-              id: key,
+              fileURL: file.fileURL,
+              fileName: file.fileName,
+              lastOpened: file.lastOpened,
+              isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
             }
           })
       }
@@ -169,6 +171,7 @@ const fileSystemModule = (userDataPath) => {
       cb(transformStore(knownFilesStore.store))
       return knownFilesStore.onDidAnyChange.bind(knownFilesStore)(withFileSystemAsSource)
     }
+
     const currentKnownFiles = () => {
       return knownFilesStore.currentStore().then((fileIndex) => {
         return Object.entries(fileIndex)
@@ -176,10 +179,10 @@ const fileSystemModule = (userDataPath) => {
             return isValidKnownFile(file)
           })
           .map(([key, file]) => ({
-            ...file,
-            fromFileSystem: true,
-            isTempFile: file.path.includes(TEMP_FILES_PATH),
-            id: key,
+            fileURL: file.fileURL,
+            fileName: file.fileName,
+            lastOpened: file.lastOpened,
+            isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
           }))
       })
     }
@@ -358,6 +361,13 @@ const fileSystemModule = (userDataPath) => {
         })
     }
 
+    const copyFile = (sourceFileURL, newFileURL) => {
+      return cp(
+        helpers.file.withoutProtocol(sourceFileURL),
+        helpers.file.withoutProtocol(newFileURL)
+      )
+    }
+
     return {
       TEMP_FILES_PATH,
       setTemplate,
@@ -393,6 +403,7 @@ const fileSystemModule = (userDataPath) => {
       customTemplatesPath,
       // lastOpenedFile,
       // setLastOpenedFilePath,
+      copyFile,
     }
   }
 }

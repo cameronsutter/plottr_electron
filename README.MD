@@ -154,6 +154,29 @@ For more detail on what the library provides, please refer to its documentation 
 
 # Features
 
+## On File Paths
+Throughout Plottr, we don't reference "raw" file paths until we hit
+native/library boundaries that require their own name or protocol to
+locate files.  Plottr uses the following protocols to differentiate
+where files are located:
+ 1. `device://` references files that are stored on the file system.
+    Plottr assumes that if it strips the protocol part of the URL the
+    result can be supplied to a native API on the device that Plottr
+    is running on.  So far, this is a UNIX/Windows/iOS/Android file
+    path.
+ 2. `storage://` references files that are stored on Plottr cloud file
+    storage -- currently backed by Firebase storage.
+ 3. `plottr://` references **Plottr** files that are stored on cloud
+    storage in the database -- currently backed by Firebase Firestore.
+ 4. `dropbox://` references files that are stored on Dropbox *via the
+    Dropbox* API (rather than using the local machine's file system to
+    indirectly address Dropbox.)
+
+For example, Plottr Desktop will translate
+`device://C:\\Users\\John\\test.pltr` to `C:\\Users\\John\\test.pltr`
+just before addressing the local file system via node.  All these
+translations belong in the helpers file in `pltr` for `files`.
+
 ## Offline Mode
 Offline mode is there for people to continue working on Pro files when their Internet connection goes down.
 

@@ -12,8 +12,11 @@ const { app, BrowserWindow, globalShortcut } = electron
 import path from 'path'
 import log from 'electron-log'
 import { is } from 'electron-util'
-import './modules/updater_events'
 import contextMenu from 'electron-context-menu'
+
+import { helpers } from 'pltr/v2'
+
+import './modules/updater_events'
 import { setupRollbar } from './modules/rollbar'
 import { loadMenu } from './modules/menus'
 import { focusFirstWindow, hasWindows } from './modules/windows'
@@ -183,6 +186,7 @@ app.whenReady().then(() => {
       log.info('yargv', yargv)
       const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
+      const fileLaunchedOnURL = helpers.file.filePathToFileURL(fileLaunchedOn)
 
       listenOnIPCMain(() => getPort(), processSwitches, safelyExitModule)
 
@@ -209,14 +213,14 @@ app.whenReady().then(() => {
         // Wait a little bit in case the app was launched by double clicking
         // on a file.
         setTimeout(() => {
-          if (!openedFile && !(fileLaunchedOn && is.macos)) {
+          if (!openedFile && !(fileLaunchedOnURL && is.macos)) {
             openedFile = true
-            log.info(`Opening <${fileLaunchedOn}> from primary whenReady`)
+            log.info(`Opening <${fileLaunchedOnURL}> from primary whenReady`)
             try {
-              openProjectWindow(fileLaunchedOn)
+              openProjectWindow(fileLaunchedOnURL)
                 .then((newWindow) => {
-                  log.info('Created the project window')
-                  if (fileLaunchedOn) addToKnown(fileLaunchedOn)
+                  log.info(`Created the project window for ${fileLaunchedOnURL}`)
+                  if (fileLaunchedOnURL) addToKnown(fileLaunchedOnURL)
                 })
                 .catch((error) => {
                   log.error('Error creating the project window to boot a file from', error)
@@ -246,13 +250,13 @@ app.whenReady().then(() => {
           if (hasWindows()) {
             focusFirstWindow()
           } else {
-            log.info('Opening project window for', fileLaunchedOn)
-            openProjectWindow(fileLaunchedOn)
+            log.info('Opening project window for', fileLaunchedOnURL)
+            openProjectWindow(fileLaunchedOnURL)
               .then(() => {
-                log.info('Opened a project window for', fileLaunchedOn)
+                log.info('Opened a project window for', fileLaunchedOnURL)
               })
               .catch((error) => {
-                log.error('Failed to open project window for', fileLaunchedOn, error)
+                log.error('Failed to open project window for', fileLaunchedOnURL, error)
               })
           }
         })
@@ -262,10 +266,11 @@ app.whenReady().then(() => {
           loadMenu(safelyExitModule)
             .then(() => {
               const newFileToLoad = fileToLoad(argv)
-              if (newFileToLoad) addToKnown(newFileToLoad)
-              openProjectWindow(newFileToLoad)
+              const newFileToLoadURL = helpers.file.filePathToFileURL(newFileToLoad)
+              if (newFileToLoadURL) addToKnown(newFileToLoadURL)
+              openProjectWindow(newFileToLoadURL)
                 .then(() => {
-                  log.info('Opened a second instance for a file', newFileToLoad)
+                  log.info('Opened a second instance for a file', newFileToLoadURL)
                 })
                 .catch((error) => {
                   log.error('Eror opening the second instance project window', error)
@@ -306,20 +311,23 @@ function fileToLoad(argv) {
   return null
 }
 
+// macOS only.  Open file from finder.
 app.on('open-file', (event, filePath) => {
+  // Convert to a Plottr URL.
+  const fileURL = helpers.file.filePathToFileURL(filePath)
   // Prevent the app from opening a default window as well as the file.
   openedFile = true
-  log.info(`Opening <${filePath}> from open file`)
+  log.info(`Opening <${fileURL}> from open file`)
   event.preventDefault()
   // mac/linux open-file event handler
   app.whenReady().then(() => {
-    openProjectWindow(filePath)
+    openProjectWindow(fileURL)
       .then(() => {
-        log.info('Project window opened for ', filePath)
-        addToKnown(filePath)
+        log.info('Project window opened for ', fileURL)
+        addToKnown(fileURL)
       })
       .catch((error) => {
-        log.error('Failed to open a project window the second instance', filePath, error)
+        log.error('Failed to open a project window the second instance', fileURL, error)
       })
   })
 })

@@ -26,12 +26,12 @@ function gracefullyQuit(safelyExit) {
   }
 }
 
-function makeBrowserWindow(filePath) {
+function makeBrowserWindow(fileURL) {
   // Load the previous state with fallback to defaults
   const { width, height } = screen.getPrimaryDisplay().workAreaSize
 
   // replacing makes it so it doesn't create the folder structure
-  let stateKeeprFile = (filePath || uuidv4()).replace(/[/\\]/g, '~')
+  let stateKeeprFile = (fileURL || uuidv4()).replace(/[/\\]/g, '~')
   const numFileLetters = 100
 
   let multiplier = 0.9

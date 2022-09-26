@@ -162,11 +162,15 @@ const App = ({
     closeOrRefresh(true)
   }
 
-  const saveAndClose = (saveFile) => () => {
+  const saveAndClose = (saveFile, saveOfflineFile) => () => {
     setBlockClosing(false)
     setShowAskToSave(false)
     const { present } = store.getState()
-    saveFile(present.file.fileName, present)
+    if (isOffline) {
+      saveOfflineFile(present)
+    } else {
+      saveFile(present.project.fileURL, present)
+    }
     closeOrRefresh(true)
   }
 

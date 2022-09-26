@@ -34,42 +34,24 @@ import {
   editKnownFilePath,
   createFromScrivener,
 } from './modules/files'
-import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
 import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
-  ipcMain.on('pls-fetch-state', function (event, id, proMode) {
-    lastOpenedFile()
-      .catch((error) => {
-        return null
+  ipcMain.on('pls-fetch-state', function (event, id, lastFile, proMode) {
+    const win = getWindowById(id)
+    const filePath = win.filePath || lastFile
+    if (win) {
+      featureFlags().then((flags) => {
+        event.sender.send(
+          'state-fetched',
+          filePath,
+          flags,
+          numberOfWindows(),
+          win.filePath,
+          processSwitches.serialise()
+        )
       })
-      .then((lastFile) => {
-        return currentSettings().then((settings) => {
-          // If the user asked for dashboard first, then never reply
-          // with the last known file.
-          return (settings?.user?.openDashboardFirst && null) || lastFile
-        })
-      })
-      .then((lastFile) => {
-        const lastFileURL =
-          (lastFile && !helpers.file.isProtocolString(lastFile)
-            ? helpers.file.filePathToFileURL(lastFile)
-            : lastFile) || null
-        const win = getWindowById(id)
-        const fileURL = win.fileURL || lastFileURL
-        if (win) {
-          featureFlags().then((flags) => {
-            event.sender.send(
-              'state-fetched',
-              fileURL,
-              flags,
-              numberOfWindows(),
-              win.fileURL,
-              processSwitches.serialise()
-            )
-          })
-        }
-      })
+    }
   })
 
   ipcMain.on('pls-tell-me-the-socket-worker-port', (event) => {
@@ -259,9 +241,5 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       // ignore
       // on windows you need something called an Application User Model ID which may not work
     }
-  })
-
-  ipcMain.on('update-last-opened-file', (_event, newFileURL) => {
-    setLastOpenedFilePath(newFileURL)
   })
 }

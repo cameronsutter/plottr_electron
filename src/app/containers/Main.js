@@ -206,7 +206,7 @@ const Main = ({
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
     ipcRenderer.on('state-fetched', stateFetchedListener)
-    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
+    ipcRenderer.send('pls-fetch-last-file', win.id, isInProMode)
     startCheckingFileToLoad()
 
     return () => {

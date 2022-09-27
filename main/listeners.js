@@ -51,7 +51,6 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         })
       })
       .then((lastFile) => {
-        // ipcRenderer.send('pls-fetch-state', id, lastFile, isInProMode)
         const lastFileURL =
           (lastFile && !helpers.file.isProtocolString(lastFile)
             ? helpers.file.filePathToFileURL(lastFile)

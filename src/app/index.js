@@ -307,28 +307,6 @@ ipcRenderer.on('redo', (event) => {
   store.dispatch(ActionCreators.redo())
 })
 
-ipcRenderer.on('pls-fetch-last-file', (event, id, isInProMode) => {
-  fileSystemAPIs
-    .lastOpenedFile()
-    .catch((error) => {
-      return null
-    })
-    .then((lastFile) => {
-      return fileSystemAPIs.currentAppSettings().then((settings) => {
-        // If the user asked for dashboard first, then never reply
-        // with the last known file.
-        return (settings?.user?.openDashboardFirst && null) || lastFile
-      })
-    })
-    .then((lastFile) => {
-      ipcRenderer.send('pls-fetch-state', id, lastFile, isInProMode)
-    })
-})
-
-ipcRenderer.on('update-last-opened-file', (_event, newFilePath) => {
-  fileSystemAPIs.setLastOpenedFilePath(newFilePath)
-})
-
 window.onerror = function (message, file, line, column, err) {
   logger.error(err)
   rollbar.error(err)

@@ -851,7 +851,7 @@ const setupListeners = (port, userDataPath) => {
           case LAST_OPENED_FILE: {
             return handlePromise(
               () => 'Getting the last opened file',
-              () => lastOpenedFile(),
+              () => statusManager.registerTask(lastOpenedFile(), LAST_OPENED_FILE),
               () => 'Error while getting last opened file'
             )
           }

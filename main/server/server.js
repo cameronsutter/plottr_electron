@@ -71,6 +71,8 @@ import {
   DELETE_KNOWN_FILE,
   REMOVE_FROM_TEMP_FILES,
   SAVE_TO_TEMP_FILE,
+  LAST_OPENED_FILE,
+  SET_LAST_OPENED_FILE,
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
 } from '../../shared/socket-server-message-types'
@@ -188,6 +190,8 @@ const setupListeners = (port, userDataPath) => {
       deleteCustomTemplate,
       setTemplate,
       customTemplatesPath,
+      lastOpenedFile,
+      setLastOpenedFilePath,
       copyFile,
     } = fileSystemModule
     const trashModule = makeTrashModule(userDataPath, logger)
@@ -842,6 +846,22 @@ const setupListeners = (port, userDataPath) => {
               () => 'Getting the current backups',
               currentBackups,
               () => 'Error while getting current backups'
+            )
+          }
+          case LAST_OPENED_FILE: {
+            return handlePromise(
+              () => 'Getting the last opened file',
+              () => statusManager.registerTask(lastOpenedFile(), LAST_OPENED_FILE),
+              () => 'Error while getting last opened file'
+            )
+          }
+          case SET_LAST_OPENED_FILE: {
+            const { filePath } = payload
+            return handlePromise(
+              () => 'Setting the last opened file',
+              () =>
+                statusManager.registerTask(setLastOpenedFilePath(filePath), SET_LAST_OPENED_FILE),
+              () => 'Error while setting last opened file'
             )
           }
           // Subscriptions

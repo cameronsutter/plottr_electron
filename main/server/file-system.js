@@ -30,7 +30,12 @@ const withFromFileSystem = (backupFolder) => ({
 
 const BACKUP_FOLDER_REGEX = /^1?[0-9]_[123]?[0-9]_[0-9][0-9][0-9][0-9]/
 
+function isOfflineFile(fileURL, offlineFileFilesPath) {
+  return fileURL && helpers.file.withoutProtocol(fileURL).startsWith(offlineFileFilesPath)
+}
+
 const fileSystemModule = (userDataPath) => {
+  const OFFLINE_FILE_FILES_PATH = path.join(userDataPath, 'offline')
   const BACKUP_BASE_PATH = path.join(userDataPath, 'backups')
   const TEMP_FILES_PATH = path.join(userDataPath, 'tmp')
   const customTemplatesPath = path.join(userDataPath, `${CUSTOM_TEMPLATES_PATH}.json`)
@@ -46,7 +51,33 @@ const fileSystemModule = (userDataPath) => {
       exportConfigStore,
       SETTINGS,
       USER,
+      lastOpenedFileStore,
     } = stores
+
+    const lastOpenedFile = async () => {
+      const lastFile = lastOpenedFileStore.get('lastOpenedFilePath')
+
+      if (isOfflineFile(lastFile, OFFLINE_FILE_FILES_PATH)) {
+        return Promise.resolve(null)
+      }
+
+      return lstat(lastFile)
+        .then(() => {
+          return lastFile
+        })
+        .catch((error) => {
+          if (error.code === 'ENOENT') {
+            return null
+          }
+          logger.error('Error finding last opened file.  Refusing to open it.', error)
+          return null
+        })
+    }
+
+    const setLastOpenedFilePath = (filePath) => {
+      if (isOfflineFile(filePath)) return
+      lastOpenedFileStore.set('lastOpenedFilePath', filePath)
+    }
 
     const currentAppSettings = () => {
       return SETTINGS.currentStore()
@@ -374,6 +405,8 @@ const fileSystemModule = (userDataPath) => {
       listenToBackupsChanges,
       currentBackups,
       customTemplatesPath,
+      lastOpenedFile,
+      setLastOpenedFilePath,
       copyFile,
     }
   }

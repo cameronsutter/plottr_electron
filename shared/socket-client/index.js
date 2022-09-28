@@ -116,6 +116,10 @@ import {
   SAVE_TO_TEMP_FILE_ERROR_REPLY,
   BUSY,
   DONE,
+  LAST_OPENED_FILE,
+  LAST_OPENED_FILE_ERROR_REPLY,
+  SET_LAST_OPENED_FILE,
+  SET_LAST_OPENED_FILE_ERROR_REPLY,
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
   COPY_FILE_ERROR_REPLY,
@@ -328,6 +332,8 @@ const connect = (
           case SAVE_OFFLINE_FILE:
           case SAVE_FILE:
           case RM_RF:
+          case LAST_OPENED_FILE:
+          case SET_LAST_OPENED_FILE:
           case PING: {
             resolvePromise()
             return
@@ -397,6 +403,8 @@ const connect = (
           case AUTO_SAVE_FILE_ERROR_REPLY:
           case ENSURE_BACKUP_FULL_PATH_ERROR_REPLY:
           case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
+          case LAST_OPENED_FILE_ERROR_REPLY:
+          case SET_LAST_OPENED_FILE_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -553,6 +561,14 @@ const connect = (
 
     const updateLastOpenedDate = (fileURL) => {
       return sendPromise(UPDATE_LAST_OPENED_DATE, { fileURL })
+    }
+
+    const lastOpenedFile = () => {
+      return sendPromise(LAST_OPENED_FILE)
+    }
+
+    const setLastOpenedFilePath = (filePath) => {
+      return sendPromise(SET_LAST_OPENED_FILE, { filePath })
     }
 
     // ===File System APIs===
@@ -737,6 +753,8 @@ const connect = (
           listenToAppSettingsChanges,
           listenToUserSettingsChanges,
           listenToBackupsChanges,
+          lastOpenedFile,
+          setLastOpenedFilePath,
           close: clientConnection.close.bind(clientConnection),
         })
       })

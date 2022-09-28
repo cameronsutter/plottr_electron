@@ -34,8 +34,8 @@ import {
   editKnownFilePath,
   createFromScrivener,
 } from './modules/files'
-import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
 import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
+import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
@@ -260,7 +260,6 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       // on windows you need something called an Application User Model ID which may not work
     }
   })
-
   ipcMain.on('update-last-opened-file', (_event, newFileURL) => {
     setLastOpenedFilePath(newFileURL)
   })

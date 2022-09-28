@@ -150,6 +150,16 @@ const makeFileSystemAPIs = (socketClient) => {
       return currentBackups()
     })
   }
+  const lastOpenedFile = () => {
+    return socketClient(({ lastOpenedFile }) => {
+      return lastOpenedFile()
+    })
+  }
+  const setLastOpenedFilePath = (filePath) => {
+    return socketClient(({ setLastOpenedFilePath }) => {
+      return setLastOpenedFilePath(filePath)
+    })
+  }
 
   return {
     customTemplatesPath,
@@ -180,6 +190,8 @@ const makeFileSystemAPIs = (socketClient) => {
     currentUserSettings,
     listenToBackupsChanges,
     currentBackups,
+    lastOpenedFile,
+    setLastOpenedFilePath,
   }
 }
 

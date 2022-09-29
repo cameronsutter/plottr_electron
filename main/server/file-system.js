@@ -75,8 +75,10 @@ const fileSystemModule = (userDataPath) => {
     }
 
     const setLastOpenedFilePath = (filePath) => {
-      if (isOfflineFile(filePath)) return
-      lastOpenedFileStore.set('lastOpenedFilePath', filePath)
+      if (isOfflineFile(filePath)) {
+        return Promise.resolve()
+      }
+      return lastOpenedFileStore.set('lastOpenedFilePath', filePath)
     }
 
     const currentAppSettings = () => {

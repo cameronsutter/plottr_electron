@@ -111,7 +111,7 @@ const NoteItemConnector = (connector) => {
     }
 
     render() {
-      const { note } = this.props
+      const { note, selected } = this.props
       let img = null
       if (note.imageId) {
         img = (
@@ -130,7 +130,11 @@ const NoteItemConnector = (connector) => {
       }
 
       return (
-        <div className="list-group-item" ref={this.ref} onClick={this.selectNote}>
+        <div
+          className={cx('list-group-item', { selected })}
+          ref={this.ref}
+          onClick={this.selectNote}
+        >
           {this.renderDelete()}
           <div className="note-list__item-inner">
             {img}

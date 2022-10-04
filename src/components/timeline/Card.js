@@ -214,7 +214,7 @@ const CardConnector = (connector) => {
         title = (
           <Floater
             component={this.renderPopover}
-            open={this.state.hovering}
+            open={this.state.hovering && this.props.isVisible}
             placement={placement}
             offset={0}
             styles={{ wrapper: { cursor: 'move' } }}

@@ -67,13 +67,13 @@ const CustomAttrFilterListConnector = (connector) => {
       this.setState({ filteredItems })
     }
 
-    filterList(attr) {
+    filterList(attr, id) {
       var filteredItems = this.state.filteredItems
       if (!filteredItems[attr]) return
       if (filteredItems[attr].length > 0) {
         filteredItems[attr] = []
       } else {
-        filteredItems[attr] = this.values(attr)
+        filteredItems[attr] = this.values(attr, id)
       }
       this.props.update(filteredItems)
       this.setState({ filteredItems: filteredItems })
@@ -85,7 +85,10 @@ const CustomAttrFilterListConnector = (connector) => {
       return this.state.filteredItems[attrName].indexOf(value) !== -1
     }
 
-    values(attrName) {
+    values(attrName, id) {
+      if (id) {
+        return this.props.customAttributeValues[id]
+      }
       // TODO: this should be a selector
       let values = this.props.items.map((item) => item[attrName])
       return _.uniq(values.filter((v) => v && v != ''))
@@ -131,10 +134,10 @@ const CustomAttrFilterListConnector = (connector) => {
 
       return (
         <div key={name}>
-          <p onClick={() => this.filterList(attr.name)}>
+          <p onClick={() => this.filterList(attr.name, attr.id)}>
             <em>{name}</em>
           </p>
-          {this.renderFilterList(this.values(attr.name), attr)}
+          {this.renderFilterList(this.values(attr.name, attr.id), attr)}
         </div>
       )
     }
@@ -202,6 +205,7 @@ const CustomAttrFilterListConnector = (connector) => {
     tags: PropTypes.array.isRequired,
     books: PropTypes.object.isRequired,
     customAttributes: PropTypes.array.isRequired,
+    customAttributeValues: PropTypes.object.isRequired,
     items: PropTypes.array.isRequired,
     filteredItems: PropTypes.object,
     type: PropTypes.string.isRequired,
@@ -218,11 +222,21 @@ const CustomAttrFilterListConnector = (connector) => {
     redux,
     pltr: {
       actions,
-      selectors: { sortedTagsSelector },
+      selectors: {
+        sortedTagsSelector,
+        characterAttributesForCurrentBookSelector,
+        characterAttributeValuesForCurrentBookSelector,
+      },
     },
   } = connector
 
-  checkDependencies({ redux, actions, sortedTagsSelector })
+  checkDependencies({
+    redux,
+    actions,
+    sortedTagsSelector,
+    characterAttributesForCurrentBookSelector,
+    characterAttributeValuesForCurrentBookSelector,
+  })
 
   if (redux) {
     const { connect, bindActionCreators } = redux
@@ -246,7 +260,7 @@ const CustomAttrFilterListConnector = (connector) => {
     const chooseCustomAttributes = (state, type) => {
       switch (type) {
         case 'characters':
-          return state.present.customAttributes.characters
+          return characterAttributesForCurrentBookSelector(state.present)
         case 'places':
           return state.present.customAttributes.places
         case 'cards':
@@ -259,12 +273,24 @@ const CustomAttrFilterListConnector = (connector) => {
       }
     }
 
+    const chooseAttributeValuesPerType = (state, type) => {
+      switch (type) {
+        case 'characters': {
+          return characterAttributeValuesForCurrentBookSelector(state.present)
+        }
+        default: {
+          return {}
+        }
+      }
+    }
+
     const mapStateToProps = (state, { type }) => {
       const filteredItems = chooseFilteredItems(state, type)
       return {
         tags: sortedTagsSelector(state.present),
         books: state.present.books,
         customAttributes: chooseCustomAttributes(state, type),
+        customAttributeValues: chooseAttributeValuesPerType(state, type),
         items: state.present[type],
         filteredItems,
         showCharacters: type === 'cards' || type === 'notes',

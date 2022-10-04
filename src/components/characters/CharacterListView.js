@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 
-import { t as i18n } from 'plottr_locales'
-import { newIds } from 'pltr/v2'
+import { t } from 'plottr_locales'
+import { newIds, helpers } from 'pltr/v2'
 
 import Grid from '../Grid'
 import Alert from '../Alert'
@@ -29,8 +29,13 @@ import SubNavConnector from '../containers/SubNav'
 import UnconnectedFloater from '../PlottrFloater'
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
+import Tabs from '../Tabs'
+import Tab from '../Tab'
 
 const { nextId } = newIds
+const {
+  card: { truncateTitle },
+} = helpers
 
 const selectedId = (charactersByCategory, characters, categories, characterDetailId) => {
   if (!characters.length) return null
@@ -87,13 +92,15 @@ const CharacterListViewConnector = (connector) => {
     characterSort,
     darkMode,
     charactersSearchTerm,
+    books,
+    attributeTabId,
+    selectedCharacteId,
     actions,
     customAttributeActions,
     uiActions,
   }) => {
     const [attributesDialogOpen, setAttributesDialogOpen] = useState(false)
     const [categoriesDialogOpen, setCategoriesDialogOpen] = useState(false)
-    const [characterDetailId, setCharacterDetailId] = useState(null)
     const [editingSelected, setEditingSelected] = useState(false)
     const [showTemplatePicker, setShowTemplatePicker] = useState(false)
     const [creating, setCreating] = useState(false)
@@ -102,8 +109,8 @@ const CharacterListViewConnector = (connector) => {
     const [sortVisible, setSortVisible] = useState(false)
 
     useEffect(() => {
-      setCharacterDetailId(
-        selectedId(visibleCharactersByCategory, characters, categories, characterDetailId)
+      uiActions.selectCharacter(
+        selectedId(visibleCharactersByCategory, characters, categories, selectedCharacteId)
       )
     }, [visibleCharactersByCategory, characters, categories])
 
@@ -126,7 +133,7 @@ const CharacterListViewConnector = (connector) => {
       // going back to old way (without modal) to think it over
       const id = nextId(characters)
       actions.addCharacter()
-      setCharacterDetailId(id)
+      uiActions.selectCharacter(id)
       setEditingSelected(true)
     }
 
@@ -136,7 +143,7 @@ const CharacterListViewConnector = (connector) => {
       // going back to old way (without modal) to think it over
       const id = nextId(characters)
       actions.addCharacterWithTemplate(null, templateData)
-      setCharacterDetailId(id)
+      uiActions.selectCharacter(id)
       setEditingSelected(true)
       setShowTemplatePicker(false)
     }
@@ -151,7 +158,7 @@ const CharacterListViewConnector = (connector) => {
 
       setCreating(false)
       setTemplateData(null)
-      setCharacterDetailId(id)
+      uiActions.selectCharacter(id)
       setEditingSelected(true)
     }
 
@@ -160,7 +167,7 @@ const CharacterListViewConnector = (connector) => {
 
       return (
         <InputModal
-          title={i18n('Name')}
+          title={t('Name')}
           getValue={handleFinishCreate}
           cancel={() => setCreating(false)}
           isOpen={true}
@@ -192,7 +199,7 @@ const CharacterListViewConnector = (connector) => {
         <Alert onClick={() => uiActions.setCharacterFilter(null)} bsStyle="warning">
           <Glyphicon glyph="remove-sign" />
           {'  '}
-          {i18n('Character list is filtered')}
+          {t('Character list is filtered')}
         </Alert>
       )
       if (filterIsEmpty) {
@@ -211,25 +218,25 @@ const CharacterListViewConnector = (connector) => {
             <NavItem>
               <ButtonGroup>
                 <Button bsSize="small" onClick={handleCreateNewCharacter}>
-                  <Glyphicon glyph="plus" /> {i18n('New')}
+                  <Glyphicon glyph="plus" /> {t('New')}
                 </Button>
                 <Button
                   disabled={templatesDisabled}
                   bsSize="small"
                   onClick={() => setShowTemplatePicker(true)}
                 >
-                  {i18n('Use Template')}
+                  {t('Use Template')}
                 </Button>
               </ButtonGroup>
             </NavItem>
             <NavItem>
               <Button bsSize="small" onClick={() => setAttributesDialogOpen(true)}>
-                <Glyphicon glyph="list" /> {i18n('Attributes')}
+                <Glyphicon glyph="list" /> {t('Attributes')}
               </Button>
             </NavItem>
             <NavItem>
               <Button bsSize="small" onClick={() => setCategoriesDialogOpen(true)}>
-                <Glyphicon glyph="list" /> {i18n('Categories')}
+                <Glyphicon glyph="list" /> {t('Categories')}
               </Button>
             </NavItem>
             <NavItem>
@@ -249,7 +256,7 @@ const CharacterListViewConnector = (connector) => {
                     setFilterVisible(!filterVisible)
                   }}
                 >
-                  <Glyphicon glyph="filter" /> {i18n('Filter')}
+                  <Glyphicon glyph="filter" /> {t('Filter')}
                 </Button>
               </Floater>
               {filterDeclaration}
@@ -271,7 +278,7 @@ const CharacterListViewConnector = (connector) => {
                     setSortVisible(!sortVisible)
                   }}
                 >
-                  <Glyphicon glyph={sortGlyph} /> {i18n('Sort')}
+                  <Glyphicon glyph={sortGlyph} /> {t('Sort')}
                 </Button>
               </Floater>
             </NavItem>
@@ -302,10 +309,10 @@ const CharacterListViewConnector = (connector) => {
         <CharacterItem
           key={ch.id}
           character={ch}
-          selected={ch.id == characterDetailId}
+          selected={ch.id == selectedCharacteId}
           startEdit={editSelected}
           stopEdit={stopEditing}
-          select={() => setCharacterDetailId(ch.id)}
+          select={() => uiActions.selectCharacter(ch.id)}
         />
       ))
     }
@@ -328,13 +335,13 @@ const CharacterListViewConnector = (connector) => {
     }
 
     const renderCharacters = () => {
-      return [...categories, { id: null, name: i18n('Uncategorized') }].map((cat) =>
+      return [...categories, { id: null, name: t('Uncategorized') }].map((cat) =>
         renderCategory(cat)
       )
     }
 
     const renderCharacterDetails = () => {
-      let character = characters.find((char) => char.id == characterDetailId)
+      let character = characters.find((char) => char.id == selectedCharacteId)
       if (!character) return null
 
       return (
@@ -390,14 +397,36 @@ const CharacterListViewConnector = (connector) => {
           <Row>
             <Col sm={3}>
               <h1 className={cx('secondary-text', { darkmode: darkMode })}>
-                {i18n('Characters')}{' '}
+                {t('Characters')}{' '}
                 <Button onClick={handleCreateNewCharacter}>
                   <Glyphicon glyph="plus" />
                 </Button>
               </h1>
               <div className="character-list__category-list">{renderCharacters()}</div>
             </Col>
-            <Col sm={9}>{renderCharacterDetails()}</Col>
+            <Col sm={9}>
+              <div className="item-list__book-tabs-wrapper">
+                <Tabs
+                  bsStyle="pills"
+                  activeKey={attributeTabId}
+                  onSelect={(key) => {
+                    uiActions.selectCharacterAttributeBookTab(key)
+                  }}
+                  id="book-chooser"
+                  style={{ marginBottom: '16px' }}
+                >
+                  <Tab eventKey={'all'} title={t('All')}></Tab>
+                  {Object.values(books).map((book, index) => {
+                    if (Array.isArray(book)) {
+                      return null
+                    }
+                    const title = (book.title && truncateTitle(book.title, 40)) || t('Untitled')
+                    return <Tab key={index} eventKey={book.id} title={title}></Tab>
+                  })}
+                </Tabs>
+              </div>
+              {renderCharacterDetails()}
+            </Col>
           </Row>
         </Grid>
       </div>
@@ -414,6 +443,9 @@ const CharacterListViewConnector = (connector) => {
     characterSort: PropTypes.string,
     darkMode: PropTypes.bool,
     charactersSearchTerm: PropTypes.string,
+    books: PropTypes.object.isRequired,
+    selectedCharacteId: PropTypes.number,
+    attributeTabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     actions: PropTypes.object.isRequired,
     customAttributeActions: PropTypes.object.isRequired,
     uiActions: PropTypes.object.isRequired,
@@ -449,6 +481,9 @@ const CharacterListViewConnector = (connector) => {
           characterSort: selectors.characterSortSelector(state.present),
           darkMode: selectors.isDarkModeSelector(state.present),
           charactersSearchTerm: selectors.charactersSearchTermSelector(state.present),
+          books: selectors.allBooksSelector(state.present),
+          attributeTabId: selectors.characterAttributeTabSelector(state.present),
+          selectedCharacteId: selectors.selectedCharacterSelector(state.present),
         }
       },
       (dispatch) => {

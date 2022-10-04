@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
 
-import InputModal from '../../dialogs/InputModal'
+import UnconnectedNewProjectInputModal from '../../dialogs/NewProjectInputModal'
 import UnconnectedNewFiles from './NewFiles'
 import UnconnectedRecentFiles from './RecentFiles'
 import UnconnectedTemplatePicker from '../../templates/TemplatePicker'
@@ -33,6 +33,7 @@ const FilesHomeConnector = (connector) => {
   const NewFiles = UnconnectedNewFiles(connector)
   const RecentFiles = UnconnectedRecentFiles(connector)
   const TemplatePicker = UnconnectedTemplatePicker(connector)
+  const NewProjectInputModal = UnconnectedNewProjectInputModal(connector)
 
   function snowflakeImportDialog(errorActions) {
     const title = t('Choose your Snowflake Pro file')
@@ -62,22 +63,12 @@ const FilesHomeConnector = (connector) => {
     }
   }
 
-  const FilesHome = ({ errorActions, importActions, isOnWeb }) => {
+  const FilesHome = ({ errorActions, importActions, isOnWeb, projectActions, isInOfflineMode }) => {
     const [view, setView] = useState('recent')
-    const [namingFile, setNamingFile] = useState(null)
-    const [template, setTemplate] = useState(null)
-
-    const createWithTemplate = (template, name) => {
-      mpq.push('btn_create_with_template', { template_name: template.name })
-      try {
-        createNew(template, name)
-      } catch (error) {
-        log.error(error)
-        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-      }
-    }
 
     const createFromSnowflakeImport = () => {
+      if (isInOfflineMode) return
+
       mpq.push('btn_create_from_import', { type: 'snowflake' })
       try {
         const importedPath = snowflakeImportDialog(errorActions)
@@ -95,6 +86,8 @@ const FilesHomeConnector = (connector) => {
     }
 
     const createFromScrivenerImport = () => {
+      if (isInOfflineMode) return
+
       mpq.push('btn_create_from_import', { type: 'scrivener' })
       try {
         const importedPath = scrivenerImportDialog(errorActions)
@@ -107,18 +100,21 @@ const FilesHomeConnector = (connector) => {
       } catch (error) {
         if (error) {
           log.error(error)
-          return dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
         }
       }
     }
 
-    const startNamingTemplate = useCallback(
-      (template) => {
-        setNamingFile('template')
-        setTemplate(template)
-      },
-      [setNamingFile]
-    )
+    const handleCreateNewProject = (template) => {
+      if (isInOfflineMode) return
+
+      if (template.constructor.name == 'Object') {
+        mpq.push('btn_create_with_template', { template_name: template.name })
+        projectActions.startCreatingNewProject(template)
+      } else {
+        projectActions.startCreatingNewProject()
+      }
+    }
 
     let body = null
     switch (view) {
@@ -128,7 +124,7 @@ const FilesHomeConnector = (connector) => {
             newProject
             modal={false}
             types={['custom', 'project', 'plotlines']}
-            onChooseTemplate={startNamingTemplate}
+            onChooseTemplate={handleCreateNewProject}
             showCancelButton={false}
             confirmButtonText={t('Create New Project')}
           />
@@ -142,46 +138,21 @@ const FilesHomeConnector = (connector) => {
         break
     }
 
-    const handleNameInput = useCallback(
-      (value) => {
-        setNamingFile(null)
-        if (template) {
-          createWithTemplate(template, value)
-        } else {
-          createNew(template, value)
-        }
-        setTemplate(null)
-      },
-      [setNamingFile, setTemplate, template, namingFile]
-    )
-    const cancelNameInput = useCallback(() => {
-      setNamingFile(null)
-      setTemplate(null)
-    }, [setNamingFile, setTemplate])
-
-    const NameFile = () => {
-      if (!namingFile) return null
-
-      return (
-        <InputModal
-          title={t('Name')}
-          getValue={handleNameInput}
-          cancel={cancelNameInput}
-          isOpen={true}
-          type="text"
-        />
-      )
-    }
-
     return (
       <div className="dashboard__files">
-        <NameFile />
+        <NewProjectInputModal />
         <NewFiles
           activeView={view}
-          toggleView={(val) => setView(val == view ? 'recent' : val)}
+          toggleView={(val) => {
+            if (!isInOfflineMode) {
+              setView(val == view ? 'recent' : val)
+            }
+          }}
           doSnowflakeImport={createFromSnowflakeImport}
           doScrivenerImport={createFromScrivenerImport}
           isOnWeb={isOnWeb}
+          doCreateNewProject={handleCreateNewProject}
+          isInOfflineMode={isInOfflineMode}
         />
         {body}
       </div>
@@ -191,7 +162,9 @@ const FilesHomeConnector = (connector) => {
   FilesHome.propTypes = {
     errorActions: PropTypes.object,
     importActions: PropTypes.object,
+    projectActions: PropTypes.object,
     isOnWeb: PropTypes.bool,
+    isInOfflineMode: PropTypes.bool,
   }
 
   const {
@@ -201,6 +174,7 @@ const FilesHomeConnector = (connector) => {
 
   const ErrorActions = actions.error
   const AppStateActions = actions.applicationState
+  const ProjectActions = actions.project
 
   checkDependencies({ redux, actions, selectors })
 
@@ -210,11 +184,13 @@ const FilesHomeConnector = (connector) => {
     return connect(
       (state) => ({
         isOnWeb: selectors.isOnWebSelector(state.present),
+        isInOfflineMode: selectors.isInOfflineModeSelector(state.present),
       }),
       (dispatch) => {
         return {
           errorActions: bindActionCreators(ErrorActions, dispatch),
           importActions: bindActionCreators(AppStateActions, dispatch),
+          projectActions: bindActionCreators(ProjectActions, dispatch),
         }
       }
     )(FilesHome)

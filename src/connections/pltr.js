@@ -91,6 +91,7 @@ import {
   ExpiredView as UnconnectedExpiredView,
   ProOnboarding as UnconnectedProOnboarding,
   UpdateNotifier as UnconnectedUpdateNotifier,
+  NewProjectInputModal as UnconnectedNewProjectInputModal,
 } from '../components'
 
 const connector = {
@@ -125,7 +126,6 @@ const pltrTypeSpecs = {
   defaultBackupLocation: PropTypes.func.isRequired,
   setDarkMode: PropTypes.func.isRequired,
   file: PropTypes.shape({
-    sortAndSearch: PropTypes.func.isRequired,
     createNew: PropTypes.func.isRequired,
     openExistingFile: PropTypes.func.isRequired,
     doesFileExist: PropTypes.func.isRequired,
@@ -335,5 +335,6 @@ export default (platform) => {
     ExpiredView: UnconnectedExpiredView(connectorObject),
     ProOnboarding: UnconnectedProOnboarding(connectorObject),
     UpdateNotifier: UnconnectedUpdateNotifier(connectorObject),
+    NewProjectInputModal: UnconnectedNewProjectInputModal(connectorObject),
   }
 }

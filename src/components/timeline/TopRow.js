@@ -216,11 +216,7 @@ const TopRowConnector = (connector) => {
         return [...renderedLines, insertLineTH]
       }
 
-      let finalArray = [
-        <Cell key="placeholder" style={{ zIndex: 101 }} />,
-        <Cell key="placeholder-2" style={{ zIndex: 101 }} />,
-        ...renderedLines,
-      ]
+      let finalArray = [<Cell key="placeholder" style={{ zIndex: 101 }} />, ...renderedLines]
       if (isLarge || isMedium) {
         const insertLineCell = (
           <Row key="insert-line">

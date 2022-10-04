@@ -1,11 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Editor } from 'slate'
+import { useSlate } from 'slate-react'
 
 import Glyphicon from '../Glyphicon'
 import Button from '../Button'
 
 const UnforwardedColorButton = ({ editor, toggle, logger }, ref) => {
+  // needs this so it gets changes to editor.selection
+  // I don't know why
+  const _editor = useSlate()
+
   // TODO: send MiniColorPicker the selected color
   return (
     <div className="tool-bar__color-button-wrapper" ref={ref}>
@@ -36,8 +41,8 @@ export const ColorButton = React.forwardRef(UnforwardedColorButton)
 
 const isColorActive = (editor, logger) => {
   try {
-    const [color] = Editor.nodes(editor, { match: (n) => n.color })
-    return !!color
+    const marks = Editor.marks(editor)
+    return marks ? marks.color !== undefined : false
   } catch (error) {
     logger.error('Error trying to detect if a color is active', error)
     return false

@@ -21,19 +21,16 @@ const CharacterDetailsConnector = (connector) => {
     categories,
   }) => {
     const customAttrNotes = customAttributes.map((attr, idx) => {
-      const { name, type } = attr
+      const { name, type, value } = attr
       let desc
       if (type == 'paragraph') {
         desc = (
           <dd>
-            <RichText
-              id={`character.${character.id}.attribute.${name}`}
-              description={character[name]}
-            />
+            <RichText id={`character.${character.id}.attribute.${name}`} description={value} />
           </dd>
         )
       } else {
-        desc = <dd>{character[name]}</dd>
+        desc = <dd>{value}</dd>
       }
       return (
         <dl key={idx} className="dl-horizontal">
@@ -138,7 +135,10 @@ const CharacterDetailsConnector = (connector) => {
         return {
           character: selectors.singleCharacterSelector(state.present, ownProps.characterId),
           categories: state.present.categories.characters,
-          customAttributes: state.present.customAttributes.characters,
+          customAttributes: selectors.characterAttributesSelector(
+            state.present,
+            ownProps.characterId
+          ),
           getTemplateById: (templateId) =>
             selectors.templateByIdSelector(state.present, templateId),
           templateAttributeValue: (templateId, attributeName) => {

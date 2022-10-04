@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react'
+import React, { useCallback, useMemo, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
 import { t } from 'plottr_locales'
@@ -45,6 +45,16 @@ const RichTextEditorConnector = (connector) => {
   })
 
   const ToolBar = UnconnectedToolBar(connector)
+
+  const isEmpty = (children) => {
+    // Bit hacky, but this should catch all the possible cases.
+    return (
+      children &&
+      (children.length === 0 ||
+        children[0].children.length === 0 ||
+        (children[0].children.length === 1 && children[0].children[0].text === ''))
+    )
+  }
 
   const RichTextEditor = ({
     editorKey,
@@ -94,12 +104,20 @@ const RichTextEditorConnector = (connector) => {
     }
 
     // Focus on first render
-    const [editorWrapperRef, setEditorWrapperRef] = useState(null)
+    const editorWrapperRef = useRef(null)
     useEffect(() => {
-      if (autoFocus && editorWrapperRef && editorWrapperRef.firstChild) {
-        editorWrapperRef.firstChild.focus()
+      if (autoFocus && editorWrapperRef.current && editorWrapperRef.current.firstChild) {
+        editorWrapperRef.current.firstChild.focus()
       }
-    }, [autoFocus, editorWrapperRef])
+    }, [autoFocus])
+    const focusEditor = useCallback((previousSelection) => {
+      setTimeout(() => {
+        if (editorWrapperRef.current && editorWrapperRef.current.firstChild) {
+          editorWrapperRef.current.firstChild.focus()
+          editor.selection = previousSelection
+        }
+      }, 50)
+    }, [])
 
     // State management
     const [
@@ -139,6 +157,13 @@ const RichTextEditorConnector = (connector) => {
           return
         }
       }
+      // This is a hack to prevent a bug that's only present in
+      // Safari.  See:
+      // https://github.com/ianstormtaylor/slate/issues/4640
+      if (event.key === 'Backspace' && isEmpty(editor.children)) {
+        event.preventDefault()
+        return
+      }
       for (const hotkey in HOTKEYS) {
         if (isHotkey(hotkey, event)) {
           event.preventDefault()
@@ -173,11 +198,11 @@ const RichTextEditorConnector = (connector) => {
     }
 
     const handleClickEditable = (event) => {
-      if (!editorWrapperRef) return
-      if (editorWrapperRef.firstChild.contains(event.target)) return
+      if (!editorWrapperRef.current) return
+      if (editorWrapperRef.current.firstChild.contains(event.target)) return
 
       // Focus the Editable content
-      editorWrapperRef.firstChild.focus()
+      editorWrapperRef.current.firstChild.focus()
     }
 
     if (value === null) return null
@@ -186,12 +211,12 @@ const RichTextEditorConnector = (connector) => {
     return (
       <Slate editor={editor} value={value} onChange={onValueChanged} key={editorKey}>
         <div className={cx('slate-editor__wrapper', className)}>
-          <ToolBar editor={editor} />
+          <ToolBar editor={editor} focusEditor={focusEditor} />
           <div
             // the firstChild will be the contentEditable dom node
             ref={(e) => {
               registerEditor(e && e.firstChild)
-              setEditorWrapperRef(e)
+              editorWrapperRef.current = e
             }}
             onClick={handleClickEditable}
             className={cx('slate-editor__editor', { darkmode: darkMode })}
@@ -246,7 +271,7 @@ const RichTextEditorConnector = (connector) => {
       (state) => ({
         undoId: selectors.undoIdSelector(state.present),
         clientId: selectors.clientIdSelector(state.present),
-        fileId: selectors.selectedFileIdSelector(state.present),
+        fileId: selectors.fileIdSelector(state.present),
         darkMode: selectors.isDarkModeSelector(state.present),
         imageCache: selectors.imageCacheSelector(state.present),
         useSpellcheck: selectors.useSpellcheckSelector(state.present),

@@ -54,7 +54,7 @@ const HelpHomeConnector = (connector) => {
         <div style={{ flex: 0.16 }}>
           <h1>{t('Links')}</h1>
           <div className="dashboard__help__item links">
-            <Button bsSize="large" bsStyle="link" onClick={l('https://www.youtube.com/c/Plottr')}>
+            <Button bsSize="large" bsStyle="link" onClick={l('youtube.com/c/Plottr')}>
               {t('Tutorials')}
             </Button>
             <Button
@@ -76,7 +76,7 @@ const HelpHomeConnector = (connector) => {
             <Button
               bsSize="large"
               bsStyle="link"
-              onClick={l('www.facebook.com/groups/367650870614184')}
+              onClick={l('facebook.com/groups/367650870614184')}
             >
               {t('Facebook Group')}
             </Button>

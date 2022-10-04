@@ -185,6 +185,9 @@ const TimelineTableConnector = (connector) => {
             line={line}
             handleReorder={this.handleReorderLines}
             bookId={currentTimeline}
+            // This needs to be here to prevent the move book dialog
+            // from overlapping with the plotline beneath this one.
+            zIndex={100 - index}
           />
         )
         const cards = this.renderHorizontalCards(line, beatMapping, beatMapKeys)
@@ -222,15 +225,16 @@ const TimelineTableConnector = (connector) => {
     renderVertical() {
       const lineMap = this.lineMapping()
       const lineMapKeys = Object.keys(lineMap)
-      const { beats, isSmall, isLarge, isMedium, beatPositions, timelineViewIsTabbed } = this.props
+      const { beats, isSmall, isLarge, beatPositions, timelineViewIsTabbed } = this.props
 
       const renderedBeats = beats.map((beat, idx) => {
-        let inserts = [
-          <Cell key={`controls-placeholder-${beat.id}`}>
-            <div></div>
-          </Cell>,
-        ]
-        if (isLarge || isMedium || idx === 0) {
+        let inserts = []
+        // let inserts = [
+        //   <Cell key={`controls-placeholder-${beat.id}`}>
+        //     <div></div>
+        //   </Cell>,
+        // ]
+        if (isLarge || idx === 0) {
           inserts = lineMapKeys.flatMap((linePosition) => {
             const line = lineMap[linePosition]
             const beatPosition = beatPositions[beat.id]
@@ -261,12 +265,6 @@ const TimelineTableConnector = (connector) => {
           return [
             <Row key={`beatId-${beat.id}`}>
               <Cell key={`beatId-${beat.id}-insert-controls-place-holder`}>
-                <div></div>
-              </Cell>
-              <Cell
-                key={`beatId-${beat.id}-insert-controls-place-holder-2`}
-                className="sticky-table-controls-spacer"
-              >
                 <div></div>
               </Cell>
               {inserts}
@@ -393,22 +391,24 @@ const TimelineTableConnector = (connector) => {
     }
 
     renderHorizontalCards(line, beatMap, beatMapKeys) {
-      const { beats, cardMap, beatHasChildrenMap } = this.props
+      const { beats, cardMap, isLarge, isMedium, beatHasChildrenMap } = this.props
       return beatMapKeys.flatMap((beatPosition) => {
         const cells = []
         const beatId = beatMap[beatPosition]
         const beat = beats[beatPosition]
-        cells.push(
-          <BeatInsertCell
-            key={`${beatPosition}-insert`}
-            isInBeatList={false}
-            handleInsert={this.handleInsertNewBeat}
-            beatToLeft={beats[beatPosition - 1]}
-            showLine={beatPosition == 0}
-            color={line.color}
-            tableLength={this.state.tableLength}
-          />
-        )
+        if (isLarge || (isMedium && beatPosition == 0)) {
+          cells.push(
+            <BeatInsertCell
+              key={`${beatPosition}-insert`}
+              isInBeatList={false}
+              handleInsert={this.handleInsertNewBeat}
+              beatToLeft={beats[beatPosition - 1]}
+              showLine={beatPosition == 0}
+              color={line.color}
+              tableLength={this.state.tableLength}
+            />
+          )
+        }
         const cards = cardMap[`${line.id}-${beatId}`]
         const key = `${cards ? 'card' : 'blank'}-${beatPosition}-${line.position}`
         if (cards) {

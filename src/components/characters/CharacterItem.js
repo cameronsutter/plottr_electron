@@ -24,14 +24,6 @@ const CharacterItemConnector = (connector) => {
       this.ref = React.createRef()
     }
 
-    componentDidMount() {
-      this.scrollIntoView()
-    }
-
-    componentDidUpdate() {
-      this.scrollIntoView()
-    }
-
     scrollIntoView = () => {
       if (this.props.selected) {
         const node = this.ref.current
@@ -111,7 +103,7 @@ const CharacterItemConnector = (connector) => {
     }
 
     render() {
-      const { character } = this.props
+      const { character, selected } = this.props
       let img = null
       if (character.imageId) {
         img = (
@@ -122,7 +114,11 @@ const CharacterItemConnector = (connector) => {
       }
 
       return (
-        <div className="list-group-item" ref={this.ref} onClick={this.selectCharacter}>
+        <div
+          className={cx('list-group-item', { selected })}
+          ref={this.ref}
+          onClick={this.selectCharacter}
+        >
           <div className="character-list__item-inner">
             {img}
             <div>

@@ -50,6 +50,7 @@ const PlaceViewConnector = (connector) => {
     darkMode,
     tags,
     places,
+    placeSearchTerm,
   }) => {
     const [deleting, setDeleting] = useState(false)
 
@@ -191,7 +192,7 @@ const PlaceViewConnector = (connector) => {
                   <FormControl
                     type="text"
                     onChange={withEventTargetValue(changeName)}
-                    autoFocus
+                    autoFocus={placeSearchTerm ? false : true}
                     onKeyDown={handleEsc}
                     onKeyPress={handleEnter}
                     defaultValue={place.name}
@@ -232,7 +233,7 @@ const PlaceViewConnector = (connector) => {
             </div>
             <ButtonToolbar className="card-dialog__button-bar">
               <Button bsStyle="success" onClick={saveEdit}>
-                {t('Save')}
+                {t('Close')}
               </Button>
               <Button className="card-dialog__duplicate" onClick={handleDuplicate}>
                 <FiCopy />
@@ -337,6 +338,7 @@ const PlaceViewConnector = (connector) => {
     darkMode: PropTypes.bool,
     tags: PropTypes.array.isRequired,
     places: PropTypes.array,
+    placeSearchTerm: PropTypes.string,
   }
 
   const {
@@ -362,6 +364,7 @@ const PlaceViewConnector = (connector) => {
           editorPath,
           selection: selectors.selectionSelector(state.present, editorPath),
           tags: sortedTagsSelector(state.present),
+          placeSearchTerm: selectors.placesSearchTermSelector(state.present),
         }
       },
       (dispatch) => {

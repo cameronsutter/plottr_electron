@@ -24,7 +24,7 @@ const EditAttributeConnector = (connector) => {
   const RichText = RichTextConnector(connector)
 
   const {
-    platform: { undo, redo, log },
+    platform: { undo, redo, log, openExternal },
   } = connector
 
   checkDependencies({ undo, redo, log })
@@ -35,6 +35,7 @@ const EditAttributeConnector = (connector) => {
     name,
     type,
     description,
+    link,
     inputId,
     value,
     index,
@@ -126,7 +127,21 @@ const EditAttributeConnector = (connector) => {
       if (editing) return null
       if (!description) return null
 
-      return <p className="template-attr__description-label">{description}</p>
+      let anchor = null
+      if (link) {
+        anchor = (
+          <a className="template-picker__link dark" title={link} onClick={() => openExternal(link)}>
+            <Glyphicon glyph="link" />
+          </a>
+        )
+      }
+
+      return (
+        <p className="template-attr__description-label">
+          {description}
+          {anchor}
+        </p>
+      )
     }
 
     const onShortDescriptionKeyPress = useMemo(
@@ -212,6 +227,7 @@ const EditAttributeConnector = (connector) => {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     description: PropTypes.string,
+    link: PropTypes.string,
     index: PropTypes.number.isRequired,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     valueSelector: PropTypes.func,

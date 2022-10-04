@@ -27,8 +27,8 @@
   }
   &:hover {
     .card__add-card {
-        color: $blue-5;
-      }
+      color: $blue-5;
+    }
   }
 
   &.vertical {
@@ -56,6 +56,14 @@
 
   cursor: pointer;
 
+  .card__cell__overview__drag-anchor {
+    width: 150px;
+    margin-left: 12.5px;
+    margin-right: 12.5px;
+    &.medium-timeline {
+      width: 80px;
+    }
+  }
   span:first-child {
     text-align: left;
   }
@@ -85,7 +93,6 @@
     .card__add-card {
       display: block;
       z-index: 10;
-
     }
     &:hover .card__add-card {
       .glyphicon {

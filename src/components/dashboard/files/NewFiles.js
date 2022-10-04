@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import { IoIosBrowsers, IoIosDocument } from 'react-icons/io'
 import { BiImport } from 'react-icons/bi'
@@ -12,24 +12,29 @@ import Dropdown from '../../Dropdown'
 import Grid from '../../Grid'
 import Col from '../../Col'
 import Row from '../../Row'
-import InputModal from '../../dialogs/InputModal'
 import { checkDependencies } from '../../checkDependencies'
 
 const NewFilesConnector = (connector) => {
   const {
     platform: {
-      file: { createNew, openExistingFile },
+      file: { openExistingFile },
       dialog,
       log,
       mpq,
       os,
     },
   } = connector
-  checkDependencies({ createNew, openExistingFile, dialog, log, mpq, os })
+  checkDependencies({ openExistingFile, dialog, log, mpq, os })
 
-  const NewFiles = ({ activeView, toggleView, doSnowflakeImport, doScrivenerImport, isOnWeb }) => {
-    const [namingFile, setNamingFile] = useState(false)
-
+  const NewFiles = ({
+    activeView,
+    toggleView,
+    doSnowflakeImport,
+    doScrivenerImport,
+    isOnWeb,
+    isInOfflineMode,
+    doCreateNewProject,
+  }) => {
     const wrapFunc = (type, func) => {
       return () => {
         mpq.push(`btn_${type}`)
@@ -42,53 +47,32 @@ const NewFilesConnector = (connector) => {
       }
     }
 
-    const createNewProj = wrapFunc('create_new', () => setNamingFile(true))
-    const fromExisting = wrapFunc('open_existing', openExistingFile)
+    const fromExisting = () => {
+      if (isInOfflineMode) return
+
+      wrapFunc('open_existing', openExistingFile)()
+    }
 
     useEffect(() => {
-      const newProj = document.addEventListener('new-project', createNewProj)
       const fromTempl = document.addEventListener('from-template', () => toggleView('templates'))
       const openEx = document.addEventListener('open-existing', fromExisting)
       return () => {
-        document.removeEventListener('new-project', newProj)
         document.removeEventListener('from-template', fromTempl)
         document.removeEventListener('open-existing', openEx)
       }
     }, [])
 
-    const handleNameInput = useCallback(
-      (value) => {
-        setNamingFile(false)
-        createNew(null, value)
-      },
-      [setNamingFile]
-    )
-    const cancelNameInput = useCallback(() => {
-      setNamingFile(false)
-    }, [setNamingFile])
-
-    const NameFile = () => {
-      if (!namingFile) return null
-
-      return (
-        <InputModal
-          title={t('Name Your Project:')}
-          getValue={handleNameInput}
-          cancel={cancelNameInput}
-          isOpen={true}
-          type="text"
-          customOkButtonText={t('Save')}
-        />
-      )
-    }
-
     return (
       <>
-        <NameFile />
         <Grid fluid className="dashboard__new-files">
           <Row>
             <Col xs={3}>
-              <div className="dashboard__new-files__item icon" onClick={createNewProj}>
+              <div
+                className={cx('dashboard__new-files__item icon', {
+                  disabled: isInOfflineMode,
+                })}
+                onClick={doCreateNewProject}
+              >
                 <IoIosDocument />
                 <div>{t('Create Blank Project')}</div>
               </div>
@@ -97,6 +81,7 @@ const NewFilesConnector = (connector) => {
               <div
                 className={cx('dashboard__new-files__item icon', {
                   active: activeView == 'templates',
+                  disabled: isInOfflineMode,
                 })}
                 onClick={() => toggleView('templates')}
               >
@@ -105,7 +90,12 @@ const NewFilesConnector = (connector) => {
               </div>
             </Col>
             <Col xs={3}>
-              <div className="dashboard__new-files__item icon" onClick={fromExisting}>
+              <div
+                className={cx('dashboard__new-files__item icon', {
+                  disabled: isInOfflineMode,
+                })}
+                onClick={fromExisting}
+              >
                 <VscCloudUpload />
                 <div>
                   {os() == 'unknown' ? t('Upload Existing Project') : t('Open Existing File')}
@@ -118,7 +108,9 @@ const NewFilesConnector = (connector) => {
                   id="new-files-dropdown"
                   className={cx('dashboard__new-files__item icon import-file', {
                     active: activeView == 'import',
+                    disabled: isInOfflineMode,
                   })}
+                  disabled={isInOfflineMode}
                 >
                   <Dropdown.Toggle noCaret>
                     <BiImport />
@@ -142,7 +134,9 @@ const NewFilesConnector = (connector) => {
     toggleView: PropTypes.func,
     doSnowflakeImport: PropTypes.func,
     doScrivenerImport: PropTypes.func,
+    doCreateNewProject: PropTypes.func,
     isOnWeb: PropTypes.bool,
+    isInOfflineMode: PropTypes.bool,
   }
 
   return NewFiles

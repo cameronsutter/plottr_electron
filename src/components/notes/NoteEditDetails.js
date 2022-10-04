@@ -40,6 +40,7 @@ const NoteEditDetailsConnector = (connector) => {
     darkMode,
     customAttributes,
     selection,
+    notesSearchTerm,
   }) => {
     const [deleting, setDeleting] = useState(false)
 
@@ -165,7 +166,7 @@ const NoteEditDetailsConnector = (connector) => {
                 <FormControl
                   type="text"
                   onChange={withEventTargetValue(changeTitle)}
-                  autoFocus
+                  autoFocus={notesSearchTerm ? false : true}
                   onKeyDown={handleEsc}
                   onKeyPress={handleEnter}
                   defaultValue={note.title}
@@ -225,6 +226,7 @@ const NoteEditDetailsConnector = (connector) => {
     finishEditing: PropTypes.func.isRequired,
     editorPath: PropTypes.string.isRequired,
     selection: PropTypes.object.isRequired,
+    notesSearchTerm: PropTypes.string,
   }
 
   const {
@@ -245,6 +247,7 @@ const NoteEditDetailsConnector = (connector) => {
           editorPath,
           selection: selectors.selectionSelector(state.present, editorPath),
           darkMode: selectors.isDarkModeSelector(state.present),
+          notesSearchTerm: selectors.notesSearchTermSelector(state.present),
         }
       },
       (dispatch) => {

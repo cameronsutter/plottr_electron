@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import cx from 'classnames'
 
@@ -50,59 +50,44 @@ const UpdateNotifierConnector = (connector) => {
     isDevelopment,
   })
 
-  const UpdateNotifier = ({ darkMode, settings, inDashboard }) => {
-    const [shouldCheck, setShouldCheck] = useState(true)
-    const [_, setChecking] = useState(false)
-    const [available, setAvailable] = useState(false)
-    const [finishedChecking, setFinishedChecking] = useState(false)
-    const [downloadInProgress, setDownloadInProgress] = useState(false)
-    const [percentDownloaded, setPercentDownloaded] = useState(0)
-    const [finishedDownloading, setFinishedDownloading] = useState(false)
-    const [error, setError] = useState(null)
-    const [info, setInfo] = useState(null)
-    const [hidden, setHidden] = useState(false)
-
+  const UpdateNotifier = ({
+    darkMode,
+    settings,
+    inDashboard,
+    shouldCheck,
+    available,
+    downloadInProgress,
+    percentDownloaded,
+    finishedDownloading,
+    error,
+    info,
+    hidden,
+    checking,
+    requestCheckForUpdates,
+    autoCheckForUpdates,
+    processResponseToRequestUpdate,
+    dismissUpdateNotifier,
+    setUpdateDownloadProgress,
+  }) => {
     useEffect(() => {
       onUpdateError((event, error) => {
         log.warn(error)
-        setError(error)
-        setHidden(false)
-        setChecking(false)
-        setFinishedChecking(true)
-        setAvailable(false)
-        setTimeout(() => setFinishedChecking(false), 10000)
+        processResponseToRequestUpdate(false, error, null)
       })
       onUpdaterUpdateAvailable((event, info) => {
-        setHidden(false)
-        setChecking(false)
-        setAvailable(true)
-        setError(null)
-        setInfo(info)
+        processResponseToRequestUpdate(true, null, info)
       })
       onUpdaterUpdateNotAvailable(() => {
-        setHidden(false)
-        setChecking(false)
-        setFinishedChecking(true)
-        setAvailable(false)
-        setError(null)
-        setTimeout(() => setFinishedChecking(false), 5000)
+        processResponseToRequestUpdate(false, null, null)
       })
       onUpdaterDownloadProgress((event, progress) => {
-        setHidden(false)
-        setDownloadInProgress(true)
-
+        setUpdateDownloadProgress(percentDownloaded + 1)
         if (settings.diagnoseUpdate) {
           log.info('download-progress', progress)
         }
-        const percent = progress.percent || percentDownloaded + 1
-
-        setPercentDownloaded(Math.floor(percent))
       })
       onUpdatorUpdateDownloaded((event, info) => {
-        setHidden(false)
-        setDownloadInProgress(false)
-        setFinishedDownloading(true)
-        setPercentDownloaded(100)
+        setUpdateDownloadProgress(100)
       })
       return () => {
         deregisterUpdateListeners()
@@ -110,21 +95,23 @@ const UpdateNotifierConnector = (connector) => {
     }, [])
 
     useEffect(() => {
-      if (isDevelopment) return
-      if (shouldCheck && settings.canGetUpdates) {
-        _checkForUpdates()
+      if (isDevelopment) {
+        return () => {}
       }
+
+      if (settings.canGetUpdates) {
+        const interval = setInterval(_checkForUpdates, updateCheckThreshold)
+        return () => {
+          clearInterval(interval)
+        }
+      }
+
+      return () => {}
     }, [shouldCheck])
 
     const _checkForUpdates = () => {
       checkForUpdates()
-      setError(null)
-      setChecking(true)
-      setTimeout(() => setChecking(false), 5000) //failsafe in case of no response
-      setHidden(false)
-      // reset to check every interval
-      setShouldCheck(false)
-      setTimeout(() => setShouldCheck(true), updateCheckThreshold)
+      autoCheckForUpdates()
     }
 
     const manualDownload = () => {
@@ -135,19 +122,18 @@ const UpdateNotifierConnector = (connector) => {
 
     const startDownload = () => {
       downloadUpdate()
-      setDownloadInProgress(true)
+      setUpdateDownloadProgress(1)
     }
 
     const hide = () => {
-      setHidden(true)
-      setError(null)
+      dismissUpdateNotifier()
     }
 
     const renderStatus = () => {
       const version = info && info.version ? info.version : ''
       let text = ''
-      // if (checking) text = t('Checking for updates')
-      if (inDashboard && finishedChecking && !available) text = t("You're on the latest version")
+      if (checking) text = t('Checking for updates')
+      if (inDashboard && !checking && !available) text = t("You're on the latest version")
       if (available) text = t('Update Available 🎉 (version {version})', { version })
       if (downloadInProgress) text = t('Downloading version {version}', { version: version })
       if (finishedDownloading) text = t('Download Complete 🎉 (version {version})', { version })
@@ -202,7 +188,7 @@ const UpdateNotifierConnector = (connector) => {
     if (!text) return null
     if (hidden) return null
 
-    const floating = inDashboard ? finishedChecking && !available : true
+    const floating = !inDashboard
 
     return (
       <div
@@ -225,24 +211,56 @@ const UpdateNotifierConnector = (connector) => {
   }
 
   UpdateNotifier.propTypes = {
+    shouldCheck: PropTypes.bool,
+    available: PropTypes.bool,
+    downloadInProgress: PropTypes.bool,
+    percentDownloaded: PropTypes.number,
+    finishedDownloading: PropTypes.bool,
+    error: PropTypes.string,
+    info: PropTypes.string,
+    hidden: PropTypes.bool,
+    checking: PropTypes.bool,
     darkMode: PropTypes.bool,
     settings: PropTypes.object.isRequired,
     inDashboard: PropTypes.bool,
+    requestCheckForUpdates: PropTypes.func.isRequired,
+    autoCheckForUpdates: PropTypes.func.isRequired,
+    processResponseToRequestUpdate: PropTypes.func.isRequired,
+    dismissUpdateNotifier: PropTypes.func.isRequired,
+    setUpdateDownloadProgress: PropTypes.func.isRequired,
   }
 
   const {
     redux,
-    pltr: { selectors },
+    pltr: { selectors, actions },
   } = connector
   checkDependencies({ redux, selectors })
 
   if (redux) {
     const { connect } = redux
 
-    return connect((state) => ({
-      darkMode: selectors.isDarkModeSelector(state.present),
-      settings: selectors.appSettingsSelector(state.present),
-    }))(UpdateNotifier)
+    return connect(
+      (state) => ({
+        shouldCheck: selectors.shouldCheckForUpdatesSelector(state.present),
+        available: selectors.updateAvailableSelector(state.present),
+        downloadInProgress: selectors.downloadInProgressSelector(state.present),
+        percentDownloaded: selectors.percentDownloadedSelector(state.present),
+        finishedDownloading: selectors.finishedDownloadingSelector(state.present),
+        error: selectors.updateErrorSelector(state.present),
+        info: selectors.updateInfoSelector(state.present),
+        hidden: selectors.updateNotificationHiddenSelector(state.present),
+        checking: selectors.checkingForUpdatesSelector(state.present),
+        darkMode: selectors.isDarkModeSelector(state.present),
+        settings: selectors.appSettingsSelector(state.present),
+      }),
+      {
+        requestCheckForUpdates: actions.applicationState.requestCheckForUpdates,
+        autoCheckForUpdates: actions.applicationState.autoCheckForUpdates,
+        processResponseToRequestUpdate: actions.applicationState.processResponseToRequestUpdate,
+        dismissUpdateNotifier: actions.applicationState.dismissUpdateNotifier,
+        setUpdateDownloadProgress: actions.applicationState.setUpdateDownloadProgress,
+      }
+    )(UpdateNotifier)
   }
 
   throw new Error('Could not connect UpdateNotifier')

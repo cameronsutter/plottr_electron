@@ -289,6 +289,7 @@ const CardDialogConnector = (connector) => {
           isOpen={showTemplatePicker}
           close={closeTemplatePicker}
           onChooseTemplate={handleChooseTemplate}
+          templatesAlreadySelected={cardMetaData.templates}
         />
       )
     }
@@ -342,6 +343,7 @@ const CardDialogConnector = (connector) => {
                 name={attr.name}
                 type={attr.type}
                 description={attr.description}
+                link={attr.link}
               />
             </React.Fragment>
           )
@@ -404,12 +406,22 @@ const CardDialogConnector = (connector) => {
         const destinationLine = destinationLineId(id)
         const destinationBeat = destinationBeatId(id)
         const noDestination = !destinationLine || !destinationBeat
+        const bookTitle = books[id]?.title || t('Untitled')
 
         return (
-          <MenuItem key={id} onSelect={() => onSelect(id)} disabled={noDestination}>
+          <MenuItem
+            title={
+              noDestination
+                ? t("Can't move card to empty book")
+                : t('Move card to { bookTitle }', { bookTitle })
+            }
+            key={id}
+            onSelect={() => onSelect(id)}
+            disabled={noDestination}
+          >
             <div className="card-dialog__book-selector">
               {noDestination && <IoIosWarning />}
-              {id === 'series' ? t('Series') : books[id].title || t('Untitled')}
+              {id === 'series' ? t('Series') : bookTitle}
             </div>
           </MenuItem>
         )
@@ -559,7 +571,7 @@ const CardDialogConnector = (connector) => {
                 style={{ margin: '2px', marginRight: '12px' }}
                 buttonStyle={{
                   border: `1px solid ${borderColor}`,
-                  backgroundColor: cardMetaData.color && borderColor,
+                  backgroundColor: cardMetaData.color,
                 }}
               />
             </Floater>

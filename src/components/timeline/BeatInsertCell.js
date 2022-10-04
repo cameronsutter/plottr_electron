@@ -186,7 +186,7 @@ const BeatInsertCellConnector = (connector) => {
     } else if (orientation === 'vertical') {
       insideDiv = (
         <div
-          className="vertical-beat-list__insert"
+          className={cx('vertical-beat-list__insert', { 'medium-timeline': isMedium })}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >

@@ -299,10 +299,12 @@ const CardCellConnector = (connector) => {
                 styles={{ wrapper: { cursor: 'pointer' } }}
                 open={this.state.cardStackOpen}
                 onClose={this.closeCardStack}
-                zIndex={900}
-                rootClose
+                zIndex={1000}
               >
                 <div
+                  className={cx('card__cell__overview__drag-anchor', {
+                    'medium-timeline': isMedium,
+                  })}
                   onClick={this.toggleCardStack}
                   onDragStart={this.handleDragStart}
                   onDragEnd={this.handleDragEnd}

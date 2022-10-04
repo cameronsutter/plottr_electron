@@ -54,9 +54,7 @@
       "timelineTemplates": [],
       "imageId": null
     },
-    "allIds": [
-      1
-    ]
+    "allIds": [1]
   },
   "beats": {
     "1": {
@@ -1042,14 +1040,10 @@
       "cards": ["43AA33B0-6767-4CAA-A998-71DBEFB9DA2A"],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1
-      ],
+      "tags": [1],
       "categoryId": 3,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Ally",
       "Gender": "Female",
       "Primary Characteristic": "Caring",
@@ -1073,14 +1067,10 @@
       "cards": [],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2
-      ],
+      "tags": [2],
       "categoryId": 2,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Type of House": "Straw",
       "Gender": "Male",
       "Primary Characteristic": "Lazy",
@@ -1107,9 +1097,7 @@
       "tags": [],
       "categoryId": 2,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Type of House": "Sticks",
       "Gender": "Male",
       "Primary Characteristic": "Lazy",
@@ -1133,15 +1121,10 @@
       "cards": [],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        3,
-        4
-      ],
+      "tags": [3, 4],
       "categoryId": 1,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Type of House": "Bricks",
       "Role": "Protagonist",
       "Gender": "Male",
@@ -1166,14 +1149,10 @@
       "cards": [],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        5
-      ],
+      "tags": [5],
       "categoryId": 1,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Antagonist",
       "Gender": "Male",
       "Primary Characteristic": "Hungry",
@@ -1358,9 +1337,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 2,
@@ -1397,9 +1374,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 3,
@@ -1452,9 +1427,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 4,
@@ -1491,9 +1464,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 5,
@@ -1530,9 +1501,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 6,
@@ -1569,9 +1538,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 7,
@@ -1608,9 +1575,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 8,
@@ -1663,9 +1628,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 9,
@@ -1702,9 +1665,7 @@
       "lastEdited": null,
       "templates": [],
       "imageId": null,
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     }
   ],
   "places": [
@@ -1726,13 +1687,9 @@
       "cards": ["68C18B39-9109-4F66-A884-DEBC688730DC"],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1
-      ],
+      "tags": [1],
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Owner": "Mother Pig",
       "Symbolizes": "Safety"
     },
@@ -1754,13 +1711,9 @@
       "cards": [],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2
-      ],
+      "tags": [2],
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Owner": "Pig #2",
       "Blown Away": "Yes",
       "Blows Away": "Yes",
@@ -1784,13 +1737,9 @@
       "cards": [],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2
-      ],
+      "tags": [2],
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Owner": "Pig #1",
       "Blown Away": "Yes",
       "Blows Away": "Yes",

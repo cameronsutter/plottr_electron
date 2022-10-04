@@ -3,36 +3,39 @@ import axios from 'axios'
 import { DateTime } from 'luxon'
 import { isEqual } from 'lodash'
 
-import { actions, selectors, ARRAY_KEYS, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
+import { removeSystemKeys, actions, selectors, ARRAY_KEYS, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 const doNothingWithPartialResult = () => {}
 
-const sequencePromiseThunks = (log, batchSize = 10) => (thunks, onPartialResult = doNothingWithPartialResult) => {
-  return new Promise((resolve, reject) => {
-    const iter = (results, remainingThunks) => {
-      if (remainingThunks.length === 0) {
-        resolve(results)
-        return
+const sequencePromiseThunks =
+  (log, batchSize = 10) =>
+  (thunks, onPartialResult = doNothingWithPartialResult) => {
+    return new Promise((resolve, reject) => {
+      const iter = (results, remainingThunks) => {
+        if (remainingThunks.length === 0) {
+          resolve(results)
+          return
+        }
+
+        const nextThunks = remainingThunks.slice(0, 10)
+        Promise.all(
+          nextThunks.map((f) => {
+            return f()
+          })
+        )
+          .then((newResults) => {
+            const currentResults = [...newResults, ...results]
+            onPartialResult(currentResults)
+            iter(currentResults, remainingThunks.slice(1))
+          })
+          .catch((error) => {
+            log.error('Failed to execute a sequenced promise', error.message, error)
+          })
       }
 
-      const nextThunks = remainingThunks.slice(0, 10)
-      Promise.all(
-        nextThunks.map((f) => {
-          return f()
-        }))
-        .then((newResults) => {
-          const currentResults = [...newResults, ...results]
-          onPartialResult(currentResults)
-          iter(currentResults, remainingThunks.slice(1))
-        })
-        .catch((error) => {
-          log.error('Failed to execute a sequenced promise', error.message, error)
-        })
-    }
-
-    iter([], thunks)
-  })
-}
+      iter([], thunks)
+    })
+  }
 
 /**
  * auth, database and storage should be thunks that produce instances
@@ -71,12 +74,33 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
       })
   }
 
-  const editFileName = (userId, fileId, newName) => {
+  const updateAuthFileName = (fileId, newName) => {
+    return axios
+      .post(`${BASE_API_URL}/api/update-auth-name`, {
+        fileId,
+        newName,
+      })
+      .then((response) => ({
+        fileId,
+      }))
+      .catch((error) => {
+        const status = error && error.response && error.response.status
+        log.error(
+          'Error pinging auth (to signal that the file list was updated)',
+          status,
+          error.response
+        )
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
+      })
+  }
+
+  const editFileName = (fileId, newName) => {
     const { doc, updateDoc } = database()
     return updateDoc(doc(`file/${fileId}`), {
       fileName: newName,
     }).then(() => {
-      return pingAuth(userId, fileId)
+      return updateAuthFileName(fileId, newName)
     })
   }
 
@@ -317,27 +341,28 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const initialFetch = (userId, fileId, clientId) => {
-    return fetchFile(userId, fileId, clientId).then((file) => {
-      return Promise.all([
-        fetchChapters(userId, fileId, clientId),
-        fetchBeats(userId, fileId, clientId, file.file.version),
-        fetchCards(userId, fileId, clientId),
-        fetchSeries(userId, fileId, clientId),
-        fetchBooks(userId, fileId, clientId),
-        fetchCategories(userId, fileId, clientId),
-        fetchCharacters(userId, fileId, clientId),
-        fetchCustomAttributes(userId, fileId, clientId),
-        fetchEditors(userId, fileId, clientId),
-        fetchLines(userId, fileId, clientId),
-        fetchNotes(userId, fileId, clientId),
-        fetchPlaces(userId, fileId, clientId),
-        fetchTags(userId, fileId, clientId),
-        fetchhierarchyLevels(userId, fileId, clientId),
-        fetchImages(userId, fileId, clientId),
-      ]).then((results) => {
-        return [file, ...results]
+    return fetchFile(userId, fileId, clientId)
+      .then((file) => {
+        return Promise.all([
+          fetchChapters(userId, fileId, clientId),
+          fetchBeats(userId, fileId, clientId, file.file.version),
+          fetchCards(userId, fileId, clientId),
+          fetchSeries(userId, fileId, clientId),
+          fetchBooks(userId, fileId, clientId),
+          fetchCategories(userId, fileId, clientId),
+          fetchCharacters(userId, fileId, clientId),
+          fetchCustomAttributes(userId, fileId, clientId),
+          fetchEditors(userId, fileId, clientId),
+          fetchLines(userId, fileId, clientId),
+          fetchNotes(userId, fileId, clientId),
+          fetchPlaces(userId, fileId, clientId),
+          fetchTags(userId, fileId, clientId),
+          fetchhierarchyLevels(userId, fileId, clientId),
+          fetchImages(userId, fileId, clientId),
+        ]).then((results) => {
+          return [file, ...results]
+        })
       })
-    })
       .then((results) => {
         const newOpenDate = new Date()
         return patch('file', fileId, { lastOpened: newOpenDate }, clientId)
@@ -370,10 +395,9 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const deleteFile = (fileId, userId, clientId) => {
-    const { doc, updateDoc } = database()
     const setDeletedAuthorisation = () => {
-      return updateDoc(doc(`authorisation/${userId}/granted/${fileId}`), {
-        deleted: true
+      return axios.post(`${BASE_API_URL}/api/delete-auth`, {
+        fileId,
       })
     }
     const setDeleted = (path) => patch(path, fileId, { deleted: true }, clientId)
@@ -416,7 +440,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const listenToFiles = (userId, callback, errorHandler = defaultErrorHandler) => {
-    const { getDoc, doc, collection, onSnapshot } = database()
+    const { collection, onSnapshot } = database()
     return onSnapshot(collection(`authorisation/${userId}/granted`), {
       next: (authorisationsRef) => {
         const authorisedDocuments = []
@@ -441,22 +465,22 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const fetchFiles = (userId) => {
-    const { collection, getDocs, getDoc, doc } = database()
+    const { collection, getDocs } = database()
 
     return getDocs(collection(`authorisation/${userId}/granted`)).then((authorisationsRef) => {
       const authorisedDocuments = []
-        authorisationsRef.forEach((authorisation) => {
-          const data = authorisation.data()
-          if (data.deleted) return
+      authorisationsRef.forEach((authorisation) => {
+        const data = authorisation.data()
+        if (data.deleted) return
 
-          authorisedDocuments.push({
-            id: authorisation.id,
-            ...data,
-            fileURL: `plottr://${authorisation.id}`,
-            isCloudFile: true,
-          })
+        authorisedDocuments.push({
+          id: authorisation.id,
+          ...data,
+          fileURL: `plottr://${authorisation.id}`,
+          isCloudFile: true,
         })
-        return authorisedDocuments
+      })
+      return authorisedDocuments
     })
   }
 
@@ -476,6 +500,16 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
+        })
+      })
+      .then((response) => {
+        if (response.ok) {
+          return response
+        }
+        return response.text().then((body) => {
+          return Promise.reject(
+            new Error(`HTTP failure while minting a cookie: ${response.status}.  Body: ${body}`)
+          )
         })
       })
   }
@@ -684,11 +718,12 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
 
   const TEN_SECONDS_IN_MILISECONDS = 10000
 
-  const saveBackup = (userId, file) => {
+  const saveBackup = (userId, fullFile) => {
     const startOfToday = DateTime.now().startOf('day').toJSDate()
     const lastModified = new Date()
-    const fileId = selectors.fileIdSelector(file)
-    const fileName = selectors.fileNameSelector(file)
+    const fileId = selectors.fileIdSelector(fullFile)
+    const fileName = selectors.fileNameSelector(fullFile)
+    const file = removeSystemKeys(fullFile)
 
     return startOfSessionBackup(userId, file, startOfToday, fileId)
       .then((startOfSession) => {
@@ -771,19 +806,26 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     }.pltr`
   }
 
-  const withoutStorageProtocal = (path) => {
-    const split = path.split(/[a-zA-Z0-9]+:\/\//g)
-    if (split.length > 1) return split[1]
-    return split
+  const saveFileToStorage = (userId, storageURL, fileText) => {
+    return axios
+      .post(`${BASE_API_URL}/api/save-file-to-storage`, {
+        userId,
+        fileText,
+        storageURL,
+      })
+      .then((response) => {
+        return response.data.storageURL
+      })
+      .catch((error) => {
+        log.error(`Failed to upload file for user ${userId} to ${storageURL}`, error)
+        return Promise.reject(error)
+      })
   }
 
   const backupToStorage = (userId, file, date, startOfSession) => {
     const fileId = selectors.fileIdSelector(file)
-    const filePath = toBackupPath(userId, fileId, date, startOfSession)
-    const { ref, uploadString } = storage()
-    return uploadString(ref(withoutStorageProtocal(filePath)), JSON.stringify(file)).then(() => {
-      return filePath
-    })
+    const storageURL = toBackupPath(userId, fileId, date, startOfSession)
+    return saveFileToStorage(userId, storageURL, JSON.stringify(file))
   }
 
   const toTemplatePath = (userId, templateId) => {
@@ -791,28 +833,37 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const saveCustomTemplate = (userId, template) => {
-    const filePath = toTemplatePath(userId, template.id)
-    const { ref, uploadString } = storage()
-    return uploadString(ref(withoutStorageProtocal(filePath)), JSON.stringify(template)).then(
-      () => {
-        // Bumping the timestamp will guarantee that listeners fetch
-        // the latest versions.
-        const { doc, setDoc } = database()
-        return setDoc(doc(`templates/${userId}/userTemplates/${template.id}`), {
-          id: template.id,
-          path: filePath,
-          timeStamp: new Date(),
-        })
-      }
-    )
+    const storageURL = toTemplatePath(userId, template.id)
+    return saveFileToStorage(userId, storageURL, JSON.stringify(template)).then(() => {
+      // Bumping the timestamp will guarantee that listeners fetch
+      // the latest versions.
+      const { doc, setDoc } = database()
+      return setDoc(doc(`templates/${userId}/userTemplates/${template.id}`), {
+        id: template.id,
+        path: storageURL,
+        timeStamp: new Date(),
+      })
+    })
+  }
+
+  const templatePublicURL = (storageURL) => {
+    return axios
+      .get(`${BASE_API_URL}/api/template-public-url?url=${storageURL}`)
+      .then((response) => {
+        return response.data.publicURL
+      })
+      .catch((error) => {
+        const status = error && error.response && error.response.status
+        log.error('Error getting template public url', status, error && error.response, error)
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
+      })
   }
 
   const allTemplateUrlsForUser = (documents) => {
-    const { ref, getDownloadURL } = storage()
-    const doNothingWithPartialResult = () => {}
     return sequence(
       documents.map(({ path }) => {
-        return () => getDownloadURL(ref(withoutStorageProtocal(path)))
+        return () => templatePublicURL(path)
       })
     )
   }
@@ -827,7 +878,23 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
         })
         allTemplateUrlsForUser(documents)
           .then((urls) =>
-            Promise.all(urls.map((url) => fetch(url).then((response) => response.json())))
+            Promise.all(
+              urls.map((url) =>
+                fetch(url).then((response) => {
+                  if (response.ok) {
+                    return response.json()
+                  }
+
+                  return response.text().then((body) => {
+                    return Promise.reject(
+                      new Error(
+                        `HTTP request for custom template failed: ${response.status}.  Body: ${body}`
+                      )
+                    )
+                  })
+                })
+              )
+            )
           )
           .then(callback)
           .catch(errorHandler)
@@ -839,11 +906,22 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const editCustomTemplate = saveCustomTemplate
 
   const deleteCustomTemplate = (userId, templateId) => {
-    const { deleteObject, ref } = storage()
-    return deleteObject(ref(`userTemplates/${userId}/${templateId}`)).then((result) => {
-      const { doc, deleteDoc } = database()
-      return deleteDoc(doc(`templates/${userId}/userTemplates/${templateId}`))
-    })
+    const storageURL = `userTemplates/${userId}/${templateId}`
+    return axios
+      .post(`${BASE_API_URL}/api/delete-custom-template?url=${storageURL}`)
+      .then((response) => {
+        return response.data.publicURL
+      })
+      .catch((error) => {
+        const status = error && error.response && error.response.status
+        log.error('Error getting template public url', status, error && error.response, error)
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
+      })
+      .then((result) => {
+        const { doc, deleteDoc } = database()
+        return deleteDoc(doc(`templates/${userId}/userTemplates/${templateId}`))
+      })
   }
 
   const escapeImageName = (imageName) => {
@@ -854,47 +932,59 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     return `storage://images/${userId}/${escapeImageName(imageName)}`
   }
 
-  const imagetoBlob = (imageUrl) => {
-    return fetch(imageUrl).then((response) => response.blob())
-  }
-
-  const saveImageToStorageBlob = (userId, imageName, imageBlob) => {
+  const saveImageToStorageBlob = (userId, imageName, imageUrl) => {
     const filePath = toImagePath(userId, imageName)
-    const { uploadBytes, ref } = storage()
-    return uploadBytes(ref(withoutStorageProtocal(filePath)), imageBlob).then(() => {
-      return filePath
-    })
+    return axios
+      .post(`${BASE_API_URL}/api/upload-image`, {
+        userId,
+        imageUrl,
+        storageURL: filePath,
+      })
+      .then((response) => {
+        return response.data.storageURL
+      })
+      .catch((error) => {
+        log.error(`Failed to upload image for user ${userId} to ${filePath}`, error)
+        return Promise.reject(error)
+      })
   }
 
   const saveImageToStorageFromURL = (userId, imageName, imageUrl) => {
-    return imagetoBlob(imageUrl).then((response) => {
-      return saveImageToStorageBlob(userId, imageName, response)
-    })
+    return saveImageToStorageBlob(userId, imageName, imageUrl)
   }
 
   const backupPublicURL = (storageProtocolURL) => {
-    const { ref, getDownloadURL } = storage()
-    return getDownloadURL(ref(withoutStorageProtocal(storageProtocolURL)))
+    return axios
+      .get(`${BASE_API_URL}/api/backup-public-url?url=${storageProtocolURL}`)
+      .then((response) => {
+        return response.data.publicURL
+      })
+      .catch((error) => {
+        const status = error && error.response && error.response.status
+        log.error('Error getting file public url', status, error && error.response, error)
+        if (status === 401) return mintCookieToken(currentUser())
+        return Promise.reject(error)
+      })
   }
 
-  const imagePublicURL = (storageProtocolURL, fileId, userId) => {
-    if (development) {
-      const { ref, getDownloadURL } = storage()
-      return getDownloadURL(ref(withoutStorageProtocal(storageProtocolURL)))
-    }
+  const filePublicURL = (storageProtocolURL, fileId, userId) => {
     return axios
       .get(
-        `${BASE_API_URL}/api/image-public-url?url=${storageProtocolURL}&fileId=${fileId}&userId=${userId}`
+        `${BASE_API_URL}/api/file-public-url?url=${storageProtocolURL}&fileId=${fileId}&userId=${userId}`
       )
       .then((response) => {
         return response.data.publicURL
       })
       .catch((error) => {
         const status = error && error.response && error.response.status
-        log.error('Error getting image public url', status, error && error.response, error)
+        log.error('Error getting file public url', status, error && error.response, error)
         if (status === 401) return mintCookieToken(currentUser())
         return Promise.reject(error)
       })
+  }
+
+  const imagePublicURL = (storageProtocolURL, fileId, userId) => {
+    return filePublicURL(storageProtocolURL, fileId, userId)
   }
 
   const isStorageURL = (string) => {
@@ -907,6 +997,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
 
   return {
     editFileName,
+    updateAuthFileName,
     listenToFile,
     listenToBeats,
     listenToCards,

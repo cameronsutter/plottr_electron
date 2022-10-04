@@ -11,7 +11,6 @@ import {
 } from 'firebase/auth'
 import {
   initializeFirestore,
-  connectFirestoreEmulator,
   query,
   collection,
   where,
@@ -23,6 +22,7 @@ import {
   setDoc,
   runTransaction,
   addDoc,
+  deleteDoc,
 } from 'firebase/firestore'
 import {
   getStorage,
@@ -79,7 +79,6 @@ const database = () => {
           host: 'plottr.local:8081',
           ssl: true,
         })
-        connectFirestoreEmulator(_database, 'plottr.local', 8081)
       } catch (error) {
         console.error(
           'Error initialising dev emulator (you can usually safely ignore this):',
@@ -109,6 +108,7 @@ const database = () => {
       return runTransaction(_database, transaction)
     },
     addDoc,
+    deleteDoc,
   }
 }
 
@@ -154,7 +154,8 @@ const storage = () => {
       )
       _storage = getStorage(firebaseApp)
       connectStorageEmulator(_storage, 'localhost', 9200)
-      _storage._delegate.host = 'https://plottr.local:9200'
+      // This doesn't work on the new version :/
+      _storage._protocol = 'https'
     } else {
       _storage = getStorage(firebaseApp)
     }
@@ -194,7 +195,9 @@ export const startUI = (queryString) => {
 }
 
 const isElectron =
-  ((navigator && navigator.userAgent && navigator.userAgent.toLowerCase()) || '').indexOf(' electron/') > -1
+  ((navigator && navigator.userAgent && navigator.userAgent.toLowerCase()) || '').indexOf(
+    ' electron/'
+  ) > -1
 
 export const wireUpAPI = (logger) => {
   const wiredUp = api(
@@ -211,6 +214,7 @@ export const wireUpAPI = (logger) => {
 
   return {
     editFileName: wiredUp.editFileName,
+    updateAuthFileName: wiredUp.updateAuthFileName,
     listenToFile: wiredUp.listenToFile,
     listenToBeats: wiredUp.listenToBeats,
     listenToCards: wiredUp.listenToCards,

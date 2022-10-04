@@ -1,4 +1,3 @@
-const fs = require('fs')
 const admin = require('firebase-admin')
 const readline = require('node:readline')
 const { stdin, stdout } = require('node:process')
@@ -63,7 +62,7 @@ const allFiles = (userId) => {
               return document.data()
             }
             return {
-              exists: false
+              exists: false,
             }
           })
       })
@@ -86,12 +85,12 @@ const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
               const payload = {
                 lastOpened: correspondingFile.lastOpened || correspondingFile.timeStamp || null,
                 fileURL: `plottr://${correspondingFile.id}`,
-                fileName: correspondingFile.fileName || 'Untitled'
+                fileName: correspondingFile.fileName || 'Untitled',
               }
-              console.log(`Adding ${JSON.stringify(payload)} to authorisation/${userId}/granted/${fileId}`)
-              return database
-                .doc(`authorisation/${userId}/granted/${fileId}`)
-                .update(payload)
+              console.log(
+                `Adding ${JSON.stringify(payload)} to authorisation/${userId}/granted/${fileId}`
+              )
+              return database.doc(`authorisation/${userId}/granted/${fileId}`).update(payload)
             } else {
               console.log(`No file found for: authorisation/${userId}/granted/${fileId}`)
             }

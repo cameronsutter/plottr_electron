@@ -31,6 +31,11 @@ service cloud.firestore {
       allow read, write, update: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'collaborator';
       allow read: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'viewer';
     }
+    match /attributes/{document} {
+      allow read, write, update, create: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'owner';
+      allow read, write, update: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'collaborator';
+      allow read: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'viewer';
+    }
     match /customAttributes/{document} {
       allow read, write, update, create: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'owner';
       allow read, write, update: if request.auth != null && get(/databases/$(database)/documents/authorisation/$(request.auth.uid)/granted/$(document)).data.permission == 'collaborator';

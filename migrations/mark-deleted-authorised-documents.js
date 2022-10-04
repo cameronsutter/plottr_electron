@@ -1,11 +1,12 @@
-const fs = require('fs')
 const admin = require('firebase-admin')
-const readline =  require('node:readline')
+const readline = require('node:readline')
 const { stdin, stdout } = require('node:process')
 
 if (!admin.apps.length) {
   if (!process.env.FIREBASE_ENV || process.env.FIREBASE_ENV === '') {
-    console.error('No FIREBASE_ENV set.  Please set one and try again.  Options: "development", "preview" or "production".')
+    console.error(
+      'No FIREBASE_ENV set.  Please set one and try again.  Options: "development", "preview" or "production".'
+    )
     process.exit(1)
   } else if (process.env.FIREBASE_ENV === 'development') {
     const projectId = 'plottr-ci'
@@ -49,9 +50,9 @@ const authorisedProjects = (userId) => {
 const deletedFiles = (userId) => {
   const database = admin.firestore()
 
-  return authorisedProjects(userId)
-    .then((projects) => {
-      return Promise.all(projects.map((id) => {
+  return authorisedProjects(userId).then((projects) => {
+    return Promise.all(
+      projects.map((id) => {
         return database
           .collection('file')
           .doc(id)
@@ -60,22 +61,22 @@ const deletedFiles = (userId) => {
             if (document.exists) {
               return {
                 document: document.data(),
-                exists: true
+                exists: true,
               }
             }
             return {
-              exists: false
+              exists: false,
             }
           })
-      }))
-        .then((results) => {
-          return results
-            .filter(({ exists, document }) => {
-              return exists && document.deleted
-            })
-            .map(({ document }) => document)
+      })
+    ).then((results) => {
+      return results
+        .filter(({ exists, document }) => {
+          return exists && document.deleted
         })
+        .map(({ document }) => document)
     })
+  })
 }
 
 const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
@@ -91,7 +92,8 @@ const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
             })
             if (fileIsDeleted) {
               console.log(`Marking: authorisation/${userId}/granted/${fileId}`)
-              return database.doc(`authorisation/${userId}/granted/${fileId}`)
+              return database
+                .doc(`authorisation/${userId}/granted/${fileId}`)
                 .update({ deleted: true })
             } else {
               console.log(`File isn't deleted: authorisation/${userId}/granted/${fileId}`)

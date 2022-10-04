@@ -9,14 +9,14 @@
   background-color: $popover-bg;
   background-clip: padding-box;
   border-radius: $border-radius-large;
-  @include box-shadow(0 5px 10px rgba(0,0,0,.2));
+  @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
 
   &.no-max-width {
     max-width: none;
   }
 }
 
-.darkmode .plottr-popover{
+.darkmode .plottr-popover {
   background-color: $darkmode-background;
 
   ul,
@@ -33,7 +33,6 @@
 .darkmode .react-tiny-popover-container {
   .btn-group__list-group-item .btn {
     background-color: $darkmode-darker-border;
-
   }
   .btn-group__list-group-item .btn:hover {
     background-color: $darkmode-background;

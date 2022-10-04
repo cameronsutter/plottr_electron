@@ -27,8 +27,8 @@
   }
   &:hover {
     .card__add-card {
-        color: $blue-5;
-      }
+      color: $blue-5;
+    }
   }
 
   &.vertical {
@@ -93,7 +93,6 @@
     .card__add-card {
       display: block;
       z-index: 10;
-
     }
     &:hover .card__add-card {
       .glyphicon {

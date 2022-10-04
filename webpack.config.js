@@ -99,6 +99,9 @@ const mainConfig = {
   node: {
     __dirname: false,
   },
+  externals: {
+    sharp: 'sharp',
+  },
 }
 
 const appCircularDependencyChecker = new CircularDependencyPlugin({
@@ -203,6 +206,9 @@ const rendererConfig = {
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
+  externals: {
+    sharp: 'sharp',
+  },
 }
 
 const loginPopupConfig = {
@@ -294,6 +300,9 @@ const loginPopupConfig = {
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
+  externals: {
+    sharp: 'sharp',
+  },
 }
 
 const socketServerConfig = {
@@ -335,6 +344,9 @@ const socketServerConfig = {
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
+  externals: {
+    sharp: 'sharp',
+  },
 }
 
 module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig]

@@ -107,9 +107,11 @@ const startupTasks = (userDataPath, stores, logInfo) => {
   })
 }
 
+const ONE_GIGABYTE = 1073741824
+
 const setupListeners = (port, userDataPath) => {
   process.send(`Starting server on port: ${port}`)
-  const webSocketServer = new WebSocketServer({ host: 'localhost', port })
+  const webSocketServer = new WebSocketServer({ host: 'localhost', port, maxPayload: ONE_GIGABYTE })
   const unsubscribeFunctions = new Map()
   const logInfo = (...args) => {
     process.send(`[Socket Server]: Basic Log Info ${args.join(', ')}`)
@@ -236,7 +238,7 @@ const setupListeners = (port, userDataPath) => {
                 type: messageType,
                 messageId,
                 result: args,
-                payload,
+                payload: 'truncated',
               })
             )
           } catch (error) {
@@ -253,7 +255,7 @@ const setupListeners = (port, userDataPath) => {
             JSON.stringify({
               type: typeToErrorReplyType(type),
               messageId,
-              payload,
+              payload: 'truncated',
               result: errorMessage,
             })
           )
@@ -267,7 +269,7 @@ const setupListeners = (port, userDataPath) => {
               JSON.stringify({
                 type,
                 messageId,
-                payload,
+                payload: 'truncated',
                 result: handlePayload(),
               })
             )
@@ -291,7 +293,7 @@ const setupListeners = (port, userDataPath) => {
                 JSON.stringify({
                   type,
                   messageId,
-                  payload,
+                  payload: 'truncated',
                   result,
                 })
               )
@@ -324,7 +326,7 @@ const setupListeners = (port, userDataPath) => {
                   type,
                   messageId,
                   result,
-                  payload,
+                  payload: 'truncated',
                 })
               )
             }

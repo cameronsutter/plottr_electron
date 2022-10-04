@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash'
+import { cloneDeep, uniq } from 'lodash'
 import {
   ADD_CHARACTER,
   ADD_CHARACTER_WITH_TEMPLATE,
@@ -51,6 +51,64 @@ const firstParagraphText = (children) => {
   }
 
   return firstParagraphText(firstElement.children)
+}
+
+const attachBaseAttribute = (attributeName, value, action, state) => {
+  return state.map((character) => {
+    if (character.id === action.id) {
+      const attributeId = action.attributeId
+      const newAttributes = character.attributes || []
+      const hasAttribute = newAttributes.some((attribute) => {
+        return attribute.id === attributeId
+      })
+      const attributes = attributeId
+        ? hasAttribute
+          ? newAttributes.map((attribute) => {
+              if (attribute.id === attributeId) {
+                return {
+                  ...attribute,
+                  value: uniq([...attribute.value, value]),
+                }
+              }
+              return attribute
+            })
+          : [...newAttributes, { id: attributeId, value: [value] }]
+        : newAttributes
+
+      return {
+        ...character,
+        [attributeName]: uniq([...character[attributeName], value]),
+        attributes,
+      }
+    }
+    return character
+  })
+}
+
+const removeBaseAttribute = (attributeName, value, action, state) => {
+  return state.map((character) => {
+    return character.id === action.id
+      ? {
+          ...character,
+          [attributeName]: character[attributeName].filter((thisValue) => {
+            return thisValue !== value
+          }),
+          attributes: action.attributeId
+            ? character.attributes.map((attribute) => {
+                if (attribute.id === action.attributeId) {
+                  return {
+                    ...attribute,
+                    value: attribute.value.filter((id) => {
+                      return id !== value
+                    }),
+                  }
+                }
+                return attribute
+              })
+            : character.attributes,
+        }
+      : character
+  })
 }
 
 const characters =
@@ -214,23 +272,13 @@ const characters =
             : character
         })
 
-      case ATTACH_TAG_TO_CHARACTER:
-        return state.map((character) => {
-          let tags = cloneDeep(character.tags)
-          tags.push(action.tagId)
-          return character.id === action.id
-            ? Object.assign({}, character, { tags: tags })
-            : character
-        })
+      case ATTACH_TAG_TO_CHARACTER: {
+        return attachBaseAttribute('tags', action.id, action, state)
+      }
 
-      case REMOVE_TAG_FROM_CHARACTER:
-        return state.map((character) => {
-          let tags = cloneDeep(character.tags)
-          tags.splice(tags.indexOf(action.tagId), 1)
-          return character.id === action.id
-            ? Object.assign({}, character, { tags: tags })
-            : character
-        })
+      case REMOVE_TAG_FROM_CHARACTER: {
+        return removeBaseAttribute('tags', action.id, action, state)
+      }
 
       case DELETE_TAG:
         return state.map((character) => {
@@ -243,23 +291,13 @@ const characters =
           }
         })
 
-      case ATTACH_BOOK_TO_CHARACTER:
-        return state.map((character) => {
-          let bookIds = cloneDeep(character.bookIds)
-          bookIds.push(action.bookId)
-          return character.id === action.id
-            ? Object.assign({}, character, { bookIds: bookIds })
-            : character
-        })
+      case ATTACH_BOOK_TO_CHARACTER: {
+        return attachBaseAttribute(action, state)
+      }
 
-      case REMOVE_BOOK_FROM_CHARACTER:
-        return state.map((character) => {
-          let bookIds = cloneDeep(character.bookIds)
-          bookIds.splice(bookIds.indexOf(action.bookId), 1)
-          return character.id === action.id
-            ? Object.assign({}, character, { bookIds: bookIds })
-            : character
-        })
+      case REMOVE_BOOK_FROM_CHARACTER: {
+        return removeBaseAttribute('bookIds', action.bookId, action, state)
+      }
 
       case REMOVE_TEMPLATE_FROM_CHARACTER:
         return state.map((character) => {

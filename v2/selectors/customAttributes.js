@@ -65,6 +65,10 @@ function hasNoValue(item, id) {
 
 const noEntityHasAttributeBound = (entities, attrs) => {
   return attrs.reduce((acc, attr) => {
+    if (attr.type === 'base-attribute') {
+      return acc
+    }
+
     if (attr.type == 'text') {
       acc.push(attr.name)
       return acc

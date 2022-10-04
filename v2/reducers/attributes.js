@@ -1,5 +1,7 @@
 import { FILE_LOADED } from '../../v1/constants/ActionTypes'
 import {
+  ATTACH_BOOK_TO_CHARACTER,
+  ATTACH_TAG_TO_CHARACTER,
   CREATE_CHARACTER_ATTRIBUTE,
   DELETE_CHARACTER_ATTRIBUTE,
   EDIT_CHARACTER_ATTRIBUTE_METADATA,
@@ -75,8 +77,52 @@ const attributesReducer =
         }
       }
 
+      case ATTACH_BOOK_TO_CHARACTER: {
+        const attributeExists = state.characters.some((attribute) => {
+          return attribute.id === action.attributeId
+        })
+        if (attributeExists) {
+          return state
+        }
+
+        return {
+          ...state,
+          characters: [
+            ...state.characters,
+            {
+              name: 'bookIds',
+              type: 'base-attribute',
+              id: action.attributeId,
+              bookId: action.currentBookId,
+            },
+          ],
+        }
+      }
+
+      case ATTACH_TAG_TO_CHARACTER: {
+        const attributeExists = state.characters.some((attribute) => {
+          return attribute.id === action.attributeId
+        })
+        if (attributeExists) {
+          return state
+        }
+
+        return {
+          ...state,
+          characters: [
+            ...state.characters,
+            {
+              name: 'tags',
+              type: 'base-attribute',
+              id: action.attributeId,
+              bookId: action.currentBookId,
+            },
+          ],
+        }
+      }
+
       case FILE_LOADED: {
-        return action.data.attributes || {}
+        return action.data.attributes || INITIAL_STATE
       }
 
       default: {

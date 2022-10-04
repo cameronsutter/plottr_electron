@@ -4,8 +4,9 @@ import semverLte from 'semver/functions/lte'
 import migrationsList from './migrations_list'
 import migrators from './migrations'
 import { toSemver } from './toSemver'
+import { withoutProtocol } from '../helpers/file'
 
-export default function Migrator(data, fileName, fileVersion, appVersion, backupFunction, logger) {
+export default function Migrator(data, fileURL, fileVersion, appVersion, backupFunction, logger) {
   const logError = (...args) => (logger ? logger.error(...args) : console.error(...args))
 
   this.data = cloneDeep(data)
@@ -23,7 +24,7 @@ export default function Migrator(data, fileName, fileVersion, appVersion, backup
     // save a backup file
     if (this.backupFunction) {
       this.backupFunction(
-        `${fileName.replace('.pltr', '')}-${this.fileVersion}-backup.pltr`,
+        `${withoutProtocol(fileURL).replace('.pltr', '')}-${this.fileVersion}-backup.pltr`,
         JSON.stringify(this.data, null, 2),
         (err) => {
           if (err) {

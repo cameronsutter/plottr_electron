@@ -17,6 +17,10 @@ import {
   EDIT_CHARACTER_ATTRIBUTE_METADATA,
   DELETE_CHARACTER_ATTRIBUTE,
   REORDER_CHARACTER_ATTRIBUTE_METADATA,
+  ATTACH_BOOK_TO_CHARACTER,
+  REMOVE_BOOK_FROM_CHARACTER,
+  ATTACH_TAG_TO_CHARACTER,
+  REMOVE_TAG_FROM_CHARACTER,
 } from '../constants/ActionTypes'
 import { characterAttributeTabSelector, isSeriesSelector } from '../selectors/ui'
 import { reduce, beatsByPosition, nextId as nextBeatId } from '../helpers/beats'
@@ -34,7 +38,41 @@ import {
 } from '../selectors/beats'
 import { addBeat } from '../actions/beats'
 import { setTimelineView } from '../actions/ui'
-import { characterAttributesForBookSelector } from '../selectors/attributes'
+import {
+  characterAttributesForBookSelector,
+  characterAttributsForBookByIdSelector,
+} from '../selectors/attributes'
+
+const addCharacterAttributeDataForModifyingBaseAttribute = (baseAttributeName, state, action) => {
+  const currentBookId = characterAttributeTabSelector(state)
+  const characterAttributes = characterAttributesForBookSelector(state)
+  const nextAttributeId = nextId(characterAttributes)
+  const availableAttributes = characterAttributsForBookByIdSelector(state)
+  const existingBookAttribute = Object.values(availableAttributes).find((attribute) => {
+    return attribute.type === 'base-attribute' && attribute.name === baseAttributeName
+  })
+  const attributeId = existingBookAttribute?.id || nextAttributeId
+  return {
+    ...action,
+    currentBookId,
+    attributeId,
+  }
+}
+
+const addCharacterAttributeDataForRemovingBaseAttribute = (baseAttributeName, state, action) => {
+  const currentBookId = characterAttributeTabSelector(state)
+  const availableAttributes = characterAttributsForBookByIdSelector(state)
+  const existingBookAttribute = Object.values(availableAttributes).find((attribute) => {
+    return attribute.type === 'base-attribute' && attribute.name === baseAttributeName
+  })
+  const attributeId = existingBookAttribute?.id
+
+  return {
+    ...action,
+    currentBookId,
+    attributeId,
+  }
+}
 
 /**
  * `dataRepairers` is an object which contains various repairs to be
@@ -54,6 +92,30 @@ const root = (dataRepairers) => (state, action) => {
   const isSeries = action.type.includes('@@') ? false : isSeriesSelector(state)
   const mainReducer = unrepairedMainReducer(dataRepairers)
   switch (action.type) {
+    // We might need to mint the books attribute when attaching a book
+    // to a character.
+    case ATTACH_BOOK_TO_CHARACTER: {
+      const newAction = addCharacterAttributeDataForModifyingBaseAttribute('bookIds', state, action)
+      return mainReducer(state, newAction)
+    }
+    // We need to know what the current book is and the associated
+    // attribute when we remove a book association from a character.
+    case REMOVE_BOOK_FROM_CHARACTER: {
+      const newAction = addCharacterAttributeDataForRemovingBaseAttribute('booIds', state, action)
+      return mainReducer(state, newAction)
+    }
+    // We might need to mint the books attribute when attaching a book
+    // to a character.
+    case ATTACH_TAG_TO_CHARACTER: {
+      const newAction = addCharacterAttributeDataForModifyingBaseAttribute('tags', state, action)
+      return mainReducer(state, newAction)
+    }
+    // We need to know what the current book is and the associated
+    // attribute when we remove a book association from a character.
+    case REMOVE_TAG_FROM_CHARACTER: {
+      const newAction = addCharacterAttributeDataForRemovingBaseAttribute('tags', state, action)
+      return mainReducer(state, newAction)
+    }
     // Actions for new attributes need the current book.
     case REORDER_CHARACTER_ATTRIBUTE_METADATA:
     case DELETE_CHARACTER_ATTRIBUTE:

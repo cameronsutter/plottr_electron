@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { sortBy, groupBy, uniq } from 'lodash'
+import { sortBy, groupBy, uniq, mapValues } from 'lodash'
 import {
   characterSortSelector,
   characterFilterSelector,
@@ -9,7 +9,11 @@ import {
 } from './ui'
 import { isSeries } from '../helpers/books'
 import { outOfOrderSearch } from '../helpers/outOfOrderSearch'
-import { attributesSelector, characterAttributesForCurrentBookSelector } from './attributes'
+import {
+  attributesSelector,
+  characterAttributesForCurrentBookSelector,
+  characterAttributsForBookByIdSelector,
+} from './attributes'
 
 export const allCharactersSelector = (state) => state.characters
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
@@ -20,6 +24,41 @@ export const singleCharacterSelector = createSelector(
   allCharactersSelector,
   selectId,
   (characters, propId) => characters.find((ch) => ch.id == propId)
+)
+
+// This selector produces a character with overridden attributes based
+// on the book we're looking at.
+export const displayedSingleCharacterSelector = createSelector(
+  singleCharacterSelector,
+  characterAttributeTabSelector,
+  characterAttributsForBookByIdSelector,
+  (character, bookId, currentBookAttributeDescirptorsById) => {
+    const currentBookAttributes = (character.attributes || []).filter((attribute) => {
+      return currentBookAttributeDescirptorsById[attribute.id]?.bookId === bookId
+    })
+
+    const bookIds =
+      currentBookAttributes.find((attribute) => {
+        return (
+          currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+          currentBookAttributeDescirptorsById[attribute.id].name === 'bookIds'
+        )
+      })?.value || character.bookIds
+
+    const tags =
+      currentBookAttributes.find((attribute) => {
+        return (
+          currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+          currentBookAttributeDescirptorsById[attribute.id].name === 'tags'
+        )
+      })?.value || character.tags
+
+    return {
+      ...character,
+      bookIds,
+      tags,
+    }
+  }
 )
 
 export const charactersByCategorySelector = createSelector(allCharactersSelector, (characters) =>
@@ -110,6 +149,10 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
           }
         }
       })
+    } else {
+      visible = mapValues(visible, (ch) => {
+        return ch.filter((c) => bookId === 'all' || c.bookIds.includes(bookId))
+      })
     }
 
     return sortEachCategory(visible, sort)
@@ -191,7 +234,10 @@ const combinedAttributesForCharacter = (character, attributes, customAttributes,
   const allAttributes = attributes.characters || []
   const newAttributes = allAttributes
     .filter((bookAttribute) => {
-      return bookAttribute.bookId === bookId || bookAttribute.bookId === 'all'
+      return (
+        (bookAttribute.bookId === bookId || bookAttribute.bookId === 'all') &&
+        bookAttribute.type !== 'base-attribute'
+      )
     })
     .map((bookAttribute) => {
       const value = characterBookAttributes.find((attributeValue) => {

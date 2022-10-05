@@ -20,6 +20,9 @@ bin/socketServer.bundle.js.LICENSE.txt
 *.bundle.js.map
 *.map
 
+# Temp version for building
+build/version.js
+
 # New examples (use git add with force flag to add another)
 examples/**/*
 

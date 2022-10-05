@@ -221,6 +221,9 @@
         cursor: pointer;
         user-select: none;
 
+        &.disabled {
+          cursor: not-allowed;
+        }
         &:first-child {
           border-width: 0 0 1px 1px;
         }

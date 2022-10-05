@@ -151,7 +151,7 @@ export const renameFile = (fileURL) => {
       const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
       const newFileURL = `device://${newFilePath}`
       editKnownFilePath(fileURL, newFileURL)
-      const contents = JSON.parse(readFileSync(fileURL, 'utf-8'))
+      const contents = JSON.parse(readFileSync(helpers.file.withoutProtocol(fileURL), 'utf-8'))
       saveFile(newFileURL, contents)
       moveItemToTrash(fileURL, true)
       store.dispatch(actions.applicationState.finishRenamingFile())

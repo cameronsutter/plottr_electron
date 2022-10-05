@@ -228,7 +228,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         })
       })
       .on('error', (error) => {
-        log.error('Error downloading file from ${url}', error)
+        log.error(`Error downloading file from ${url}`, error)
       })
   })
 

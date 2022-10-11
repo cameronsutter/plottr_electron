@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect } from 'react'
 import { ipcRenderer } from 'electron'
 import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'

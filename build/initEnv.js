@@ -15,15 +15,15 @@ const env = {
   EDD_TOKEN: process.env.EDD_TOKEN,
   NEXT_PUBLIC_FIREBASE_ENV: isProduction ? 'production' : 'preview',
   API_BASE_DOMAIN: isProduction
-    // Uses the `main` branch of plottr_web
-    ? 'app.plottr.com'
+    ? // Uses the `main` branch of plottr_web
+      'app.plottr.com'
     : isBeta
-    // Beta uses the latest release branch
-    ? 'plottr-web-beta.vercel.app'
+    ? // Beta uses the latest release branch
+      'plottr-web-beta.vercel.app'
     : isAlpha
     ? 'plottr-web-alpha.vercel.app'
-    // Default to alpha (staging branch)
-    : 'plottr-web-alpha.vercel.app',
+    : // Default to alpha (staging branch)
+      'plottr-web-alpha.vercel.app',
   FIREBASE_KEY: isProduction
     ? process.env.NEXT_PUBLIC_FIREBASE_KEY
     : process.env.NEXT_PUBLIC_CI_FIREBASE_KEY,

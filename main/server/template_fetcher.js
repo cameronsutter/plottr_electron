@@ -177,7 +177,12 @@ class TemplateFetcher {
       }
       return Promise.resolve()
     })
-    return Promise.all(templateRequests)
+    return Promise.all(templateRequests).then((templateIdValueObjects) => {
+      const templateStoreObject = templateIdValueObjects.reduce((acc, next) => {
+        return { ...next, ...acc }
+      }, this.templatesStore.get())
+      this.templatesStore.set(templateStoreObject)
+    })
   }
 
   fetchTemplate = (id, url) => {
@@ -194,7 +199,7 @@ class TemplateFetcher {
         return resp.json()
       })
       .then((fetchedTemplate) => {
-        return this.templatesStore.setRawKey(id, fetchedTemplate)
+        return { [id]: fetchedTemplate }
       })
   }
 

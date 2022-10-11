@@ -1,13 +1,11 @@
-import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { selectors } from 'pltr/v2'
 
 const Busy = ({ applicationIsBusyAndCannotBeQuit }) => {
-  return applicationIsBusyAndCannotBeQuit ? (
-    <img width="50" src="../icons/logo_28_500.png" className="busy" />
-  ) : null
+  // We've decided to disable this component until further notice.
+  return null
 }
 
 Busy.propTypes = {

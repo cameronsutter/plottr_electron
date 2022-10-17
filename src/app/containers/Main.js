@@ -330,7 +330,7 @@ const Main = ({
               <UploadOfflineFile
                 fileURL={fileToUpload}
                 onUploadFile={() => {
-                  readFile(fileToUpload).then((data) => {
+                  readFile(helpers.file.withoutProtocol(fileToUpload)).then((data) => {
                     let file
                     try {
                       file = JSON.parse(data)

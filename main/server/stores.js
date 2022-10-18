@@ -32,7 +32,25 @@ const exportPath =
 const LAST_OPENED_NAME = process.env.NODE_ENV == 'development' ? 'last_opened_dev' : 'last_opened'
 
 export const migrateKnownFilesStoreObject = (knownFiles) => {
-  
+  return Object.entries(knownFiles).reduce((acc, [key, value]) => {
+    if (!value.path && !value.fileURL) {
+      return acc
+    }
+
+    const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+    if (!fileURL) {
+      return acc
+    }
+
+    return {
+      ...acc,
+      [fileURL]: {
+        fileURL,
+        fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
+        lastOpened: value.lastOpened,
+      },
+    }
+  }, {})
 }
 
 const makeStores = (userDataPath, logger) => {
@@ -112,30 +130,8 @@ const makeStores = (userDataPath, logger) => {
               logger.info(
                 'Migrating the known files store because we found a key that is not a file URL.'
               )
-              return knownFilesStore.map((value, key) => {
-                logger.info('Migrating known file entry', value, key)
-                if (!value.path && !value.fileURL) {
-                  return {
-                    [key]: value,
-                  }
-                }
-                const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
-                if (!fileURL) {
-                  logger.info(
-                    `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
-                    value,
-                    key
-                  )
-                  return {}
-                }
-
-                return {
-                  [fileURL]: {
-                    fileURL: fileURL,
-                    fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
-                    lastOpened: value.lastOpened,
-                  },
-                }
+              return knownFilesStore.currentStore().then((currentStore) => {
+                return knownFilesStore.set(migrateKnownFilesStoreObject(currentStore))
               })
             }
             return true

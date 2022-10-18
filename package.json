@@ -73,6 +73,7 @@
     "@electron/remote": "^2.0.1",
     "axios": "^0.22.0",
     "bufferutil": "^4.0.6",
+    "docx": "^7.5.0",
     "dom-helpers": "^3.4.0",
     "dotenv": "^4.0.0",
     "dotenv-stringify": "^2.0.6",

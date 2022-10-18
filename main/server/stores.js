@@ -31,6 +31,10 @@ const exportPath =
   process.env.NODE_ENV == 'development' ? `${EXPORT_CONFIG_PATH}_dev` : EXPORT_CONFIG_PATH
 const LAST_OPENED_NAME = process.env.NODE_ENV == 'development' ? 'last_opened_dev' : 'last_opened'
 
+export const migrateKnownFilesStoreObject = (knownFiles) => {
+  
+}
+
 const makeStores = (userDataPath, logger) => {
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })

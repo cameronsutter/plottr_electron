@@ -53,6 +53,26 @@ export const migrateKnownFilesStoreObject = (knownFiles) => {
   }, {})
 }
 
+export const migrateTempFilesStoreObject = (tempFiles) => {
+  return Object.entries(tempFiles).reduce((acc, [key, value]) => {
+    if (!value.path && !value.fileURL) {
+      return acc
+    }
+
+    const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+    if (!fileURL) {
+      return acc
+    }
+
+    return {
+      ...acc,
+      [fileURL]: {
+        fileURL,
+      },
+    }
+  }, {})
+}
+
 const makeStores = (userDataPath, logger) => {
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })

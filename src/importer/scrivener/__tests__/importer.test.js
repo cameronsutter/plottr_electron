@@ -371,6 +371,7 @@ describe('ScrivenerImporter', () => {
       'images',
       'hierarchyLevels',
       'featureFlags',
+      'attributes',
     ]
 
     const storyLines = withStoryLineIfItExists(

@@ -104,7 +104,9 @@ const makeStores = (userDataPath, logger) => {
   function resetTemplates() {
     logger.info('Clearing template store and manifest store.')
     return templatesStore.clear().then(() => {
-      return manifestStore.clear()
+      return manifestStore.clear().then(() => {
+        return Promise.reject(new Error('Error reading templates'))
+      })
     })
   }
 

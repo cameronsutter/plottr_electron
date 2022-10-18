@@ -16,7 +16,16 @@
     }
   }
   li:hover {
-    background-color: $body-background-color;
+    &:not(.select-list__line) {
+      background-color: $body-background-color;
+    }
+  }
+  .select-list__line {
+    cursor: default;
+    hr {
+      padding: 0;
+      margin: 0 -14px 0 -24px;
+    }
   }
   &.series-select {
     li {

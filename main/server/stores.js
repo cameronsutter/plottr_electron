@@ -81,7 +81,11 @@ const makeStores = (userDataPath, logger) => {
     name: tempPath,
     watch: true,
   })
-  const templatesStore = new Store(userDataPath, logger, { name: templatesPath, watch: true })
+  const templatesStore = new Store(userDataPath, logger, {
+    name: templatesPath,
+    watch: true,
+    onInvalidStore: resetTemplates,
+  })
   const customTemplatesStore = new Store(userDataPath, logger, {
     name: customTemplatesPath,
     watch: true,
@@ -91,8 +95,18 @@ const makeStores = (userDataPath, logger) => {
     watch: true,
     defaults: export_config,
   })
-  const manifestStore = new Store(userDataPath, logger, { name: manifestPath, watch: true })
+  const manifestStore = new Store(userDataPath, logger, {
+    name: manifestPath,
+    watch: true,
+    onInvalidStore: resetTemplates,
+  })
   const USER = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
+  function resetTemplates() {
+    logger.info('Clearing template store and manifest store.')
+    return templatesStore.clear().then(() => {
+      return manifestStore.clear()
+    })
+  }
 
   const settingsStorePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
   const SETTINGS = new Store(userDataPath, logger, {

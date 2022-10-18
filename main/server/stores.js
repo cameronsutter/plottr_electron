@@ -170,29 +170,8 @@ const makeStores = (userDataPath, logger) => {
             logger.info(
               'Migrating the temp files store because we found a key that is not a file URL.'
             )
-            return tempFilesStore.map((value, key) => {
-              logger.info('Migrating temp file entry', value, key)
-              if (!value.filePath && !value.fileURL) {
-                return {
-                  [key]: value,
-                }
-              }
-              const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
-              if (!fileURL) {
-                logger.info(
-                  `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
-                  value,
-                  key
-                )
-                return {}
-              }
-
-              return {
-                [fileURL]: {
-                  fileURL,
-                  fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
-                },
-              }
+            return tempFilesStore.currentStore().then((currentStore) => {
+              return tempFilesStore.set(migrateTempFilesStore(currentStore))
             })
           }
           return true

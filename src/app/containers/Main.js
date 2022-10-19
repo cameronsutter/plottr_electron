@@ -145,10 +145,12 @@ const Main = ({
       // mode enabled, in which case we use convention to determine
       // the offline file counterpart.
       if (!!isInProMode === !!helpers.file.urlPointsToPlottrCloud(fileURL)) {
-        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup)
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup).then(closeDashboard)
       }
       if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
-        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true)
+        bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true).then(
+          closeDashboard
+        )
       }
       // We only want to obey the setting to show the dashboard on
       // start-up for the first file opened.  All files opened after
@@ -355,7 +357,9 @@ const Main = ({
                         //
                         // FIXME: where should the options come from?
                         const newFileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
-                        bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup)
+                        bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup).then(
+                          closeDashboard
+                        )
                         ipcRenderer.send('update-last-opened-file', newFileURL)
                       })
                       .catch((error) => {})

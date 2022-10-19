@@ -61,7 +61,7 @@ const fileSystemModule = (userDataPath) => {
         return Promise.resolve(null)
       }
 
-      return lstat(lastFile)
+      return lstat(helpers.file.withoutProtocol(lastFile))
         .then(() => {
           return lastFile
         })

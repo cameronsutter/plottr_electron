@@ -28,9 +28,12 @@ const win = getCurrentWindow()
 
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
+  const withoutProtocol = helpers.file.withoutProtocol(fileURL)
   const computedFileName = isOnCloud
     ? fileName
-    : path.basename(helpers.file.withoutProtocol(fileURL))
+    : withoutProtocol
+    ? path.basename(withoutProtocol)
+    : ''
   const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
   const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
   const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'

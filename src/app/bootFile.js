@@ -443,5 +443,5 @@ export function bootFile(
     }
   }
 
-  _bootFile(fileURL, options, numOpenFiles, saveBackup)
+  return _bootFile(fileURL, options, numOpenFiles, saveBackup)
 }

@@ -47,6 +47,7 @@
   border-radius: 4px;
   transition: all .1s ease-in;
   position: relative;
+  user-select: none;
 
   .badge {
     position: absolute;

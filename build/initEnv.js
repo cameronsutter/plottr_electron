@@ -27,7 +27,7 @@ const env = {
   FIREBASE_KEY: isProduction
     ? process.env.NEXT_PUBLIC_FIREBASE_KEY
     : process.env.NEXT_PUBLIC_CI_FIREBASE_KEY,
-  NODE_ENV: isProduction ? 'production' : 'development', // i'm pretty sure this is useless. I think it gets set by webpack
+  NODE_ENV: 'production', // i'm pretty sure this is useless. I think it gets set by webpack
   TRIALMODE: false, // i'm pretty sure this is uselsss too
 }
 const envstr = stringify(env)

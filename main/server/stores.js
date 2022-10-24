@@ -31,6 +31,48 @@ const exportPath =
   process.env.NODE_ENV == 'development' ? `${EXPORT_CONFIG_PATH}_dev` : EXPORT_CONFIG_PATH
 const LAST_OPENED_NAME = process.env.NODE_ENV == 'development' ? 'last_opened_dev' : 'last_opened'
 
+export const migrateKnownFilesStoreObject = (knownFiles) => {
+  return Object.entries(knownFiles).reduce((acc, [key, value]) => {
+    if (!value.path && !value.fileURL) {
+      return acc
+    }
+
+    const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+    if (!fileURL) {
+      return acc
+    }
+
+    return {
+      ...acc,
+      [fileURL]: {
+        fileURL,
+        fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
+        lastOpened: value.lastOpened,
+      },
+    }
+  }, {})
+}
+
+export const migrateTempFilesStoreObject = (tempFiles) => {
+  return Object.entries(tempFiles).reduce((acc, [key, value]) => {
+    if (!value.path && !value.fileURL) {
+      return acc
+    }
+
+    const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
+    if (!fileURL) {
+      return acc
+    }
+
+    return {
+      ...acc,
+      [fileURL]: {
+        fileURL,
+      },
+    }
+  }, {})
+}
+
 const makeStores = (userDataPath, logger) => {
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
@@ -39,7 +81,11 @@ const makeStores = (userDataPath, logger) => {
     name: tempPath,
     watch: true,
   })
-  const templatesStore = new Store(userDataPath, logger, { name: templatesPath, watch: true })
+  const templatesStore = new Store(userDataPath, logger, {
+    name: templatesPath,
+    watch: true,
+    onInvalidStore: resetTemplates,
+  })
   const customTemplatesStore = new Store(userDataPath, logger, {
     name: customTemplatesPath,
     watch: true,
@@ -49,8 +95,20 @@ const makeStores = (userDataPath, logger) => {
     watch: true,
     defaults: export_config,
   })
-  const manifestStore = new Store(userDataPath, logger, { name: manifestPath, watch: true })
+  const manifestStore = new Store(userDataPath, logger, {
+    name: manifestPath,
+    watch: true,
+    onInvalidStore: resetTemplates,
+  })
   const USER = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
+  function resetTemplates() {
+    logger.info('Clearing template store and manifest store.')
+    return templatesStore.clear().then(() => {
+      return manifestStore.clear().then(() => {
+        return Promise.reject(new Error('Error reading templates'))
+      })
+    })
+  }
 
   const settingsStorePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
   const SETTINGS = new Store(userDataPath, logger, {
@@ -108,30 +166,8 @@ const makeStores = (userDataPath, logger) => {
               logger.info(
                 'Migrating the known files store because we found a key that is not a file URL.'
               )
-              return knownFilesStore.map((value, key) => {
-                logger.info('Migrating known file entry', value, key)
-                if (!value.path && !value.fileURL) {
-                  return {
-                    [key]: value,
-                  }
-                }
-                const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
-                if (!fileURL) {
-                  logger.info(
-                    `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
-                    value,
-                    key
-                  )
-                  return {}
-                }
-
-                return {
-                  [fileURL]: {
-                    fileURL: fileURL,
-                    fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
-                    lastOpened: value.lastOpened,
-                  },
-                }
+              return knownFilesStore.currentStore().then((currentStore) => {
+                return knownFilesStore.set(migrateKnownFilesStoreObject(currentStore))
               })
             }
             return true
@@ -150,29 +186,8 @@ const makeStores = (userDataPath, logger) => {
             logger.info(
               'Migrating the temp files store because we found a key that is not a file URL.'
             )
-            return tempFilesStore.map((value, key) => {
-              logger.info('Migrating temp file entry', value, key)
-              if (!value.filePath && !value.fileURL) {
-                return {
-                  [key]: value,
-                }
-              }
-              const fileURL = value.fileURL || helpers.file.filePathToFileURL(value.path)
-              if (!fileURL) {
-                logger.info(
-                  `Migrating known file entry {${key}: ${value}}, but we couldn't compute the fileURL for the new store so we're dropping the key-value pair.`,
-                  value,
-                  key
-                )
-                return {}
-              }
-
-              return {
-                [fileURL]: {
-                  fileURL,
-                  fileName: basename(helpers.file.withoutProtocol(fileURL), '.pltr'),
-                },
-              }
+            return tempFilesStore.currentStore().then((currentStore) => {
+              return tempFilesStore.set(migrateTempFilesStore(currentStore))
             })
           }
           return true

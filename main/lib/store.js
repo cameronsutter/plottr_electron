@@ -8,12 +8,13 @@ class Store {
   store = {}
   watchers = new Set()
 
-  constructor(userDataPath, logger, { name, watch, defaults }) {
+  constructor(userDataPath, logger, { name, watch, defaults, onInvalidStore }) {
     logger.info(`Constructing store for: ${name}`)
 
     this.name = name
     this.watch = watch
     this.defaults = defaults || {}
+    this.onInvalidStore = onInvalidStore
     this.logger = logger
     this.userDataPath = userDataPath
     this.path = path.join(userDataPath, `${name}.json`)
@@ -141,6 +142,11 @@ class Store {
             `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
             error
           )
+          if (this.onInvalidStore) {
+            this.logger.info('Recovering with supplied recovery function.')
+            return this.onInvalidStore()
+          }
+
           throw new Error(
             `Contents of store for ${this.name} at ${this.path} are invalid: <${storeContents}>`,
             error

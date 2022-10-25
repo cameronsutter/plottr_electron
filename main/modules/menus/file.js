@@ -11,6 +11,7 @@ import { NODE_ENV } from '../constants'
 import { getLicenseInfo } from '../license_info'
 import { buildRecents } from './recents'
 import { featureFlags } from '../feature_flags'
+import currentSettings from '../settings'
 
 const TEMP_FILES_PATH = path.join(app.getPath('userData'), 'tmp')
 let showInMessage = t('Show in File Explorer')
@@ -21,8 +22,9 @@ if (is.macos) {
 function buildFileMenu(fileURL, getTrialInfo) {
   const isCloudFile = helpers.file.urlPointsToPlottrCloud(fileURL)
   const isTemp = fileURL && fileURL.includes(TEMP_FILES_PATH)
-  return Promise.all([getTrialInfo(), getLicenseInfo(), buildRecents()]).then(
-    ([trialInfo, licenseInfo, recents]) => {
+  return Promise.all([getTrialInfo(), getLicenseInfo(), buildRecents(), currentSettings()]).then(
+    ([trialInfo, licenseInfo, recents, settings]) => {
+      const isPro = settings.user.frbId || isCloudFile
       let submenu = [
         {
           label: t('Create Blank Project'),
@@ -46,7 +48,7 @@ function buildFileMenu(fileURL, getTrialInfo) {
         },
         {
           label: t('Recent Projects'),
-          visible: !isCloudFile && recents.length > 0,
+          visible: !isPro && recents.length > 0,
           submenu: recents,
         },
         {
@@ -69,7 +71,7 @@ function buildFileMenu(fileURL, getTrialInfo) {
           accelerator: 'CmdOrCtrl+Shift+S',
           visible: !!fileURL,
           click: function (event, focusedWindow) {
-            if (isCloudFile) {
+            if (isPro) {
               focusedWindow.webContents.send('save-as--pro', fileURL)
             } else {
               focusedWindow.webContents.send('save-as')
@@ -78,7 +80,7 @@ function buildFileMenu(fileURL, getTrialInfo) {
         },
         {
           label: showInMessage,
-          visible: !isCloudFile && !isTemp,
+          visible: !isPro && !isTemp,
           click: function () {
             shell.showItemInFolder(helpers.file.withoutProtocol(fileURL))
           },

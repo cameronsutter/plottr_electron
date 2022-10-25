@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.10.19-alpha.9",
+  "version": "2022.11.2-beta.2",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -40,7 +40,7 @@
     "format:write": "prettier . --write",
     "validate": "npm-run-all format:check lint test",
     "import-test": "npm run test:aCoronersTale && npm run test:fractureTest && npm run test:theTurn && npm run test:import-scrivener",
-    "test:import-scrivener": "jest test/end-to-end/import-scrivener.test.js",
+    "test:watch-import-scrivener": "jest \"lib/plottr_import_export/src/importer/scrivener/__tests__/importer.test.js\" --watch",
     "test:aCoronersTale": "electron --inspect=5858 . --import-from-scrivener ./examples/A-Coroners-Tale-Temp2.scriv --output-file ./examples/test_output/A-Coroners-Tale-Temp2.pltr",
     "test:fractureTest": "electron --inspect=5858 . --import-from-scrivener ./examples/Fractured-Test-Import-to-Plottr.scriv --output-file ./examples/test_output/Fractured-Test-Import-to-Plottr.pltr",
     "test:theTurn": "electron --inspect=5858 . --import-from-scrivener ./examples/The-Turn.scriv --output-file ./examples/test_output/The-Turn.pltr",

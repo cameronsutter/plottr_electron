@@ -63,6 +63,7 @@
     "web-vitals": "^1.0.1"
   },
   "dependencies": {
+    "animated-scroll-to": "^2.3.0",
     "axios": "^0.22.0",
     "dom-helpers": "^3.4.0",
     "image-conversion": "^2.1.1",

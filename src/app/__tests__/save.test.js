@@ -89,8 +89,8 @@ describe('saveFile', () => {
           called = true
           return Promise.resolve()
         }
-        const whenClientIsReady = () => {
-          return Promise.resolve({
+        const whenClientIsReady = (f) => {
+          return f({
             saveFile: _saveFile,
           })
         }
@@ -107,8 +107,8 @@ describe('saveFile', () => {
             called = true
             return Promise.resolve()
           }
-          const whenClientIsReady = () => {
-            return Promise.resolve({
+          const whenClientIsReady = (f) => {
+            return f({
               saveFile: _saveFile,
             })
           }
@@ -125,8 +125,8 @@ describe('saveFile', () => {
               called = true
               return Promise.resolve()
             }
-            const whenClientIsReady = () => {
-              return Promise.resolve({
+            const whenClientIsReady = (f) => {
+              return f({
                 saveFile: _saveFile,
               })
             }
@@ -147,8 +147,8 @@ describe('saveFile', () => {
               calledSaveOfflineFile = false
               return Promise.resolve()
             }
-            const whenClientIsReady = () => {
-              return Promise.resolve({
+            const whenClientIsReady = (f) => {
+              return f({
                 saveFile: _saveFile,
                 saveOfflineFile,
               })
@@ -167,8 +167,8 @@ describe('saveFile', () => {
             called = true
             return Promise.resolve()
           }
-          const whenClientIsReady = () => {
-            return Promise.resolve({
+          const whenClientIsReady = (f) => {
+            return f({
               saveFile: _saveFile,
             })
           }
@@ -185,8 +185,8 @@ describe('saveFile', () => {
           called = true
           return Promise.resolve()
         }
-        const whenClientIsReady = () => {
-          return Promise.resolve({
+        const whenClientIsReady = (f) => {
+          return f({
             saveFile: _saveFile,
           })
         }

@@ -44,6 +44,9 @@ class Saver {
   backup = () => {
     return this.saveBackup(this.getState())
   }
+
+  cancelAllRemainingRequests = () => {
+  }
 }
 
 export default Saver

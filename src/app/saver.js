@@ -128,6 +128,7 @@ class Saver {
     error: (...args) => console.error(args),
   }
   saveRunner = null
+  backupRunner = null
 
   constructor(
     getState,
@@ -155,18 +156,25 @@ class Saver {
       saveIntervalMS
     )
     this.saveRunner.start()
-  }
 
-  save = () => {
-    return this.saveRunner.enqueueJob()
-  }
-
-  backup = () => {
-    return this.saveBackup(this.getState())
+    this.backupRunner = new PressureControlledTaskQueue(
+      'Backup',
+      () => {
+        const currentState = this.getState()
+        return () => {
+          return this.backupFile(currentState)
+        }
+      },
+      logger,
+      MAX_SAVE_JOBS,
+      backupIntervalMS
+    )
+    this.backupRunner.start()
   }
 
   cancelAllRemainingRequests = () => {
     this.saveRunner.cancelAllRemainingRequests()
+    this.backupRunner.cancelAllRemainingRequests()
   }
 }
 

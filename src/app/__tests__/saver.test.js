@@ -426,13 +426,13 @@ describe('Saver', () => {
               }
               const backupCalls = []
               const saveFile = () => {
-                return new Promise((resolve) => {
-                  setTimeout(resolve, 200)
-                })
+                return Promise.resolve()
               }
               const backupFile = (...args) => {
                 backupCalls.push(args)
-                return Promise.resolve()
+                return new Promise((resolve) => {
+                  setTimeout(resolve, 200)
+                })
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
               await new Promise((resolve) => {
@@ -477,13 +477,13 @@ describe('Saver', () => {
               }
               const backupCalls = []
               const saveFile = () => {
-                return new Promise((resolve) => {
-                  setTimeout(resolve, 200)
-                })
+                return Promise.resolve()
               }
               const backupFile = (...args) => {
                 backupCalls.push(args)
-                return Promise.resolve()
+                return new Promise((resolve) => {
+                  setTimeout(resolve, 200)
+                })
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
               await new Promise((resolve) => {

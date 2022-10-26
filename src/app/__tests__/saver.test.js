@@ -1,5 +1,11 @@
 import Saver from '../saver'
 
+const CONSOLE_LOGGER = {
+  info: (...args) => console.log(args),
+  warn: (...args) => console.warn(args),
+  error: (...args) => console.error(args),
+}
+
 describe('Saver', () => {
   describe('given a getState function that produces the same value', () => {
     describe('and a 100ms interval', () => {
@@ -14,9 +20,9 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, 100)
+        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
         await new Promise((resolve) => {
-          setTimeout(resolve, 1050)
+          setTimeout(resolve, 1100)
         })
         expect(saveCalls).toEqual([
           [dummyState],
@@ -44,9 +50,9 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, 500)
+        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 500)
         await new Promise((resolve) => {
-          setTimeout(resolve, 1050)
+          setTimeout(resolve, 1100)
         })
         expect(saveCalls).toEqual([[dummyState], [dummyState]])
       })
@@ -70,9 +76,9 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, 100)
+        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
         await new Promise((resolve) => {
-          setTimeout(resolve, 1050)
+          setTimeout(resolve, 1100)
         })
         expect(saveCalls).toEqual([
           [
@@ -147,10 +153,11 @@ describe('Saver', () => {
             const backupFile = () => {
               return Promise.resolve()
             }
-            new Saver(getState, saveFile, backupFile, 100)
+            const saver = new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })
+            saver.cancelAllRemainingRequests()
             expect(saveCalls).toEqual([
               [
                 {
@@ -197,7 +204,7 @@ describe('Saver', () => {
             const backupFile = () => {
               return Promise.resolve()
             }
-            const saver = new Saver(getState, saveFile, backupFile, 100)
+            const saver = new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })
@@ -253,9 +260,9 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, 500)
+        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 500)
         await new Promise((resolve) => {
-          setTimeout(resolve, 1050)
+          setTimeout(resolve, 1100)
         })
         expect(saveCalls).toEqual([
           [

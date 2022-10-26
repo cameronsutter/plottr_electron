@@ -52,8 +52,8 @@ class Saver {
     this.saveInterval = saveIntervalMS
     this.backupInterval = backupIntervalMS
 
-    this.saveTimer = setInterval(this.save, this.saveInterval)
-    this.backupTimer = setInterval(this.backup, this.backupInterval)
+    this.saveTimer = setInterval(() => this.save(this.jobId++, 'Save'), this.saveInterval)
+    this.backupTimer = setInterval(() => this.backup(this.jobId++, 'Backup'), this.backupInterval)
   }
 
   executePendingSaveJob = () => {
@@ -67,29 +67,28 @@ class Saver {
     })
   }
 
-  save = () => {
-    const jobId = this.saveCount++
-    this.logger.info(jobId, `Starting save job`)
+  save = (jobId, name) => {
+    this.logger.info(jobId, `Starting ${name} job`)
 
     if (this.pendingSaveBuffer.length >= MAX_SAVE_JOBS) {
-      const error = new Error('Too many concurrent save jobs; dropping request to save')
-      this.logger.error(jobId, 'Too many concurrent saves', error)
+      const error = new Error(`Too many concurrent ${name} jobs; dropping request to ${name}`)
+      this.logger.error(jobId, `Too many concurrent ${name}s`, error)
       return Promise.reject(error)
     }
 
-    this.logger.info(jobId, 'Accepted request to save with current state.')
+    this.logger.info(jobId, `Accepted request to ${name} with current state.`)
 
     const currentState = this.getState()
     this.pendingSaveBuffer.push(() => this.saveFile(currentState))
     if (this.saveJob) {
-      this.logger.info(jobId, 'Saver busy.  Waiting for last save job to finish first')
+      this.logger.info(jobId, `${name} busy.  Waiting for last ${name} job to finish first`)
       return this.saveJob
         .then(() => {
-          this.logger.info(jobId, 'Saver ready, comencing with save job.')
+          this.logger.info(jobId, `${name} ready, comencing with ${name} job.`)
           return this.saveJob
         })
         .catch((error) => {
-          this.logger.error(jobId, 'Error executing previous save job.  Enqueing next anyway.')
+          this.logger.error(jobId, `Error executing previous ${name} job.  Enqueing next anyway.`)
           this.executePendingSaveJob()
           return this.saveJob
         })
@@ -133,8 +132,8 @@ class Saver {
 
     this.logger.info('Starting saver')
     this.running = true
-    this.saveTimer = setInterval(this.save, this.saveInterval)
-    this.backupTimer = setInterval(this.backup, this.backupInterval)
+    this.saveTimer = setInterval(() => this.save(this.jobId++, 'Save'), this.saveInterval)
+    this.backupTimer = setInterval(() => this.backup(this.jobId++, 'Backup'), this.backupInterval)
   }
 }
 

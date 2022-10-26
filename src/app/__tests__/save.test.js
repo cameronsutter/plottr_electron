@@ -155,7 +155,7 @@ describe('saveFile', () => {
             }
             await saveFile(whenClientIsReady)(state)
             expect(calledSaveFile).toBeFalsy()
-            expect(calledSaveOfflineFile).toBetrue()
+            expect(calledSaveOfflineFile).toBeTruthy()
           })
         })
       })
@@ -173,7 +173,7 @@ describe('saveFile', () => {
             })
           }
           await saveFile(whenClientIsReady)(state)
-          expect(called).toBeFalsy()
+          expect(called).toBeTruthy()
         })
       })
     })
@@ -191,7 +191,7 @@ describe('saveFile', () => {
           })
         }
         await saveFile(whenClientIsReady)(state)
-        expect(called).toBeFalsy()
+        expect(called).toBeTruthy()
       })
     })
   })

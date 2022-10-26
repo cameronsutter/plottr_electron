@@ -11,10 +11,11 @@
 const DEFAULT_SAVE_INTERVAL_MS = 10000
 const DEFAULT_BACKUP_INTERVAL_MS = 60000
 
-const MAX_SAVE_JOBS = 5
+const MAX_SAVE_JOBS = 10
 
 class Saver {
   getState = () => ({})
+  running = true
   saveCount = 0
   logger = {
     info: (jobId, ...args) => this._logger.info(`[Save job: ${jobId}]`, ...args),
@@ -55,6 +56,17 @@ class Saver {
     this.backupTimer = setInterval(this.backup, this.backupInterval)
   }
 
+  executePendingSaveJob = () => {
+    if (this.pendingSaveBuffer.length === 0) {
+      return
+    }
+
+    const nextJob = this.pendingSaveBuffer.shift()
+    this.saveJob = nextJob().then(() => {
+      this.saveJob = null
+    })
+  }
+
   save = () => {
     const jobId = this.saveCount++
     this.logger.info(jobId, `Starting save job`)
@@ -74,17 +86,16 @@ class Saver {
       return this.saveJob
         .then(() => {
           this.logger.info(jobId, 'Saver ready, comencing with save job.')
-          this.saveJob = this.pendingSaveBuffer.shift()()
           return this.saveJob
         })
         .catch((error) => {
           this.logger.error(jobId, 'Error executing previous save job.  Enqueing next anyway.')
-          this.saveJob = this.pendingSaveBuffer.shift()()
+          this.executePendingSaveJob()
           return this.saveJob
         })
     }
 
-    this.saveJob = this.pendingSaveBuffer.shift()()
+    this.executePendingSaveJob()
     return this.saveJob
   }
 
@@ -92,7 +103,39 @@ class Saver {
     return this.saveBackup(this.getState())
   }
 
-  cancelAllRemainingRequests = () => {}
+  cancelAllRemainingRequests = () => {
+    this.logger.warn(
+      `Dropping all pending save requests.  ${this.pendingSaveBuffer.length} remain unprocessed`
+    )
+    this.pendingSaveBuffer = []
+    this.stop()
+  }
+
+  stop = () => {
+    if (!this.running) {
+      this.logger.warn('Saver is not running; cannot stop a stopped saver')
+      return
+    }
+
+    this.logger.warn('Stopping saver')
+    this.running = false
+    clearInterval(this.saveTimer)
+    this.saveTimer = null
+    clearInterval(this.backupInterval)
+    this.backupTimer = null
+  }
+
+  start = () => {
+    if (this.running) {
+      this.logger.warn('Saver is running; cannot start a running saver')
+      return
+    }
+
+    this.logger.info('Starting saver')
+    this.running = true
+    this.saveTimer = setInterval(this.save, this.saveInterval)
+    this.backupTimer = setInterval(this.backup, this.backupInterval)
+  }
 }
 
 export default Saver

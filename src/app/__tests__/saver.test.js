@@ -6,6 +6,12 @@ const CONSOLE_LOGGER = {
   error: (...args) => console.error(args),
 }
 
+const NOP_LOGGER = {
+  info: (...args) => {},
+  warn: (...args) => {},
+  error: (...args) => {},
+}
+
 describe('Saver', () => {
   describe('given a getState function that produces the same value', () => {
     describe('and a 100ms interval', () => {
@@ -20,7 +26,7 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
+        new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
         await new Promise((resolve) => {
           setTimeout(resolve, 1100)
         })
@@ -50,7 +56,7 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 500)
+        new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
         await new Promise((resolve) => {
           setTimeout(resolve, 1100)
         })
@@ -76,7 +82,7 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
+        new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
         await new Promise((resolve) => {
           setTimeout(resolve, 1100)
         })
@@ -153,11 +159,12 @@ describe('Saver', () => {
             const backupFile = () => {
               return Promise.resolve()
             }
-            const saver = new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })
             saver.cancelAllRemainingRequests()
+            saver.stop()
             expect(saveCalls).toEqual([
               [
                 {
@@ -204,11 +211,12 @@ describe('Saver', () => {
             const backupFile = () => {
               return Promise.resolve()
             }
-            const saver = new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 100)
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })
             saver.cancelAllRemainingRequests()
+            saver.stop()
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })
@@ -260,7 +268,7 @@ describe('Saver', () => {
         const backupFile = () => {
           return Promise.resolve()
         }
-        new Saver(getState, saveFile, backupFile, CONSOLE_LOGGER, 500)
+        new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
         await new Promise((resolve) => {
           setTimeout(resolve, 1100)
         })

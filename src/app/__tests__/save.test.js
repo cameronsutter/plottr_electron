@@ -1,5 +1,7 @@
-import { configureStore } from './fixtures/testStore'
 import { emptyFile, actions } from 'pltr/v2'
+
+import { configureStore } from './fixtures/testStore'
+import { saveFile } from '../save'
 
 const EMPTY_FILE = emptyFile('Test file')
 const initialStore = () => {
@@ -46,7 +48,7 @@ const resumingState = () => {
       'plottr://abcdefghowilovetowritethesetests'
     )
   )
-  store.dispatch(actions.setResuming(true))
+  store.dispatch(actions.project.setResuming(true))
   return store.getState().present
 }
 const offlineWithOfflineDisabledState = () => {
@@ -63,7 +65,7 @@ const offlineWithOfflineDisabledState = () => {
   store.dispatch(actions.project.setOffline(true))
   const oldSettings = store.getState().present.settings
   store.dispatch(
-    actions.setAppSettings({
+    actions.settings.setAppSettings({
       ...oldSettings,
       appSettings: {
         ...oldSettings.appSettings,
@@ -83,17 +85,17 @@ describe('saveFile', () => {
       it('should not call the dummy saveFile', async () => {
         const state = stateWithoutFileURL()
         let called = false
-        const saveFile = () => {
+        const _saveFile = () => {
           called = true
           return Promise.resolve()
         }
         const whenClientIsReady = () => {
           return Promise.resolve({
-            saveFile,
+            saveFile: _saveFile,
           })
         }
         await saveFile(whenClientIsReady)(state)
-        expect(called).toBeFalse()
+        expect(called).toBeFalsy()
       })
     })
     describe('and a full file state with a Pro file URL', () => {
@@ -101,17 +103,17 @@ describe('saveFile', () => {
         it('should not call the dummy saveFile', async () => {
           const state = resumingState()
           let called = false
-          const saveFile = () => {
+          const _saveFile = () => {
             called = true
             return Promise.resolve()
           }
           const whenClientIsReady = () => {
             return Promise.resolve({
-              saveFile,
+              saveFile: _saveFile,
             })
           }
           await saveFile(whenClientIsReady)(state)
-          expect(called).toBeFalse()
+          expect(called).toBeFalsy()
         })
       })
       describe('and Plottr is offline', () => {
@@ -119,24 +121,24 @@ describe('saveFile', () => {
           it('should not call the dummy saveFile', async () => {
             const state = offlineWithOfflineDisabledState()
             let called = false
-            const saveFile = () => {
+            const _saveFile = () => {
               called = true
               return Promise.resolve()
             }
             const whenClientIsReady = () => {
               return Promise.resolve({
-                saveFile,
+                saveFile: _saveFile,
               })
             }
             await saveFile(whenClientIsReady)(state)
-            expect(called).toBeFalse()
+            expect(called).toBeFalsy()
           })
         })
         describe('and offline mode is enabled', () => {
           it('should not call saveFile, but instead it should call soveOfflineFile', async () => {
             const state = offlineWithOfflineDisabledState()
             let calledSaveFile = false
-            const saveFile = () => {
+            const _saveFile = () => {
               calledSaveFile = true
               return Promise.resolve()
             }
@@ -147,12 +149,12 @@ describe('saveFile', () => {
             }
             const whenClientIsReady = () => {
               return Promise.resolve({
-                saveFile,
+                saveFile: _saveFile,
                 saveOfflineFile,
               })
             }
             await saveFile(whenClientIsReady)(state)
-            expect(calledSaveFile).toBeFalse()
+            expect(calledSaveFile).toBeFalsy()
             expect(calledSaveOfflineFile).toBetrue()
           })
         })
@@ -161,17 +163,17 @@ describe('saveFile', () => {
         it('should call save file', async () => {
           const state = stateForProFile()
           let called = false
-          const saveFile = () => {
+          const _saveFile = () => {
             called = true
             return Promise.resolve()
           }
           const whenClientIsReady = () => {
             return Promise.resolve({
-              saveFile,
+              saveFile: _saveFile,
             })
           }
           await saveFile(whenClientIsReady)(state)
-          expect(called).toBeFalse()
+          expect(called).toBeFalsy()
         })
       })
     })
@@ -179,22 +181,20 @@ describe('saveFile', () => {
       it('should call the dummy saveFile', async () => {
         const state = stateForDeviceFile()
         let called = false
-        const saveFile = () => {
+        const _saveFile = () => {
           called = true
           return Promise.resolve()
         }
         const whenClientIsReady = () => {
           return Promise.resolve({
-            saveFile,
+            saveFile: _saveFile,
           })
         }
         await saveFile(whenClientIsReady)(state)
-        expect(called).toBeFalse()
+        expect(called).toBeFalsy()
       })
     })
   })
 })
 
-describe('backupFile', () => {
-  
-})
+describe('backupFile', () => {})

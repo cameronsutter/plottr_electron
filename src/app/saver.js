@@ -28,8 +28,21 @@ class Saver {
     backupIntervalMS = DEFAULT_BACKUP_INTERVAL_MS
   ) {
     this.getState = getState
+    this.saveFile = saveFile
+    this.backupFile = backupFile
     this.saveInterval = saveIntervalMS
     this.backupInterval = backupIntervalMS
+
+    this.saveTimer = setInterval(this.save, this.saveInterval)
+    this.backupTimer = setInterval(this.backup, this.backupInterval)
+  }
+
+  save = () => {
+    return this.saveFile(this.getState())
+  }
+
+  backup = () => {
+    return this.saveBackup(this.getState())
   }
 }
 

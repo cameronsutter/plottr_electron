@@ -16,19 +16,19 @@ describe('Saver', () => {
         }
         new Saver(getState, saveFile, backupFile, 100)
         await new Promise((resolve) => {
-          setTimeout(resolve, 1000)
+          setTimeout(resolve, 1050)
         })
         expect(saveCalls).toEqual([
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
-          dummyState,
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
+          [dummyState],
         ])
       })
     })

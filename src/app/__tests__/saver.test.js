@@ -164,7 +164,6 @@ describe('Saver', () => {
               setTimeout(resolve, 1050)
             })
             saver.cancelAllRemainingRequests()
-            saver.stop()
             expect(saveCalls).toEqual([
               [
                 {
@@ -216,7 +215,6 @@ describe('Saver', () => {
               setTimeout(resolve, 1050)
             })
             saver.cancelAllRemainingRequests()
-            saver.stop()
             await new Promise((resolve) => {
               setTimeout(resolve, 1050)
             })

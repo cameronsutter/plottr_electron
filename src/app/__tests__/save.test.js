@@ -3,6 +3,12 @@ import { emptyFile, actions } from 'pltr/v2'
 import { configureStore } from './fixtures/testStore'
 import { saveFile } from '../save'
 
+const CONSOLE_LOGGER = {
+  info: (...args) => console.log(...args),
+  warn: (...args) => console.warn(...args),
+  error: (...args) => console.error(...args),
+}
+
 const EMPTY_FILE = emptyFile('Test file')
 const initialStore = () => {
   const store = configureStore()
@@ -94,7 +100,7 @@ describe('saveFile', () => {
             saveFile: _saveFile,
           })
         }
-        await saveFile(whenClientIsReady)(state)
+        await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
         expect(called).toBeFalsy()
       })
     })
@@ -112,7 +118,7 @@ describe('saveFile', () => {
               saveFile: _saveFile,
             })
           }
-          await saveFile(whenClientIsReady)(state)
+          await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
           expect(called).toBeFalsy()
         })
       })
@@ -130,7 +136,7 @@ describe('saveFile', () => {
                 saveFile: _saveFile,
               })
             }
-            await saveFile(whenClientIsReady)(state)
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
             expect(called).toBeFalsy()
           })
         })
@@ -153,7 +159,7 @@ describe('saveFile', () => {
                 saveOfflineFile,
               })
             }
-            await saveFile(whenClientIsReady)(state)
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
             expect(calledSaveFile).toBeFalsy()
             expect(calledSaveOfflineFile).toBeTruthy()
           })
@@ -172,7 +178,7 @@ describe('saveFile', () => {
               saveFile: _saveFile,
             })
           }
-          await saveFile(whenClientIsReady)(state)
+          await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
           expect(called).toBeTruthy()
         })
       })
@@ -190,7 +196,7 @@ describe('saveFile', () => {
             saveFile: _saveFile,
           })
         }
-        await saveFile(whenClientIsReady)(state)
+        await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
         expect(called).toBeTruthy()
       })
     })

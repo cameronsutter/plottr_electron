@@ -69,16 +69,37 @@ const offlineWithOfflineDisabledState = () => {
     )
   )
   store.dispatch(actions.project.setOffline(true))
-  const oldSettings = store.getState().present.settings
+  const oldSettings = store.getState().present.settings.appSettings
   store.dispatch(
     actions.settings.setAppSettings({
       ...oldSettings,
-      appSettings: {
-        ...oldSettings.appSettings,
-        user: {
-          ...oldSettings.appSettings.user,
-          enableOfflineMode: true,
-        },
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: false,
+      },
+    })
+  )
+  return store.getState().present
+}
+const offlineWithOfflineEnabledState = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'plottr://abcdefghowilovetowritethesetests'
+    )
+  )
+  store.dispatch(actions.project.setOffline(true))
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: true,
       },
     })
   )
@@ -142,7 +163,7 @@ describe('saveFile', () => {
         })
         describe('and offline mode is enabled', () => {
           it('should not call saveFile, but instead it should call soveOfflineFile', async () => {
-            const state = offlineWithOfflineDisabledState()
+            const state = offlineWithOfflineEnabledState()
             let calledSaveFile = false
             const _saveFile = () => {
               calledSaveFile = true
@@ -150,7 +171,7 @@ describe('saveFile', () => {
             }
             let calledSaveOfflineFile = false
             const saveOfflineFile = () => {
-              calledSaveOfflineFile = false
+              calledSaveOfflineFile = true
               return Promise.resolve()
             }
             const whenClientIsReady = (f) => {

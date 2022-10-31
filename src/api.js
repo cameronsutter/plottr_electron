@@ -5,38 +5,6 @@ import { isEqual } from 'lodash'
 
 import { removeSystemKeys, actions, selectors, ARRAY_KEYS, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
-const doNothingWithPartialResult = () => {}
-
-const sequencePromiseThunks =
-  (log, batchSize = 10) =>
-  (thunks, onPartialResult = doNothingWithPartialResult) => {
-    return new Promise((resolve, reject) => {
-      const iter = (results, remainingThunks) => {
-        if (remainingThunks.length === 0) {
-          resolve(results)
-          return
-        }
-
-        const nextThunks = remainingThunks.slice(0, 10)
-        Promise.all(
-          nextThunks.map((f) => {
-            return f()
-          })
-        )
-          .then((newResults) => {
-            const currentResults = [...newResults, ...results]
-            onPartialResult(currentResults)
-            iter(currentResults, remainingThunks.slice(1))
-          })
-          .catch((error) => {
-            log.error('Failed to execute a sequenced promise', error.message, error)
-          })
-      }
-
-      iter([], thunks)
-    })
-  }
-
 /**
  * auth, database and storage should be thunks that produce instances
  * of the correspending firebase objects from either the firebase JS
@@ -45,8 +13,6 @@ const sequencePromiseThunks =
 const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop) => {
   const BASE_API_URL =
     (!isDesktop && development) || !baseAPIDomain ? '' : `https://${baseAPIDomain || ''}`
-
-  const sequence = sequencePromiseThunks(log)
 
   const defaultErrorHandler = (error) => {
     log.error('Error communicating with Firebase.', error.message, error)
@@ -253,6 +219,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const listenToTags = listenForArrayAtPath('tags')
   const listenToHierarchyLevels = listenForObjectAtPath('hierarchyLevels')
   const listenToImages = listenForObjectAtPath('images')
+  const listenToAttributes = listenForObjectAtPath('attributes')
 
   const onFetched = (fileId, path, withData, clientId) => (documentRef) => {
     const data = documentRef && documentRef.data()
@@ -313,6 +280,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   const fetchTags = fetchArrayAtPath('tags')
   const fetchhierarchyLevels = fetchObjectAtPath('hierarchyLevels')
   const fetchImages = fetchObjectAtPath('images')
+  const fetchAttributes = fetchObjectAtPath('attributes')
 
   const toFirestoreArray = (array) =>
     array.reduce((acc, value, index) => Object.assign(acc, { [index]: value }), {})
@@ -359,6 +327,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
           fetchTags(userId, fileId, clientId),
           fetchhierarchyLevels(userId, fileId, clientId),
           fetchImages(userId, fileId, clientId),
+          fetchAttributes(userId, fileId, clientId),
         ]).then((results) => {
           return [file, ...results]
         })
@@ -861,11 +830,18 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
   }
 
   const allTemplateUrlsForUser = (documents) => {
-    return sequence(
+    return Promise.all(
       documents.map(({ path }) => {
-        return () => templatePublicURL(path)
+        return templatePublicURL(path).catch((error) => {
+          log.error(`Failed to get public URL for template at ${path}`)
+          return Promise.resolve('IGNORE')
+        })
       })
-    )
+    ).then((urls) => {
+      return urls.filter((url) => {
+        return url !== 'IGNORE'
+      })
+    })
   }
 
   const listenToCustomTemplates = (userId, callback, errorHandler = defaultErrorHandler) => {
@@ -1013,6 +989,7 @@ const api = (auth, database, storage, baseAPIDomain, development, log, isDesktop
     listenToTags,
     listenToHierarchyLevels,
     listenToImages,
+    listenToAttributes,
     toFirestoreArray,
     overwriteAllKeys,
     initialFetch,

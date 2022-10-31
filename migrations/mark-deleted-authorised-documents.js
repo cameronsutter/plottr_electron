@@ -2,6 +2,9 @@ const admin = require('firebase-admin')
 const readline = require('node:readline')
 const { stdin, stdout } = require('node:process')
 
+const { logChange } = require('./log-change')
+const { sequencePromises } = require('./util')
+
 if (!admin.apps.length) {
   if (!process.env.FIREBASE_ENV || process.env.FIREBASE_ENV === '') {
     console.error(
@@ -22,14 +25,92 @@ if (!admin.apps.length) {
   }
 }
 
+const RUN_DATE = new Date()
+
 const main = (argv) => {
   const rl = readline.createInterface({ input: stdin, output: stdout })
   const userId = argv[2]
-  console.log('User id: ' + userId)
+  if (userId) {
+    console.log('Running for user id: ' + userId)
+  } else {
+    console.log('No user supplied running for all users.')
+  }
 
-  rl.question('Hit enter to continue...', () => {
-    markDeletedAuthorisedDocumentsAsDeleted(userId)
-  })
+  rl.question(
+    'Is this the production run?\n(Only "Yes" -case sensitive- will be interpreted as affirmative): ',
+    (response) => {
+      const readOnlyMode = response !== 'Yes'
+      console.log('Read only mode: ', readOnlyMode)
+      rl.question('Please enter your userId: ', (executingUserId) => {
+        checkUserId(executingUserId).then((proceed) => {
+          if (proceed) {
+            console.log('User exists.  Executing script.')
+            const userIds = userId ? Promise.resolve([userId]) : allUserIds()
+            userIds
+              .then((uids) => {
+                console.log(`Will run script for users with ids: ${JSON.stringify(uids, null, 2)}`)
+                return sequencePromises(
+                  uids.map((uid) => {
+                    return () => {
+                      console.log(`> ${uid}`)
+                      return markDeletedAuthorisedDocumentsAsDeleted(
+                        uid,
+                        executingUserId,
+                        readOnlyMode
+                      ).catch((error) => {
+                        console.error(`Error executing change on ${uid}`, error)
+                      })
+                    }
+                  })
+                )
+              })
+              .then(() => {
+                process.exit(0)
+              })
+          } else {
+            process.exit(1)
+          }
+        })
+      })
+    }
+  )
+}
+
+const checkUserId = (userId) => {
+  return admin
+    .auth()
+    .getUser(userId)
+    .catch((error) => {
+      if (error.errorInfo.code === 'auth/user-not-found') {
+        console.error('Executing user does not exist.  Please check the user id!')
+        return false
+      }
+
+      return Promise.reject(error)
+    })
+}
+
+const allUserIds = () => {
+  function iter(acc, nextPageToken) {
+    return admin
+      .auth()
+      .listUsers(1000, nextPageToken)
+      .then((listUsersResult) => {
+        const nextUsers = listUsersResult.users.map((user) => {
+          return user.uid
+        })
+        if (listUsersResult.pageToken) {
+          return iter([...nextUsers, ...acc], listUsersResult.pageToken)
+        } else {
+          return acc
+        }
+      })
+      .catch((error) => {
+        console.log('Error listing users:', error)
+      })
+  }
+
+  return iter([])
 }
 
 const authorisedProjects = (userId) => {
@@ -79,8 +160,14 @@ const deletedFiles = (userId) => {
   })
 }
 
-const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
+const markDeletedAuthorisedDocumentsAsDeleted = (userId, executingUserId, readOnly) => {
   const database = admin.firestore()
+  const runTransactionWithAuditing = logChange(readOnly)(
+    database,
+    executingUserId,
+    'mark-deleted-authorised-documents.js',
+    RUN_DATE
+  )
 
   return deletedFiles(userId)
     .then((deletedFiles) => {
@@ -94,7 +181,33 @@ const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
               console.log(`Marking: authorisation/${userId}/granted/${fileId}`)
               return database
                 .doc(`authorisation/${userId}/granted/${fileId}`)
-                .update({ deleted: true })
+                .get()
+                .then((ref) => ref.data())
+                .then((oldRecord) => {
+                  const change = { deleted: true }
+                  const newRecord = {
+                    ...oldRecord,
+                    ...change,
+                  }
+                  console.log(
+                    `Adding ${JSON.stringify(
+                      change,
+                      null,
+                      2
+                    )} to authorisation/${userId}/granted/${fileId} to produce: ${JSON.stringify(
+                      newRecord,
+                      null,
+                      2
+                    )}`
+                  )
+                  return runTransactionWithAuditing(
+                    userId,
+                    fileId,
+                    `authorisation/${userId}/granted`,
+                    oldRecord,
+                    newRecord
+                  )
+                })
             } else {
               console.log(`File isn't deleted: authorisation/${userId}/granted/${fileId}`)
             }
@@ -105,10 +218,6 @@ const markDeletedAuthorisedDocumentsAsDeleted = (userId) => {
     })
     .catch((error) => {
       console.error(`ERROR: ${error.message}`, error)
-      process.exit(1)
-    })
-    .finally(() => {
-      process.exit(0)
     })
 }
 

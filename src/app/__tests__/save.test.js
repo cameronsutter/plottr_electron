@@ -83,6 +83,56 @@ const offlineWithOfflineDisabledState = () => {
   )
   return store.getState().present
 }
+const offlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'plottr://abcdefghowilovetowritethesetests'
+    )
+  )
+  store.dispatch(actions.project.setOffline(true))
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: false,
+        localBackups: false,
+      },
+    })
+  )
+  return store.getState().present
+}
+const offlineWithOfflineDisabledAndLocalBackupEnabledState = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'plottr://abcdefghowilovetowritethesetests'
+    )
+  )
+  store.dispatch(actions.project.setOffline(true))
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: false,
+        localBackups: false,
+      },
+    })
+  )
+  return store.getState().present
+}
 const offlineWithOfflineEnabledState = () => {
   const store = initialStore()
   store.dispatch(
@@ -292,38 +342,110 @@ describe('backupFile', () => {
     describe('given a file with a URL that points to Plottr cloud', () => {
       describe('and Plottr is offline', () => {
         describe('with offline mode disabled', () => {
-          it('should not call the dummy backup', () => {
-            throw new Error('TODO!')
+          it('should not call the dummy backup', async () => {
+            const state = offlineWithOfflineDisabledState()
+            let called = false
+            const _backupFile = () => {
+              called = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                backupFile: _backupFile,
+              })
+            }
+            await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(called).toBeFalsy()
           })
         })
         describe('with offline mode enabled', () => {
-          it('should not call the dummy backup', () => {
-            throw new Error('TODO!')
+          it('should not call the dummy backup', async () => {
+            const state = offlineWithOfflineEnabledState()
+            let called = false
+            const _backupFile = () => {
+              called = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                backupFile: _backupFile,
+              })
+            }
+            await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(called).toBeFalsy()
           })
         })
       })
       describe('and Plottr is online', () => {
         describe('with offline mode disabled', () => {
           describe('and local backups is disabled', () => {
-            it('should not call the dummy backup', () => {
-              throw new Error('TODO!')
+            it('should not call the dummy backup', async () => {
+              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              let called = false
+              const _backupFile = () => {
+                called = true
+                return Promise.resolve()
+              }
+              const whenClientIsReady = (f) => {
+                return f({
+                  backupFile: _backupFile,
+                })
+              }
+              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              expect(called).toBeFalsy()
             })
           })
           describe('and local backups is enabled', () => {
-            it('should call the dummy backup', () => {
-              throw new Error('TODO!')
+            it('should call the dummy backup', async () => {
+              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              let called = false
+              const _backupFile = () => {
+                called = true
+                return Promise.resolve()
+              }
+              const whenClientIsReady = (f) => {
+                return f({
+                  backupFile: _backupFile,
+                })
+              }
+              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              expect(called).toBeTruthy()
             })
           })
         })
         describe('with offline mode enabled', () => {
           describe('and local backups is disabled', () => {
-            it('should not call the dummy backup', () => {
-              throw new Error('TODO!')
+            it('should not call the dummy backup', async () => {
+              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              let called = false
+              const _backupFile = () => {
+                called = true
+                return Promise.resolve()
+              }
+              const whenClientIsReady = (f) => {
+                return f({
+                  backupFile: _backupFile,
+                })
+              }
+              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              expect(called).toBeFalsy()
             })
           })
           describe('and local backups is enabled', () => {
-            it('should call the dummy backup', () => {
-              throw new Error('TODO!')
+            it('should call the dummy backup', async () => {
+              const state = offlineWithOfflineDisabledAndLocalBackupEnabledState()
+              let called = false
+              const _backupFile = () => {
+                called = true
+                return Promise.resolve()
+              }
+              const whenClientIsReady = (f) => {
+                return f({
+                  backupFile: _backupFile,
+                })
+              }
+              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              expect(called).toBeTruthy()
             })
           })
         })

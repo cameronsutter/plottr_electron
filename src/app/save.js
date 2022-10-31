@@ -29,6 +29,22 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
   })
 }
 
-export const backupFile = (whenClientIsReady, logger) => (fullState) => {
-  return Promise.resolve()
+export const backupFile = (whenClientIsReady, logger) => (state) => {
+  return whenClientIsReady(({ backupFile }) => {
+    const hasAllKeys = selectors.hasAllKeysSelector(state)
+    if (!hasAllKeys) {
+      const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
+      const missing = difference(Object.keys(emptyFileState), withoutSystemKeys)
+      const message = `File is missing keys (${missing}).  Refusing to save.`
+      logger.error('Missing keys', new Error(message))
+      return Promise.reject(message)
+    }
+    const canSave = selectors.canSaveSelector(state)
+    if (!canSave) {
+      logger.warn('File is in a state that prohibits saving.  Refusing to backup.')
+      return Promise.resolve()
+    }
+
+    return backupFile(state)
+  })
 }

@@ -4,4 +4,18 @@
   & > div {
     @include application-text;
   }
+
+  .nav-pills {
+    & > li > a {
+      background: none !important;
+    }
+    & > li {
+      &.active {
+        a {
+          color: $nav-pills-active-link-hover-bg !important;
+          outline: 2px solid $nav-pills-active-link-hover-bg !important;
+        }
+      }
+    }
+  }
 }

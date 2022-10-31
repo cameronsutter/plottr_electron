@@ -3,7 +3,7 @@ import { omit } from 'lodash'
 import { emptyFile, actions } from 'pltr/v2'
 
 import { configureStore } from './fixtures/testStore'
-import { saveFile } from '../save'
+import { saveFile, backupFile } from '../save'
 
 const CONSOLE_LOGGER = {
   info: (...args) => console.log(...args),
@@ -251,13 +251,42 @@ describe('saveFile', () => {
 describe('backupFile', () => {
   describe('given a whenClientIsReady that produces a dummy saveBackup', () => {
     describe('and a file that lacks the necessary keys', () => {
-      it('should not call the dummy backup', () => {
-        throw new Error('TODO!')
+      it('should not call the dummy backup', async () => {
+        let called = false
+        const _backupFile = () => {
+          called = true
+          return Promise.resolve()
+        }
+        const whenClientIsReady = (f) => {
+          return f({
+            backupFile: _backupFile,
+          })
+        }
+        let threw = false
+        try {
+          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(omit(EMPTY_FILE, 'file'))
+        } catch (error) {
+          threw = true
+          expect(called).toBeFalsy()
+        }
+        expect(threw).toBeTruthy()
       })
     })
     describe('and a file that lacks a fileURL', () => {
-      it('should not call the dummy backup', () => {
-        throw new Error('TODO!')
+      it('should not call the dummy backup', async () => {
+        const state = stateWithoutFileURL()
+        let called = false
+        const _backupFile = () => {
+          called = true
+          return Promise.resolve()
+        }
+        const whenClientIsReady = (f) => {
+          return f({
+            backupFile: _backupFile,
+          })
+        }
+        await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+        expect(called).toBeFalsy()
       })
     })
     describe('given a file with a URL that points to Plottr cloud', () => {

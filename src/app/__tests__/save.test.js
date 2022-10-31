@@ -1,3 +1,5 @@
+import { omit } from 'lodash'
+
 import { emptyFile, actions } from 'pltr/v2'
 
 import { configureStore } from './fixtures/testStore'
@@ -109,8 +111,25 @@ const offlineWithOfflineEnabledState = () => {
 describe('saveFile', () => {
   describe('given a whenClientIsReady that produces a dummy saveFile', () => {
     describe('and a file that lacks the necessary keys', () => {
-      it('should not call the dummy save', () => {
-        throw new Error('TODO!')
+      it('should not call the dummy save', async () => {
+        let called = false
+        const _saveFile = () => {
+          called = true
+          return Promise.resolve()
+        }
+        const whenClientIsReady = (f) => {
+          return f({
+            saveFile: _saveFile,
+          })
+        }
+        let threw = false
+        try {
+          await saveFile(whenClientIsReady, CONSOLE_LOGGER)(omit(EMPTY_FILE, 'file'))
+        } catch (error) {
+          threw = true
+          expect(called).toBeFalsy()
+        }
+        expect(threw).toBeTruthy()
       })
     })
     describe('and a full file state that has no file URL', () => {

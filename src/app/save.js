@@ -17,4 +17,6 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
   })
 }
 
-export const backupFile = (whenClientIsReady) => (fullState) => {}
+export const backupFile = (whenClientIsReady, logger) => (fullState) => {
+  return Promise.resolve()
+}

@@ -108,6 +108,11 @@ const offlineWithOfflineEnabledState = () => {
 
 describe('saveFile', () => {
   describe('given a whenClientIsReady that produces a dummy saveFile', () => {
+    describe('and a file that lacks the necessary keys', () => {
+      it('should not call the dummy save', () => {
+        throw new Error('TODO!')
+      })
+    })
     describe('and a full file state that has no file URL', () => {
       it('should not call the dummy saveFile', async () => {
         const state = stateWithoutFileURL()
@@ -224,4 +229,74 @@ describe('saveFile', () => {
   })
 })
 
-describe('backupFile', () => {})
+describe('backupFile', () => {
+  describe('given a whenClientIsReady that produces a dummy saveBackup', () => {
+    describe('and a file that lacks the necessary keys', () => {
+      it('should not call the dummy backup', () => {
+        throw new Error('TODO!')
+      })
+    })
+    describe('and a file that lacks a fileURL', () => {
+      it('should not call the dummy backup', () => {
+        throw new Error('TODO!')
+      })
+    })
+    describe('given a file with a URL that points to Plottr cloud', () => {
+      describe('and Plottr is offline', () => {
+        describe('with offline mode disabled', () => {
+          it('should not call the dummy backup', () => {
+            throw new Error('TODO!')
+          })
+        })
+        describe('with offline mode enabled', () => {
+          it('should not call the dummy backup', () => {
+            throw new Error('TODO!')
+          })
+        })
+      })
+      describe('and Plottr is online', () => {
+        describe('with offline mode disabled', () => {
+          describe('and local backups is disabled', () => {
+            it('should not call the dummy backup', () => {
+              throw new Error('TODO!')
+            })
+          })
+          describe('and local backups is enabled', () => {
+            it('should call the dummy backup', () => {
+              throw new Error('TODO!')
+            })
+          })
+        })
+        describe('with offline mode enabled', () => {
+          describe('and local backups is disabled', () => {
+            it('should not call the dummy backup', () => {
+              throw new Error('TODO!')
+            })
+          })
+          describe('and local backups is enabled', () => {
+            it('should call the dummy backup', () => {
+              throw new Error('TODO!')
+            })
+          })
+        })
+      })
+    })
+    describe('and a URL that points to a device file', () => {
+      describe('and that URL points to an offline backup file', () => {
+        it('should not backup the file', () => {
+          throw new Error('TODO!')
+        })
+      })
+      describe('and backups are disabeld', () => {
+        it('should not backup the file', () => {
+          throw new Error('TODO!')
+        })
+      })
+      describe('and backups are enabled', () => {
+        it('should backup the file', () => {
+          throw new Error('TODO!')
+        })
+      })
+    })
+  })
+})

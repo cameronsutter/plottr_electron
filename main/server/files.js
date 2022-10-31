@@ -9,7 +9,6 @@ import {
   AUTO_SAVE_BACKUP_ERROR,
   AUTO_SAVE_ERROR,
   AUTO_SAVE_WORKED_THIS_TIME,
-  OFFLINE_FILE_PATH,
 } from '../../shared/socket-server-message-types'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
@@ -41,7 +40,7 @@ const fileModule = (userDataPath) => {
   function isOfflineFileURL(fileURL) {
     return (
       helpers.file.isDeviceFileURL(fileURL) &&
-      helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_PATH)
+      helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)
     )
   }
 

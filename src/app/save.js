@@ -1,6 +1,6 @@
 import { difference } from 'lodash'
 
-import { selectors, SYSTEM_REDUCER_KEYS, emptyFile } from 'pltr/v2'
+import { helpers, selectors, SYSTEM_REDUCER_KEYS, emptyFile } from 'pltr/v2'
 
 const emptyFileState = emptyFile('DummyFile', '2022.11.2')
 
@@ -30,7 +30,7 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
 }
 
 export const backupFile = (whenClientIsReady, logger) => (state) => {
-  return whenClientIsReady(({ backupFile }) => {
+  return whenClientIsReady(({ backupFile, offlineFileURL }) => {
     const hasAllKeys = selectors.hasAllKeysSelector(state)
     if (!hasAllKeys) {
       const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
@@ -39,12 +39,23 @@ export const backupFile = (whenClientIsReady, logger) => (state) => {
       logger.error('Missing keys', new Error(message))
       return Promise.reject(message)
     }
-    const canSave = selectors.canSaveSelector(state)
-    if (!canSave) {
-      logger.warn('File is in a state that prohibits saving.  Refusing to backup.')
+
+    const canBackup = selectors.canBackupSelector(state)
+    if (!canBackup) {
+      logger.warn('File is in a state that prohibits backing up.  Refusing to backup.')
       return Promise.resolve()
     }
 
-    return backupFile(state)
+    return offlineFileURL().then((offlineFilePath) => {
+      const fileURL = selectors.fileURLSelector(state)
+      if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilePath)) {
+        logger.warn(
+          `Attempting to backup a file at ${fileURL}, but the file is in the offline folder ${offlineFilePath}.`
+        )
+        return Promise.resolve()
+      }
+
+      return backupFile(state)
+    })
   })
 }

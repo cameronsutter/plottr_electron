@@ -83,7 +83,7 @@ const offlineWithOfflineDisabledState = () => {
   )
   return store.getState().present
 }
-const offlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
+const onlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
   const store = initialStore()
   store.dispatch(
     actions.ui.loadFile(
@@ -94,7 +94,7 @@ const offlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
       'plottr://abcdefghowilovetowritethesetests'
     )
   )
-  store.dispatch(actions.project.setOffline(true))
+  store.dispatch(actions.project.setOffline(false))
   const oldSettings = store.getState().present.settings.appSettings
   store.dispatch(
     actions.settings.setAppSettings({
@@ -108,7 +108,7 @@ const offlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
   )
   return store.getState().present
 }
-const offlineWithOfflineDisabledAndLocalBackupEnabledState = () => {
+const onlineWithOfflineDisabledAndLocalBackupEnabledState = () => {
   const store = initialStore()
   store.dispatch(
     actions.ui.loadFile(
@@ -119,7 +119,7 @@ const offlineWithOfflineDisabledAndLocalBackupEnabledState = () => {
       'plottr://abcdefghowilovetowritethesetests'
     )
   )
-  store.dispatch(actions.project.setOffline(true))
+  store.dispatch(actions.project.setOffline(false))
   const oldSettings = store.getState().present.settings.appSettings
   store.dispatch(
     actions.settings.setAppSettings({
@@ -127,7 +127,7 @@ const offlineWithOfflineDisabledAndLocalBackupEnabledState = () => {
       user: {
         ...oldSettings.user,
         enableOfflineMode: false,
-        localBackups: false,
+        localBackups: true,
       },
     })
   )
@@ -153,6 +153,66 @@ const offlineWithOfflineEnabledState = () => {
         ...oldSettings.user,
         enableOfflineMode: true,
       },
+    })
+  )
+  return store.getState().present
+}
+const localFileWithBackupsDisabled = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'device://abcdefghowilovetowritethesetests'
+    )
+  )
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      backup: false,
+    })
+  )
+  return store.getState().present
+}
+const localFileWithBackupsEnabled = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'device://abcdefghowilovetowritethesetests'
+    )
+  )
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      backup: true,
+    })
+  )
+  return store.getState().present
+}
+const localFileWithBackupsEnabledThatPointsAtOfflineModeFile = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'device:///offline/a-file.pltr'
+    )
+  )
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      backup: true,
     })
   )
   return store.getState().present
@@ -310,6 +370,7 @@ describe('backupFile', () => {
         const whenClientIsReady = (f) => {
           return f({
             backupFile: _backupFile,
+            offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
         let threw = false
@@ -333,6 +394,7 @@ describe('backupFile', () => {
         const whenClientIsReady = (f) => {
           return f({
             backupFile: _backupFile,
+            offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
         await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -352,6 +414,7 @@ describe('backupFile', () => {
             const whenClientIsReady = (f) => {
               return f({
                 backupFile: _backupFile,
+                offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
             await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -369,6 +432,7 @@ describe('backupFile', () => {
             const whenClientIsReady = (f) => {
               return f({
                 backupFile: _backupFile,
+                offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
             await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -380,7 +444,8 @@ describe('backupFile', () => {
         describe('with offline mode disabled', () => {
           describe('and local backups is disabled', () => {
             it('should not call the dummy backup', async () => {
-              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              // HERE
+              const state = onlineWithOfflineDisabledAndLocalBackupDisabledState()
               let called = false
               const _backupFile = () => {
                 called = true
@@ -389,6 +454,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   backupFile: _backupFile,
+                  offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -397,7 +463,7 @@ describe('backupFile', () => {
           })
           describe('and local backups is enabled', () => {
             it('should call the dummy backup', async () => {
-              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              const state = onlineWithOfflineDisabledAndLocalBackupEnabledState()
               let called = false
               const _backupFile = () => {
                 called = true
@@ -406,6 +472,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   backupFile: _backupFile,
+                  offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -416,7 +483,7 @@ describe('backupFile', () => {
         describe('with offline mode enabled', () => {
           describe('and local backups is disabled', () => {
             it('should not call the dummy backup', async () => {
-              const state = offlineWithOfflineDisabledAndLocalBackupDisabledState()
+              const state = onlineWithOfflineDisabledAndLocalBackupDisabledState()
               let called = false
               const _backupFile = () => {
                 called = true
@@ -425,6 +492,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   backupFile: _backupFile,
+                  offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -433,7 +501,7 @@ describe('backupFile', () => {
           })
           describe('and local backups is enabled', () => {
             it('should call the dummy backup', async () => {
-              const state = offlineWithOfflineDisabledAndLocalBackupEnabledState()
+              const state = onlineWithOfflineDisabledAndLocalBackupEnabledState()
               let called = false
               const _backupFile = () => {
                 called = true
@@ -442,6 +510,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   backupFile: _backupFile,
+                  offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
@@ -453,18 +522,57 @@ describe('backupFile', () => {
     })
     describe('and a URL that points to a device file', () => {
       describe('and that URL points to an offline backup file', () => {
-        it('should not backup the file', () => {
-          throw new Error('TODO!')
+        it('should not backup the file', async () => {
+          const state = localFileWithBackupsEnabledThatPointsAtOfflineModeFile()
+          let called = false
+          const _backupFile = () => {
+            called = true
+            return Promise.resolve()
+          }
+          const whenClientIsReady = (f) => {
+            return f({
+              backupFile: _backupFile,
+              offlineFileURL: () => Promise.resolve('/offline/'),
+            })
+          }
+          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          expect(called).toBeFalsy()
         })
       })
       describe('and backups are disabeld', () => {
-        it('should not backup the file', () => {
-          throw new Error('TODO!')
+        it('should not backup the file', async () => {
+          const state = localFileWithBackupsDisabled()
+          let called = false
+          const _backupFile = () => {
+            called = true
+            return Promise.resolve()
+          }
+          const whenClientIsReady = (f) => {
+            return f({
+              backupFile: _backupFile,
+              offlineFileURL: () => Promise.resolve('/offline/'),
+            })
+          }
+          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          expect(called).toBeFalsy()
         })
       })
       describe('and backups are enabled', () => {
-        it('should backup the file', () => {
-          throw new Error('TODO!')
+        it('should backup the file', async () => {
+          const state = localFileWithBackupsEnabled()
+          let called = false
+          const _backupFile = () => {
+            called = true
+            return Promise.resolve()
+          }
+          const whenClientIsReady = (f) => {
+            return f({
+              backupFile: _backupFile,
+              offlineFileURL: () => Promise.resolve('/offline/'),
+            })
+          }
+          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          expect(called).toBeTruthy()
         })
       })
     })

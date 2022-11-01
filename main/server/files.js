@@ -536,6 +536,7 @@ const fileModule = (userDataPath) => {
       backupOfflineBackupForResume,
       readOfflineFiles,
       isTempFile,
+      offlineFilesFilesPath: OFFLINE_FILE_FILES_PATH,
       OFFLINE_FILE_FILES_PATH,
       saveTempFile,
     }

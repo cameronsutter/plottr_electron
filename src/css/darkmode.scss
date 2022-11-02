@@ -130,11 +130,11 @@ body.darkmode {
     .nav-pills {
       & > li {
         & > a {
-          color: $darkmode-text !important;
+          color: $darkmode-darker-text !important;
         }
         &.active {
           a {
-            outline: 2px solid $darkmode-text !important;
+            outline: 2px solid $darkmode-darker-text !important;
           }
         }
       }

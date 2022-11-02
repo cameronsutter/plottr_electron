@@ -80,7 +80,7 @@ class PressureControlledTaskQueue {
     this.pendingJobBuffer.push(jobThunk)
     if (this.currentJob) {
       this.logger.info(jobId, `${name} busy.  Waiting for last ${name} job to finish first`)
-      return this.currentJob
+      this.currentJob = this.currentJob
         .then(() => {
           this.logger.info(jobId, `${name} ready, comencing with ${name} job.`)
           return this.currentJob
@@ -90,6 +90,7 @@ class PressureControlledTaskQueue {
           this.executePendingJob()
           return this.currentJob
         })
+      return this.currentJob
     }
 
     this.executePendingJob()

@@ -1,12 +1,4 @@
-/**
- * What does this thing need to do?
- *
- *  - Save on an interval.
- *  - Backup on an interval.
- *  - Prevent exiting the app with unsaved changes.
- *  - Backup cloud files to local.
- *  - Keep offline versions of cloud files for offline mode(?)
- */
+import { t } from 'plottr_locales'
 
 const DEFAULT_SAVE_INTERVAL_MS = 10000
 const DEFAULT_BACKUP_INTERVAL_MS = 60000
@@ -149,6 +141,15 @@ onSaveBackupError: (filePath, errorMessage) => {
 -    rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
 -  },
    */
+
+const DUMMY_ROLLBAR = {
+  info: () => {},
+  warn: () => {},
+  error: () => {},
+}
+const DUMMY_SHOW_MESSAGE_BOX = () => {}
+const DUMMY_SHOW_ERROR_BOX = () => {}
+
 class Saver {
   getState = () => ({})
   saveFile = (file) => Promise.resolve()
@@ -160,6 +161,35 @@ class Saver {
   }
   saveRunner = null
   backupRunner = null
+  lastAutoSaveFailed = false
+  rollbar = null
+  onSaveBackupError = (filePath, errorMessage) => {
+    this.logger.warn('[file save backup]', errorMessage)
+    this.rollbar.error({ message: 'BACKUP failed' })
+    this.rollbar.warn(errorMessage, { fileName: filePath })
+  }
+  onSaveBackupSuccess = (filePath) => {
+    this.logger.info('[file save backup]', 'success', filePath)
+  }
+  onAutoSaveError = (filePath, errorMessage) => {
+    this.logger.warn(errorMessage)
+    this.rollbar.warn(errorMessage, { fileName: filePath })
+    this.showErrorBox(
+      t('Auto-saving failed'),
+      t("Saving your file didn't work. Check where it's stored.")
+    )
+  }
+  onAutoSaveWorkedThisTime = () => {
+    this.showMessageBox({
+      title: t('Auto-saving worked'),
+      message: t('Saving worked this time 🎉'),
+    })
+  }
+  onAutoSaveBackupError = (backupFilePath, backupErrorMessage) => {
+    this.logger.warn('[save state backup]', backupErrorMessage)
+    this.rollbar.error({ message: 'BACKUP failed' })
+    this.rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
+  }
 
   constructor(
     getState,
@@ -167,12 +197,17 @@ class Saver {
     backupFile,
     logger,
     saveIntervalMS = DEFAULT_SAVE_INTERVAL_MS,
-    backupIntervalMS = DEFAULT_BACKUP_INTERVAL_MS
+    backupIntervalMS = DEFAULT_BACKUP_INTERVAL_MS,
+    rollbar = DUMMY_ROLLBAR,
+    showMessageBox = DUMMY_SHOW_MESSAGE_BOX,
+    showErrorBox = DUMMY_SHOW_ERROR_BOX
   ) {
     this.getState = getState
     this.logger = logger
     this.saveFile = saveFile
     this.backupFile = backupFile
+    this.rollbar = rollbar
+    this.showMessageBox = showMessageBox
 
     this.saveRunner = new PressureControlledTaskQueue(
       'Save',

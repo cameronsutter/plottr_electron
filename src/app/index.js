@@ -62,33 +62,6 @@ setupRollbar('app.html').then((newRollbar) => {
 })
 
 const socketServerEventHandlers = {
-  onSaveBackupError: (filePath, errorMessage) => {
-    logger.warn('[file save backup]', errorMessage)
-    rollbar.error({ message: 'BACKUP failed' })
-    rollbar.warn(errorMessage, { fileName: filePath })
-  },
-  onSaveBackupSuccess: (filePath) => {
-    logger.info('[file save backup]', 'success', filePath)
-  },
-  onAutoSaveError: (filePath, errorMessage) => {
-    logger.warn(errorMessage)
-    rollbar.warn(errorMessage, { fileName: filePath })
-    dialog.showErrorBox(
-      t('Auto-saving failed'),
-      t("Saving your file didn't work. Check where it's stored.")
-    )
-  },
-  onAutoSaveWorkedThisTime: () => {
-    dialog.showMessageBox(win, {
-      title: t('Auto-saving worked'),
-      message: t('Saving worked this time 🎉'),
-    })
-  },
-  onAutoSaveBackupError: (backupFilePath, backupErrorMessage) => {
-    logger.warn('[save state backup]', backupErrorMessage)
-    rollbar.error({ message: 'BACKUP failed' })
-    rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
-  },
   onBusy: () => {
     store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
   },

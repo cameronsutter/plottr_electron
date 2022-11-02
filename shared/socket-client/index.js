@@ -11,10 +11,6 @@ import {
   AUTO_SAVE_FILE,
   BACKUP_FILE,
   SAVE_BACKUP_ERROR,
-  SAVE_BACKUP_SUCCESS,
-  AUTO_SAVE_ERROR,
-  AUTO_SAVE_WORKED_THIS_TIME,
-  AUTO_SAVE_BACKUP_ERROR,
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   LOG_INFO,
@@ -133,19 +129,7 @@ const defer =
         setTimeout(f, 0)
       }
 
-const connect = (
-  port,
-  logger,
-  {
-    onSaveBackupError,
-    onSaveBackupSuccess,
-    onAutoSaveError,
-    onAutoSaveWorkedThisTime,
-    onAutoSaveBackupError,
-    onBusy,
-    onDone,
-  }
-) => {
+const connect = (port, logger, { onBusy, onDone }) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
     const promises = new Map()
@@ -229,43 +213,8 @@ const connect = (
           unresolvedPromise.reject(result)
         }
 
+        // TODO: handle SAVE_BACKUP_ERRORs
         switch (type) {
-          // Additional replies (i.e. these might happen in addition
-          // to the normal/happy path):
-          case SAVE_BACKUP_ERROR: {
-            if (onSaveBackupError) {
-              const [filePath, errorMessage] = result
-              onSaveBackupError(filePath, errorMessage)
-            }
-            return
-          }
-          case SAVE_BACKUP_SUCCESS: {
-            if (onSaveBackupSuccess) {
-              const [filePath] = result
-              onSaveBackupSuccess(filePath)
-            }
-            return
-          }
-          case AUTO_SAVE_ERROR: {
-            if (onAutoSaveError) {
-              const [filePath, errorMessage] = result
-              onAutoSaveError(filePath, errorMessage)
-            }
-            return
-          }
-          case AUTO_SAVE_WORKED_THIS_TIME: {
-            if (onAutoSaveWorkedThisTime) {
-              onAutoSaveWorkedThisTime()
-            }
-            return
-          }
-          case AUTO_SAVE_BACKUP_ERROR: {
-            if (onAutoSaveBackupError) {
-              const [backupFilePath, backupErrorMessage] = result
-              onAutoSaveBackupError(backupFilePath, backupErrorMessage)
-            }
-            return
-          }
           // Subscription replies
           case LISTEN_TO_TRIAL_CHANGES:
           case LISTEN_TO_LICENSE_CHANGES:
@@ -465,10 +414,6 @@ const connect = (
 
     const readFile = (filePath) => {
       return sendPromise(READ_FILE, { filePath })
-    }
-
-    const autoSave = (fileURL, file, userId, previousFile) => {
-      return sendPromise(AUTO_SAVE_FILE, { fileURL, file, userId, previousFile })
     }
 
     const saveBackup = (filePath, file) => {
@@ -699,7 +644,6 @@ const connect = (
           saveOfflineFile,
           basename,
           readFile,
-          autoSave,
           saveBackup,
           ensureBackupFullPath,
           ensureBackupTodayPath,

@@ -3,13 +3,7 @@ import path from 'path'
 import { isEqual } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
-import { emptyFile, selectors, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'
-
-import {
-  AUTO_SAVE_BACKUP_ERROR,
-  AUTO_SAVE_ERROR,
-  AUTO_SAVE_WORKED_THIS_TIME,
-} from '../../shared/socket-server-message-types'
+import { emptyFile, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
@@ -37,13 +31,6 @@ const fileModule = (userDataPath) => {
     return helpers.file.filePathToFileURL(path.join(OFFLINE_FILE_FILES_PATH, fileId))
   }
 
-  function isOfflineFileURL(fileURL) {
-    return (
-      helpers.file.isDeviceFileURL(fileURL) &&
-      helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)
-    )
-  }
-
   function offlineFileBackupForResumeURL(fileName) {
     if (!fileName) {
       return null
@@ -65,8 +52,7 @@ const fileModule = (userDataPath) => {
   }
 
   return (backupModule, settingsModule, logger) => {
-    const { saveBackup, backupBasePath } = backupModule
-    const { readSettings } = settingsModule
+    const { backupBasePath } = backupModule
 
     const checkFileJustWritten = (filePath, data, originalStats, counter) => (fileContents) => {
       // Parsing the file could still fail...
@@ -272,75 +258,6 @@ const fileModule = (userDataPath) => {
     }
     const saveFile = fileSaver()
 
-    const autoSaver = () => {
-      let itWorkedLastTime = true
-
-      let backupTimeout = null
-      let resetCount = 0
-      const MAX_ATTEMPTS = 200
-
-      return async function autoSave(send, inputFileURL, file, userId, previousFile) {
-        // Don't auto save while resolving resuming the connection
-        if (selectors.isResumingSelector(file)) return
-
-        const onCloud = helpers.file.urlPointsToPlottrCloud(inputFileURL)
-        const isOfflineBackupFile = isOfflineFileURL(inputFileURL)
-        const isDeviceFile = helpers.file.isDeviceFileURL(inputFileURL)
-        if (isDeviceFile) {
-          try {
-            await saveFile(inputFileURL, file)
-            // didn't work last time, but it did this time
-            if (!itWorkedLastTime) {
-              itWorkedLastTime = true
-              send(AUTO_SAVE_WORKED_THIS_TIME)
-            }
-          } catch (saveError) {
-            itWorkedLastTime = false
-            send(AUTO_SAVE_ERROR, inputFileURL, saveError.message)
-          }
-        }
-        // either way, save a backup (unless we're working with an
-        // offline mode backup)
-        if (isOfflineBackupFile) {
-          return
-        }
-        function forceBackup() {
-          logger.info('Saving a backup from auto save for file at', inputFileURL)
-          // save local backup if: 1) not cloud file OR 2) localBackups is on
-          readSettings().then((settings) => {
-            if (!onCloud || (onCloud && settings.user.localBackups)) {
-              const backupFilePath = helpers.file.withoutProtocol(inputFileURL)
-              saveBackup(backupFilePath, previousFile || file, (backupError) => {
-                if (backupError) {
-                  send(AUTO_SAVE_BACKUP_ERROR, backupFilePath, backupError.message)
-                }
-              }).catch((error) => {
-                // Sending the error to the renderer is handled above.
-                // This catches other errors so they don't hit the
-                // rootand kill the node process.
-                logger.error('Error saving backup', error)
-              })
-            }
-            backupTimeout = null
-            resetCount = 0
-          })
-        }
-        if (backupTimeout) {
-          clearTimeout(backupTimeout)
-          resetCount++
-        }
-        if (resetCount >= MAX_ATTEMPTS) {
-          forceBackup()
-          return
-        }
-        // NOTE: We want to backup every 60 seconds, but saves only happen
-        // every 10 seconds.
-        logger.info('59 seconds later, a backup will be taken for file with path', inputFileURL)
-        backupTimeout = setTimeout(forceBackup, 59000)
-      }
-    }
-    const autoSave = autoSaver()
-
     const isResumeBackup = (fileName) => {
       return fileName.includes('_resume-backup_')
     }
@@ -531,7 +448,6 @@ const fileModule = (userDataPath) => {
       saveOfflineFile,
       basename,
       readFile: readFileToString,
-      autoSave,
       fileExists,
       backupOfflineBackupForResume,
       readOfflineFiles,

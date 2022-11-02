@@ -9,9 +9,7 @@ import {
   SAVE_FILE,
   SAVE_OFFLINE_FILE,
   BACKUP_FILE,
-  AUTO_SAVE_FILE,
   SAVE_BACKUP_ERROR,
-  SAVE_BACKUP_SUCCESS,
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   FILE_EXISTS,
@@ -151,7 +149,6 @@ const setupListeners = (port, userDataPath) => {
       saveOfflineFile,
       basename,
       readFile,
-      autoSave,
       fileExists,
       backupOfflineBackupForResume,
       readOfflineFiles,
@@ -427,42 +424,6 @@ const setupListeners = (port, userDataPath) => {
               ],
               () => statusManager.registerTask(saveBackup(filePath, file), BACKUP_FILE),
               () => ['Error while saving a backup ', payload?.file?.file]
-            )
-          }
-          case AUTO_SAVE_FILE: {
-            const { fileURL, file, userId, previousFile } = payload
-            return handlePromise(
-              () => [
-                'Auto-saving file (reduced payload): ',
-                {
-                  file: {
-                    ...file.file,
-                  },
-                  fileURL,
-                  previousFile: {
-                    ...previousFile.file,
-                  },
-                  userId,
-                },
-              ],
-              () =>
-                statusManager.registerTask(
-                  autoSave(send, fileURL, file, userId, previousFile),
-                  AUTO_SAVE_FILE
-                ),
-              () => [
-                'Error while auto saving',
-                {
-                  file: {
-                    ...file?.file,
-                  },
-                  fileURL,
-                  previousFile: {
-                    ...previousFile?.file,
-                  },
-                  userId,
-                },
-              ]
             )
           }
           case ENSURE_BACKUP_FULL_PATH: {

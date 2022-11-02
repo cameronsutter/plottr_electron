@@ -43,12 +43,6 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
-  const autoSave = (fileURL, file, userId, previousFile) => {
-    return whenClientIsReady(({ autoSave }) => {
-      return autoSave(fileURL, file, userId, previousFile)
-    })
-  }
-
   const saveBackup = (filePath, file) => {
     const state = store.getState().present
     const onCloud = selectors.isCloudFileSelector(state)
@@ -83,7 +77,6 @@ export const renderFile = (root, whenClientIsReady) => {
           saveFile,
           basename,
           readFile,
-          autoSave,
           saveBackup,
           backupOfflineBackupForResume,
           saveAppSetting,

@@ -5,7 +5,6 @@ import thunk from 'redux-thunk'
 
 import { rootReducer, ActionTypes, SYSTEM_REDUCER_ACTION_TYPES } from 'pltr/v2'
 
-import saver from '../middlewares/saver'
 import tracker from '../middlewares/tracker'
 import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
@@ -51,7 +50,6 @@ export function configureStore(whenClientIsReady, initialState) {
   const middlewares = applyMiddleware(
     thunk,
     actionRecorder,
-    saver(whenClientIsReady),
     firebaseSync,
     offlineRecorder(whenClientIsReady),
     tracker(whenClientIsReady),

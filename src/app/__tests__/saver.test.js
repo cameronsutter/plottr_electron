@@ -27,7 +27,7 @@ describe('Saver', () => {
           const backupFile = () => {
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -43,6 +43,7 @@ describe('Saver', () => {
             [dummyState],
             [dummyState],
           ])
+          saver.cancelAllRemainingRequests()
         })
         describe('given  a saveFile function that succeeds, fails and then succeeds', () => {
           it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
@@ -70,7 +71,7 @@ describe('Saver', () => {
             const showMessageBox = () => {
               calledShowMessageBox++
             }
-            new Saver(
+            const saver = new Saver(
               getState,
               saveFile,
               backupFile,
@@ -104,6 +105,7 @@ describe('Saver', () => {
             expect(calledShowErrorBox).toBe(1)
             expect(calledShowMessageBox).toBe(1)
             expect(saveCalls).toEqual([[dummyState], [dummyState], [dummyState], [dummyState]])
+            saver.cancelAllRemainingRequests()
           })
         })
       })
@@ -119,11 +121,12 @@ describe('Saver', () => {
           const backupFile = () => {
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
           expect(saveCalls).toEqual([[dummyState], [dummyState]])
+          saver.cancelAllRemainingRequests()
         })
       })
     })
@@ -145,7 +148,7 @@ describe('Saver', () => {
           const backupFile = () => {
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -201,6 +204,7 @@ describe('Saver', () => {
               },
             ],
           ])
+          saver.cancelAllRemainingRequests()
         })
         describe('and a save function that takes 200ms to complete', () => {
           describe('and we cancel saving after 1 second', () => {
@@ -329,7 +333,7 @@ describe('Saver', () => {
           const backupFile = () => {
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -345,6 +349,7 @@ describe('Saver', () => {
               },
             ],
           ])
+          saver.cancelAllRemainingRequests()
         })
       })
     })
@@ -363,7 +368,7 @@ describe('Saver', () => {
             backupCalls.push(args)
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100000, 100)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100000, 100)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -379,6 +384,72 @@ describe('Saver', () => {
             [dummyState],
             [dummyState],
           ])
+          saver.cancelAllRemainingRequests()
+        })
+        describe('given  a saveBackup function that succeeds, fails and then succeeds', () => {
+          it('should call the appropriate error and success functions', async () => {
+            const dummyState = {}
+            const getState = () => dummyState
+            const backupCalls = []
+            const backupFile = (...args) => {
+              backupCalls.push(args)
+              if (backupCalls.length === 1) {
+                return Promise.resolve()
+              } else if (backupCalls.length === 2) {
+                return Promise.reject(new Error('boom!'))
+              } else {
+                return Promise.resolve()
+              }
+            }
+            const saveFile = () => {
+              return Promise.resolve()
+            }
+            let loggedErrors = 0
+            let loggedWarnings = 0
+            let loggedInfos = 0
+            const countingLogger = {
+              info: (...args) => {
+                console.log(...args)
+                loggedInfos++
+              },
+              warn: (...args) => {
+                loggedWarnings++
+              },
+              error: (...args) => {
+                loggedErrors++
+              },
+            }
+            const saver = new Saver(getState, saveFile, backupFile, countingLogger, 10000, 100)
+            expect(loggedInfos).toBeGreaterThan(0)
+            expect(loggedWarnings).toBe(0)
+            expect(loggedErrors).toBe(0)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(loggedInfos).toBeGreaterThan(0)
+            expect(loggedWarnings).toBe(0)
+            expect(loggedErrors).toBe(0)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(loggedInfos).toBeGreaterThan(0)
+            expect(loggedWarnings).toBe(1)
+            expect(loggedErrors).toBe(0)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(loggedInfos).toBeGreaterThan(0)
+            expect(loggedWarnings).toBe(1)
+            expect(loggedErrors).toBe(0)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(loggedInfos).toBeGreaterThan(0)
+            expect(loggedWarnings).toBe(1)
+            expect(loggedErrors).toBe(0)
+            expect(backupCalls).toEqual([[dummyState], [dummyState], [dummyState], [dummyState]])
+            saver.cancelAllRemainingRequests()
+          })
         })
       })
       describe('and a 500ms interval', () => {
@@ -393,11 +464,12 @@ describe('Saver', () => {
             backupCalls.push(args)
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
           expect(backupCalls).toEqual([[dummyState], [dummyState]])
+          saver.cancelAllRemainingRequests()
         })
       })
     })
@@ -419,7 +491,7 @@ describe('Saver', () => {
             backupCalls.push(args)
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -475,6 +547,7 @@ describe('Saver', () => {
               },
             ],
           ])
+          saver.cancelAllRemainingRequests()
         })
         describe('and a backup function that takes 200ms to complete', () => {
           describe('and we cancel saving after 1 second', () => {
@@ -603,7 +676,7 @@ describe('Saver', () => {
             backupCalls.push(args)
             return Promise.resolve()
           }
-          new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
+          const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
@@ -619,6 +692,7 @@ describe('Saver', () => {
               },
             ],
           ])
+          saver.cancelAllRemainingRequests()
         })
       })
     })

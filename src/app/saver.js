@@ -204,11 +204,6 @@ class Saver {
       message: t('Saving worked this time 🎉'),
     })
   }
-  onAutoSaveBackupError = (backupFilePath, backupErrorMessage) => {
-    this.logger.warn('[save state backup]', backupErrorMessage)
-    this.rollbar.error({ message: 'BACKUP failed' })
-    this.rollbar.warn(backupErrorMessage, { fileName: backupFilePath })
-  }
 
   constructor(
     getState,

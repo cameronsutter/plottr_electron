@@ -62,13 +62,13 @@ describe('Saver', () => {
             const backupFile = () => {
               return Promise.resolve()
             }
-            let calledShowErrorBox = false
+            let calledShowErrorBox = 0
             const showErrorBox = () => {
-              calledShowErrorBox = true
+              calledShowErrorBox++
             }
-            let calledShowMessageBox = false
+            let calledShowMessageBox = 0
             const showMessageBox = () => {
-              calledShowMessageBox = true
+              calledShowMessageBox++
             }
             new Saver(
               getState,
@@ -81,24 +81,29 @@ describe('Saver', () => {
               showMessageBox,
               showErrorBox
             )
-            expect(calledShowErrorBox).toBeFalsy()
-            expect(calledShowMessageBox).toBeFalsy()
+            expect(calledShowErrorBox).toBe(0)
+            expect(calledShowMessageBox).toBe(0)
             await new Promise((resolve) => {
               setTimeout(resolve, 110)
             })
-            expect(calledShowErrorBox).toBeFalsy()
-            expect(calledShowMessageBox).toBeFalsy()
+            expect(calledShowErrorBox).toBe(0)
+            expect(calledShowMessageBox).toBe(0)
             await new Promise((resolve) => {
               setTimeout(resolve, 110)
             })
-            expect(calledShowErrorBox).toBeTruthy()
-            expect(calledShowMessageBox).toBeFalsy()
+            expect(calledShowErrorBox).toBe(1)
+            expect(calledShowMessageBox).toBe(0)
             await new Promise((resolve) => {
               setTimeout(resolve, 110)
             })
-            expect(calledShowErrorBox).toBeTruthy()
-            expect(calledShowMessageBox).toBeTruthy()
-            expect(saveCalls).toEqual([[dummyState], [dummyState], [dummyState]])
+            expect(calledShowErrorBox).toBe(1)
+            expect(calledShowMessageBox).toBe(1)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(calledShowErrorBox).toBe(1)
+            expect(calledShowMessageBox).toBe(1)
+            expect(saveCalls).toEqual([[dummyState], [dummyState], [dummyState], [dummyState]])
           })
         })
       })

@@ -25,13 +25,25 @@ class PressureControlledTaskQueue {
   pendingJobBuffer = []
   jobTimer = null
   jobInterval = 10000
+  onJobSuccess = () => {}
+  onJobFailure = (_error) => {}
 
-  constructor(name, createNextJob, logger, maxJobs, jobInterval = 10000) {
+  constructor(
+    name,
+    createNextJob,
+    logger,
+    maxJobs,
+    jobInterval = 10000,
+    onJobSuccess = () => {},
+    onJobFailure = (_error) => {}
+  ) {
     this.name = name
     this.createNextJob = createNextJob
     this._logger = logger
     this.maxJobs = maxJobs
     this.jobInterval = jobInterval
+    this.onJobSuccess = onJobSuccess
+    this.onJobFailure = onJobFailure
   }
 
   executePendingJob = () => {
@@ -40,9 +52,15 @@ class PressureControlledTaskQueue {
     }
 
     const nextJob = this.pendingJobBuffer.shift()
-    this.currentJob = nextJob().then(() => {
-      this.currentJob = null
-    })
+    this.currentJob = nextJob()
+      .then(() => {
+        this.onJobSuccess()
+        this.currentJob = null
+      })
+      .catch((error) => {
+        this.onJobFailure(error)
+        this.currentJob = null
+      })
   }
 
   enqueueJob = () => {
@@ -142,7 +160,7 @@ onSaveBackupError: (filePath, errorMessage) => {
 -  },
    */
 
-const DUMMY_ROLLBAR = {
+export const DUMMY_ROLLBAR = {
   info: () => {},
   warn: () => {},
   error: () => {},
@@ -163,17 +181,18 @@ class Saver {
   backupRunner = null
   lastAutoSaveFailed = false
   rollbar = null
-  onSaveBackupError = (filePath, errorMessage) => {
+  showMessageBox = () => {}
+  showErrorBox = () => {}
+  onSaveBackupError = (errorMessage) => {
     this.logger.warn('[file save backup]', errorMessage)
     this.rollbar.error({ message: 'BACKUP failed' })
-    this.rollbar.warn(errorMessage, { fileName: filePath })
+    this.rollbar.warn(errorMessage)
   }
-  onSaveBackupSuccess = (filePath) => {
-    this.logger.info('[file save backup]', 'success', filePath)
+  onSaveBackupSuccess = () => {
+    this.logger.info('[file save backup]', 'success')
   }
-  onAutoSaveError = (filePath, errorMessage) => {
-    this.logger.warn(errorMessage)
-    this.rollbar.warn(errorMessage, { fileName: filePath })
+  onAutoSaveError = (errorMessage) => {
+    this.rollbar.warn(errorMessage)
     this.showErrorBox(
       t('Auto-saving failed'),
       t("Saving your file didn't work. Check where it's stored.")
@@ -208,6 +227,7 @@ class Saver {
     this.backupFile = backupFile
     this.rollbar = rollbar
     this.showMessageBox = showMessageBox
+    this.showErrorBox = showErrorBox
 
     this.saveRunner = new PressureControlledTaskQueue(
       'Save',
@@ -219,7 +239,18 @@ class Saver {
       },
       logger,
       MAX_SAVE_JOBS,
-      saveIntervalMS
+      saveIntervalMS,
+      () => {
+        if (this.lastAutoSaveFailed) {
+          this.lastAutoSaveFailed = false
+          this.onAutoSaveWorkedThisTime()
+        }
+      },
+      (error) => {
+        this.lastAutoSaveFailed = true
+        logger.warn('Failed to autosave', error)
+        this.onAutoSaveError(error.message)
+      }
     )
     this.saveRunner.start()
 

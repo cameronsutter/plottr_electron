@@ -1,4 +1,4 @@
-import Saver from '../saver'
+import Saver, { DUMMY_ROLLBAR } from '../saver'
 
 const CONSOLE_LOGGER = {
   info: (...args) => console.log(args),
@@ -43,6 +43,63 @@ describe('Saver', () => {
             [dummyState],
             [dummyState],
           ])
+        })
+        describe('given  a saveFile function that succeeds, fails and then succeeds', () => {
+          it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
+            const dummyState = {}
+            const getState = () => dummyState
+            const saveCalls = []
+            const saveFile = (...args) => {
+              saveCalls.push(args)
+              if (saveCalls.length === 1) {
+                return Promise.resolve()
+              } else if (saveCalls.length === 2) {
+                return Promise.reject(new Error('boom!'))
+              } else {
+                return Promise.resolve()
+              }
+            }
+            const backupFile = () => {
+              return Promise.resolve()
+            }
+            let calledShowErrorBox = false
+            const showErrorBox = () => {
+              calledShowErrorBox = true
+            }
+            let calledShowMessageBox = false
+            const showMessageBox = () => {
+              calledShowMessageBox = true
+            }
+            new Saver(
+              getState,
+              saveFile,
+              backupFile,
+              NOP_LOGGER,
+              100,
+              10000,
+              DUMMY_ROLLBAR,
+              showMessageBox,
+              showErrorBox
+            )
+            expect(calledShowErrorBox).toBeFalsy()
+            expect(calledShowMessageBox).toBeFalsy()
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(calledShowErrorBox).toBeFalsy()
+            expect(calledShowMessageBox).toBeFalsy()
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(calledShowErrorBox).toBeTruthy()
+            expect(calledShowMessageBox).toBeFalsy()
+            await new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            })
+            expect(calledShowErrorBox).toBeTruthy()
+            expect(calledShowMessageBox).toBeTruthy()
+            expect(saveCalls).toEqual([[dummyState], [dummyState], [dummyState]])
+          })
         })
       })
       describe('and a 500ms interval', () => {

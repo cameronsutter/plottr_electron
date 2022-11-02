@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron'
 import { app } from '@electron/remote'
 
 import { t } from 'plottr_locales'
-import { tree, helpers } from 'pltr/v2'
+import { tree, helpers, selectors } from 'pltr/v2'
 
 import { saveCustomTemplate } from './templates_from_firestore'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
@@ -95,6 +95,12 @@ function createCharacterTemplate(pltrData, { name, description, link }) {
   const data = cloneDeep(pltrData)
 
   let id = makeNewId('ch')
+  const attributes = selectors.allNonBaseCharacterAttributesSelector(data).map((attribute) => {
+    return {
+      type: attribute.type,
+      name: attribute.name,
+    }
+  })
   const template = {
     id: id,
     version: app.getVersion(),
@@ -102,7 +108,7 @@ function createCharacterTemplate(pltrData, { name, description, link }) {
     name: name,
     description: description,
     link: link,
-    attributes: data.customAttributes.characters,
+    attributes,
   }
   return template
 }

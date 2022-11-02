@@ -409,7 +409,6 @@ describe('Saver', () => {
             let loggedInfos = 0
             const countingLogger = {
               info: (...args) => {
-                console.log(...args)
                 loggedInfos++
               },
               warn: (...args) => {

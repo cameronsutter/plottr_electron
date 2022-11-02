@@ -184,7 +184,6 @@ class Saver {
   showMessageBox = () => {}
   showErrorBox = () => {}
   onSaveBackupError = (errorMessage) => {
-    this.logger.warn('[file save backup]', errorMessage)
     this.rollbar.error({ message: 'BACKUP failed' })
     this.rollbar.warn(errorMessage)
   }
@@ -259,7 +258,14 @@ class Saver {
       },
       logger,
       MAX_SAVE_JOBS,
-      backupIntervalMS
+      backupIntervalMS,
+      () => {
+        this.onSaveBackupSuccess()
+      },
+      (error) => {
+        this.logger.warn('[file save backup]', error)
+        this.onSaveBackupError(error.message)
+      }
     )
     this.backupRunner.start()
   }

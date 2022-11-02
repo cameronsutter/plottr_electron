@@ -11,6 +11,7 @@ install:
   - npm i -g npm@8.8.0
   - npm ci
 build_script:
+  - npm run validate
   - npm run dist:windows
 test: off
 branches:

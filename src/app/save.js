@@ -25,12 +25,13 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
       return saveOfflineFile(state)
     }
 
-    return saveFile(state)
+    const fileURL = selectors.fileURLSelector(state)
+    return saveFile(fileURL, state)
   })
 }
 
 export const backupFile = (whenClientIsReady, logger) => (state) => {
-  return whenClientIsReady(({ backupFile, offlineFileURL }) => {
+  return whenClientIsReady(({ saveBackup, offlineFileURL }) => {
     const hasAllKeys = selectors.hasAllKeysSelector(state)
     if (!hasAllKeys) {
       const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
@@ -55,7 +56,7 @@ export const backupFile = (whenClientIsReady, logger) => (state) => {
         return Promise.resolve()
       }
 
-      return backupFile(state)
+      return saveBackup(fileURL, state)
     })
   })
 }

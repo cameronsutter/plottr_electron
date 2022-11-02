@@ -10,6 +10,7 @@ import {
   migrateIfNeeded,
   featureFlags,
   emptyFile,
+  selectors,
 } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
@@ -25,6 +26,8 @@ import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import { makeFileModule } from './files'
 import { offlineFileURL } from '../common/utils/files'
+import Saver from './saver'
+import { saveFile, backupFile } from './save'
 
 const clientId = machineIdSync()
 
@@ -132,6 +135,10 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
     )
   })
 }
+
+const SAVE_INTERVAL_MS = 10000
+const BACKUP_INTERVAL_MS = 60000
+let saver = null
 
 export function bootFile(
   whenClientIsReady,
@@ -443,5 +450,29 @@ export function bootFile(
     }
   }
 
-  return _bootFile(fileURL, options, numOpenFiles, saveBackup)
+  return _bootFile(fileURL, options, numOpenFiles, saveBackup).then(() => {
+    if (saver) {
+      saver.cancelAllRemainingRequests()
+    }
+    saver = new Saver(
+      () => {
+        return store.getState().present
+      },
+      saveFile(whenClientIsReady, logger),
+      backupFile(whenClientIsReady, logger),
+      logger,
+      SAVE_INTERVAL_MS,
+      BACKUP_INTERVAL_MS,
+      rollbar,
+      (title, message) => {
+        dialog.showMessageBox(win, {
+          title,
+          message,
+        })
+      },
+      (title, message) => {
+        dialog.showErorrBox(title, message)
+      }
+    )
+  })
 }

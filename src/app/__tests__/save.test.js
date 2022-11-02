@@ -369,7 +369,7 @@ describe('backupFile', () => {
         }
         const whenClientIsReady = (f) => {
           return f({
-            backupFile: _backupFile,
+            saveBackup: _backupFile,
             offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
@@ -393,7 +393,7 @@ describe('backupFile', () => {
         }
         const whenClientIsReady = (f) => {
           return f({
-            backupFile: _backupFile,
+            saveBackup: _backupFile,
             offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
@@ -413,7 +413,7 @@ describe('backupFile', () => {
             }
             const whenClientIsReady = (f) => {
               return f({
-                backupFile: _backupFile,
+                saveBackup: _backupFile,
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
@@ -431,7 +431,7 @@ describe('backupFile', () => {
             }
             const whenClientIsReady = (f) => {
               return f({
-                backupFile: _backupFile,
+                saveBackup: _backupFile,
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
@@ -453,7 +453,7 @@ describe('backupFile', () => {
               }
               const whenClientIsReady = (f) => {
                 return f({
-                  backupFile: _backupFile,
+                  saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
@@ -471,7 +471,7 @@ describe('backupFile', () => {
               }
               const whenClientIsReady = (f) => {
                 return f({
-                  backupFile: _backupFile,
+                  saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
@@ -491,7 +491,7 @@ describe('backupFile', () => {
               }
               const whenClientIsReady = (f) => {
                 return f({
-                  backupFile: _backupFile,
+                  saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
@@ -509,7 +509,7 @@ describe('backupFile', () => {
               }
               const whenClientIsReady = (f) => {
                 return f({
-                  backupFile: _backupFile,
+                  saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
@@ -531,7 +531,7 @@ describe('backupFile', () => {
           }
           const whenClientIsReady = (f) => {
             return f({
-              backupFile: _backupFile,
+              saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
@@ -549,7 +549,7 @@ describe('backupFile', () => {
           }
           const whenClientIsReady = (f) => {
             return f({
-              backupFile: _backupFile,
+              saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
@@ -567,7 +567,7 @@ describe('backupFile', () => {
           }
           const whenClientIsReady = (f) => {
             return f({
-              backupFile: _backupFile,
+              saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }

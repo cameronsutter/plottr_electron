@@ -8,7 +8,6 @@ import {
   SAVE_OFFLINE_FILE,
   FILE_BASENAME,
   READ_FILE,
-  AUTO_SAVE_FILE,
   BACKUP_FILE,
   SAVE_BACKUP_ERROR,
   ENSURE_BACKUP_FULL_PATH,
@@ -38,7 +37,6 @@ import {
   FILE_BASENAME_ERROR_REPLY,
   READ_FILE_ERROR_REPLY,
   BACKUP_FILE_ERROR_REPLY,
-  AUTO_SAVE_FILE_ERROR_REPLY,
   ENSURE_BACKUP_FULL_PATH_ERROR_REPLY,
   ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY,
   FILE_EXISTS_ERROR_REPLY,
@@ -274,7 +272,6 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case FILE_EXISTS:
           case ENSURE_BACKUP_FULL_PATH:
           case ENSURE_BACKUP_TODAY_PATH:
-          case AUTO_SAVE_FILE:
           case BACKUP_FILE:
           case READ_FILE:
           case FILE_BASENAME:
@@ -349,7 +346,6 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case FILE_BASENAME_ERROR_REPLY:
           case READ_FILE_ERROR_REPLY:
           case BACKUP_FILE_ERROR_REPLY:
-          case AUTO_SAVE_FILE_ERROR_REPLY:
           case ENSURE_BACKUP_FULL_PATH_ERROR_REPLY:
           case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
           case LAST_OPENED_FILE_ERROR_REPLY:

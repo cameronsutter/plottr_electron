@@ -23,7 +23,6 @@ class PressureControlledTaskQueue {
     error: (...args) => console.error(args),
   }
   createNextJob = () => () => Promise.resolve()
-  currentJob = null
   maxJobs = 5
   pendingJobBuffer = []
   jobTimer = null
@@ -50,19 +49,22 @@ class PressureControlledTaskQueue {
   }
 
   executePendingJob = () => {
-    if (this.pendingJobBuffer.length === 0) {
+    if (this.pendingJobBuffer.length === 0 || !this.running) {
       return
     }
 
-    const nextJob = this.pendingJobBuffer.shift()
-    this.currentJob = nextJob()
+    const nextJob = this.pendingJobBuffer[0]
+    this.logger.info('Dequeueing a job...')
+    nextJob()
       .then(() => {
         this.onJobSuccess()
-        this.currentJob = null
       })
       .catch((error) => {
         this.onJobFailure(error)
-        this.currentJob = null
+      })
+      .finally(() => {
+        this.pendingJobBuffer = this.pendingJobBuffer.slice(1)
+        this.executePendingJob()
       })
   }
 
@@ -75,29 +77,19 @@ class PressureControlledTaskQueue {
     if (this.pendingJobBuffer.length >= this.maxJobs) {
       const error = new Error(`Too many concurrent ${name} jobs; dropping request to ${name}`)
       this.logger.error(jobId, `Too many concurrent ${name}s`, error)
-      return Promise.reject(error)
+      return
     }
 
     this.logger.info(jobId, `Accepted request to ${name} with current state.`)
 
-    this.pendingJobBuffer.push(jobThunk)
-    if (this.currentJob) {
+    if (this.pendingJobBuffer.length > 0) {
       this.logger.info(jobId, `${name} busy.  Waiting for last ${name} job to finish first`)
-      this.currentJob = this.currentJob
-        .then(() => {
-          this.logger.info(jobId, `${name} ready, comencing with ${name} job.`)
-          return this.currentJob
-        })
-        .catch((error) => {
-          this.logger.error(jobId, `Error executing previous ${name} job.  Enqueing next anyway.`)
-          this.executePendingJob()
-          return this.currentJob
-        })
-      return this.currentJob
+      this.pendingJobBuffer.push(jobThunk)
+      return
     }
 
+    this.pendingJobBuffer.push(jobThunk)
     this.executePendingJob()
-    return this.currentJob
   }
 
   stop = () => {
@@ -106,6 +98,7 @@ class PressureControlledTaskQueue {
       return
     }
 
+    this.pendingJobBuffer = []
     this.logger.warn(`Stopping ${this.name}`)
     this.running = false
     clearInterval(this.jobTimer)

@@ -211,6 +211,7 @@ class Saver {
           return currentWithoutSystemKeys[key] === this.lastStateSaved[key]
         })
         if (stateDidNotChange) {
+          this.logger.info('State did not change.  Refusing to save')
           return () => {
             return Promise.resolve()
           }
@@ -250,6 +251,7 @@ class Saver {
           return currentWithoutSystemKeys[key] === this.lastStateBackedUp[key]
         })
         if (stateDidNotChange) {
+          this.logger.info('State did not change.  Refusing to backup')
           return () => {
             return Promise.resolve()
           }

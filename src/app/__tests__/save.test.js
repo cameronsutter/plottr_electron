@@ -45,6 +45,52 @@ const stateForProFile = () => {
   )
   return store.getState().present
 }
+const stateForProFileWithOfflineModeEnabled = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'plottr://abcdefghowilovetowritethesetests'
+    )
+  )
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: true,
+      },
+    })
+  )
+  return store.getState().present
+}
+const stateForProFileWithOfflineModeDisabled = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'plottr://abcdefghowilovetowritethesetests'
+    )
+  )
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: false,
+      },
+    })
+  )
+  return store.getState().present
+}
 const resumingState = () => {
   const store = initialStore()
   store.dispatch(
@@ -334,12 +380,19 @@ describe('saveFile', () => {
               called = true
               return Promise.resolve()
             }
+            let calledSaveOfflineFile = false
+            const saveOfflineFile = () => {
+              calledSaveOfflineFile = true
+              return Promise.resolve()
+            }
             const whenClientIsReady = (f) => {
               return f({
                 saveFile: _saveFile,
+                saveOfflineFile,
               })
             }
             await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(calledSaveOfflineFile).toBeFalsy()
             expect(called).toBeFalsy()
           })
         })
@@ -369,7 +422,7 @@ describe('saveFile', () => {
         })
       })
       describe('and Plottr is not offline', () => {
-        it('should call save file', async () => {
+        it('should not call save file', async () => {
           const state = stateForProFile()
           let called = false
           const _saveFile = () => {
@@ -382,7 +435,55 @@ describe('saveFile', () => {
             })
           }
           await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
-          expect(called).toBeTruthy()
+          expect(called).toBeFalsy()
+        })
+        describe('and offline mode is enabled', () => {
+          it('should not call save file, but it should call saveOfflineFile', async () => {
+            const state = stateForProFileWithOfflineModeEnabled()
+            let called = false
+            const _saveFile = () => {
+              called = true
+              return Promise.resolve()
+            }
+            let calledSaveOfflineFile = false
+            const saveOfflineFile = () => {
+              calledSaveOfflineFile = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                saveFile: _saveFile,
+                saveOfflineFile,
+              })
+            }
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(called).toBeFalsy()
+            expect(calledSaveOfflineFile).toBeTrue()
+          })
+        })
+        describe('and offline mode is disabled', () => {
+          it('should not call save file, and it should not call saveOfflineFile', async () => {
+            const state = stateForProFileWithOfflineModeDisabled()
+            let called = false
+            const _saveFile = () => {
+              called = true
+              return Promise.resolve()
+            }
+            let calledSaveOfflineFile = false
+            const saveOfflineFile = () => {
+              calledSaveOfflineFile = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                saveFile: _saveFile,
+                saveOfflineFile,
+              })
+            }
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(called).toBeFalsy()
+            expect(calledSaveOfflineFile).toBeFalsy()
+          })
         })
       })
     })

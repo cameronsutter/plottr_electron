@@ -577,6 +577,69 @@ describe('Saver', () => {
           ])
           saver.cancelAllRemainingRequests()
         })
+        describe('and a get state function that returns the same state every other time', () => {
+          it('should attempt to backup the same thing *5* times in one second', async () => {
+            let getStateCounter = 0
+            let stateCounter = 1
+            const getState = () => {
+              getStateCounter++
+              if (getStateCounter % 2 === 0) {
+                return {
+                  stateCounter,
+                }
+              }
+
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
+            const backupCalls = []
+            const backupFile = (...args) => {
+              backupCalls.push(args)
+              return Promise.resolve()
+            }
+            const saveFile = () => {
+              return Promise.resolve()
+            }
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 1100)
+            })
+            expect(backupCalls).toEqual([
+              [
+                {
+                  stateCounter: 1,
+                },
+              ],
+              [
+                {
+                  stateCounter: 2,
+                },
+              ],
+              [
+                {
+                  stateCounter: 3,
+                },
+              ],
+              [
+                {
+                  stateCounter: 4,
+                },
+              ],
+              [
+                {
+                  stateCounter: 5,
+                },
+              ],
+              [
+                {
+                  stateCounter: 6,
+                },
+              ],
+            ])
+            saver.cancelAllRemainingRequests()
+          })
+        })
         describe('given  a saveBackup function that succeeds, fails and then succeeds', () => {
           it('should call the appropriate error and success functions', async () => {
             let stateCounter = 1

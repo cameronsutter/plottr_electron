@@ -25,6 +25,12 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
       return saveOfflineFile(state)
     }
 
+    const isCloudFile = selectors.isCloudFileSelector(state)
+    if (isCloudFile) {
+      // The only local *save* of a pro file is for offline mode(!)
+      return Promise.resolve()
+    }
+
     const fileURL = selectors.fileURLSelector(state)
     return saveFile(fileURL, state)
   })

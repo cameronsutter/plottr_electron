@@ -458,7 +458,7 @@ describe('saveFile', () => {
             }
             await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
             expect(called).toBeFalsy()
-            expect(calledSaveOfflineFile).toBeTrue()
+            expect(calledSaveOfflineFile).toBeTruthy()
           })
         })
         describe('and offline mode is disabled', () => {
@@ -643,7 +643,6 @@ describe('backupFile', () => {
         describe('with offline mode disabled', () => {
           describe('and local backups is disabled', () => {
             it('should not call the dummy backup', async () => {
-              // HERE
               const state = onlineWithOfflineDisabledAndLocalBackupDisabledState()
               let called = false
               const _backupFile = () => {

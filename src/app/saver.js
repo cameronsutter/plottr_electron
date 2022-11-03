@@ -235,6 +235,16 @@ class Saver {
       'Backup',
       () => {
         const currentState = this.getState()
+        const currentWithoutSystemKeys = removeSystemKeys(currentState)
+        const stateDidNotChange = Object.keys(currentWithoutSystemKeys).every((key) => {
+          return currentWithoutSystemKeys[key] === this.lastStateBackedUp[key]
+        })
+        if (stateDidNotChange) {
+          return () => {
+            return Promise.resolve()
+          }
+        }
+        this.lastStateBackedUp = currentWithoutSystemKeys
         return () => {
           return this.backupFile(currentState)
         }

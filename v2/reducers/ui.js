@@ -1,12 +1,12 @@
+import { omit } from 'lodash'
+
 import {
-  ADD_CHARACTER_ATTRIBUTE,
   ADD_PLACES_ATTRIBUTE,
   CHANGE_CURRENT_TIMELINE,
   CHANGE_CURRENT_VIEW,
   CHANGE_ORIENTATION,
   CLOSE_ATTRIBUTES_DIALOG,
   COLLAPSE_TIMELINE,
-  EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE,
   EXPAND_TIMELINE,
   FILE_LOADED,
@@ -16,7 +16,6 @@ import {
   NEW_FILE,
   OPEN_ATTRIBUTES_DIALOG,
   RECORD_SCROLL_POSITION,
-  REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_PLACES_ATTRIBUTE,
   SET_CHARACTER_FILTER,
   SET_CHARACTER_SORT,
@@ -44,9 +43,81 @@ import {
   DELETE_BEAT,
   SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB,
   SELECT_CHARACTER,
+  DELETE_CHARACTER_ATTRIBUTE,
+  DELETE_BOOK,
+  REORDER_CHARACTER_ATTRIBUTE_METADATA,
+  CREATE_CHARACTER_ATTRIBUTE,
+  DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE_METADATA,
 } from '../constants/ActionTypes'
 import { ui as defaultUI } from '../store/initialState'
 import { newFileUI } from '../store/newFileState'
+import { characterAttributesForCurrentBookSelector } from '../selectors/attributes'
+
+const removeCustomAttributeFilter = (state, action) => {
+  if (!state.characterFilter || !state.characterFilter[(action.id || action.name).toString()]) {
+    return state
+  }
+
+  const currentFilter = state.characterFilter
+
+  return {
+    ...state,
+    characterFilter: omit(currentFilter, action.id.toString()),
+  }
+}
+
+const addCustomAttributeOrdering = (state, fullState) => {
+  const toAttributeOrderEntry = (attribute) => {
+    if (attribute.id) {
+      return {
+        type: 'attributes',
+        id: attribute.id,
+      }
+    }
+
+    return {
+      type: 'customAttributes',
+      name: attribute.name,
+    }
+  }
+
+  // Case 1: there is no custom attribute ordering
+  if (!state.customAttributeOrder) {
+    const attributes = fullState?.ui ? characterAttributesForCurrentBookSelector(fullState) : []
+    return {
+      ...state,
+      customAttributeOrder: {
+        characters: attributes.map(toAttributeOrderEntry),
+      },
+    }
+  }
+
+  // Case 2: there is an incomplete custom attribute ordering
+  const attributes = fullState?.ui ? characterAttributesForCurrentBookSelector(fullState) : []
+  const notOrdered = attributes.filter((attribute) => {
+    return !state.customAttributeOrder.characters.some((orderEntry) => {
+      if (attribute.id) {
+        return orderEntry.type === 'attributes' && orderEntry.id === attribute.id
+      }
+
+      return orderEntry.type === 'customAttributes' && orderEntry.name === attribute.name
+    })
+  })
+  if (notOrdered.length > 0) {
+    return {
+      ...state,
+      customAttributeOrder: {
+        characters: [
+          ...state.customAttributeOrder.characters,
+          ...notOrdered.map(toAttributeOrderEntry),
+        ],
+      },
+    }
+  }
+
+  return state
+}
 
 const ui =
   (dataRepairers) =>
@@ -103,32 +174,17 @@ const ui =
       case SET_CHARACTER_FILTER:
         return Object.assign({}, state, { characterFilter: action.filter })
 
-      case ADD_CHARACTER_ATTRIBUTE:
-        filter = { ...state.characterFilter }
-        if (action.attribute.type == 'paragraph') return state
-        filter[action.attribute.name] = []
-        return Object.assign({}, state, { characterFilter: filter })
       case ADD_PLACES_ATTRIBUTE:
         filter = { ...state.placeFilter }
         if (action.attribute.type == 'paragraph') return state
         filter[action.attribute.name] = []
         return Object.assign({}, state, { placeFilter: filter })
 
-      case REMOVE_CHARACTER_ATTRIBUTE:
-        filter = { ...state.characterFilter }
-        delete filter[action.attribute]
-        return Object.assign({}, state, { characterFilter: filter })
       case REMOVE_PLACES_ATTRIBUTE:
         filter = { ...state.placeFilter }
         delete filter[action.attribute]
         return Object.assign({}, state, { placeFilter: filter })
 
-      case EDIT_CHARACTER_ATTRIBUTE:
-        filter = { ...state.characterFilter }
-        delete filter[action.oldAttribute.name]
-        if (action.newAttribute.type == 'paragraph') return state
-        filter[action.newAttribute.name] = []
-        return Object.assign({}, state, { characterFilter: filter })
       case EDIT_PLACES_ATTRIBUTE:
         filter = { ...state.placeFilter }
         delete filter[action.oldAttribute.name]
@@ -164,8 +220,131 @@ const ui =
         return Object.assign({}, state, { outlineFilter: filter })
       }
 
-      case FILE_LOADED:
-        return action.data.ui || newFileUI
+      case FILE_LOADED: {
+        const initialState = action.data.ui || newFileUI
+        return addCustomAttributeOrdering(initialState, action.data)
+      }
+
+      case CREATE_CHARACTER_ATTRIBUTE: {
+        if (action.fromLegacyAttribute) {
+          return {
+            ...state,
+            customAttributeOrder: {
+              ...state.customAttributeOrder,
+              characters: state.customAttributeOrder.characters.map((attribute) => {
+                if (attribute.name === action.attribute.name) {
+                  return {
+                    type: 'attributes',
+                    id: action.nextAttributeId,
+                  }
+                }
+
+                return attribute
+              }),
+            },
+          }
+        }
+
+        return {
+          ...state,
+          customAttributeOrder: {
+            ...state.customAttributeOrder,
+            characters: [
+              ...state.customAttributeOrder.characters,
+              {
+                type: 'attributes',
+                id: action.nextAttributeId,
+              },
+            ],
+          },
+        }
+      }
+
+      case DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE: {
+        return {
+          ...state,
+          customAttributeOrder: {
+            ...state.customAttributeOrder,
+            characters: state.customAttributeOrder.characters.filter((attribute) => {
+              return attribute.name !== action.attributeName
+            }),
+          },
+        }
+      }
+
+      case DELETE_CHARACTER_ATTRIBUTE: {
+        const nextState = removeCustomAttributeFilter(state, action)
+
+        return {
+          ...nextState,
+          customAttributeOrder: {
+            ...nextState.customAttributeOrder,
+            characters: nextState.customAttributeOrder.characters.filter((attribute) => {
+              return attribute.id !== action.id
+            }),
+          },
+        }
+      }
+
+      case EDIT_CHARACTER_ATTRIBUTE_METADATA: {
+        const { id, name, oldName } = action
+        if (id) {
+          return state
+        }
+
+        const isAttribute = (attribute) => {
+          return attribute.type === 'customAttributes' && attribute.name === oldName
+        }
+        const existingAttribute = state.customAttributeOrder.characters.some(isAttribute)
+
+        if (existingAttribute) {
+          return {
+            ...state,
+            customAttributeOrder: {
+              ...state.customAttributeOrder,
+              characters: state.customAttributeOrder.characters.map((attribute) => {
+                if (isAttribute(attribute)) {
+                  return {
+                    ...attribute,
+                    name,
+                  }
+                }
+
+                return attribute
+              }),
+            },
+          }
+        }
+
+        return state
+      }
+
+      case REORDER_CHARACTER_ATTRIBUTE_METADATA: {
+        const { toIndex, attributeId, attributeName } = action
+
+        const characterAttributeOrder = state.customAttributeOrder.characters
+
+        const isAttribute = (existingAttribute) => {
+          return (
+            (existingAttribute.type === 'attributes' && existingAttribute.id === attributeId) ||
+            (existingAttribute.type === 'customAttributes' &&
+              existingAttribute.name === attributeName)
+          )
+        }
+        const existingAttribute = characterAttributeOrder.find(isAttribute)
+        if (!existingAttribute) {
+          return state
+        }
+        const copy = characterAttributeOrder.slice().filter((attribute) => !isAttribute(attribute))
+        copy.splice(toIndex, 0, existingAttribute)
+
+        return {
+          ...state,
+          customAttributeOrder: {
+            characters: copy,
+          },
+        }
+      }
 
       case NEW_FILE:
         return newFileUI
@@ -342,9 +521,23 @@ const ui =
       case SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB: {
         return {
           ...state,
+          characterFilter: {},
           attributeTabs: {
             ...state.attributeTabs,
             characters: action.bookId,
+          },
+        }
+      }
+
+      case DELETE_BOOK: {
+        const selectedBook = state.attributeTabs?.characters
+
+        return {
+          ...state,
+          characterFilter: selectedBook === action.id ? {} : state.characterFilter,
+          attributeTabs: {
+            ...state.attributeTabs,
+            characters: selectedBook === action.id ? 'all' : selectedBook,
           },
         }
       }

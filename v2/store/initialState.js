@@ -86,9 +86,14 @@ export const ui = {
   characterTab: {
     selectedCharacter: null,
   },
+  customAttributeOrder: {
+    characters: [],
+  },
 }
 
-export const attributes = []
+export const attributes = {
+  characters: [],
+}
 
 export const notifications = {
   message: null,

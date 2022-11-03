@@ -4,6 +4,7 @@ import { beatHierarchyIsOn } from './featureFlags'
 import { allBookIdsSelector } from './books'
 import { hierarchyLevelCount } from './hierarchy'
 import { isDarkModeSelector } from './settings'
+import { showBookTabs } from './attributeTabs'
 
 export const currentTimelineSelector = (state) => {
   const bookIds = allBookIdsSelector(state)
@@ -127,13 +128,18 @@ export const timelineBundleSelector = createSelector(
 
 const uiSelector = (state) => state.ui
 
+const allCharactersSelector = (state) => state.characters
+
+const showBookTabsSelector = createSelector(allBookIdsSelector, allCharactersSelector, showBookTabs)
+
 export const attributeTabsSelector = createSelector(uiSelector, ({ attributeTabs }) => {
   return attributeTabs || {}
 })
-export const characterAttributeTabSelector = createSelector(
+export const selectedCharacterAttributeTabSelector = createSelector(
   attributeTabsSelector,
-  ({ characters }) => {
-    return characters || 'all'
+  showBookTabsSelector,
+  ({ characters }, showTabs) => {
+    return showTabs ? characters || 'all' : 'all'
   }
 )
 export const characterTabSelector = createSelector(uiSelector, ({ characterTab }) => {
@@ -144,4 +150,9 @@ export const selectedCharacterSelector = createSelector(
   ({ selectedCharacter }) => {
     return selectedCharacter || null
   }
+)
+const customAttributeOrderSelector = (state) => state.ui.customAttributeOrder || []
+export const characterCustomAttributeOrderSelector = createSelector(
+  customAttributeOrderSelector,
+  ({ characters }) => characters || []
 )

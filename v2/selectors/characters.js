@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect'
-import { sortBy, groupBy, uniq, mapValues } from 'lodash'
+import { sortBy, groupBy, uniq, mapValues, differenceWith, isEqual } from 'lodash'
 import {
   characterSortSelector,
   characterFilterSelector,
   currentTimelineSelector,
   charactersSearchTermSelector,
-  characterAttributeTabSelector,
+  selectedCharacterAttributeTabSelector,
+  characterCustomAttributeOrderSelector,
 } from './ui'
 import { isSeries } from '../helpers/books'
 import { outOfOrderSearch } from '../helpers/outOfOrderSearch'
@@ -13,9 +14,27 @@ import {
   attributesSelector,
   characterAttributesForCurrentBookSelector,
   characterAttributsForBookByIdSelector,
+  overriddenBookIdSelector,
 } from './attributes'
+import { allBookIdsSelector } from './books'
+import { showBookTabs } from './attributeTabs'
 
 export const allCharactersSelector = (state) => state.characters
+
+export const showBookTabsSelector = createSelector(
+  allBookIdsSelector,
+  allCharactersSelector,
+  showBookTabs
+)
+
+export const characterAttributeTabSelector = createSelector(
+  selectedCharacterAttributeTabSelector,
+  showBookTabsSelector,
+  (selectedTab, showTabs) => {
+    return !showTabs ? 'all' : selectedTab
+  }
+)
+
 // this one also lives in ./customAttributes.js but it causes a circular dependency to import it here
 
 const selectId = (state, id) => id
@@ -26,54 +45,127 @@ export const singleCharacterSelector = createSelector(
   (characters, propId) => characters.find((ch) => ch.id == propId)
 )
 
+const displayedSingleCharacter = (character, bookId, currentBookAttributeDescirptorsById) => {
+  const currentBookAttributes = character.attributes || []
+
+  const tags =
+    currentBookAttributes.find((attribute) => {
+      return (
+        attribute.bookId === bookId &&
+        currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+        currentBookAttributeDescirptorsById[attribute.id].name === 'tags'
+      )
+    })?.value ||
+    (bookId === 'all' && character.tags) ||
+    []
+
+  const description =
+    currentBookAttributes.find((attribute) => {
+      return (
+        attribute.bookId === bookId &&
+        currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+        currentBookAttributeDescirptorsById[attribute.id].name === 'shortDescription'
+      )
+    })?.value ||
+    (bookId === 'all' && character.description) ||
+    ''
+
+  const notes =
+    currentBookAttributes.find((attribute) => {
+      return (
+        attribute.bookId === bookId &&
+        currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+        currentBookAttributeDescirptorsById[attribute.id].name === 'description'
+      )
+    })?.value ||
+    (bookId === 'all' && character.notes) ||
+    ''
+
+  const categoryId =
+    currentBookAttributes.find((attribute) => {
+      return (
+        attribute.bookId === bookId &&
+        currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
+        currentBookAttributeDescirptorsById[attribute.id].name === 'category'
+      )
+    })?.value ||
+    (bookId === 'all' && character.categoryId) ||
+    null
+
+  return {
+    ...character,
+    tags,
+    description,
+    notes,
+    categoryId,
+  }
+}
+
 // This selector produces a character with overridden attributes based
 // on the book we're looking at.
 export const displayedSingleCharacterSelector = createSelector(
   singleCharacterSelector,
   characterAttributeTabSelector,
   characterAttributsForBookByIdSelector,
-  (character, bookId, currentBookAttributeDescirptorsById) => {
-    const currentBookAttributes = (character.attributes || []).filter((attribute) => {
-      return currentBookAttributeDescirptorsById[attribute.id]?.bookId === bookId
-    })
-
-    const bookIds =
-      currentBookAttributes.find((attribute) => {
-        return (
-          currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
-          currentBookAttributeDescirptorsById[attribute.id].name === 'bookIds'
-        )
-      })?.value || character.bookIds
-
-    const tags =
-      currentBookAttributes.find((attribute) => {
-        return (
-          currentBookAttributeDescirptorsById[attribute.id].type === 'base-attribute' &&
-          currentBookAttributeDescirptorsById[attribute.id].name === 'tags'
-        )
-      })?.value || character.tags
-
-    return {
-      ...character,
-      bookIds,
-      tags,
-    }
-  }
+  displayedSingleCharacter
 )
 
 export const charactersByCategorySelector = createSelector(allCharactersSelector, (characters) =>
   groupBy(characters, 'categoryId')
 )
 
+export const allDisplayedCharactersSelector = createSelector(
+  allCharactersSelector,
+  characterAttributeTabSelector,
+  characterAttributsForBookByIdSelector,
+  overriddenBookIdSelector,
+  (characters, bookId, currentBookAttributeDescirptorsById, overridenBookId) => {
+    return characters.map((character) =>
+      displayedSingleCharacter(
+        character,
+        overridenBookId || bookId,
+        currentBookAttributeDescirptorsById
+      )
+    )
+  }
+)
+
+export const allDisplayedCharactersForCurrentBookSelector = createSelector(
+  allDisplayedCharactersSelector,
+  characterAttributeTabSelector,
+  overriddenBookIdSelector,
+  (characters, selectedBookId, overriddenBookId) => {
+    const bookId = overriddenBookId || selectedBookId || 'series'
+    if (bookId === 'all' || bookId === 'series') {
+      return characters
+    }
+
+    return characters.filter((character) => {
+      return character.bookIds.indexOf(bookId) > -1
+    })
+  }
+)
+
+export const displayedCharactersByCategorySelector = createSelector(
+  allDisplayedCharactersSelector,
+  (characters) => groupBy(characters, 'categoryId')
+)
+
 export const characterTemplateAttributeValueSelector =
   (characterId, templateId, attributeName) => (state) => {
+    const bookId = characterAttributeTabSelector(state)
     const character = singleCharacterSelector(state, characterId)
     const templateOnCharacter = character && character.templates.find(({ id }) => id === templateId)
     const valueInAttributes =
       templateOnCharacter &&
       templateOnCharacter.attributes.find(({ name }) => name === attributeName).value
     const valueOnTemplate = templateOnCharacter && templateOnCharacter[attributeName]
-    return valueInAttributes || valueOnTemplate
+    const valueForBook =
+      templateOnCharacter.values &&
+      templateOnCharacter.values.find((value) => {
+        return value.name === attributeName && value.bookId === bookId
+      })?.value
+    return valueForBook || (bookId === 'all' && (valueInAttributes || valueOnTemplate))
   }
 
 export const characterFilterIsEmptySelector = createSelector(
@@ -90,8 +182,8 @@ export const characterFilterIsEmptySelector = createSelector(
 )
 
 export const visibleSortedCharactersByCategorySelector = createSelector(
-  allCharactersSelector,
-  charactersByCategorySelector,
+  allDisplayedCharactersSelector,
+  displayedCharactersByCategorySelector,
   characterFilterSelector,
   characterFilterIsEmptySelector,
   characterSortSelector,
@@ -119,12 +211,11 @@ export const visibleSortedCharactersByCategorySelector = createSelector(
             // It could be a new attribute
             const characterAttributes = ch.attributes || []
             const attributeFound = characterAttributes.find((attribute) => {
-              const attributeBookId = allAttributes.find((bookAttribute) => {
-                return attribute.id === bookAttribute.id
-              })?.bookId
-              return attribute?.id?.toString() === attr && attributeBookId === bookId
+              return attribute?.id?.toString() === attr && attribute.bookId === bookId
             })
-            const definesAttribute = attributeFound?.value === val
+            const definesAttribute =
+              attributeFound?.value === val ||
+              (attributeFound && attributeFound.value === undefined && val === '')
             if (definesAttribute) {
               return true
             }
@@ -229,19 +320,24 @@ export const charactersSortedInBookSelector = createSelector(
 
 const characterCustomAttributes = (state) => state.customAttributes.characters
 
-const combinedAttributesForCharacter = (character, attributes, customAttributes, bookId) => {
+const combinedAttributesForCharacter = (
+  character,
+  attributes,
+  customAttributes,
+  selectedBookId,
+  overridenBookId,
+  order
+) => {
   const characterBookAttributes = character.attributes || []
   const allAttributes = attributes.characters || []
+  const bookId = overridenBookId || selectedBookId
   const newAttributes = allAttributes
     .filter((bookAttribute) => {
-      return (
-        (bookAttribute.bookId === bookId || bookAttribute.bookId === 'all') &&
-        bookAttribute.type !== 'base-attribute'
-      )
+      return bookAttribute.type !== 'base-attribute'
     })
     .map((bookAttribute) => {
       const value = characterBookAttributes.find((attributeValue) => {
-        return attributeValue.id === bookAttribute.id
+        return attributeValue.id === bookAttribute.id && attributeValue.bookId === bookId
       })
       return {
         value: '',
@@ -258,7 +354,20 @@ const combinedAttributesForCharacter = (character, attributes, customAttributes,
     }
   })
 
-  return [...newAttributes, ...legacyAttributes]
+  const ordered = order.map((entry) => {
+    if (entry.type === 'attributes') {
+      return newAttributes.find(({ id }) => {
+        return id === entry.id
+      })
+    } else {
+      return legacyAttributes.find(({ name }) => {
+        return name === entry.name
+      })
+    }
+  })
+  const missing = differenceWith([...newAttributes, ...legacyAttributes], ordered, isEqual)
+
+  return [...ordered, ...missing]
 }
 
 export const characterAttributesSelector = createSelector(
@@ -266,6 +375,8 @@ export const characterAttributesSelector = createSelector(
   attributesSelector,
   characterCustomAttributes,
   characterAttributeTabSelector,
+  overriddenBookIdSelector,
+  characterCustomAttributeOrderSelector,
   combinedAttributesForCharacter
 )
 
@@ -274,13 +385,16 @@ export const characterAttributeValuesForCurrentBookSelector = createSelector(
   attributesSelector,
   characterCustomAttributes,
   characterAttributeTabSelector,
-  (characters, attributes, customAttributes, bookId) => {
+  characterCustomAttributeOrderSelector,
+  (characters, attributes, customAttributes, bookId, order) => {
     const newAttributeValues = characters.reduce((acc, character) => {
       const attributesForCharacter = combinedAttributesForCharacter(
         character,
         attributes,
         customAttributes,
-        bookId
+        bookId,
+        null,
+        order
       )
       attributesForCharacter.forEach((attribute) => {
         if (attribute.value !== undefined && attribute.value !== null && attribute.value !== '') {
@@ -312,5 +426,47 @@ export const characterAttributeValuesForCurrentBookSelector = createSelector(
       ...newAttributeValues,
       ...legacyAttributes,
     }
+  }
+)
+
+export const characterBookCategoriesSelector = createSelector(
+  currentTimelineSelector,
+  allCharactersSelector,
+  (bookId, characters) => {
+    const categoryMembership = characters.reduce((acc, character) => {
+      if (character.bookIds.indexOf(bookId) > -1) {
+        return {
+          ...acc,
+          'Characters In Book': [character.id, ...(acc['Characters In Book'] || [])],
+        }
+      }
+
+      return {
+        ...acc,
+        'Not in Book': [character.id, ...(acc['Not in Book'] || [])],
+      }
+    }, {})
+    return [
+      categoryMembership['Characters In Book']?.length > 0
+        ? [
+            {
+              displayHeading: false,
+              key: 'Characters In Book',
+              'Characters In Book': categoryMembership['Characters In Book'],
+            },
+          ]
+        : [],
+      categoryMembership['Not in Book']?.length > 0
+        ? [
+            {
+              glyph: 'plus',
+              displayHeading: true,
+              key: 'Not in Book',
+              'Not in Book': categoryMembership['Not in Book'],
+              lineAbove: true,
+            },
+          ]
+        : [],
+    ].flatMap((x) => x)
   }
 )

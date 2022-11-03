@@ -145,3 +145,17 @@ export const noteCustomAttributesRestrictedValues = createSelector(
   noteCustomAttributesSelector,
   (attrs) => placeKeys.concat(attrs.map((a) => a.name))
 )
+
+const attributeNameSelector = (_state, attributeName) => {
+  return attributeName
+}
+
+export const legacyCustomCharacterAttributeByName = createSelector(
+  characterCustomAttributesSelector,
+  attributeNameSelector,
+  (customAttributes, name) => {
+    return customAttributes.find((attribute) => {
+      return attribute.name === name
+    })
+  }
+)

@@ -1,9 +1,7 @@
-import { cloneDeep, uniq } from 'lodash'
+import { cloneDeep, omit, uniq } from 'lodash'
 import {
   ADD_CHARACTER,
   ADD_CHARACTER_WITH_TEMPLATE,
-  ADD_CHARACTER_WITH_VALUES,
-  EDIT_CHARACTER,
   FILE_LOADED,
   NEW_FILE,
   RESET,
@@ -15,7 +13,6 @@ import {
   DELETE_CARD,
   DELETE_CHARACTER,
   DELETE_IMAGE,
-  EDIT_CHARACTER_ATTRIBUTE,
   ATTACH_TAG_TO_CHARACTER,
   REMOVE_TAG_FROM_CHARACTER,
   ATTACH_BOOK_TO_CHARACTER,
@@ -31,6 +28,13 @@ import {
   EDIT_CHARACTER_ATTRIBUTE_VALUE,
   EDIT_CHARACTER_ATTRIBUTE_METADATA,
   DELETE_CHARACTER_ATTRIBUTE,
+  EDIT_CHARACTER_SHORT_DESCRIPTION,
+  EDIT_CHARACTER_DESCRIPTION,
+  EDIT_CHARACTER_CATEGORY,
+  DELETE_BOOK,
+  EDIT_CHARACTER_NAME,
+  EDIT_CHARACTER_IMAGE,
+  DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE,
 } from '../constants/ActionTypes'
 import { character as defaultCharacter } from '../store/initialState'
 import { newFileCharacters } from '../store/newFileState'
@@ -59,7 +63,10 @@ const attachBaseAttribute = (attributeName, value, action, state) => {
       const attributeId = action.attributeId
       const newAttributes = character.attributes || []
       const hasAttribute = newAttributes.some((attribute) => {
-        return attribute.id === attributeId
+        return (
+          attribute.id === attributeId &&
+          attribute.bookId === (action.bookId || action.currentBookId)
+        )
       })
       const attributes = attributeId
         ? hasAttribute
@@ -72,12 +79,18 @@ const attachBaseAttribute = (attributeName, value, action, state) => {
               }
               return attribute
             })
-          : [...newAttributes, { id: attributeId, value: [value] }]
+          : [
+              ...newAttributes,
+              {
+                id: attributeId,
+                bookId: action.bookId || action.currentBookId,
+                value: [value, ...character[attributeName]],
+              },
+            ]
         : newAttributes
 
       return {
         ...character,
-        [attributeName]: uniq([...character[attributeName], value]),
         attributes,
       }
     }
@@ -85,31 +98,64 @@ const attachBaseAttribute = (attributeName, value, action, state) => {
   })
 }
 
-const removeBaseAttribute = (attributeName, value, action, state) => {
+const removeTag = (attributeName, value, action, state) => {
   return state.map((character) => {
-    return character.id === action.id
-      ? {
-          ...character,
-          [attributeName]: character[attributeName].filter((thisValue) => {
-            return thisValue !== value
-          }),
-          attributes: action.attributeId
-            ? character.attributes.map((attribute) => {
-                if (attribute.id === action.attributeId) {
-                  return {
-                    ...attribute,
-                    value: attribute.value.filter((id) => {
-                      return id !== value
-                    }),
-                  }
+    if (character.id === action.id) {
+      const attributeId = action.attributeId
+      const newAttributes = character.attributes || []
+      const hasAttribute = newAttributes.some((attribute) => {
+        return (
+          attribute.id === attributeId &&
+          attribute.bookId === (action.bookId || action.currentBookId)
+        )
+      })
+      const attributes = attributeId
+        ? hasAttribute
+          ? newAttributes.map((attribute) => {
+              if (
+                attribute.id === attributeId &&
+                attribute.bookId === (action.bookId || action.currentBookId)
+              ) {
+                return {
+                  ...attribute,
+                  value: attribute.value.filter((x) => x !== value),
                 }
-                return attribute
-              })
-            : character.attributes,
-        }
-      : character
+              }
+              return attribute
+            })
+          : [
+              ...newAttributes,
+              {
+                id: attributeId,
+                bookId: action.bookId || action.currentBookId,
+                value: character[attributeName].filter((x) => x !== value),
+              },
+            ]
+        : newAttributes
+
+      return {
+        ...character,
+        attributes,
+      }
+    }
+
+    return character
   })
 }
+
+const DISALLOWED_NAMES = [
+  'notes',
+  'categoryId',
+  'id',
+  'name',
+  'color',
+  'cards',
+  'noteIds',
+  'templates',
+  'tags',
+  'imageId',
+  'bookIds',
+]
 
 const characters =
   (dataRepairers) =>
@@ -126,16 +172,7 @@ const characters =
             name: action.name,
             description: action.description,
             notes: action.notes,
-          },
-        ]
-
-      case ADD_CHARACTER_WITH_VALUES:
-        return [
-          ...state,
-          {
-            ...defaultCharacter,
-            ...action.character,
-            id: nextId(state),
+            ...(action.currentBookId !== 'all' ? { bookIds: [action.currentBookId] } : {}),
           },
         ]
 
@@ -159,10 +196,31 @@ const characters =
         ]
       }
 
-      case EDIT_CHARACTER:
-        return state.map((character) =>
-          character.id === action.id ? Object.assign({}, character, action.attributes) : character
-        )
+      case EDIT_CHARACTER_NAME: {
+        return state.map((character) => {
+          if (character.id === action.id) {
+            return {
+              ...character,
+              name: action.name,
+            }
+          }
+
+          return character
+        })
+      }
+
+      case EDIT_CHARACTER_IMAGE: {
+        return state.map((character) => {
+          if (character.id === action.id) {
+            return {
+              ...character,
+              imageId: action.imageId,
+            }
+          }
+
+          return character
+        })
+      }
 
       case EDIT_CHARACTER_TEMPLATE_ATTRIBUTE: {
         return state.map((character) => {
@@ -171,13 +229,32 @@ const characters =
               ...character,
               templates: character.templates.map((template) => {
                 if (template.id === action.templateId) {
+                  const templateHasAttribute = template.attributes.some((attribute) => {
+                    return attribute.name === action.name
+                  })
+                  if (!templateHasAttribute) {
+                    return template
+                  }
+                  const isAttributeValue = (attribute) => {
+                    return attribute.bookId === action.bookId && attribute.name === action.name
+                  }
+                  const hasAttributeValue = (template.values || []).some(isAttributeValue)
                   return {
                     ...template,
-                    attributes: template.attributes.map((attribute) =>
-                      attribute.name === action.name
-                        ? { ...attribute, value: action.value }
-                        : attribute
-                    ),
+                    values: hasAttributeValue
+                      ? (template.values || []).map((attribute) => {
+                          if (isAttributeValue(attribute))
+                            return {
+                              ...attribute,
+                              value: action.value,
+                            }
+
+                          return attribute
+                        })
+                      : [
+                          ...(template.values || []),
+                          { name: action.name, value: action.value, bookId: action.bookId },
+                        ],
                   }
                 }
                 return template
@@ -207,41 +284,14 @@ const characters =
           }
         })
 
-      case EDIT_CHARACTER_ATTRIBUTE:
-        if (
-          action.oldAttribute.type != 'text' &&
-          action.oldAttribute.name == action.newAttribute.name
-        )
-          return state
-
-        return state.map((c) => {
-          let ch = cloneDeep(c)
-
-          if (action.oldAttribute.name != action.newAttribute.name) {
-            // Firebase doesn't support undefined, so use null when the attribute isn't set
-            ch[action.newAttribute.name] = ch[action.oldAttribute.name] || null
-            delete ch[action.oldAttribute.name]
-          }
-
-          // reset value to blank string
-          // (if changing to something other than text type)
-          // see ../selectors/customAttributes.js for when this is allowed
-          if (action.oldAttribute.type == 'text') {
-            let desc = ch[action.newAttribute.name]
-            if (!desc || (desc && desc.length && typeof desc !== 'string')) {
-              desc = ''
-            }
-            ch[action.newAttribute.name] = desc
-          }
-          return ch
-        })
-
       case ATTACH_CHARACTER_TO_CARD:
         return state.map((character) => {
-          let cards = cloneDeep(character.cards)
-          cards.push(action.id)
           return character.id === action.characterId
-            ? Object.assign({}, character, { cards: cards })
+            ? {
+                ...character,
+                bookIds: uniq([action.currentTimeline, ...character.bookIds]),
+                cards: [action.id, ...character.cards],
+              }
             : character
         })
 
@@ -273,30 +323,60 @@ const characters =
         })
 
       case ATTACH_TAG_TO_CHARACTER: {
-        return attachBaseAttribute('tags', action.id, action, state)
+        return attachBaseAttribute('tags', action.tagId, action, state)
       }
 
       case REMOVE_TAG_FROM_CHARACTER: {
-        return removeBaseAttribute('tags', action.id, action, state)
+        return removeTag('tags', action.tagId, action, state)
       }
 
-      case DELETE_TAG:
+      case DELETE_TAG: {
         return state.map((character) => {
-          if (character.tags.includes(action.id)) {
-            let tags = cloneDeep(character.tags)
-            tags.splice(tags.indexOf(action.id), 1)
-            return Object.assign({}, character, { tags: tags })
-          } else {
+          if (!Array.isArray(character.attributes)) {
             return character
           }
+
+          const characterHasAttribute = character.attributes.some((attribute) => {
+            return action.attributeId === attribute.id
+          })
+          if (characterHasAttribute) {
+            return {
+              ...character,
+              attributes: character.attributes.map((attribute) => {
+                if (action.attributeId === attribute.id) {
+                  return {
+                    ...attribute,
+                    value: attribute.value.filter((tagId) => {
+                      return tagId !== action.id
+                    }),
+                  }
+                }
+
+                return attribute
+              }),
+            }
+          }
+
+          return character
         })
+      }
 
       case ATTACH_BOOK_TO_CHARACTER: {
-        return attachBaseAttribute(action, state)
+        return state.map((character) => {
+          let bookIds = cloneDeep(character.bookIds)
+          bookIds.push(action.bookId)
+          return character.id === action.id
+            ? Object.assign({}, character, { bookIds: bookIds })
+            : character
+        })
       }
 
       case REMOVE_BOOK_FROM_CHARACTER: {
-        return removeBaseAttribute('bookIds', action.bookId, action, state)
+        return state.map((character) => {
+          return character.id === action.id
+            ? { ...character, bookIds: character.bookIds.filter((id) => id !== action.bookId) }
+            : character
+        })
       }
 
       case REMOVE_TEMPLATE_FROM_CHARACTER:
@@ -305,6 +385,21 @@ const characters =
           const newTemplates = character.templates.filter((t) => t.id != action.templateId)
           return Object.assign({}, character, { templates: newTemplates })
         })
+
+      case DELETE_BOOK: {
+        return state.map((character) => {
+          if (character.bookIds.indexOf(action.id) > -1) {
+            return {
+              ...character,
+              bookIds: character.bookIds.filter((bookId) => {
+                return bookId !== action.id
+              }),
+            }
+          }
+
+          return character
+        })
+      }
 
       case DELETE_NOTE:
         return state.map((character) => {
@@ -354,19 +449,47 @@ const characters =
       case NEW_FILE:
         return newFileCharacters
 
-      case DELETE_CHARACTER_CATEGORY:
-        return state.map((character) => {
-          // In one case the ids are strings and the other they are numbers
-          // so just to be safe string them both
-          if (String(character.categoryId) !== String(action.category.id)) {
+      case DELETE_CHARACTER_CATEGORY: {
+        return state.map((rawCharacter) => {
+          // Problem is here.  Also take a look at whether deleting
+          // tags works now.
+          const character =
+            rawCharacter?.categoryId?.toString() === action.categoryId.toString()
+              ? {
+                  ...rawCharacter,
+                  categoryId: null,
+                }
+              : rawCharacter
+
+          if (!Array.isArray(character.attributes)) {
             return character
           }
 
-          return {
-            ...character,
-            categoryId: null,
+          const characterHasAttribute = character.attributes.some((attribute) => {
+            return action.attributeId === attribute.id
+          })
+          if (characterHasAttribute) {
+            return {
+              ...character,
+              attributes: character.attributes.map((attribute) => {
+                if (
+                  action.attributeId === attribute.id &&
+                  action.categoryId.toString() === attribute.value?.toString()
+                ) {
+                  return {
+                    ...attribute,
+                    value: null,
+                  }
+                }
+
+                return attribute
+              }),
+            }
           }
+
+          return character
         })
+      }
 
       case LOAD_CHARACTERS:
         return action.characters
@@ -387,50 +510,41 @@ const characters =
         return state.map((character) => {
           const attributes = character.attributes || []
 
+          const oldValue =
+            DISALLOWED_NAMES.indexOf(action.attribute.name) === -1
+              ? character[action.attribute.name]
+              : undefined
+          const value = action.attribute.value || oldValue
+
           return {
             ...character,
             attributes: [
               ...attributes,
-              { value: action.attribute.value, id: action.nextAttributeId },
+              {
+                value,
+                id: action.nextAttributeId,
+                bookId: action.bookId || action.currentBookId,
+              },
             ],
           }
         })
       }
 
-      case EDIT_CHARACTER_ATTRIBUTE_VALUE: {
-        return state.map((character) => {
-          if (character.id === action.characterId) {
-            const attributes = character.attributes || []
-            return {
-              ...character,
-              attributes: [
-                ...attributes.map((attribute) => {
-                  if (attribute.id === action.attributeId) {
-                    return {
-                      ...attribute,
-                      value: action.value,
-                    }
-                  }
-
-                  return attribute
-                }),
-              ],
-            }
+      case EDIT_CHARACTER_ATTRIBUTE_METADATA: {
+        const nextState = state.map((character) => {
+          if (!Array.isArray(character.attributes)) {
+            return character
           }
 
-          return character
-        })
-      }
-
-      case EDIT_CHARACTER_ATTRIBUTE_METADATA: {
-        return state.map((character) => {
-          const attributes = character.attributes || []
+          const attributes = character.attributes
           return {
             ...character,
             attributes: attributes.map((attribute) => {
               if (attribute.id === action.id) {
                 const newValue =
-                  action.attributeType === 'text' && typeof attribute.value !== 'string'
+                  typeof attribute.value === 'undefined'
+                    ? attribute.value
+                    : action.attributeType === 'text' && typeof attribute.value !== 'string'
                     ? firstParagraphText(attribute.value)
                     : attribute.value
                 return {
@@ -443,10 +557,83 @@ const characters =
             }),
           }
         })
+
+        if (!action.id) {
+          const { oldName, name } = action
+          return nextState.map((character) => {
+            if (character[oldName]) {
+              return omit(
+                {
+                  ...character,
+                  [name]: character[oldName],
+                },
+                oldName
+              )
+            }
+
+            return character
+          })
+        }
+
+        return nextState
+      }
+
+      case EDIT_CHARACTER_CATEGORY:
+      case EDIT_CHARACTER_DESCRIPTION:
+      case EDIT_CHARACTER_SHORT_DESCRIPTION:
+      case EDIT_CHARACTER_ATTRIBUTE_VALUE: {
+        return state.map((character) => {
+          if (character.id === action.characterId) {
+            const attributes = character.attributes || []
+            const isAttributeToEdit = (attribute) => {
+              return (
+                attribute.id === action.attributeId &&
+                attribute.bookId === (action.bookId || action.currentBookId)
+              )
+            }
+            const willEditAnAttribute = attributes.some(isAttributeToEdit)
+
+            if (willEditAnAttribute) {
+              return {
+                ...character,
+                attributes: [
+                  ...attributes.map((attribute) => {
+                    if (isAttributeToEdit(attribute)) {
+                      return {
+                        ...attribute,
+                        value: action.value,
+                      }
+                    }
+
+                    return attribute
+                  }),
+                ],
+              }
+            }
+
+            return {
+              ...character,
+              attributes: [
+                ...attributes,
+                {
+                  bookId: action.bookId || action.currentBookId,
+                  id: action.attributeId,
+                  value: action.value,
+                },
+              ],
+            }
+          }
+
+          return character
+        })
       }
 
       case DELETE_CHARACTER_ATTRIBUTE: {
         return state.map((character) => {
+          if (!Array.isArray(character.attributes)) {
+            return character
+          }
+
           const attributes = character.attributes || []
           return {
             ...character,
@@ -454,6 +641,17 @@ const characters =
               return attribute.id !== action.id
             }),
           }
+        })
+      }
+
+      case DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE: {
+        const { attributeName } = action
+
+        return state.map((character) => {
+          if (typeof character[attributeName] !== 'undefined') {
+            return omit(character, attributeName)
+          }
+          return character
         })
       }
 

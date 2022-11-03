@@ -1,15 +1,12 @@
 import {
-  ADD_CHARACTER_ATTRIBUTE,
   ADD_PLACES_ATTRIBUTE,
   ADD_CARDS_ATTRIBUTE,
   ADD_LINES_ATTRIBUTE,
   ADD_NOTES_ATTRIBUTE,
-  REMOVE_CHARACTER_ATTRIBUTE,
   REMOVE_CARDS_ATTRIBUTE,
   REMOVE_PLACES_ATTRIBUTE,
   REMOVE_LINES_ATTRIBUTE,
   REMOVE_NOTES_ATTRIBUTE,
-  EDIT_CHARACTER_ATTRIBUTE,
   EDIT_PLACES_ATTRIBUTE,
   EDIT_CARDS_ATTRIBUTE,
   EDIT_NOTES_ATTRIBUTE,
@@ -21,25 +18,14 @@ import {
   REORDER_CARDS_ATTRIBUTE,
   REORDER_NOTES_ATTRIBUTE,
   LOAD_CUSTOM_ATTRIBUTES,
+  DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE,
+  EDIT_CHARACTER_ATTRIBUTE_METADATA,
 } from '../constants/ActionTypes'
 import { combineReducers } from 'redux'
 import { newFileCustomAttributes } from '../store/newFileState'
 
 function characters(state = [], action) {
   switch (action.type) {
-    case ADD_CHARACTER_ATTRIBUTE:
-      return [...state, action.attribute]
-
-    case REMOVE_CHARACTER_ATTRIBUTE: // attribute is the attr's name
-      return state.filter((attr) => attr.name !== action.attribute)
-
-    case EDIT_CHARACTER_ATTRIBUTE: {
-      let newState = [...state]
-      newState[action.index] = action.newAttribute
-
-      return newState
-    }
-
     case RESET:
     case NEW_FILE:
       return newFileCustomAttributes['characters']
@@ -54,6 +40,31 @@ function characters(state = [], action) {
 
       copy.splice(toIndex, 0, attribute)
       return copy
+    }
+
+    case EDIT_CHARACTER_ATTRIBUTE_METADATA: {
+      const { id, name, attributeType, oldName } = action
+      if (id || !oldName) {
+        return state
+      }
+
+      return state.map((attribute) => {
+        if (attribute.name === oldName) {
+          return {
+            ...attribute,
+            name,
+            type: attributeType,
+          }
+        }
+        return attribute
+      })
+    }
+
+    case DELETE_CHARACTER_LEGACY_CUSTOM_ATTRIBUTE: {
+      const { attributeName } = action
+      return state.filter((attribute) => {
+        return attribute.name !== attributeName
+      })
     }
 
     case LOAD_CUSTOM_ATTRIBUTES:

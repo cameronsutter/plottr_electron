@@ -105,12 +105,17 @@ process.on('uncaughtException', (err) => {
 })
 
 // Secondary SETUP //
-window.requestIdleCallback(() => {
-  whenClientIsReady(({ ensureBackupFullPath, ensureBackupTodayPath, attemptToFetchTemplates }) => {
-    return ensureBackupFullPath().then(ensureBackupTodayPath).then(attemptToFetchTemplates)
-  })
-  initMixpanel()
-})
+window.requestIdleCallback(
+  () => {
+    whenClientIsReady(
+      ({ ensureBackupFullPath, ensureBackupTodayPath, attemptToFetchTemplates }) => {
+        return ensureBackupFullPath().then(ensureBackupTodayPath).then(attemptToFetchTemplates)
+      }
+    )
+    initMixpanel()
+  },
+  { timeout: 1000 }
+)
 
 // TODO: fix this by exporting store from the configureStore file
 // kind of a hack to enable store dispatches in otherwise hard situations

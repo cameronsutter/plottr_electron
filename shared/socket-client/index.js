@@ -120,9 +120,10 @@ import {
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
+const FORCE_IDLE_WORK_TIMEOUT = 1000
 const defer =
   typeof process === 'object' && process.type === 'renderer'
-    ? window.requestIdleCallback
+    ? (f) => window.requestIdleCallback(f, { timeout: FORCE_IDLE_WORK_TIMEOUT })
     : (f) => {
         setTimeout(f, 0)
       }

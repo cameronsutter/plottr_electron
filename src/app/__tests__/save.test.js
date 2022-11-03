@@ -447,8 +447,8 @@ describe('saveFile', () => {
               })
             }
             await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
-            expect(calledSaveFile).toBeFalsy()
-            expect(calledSaveOfflineFile).toBeTruthy()
+            expect(calledSaveOfflineFile).toBeFalsy()
+            expect(calledSaveFile).toBeTruthy()
           })
         })
       })

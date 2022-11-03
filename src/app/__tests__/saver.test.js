@@ -17,8 +17,12 @@ describe('Saver', () => {
     describe('given a getState function that produces the same value', () => {
       describe('and a 100ms interval', () => {
         it('should attempt to save the same thing 10 times in one second', async () => {
-          const dummyState = {}
-          const getState = () => dummyState
+          let stateCounter = 1
+          const getState = () => {
+            return {
+              stateCounter: stateCounter++,
+            }
+          }
           const saveCalls = []
           const saveFile = (...args) => {
             saveCalls.push(args)
@@ -32,23 +36,67 @@ describe('Saver', () => {
             setTimeout(resolve, 1100)
           })
           expect(saveCalls).toEqual([
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
+            [
+              {
+                stateCounter: 1,
+              },
+            ],
+            [
+              {
+                stateCounter: 2,
+              },
+            ],
+            [
+              {
+                stateCounter: 3,
+              },
+            ],
+            [
+              {
+                stateCounter: 4,
+              },
+            ],
+            [
+              {
+                stateCounter: 5,
+              },
+            ],
+            [
+              {
+                stateCounter: 6,
+              },
+            ],
+            [
+              {
+                stateCounter: 7,
+              },
+            ],
+            [
+              {
+                stateCounter: 8,
+              },
+            ],
+            [
+              {
+                stateCounter: 9,
+              },
+            ],
+            [
+              {
+                stateCounter: 10,
+              },
+            ],
           ])
           saver.cancelAllRemainingRequests()
         })
         describe('given  a saveFile function that succeeds, fails and then succeeds', () => {
           it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
-            const dummyState = {}
-            const getState = () => dummyState
+            let stateCounter = 1
+            const getState = () => {
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
             const saveCalls = []
             const saveFile = (...args) => {
               saveCalls.push(args)
@@ -104,15 +152,40 @@ describe('Saver', () => {
             })
             expect(calledShowErrorBox).toBe(1)
             expect(calledShowMessageBox).toBe(1)
-            expect(saveCalls).toEqual([[dummyState], [dummyState], [dummyState], [dummyState]])
+            expect(saveCalls).toEqual([
+              [
+                {
+                  stateCounter: 1,
+                },
+              ],
+              [
+                {
+                  stateCounter: 2,
+                },
+              ],
+              [
+                {
+                  stateCounter: 3,
+                },
+              ],
+              [
+                {
+                  stateCounter: 4,
+                },
+              ],
+            ])
             saver.cancelAllRemainingRequests()
           })
         })
       })
       describe('and a 500ms interval', () => {
         it('should attempt to save the same thing 2 times in one second', async () => {
-          const dummyState = {}
-          const getState = () => dummyState
+          let stateCounter = 1
+          const getState = () => {
+            return {
+              stateCounter: stateCounter++,
+            }
+          }
           const saveCalls = []
           const saveFile = (...args) => {
             saveCalls.push(args)
@@ -125,7 +198,18 @@ describe('Saver', () => {
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
-          expect(saveCalls).toEqual([[dummyState], [dummyState]])
+          expect(saveCalls).toEqual([
+            [
+              {
+                stateCounter: 1,
+              },
+            ],
+            [
+              {
+                stateCounter: 2,
+              },
+            ],
+          ])
           saver.cancelAllRemainingRequests()
         })
       })
@@ -358,8 +442,12 @@ describe('Saver', () => {
     describe('given a getState function that produces the same value', () => {
       describe('and a 100ms interval', () => {
         it('should attempt to backup the same thing 10 times in one second', async () => {
-          const dummyState = {}
-          const getState = () => dummyState
+          let stateCounter = 1
+          const getState = () => {
+            return {
+              stateCounter: stateCounter++,
+            }
+          }
           const backupCalls = []
           const saveFile = () => {
             return Promise.resolve()
@@ -373,23 +461,67 @@ describe('Saver', () => {
             setTimeout(resolve, 1100)
           })
           expect(backupCalls).toEqual([
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
-            [dummyState],
+            [
+              {
+                stateCounter: 1,
+              },
+            ],
+            [
+              {
+                stateCounter: 2,
+              },
+            ],
+            [
+              {
+                stateCounter: 3,
+              },
+            ],
+            [
+              {
+                stateCounter: 4,
+              },
+            ],
+            [
+              {
+                stateCounter: 5,
+              },
+            ],
+            [
+              {
+                stateCounter: 6,
+              },
+            ],
+            [
+              {
+                stateCounter: 7,
+              },
+            ],
+            [
+              {
+                stateCounter: 8,
+              },
+            ],
+            [
+              {
+                stateCounter: 9,
+              },
+            ],
+            [
+              {
+                stateCounter: 10,
+              },
+            ],
           ])
           saver.cancelAllRemainingRequests()
         })
         describe('given  a saveBackup function that succeeds, fails and then succeeds', () => {
           it('should call the appropriate error and success functions', async () => {
-            const dummyState = {}
-            const getState = () => dummyState
+            let stateCounter = 1
+            const getState = () => {
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
             const backupCalls = []
             const backupFile = (...args) => {
               backupCalls.push(args)
@@ -446,15 +578,40 @@ describe('Saver', () => {
             expect(loggedInfos).toBeGreaterThan(0)
             expect(loggedWarnings).toBe(1)
             expect(loggedErrors).toBe(0)
-            expect(backupCalls).toEqual([[dummyState], [dummyState], [dummyState], [dummyState]])
+            expect(backupCalls).toEqual([
+              [
+                {
+                  stateCounter: 1,
+                },
+              ],
+              [
+                {
+                  stateCounter: 2,
+                },
+              ],
+              [
+                {
+                  stateCounter: 3,
+                },
+              ],
+              [
+                {
+                  stateCounter: 4,
+                },
+              ],
+            ])
             saver.cancelAllRemainingRequests()
           })
         })
       })
       describe('and a 500ms interval', () => {
         it('should attempt to backup the same thing 2 times in one second', async () => {
-          const dummyState = {}
-          const getState = () => dummyState
+          let stateCounter = 1
+          const getState = () => {
+            return {
+              stateCounter: stateCounter++,
+            }
+          }
           const backupCalls = []
           const saveFile = () => {
             return Promise.resolve()
@@ -467,7 +624,18 @@ describe('Saver', () => {
           await new Promise((resolve) => {
             setTimeout(resolve, 1100)
           })
-          expect(backupCalls).toEqual([[dummyState], [dummyState]])
+          expect(backupCalls).toEqual([
+            [
+              {
+                stateCounter: 1,
+              },
+            ],
+            [
+              {
+                stateCounter: 2,
+              },
+            ],
+          ])
           saver.cancelAllRemainingRequests()
         })
       })

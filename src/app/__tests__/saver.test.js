@@ -89,6 +89,64 @@ describe('Saver', () => {
           ])
           saver.cancelAllRemainingRequests()
         })
+        describe('and a get state function that returns the same state every other time', () => {
+          it('should attempt to save the same thing *5* times in one second', async () => {
+            let getStateCounter = 0
+            let stateCounter = 1
+            const getState = () => {
+              getStateCounter++
+              if (getStateCounter % 2 === 0) {
+                return {
+                  stateCounter,
+                }
+              }
+
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
+            const saveCalls = []
+            const saveFile = (...args) => {
+              saveCalls.push(args)
+              return Promise.resolve()
+            }
+            const backupFile = () => {
+              return Promise.resolve()
+            }
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
+            await new Promise((resolve) => {
+              setTimeout(resolve, 1100)
+            })
+            expect(saveCalls).toEqual([
+              [
+                {
+                  stateCounter: 1,
+                },
+              ],
+              [
+                {
+                  stateCounter: 2,
+                },
+              ],
+              [
+                {
+                  stateCounter: 3,
+                },
+              ],
+              [
+                {
+                  stateCounter: 4,
+                },
+              ],
+              [
+                {
+                  stateCounter: 5,
+                },
+              ],
+            ])
+            saver.cancelAllRemainingRequests()
+          })
+        })
         describe('given  a saveFile function that succeeds, fails and then succeeds', () => {
           it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
             let stateCounter = 1

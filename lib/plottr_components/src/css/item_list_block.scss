@@ -3,17 +3,18 @@
 .item-list__book-tabs-wrapper {
   & > div {
     @include application-text;
+    @include secondary-text;
   }
 
   .nav-pills {
     & > li > a {
       background: none !important;
+      color: rgba(22, 34, 45, 0.7) !important;
     }
     & > li {
       &.active {
         a {
-          color: $nav-pills-active-link-hover-bg !important;
-          outline: 2px solid $nav-pills-active-link-hover-bg !important;
+          outline: 2px solid rgba(22, 34, 45, 0.7) !important;
         }
       }
     }

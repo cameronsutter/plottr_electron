@@ -12,8 +12,7 @@ cache:
     - $HOME/.cache/electron
     - $HOME/.cache/electron-builder
 script:
-  - npm run validate
-  - npm run dist
+  - npm run validate && npm run dist
 branches:
   only:
     - master

@@ -1,3 +1,5 @@
+import { isEqual } from 'lodash'
+
 import { t } from 'plottr_locales'
 import { removeSystemKeys } from 'pltr/v2'
 
@@ -202,6 +204,10 @@ class Saver {
         const currentState = this.getState()
         const currentWithoutSystemKeys = removeSystemKeys(currentState)
         const stateDidNotChange = Object.keys(currentWithoutSystemKeys).every((key) => {
+          if (key === 'file') {
+            return isEqual(currentWithoutSystemKeys[key], this.lastStateSaved[key])
+          }
+
           return currentWithoutSystemKeys[key] === this.lastStateSaved[key]
         })
         if (stateDidNotChange) {
@@ -237,6 +243,10 @@ class Saver {
         const currentState = this.getState()
         const currentWithoutSystemKeys = removeSystemKeys(currentState)
         const stateDidNotChange = Object.keys(currentWithoutSystemKeys).every((key) => {
+          if (key === 'file') {
+            return isEqual(currentWithoutSystemKeys[key], this.lastStateSaved[key])
+          }
+
           return currentWithoutSystemKeys[key] === this.lastStateBackedUp[key]
         })
         if (stateDidNotChange) {

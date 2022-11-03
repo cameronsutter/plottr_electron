@@ -143,6 +143,11 @@ describe('Saver', () => {
                   stateCounter: 5,
                 },
               ],
+              [
+                {
+                  stateCounter: 6,
+                },
+              ],
             ])
             saver.cancelAllRemainingRequests()
           })

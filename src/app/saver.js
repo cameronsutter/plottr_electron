@@ -1,4 +1,5 @@
 import { t } from 'plottr_locales'
+import { removeSystemKeys } from 'pltr/v2'
 
 const DEFAULT_SAVE_INTERVAL_MS = 10000
 const DEFAULT_BACKUP_INTERVAL_MS = 60000
@@ -153,6 +154,8 @@ class Saver {
   rollbar = null
   showMessageBox = () => {}
   showErrorBox = () => {}
+  lastStateSaved = {}
+  lastStateBackedUp = {}
   onSaveBackupError = (errorMessage) => {
     this.rollbar.error({ message: 'BACKUP failed' })
     this.rollbar.warn(errorMessage)
@@ -197,6 +200,16 @@ class Saver {
       'Save',
       () => {
         const currentState = this.getState()
+        const currentWithoutSystemKeys = removeSystemKeys(currentState)
+        const stateDidNotChange = Object.keys(currentWithoutSystemKeys).every((key) => {
+          return currentWithoutSystemKeys[key] === this.lastStateSaved[key]
+        })
+        if (stateDidNotChange) {
+          return () => {
+            return Promise.resolve()
+          }
+        }
+        this.lastStateSaved = currentWithoutSystemKeys
         return () => {
           return this.saveFile(currentState)
         }

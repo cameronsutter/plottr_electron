@@ -83,6 +83,54 @@ const offlineWithOfflineDisabledState = () => {
   )
   return store.getState().present
 }
+const offlineLocalFileWithOfflineDisabledState = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'device:///tmp/a-dummy-file.pltr'
+    )
+  )
+  store.dispatch(actions.project.setOffline(true))
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: false,
+      },
+    })
+  )
+  return store.getState().present
+}
+const offlineLocalFileWithOfflineEnabledState = () => {
+  const store = initialStore()
+  store.dispatch(
+    actions.ui.loadFile(
+      'Test Pro file',
+      false,
+      EMPTY_FILE,
+      EMPTY_FILE.file.version,
+      'device:///tmp/a-dummy-file.pltr'
+    )
+  )
+  store.dispatch(actions.project.setOffline(true))
+  const oldSettings = store.getState().present.settings.appSettings
+  store.dispatch(
+    actions.settings.setAppSettings({
+      ...oldSettings,
+      user: {
+        ...oldSettings.user,
+        enableOfflineMode: true,
+      },
+    })
+  )
+  return store.getState().present
+}
 const onlineWithOfflineDisabledAndLocalBackupDisabledState = () => {
   const store = initialStore()
   store.dispatch(
@@ -353,6 +401,56 @@ describe('saveFile', () => {
         }
         await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
         expect(called).toBeTruthy()
+      })
+      describe('and Plottr is offline', () => {
+        describe('and offline mode is disabled', () => {
+          it('should call the dummy saveFile', async () => {
+            const state = offlineLocalFileWithOfflineDisabledState()
+            let called = false
+            const _saveFile = () => {
+              called = true
+              return Promise.resolve()
+            }
+            let calledSaveOfflineFile = false
+            const saveOfflineFile = () => {
+              calledSaveOfflineFile = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                saveFile: _saveFile,
+                saveOfflineFile,
+              })
+            }
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(calledSaveOfflineFile).toBeFalsy()
+            expect(called).toBeTruthy()
+          })
+        })
+        describe('and offline mode is enabled', () => {
+          it('should call the dummy saveFile', async () => {
+            const state = offlineLocalFileWithOfflineEnabledState()
+            let calledSaveFile = false
+            const _saveFile = () => {
+              calledSaveFile = true
+              return Promise.resolve()
+            }
+            let calledSaveOfflineFile = false
+            const saveOfflineFile = () => {
+              calledSaveOfflineFile = true
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                saveFile: _saveFile,
+                saveOfflineFile,
+              })
+            }
+            await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            expect(calledSaveFile).toBeFalsy()
+            expect(calledSaveOfflineFile).toBeTruthy()
+          })
+        })
       })
     })
   })

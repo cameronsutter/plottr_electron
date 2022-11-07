@@ -10,7 +10,6 @@ import {
   migrateIfNeeded,
   featureFlags,
   emptyFile,
-  selectors,
 } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'

@@ -123,6 +123,8 @@ import {
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
   COPY_FILE_ERROR_REPLY,
+  NUKE_LAST_OPENED_FILE_URL,
+  NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -334,6 +336,7 @@ const connect = (
           case RM_RF:
           case LAST_OPENED_FILE:
           case SET_LAST_OPENED_FILE:
+          case NUKE_LAST_OPENED_FILE_URL:
           case PING: {
             resolvePromise()
             return
@@ -360,6 +363,7 @@ const connect = (
             return
           }
           // Error return types
+          case NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY:
           case REMOVE_FROM_TEMP_FILES_ERROR_REPLY:
           case SAVE_TO_TEMP_FILE_ERROR_REPLY:
           case DELETE_KNOWN_FILE_ERROR_REPLY:
@@ -571,6 +575,10 @@ const connect = (
       return sendPromise(SET_LAST_OPENED_FILE, { filePath })
     }
 
+    const nukeLastOpenedFileURL = () => {
+      return sendPromise(NUKE_LAST_OPENED_FILE_URL)
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -755,6 +763,7 @@ const connect = (
           listenToBackupsChanges,
           lastOpenedFile,
           setLastOpenedFilePath,
+          nukeLastOpenedFileURL,
           close: clientConnection.close.bind(clientConnection),
         })
       })

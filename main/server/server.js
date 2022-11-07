@@ -75,6 +75,7 @@ import {
   SET_LAST_OPENED_FILE,
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
+  NUKE_LAST_OPENED_FILE_URL,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -864,6 +865,14 @@ const setupListeners = (port, userDataPath) => {
               () =>
                 statusManager.registerTask(setLastOpenedFilePath(filePath), SET_LAST_OPENED_FILE),
               () => 'Error while setting last opened file'
+            )
+          }
+          case NUKE_LAST_OPENED_FILE_URL: {
+            return handlePromise(
+              () => 'Nuking the last opened file URL',
+              () =>
+                statusManager.registerTask(setLastOpenedFilePath(''), NUKE_LAST_OPENED_FILE_URL),
+              () => 'Error nuking the last opened file URL'
             )
           }
           // Subscriptions

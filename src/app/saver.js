@@ -133,7 +133,6 @@ export const DUMMY_ROLLBAR = {
 const DUMMY_SHOW_MESSAGE_BOX = () => {}
 const DUMMY_SHOW_ERROR_BOX = () => {}
 
-// TODO: Shouldn't I not save when there's not been a change??
 class Saver {
   getState = () => ({})
   saveFile = (file) => Promise.resolve()

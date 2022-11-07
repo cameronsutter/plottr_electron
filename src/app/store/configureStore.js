@@ -10,7 +10,6 @@ import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import actionRecorder from '../middlewares/actionRecorder'
 import firebaseSync from '../middlewares/firebaseSync'
-import offlineRecorder from '../middlewares/offlineRecorder'
 import dataRepairers from './dataRepairers'
 
 // Ten seconds

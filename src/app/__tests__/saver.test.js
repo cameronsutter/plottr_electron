@@ -14,7 +14,7 @@ const NOP_LOGGER = {
 
 describe('Saver', () => {
   describe('save', () => {
-    describe('given a getState function that produces the same value', () => {
+    describe('given a dummy getState function', () => {
       describe('and a 100ms interval', () => {
         it('should attempt to save the same thing 10 times in one second', async () => {
           let stateCounter = 1
@@ -89,8 +89,8 @@ describe('Saver', () => {
           ])
           saver.cancelAllRemainingRequests()
         })
-        describe('and a get state function that returns the same state every other time', () => {
-          it('should attempt to save the same thing *5* times in one second', async () => {
+        describe('and the get state function returns the same state as its previous call every other time', () => {
+          it('should attempt to save the same thing *6* times in one second', async () => {
             let getStateCounter = 0
             let stateCounter = 1
             const getState = () => {
@@ -502,7 +502,7 @@ describe('Saver', () => {
     })
   })
   describe('backup', () => {
-    describe('given a getState function that produces the same value', () => {
+    describe('given a dummy getState function', () => {
       describe('and a 100ms interval', () => {
         it('should attempt to backup the same thing 10 times in one second', async () => {
           let stateCounter = 1
@@ -577,8 +577,8 @@ describe('Saver', () => {
           ])
           saver.cancelAllRemainingRequests()
         })
-        describe('and a get state function that returns the same state every other time', () => {
-          it('should attempt to backup the same thing *5* times in one second', async () => {
+        describe('and the get state function returns the same state every other time', () => {
+          it('should attempt to backup the same thing *6* times in one second', async () => {
             let getStateCounter = 0
             let stateCounter = 1
             const getState = () => {

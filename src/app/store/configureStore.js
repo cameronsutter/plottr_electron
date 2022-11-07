@@ -51,7 +51,6 @@ export function configureStore(whenClientIsReady, initialState) {
     thunk,
     actionRecorder,
     firebaseSync,
-    offlineRecorder(whenClientIsReady),
     tracker(whenClientIsReady),
     logger,
     reporter

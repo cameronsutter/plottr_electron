@@ -96,9 +96,13 @@ const fileModule = (userDataPath) => {
           return Promise.reject(message)
         }
         const withoutSystemKeys = removeSystemKeys(jsonData)
-        return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(
-          writeAndWaitForFlush(filePath, withoutSystemKeys)
-        )
+        return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(() => {
+          const payload =
+            process.env.NODE_ENV == 'development'
+              ? JSON.stringify(withoutSystemKeys, null, 2)
+              : JSON.stringify(withoutSystemKeys)
+          return writeAndWaitForFlush(filePath, payload)
+        })
       })
     }
 

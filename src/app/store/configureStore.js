@@ -5,13 +5,11 @@ import thunk from 'redux-thunk'
 
 import { rootReducer, ActionTypes, SYSTEM_REDUCER_ACTION_TYPES } from 'pltr/v2'
 
-import saver from '../middlewares/saver'
 import tracker from '../middlewares/tracker'
 import logger from '../middlewares/logger'
 import reporter from '../middlewares/reporter'
 import actionRecorder from '../middlewares/actionRecorder'
 import firebaseSync from '../middlewares/firebaseSync'
-import offlineRecorder from '../middlewares/offlineRecorder'
 import dataRepairers from './dataRepairers'
 
 // Ten seconds
@@ -51,9 +49,7 @@ export function configureStore(whenClientIsReady, initialState) {
   const middlewares = applyMiddleware(
     thunk,
     actionRecorder,
-    saver(whenClientIsReady),
     firebaseSync,
-    offlineRecorder(whenClientIsReady),
     tracker(whenClientIsReady),
     logger,
     reporter

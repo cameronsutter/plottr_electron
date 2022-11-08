@@ -96,6 +96,7 @@ module.exports = {
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   modulePathIgnorePatterns: [
+    '.test-output',
     '__tests__/fixtures/.*',
     'lib/plottr_check-prop-types/.*',
     'lib/tree-changes/.*',

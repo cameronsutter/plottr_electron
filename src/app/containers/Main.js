@@ -293,6 +293,13 @@ const Main = ({
     dashboardClosed,
   ])
 
+  const dismissUploadPromptHandlingLastOpened = useCallback(() => {
+    dismissPromptToUploadFile()
+    whenClientIsReady(({ nukeLastOpenedFileURL }) => {
+      return nukeLastOpenedFileURL()
+    })
+  }, [dismissPromptToUploadFile])
+
   const goToSupport = () => {
     shell.openExternal('https://plottr.com/support/')
   }
@@ -354,7 +361,7 @@ const Main = ({
                           return
                         }
                         finishUploadingFileToCloud()
-                        dismissPromptToUploadFile()
+                        dismissUploadPromptHandlingLastOpened()
                         // Lie about the number of open files to avoid opening
                         // the dashboard when we double click a file.
                         //
@@ -368,7 +375,7 @@ const Main = ({
                       .catch((error) => {})
                   })
                 }}
-                onCancel={dismissPromptToUploadFile}
+                onCancel={dismissUploadPromptHandlingLastOpened}
                 busy={uploadingFileToCloud}
               />
             </>

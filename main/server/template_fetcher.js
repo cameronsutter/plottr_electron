@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import fetch from 'node-fetch-cjs'
 import semverGt from 'semver/functions/gt'
 import { isDevelopment } from './isDevelopment'
 

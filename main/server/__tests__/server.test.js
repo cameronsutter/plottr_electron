@@ -37,7 +37,8 @@ afterAll(async () => {
 jest.setTimeout(10000)
 
 describe('startServer', () => {
-  it('should start, broadcast ports, and have well-formed stores', async () => {
+  it('should start, broadcast ports, have well-formed stores and ensure that various messages work', async () => {
+    // ==========Basic Initialisation==========
     let portBroadcasted = null
     const userDataDirectory = await fs.promises.mkdtemp(
       '.test-output/plottr_test_socket_server_userData'
@@ -87,6 +88,8 @@ describe('startServer', () => {
     expect(fatalErrorOccured).toBeFalsy()
     await new Promise((resolve) => setTimeout(resolve, 5000))
     expect(fatalErrorOccured).toBeFalsy()
+
+    // ==========Check the Stores==========
     const configFile = await fs.promises.readFile(path.join(userDataDirectory, 'config.json'))
     const customTemplates = await fs.promises.readFile(
       path.join(userDataDirectory, 'custom_templates.json')
@@ -125,6 +128,28 @@ describe('startServer', () => {
     const parsedTrialInfo = JSON.parse(trialInfo)
     expect(typeof parsedTrialInfo).toEqual('object')
     expect(parsedTrialInfo).toMatchObject({})
+
+    // ==========Check that Last Opened Logic Works==========
+    await whenClientIsReady(({ setLastOpenedFilePath }) => {
+      return setLastOpenedFilePath('device:///dummy-path.pltr')
+    })
+    const lastOpenedSet = await fs.promises.readFile(
+      path.join(userDataDirectory, 'last_opened.json')
+    )
+    const parsedLastOpenedSet = JSON.parse(lastOpenedSet)
+    expect(parsedLastOpenedSet).toMatchObject({
+      lastOpenedFilePath: 'device:///dummy-path.pltr',
+    })
+    await whenClientIsReady(({ nukeLastOpenedFileURL }) => {
+      return nukeLastOpenedFileURL()
+    })
+    const lastOpenedAfter = await fs.promises.readFile(
+      path.join(userDataDirectory, 'last_opened.json')
+    )
+    const parsedLastOpenedAfter = JSON.parse(lastOpenedAfter)
+    expect(parsedLastOpenedAfter).toMatchObject({})
+
+    // ==========Shut Down the Server==========
     await whenClientIsReady(({ shutdown }) => {
       return shutdown()
     })

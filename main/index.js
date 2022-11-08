@@ -1,11 +1,9 @@
 import electron, { dialog } from 'electron'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
-import { initialize } from '@electron/remote/main'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
 
-initialize()
 setupI18n(SETTINGS, { electron })
 
 const { app, BrowserWindow, globalShortcut } = electron

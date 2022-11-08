@@ -125,6 +125,8 @@ import {
   COPY_FILE_ERROR_REPLY,
   NUKE_LAST_OPENED_FILE_URL,
   NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY,
+  SHUTDOWN,
+  SHUTDOWN_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -337,6 +339,7 @@ const connect = (
           case LAST_OPENED_FILE:
           case SET_LAST_OPENED_FILE:
           case NUKE_LAST_OPENED_FILE_URL:
+          case SHUTDOWN:
           case PING: {
             resolvePromise()
             return
@@ -409,6 +412,7 @@ const connect = (
           case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
           case LAST_OPENED_FILE_ERROR_REPLY:
           case SET_LAST_OPENED_FILE_ERROR_REPLY:
+          case SHUTDOWN_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -577,6 +581,10 @@ const connect = (
 
     const nukeLastOpenedFileURL = () => {
       return sendPromise(NUKE_LAST_OPENED_FILE_URL)
+    }
+
+    const shutdown = () => {
+      return sendPromise(SHUTDOWN)
     }
 
     // ===File System APIs===
@@ -764,6 +772,7 @@ const connect = (
           lastOpenedFile,
           setLastOpenedFilePath,
           nukeLastOpenedFileURL,
+          shutdown,
           close: clientConnection.close.bind(clientConnection),
         })
       })

@@ -76,6 +76,7 @@ import {
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
   NUKE_LAST_OPENED_FILE_URL,
+  SHUTDOWN,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -873,6 +874,20 @@ const setupListeners = (port, userDataPath) => {
               () =>
                 statusManager.registerTask(setLastOpenedFilePath(''), NUKE_LAST_OPENED_FILE_URL),
               () => 'Error nuking the last opened file URL'
+            )
+          }
+          case SHUTDOWN: {
+            return handlePromise(
+              () => 'SHUTTING DOWN THE SOCKET SERVER',
+              () =>
+                statusManager.registerTask(
+                  (() => {
+                    process.send('shutdown')
+                    return Promise.resolve()
+                  })(),
+                  SHUTDOWN
+                ),
+              () => 'ERROR SHUTTING DOWN THE SOCKET SERVER'
             )
           }
           // Subscriptions

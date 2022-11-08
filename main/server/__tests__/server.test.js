@@ -3,6 +3,8 @@ import path from 'path'
 import { createClient, whenClientIsReady } from '../../../shared/socket-client/index'
 
 import { startServer } from '../init'
+import defaultSettings from '../../../shared/default_settings'
+import export_config from 'plottr_import_export/src/exporter/default_config'
 
 const NOP_LOGGER = {
   info: () => {},
@@ -99,14 +101,30 @@ describe('startServer', () => {
     )
     const templates = await fs.promises.readFile(path.join(userDataDirectory, 'templates.json'))
     const trialInfo = await fs.promises.readFile(path.join(userDataDirectory, 'trial_info.json'))
-    expect(typeof JSON.parse(configFile)).toEqual('object')
-    expect(typeof JSON.parse(customTemplates)).toEqual('object')
-    expect(typeof JSON.parse(exportConfig)).toEqual('object')
-    expect(typeof JSON.parse(knownFiles)).toEqual('object')
-    expect(typeof JSON.parse(lastOpened)).toEqual('object')
-    expect(typeof JSON.parse(licenseInfo)).toEqual('object')
-    expect(typeof JSON.parse(templates)).toEqual('object')
-    expect(typeof JSON.parse(trialInfo)).toEqual('object')
+    const parsedConfigFile = JSON.parse(configFile)
+    expect(typeof parsedConfigFile).toEqual('object')
+    expect(parsedConfigFile).toMatchObject(defaultSettings)
+    const parsedCustomTemplates = JSON.parse(customTemplates)
+    expect(typeof parsedCustomTemplates).toEqual('object')
+    expect(parsedCustomTemplates).toMatchObject({})
+    const parsedExportConfig = JSON.parse(exportConfig)
+    expect(typeof parsedExportConfig).toEqual('object')
+    expect(parsedExportConfig).toMatchObject(parsedExportConfig)
+    const parsedKnownFiles = JSON.parse(knownFiles)
+    expect(typeof parsedKnownFiles).toEqual('object')
+    expect(parsedKnownFiles).toMatchObject({})
+    const parsedLastOpened = JSON.parse(lastOpened)
+    expect(typeof parsedLastOpened).toEqual('object')
+    expect(parsedLastOpened).toMatchObject({})
+    const parsedLicenseInfo = JSON.parse(licenseInfo)
+    expect(typeof parsedLicenseInfo).toEqual('object')
+    expect(parsedLicenseInfo).toMatchObject({})
+    const parsedTemplates = JSON.parse(templates)
+    expect(typeof parsedTemplates).toEqual('object')
+    expect(parsedTemplates).toMatchObject({})
+    const parsedTrialInfo = JSON.parse(trialInfo)
+    expect(typeof parsedTrialInfo).toEqual('object')
+    expect(parsedTrialInfo).toMatchObject({})
     await whenClientIsReady(({ shutdown }) => {
       return shutdown()
     })

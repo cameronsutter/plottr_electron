@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { ipcRenderer, shell } from 'electron'
-import { getCurrentWindow } from '@electron/remote'
 import path from 'path'
 import { IoIosAlert } from 'react-icons/io'
 
@@ -23,8 +22,6 @@ import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import logger from '../../../shared/logger'
-
-const win = getCurrentWindow()
 
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
@@ -108,6 +105,8 @@ const Main = ({
   saveBackup,
   settings,
   generalError,
+  windowId,
+  setWindowTitle,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -119,12 +118,12 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, fileURL, false))
+        setWindowTitle(displayFileName(fileName, fileURL, false))
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, fileURL, true))
+        setWindowTitle(displayFileName(fileName, fileURL, true))
       }
     }
   }, [fileName, fileURL, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
@@ -210,9 +209,11 @@ const Main = ({
       }
       ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
-    ipcRenderer.on('state-fetched', stateFetchedListener)
-    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
-    startCheckingFileToLoad()
+    windowId().then((id) => {
+      ipcRenderer.on('state-fetched', stateFetchedListener)
+      ipcRenderer.send('pls-fetch-state', id, isInProMode)
+      startCheckingFileToLoad()
+    })
 
     return () => {
       ipcRenderer.removeListener('reload-from-file', reloadListener)
@@ -481,7 +482,13 @@ const Main = ({
     )
   }
 
-  return <App forceProjectDashboard={showDashboard} />
+  return (
+    <MainIntegrationContext.Consumer>
+      {({ showErrorBox }) => {
+        return <App forceProjectDashboard={showDashboard} showErrorBox={showErrorBox} />
+      }}
+    </MainIntegrationContext.Consumer>
+  )
 }
 
 Main.propTypes = {
@@ -525,6 +532,8 @@ Main.propTypes = {
   saveBackup: PropTypes.func.isRequired,
   settings: PropTypes.object,
   generalError: PropTypes.func,
+  windowId: PropTypes.func.isRequired,
+  setWindowTitle: PropTypes.func.isRequired,
 }
 
 export default connect(

@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { ipcRenderer } from 'electron'
-import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -44,6 +43,7 @@ const Listener = ({
   setProLicenseInfo,
   startLoadingALicenseType,
   finishLoadingALicenseType,
+  showErrorBox,
 }) => {
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
   const { saveAsTempFile } = makeFileModule(whenClientIsReady)
@@ -109,7 +109,7 @@ const Listener = ({
       logOut().then(() => {
         setUserId(null)
         setEmailAddress(null)
-        dialog.showErrorBox(t('Error'), t("It doesn't look like you have a pro license."))
+        showErrorBox(t('Error'), t("It doesn't look like you have a pro license."))
       })
     }
   }
@@ -199,6 +199,7 @@ Listener.propTypes = {
   setProLicenseInfo: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
+  showErrorBox: PropTypes.func.isRequired,
 }
 
 export default connect(

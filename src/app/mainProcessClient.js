@@ -12,10 +12,30 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const windowId = () => {
+    return Promise.resolve()
+  }
+
+  const showMessageBox = (title, message) => {
+    return Promise.resolve()
+  }
+
+  const showSaveDialog = (filters, title, defaultPath) => {
+    return Promise.resolve()
+  }
+
+  const setFileURL = (newFileURL) => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
     getVersion,
     showErrorBox,
+    windowId,
+    showMessageBox,
+    showSaveDialog,
+    setFileURL,
   }
 }

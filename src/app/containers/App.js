@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { ipcRenderer } from 'electron'
-import { dialog } from '@electron/remote'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
@@ -36,6 +35,7 @@ const App = ({
   sessionChecked,
   clickOnDom,
   applicationIsBusyAndCannotBeQuit,
+  showErrorBox,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -72,7 +72,7 @@ const App = ({
       sessionChecked
     ) {
       log.error('Attempting to open a cloud file locally without being logged in.')
-      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
+      showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
   }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
 
@@ -249,6 +249,7 @@ App.propTypes = {
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
   applicationIsBusyAndCannotBeQuit: PropTypes.bool,
+  showErrorBox: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

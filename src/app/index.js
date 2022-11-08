@@ -11,7 +11,6 @@
 
 import electron, { ipcRenderer } from 'electron'
 import { setupI18n, t } from 'plottr_locales'
-import { dialog, getCurrentWindow } from '@electron/remote'
 
 import path from 'path'
 import { store } from 'store'
@@ -49,8 +48,8 @@ import { makeFileModule } from './files'
 import { createClient, getPort, whenClientIsReady, setPort } from '../../shared/socket-client'
 import logger from '../../shared/logger'
 import { removeSystemKeys } from './bootFile'
+import { makeMainProcessClient } from './mainProcessClient'
 
-const win = getCurrentWindow()
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
 const socketWorkerPort = ipcRenderer.sendSync('pls-tell-me-the-socket-worker-port')
@@ -60,6 +59,9 @@ let rollbar
 setupRollbar('app.html').then((newRollbar) => {
   rollbar = newRollbar
 })
+
+const { showErrorBox, showSaveDialog, showMessageBox, setRepresentedFilename, setFileURL } =
+  makeMainProcessClient()
 
 const socketServerEventHandlers = {
   onBusy: () => {
@@ -78,11 +80,12 @@ createClient(
       `Failed to reconnect to socket server on port: <${getPort()}>.  Killing the window.`,
       error
     )
-    dialog.showErrorBox(
+    showErrorBox(
       t('Error'),
       t("Plottr ran into a problem and can't start.  Please contact support.")
-    )
-    window.close()
+    ).then(() => {
+      window.close()
+    })
   },
   socketServerEventHandlers
 )
@@ -165,7 +168,7 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     (error, success) => {
       if (error) {
         logger.error(error)
-        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+        showErrorBox(t('Error'), t('There was an error doing that. Try again'))
         return
       }
     }
@@ -194,18 +197,19 @@ ipcRenderer.on('save-as', () => {
 
   const defaultPath = path.basename(present.file.fileName, '.pltr')
   const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-  const fileName = dialog.showSaveDialogSync(win, {
+  showSaveDialog({
     filters,
     title: t('Where would you like to save this copy?'),
     defaultPath,
+  }).then((fileName) => {
+    if (fileName) {
+      const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+      const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+      saveFile(newFileURL, present).then(() => {
+        ipcRenderer.send('pls-open-window', newFileURL, true)
+      })
+    }
   })
-  if (fileName) {
-    const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-    const newFileURL = helpers.file.filePathToFileURL(newFilePath)
-    saveFile(newFileURL, present).then(() => {
-      ipcRenderer.send('pls-open-window', newFileURL, true)
-    })
-  }
 })
 
 const ensureEndsInPltr = (filePath) => {
@@ -235,45 +239,47 @@ ipcRenderer.on('move-from-temp', () => {
       return
     }
     const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-    const newFilePath = ensureEndsInPltr(
-      dialog.showSaveDialogSync(win, {
-        filters: filters,
-        title: t('Where would you like to save this file?'),
-      })
-    )
-    if (newFilePath) {
-      // Point at the new file
-      const newFileURL = helpers.file.filePathToFileURL(newFilePath)
-      const oldFileURL = selectors.fileURLSelector(present)
-      if (!newFilePath || !newFileURL) {
-        logger.error(`Tried to move file at ${oldFileURL} to ${newFilePath} (path: ${newFilePath})`)
-        return
-      }
-      copyFile(oldFileURL, newFileURL).then(() => {
-        return basename(newFilePath).then((newFileName) => {
-          // load the new file: the only way to set a new
-          // `project.fileURL`(!)
-          store.dispatch(
-            actions.ui.loadFile(
-              newFileName,
-              false,
-              removeSystemKeys(present),
-              present.file.version,
-              newFileURL
-            )
+    showSaveDialog({
+      filters: filters,
+      title: t('Where would you like to save this file?'),
+    }).then((filePath) => {
+      const newFilePath = ensureEndsInPltr(filePath)
+      if (newFilePath) {
+        // Point at the new file
+        const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+        const oldFileURL = selectors.fileURLSelector(present)
+        if (!newFilePath || !newFileURL) {
+          logger.error(
+            `Tried to move file at ${oldFileURL} to ${newFilePath} (path: ${newFilePath})`
           )
-          // remove from tmp store
-          ipcRenderer.send('remove-from-temp-files-if-temp', oldFileURL)
-          // update in known files
-          ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
-          // change the window's title
-          win.setRepresentedFilename(newFilePath)
-          win.fileURL = newFileURL
-          // send event to dashboard
-          ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+          return
+        }
+        copyFile(oldFileURL, newFileURL).then(() => {
+          return basename(newFilePath).then((newFileName) => {
+            // load the new file: the only way to set a new
+            // `project.fileURL`(!)
+            store.dispatch(
+              actions.ui.loadFile(
+                newFileName,
+                false,
+                removeSystemKeys(present),
+                present.file.version,
+                newFileURL
+              )
+            )
+            // remove from tmp store
+            ipcRenderer.send('remove-from-temp-files-if-temp', oldFileURL)
+            // update in known files
+            ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
+            // change the window's title
+            setRepresentedFilename(newFilePath)
+            setFileURL(newFileURL)
+            // send event to dashboard
+            ipcRenderer.send('pls-tell-dashboard-to-reload-recents')
+          })
         })
-      })
-    }
+      }
+    })
   })
 })
 
@@ -375,7 +381,7 @@ ipcRenderer.on('error-importing-scrivener', (event, error) => {
   logger.warn('[scrivener import]', error)
   rollbar.warn({ message: error })
   store.dispatch(actions.applicationState.finishScrivenerImporter())
-  dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+  showErrorBox(t('Error'), t('There was an error doing that. Try again'))
 })
 
 ipcRenderer.on('convert-rtf-string-to-slate', (event, rtfString, conversionId) => {
@@ -414,11 +420,12 @@ ipcRenderer.on('update-worker-port', (_event, newPort) => {
         `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
         error
       )
-      dialog.showErrorBox(
+      showErrorBox(
         t('Error'),
         t('Plottr ran into a problem and needs to close.  Please contact support.')
-      )
-      window.close()
+      ).then(() => {
+        window.close()
+      })
     },
     socketServerEventHandlers
   )

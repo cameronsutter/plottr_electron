@@ -35,7 +35,7 @@ afterAll(async () => {
 jest.setTimeout(10000)
 
 describe('startServer', () => {
-  it('should start the server on a random port and broadcast that port without erroring out', async () => {
+  it('should start, broadcast ports, and have well-formed stores', async () => {
     let portBroadcasted = null
     const userDataDirectory = await fs.promises.mkdtemp(
       '.test-output/plottr_test_socket_server_userData'
@@ -85,6 +85,28 @@ describe('startServer', () => {
     expect(fatalErrorOccured).toBeFalsy()
     await new Promise((resolve) => setTimeout(resolve, 5000))
     expect(fatalErrorOccured).toBeFalsy()
+    const configFile = await fs.promises.readFile(path.join(userDataDirectory, 'config.json'))
+    const customTemplates = await fs.promises.readFile(
+      path.join(userDataDirectory, 'custom_templates.json')
+    )
+    const exportConfig = await fs.promises.readFile(
+      path.join(userDataDirectory, 'export_config.json')
+    )
+    const knownFiles = await fs.promises.readFile(path.join(userDataDirectory, 'known_files.json'))
+    const lastOpened = await fs.promises.readFile(path.join(userDataDirectory, 'last_opened.json'))
+    const licenseInfo = await fs.promises.readFile(
+      path.join(userDataDirectory, 'license_info.json')
+    )
+    const templates = await fs.promises.readFile(path.join(userDataDirectory, 'templates.json'))
+    const trialInfo = await fs.promises.readFile(path.join(userDataDirectory, 'trial_info.json'))
+    expect(typeof JSON.parse(configFile)).toEqual('object')
+    expect(typeof JSON.parse(customTemplates)).toEqual('object')
+    expect(typeof JSON.parse(exportConfig)).toEqual('object')
+    expect(typeof JSON.parse(knownFiles)).toEqual('object')
+    expect(typeof JSON.parse(lastOpened)).toEqual('object')
+    expect(typeof JSON.parse(licenseInfo)).toEqual('object')
+    expect(typeof JSON.parse(templates)).toEqual('object')
+    expect(typeof JSON.parse(trialInfo)).toEqual('object')
     await whenClientIsReady(({ shutdown }) => {
       return shutdown()
     })

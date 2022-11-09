@@ -230,21 +230,6 @@ const setupListeners = (port, userDataPath) => {
       try {
         const { type, messageId, payload } = JSON.parse(message)
 
-        const send = (messageType, ...args) => {
-          try {
-            webSocket.send(
-              JSON.stringify({
-                type: messageType,
-                messageId,
-                result: args,
-                payload: 'truncated',
-              })
-            )
-          } catch (error) {
-            logger.error('Error sending a message back to the socket client')
-          }
-        }
-
         const typeToErrorReplyType = (messageType) => {
           return `${messageType}_ERROR_REPLY`
         }

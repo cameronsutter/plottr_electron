@@ -5,9 +5,16 @@ import { DateTime, Duration } from 'luxon'
 const { writeFile, readdir, lstat, rmdir, unlink, mkdir } = fs.promises
 
 const BackupModule = (userDataPath) => (settings, logger) => {
+  const OFFLINE_FILE_FILES_PATH = path.join(userDataPath, 'offline')
+
   const { readSettings } = settings
 
   const defaultBackupPath = path.join(userDataPath, 'backups')
+
+  function isOfflineFileURL(fileURL) {
+    return fileURL.startsWith(OFFLINE_FILE_FILES_PATH)
+  }
+
   const backupBasePath = () => {
     return readSettings().then((settings) => {
       const configuredBackupPath = settings.user.backupLocation
@@ -22,6 +29,10 @@ const BackupModule = (userDataPath) => (settings, logger) => {
         const message = `Attempting to save a backup of a file that's already a backup (${filePath})!  Backups are in ${basePath}`
         logger.error(message)
         return Promise.reject(message)
+      }
+      const isOfflineBackupFile = isOfflineFileURL(filePath)
+      if (isOfflineBackupFile) {
+        return Promise.reject(`Trying to save a backup from an offline mode file: ${filePath}`)
       }
       return readSettings().then((settings) => {
         try {

@@ -9,9 +9,7 @@ import {
   SAVE_FILE,
   SAVE_OFFLINE_FILE,
   BACKUP_FILE,
-  AUTO_SAVE_FILE,
   SAVE_BACKUP_ERROR,
-  SAVE_BACKUP_SUCCESS,
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   FILE_EXISTS,
@@ -75,6 +73,8 @@ import {
   SET_LAST_OPENED_FILE,
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
+  NUKE_LAST_OPENED_FILE_URL,
+  SHUTDOWN,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -151,7 +151,6 @@ const setupListeners = (port, userDataPath) => {
       saveOfflineFile,
       basename,
       readFile,
-      autoSave,
       fileExists,
       backupOfflineBackupForResume,
       readOfflineFiles,
@@ -230,21 +229,6 @@ const setupListeners = (port, userDataPath) => {
     webSocket.on('message', (message) => {
       try {
         const { type, messageId, payload } = JSON.parse(message)
-
-        const send = (messageType, ...args) => {
-          try {
-            webSocket.send(
-              JSON.stringify({
-                type: messageType,
-                messageId,
-                result: args,
-                payload: 'truncated',
-              })
-            )
-          } catch (error) {
-            logger.error('Error sending a message back to the socket client')
-          }
-        }
 
         const typeToErrorReplyType = (messageType) => {
           return `${messageType}_ERROR_REPLY`
@@ -427,42 +411,6 @@ const setupListeners = (port, userDataPath) => {
               ],
               () => statusManager.registerTask(saveBackup(filePath, file), BACKUP_FILE),
               () => ['Error while saving a backup ', payload?.file?.file]
-            )
-          }
-          case AUTO_SAVE_FILE: {
-            const { fileURL, file, userId, previousFile } = payload
-            return handlePromise(
-              () => [
-                'Auto-saving file (reduced payload): ',
-                {
-                  file: {
-                    ...file.file,
-                  },
-                  fileURL,
-                  previousFile: {
-                    ...previousFile.file,
-                  },
-                  userId,
-                },
-              ],
-              () =>
-                statusManager.registerTask(
-                  autoSave(send, fileURL, file, userId, previousFile),
-                  AUTO_SAVE_FILE
-                ),
-              () => [
-                'Error while auto saving',
-                {
-                  file: {
-                    ...file?.file,
-                  },
-                  fileURL,
-                  previousFile: {
-                    ...previousFile?.file,
-                  },
-                  userId,
-                },
-              ]
             )
           }
           case ENSURE_BACKUP_FULL_PATH: {
@@ -864,6 +812,28 @@ const setupListeners = (port, userDataPath) => {
               () =>
                 statusManager.registerTask(setLastOpenedFilePath(filePath), SET_LAST_OPENED_FILE),
               () => 'Error while setting last opened file'
+            )
+          }
+          case NUKE_LAST_OPENED_FILE_URL: {
+            return handlePromise(
+              () => 'Nuking the last opened file URL',
+              () =>
+                statusManager.registerTask(setLastOpenedFilePath(''), NUKE_LAST_OPENED_FILE_URL),
+              () => 'Error nuking the last opened file URL'
+            )
+          }
+          case SHUTDOWN: {
+            return handlePromise(
+              () => 'SHUTTING DOWN THE SOCKET SERVER',
+              () =>
+                statusManager.registerTask(
+                  (() => {
+                    process.send('shutdown')
+                    return Promise.resolve()
+                  })(),
+                  SHUTDOWN
+                ),
+              () => 'ERROR SHUTTING DOWN THE SOCKET SERVER'
             )
           }
           // Subscriptions

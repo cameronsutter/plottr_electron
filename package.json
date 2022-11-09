@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.11.2-beta.4",
+  "version": "2022.11.2-beta.8",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -90,7 +90,7 @@
     "json-schema-traverse": "^1.0.0",
     "jsonfile": "^6.1.0",
     "luxon": "^2.3.2",
-    "node-fetch": "^3.2.10",
+    "node-fetch-cjs": "^3.2.10",
     "path-exists": "^4.0.0",
     "react-is": "^16.13.1",
     "redux-thunk": "^2.3.0",
@@ -105,6 +105,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@babel/node": "^7.20.2",
     "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/plugin-transform-modules-commonjs": "^7.12.1",
     "@babel/preset-env": "^7.4.5",

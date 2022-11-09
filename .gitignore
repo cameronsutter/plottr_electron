@@ -20,6 +20,9 @@ bin/socketServer.bundle.js.LICENSE.txt
 *.bundle.js.map
 *.map
 
+# For testing
+.test-output/
+
 # Temp version for building
 build/version.js
 

@@ -18,8 +18,19 @@ export const startServer = (log, broadcastPortChange, userDataPath, onFatalError
     const randomPort = START_PORT + Math.floor(1000 * Math.random())
     log.info(`Starting socket server on port: ${randomPort}`)
 
-    const server = fork(join(__dirname, './socketServer.bundle.js'), [randomPort, userDataPath])
+    const serverScriptPath =
+      process.env.NODE_ENV === 'test'
+        ? join(__dirname, './server.js')
+        : join(__dirname, './socketServer.bundle.js')
+    const server =
+      process.env.NODE_ENV === 'test'
+        ? fork('node_modules/.bin/babel-node', [serverScriptPath, randomPort, userDataPath])
+        : fork(serverScriptPath, [randomPort, userDataPath])
+    let weInstructedServerToDie = false
     server.on('close', (code) => {
+      if (weInstructedServerToDie) {
+        return
+      }
       log.warn(`Socket server died with code: ${code}`)
       if (code === 1) {
         log.warn(`Restarting the server on a new port.`)
@@ -38,6 +49,11 @@ export const startServer = (log, broadcastPortChange, userDataPath, onFatalError
         log.info('Started socket server!')
         resolve(randomPort)
         broadcastPortChange(randomPort)
+      } else if (message === 'shutdown') {
+        log.info(`Received "${message}" from socket worker.`)
+        log.info('SHUTTING DOWN SOCKET SERVER!')
+        weInstructedServerToDie = true
+        server.kill()
       } else {
         log.info(message)
       }

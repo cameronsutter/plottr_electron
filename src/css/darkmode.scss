@@ -125,6 +125,21 @@ body.darkmode {
     color: $darkmode-text;
     background-color: $darkmode-background !important;
   }
+
+  .item-list__book-tabs-wrapper {
+    .nav-pills {
+      & > li {
+        & > a {
+          color: $darkmode-darker-text !important;
+        }
+        &.active {
+          a {
+            outline: 2px solid $darkmode-darker-text !important;
+          }
+        }
+      }
+    }
+  }
 }
 
 .container-with-sub-nav.darkmode {

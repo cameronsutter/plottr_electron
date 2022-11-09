@@ -8,13 +8,8 @@ import {
   SAVE_OFFLINE_FILE,
   FILE_BASENAME,
   READ_FILE,
-  AUTO_SAVE_FILE,
   BACKUP_FILE,
   SAVE_BACKUP_ERROR,
-  SAVE_BACKUP_SUCCESS,
-  AUTO_SAVE_ERROR,
-  AUTO_SAVE_WORKED_THIS_TIME,
-  AUTO_SAVE_BACKUP_ERROR,
   ENSURE_BACKUP_FULL_PATH,
   ENSURE_BACKUP_TODAY_PATH,
   LOG_INFO,
@@ -42,7 +37,6 @@ import {
   FILE_BASENAME_ERROR_REPLY,
   READ_FILE_ERROR_REPLY,
   BACKUP_FILE_ERROR_REPLY,
-  AUTO_SAVE_FILE_ERROR_REPLY,
   ENSURE_BACKUP_FULL_PATH_ERROR_REPLY,
   ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY,
   FILE_EXISTS_ERROR_REPLY,
@@ -123,29 +117,22 @@ import {
   COPY_FILE,
   UPDATE_KNOWN_FILE_NAME,
   COPY_FILE_ERROR_REPLY,
+  NUKE_LAST_OPENED_FILE_URL,
+  NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY,
+  SHUTDOWN,
+  SHUTDOWN_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
+const FORCE_IDLE_WORK_TIMEOUT = 1000
 const defer =
   typeof process === 'object' && process.type === 'renderer'
-    ? window.requestIdleCallback
+    ? (f) => window.requestIdleCallback(f, { timeout: FORCE_IDLE_WORK_TIMEOUT })
     : (f) => {
         setTimeout(f, 0)
       }
 
-const connect = (
-  port,
-  logger,
-  {
-    onSaveBackupError,
-    onSaveBackupSuccess,
-    onAutoSaveError,
-    onAutoSaveWorkedThisTime,
-    onAutoSaveBackupError,
-    onBusy,
-    onDone,
-  }
-) => {
+const connect = (port, logger, { onBusy, onDone }) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
     const promises = new Map()
@@ -229,43 +216,8 @@ const connect = (
           unresolvedPromise.reject(result)
         }
 
+        // TODO: handle SAVE_BACKUP_ERRORs
         switch (type) {
-          // Additional replies (i.e. these might happen in addition
-          // to the normal/happy path):
-          case SAVE_BACKUP_ERROR: {
-            if (onSaveBackupError) {
-              const [filePath, errorMessage] = result
-              onSaveBackupError(filePath, errorMessage)
-            }
-            return
-          }
-          case SAVE_BACKUP_SUCCESS: {
-            if (onSaveBackupSuccess) {
-              const [filePath] = result
-              onSaveBackupSuccess(filePath)
-            }
-            return
-          }
-          case AUTO_SAVE_ERROR: {
-            if (onAutoSaveError) {
-              const [filePath, errorMessage] = result
-              onAutoSaveError(filePath, errorMessage)
-            }
-            return
-          }
-          case AUTO_SAVE_WORKED_THIS_TIME: {
-            if (onAutoSaveWorkedThisTime) {
-              onAutoSaveWorkedThisTime()
-            }
-            return
-          }
-          case AUTO_SAVE_BACKUP_ERROR: {
-            if (onAutoSaveBackupError) {
-              const [backupFilePath, backupErrorMessage] = result
-              onAutoSaveBackupError(backupFilePath, backupErrorMessage)
-            }
-            return
-          }
           // Subscription replies
           case LISTEN_TO_TRIAL_CHANGES:
           case LISTEN_TO_LICENSE_CHANGES:
@@ -325,7 +277,6 @@ const connect = (
           case FILE_EXISTS:
           case ENSURE_BACKUP_FULL_PATH:
           case ENSURE_BACKUP_TODAY_PATH:
-          case AUTO_SAVE_FILE:
           case BACKUP_FILE:
           case READ_FILE:
           case FILE_BASENAME:
@@ -334,6 +285,8 @@ const connect = (
           case RM_RF:
           case LAST_OPENED_FILE:
           case SET_LAST_OPENED_FILE:
+          case NUKE_LAST_OPENED_FILE_URL:
+          case SHUTDOWN:
           case PING: {
             resolvePromise()
             return
@@ -360,6 +313,7 @@ const connect = (
             return
           }
           // Error return types
+          case NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY:
           case REMOVE_FROM_TEMP_FILES_ERROR_REPLY:
           case SAVE_TO_TEMP_FILE_ERROR_REPLY:
           case DELETE_KNOWN_FILE_ERROR_REPLY:
@@ -400,11 +354,11 @@ const connect = (
           case FILE_BASENAME_ERROR_REPLY:
           case READ_FILE_ERROR_REPLY:
           case BACKUP_FILE_ERROR_REPLY:
-          case AUTO_SAVE_FILE_ERROR_REPLY:
           case ENSURE_BACKUP_FULL_PATH_ERROR_REPLY:
           case ENSURE_BACKUP_TODAY_PATH_ERROR_REPLY:
           case LAST_OPENED_FILE_ERROR_REPLY:
           case SET_LAST_OPENED_FILE_ERROR_REPLY:
+          case SHUTDOWN_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -465,10 +419,6 @@ const connect = (
 
     const readFile = (filePath) => {
       return sendPromise(READ_FILE, { filePath })
-    }
-
-    const autoSave = (fileURL, file, userId, previousFile) => {
-      return sendPromise(AUTO_SAVE_FILE, { fileURL, file, userId, previousFile })
     }
 
     const saveBackup = (filePath, file) => {
@@ -569,6 +519,14 @@ const connect = (
 
     const setLastOpenedFilePath = (filePath) => {
       return sendPromise(SET_LAST_OPENED_FILE, { filePath })
+    }
+
+    const nukeLastOpenedFileURL = () => {
+      return sendPromise(NUKE_LAST_OPENED_FILE_URL)
+    }
+
+    const shutdown = () => {
+      return sendPromise(SHUTDOWN)
     }
 
     // ===File System APIs===
@@ -699,7 +657,6 @@ const connect = (
           saveOfflineFile,
           basename,
           readFile,
-          autoSave,
           saveBackup,
           ensureBackupFullPath,
           ensureBackupTodayPath,
@@ -755,6 +712,8 @@ const connect = (
           listenToBackupsChanges,
           lastOpenedFile,
           setLastOpenedFilePath,
+          nukeLastOpenedFileURL,
+          shutdown,
           close: clientConnection.close.bind(clientConnection),
         })
       })

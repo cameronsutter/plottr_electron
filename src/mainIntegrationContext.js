@@ -21,11 +21,6 @@ const MainIntegrationContext = React.createContext({
       `Couldn't read file at ${filePath}.  Please wire up the MainIntegrationContext provider.`
     )
   },
-  autoSave: (fileURL, file, userId, previousFile) => {
-    throw new Error(
-      `Couldn't auto save file at ${fileURL}.  Please wire up the MainIntegrationContext provider.`
-    )
-  },
   saveBackup: (filePath, file) => {
     throw new Error(
       `Couldn't back-up file at ${filePath}.  Please wire up the MainIntegrationContext provider.`

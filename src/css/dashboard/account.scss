@@ -16,14 +16,17 @@
 
   h1 {
     font-size: 20pt;
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin-top: 10px;
   }
-
+  
   .dashboard__acount__top {
+    margin-bottom: 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+
+    .start_plottr_pro__button {
+      margin-left: 20px;
+    }
   }
 }
 
@@ -55,9 +58,8 @@
 
   h2 {
     font-size: 16pt;
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-top: 10px;
+    text-align: left;
   }
 
   .dashboard__user-info__wrapper {
@@ -78,6 +80,12 @@
 
   a.darkmode {
     color: $blue-6;
+  }
+
+  &.license-info__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 

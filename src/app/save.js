@@ -78,7 +78,10 @@ export const backupFile = (whenClientIsReady, saveBackupOnFirebase, logger) => (
           : Promise.resolve(state)
 
         return stateToSave.then((selfContainedFile) => {
-          return saveBackup(helpers.file.withoutProtocol(fileURL), selfContainedFile)
+          const filePath = isCloudFile
+            ? `${selfContainedFile.file.fileName}.pltr`
+            : helpers.file.withoutProtocol(fileURL)
+          return saveBackup(filePath, selfContainedFile)
         })
       })
     })

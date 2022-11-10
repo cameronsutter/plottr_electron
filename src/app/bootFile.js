@@ -18,6 +18,7 @@ import {
   overwriteAllKeys,
   saveBackup as saveBackupOnFirebase,
 } from 'wired-up-firebase'
+import { exportToSelfContainedPlottrFile } from 'plottr_import_export'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
@@ -32,6 +33,7 @@ import { makeFileModule } from './files'
 import { offlineFileURL } from '../common/utils/files'
 import Saver from './saver'
 import { saveFile, backupFile } from './save'
+import { downloadStorageImage } from '../common/downloadStorageImage'
 
 const clientId = machineIdSync()
 
@@ -270,7 +272,11 @@ export function bootFile(
 
   const afterLoading = (userId, saveBackup) => (json) => {
     logger.info(`Loaded file ${json.file.fileName}.`)
-    saveBackup(`${json.file.fileName}.pltr`, json)
+    exportToSelfContainedPlottrFile(json, userId, downloadStorageImage).then(
+      (selfContainedFile) => {
+        saveBackup(`${json.file.fileName}.pltr`, selfContainedFile)
+      }
+    )
   }
 
   const makeFlagsConsistent = (beatHierarchy) => (json) => {

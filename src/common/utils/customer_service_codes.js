@@ -1,7 +1,9 @@
 import { shell } from 'electron'
-import { app, dialog } from '@electron/remote'
 import { makeFileSystemAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
+
+const { userDataPath, showMessageBox } = makeMainProcessClient()
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
@@ -77,17 +79,19 @@ export function handleCustomerServiceCode(code) {
 
     case '8bb9de':
       // open the Plottr internal User Data folder
-      shell.openPath(app.getPath('userData'))
+      userDataPath().then((userData) => {
+        return shell.openPath(userData)
+      })
       break
 
     case 'templates version':
       fileSystemAPIs.currentTemplateManifest().then((manifest) => {
-        dialog.showMessageBox({
-          title: 'Templates Version',
-          type: 'info',
-          message: manifest.manifest.version,
-          detail: 'Templates Version',
-        })
+        showMessageBox(
+          'Templates Version',
+          manifest.manifest.version,
+          'info',
+          'Templates Version'
+        )
       })
       break
 

@@ -16,7 +16,7 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
-  const showMessageBox = (title, message) => {
+  const showMessageBox = (title, message, type, detail) => {
     return Promise.resolve()
   }
 
@@ -25,6 +25,14 @@ export const makeMainProcessClient = () => {
   }
 
   const setFileURL = (newFileURL) => {
+    return Promise.resolve()
+  }
+
+  const userDataPath = () => {
+    return Promise.resolve()
+  }
+
+  const userDocumentsPath = () => {
     return Promise.resolve()
   }
 
@@ -37,5 +45,7 @@ export const makeMainProcessClient = () => {
     showMessageBox,
     showSaveDialog,
     setFileURL,
+    userDataPath,
+    userDocumentsPath,
   }
 }

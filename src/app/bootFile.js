@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { ipcRenderer } from 'electron'
 import { machineIdSync } from 'node-machine-id'
 
@@ -261,22 +260,37 @@ export function bootFile(
       const offlineURL = offlineFileURLFromFile(json)
       if (!offlineURL) {
         logger.warn(`Could not compute an offline path for file: ${json?.file}`)
-        return Promise.resolve(json)
-      }
-      const offlinePath = helpers.file.withoutProtocol(offlineURL)
-      const exists = offlinePath && fs.existsSync(offlinePath)
-      // FIXME: the socket server now has a way to read files.  We don't
-      // want to depend on FS from the renderer because that'll call out
-      // to the main process.
-      const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-      if (!offlineFile.file) {
-        logger.warn(
-          `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
-        )
         return Promise.resolve(false)
       }
-      const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
-      return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+      const offlinePath = helpers.file.withoutProtocol(offlineURL)
+      return whenClientIsReady(({ fileExists }) => {
+        return fileExists(offlinePath)
+      })
+        .then((exists) => {
+          return offlinePath && exists
+        })
+        .then((exists) => {
+          return whenClientIsReady(({ readFile }) => {
+            return exists
+              ? readFile(offlinePath).then((file) => {
+                  return JSON.parse(file)
+                })
+              : Promise.resolve(null)
+          })
+        })
+        .then((offlineFile) => {
+          if (!offlineFile) {
+            return false
+          }
+          if (!offlineFile.file) {
+            logger.warn(
+              `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
+            )
+            return Promise.resolve(false)
+          }
+          const [uploadOurs, backupOurs] = resumeDirective(offlineFile, json)
+          return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+        })
     })
   }
 
@@ -354,21 +368,23 @@ export function bootFile(
         return setRepresentedFileName(helpers.file.withoutProtocol(fileURL))
       })
       .then(() => {
-        let json
+        let jsonPromise
         try {
-          const filePath = helpers.file.withoutProtocol(
-            bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
-          )
-          json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-          // In case this file was downloaded and we want to open it while
-          // logged out, we need to reset the cloud flag.  (This is usually
-          // set when we receive the file from Firebase, but it gets
-          // synchronised back up to the database and if you then download
-          // the file it'll be there.)
-          //
-          // This use case is actually quite common: you might want to
-          // simply open a backup file locally.
-          json.file.isCloudFile = false
+          offlineFileURL(fileURL).then((offlineFileURL) => {
+            const filePath = helpers.file.withoutProtocol(
+              bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
+            )
+            jsonPromise = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
+            // In case this file was downloaded and we want to open it while
+            // logged out, we need to reset the cloud flag.  (This is usually
+            // set when we receive the file from Firebase, but it gets
+            // synchronised back up to the database and if you then download
+            // the file it'll be there.)
+            //
+            // This use case is actually quite common: you might want to
+            // simply open a backup file locally.
+            json.file.isCloudFile = false
+          })
         } catch (error) {
           logger.error(error)
           rollbar.error(error)

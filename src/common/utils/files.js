@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron'
-import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 
@@ -7,8 +6,9 @@ import { helpers } from 'pltr/v2'
 
 import { makeFileModule } from '../../app/files'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
+const { userDataPath } = makeMainProcessClient()
 
 const { readOfflineFiles } = makeFileModule(whenClientIsReady)
 
@@ -25,7 +25,10 @@ export function listOfflineFiles() {
 }
 
 export function offlineFileURL(fileURL) {
-  return helpers.file.filePathToFileURL(
-    path.join(OFFLINE_FILE_FILES_PATH, helpers.file.withoutProtocol(fileURL))
-  )
+  return userDataPath().then((userData) => {
+    const OFFLINE_FILE_FILES_PATH = path.join(userData, 'offline')
+    return helpers.file.filePathToFileURL(
+      path.join(OFFLINE_FILE_FILES_PATH, helpers.file.withoutProtocol(fileURL))
+    )
+  })
 }

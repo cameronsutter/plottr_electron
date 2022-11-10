@@ -1,5 +1,4 @@
 import { shell, ipcRenderer } from 'electron'
-import { app } from '@electron/remote'
 import fs from 'fs'
 import path from 'path'
 import { ActionTypes } from 'pltr/v2'
@@ -8,6 +7,7 @@ import { t as i18n } from 'plottr_locales'
 import log from '../../../shared/logger'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 import makeFileSystemAPIs from '../../api/file-system-apis'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 
 let previousAction = null
 
@@ -25,15 +25,19 @@ export function getPreviousAction() {
   return previousAction
 }
 
+const { userDocumentsPath, appVersion } = makeMainProcessClient()
+
 export function createErrorReport(error, errorInfo) {
-  prepareErrorReport(error, errorInfo).then((body) => {
-    const filePath = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-    fs.writeFile(filePath, body, function (err) {
-      if (err) {
-        log.warn(err)
-      } else {
-        notifyUser(filePath)
-      }
+  userDocumentsPath().then((documentsPath) => {
+    return prepareErrorReport(error, errorInfo).then((body) => {
+      const filePath = path.join(documentsPath, `plottr_error_report_${Date.now()}.txt`)
+      fs.writeFile(filePath, body, function (err) {
+        if (err) {
+          log.warn(err)
+        } else {
+          notifyUser(filePath)
+        }
+      })
     })
   })
 }
@@ -41,14 +45,15 @@ export function createErrorReport(error, errorInfo) {
 function prepareErrorReport(error, errorInfo) {
   const { currentUserSettings } = makeFileSystemAPIs(whenClientIsReady)
 
-  return currentUserSettings().then((user) => {
-    const hasLicense = !!user.licenseKey
-    const report = `
+  return appVersion().then((version) => {
+    return currentUserSettings().then((user) => {
+      const hasLicense = !!user.licenseKey
+      const report = `
 ----------------------------------
 INFO
 ----------------------------------
 DATE: ${new Date().toString()}
-VERSION: ${app.getVersion()}
+VERSION: ${version}
 USER HAS LICENSE: ${hasLicense}
 PLATFORM: ${process.platform}
 ----------------------------------
@@ -63,7 +68,8 @@ PREVIOUS ACTION
 ----------------------------------
 ${JSON.stringify(previousAction)}
   `
-    return report
+      return report
+    })
   })
 }
 

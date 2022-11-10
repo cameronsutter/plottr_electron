@@ -39,16 +39,18 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
 }
 
 export const backupFile = (whenClientIsReady, saveBackupOnFirebase, logger) => (state) => {
+  const isOffline = selectors.isOfflineSelector(state)
   const isCloudFile = selectors.isCloudFileSelector(state)
   const backupEnabled = selectors.backupEnabledSelector(state)
   const userId = selectors.userIdSelector(state)
 
   if (!backupEnabled) return Promise.resolve()
 
-  const cloudBackup = isCloudFile ? saveBackupOnFirebase(userId, state) : Promise.resolve()
+  const cloudBackup =
+    !isOffline && isCloudFile ? saveBackupOnFirebase(userId, state) : Promise.resolve()
 
   return cloudBackup.then(() => {
-    whenClientIsReady(({ saveBackup, offlineFileURL }) => {
+    return whenClientIsReady(({ saveBackup, offlineFileURL }) => {
       const hasAllKeys = selectors.hasAllKeysSelector(state)
       if (!hasAllKeys) {
         const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)

@@ -566,6 +566,11 @@ describe('backupFile', () => {
           called = true
           return Promise.resolve()
         }
+        let savedOnFirebase = false
+        const backupOnFirebase = () => {
+          savedOnFirebase = true
+          return Promise.resolve()
+        }
         const whenClientIsReady = (f) => {
           return f({
             saveBackup: _backupFile,
@@ -574,11 +579,16 @@ describe('backupFile', () => {
         }
         let threw = false
         try {
-          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(omit(EMPTY_FILE, 'file'))
+          await backupFile(
+            whenClientIsReady,
+            backupOnFirebase,
+            CONSOLE_LOGGER
+          )(omit(EMPTY_FILE, 'file'))
         } catch (error) {
           threw = true
           expect(called).toBeFalsy()
         }
+        expect(savedOnFirebase).toBeFalsy()
         expect(threw).toBeTruthy()
       })
     })
@@ -590,14 +600,20 @@ describe('backupFile', () => {
           called = true
           return Promise.resolve()
         }
+        let savedOnFirebase = false
+        const backupOnFirebase = () => {
+          savedOnFirebase = true
+          return Promise.resolve()
+        }
         const whenClientIsReady = (f) => {
           return f({
             saveBackup: _backupFile,
             offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
-        await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+        await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
         expect(called).toBeFalsy()
+        expect(savedOnFirebase).toBeFalsy()
       })
     })
     describe('given a file with a URL that points to Plottr cloud', () => {
@@ -610,14 +626,20 @@ describe('backupFile', () => {
               called = true
               return Promise.resolve()
             }
+            let savedOnFirebase = false
+            const backupOnFirebase = () => {
+              savedOnFirebase = true
+              return Promise.resolve()
+            }
             const whenClientIsReady = (f) => {
               return f({
                 saveBackup: _backupFile,
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
-            await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
             expect(called).toBeFalsy()
+            expect(savedOnFirebase).toBeFalsy()
           })
         })
         describe('with offline mode enabled', () => {
@@ -628,14 +650,20 @@ describe('backupFile', () => {
               called = true
               return Promise.resolve()
             }
+            let savedOnFirebase = false
+            const backupOnFirebase = () => {
+              savedOnFirebase = true
+              return Promise.resolve()
+            }
             const whenClientIsReady = (f) => {
               return f({
                 saveBackup: _backupFile,
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
-            await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+            await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
             expect(called).toBeFalsy()
+            expect(savedOnFirebase).toBeFalsy()
           })
         })
       })
@@ -649,14 +677,20 @@ describe('backupFile', () => {
                 called = true
                 return Promise.resolve()
               }
+              let savedOnFirebase = false
+              const backupOnFirebase = () => {
+                savedOnFirebase = true
+                return Promise.resolve()
+              }
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
               expect(called).toBeFalsy()
+              expect(savedOnFirebase).toBeTruthy()
             })
           })
           describe('and local backups is enabled', () => {
@@ -667,14 +701,20 @@ describe('backupFile', () => {
                 called = true
                 return Promise.resolve()
               }
+              let savedOnFirebase = false
+              const backupOnFirebase = () => {
+                savedOnFirebase = true
+                return Promise.resolve()
+              }
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
               expect(called).toBeTruthy()
+              expect(savedOnFirebase).toBeTruthy()
             })
           })
         })
@@ -687,14 +727,20 @@ describe('backupFile', () => {
                 called = true
                 return Promise.resolve()
               }
+              let savedOnFirebase = false
+              const backupOnFirebase = () => {
+                savedOnFirebase = true
+                return Promise.resolve()
+              }
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
               expect(called).toBeFalsy()
+              expect(savedOnFirebase).toBeTruthy()
             })
           })
           describe('and local backups is enabled', () => {
@@ -705,14 +751,20 @@ describe('backupFile', () => {
                 called = true
                 return Promise.resolve()
               }
+              let savedOnFirebase = false
+              const backupOnFirebase = () => {
+                savedOnFirebase = true
+                return Promise.resolve()
+              }
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
               expect(called).toBeTruthy()
+              expect(savedOnFirebase).toBeTruthy()
             })
           })
         })
@@ -727,14 +779,20 @@ describe('backupFile', () => {
             called = true
             return Promise.resolve()
           }
+          let savedOnFirebase = false
+          const backupOnFirebase = () => {
+            savedOnFirebase = true
+            return Promise.resolve()
+          }
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
           expect(called).toBeFalsy()
+          expect(savedOnFirebase).toBeFalsy()
         })
       })
       describe('and backups are disabeld', () => {
@@ -745,14 +803,20 @@ describe('backupFile', () => {
             called = true
             return Promise.resolve()
           }
+          let savedOnFirebase = false
+          const backupOnFirebase = () => {
+            savedOnFirebase = true
+            return Promise.resolve()
+          }
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
           expect(called).toBeFalsy()
+          expect(savedOnFirebase).toBeFalsy()
         })
       })
       describe('and backups are enabled', () => {
@@ -763,14 +827,20 @@ describe('backupFile', () => {
             called = true
             return Promise.resolve()
           }
+          let savedOnFirebase = false
+          const backupOnFirebase = () => {
+            savedOnFirebase = true
+            return Promise.resolve()
+          }
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, CONSOLE_LOGGER)(state)
+          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
           expect(called).toBeTruthy()
+          expect(savedOnFirebase).toBeFalsy()
         })
       })
     })

@@ -12,7 +12,12 @@ import {
   emptyFile,
 } from 'pltr/v2'
 import { t } from 'plottr_locales'
-import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
+import {
+  currentUser,
+  initialFetch,
+  overwriteAllKeys,
+  saveBackup as saveBackupOnFirebase,
+} from 'wired-up-firebase'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
@@ -458,7 +463,7 @@ export function bootFile(
         return store.getState().present
       },
       saveFile(whenClientIsReady, logger),
-      backupFile(whenClientIsReady, logger),
+      backupFile(whenClientIsReady, saveBackupOnFirebase, logger),
       logger,
       SAVE_INTERVAL_MS,
       BACKUP_INTERVAL_MS,

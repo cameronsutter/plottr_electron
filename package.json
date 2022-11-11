@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.11.2-beta.7",
+  "version": "2022.11.2-beta.8",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -32,7 +32,7 @@
     "generate-flipped": "node ./lib/plottr_locales/src/build-flipped-locale.js",
     "test": "jest \"(src.*)|(lib.*)|(main.*)\"",
     "test:watch": "jest \"(src.*)|(lib.*)|(main.*)\" --watch",
-    "test:debug": "node --inspect node_modules/.bin/jest --runInBand src/app/components/rce/__tests__/RichTextEditor.test.js",
+    "test:debug": "node --inspect node_modules/.bin/jest --runInBand lib/plottr_import_export/src/exporter/word/exporters/__tests__/characters.test.js",
     "test:integration": "jest test/integration",
     "lint-file": "eslint",
     "lint": "eslint .",

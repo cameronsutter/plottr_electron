@@ -263,7 +263,7 @@ app.whenReady().then(() => {
         })
 
         app.on('window-all-closed', () => {
-          if (is.windows) safelyExitModule.quitWhenDone()
+          safelyExitModule.quitWhenDone()
         })
 
         app.on('will-quit', () => {

@@ -608,7 +608,7 @@
   "Get access to all your projects": {
     "message": "به همه پروژه‌هاي خود دسترسي بيابيد"
   },
-  "Give Feedback": {
+  "Links": {
     "message": "بازخورد بدهيد"
   },
   "Give this tag a name": {
@@ -1070,7 +1070,7 @@
   "Reload": {
     "message": "بارگذاری مجدد"
   },
-  "Remove License": {
+  "Deactivate License Key": {
     "message": "حذف مجوز"
   },
   "Remove from this list": {
@@ -1088,7 +1088,7 @@
   "Rename": {
     "message": "نامگذاری مجدد"
   },
-  "Report a Problem": {
+  "Contact Support": {
     "message": "گزارش یک مشکل"
   },
   "Request a Feature": {
@@ -1523,7 +1523,7 @@
   "You're on the latest version": {
     "message": "شما در حال استفاده از آخرین نسخه هستید‌"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "نسخه‌های پشتیبان شما"
   },
   "Your Plottr file was exported to a .docx file": {

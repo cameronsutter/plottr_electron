@@ -557,6 +557,8 @@ describe('saveFile', () => {
   })
 })
 
+const DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE = () => {}
+
 describe('backupFile', () => {
   describe('given a whenClientIsReady that produces a dummy saveBackup', () => {
     describe('and a file that lacks the necessary keys', () => {
@@ -582,6 +584,7 @@ describe('backupFile', () => {
           await backupFile(
             whenClientIsReady,
             backupOnFirebase,
+            DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
             CONSOLE_LOGGER
           )(omit(EMPTY_FILE, 'file'))
         } catch (error) {
@@ -611,7 +614,12 @@ describe('backupFile', () => {
             offlineFileURL: () => Promise.resolve('/offline/'),
           })
         }
-        await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+        await backupFile(
+          whenClientIsReady,
+          backupOnFirebase,
+          DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+          CONSOLE_LOGGER
+        )(state)
         expect(called).toBeFalsy()
         expect(savedOnFirebase).toBeFalsy()
       })
@@ -637,7 +645,12 @@ describe('backupFile', () => {
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
-            await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+            await backupFile(
+              whenClientIsReady,
+              backupOnFirebase,
+              DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+              CONSOLE_LOGGER
+            )(state)
             expect(called).toBeFalsy()
             expect(savedOnFirebase).toBeFalsy()
           })
@@ -661,7 +674,12 @@ describe('backupFile', () => {
                 offlineFileURL: () => Promise.resolve('/offline/'),
               })
             }
-            await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+            await backupFile(
+              whenClientIsReady,
+              backupOnFirebase,
+              DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+              CONSOLE_LOGGER
+            )(state)
             expect(called).toBeFalsy()
             expect(savedOnFirebase).toBeFalsy()
           })
@@ -688,7 +706,12 @@ describe('backupFile', () => {
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+              await backupFile(
+                whenClientIsReady,
+                backupOnFirebase,
+                DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+                CONSOLE_LOGGER
+              )(state)
               expect(called).toBeFalsy()
               expect(savedOnFirebase).toBeTruthy()
             })
@@ -712,7 +735,12 @@ describe('backupFile', () => {
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+              await backupFile(
+                whenClientIsReady,
+                backupOnFirebase,
+                DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+                CONSOLE_LOGGER
+              )(state)
               expect(called).toBeTruthy()
               expect(savedOnFirebase).toBeTruthy()
             })
@@ -738,7 +766,12 @@ describe('backupFile', () => {
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+              await backupFile(
+                whenClientIsReady,
+                backupOnFirebase,
+                DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+                CONSOLE_LOGGER
+              )(state)
               expect(called).toBeFalsy()
               expect(savedOnFirebase).toBeTruthy()
             })
@@ -762,7 +795,12 @@ describe('backupFile', () => {
                   offlineFileURL: () => Promise.resolve('/offline/'),
                 })
               }
-              await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+              await backupFile(
+                whenClientIsReady,
+                backupOnFirebase,
+                DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+                CONSOLE_LOGGER
+              )(state)
               expect(called).toBeTruthy()
               expect(savedOnFirebase).toBeTruthy()
             })
@@ -790,7 +828,12 @@ describe('backupFile', () => {
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+          await backupFile(
+            whenClientIsReady,
+            backupOnFirebase,
+            DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+            CONSOLE_LOGGER
+          )(state)
           expect(called).toBeFalsy()
           expect(savedOnFirebase).toBeFalsy()
         })
@@ -814,7 +857,12 @@ describe('backupFile', () => {
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+          await backupFile(
+            whenClientIsReady,
+            backupOnFirebase,
+            DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+            CONSOLE_LOGGER
+          )(state)
           expect(called).toBeFalsy()
           expect(savedOnFirebase).toBeFalsy()
         })
@@ -838,7 +886,12 @@ describe('backupFile', () => {
               offlineFileURL: () => Promise.resolve('/offline/'),
             })
           }
-          await backupFile(whenClientIsReady, backupOnFirebase, CONSOLE_LOGGER)(state)
+          await backupFile(
+            whenClientIsReady,
+            backupOnFirebase,
+            DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+            CONSOLE_LOGGER
+          )(state)
           expect(called).toBeTruthy()
           expect(savedOnFirebase).toBeFalsy()
         })

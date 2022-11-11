@@ -33,7 +33,10 @@ import { makeFileModule } from './files'
 import { offlineFileURL } from '../common/utils/files'
 import Saver from './saver'
 import { saveFile, backupFile } from './save'
-import { downloadStorageImage } from '../common/downloadStorageImage'
+import {
+  makeCachedDownloadStorageImage,
+  downloadStorageImage,
+} from '../common/downloadStorageImage'
 
 const clientId = machineIdSync()
 
@@ -158,6 +161,8 @@ export function bootFile(
 
   const { backupOfflineBackupForResume } = makeFileModule(whenClientIsReady)
 
+  const cachedDowloadStorageImage = makeCachedDownloadStorageImage(downloadStorageImage)
+
   /* If we find that we had an offline backup, we need to either:
    *  - Backup the local copy and open the online copy,
    *  - overwrite the cloud copy, or
@@ -272,11 +277,13 @@ export function bootFile(
 
   const afterLoading = (userId, saveBackup) => (json) => {
     logger.info(`Loaded file ${json.file.fileName}.`)
-    exportToSelfContainedPlottrFile(json, userId, downloadStorageImage).then(
-      (selfContainedFile) => {
-        saveBackup(`${json.file.fileName}.pltr`, selfContainedFile)
-      }
-    )
+    exportToSelfContainedPlottrFile(
+      json,
+      userId,
+      cachedDowloadStorageImage.downloadStorageImage
+    ).then((selfContainedFile) => {
+      saveBackup(`${json.file.fileName}.pltr`, selfContainedFile)
+    })
   }
 
   const makeFlagsConsistent = (beatHierarchy) => (json) => {
@@ -469,7 +476,12 @@ export function bootFile(
         return store.getState().present
       },
       saveFile(whenClientIsReady, logger),
-      backupFile(whenClientIsReady, saveBackupOnFirebase, logger),
+      backupFile(
+        whenClientIsReady,
+        saveBackupOnFirebase,
+        cachedDowloadStorageImage.downloadStorageImage,
+        logger
+      ),
       logger,
       SAVE_INTERVAL_MS,
       BACKUP_INTERVAL_MS,

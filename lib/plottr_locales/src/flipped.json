@@ -605,7 +605,7 @@
   "Get access to all your projects": {
     "message": "(╯°□°）╯︵ sʇɔǝɾoɹd ɹnoʎ ʃʃɐ oʇ ssǝɔɔɐ ʇǝ⅁"
   },
-  "Give Feedback": {
+  "Links": {
     "message": "(╯°□°）╯︵ ʞɔɐqpǝǝℲ ǝʌı⅁"
   },
   "Give this tag a name": {
@@ -1061,7 +1061,7 @@
   "Reload": {
     "message": "(╯°□°）╯︵ pɐoʃǝᴚ"
   },
-  "Remove License": {
+  "Deactivate License Key": {
     "message": "(╯°□°）╯︵ ǝsuǝɔı⅂ ǝʌoɯǝᴚ"
   },
   "Remove from this list": {
@@ -1079,7 +1079,7 @@
   "Rename": {
     "message": "(╯°□°）╯︵ ǝɯɐuǝᴚ"
   },
-  "Report a Problem": {
+  "Contact Support": {
     "message": "(╯°□°）╯︵ ɯǝʃqoɹԀ ɐ ʇɹodǝᴚ"
   },
   "Request a Feature": {
@@ -1592,7 +1592,7 @@
   "You're on the latest version": {
     "message": "(╯°□°）╯︵ uoısɹǝʌ ʇsǝʇɐʃ ǝɥʇ uo ǝɹ,,no⅄"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ɹno⅄"
   },
   "Your Plottr file was exported to a .docx file": {

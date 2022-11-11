@@ -569,7 +569,7 @@
 	"Get access to all your projects": {
 		"message": "Erhalten Sie Zugang zu all Ihren Projekten"
 	},
-	"Give Feedback": {
+	"Links": {
 		"message": "Feedback geben"
 	},
 	"Give this tag a name": {
@@ -995,7 +995,7 @@
 	"Reload": {
 		"message": "Neu laden"
 	},
-	"Remove License": {
+	"Deactivate License Key": {
 		"message": "Lizenz entfernen"
 	},
 	"Remove from this list": {
@@ -1013,7 +1013,7 @@
 	"Rename": {
 		"message": "Umbenennen"
 	},
-	"Report a Problem": {
+	"Contact Support": {
 		"message": "Ein Problem melden"
 	},
 	"Request a Feature": {
@@ -1439,7 +1439,7 @@
 	"You're on the latest version": {
 		"message": "Sie sind auf der neuesten Version"
 	},
-	"Your Backups": {
+	"Backups": {
 		"message": "Ihre Backups"
 	},
 	"Your Plottr file was exported to a .docx file": {

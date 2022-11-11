@@ -566,7 +566,7 @@
   "Get access to all your projects": {
     "message": "Αποκτήστε πρόσβαση σε όλα τα έργα σας"
   },
-  "Give Feedback": {
+  "Links": {
     "message": "Υποβολή Σχολίων"
   },
   "Give this tag a name": {
@@ -989,7 +989,7 @@
   "Reload": {
     "message": "Επαναφόρτωση"
   },
-  "Remove License": {
+  "Deactivate License Key": {
     "message": "Κατάργηση Άδειας"
   },
   "Remove from this list": {
@@ -1007,7 +1007,7 @@
   "Rename": {
     "message": "Μετονομασία"
   },
-  "Report a Problem": {
+  "Contact Support": {
     "message": "Αναφορά προβλήματος"
   },
   "Request a Feature": {
@@ -1433,7 +1433,7 @@
   "You're on the latest version": {
     "message": "Βρίσκεστε στην πιο πρόσφατη έκδοση"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "Τα Αντίγραφα Ασφαλείας σας"
   },
   "Your Plottr file was exported to a .docx file": {

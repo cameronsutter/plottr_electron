@@ -1,5 +1,6 @@
 import { difference } from 'lodash'
 
+import { exportToSelfContainedPlottrFile } from 'plottr_import_export'
 import { helpers, selectors, SYSTEM_REDUCER_KEYS, emptyFile } from 'pltr/v2'
 
 const emptyFileState = emptyFile('DummyFile', '2022.11.2')
@@ -36,33 +37,55 @@ export const saveFile = (whenClientIsReady, logger) => (state) => {
   })
 }
 
-export const backupFile = (whenClientIsReady, logger) => (state) => {
-  return whenClientIsReady(({ saveBackup, offlineFileURL }) => {
-    const hasAllKeys = selectors.hasAllKeysSelector(state)
-    if (!hasAllKeys) {
-      const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
-      const missing = difference(Object.keys(emptyFileState), withoutSystemKeys)
-      const message = `File is missing keys (${missing}).  Refusing to save.`
-      logger.error('Missing keys', new Error(message))
-      return Promise.reject(message)
-    }
+export const backupFile =
+  (whenClientIsReady, saveBackupOnFirebase, downloadStorageImage, logger) => (state) => {
+    const isOffline = selectors.isOfflineSelector(state)
+    const isCloudFile = selectors.isCloudFileSelector(state)
+    const backupEnabled = selectors.backupEnabledSelector(state)
+    const userId = selectors.userIdSelector(state)
 
-    const canBackup = selectors.canBackupSelector(state)
-    if (!canBackup) {
-      logger.warn('File is in a state that prohibits backing up.  Refusing to backup.')
-      return Promise.resolve()
-    }
+    if (!backupEnabled) return Promise.resolve()
 
-    return offlineFileURL().then((offlineFilePath) => {
-      const fileURL = selectors.fileURLSelector(state)
-      if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilePath)) {
-        logger.warn(
-          `Attempting to backup a file at ${fileURL}, but the file is in the offline folder ${offlineFilePath}.`
-        )
-        return Promise.resolve()
-      }
+    const cloudBackup =
+      !isOffline && isCloudFile ? saveBackupOnFirebase(userId, state) : Promise.resolve()
 
-      return saveBackup(fileURL, state)
+    return cloudBackup.then(() => {
+      return whenClientIsReady(({ saveBackup, offlineFileURL }) => {
+        const hasAllKeys = selectors.hasAllKeysSelector(state)
+        if (!hasAllKeys) {
+          const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
+          const missing = difference(Object.keys(emptyFileState), withoutSystemKeys)
+          const message = `File is missing keys (${missing}).  Refusing to save.`
+          logger.error('Missing keys', new Error(message))
+          return Promise.reject(message)
+        }
+
+        const canBackup = selectors.canBackupSelector(state)
+        if (!canBackup) {
+          logger.warn('File is in a state that prohibits backing up.  Refusing to backup.')
+          return Promise.resolve()
+        }
+
+        return offlineFileURL().then((offlineFilePath) => {
+          const fileURL = selectors.fileURLSelector(state)
+          if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilePath)) {
+            logger.warn(
+              `Attempting to backup a file at ${fileURL}, but the file is in the offline folder ${offlineFilePath}.`
+            )
+            return Promise.resolve()
+          }
+
+          const stateToSave = isCloudFile
+            ? exportToSelfContainedPlottrFile(state, userId, downloadStorageImage)
+            : Promise.resolve(state)
+
+          return stateToSave.then((selfContainedFile) => {
+            const filePath = isCloudFile
+              ? `${selfContainedFile.file.fileName}.pltr`
+              : helpers.file.withoutProtocol(fileURL)
+            return saveBackup(filePath, selfContainedFile)
+          })
+        })
+      })
     })
-  })
-}
+  }

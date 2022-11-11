@@ -49,7 +49,7 @@ function buildHelpMenu() {
         type: 'separator',
       },
       {
-        label: t('Links'),
+        label: t('Give Feedback'),
         click: () => shell.openExternal('https://feedback.getplottr.com'),
       },
       {

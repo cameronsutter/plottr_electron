@@ -29,6 +29,10 @@
   &.links {
     display: flex;
     flex-wrap: wrap;
+
+    button {
+      font-size: 16px;
+    }
   }
   &.actions {
     display: flex;

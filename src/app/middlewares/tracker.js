@@ -1,4 +1,4 @@
-import { ActionTypes } from 'pltr/v2'
+import { ActionTypes, selectors } from 'pltr/v2'
 import makeFileSystemAPIs from '../../api/file-system-apis'
 import MPQ from '../../common/utils/MPQ'
 import { shouldIgnoreAction } from './shouldIgnoreAction'
@@ -36,7 +36,7 @@ const tracker = (whenClientIsReady) => {
       const { present } = state
       if (present && present.ui && present.file) {
         const attrs = {
-          timeline_orientation: present.ui.orientation,
+          timeline_orientation: selectors.orientationSelector(present),
           version: present.file.version,
         }
 

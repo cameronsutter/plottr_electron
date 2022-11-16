@@ -39,7 +39,8 @@ import { makeMainProcessClient } from './mainProcessClient'
 
 const clientId = machineIdSync()
 
-const { setWindowTitle, setRepresentedFileName, getVersion, showErrorBox } = makeMainProcessClient()
+const { setWindowTitle, setRepresentedFileName, getVersion, showErrorBox, showMessageBox } =
+  makeMainProcessClient()
 
 let rollbar
 setupRollbar('app.html').then((newRollbar) => {
@@ -368,99 +369,112 @@ export function bootFile(
         return setRepresentedFileName(helpers.file.withoutProtocol(fileURL))
       })
       .then(() => {
-        let jsonPromise
-        try {
-          offlineFileURL(fileURL).then((offlineFileURL) => {
+        return offlineFileURL(fileURL)
+          .then((offlineFileURL) => {
             const filePath = helpers.file.withoutProtocol(
               bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
             )
-            jsonPromise = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-            // In case this file was downloaded and we want to open it while
-            // logged out, we need to reset the cloud flag.  (This is usually
-            // set when we receive the file from Firebase, but it gets
-            // synchronised back up to the database and if you then download
-            // the file it'll be there.)
-            //
-            // This use case is actually quite common: you might want to
-            // simply open a backup file locally.
-            json.file.isCloudFile = false
-          })
-        } catch (error) {
-          logger.error(error)
-          rollbar.error(error)
-          return Promise.reject(`bootLocalFile001: json-parse (${fileURL})`)
-        }
-        saveBackup(fileURL, json)
-        return getVersion().then((version) => {
-          return new Promise((resolve, reject) => {
-            migrateIfNeeded(
-              version,
-              json,
-              fileURL,
-              null,
-              (err, didMigrate, state) => {
-                if (err) {
-                  rollbar.error(err)
-                  logger.error(err)
-                  if (err === 'Plottr behind file') {
-                    return reject('Need to update Plottr')
-                  }
-                  return reject(`bootLocalFile002: migration (${fileURL})`)
-                }
-                store.dispatch(
-                  actions.ui.loadFile(
-                    state.file.fileName || helpers.file.withoutProtocol(fileURL),
-                    didMigrate,
-                    {
-                      ...state,
-                      file: {
-                        ...state.file,
-                        originalVersionStamp:
-                          state.file.originalVersionStamp || state.file.versionStamp,
-                      },
-                    },
-                    state.file.version,
-                    fileURL
-                  )
-                )
-                store.dispatch(
-                  actions.project.selectFile({
-                    ...state.file,
-                    fileURL,
-                    id: helpers.file.fileIdFromPlottrProFile(fileURL),
-                  })
-                )
-
-                MPQ.projectEventStats(
-                  'open_file',
-                  {
-                    online: navigator.onLine,
-                    version: state.file.version,
-                    number_open: numOpenFiles,
+            return whenClientIsReady(({ readFile }) => {
+              return readFile(filePath)
+            })
+              .then((rawFile) => {
+                return JSON.parse(rawFile)
+              })
+              .then((json) => {
+                // In case this file was downloaded and we want to open it while
+                // logged out, we need to reset the cloud flag.  (This is usually
+                // set when we receive the file from Firebase, but it gets
+                // synchronised back up to the database and if you then download
+                // the file it'll be there.)
+                //
+                // This use case is actually quite common: you might
+                // want to simply open a backup file locally.
+                return {
+                  ...json,
+                  file: {
+                    ...json.file,
+                    isCloudFile: false,
                   },
-                  state
-                )
-
-                const withDispatch = dispatchingToStore(store.dispatch)
-                makeFlagConsistent(
-                  state,
-                  beatHierarchy,
-                  featureFlags.BEAT_HIERARCHY_FLAG,
-                  withDispatch(actions.featureFlags.setBeatHierarchy),
-                  withDispatch(actions.featureFlags.unsetBeatHierarchy)
-                )
-
-                if (state && state.tour && state.tour.showTour)
-                  store.dispatch(actions.ui.changeOrientation('horizontal'))
-
-                store.dispatch(actions.client.setClientId(clientId))
-
-                resolve()
-              },
-              logger
-            )
+                }
+              })
           })
-        })
+          .then((json) => {
+            return saveBackup(fileURL, json).then(() => {
+              return json
+            })
+          })
+          .then((json) => {
+            getVersion().then((version) => {
+              return new Promise((resolve, reject) => {
+                migrateIfNeeded(
+                  version,
+                  json,
+                  fileURL,
+                  null,
+                  (err, didMigrate, state) => {
+                    if (err) {
+                      rollbar.error(err)
+                      logger.error(err)
+                      if (err === 'Plottr behind file') {
+                        return reject('Need to update Plottr')
+                      }
+                      return reject(`bootLocalFile002: migration (${fileURL})`)
+                    }
+                    store.dispatch(
+                      actions.ui.loadFile(
+                        state.file.fileName || helpers.file.withoutProtocol(fileURL),
+                        didMigrate,
+                        {
+                          ...state,
+                          file: {
+                            ...state.file,
+                            originalVersionStamp:
+                              state.file.originalVersionStamp || state.file.versionStamp,
+                          },
+                        },
+                        state.file.version,
+                        fileURL
+                      )
+                    )
+                    store.dispatch(
+                      actions.project.selectFile({
+                        ...state.file,
+                        fileURL,
+                        id: helpers.file.fileIdFromPlottrProFile(fileURL),
+                      })
+                    )
+
+                    MPQ.projectEventStats(
+                      'open_file',
+                      {
+                        online: navigator.onLine,
+                        version: state.file.version,
+                        number_open: numOpenFiles,
+                      },
+                      state
+                    )
+
+                    const withDispatch = dispatchingToStore(store.dispatch)
+                    makeFlagConsistent(
+                      state,
+                      beatHierarchy,
+                      featureFlags.BEAT_HIERARCHY_FLAG,
+                      withDispatch(actions.featureFlags.setBeatHierarchy),
+                      withDispatch(actions.featureFlags.unsetBeatHierarchy)
+                    )
+
+                    if (state && state.tour && state.tour.showTour)
+                      store.dispatch(actions.ui.changeOrientation('horizontal'))
+
+                    store.dispatch(actions.client.setClientId(clientId))
+
+                    resolve()
+                  },
+                  logger
+                )
+              })
+            })
+          })
       })
   }
 
@@ -525,13 +539,10 @@ export function bootFile(
       BACKUP_INTERVAL_MS,
       rollbar,
       (title, message) => {
-        dialog.showMessageBox(win, {
-          title,
-          message,
-        })
+        showMessageBox(title, message)
       },
       (title, message) => {
-        dialog.showErorrBox(title, message)
+        showErrorBox(title, message)
       }
     )
   })

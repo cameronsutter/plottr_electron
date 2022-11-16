@@ -1,56 +1,59 @@
 import Rollbar from 'rollbar'
-import { app } from '@electron/remote'
 
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 import makeFileSystemAPIs from '../../api/file-system-apis'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
+
+const { getVersion } = makeMainProcessClient()
 
 export default function setupRollbar(where) {
   let environment = process.env.NODE_ENV == 'development' ? 'development' : 'production'
   let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-  let version = app.getVersion()
 
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
-  return fileSystemAPIs.currentUserSettings().then((user) => {
-    return new Rollbar({
-      accessToken: rollbarToken,
-      handleUncaughtExceptions: process.env.NODE_ENV != 'development',
-      handleUnhandledRejections: true,
-      ignoredMessages: [],
-      payload: {
-        environment: environment,
-        version: version,
-        os: process.platform,
-        context: where,
-        client: {
-          javascript: {
-            source_map_enabled: true,
-            code_version: version,
-            guess_uncaught_frames: true,
+  return Promise.all([fileSystemAPIs.currentUserSettings(), getVersion()]).then(
+    ([user, version]) => {
+      return new Rollbar({
+        accessToken: rollbarToken,
+        handleUncaughtExceptions: process.env.NODE_ENV != 'development',
+        handleUnhandledRejections: true,
+        ignoredMessages: [],
+        payload: {
+          environment: environment,
+          version: version,
+          os: process.platform,
+          context: where,
+          client: {
+            javascript: {
+              source_map_enabled: true,
+              code_version: version,
+              guess_uncaught_frames: true,
+            },
+          },
+          person: {
+            id: user.payment_id,
+            email: user.customer_email,
+          },
+          server: {
+            root: `https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${version}/`,
           },
         },
-        person: {
-          id: user.payment_id,
-          email: user.customer_email,
+        transform: function (payload) {
+          payload.request.url = requestURL(payload.request.url, version)
+          if (payload.body.trace) {
+            payload.body.trace.frames = payload.body.trace.frames.map((fr) => {
+              fr.filename = requestURL(fr.filename, version)
+              return fr
+            })
+          }
         },
-        server: {
-          root: `https://raw.githubusercontent.com/Plotinator/pltr_sourcemaps/main/${version}/`,
+        checkIgnore: function (isUncaught, args, payload) {
+          // return true to ignore
+          return process.env.NODE_ENV == 'development'
         },
-      },
-      transform: function (payload) {
-        payload.request.url = requestURL(payload.request.url, version)
-        if (payload.body.trace) {
-          payload.body.trace.frames = payload.body.trace.frames.map((fr) => {
-            fr.filename = requestURL(fr.filename, version)
-            return fr
-          })
-        }
-      },
-      checkIgnore: function (isUncaught, args, payload) {
-        // return true to ignore
-        return process.env.NODE_ENV == 'development'
-      },
-    })
-  })
+      })
+    }
+  )
 }
 
 function requestURL(url, version) {

@@ -33,6 +33,14 @@ afterAll(async () => {
       })
     }
   }
+  // ==========Shut Down the Server==========
+  try {
+    await whenClientIsReady(({ shutdown }) => {
+      return shutdown()
+    })
+  } catch (error) {
+    console.error('Failed to shut down the server!', error)
+  }
 })
 
 // Starting a socket server takes time
@@ -153,10 +161,5 @@ describe('startServer', () => {
     )
     const parsedLastOpenedAfter = JSON.parse(lastOpenedAfter)
     expect(parsedLastOpenedAfter).toMatchObject({})
-
-    // ==========Shut Down the Server==========
-    await whenClientIsReady(({ shutdown }) => {
-      return shutdown()
-    })
   })
 })

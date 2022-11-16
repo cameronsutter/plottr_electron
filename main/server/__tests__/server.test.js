@@ -23,10 +23,12 @@ const CONSOLE_LOGGER = {
   },
 }
 
+const baseTestDirectory = path.join(__dirname, '..', '..', '..', '.test-output')
+
 afterAll(async () => {
-  for (const file of await fs.promises.readdir(path.join(__dirname, '../../../.test-output/'))) {
+  for (const file of await fs.promises.readdir(baseTestDirectory)) {
     if (file !== '.gitkeep') {
-      await fs.promises.rm(path.join(__dirname, '../../../.test-output/', file), {
+      await fs.promises.rm(path.join(baseTestDirectory, file), {
         recursive: true,
       })
     }
@@ -41,7 +43,7 @@ describe('startServer', () => {
     // ==========Basic Initialisation==========
     let portBroadcasted = null
     const userDataDirectory = await fs.promises.mkdtemp(
-      '.test-output/plottr_test_socket_server_userData'
+      path.join('.test-output', 'plottr_test_socket_server_userData')
     )
     const broadcastPort = (newPort) => {
       portBroadcasted = newPort

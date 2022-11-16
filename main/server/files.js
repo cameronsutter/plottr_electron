@@ -290,6 +290,14 @@ const fileModule = (userDataPath) => {
       })
     }
 
+    const _writeFile = (filePath, data) => {
+      return writeFile(filePath, data)
+    }
+
+    const _join = (...pathArgs) => {
+      return Promise.resolve(path.join(...pathArgs))
+    }
+
     return {
       saveFile,
       saveOfflineFile,
@@ -302,6 +310,8 @@ const fileModule = (userDataPath) => {
       offlineFilesFilesPath: OFFLINE_FILE_FILES_PATH,
       OFFLINE_FILE_FILES_PATH,
       saveTempFile,
+      writeFile: _writeFile,
+      join: _join,
     }
   }
 }

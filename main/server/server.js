@@ -75,6 +75,8 @@ import {
   UPDATE_KNOWN_FILE_NAME,
   NUKE_LAST_OPENED_FILE_URL,
   SHUTDOWN,
+  WRITE_FILE,
+  JOIN,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -157,6 +159,8 @@ const setupListeners = (port, userDataPath) => {
       isTempFile,
       offlineFilesFilesPath,
       saveTempFile,
+      writeFile,
+      join,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -834,6 +838,22 @@ const setupListeners = (port, userDataPath) => {
                   SHUTDOWN
                 ),
               () => 'ERROR SHUTTING DOWN THE SOCKET SERVER'
+            )
+          }
+          case WRITE_FILE: {
+            const { filePath, file } = payload
+            return handlePromise(
+              () => ['Writing a file to', filePath],
+              () => statusManager.registerTask(writeFile(filePath, file), WRITE_FILE),
+              () => ['Failed writing a file to', filePath]
+            )
+          }
+          case JOIN: {
+            const { pathArgs } = payload
+            return handlePromise(
+              () => ['Joining path args to create an OS path', pathArgs],
+              () => statusManager.registerTask(join(...pathArgs), JOIN),
+              () => ['Joining path args to create an OS path', pathArgs]
             )
           }
           // Subscriptions

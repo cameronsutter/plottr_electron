@@ -36,6 +36,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const logsPath = () => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -47,5 +51,6 @@ export const makeMainProcessClient = () => {
     setFileURL,
     userDataPath,
     userDocumentsPath,
+    logsPath,
   }
 }

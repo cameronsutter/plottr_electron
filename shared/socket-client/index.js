@@ -121,6 +121,10 @@ import {
   NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY,
   SHUTDOWN,
   SHUTDOWN_ERROR_REPLY,
+  WRITE_FILE,
+  WRITE_FILE_ERROR_REPLY,
+  JOIN,
+  JOIN_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -287,6 +291,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case SET_LAST_OPENED_FILE:
           case NUKE_LAST_OPENED_FILE_URL:
           case SHUTDOWN:
+          case WRITE_FILE:
+          case JOIN:
           case PING: {
             resolvePromise()
             return
@@ -359,6 +365,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case LAST_OPENED_FILE_ERROR_REPLY:
           case SET_LAST_OPENED_FILE_ERROR_REPLY:
           case SHUTDOWN_ERROR_REPLY:
+          case WRITE_FILE_ERROR_REPLY:
+          case JOIN_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -527,6 +535,14 @@ const connect = (port, logger, { onBusy, onDone }) => {
 
     const shutdown = () => {
       return sendPromise(SHUTDOWN)
+    }
+
+    const writeFile = (path, file) => {
+      return sendPromise(WRITE_FILE, { path, file })
+    }
+
+    const join = (...pathArgs) => {
+      return sendPromise(JOIN, { pathArgs })
     }
 
     // ===File System APIs===
@@ -714,6 +730,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
           setLastOpenedFilePath,
           nukeLastOpenedFileURL,
           shutdown,
+          writeFile,
+          join,
           close: clientConnection.close.bind(clientConnection),
         })
       })

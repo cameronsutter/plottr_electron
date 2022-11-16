@@ -153,8 +153,8 @@ describe('Saver', () => {
                 },
               ],
             ],
-            1,
-            1
+            3,
+            3
           )
           saver.cancelAllRemainingRequests()
         })
@@ -219,8 +219,8 @@ describe('Saver', () => {
                   },
                 ],
               ],
-              1,
-              1
+              2,
+              2
             )
             saver.cancelAllRemainingRequests()
           })
@@ -288,28 +288,32 @@ describe('Saver', () => {
             })
             expect(calledShowErrorBox).toBe(1)
             expect(calledShowMessageBox).toBe(1)
-            expect(saveCalls).toEqual([
+            expect(saveCalls).toMatchArrayLoosely(
               [
-                {
-                  stateCounter: 1,
-                },
+                [
+                  {
+                    stateCounter: 1,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 2,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 3,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 4,
+                  },
+                ],
               ],
-              [
-                {
-                  stateCounter: 2,
-                },
-              ],
-              [
-                {
-                  stateCounter: 3,
-                },
-              ],
-              [
-                {
-                  stateCounter: 4,
-                },
-              ],
-            ])
+              2,
+              2
+            )
             saver.cancelAllRemainingRequests()
           })
         })
@@ -429,8 +433,8 @@ describe('Saver', () => {
                 },
               ],
             ],
-            1,
-            1
+            3,
+            3
           )
           saver.cancelAllRemainingRequests()
         })
@@ -487,8 +491,8 @@ describe('Saver', () => {
                     },
                   ],
                 ],
-                1,
-                1
+                2,
+                2
               )
             })
             it('should not save after cancel is called', async () => {
@@ -545,8 +549,8 @@ describe('Saver', () => {
                     },
                   ],
                 ],
-                1,
-                1
+                2,
+                2
               )
             })
           })
@@ -669,8 +673,8 @@ describe('Saver', () => {
                 },
               ],
             ],
-            1,
-            1
+            3,
+            3
           )
           saver.cancelAllRemainingRequests()
         })
@@ -735,8 +739,8 @@ describe('Saver', () => {
                   },
                 ],
               ],
-              1,
-              1
+              2,
+              2
             )
             saver.cancelAllRemainingRequests()
           })
@@ -950,8 +954,8 @@ describe('Saver', () => {
                 },
               ],
             ],
-            1,
-            1
+            3,
+            3
           )
           saver.cancelAllRemainingRequests()
         })
@@ -1008,8 +1012,8 @@ describe('Saver', () => {
                     },
                   ],
                 ],
-                1,
-                1
+                2,
+                2
               )
             })
             it('should not backup after cancel is called', async () => {
@@ -1066,8 +1070,8 @@ describe('Saver', () => {
                     },
                   ],
                 ],
-                1,
-                1
+                2,
+                2
               )
             })
           })

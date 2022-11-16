@@ -47,7 +47,11 @@ function toMatchArrayLoosely(received, expected, allowedMissing = 1, allowedAddi
       message: () =>
         `expected ${this.utils.printReceived(received)} to match ${this.utils.printExpected(
           expected
-        )}, but it has too many additional elements ${JSON.stringify(received.slice(matched.length), null, 2)}`,
+        )}, but it has too many additional elements ${JSON.stringify(
+          received.slice(matched.length),
+          null,
+          2
+        )}`,
       pass: false,
     }
   } else if (Math.abs(matched.length - expected.length) <= allowedMissing) {
@@ -135,19 +139,19 @@ describe('Saver', () => {
               ],
               [
                 {
-                  stateCounter: 8
-                }
+                  stateCounter: 8,
+                },
               ],
               [
                 {
-                  stateCounter: 9
-                }
+                  stateCounter: 9,
+                },
               ],
               [
                 {
-                  stateCounter: 10
-                }
-              ]
+                  stateCounter: 10,
+                },
+              ],
             ],
             1,
             1

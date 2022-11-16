@@ -145,6 +145,9 @@ describe('startServer', () => {
     await whenClientIsReady(({ nukeLastOpenedFileURL }) => {
       return nukeLastOpenedFileURL()
     })
+    // It might take time for (Windows, e.g.) to flush the operation
+    // to disk.
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     const lastOpenedAfter = await fs.promises.readFile(
       path.join(userDataDirectory, 'last_opened.json')
     )

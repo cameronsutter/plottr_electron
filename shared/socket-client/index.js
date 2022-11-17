@@ -127,6 +127,8 @@ import {
   JOIN_ERROR_REPLY,
   PATH_SEP,
   PATH_SEP_ERROR_REPLY,
+  TRASH_FILE,
+  TRASH_FILE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -370,6 +372,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case WRITE_FILE_ERROR_REPLY:
           case JOIN_ERROR_REPLY:
           case PATH_SEP_ERROR_REPLY:
+          case TRASH_FILE_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -550,6 +553,10 @@ const connect = (port, logger, { onBusy, onDone }) => {
 
     const pathSep = () => {
       return sendPromise(PATH_SEP)
+    }
+
+    const trash = (fileURL) => {
+      return sendPromise(TRASH_FILE, { fileURL })
     }
 
     // ===File System APIs===
@@ -740,6 +747,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           writeFile,
           join,
           pathSep,
+          trash,
           close: clientConnection.close.bind(clientConnection),
         })
       })

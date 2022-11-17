@@ -1,4 +1,4 @@
-import electron, { shell, ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron'
 import { ActionCreators } from 'redux-undo'
 import { machineIdSync } from 'node-machine-id'
 
@@ -35,7 +35,6 @@ import {
   renameFile,
   saveFile,
   editKnownFilePath,
-  showSaveDialogSync,
   newFile,
   uploadExisting,
   deleteCloudBackupFile,
@@ -64,9 +63,8 @@ import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
 import { makeMainProcessClient } from './app/mainProcessClient'
 
-const { getVersion, hostLocale } = makeMainProcessClient()
-
-const moveItemToTrash = shell.trashItem
+const { getVersion, hostLocale, openExternal, showSaveDialog, showOpenDialog } =
+  makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
   return whenClientIsReady(({ rmRf }) => {
@@ -193,9 +191,7 @@ const platform = {
       const isOnCloud = file?.isCloudFile
       if (isLoggedIn && isOnCloud) {
         if (!file) {
-          logger.error(
-            `Error deleting file at path: ${path} with url: ${fileURL}.  File is not known to Plottr`
-          )
+          logger.error(`Error deleting file at url: ${fileURL}.  File is not known to Plottr`)
           store.dispatch(actions.error.generalError('file-not-found'))
           store.dispatch(actions.project.showLoader(false))
           store.dispatch(actions.applicationState.finishDeletingFile())
@@ -240,9 +236,17 @@ const platform = {
     renameFile,
     removeFromKnownFiles,
     saveFile,
-    readFileSync,
+    readFile: (fileURL) => {
+      return whenClientIsReady(({ readFile }) => {
+        return readFile(fileURL)
+      })
+    },
     rmRF,
-    moveItemToTrash,
+    moveItemToTrash: (fileURL) => {
+      return whenClientIsReady(({ trash }) => {
+        return trash(fileURL)
+      })
+    },
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
@@ -253,7 +257,11 @@ const platform = {
       const isLoggedIntoPro = selectors.hasProSelector(state)
       ipcRenderer.send('create-from-scrivener', importedPath, isLoggedIntoPro)
     },
-    joinPath: path.join,
+    joinPath: (...args) => {
+      return whenClientIsReady(({ join }) => {
+        return join(...args)
+      })
+    },
     listOfflineFiles,
   },
   update: {
@@ -322,12 +330,10 @@ const platform = {
       editTemplateDetails(templateId, templateDetails, userId)
     },
     startSaveAsTemplate: (itemType) => {
-      const win = getCurrentWindow()
-      ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
+      ipcRenderer.send('save-as-template-start', itemType) // sends this message to this same process
     },
     saveTemplate: (payload) => {
-      const win = getCurrentWindow()
-      ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
+      ipcRenderer.send('save-custom-template', payload)
     },
   },
   settings: {
@@ -337,14 +343,13 @@ const platform = {
   isDevelopment: isDevelopment(),
   isWindows: () => !!isWindows(),
   isMacOS: () => !!isMacOS(),
-  openExternal: shell.openExternal,
+  openExternal,
   createErrorReport,
   createFullErrorReport,
   handleCustomerServiceCode,
   log: logger,
-  dialog,
-  showSaveDialogSync,
-  showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
+  showSaveDialog,
+  showOpenDialog,
   node: {
     env: isDevelopment() ? 'development' : 'production',
   },
@@ -360,8 +365,7 @@ const platform = {
     exportSaveDialog,
   },
   moveFromTemp: () => {
-    const win = getCurrentWindow()
-    ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
+    ipcRenderer.send('move-from-temp')
   },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {

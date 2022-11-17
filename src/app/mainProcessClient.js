@@ -48,6 +48,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const openExternal = (url) => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -62,5 +66,6 @@ export const makeMainProcessClient = () => {
     logsPath,
     showOpenDialog,
     hostLocale,
+    openExternal,
   }
 }

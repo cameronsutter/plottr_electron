@@ -78,6 +78,7 @@ import {
   WRITE_FILE,
   JOIN,
   PATH_SEP,
+  TRASH_FILE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -202,6 +203,7 @@ const setupListeners = (port, userDataPath) => {
       copyFile,
     } = fileSystemModule
     const trashModule = makeTrashModule(userDataPath, logger)
+    const { trashByURL } = trashModule
     const tempFilesModule = makeTempFilesModule(
       userDataPath,
       stores,
@@ -863,6 +865,14 @@ const setupListeners = (port, userDataPath) => {
               () => 'Requested the path separator for the host operating system',
               () => separator,
               () => 'Error requesting the path separator for the host operating system'
+            )
+          }
+          case TRASH_FILE: {
+            const { fileURL } = payload
+            return handlePromise(
+              () => ['Trashing file at', fileURL],
+              () => statusManager.registerTask(trashByURL(fileURL)),
+              () => ['Error trashing file at', fileURL]
             )
           }
           // Subscriptions

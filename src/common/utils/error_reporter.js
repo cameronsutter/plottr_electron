@@ -1,6 +1,4 @@
-import { shell, ipcRenderer } from 'electron'
-import fs from 'fs'
-import path from 'path'
+import { ipcRenderer } from 'electron'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
 
@@ -25,18 +23,21 @@ export function getPreviousAction() {
   return previousAction
 }
 
-const { userDocumentsPath, appVersion } = makeMainProcessClient()
+const { userDocumentsPath, appVersion, showItemInFolder } = makeMainProcessClient()
 
 export function createErrorReport(error, errorInfo) {
-  userDocumentsPath().then((documentsPath) => {
+  return userDocumentsPath().then((documentsPath) => {
     return prepareErrorReport(error, errorInfo).then((body) => {
-      const filePath = path.join(documentsPath, `plottr_error_report_${Date.now()}.txt`)
-      fs.writeFile(filePath, body, function (err) {
-        if (err) {
-          log.warn(err)
-        } else {
-          notifyUser(filePath)
-        }
+      return whenClientIsReady(({ join, writeFile }) => {
+        return join(documentsPath, `plottr_error_report_${Date.now()}.txt`).then((filePath) => {
+          return writeFile(filePath, body, function (err) {
+            if (err) {
+              log.warn(err)
+            } else {
+              notifyUser(filePath)
+            }
+          })
+        })
       })
     })
   })
@@ -74,17 +75,16 @@ ${JSON.stringify(previousAction)}
 }
 
 function notifyUser(filePath) {
-  try {
-    ipcRenderer.send(
-      'notify',
-      i18n('Error Report created'),
-      i18n('Plottr created a file named {filePath} in your Documents folder', {
-        filePath: path.basename(filePath),
-      })
-    )
-  } catch (error) {
-    // ignore
-    // on windows you need something called an Application User Model ID which may not work
-  }
-  shell.showItemInFolder(filePath)
+  return whenClientIsReady(({ basename }) => {
+    return basename(filePath).then((fileName) => {
+      ipcRenderer.send(
+        'notify',
+        i18n('Error Report created'),
+        i18n('Plottr created a file named {filePath} in your Documents folder', {
+          filePath: fileName,
+        })
+      )
+      return showItemInFolder(filePath)
+    })
+  })
 }

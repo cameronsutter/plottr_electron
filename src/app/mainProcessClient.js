@@ -52,6 +52,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const showItemInFolder = (filePath) => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -67,5 +71,6 @@ export const makeMainProcessClient = () => {
     showOpenDialog,
     hostLocale,
     openExternal,
+    showItemInFolder,
   }
 }

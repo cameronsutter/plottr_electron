@@ -156,6 +156,11 @@
       visibility: visible;
     }
   }
+
+  .label.label-info {
+    white-space: inherit;
+    word-break: break-word;
+  }
 }
 
 body.darkmode {

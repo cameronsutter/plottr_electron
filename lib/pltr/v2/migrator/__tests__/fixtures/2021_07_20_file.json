@@ -1600,22 +1600,6 @@
       }
     }
   },
-  "tour": {
-    "showTour": false,
-    "feature": {
-      "name": "acts",
-      "id": 1,
-      "endStep": 8
-    },
-    "run": true,
-    "stepIndex": 0,
-    "steps": [],
-    "loading": false,
-    "action": "start",
-    "transitioning": false,
-    "b2bTransition": false,
-    "toursTaken": {}
-  },
   "images": {
     "1": {
       "id": 1,

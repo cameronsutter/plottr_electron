@@ -44,7 +44,7 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
 function createPlotlineTemplate(pltrData, { name, description, link }) {
   const data = cloneDeep(pltrData)
   const id = makeNewId('pl')
-  const bookId = data.ui.currentTimeline
+  const bookId = selectors.currentTimelineSelector(data)
 
   let template = {
     id: id,

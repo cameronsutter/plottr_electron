@@ -12,7 +12,13 @@ import {
   emptyFile,
 } from 'pltr/v2'
 import { t } from 'plottr_locales'
-import { currentUser, initialFetch, overwriteAllKeys } from 'wired-up-firebase'
+import {
+  currentUser,
+  initialFetch,
+  overwriteAllKeys,
+  saveBackup as saveBackupOnFirebase,
+} from 'wired-up-firebase'
+import { exportToSelfContainedPlottrFile } from 'plottr_import_export'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
@@ -27,6 +33,10 @@ import { makeFileModule } from './files'
 import { offlineFileURL } from '../common/utils/files'
 import Saver from './saver'
 import { saveFile, backupFile } from './save'
+import {
+  makeCachedDownloadStorageImage,
+  downloadStorageImage,
+} from '../common/downloadStorageImage'
 
 const clientId = machineIdSync()
 
@@ -151,6 +161,8 @@ export function bootFile(
 
   const { backupOfflineBackupForResume } = makeFileModule(whenClientIsReady)
 
+  const cachedDowloadStorageImage = makeCachedDownloadStorageImage(downloadStorageImage)
+
   /* If we find that we had an offline backup, we need to either:
    *  - Backup the local copy and open the online copy,
    *  - overwrite the cloud copy, or
@@ -265,7 +277,13 @@ export function bootFile(
 
   const afterLoading = (userId, saveBackup) => (json) => {
     logger.info(`Loaded file ${json.file.fileName}.`)
-    saveBackup(`${json.file.fileName}.pltr`, json)
+    exportToSelfContainedPlottrFile(
+      json,
+      userId,
+      cachedDowloadStorageImage.downloadStorageImage
+    ).then((selfContainedFile) => {
+      saveBackup(`${json.file.fileName}.pltr`, selfContainedFile)
+    })
   }
 
   const makeFlagsConsistent = (beatHierarchy) => (json) => {
@@ -458,7 +476,12 @@ export function bootFile(
         return store.getState().present
       },
       saveFile(whenClientIsReady, logger),
-      backupFile(whenClientIsReady, logger),
+      backupFile(
+        whenClientIsReady,
+        saveBackupOnFirebase,
+        cachedDowloadStorageImage.downloadStorageImage,
+        logger
+      ),
       logger,
       SAVE_INTERVAL_MS,
       BACKUP_INTERVAL_MS,

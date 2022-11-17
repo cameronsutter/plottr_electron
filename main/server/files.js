@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { isEqual } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { emptyFile, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'

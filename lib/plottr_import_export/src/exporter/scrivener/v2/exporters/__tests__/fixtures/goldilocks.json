@@ -1,14 +1,4 @@
 {
-  "file": {
-    "fileName": "C:\\Users\\edwar\\Downloads\\Goldilocks-and-The-Three-Bears.pltr",
-    "loaded": true,
-    "dirty": true,
-    "version": "2022.1.12-beta.7",
-    "id": null,
-    "appliedMigrations": ["m2021_6_9", "m2021_8_1"],
-    "initialVersion": "2021.5.19",
-    "isCloudFile": false
-  },
   "ui": {
     "currentView": "story",
     "currentTimeline": 1,
@@ -22,18 +12,16 @@
     "placeFilter": null,
     "noteSort": "title~asc",
     "noteFilter": null,
+    "zoomState": null,
+    "zoomIndex": 4,
     "timelineIsExpanded": true,
-    "timelineFilter": null,
-    "timelineScrollPosition": {
-      "x": 0,
-      "y": 0
-    },
-    "timeline": {
-      "size": "large"
-    }
+    "timelineFilter": null
   },
-  "featureFlags": {
-    "BEAT_HIERARCHY": false
+  "file": {
+    "fileName": "/Users/ryanzee/Downloads/Goldilocks and The Three Bears.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2020.7.30"
   },
   "series": {
     "name": "Goldilocks and The Three Bears",
@@ -50,528 +38,11 @@
       "genre": "",
       "theme": "",
       "templates": [],
-      "imageId": "7",
-      "timelineTemplates": []
+      "imageId": "7"
     },
-    "allIds": [1]
-  },
-  "beats": {
-    "1": {
-      "children": {
-        "2": [],
-        "3": [],
-        "4": [],
-        "5": [],
-        "6": [],
-        "null": [2, 3, 4, 5, 6]
-      },
-      "heap": {
-        "2": null,
-        "3": null,
-        "4": null,
-        "5": null,
-        "6": null
-      },
-      "index": {
-        "2": {
-          "id": 2,
-          "bookId": 1,
-          "position": 0,
-          "title": "Exposition",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "3": {
-          "id": 3,
-          "bookId": 1,
-          "position": 1,
-          "title": "Rising Action",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "4": {
-          "id": 4,
-          "bookId": 1,
-          "position": 2,
-          "title": "Climax",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "5": {
-          "id": 5,
-          "bookId": 1,
-          "position": 3,
-          "title": "Falling Action",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "6": {
-          "id": 6,
-          "bookId": 1,
-          "position": 4,
-          "title": "Resolution",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        }
-      }
-    },
-    "series": {
-      "children": {
-        "1": [],
-        "null": [1]
-      },
-      "heap": {
-        "1": null
-      },
-      "index": {
-        "1": {
-          "id": 1,
-          "position": 0,
-          "title": "Beat 1",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "bookId": "series",
-          "expanded": true
-        }
-      }
-    }
-  },
-  "cards": [
-    {
-      "id": 11,
-      "lineId": 4,
-      "beatId": 4,
-      "seriesLineId": null,
-      "bookId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": 0,
-      "title": {
-        "title": "They discover Goldilocks in bed",
-        "description": [
-          {
-            "children": [
-              {
-                "text": ""
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [7, 1],
-      "characters": [2, 1, 4, 3],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 10,
-      "lineId": 3,
-      "beatId": 4,
-      "seriesLineId": null,
-      "bookId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": 0,
-      "title": {
-        "title": "They discover their chairs have been used",
-        "description": [
-          {
-            "children": [
-              {
-                "text": ""
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [6, 1],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 9,
-      "lineId": 2,
-      "beatId": 4,
-      "seriesLineId": null,
-      "bookId": null,
-      "positionWithinLine": 1,
-      "positionInChapter": 0,
-      "title": {
-        "title": "They discover their porridge has been eaten",
-        "description": [
-          {
-            "children": [
-              {
-                "text": ""
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [8, 1],
-      "characters": [],
-      "places": [],
-      "templates": [],
-      "imageId": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 8,
-      "lineId": 4,
-      "beatId": 3,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "She tries three beds until she finds the right one",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "Very tired, Goldilocks goes upstairs to the bedroom..."
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The first bed is too hard. "
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The second bed is too soft."
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The third bed is just right!"
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "And then she falls asleep."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [3, 7],
-      "characters": [],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 7,
-      "lineId": 3,
-      "beatId": 3,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "She tries three chairs until she finds the right one",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "Tired, Golidocks decides to sit on a chair..."
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The first chair is too big. "
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The second chair is also too big."
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The third (and smallest) chair is just right!"
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "But as she sits on the chair, it breaks into pieces."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [3, 6],
-      "characters": [1],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 6,
-      "lineId": 2,
-      "beatId": 3,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "She tries each bowl until she finds the right one",
-        "description": [
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The first bowl is too hot. "
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The second bowl is too cold."
-              }
-            ]
-          },
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "text": "The third bowl is just right!"
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [3, 8],
-      "characters": [1],
-      "places": [],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 5,
-      "lineId": 1,
-      "beatId": 6,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "Goldilocks runs away, never to return again",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "She runs out the door, into the forest."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [1, 4],
-      "characters": [1],
-      "places": [2, 1],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 4,
-      "lineId": 1,
-      "beatId": 5,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "Goldilocks wakes up to realize she's in the bears' home",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "She sees the bears, screams for help, and runs out of the room."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [1],
-      "characters": [1, 2, 4, 3],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 3,
-      "lineId": 1,
-      "beatId": 4,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "The three bears come home",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "They are not pleased by what they discover."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [1],
-      "characters": [1, 4, 3, 2],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 2,
-      "lineId": 1,
-      "beatId": 3,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "Goldilocks enters and finds three bowls of porridge",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "Goldilocks is hungry."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [3, 8],
-      "characters": [1],
-      "places": [2],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 1,
-      "lineId": 1,
-      "beatId": 2,
-      "seriesLineId": null,
-      "bookId": null,
-      "position": 0,
-      "title": {
-        "title": "Goldilocks takes a walk in the forest and finds a cottage",
-        "description": [
-          {
-            "children": [
-              {
-                "text": "She knocks on the door and walks right in when nobody answers."
-              }
-            ]
-          }
-        ]
-      },
-      "description": [],
-      "tags": [2, 5],
-      "characters": [1],
-      "places": [1],
-      "templates": [],
-      "imageId": null,
-      "positionWithinLine": 0,
-      "positionInChapter": null,
-      "fromTemplateId": null
-    }
-  ],
-  "categories": {
-    "characters": [
-      {
-        "id": 1,
-        "name": "Main",
-        "position": 0
-      },
-      {
-        "id": 2,
-        "name": "Supporting",
-        "position": 1
-      },
-      {
-        "id": 3,
-        "name": "Other",
-        "position": 2
-      }
-    ],
-    "places": [],
-    "notes": [],
-    "tags": []
+    "allIds": [
+      1
+    ]
   },
   "characters": [
     {
@@ -588,7 +59,16 @@
         }
       ],
       "color": null,
-      "cards": [1, 2, 6, 7, 3, 4, 5, 11],
+      "cards": [
+        1,
+        2,
+        6,
+        7,
+        3,
+        4,
+        5,
+        11
+      ],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -611,7 +91,11 @@
         }
       ],
       "color": null,
-      "cards": [3, 4, 11],
+      "cards": [
+        3,
+        4,
+        11
+      ],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -634,7 +118,11 @@
         }
       ],
       "color": null,
-      "cards": [3, 4, 11],
+      "cards": [
+        3,
+        4,
+        11
+      ],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -657,7 +145,11 @@
         }
       ],
       "color": null,
-      "cards": [3, 4, 11],
+      "cards": [
+        3,
+        4,
+        11
+      ],
       "noteIds": [],
       "templates": [],
       "tags": [],
@@ -665,6 +157,523 @@
       "imageId": "3",
       "bookIds": [],
       "Species": "Bear"
+    }
+  ],
+  "chapters": [
+    {
+      "id": 1,
+      "bookId": 1,
+      "position": 0,
+      "title": "Exposition",
+      "time": 0,
+      "templates": [],
+      "autoOutlineSort": true
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "position": 1,
+      "title": "Rising Action",
+      "time": 0,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 3,
+      "bookId": 1,
+      "position": 2,
+      "title": "Climax",
+      "time": 0,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 4,
+      "bookId": 1,
+      "position": 3,
+      "title": "Falling Action",
+      "time": 0,
+      "autoOutlineSort": true
+    },
+    {
+      "id": 5,
+      "bookId": 1,
+      "position": 4,
+      "title": "Resolution",
+      "time": 0,
+      "autoOutlineSort": true
+    }
+  ],
+  "cards": [
+    {
+      "id": 11,
+      "lineId": 4,
+      "chapterId": 3,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "They discover Goldilocks in bed",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [
+        7,
+        1
+      ],
+      "characters": [
+        2,
+        1,
+        4,
+        3
+      ],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null
+    },
+    {
+      "id": 10,
+      "lineId": 3,
+      "chapterId": 3,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": 0,
+      "title": "They discover their chairs have been used",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [
+        6,
+        1
+      ],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
+      "id": 9,
+      "lineId": 2,
+      "chapterId": 3,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "positionWithinLine": 1,
+      "positionInChapter": 0,
+      "title": "They discover their porridge has been eaten",
+      "description": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [
+        8,
+        1
+      ],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null
+    },
+    {
+      "id": 8,
+      "lineId": 4,
+      "chapterId": 2,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "She tries three beds until she finds the right one",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "Very tired, Goldilocks goes upstairs to the bedroom..."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The first bed is too hard. "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The second bed is too soft."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The third bed is just right!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "And then she falls asleep."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        3,
+        7
+      ],
+      "characters": [],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 7,
+      "lineId": 3,
+      "chapterId": 2,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "She tries three chairs until she finds the right one",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "Tired, Golidocks decides to sit on a chair..."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The first chair is too big. "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The second chair is also too big."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The third (and smallest) chair is just right!"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "But as she sits on the chair, it breaks into pieces."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        3,
+        6
+      ],
+      "characters": [
+        1
+      ],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 6,
+      "lineId": 2,
+      "chapterId": 2,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "She tries each bowl until she finds the right one",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The first bowl is too hot. "
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The second bowl is too cold."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": "The third bowl is just right!"
+            }
+          ]
+        }
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "characters": [
+        1
+      ],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 5,
+      "lineId": 1,
+      "chapterId": 5,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "Goldilocks runs away, never to return again",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "She runs out the door, into the forest."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        1,
+        4
+      ],
+      "characters": [
+        1
+      ],
+      "places": [
+        2,
+        1
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 4,
+      "lineId": 1,
+      "chapterId": 4,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "Goldilocks wakes up to realize she's in the bears' home",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "She sees the bears, screams for help, and runs out of the room."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        1
+      ],
+      "characters": [
+        1,
+        2,
+        4,
+        3
+      ],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 3,
+      "lineId": 1,
+      "chapterId": 3,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "The three bears come home",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "They are not pleased by what they discover."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        1
+      ],
+      "characters": [
+        1,
+        4,
+        3,
+        2
+      ],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 2,
+      "lineId": 1,
+      "chapterId": 2,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "Goldilocks enters and finds three bowls of porridge",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "Goldilocks is hungry."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        3,
+        8
+      ],
+      "characters": [
+        1
+      ],
+      "places": [
+        2
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    },
+    {
+      "id": 1,
+      "lineId": 1,
+      "chapterId": 1,
+      "beatId": null,
+      "seriesLineId": null,
+      "bookId": null,
+      "position": 0,
+      "title": "Goldilocks takes a walk in the forest and finds a cottage",
+      "description": [
+        {
+          "children": [
+            {
+              "text": "She knocks on the door and walks right in when nobody answers."
+            }
+          ]
+        }
+      ],
+      "tags": [
+        2,
+        5
+      ],
+      "characters": [
+        1
+      ],
+      "places": [
+        1
+      ],
+      "templates": [],
+      "imageId": null,
+      "positionWithinLine": 0,
+      "positionInChapter": null
+    }
+  ],
+  "lines": [
+    {
+      "id": 4,
+      "bookId": 1,
+      "title": "Scene 4",
+      "color": "#ff7f32",
+      "position": 3,
+      "expanded": null
+    },
+    {
+      "id": 3,
+      "bookId": 1,
+      "title": "Scene 3",
+      "color": "#e5554f",
+      "position": 2,
+      "expanded": true
+    },
+    {
+      "id": 2,
+      "bookId": 1,
+      "title": "Scene 2",
+      "color": "#78be20",
+      "position": 1,
+      "expanded": null
+    },
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "Scene 1",
+      "position": 0,
+      "characterId": null,
+      "expanded": true
     }
   ],
   "customAttributes": {
@@ -675,57 +684,105 @@
       }
     ],
     "places": [],
+    "cards": [],
     "scenes": [],
-    "lines": [],
-    "notes": []
+    "lines": []
   },
-  "lines": [
+  "places": [
     {
-      "id": 4,
-      "bookId": 1,
-      "title": "Scene 4",
-      "color": "#ff7f32",
-      "position": 3,
-      "expanded": null,
-      "fromTemplateId": null
-    },
-    {
-      "id": 3,
-      "bookId": 1,
-      "title": "Scene 3",
-      "color": "#e5554f",
-      "position": 2,
-      "expanded": true,
-      "fromTemplateId": null
+      "id": 1,
+      "name": "Forest",
+      "description": "Surrounds the bear cottage",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [
+        1,
+        5
+      ],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "imageId": "5",
+      "bookIds": []
     },
     {
       "id": 2,
-      "bookId": 1,
-      "title": "Scene 2",
-      "color": "#78be20",
-      "position": 1,
-      "expanded": null,
-      "fromTemplateId": null
-    },
+      "name": "Bear Cottage",
+      "description": "Where the bears live",
+      "notes": [
+        {
+          "children": [
+            {
+              "text": "The home Goldilocks enters"
+            }
+          ]
+        }
+      ],
+      "color": null,
+      "cards": [
+        7,
+        2,
+        8,
+        3,
+        4,
+        5,
+        11
+      ],
+      "noteIds": [],
+      "templates": [],
+      "tags": [],
+      "imageId": "6",
+      "bookIds": []
+    }
+  ],
+  "tags": [
     {
       "id": 1,
-      "bookId": 1,
-      "color": "#6cace4",
-      "title": "Scene 1",
-      "position": 0,
-      "characterId": null,
-      "expanded": true,
-      "fromTemplateId": null
+      "title": "Theme: Stranger Danger",
+      "color": "MediumAquaMarine"
+    },
+    {
+      "id": 2,
+      "title": "Theme: Trust",
+      "color": "MediumAquaMarine"
+    },
+    {
+      "id": 3,
+      "title": "Theme: Greed",
+      "color": "MediumAquaMarine"
+    },
+    {
+      "id": 4,
+      "title": "Status: Completed",
+      "color": "DarkOrange"
     },
     {
       "id": 5,
-      "bookId": "series",
-      "color": "#6cace4",
-      "title": "Main Plot",
-      "position": 0,
-      "characterId": null,
-      "expanded": null,
-      "fromTemplateId": null
+      "title": "Status: To Do",
+      "color": "DarkOrange"
+    },
+    {
+      "id": 6,
+      "title": "Item: Chair",
+      "color": "#0b1117"
+    },
+    {
+      "id": 7,
+      "title": "Item: Bed",
+      "color": "#0b1117"
+    },
+    {
+      "id": 8,
+      "title": "Item: Porridge",
+      "color": "#0b1117"
     }
   ],
   "notes": [
@@ -779,7 +836,9 @@
           ]
         }
       ],
-      "tags": [4],
+      "tags": [
+        4
+      ],
       "characters": [],
       "places": [],
       "lastEdited": 1597213167350,
@@ -813,7 +872,9 @@
           ]
         }
       ],
-      "tags": [2],
+      "tags": [
+        2
+      ],
       "characters": [],
       "places": [],
       "lastEdited": 1597183091866,
@@ -854,7 +915,9 @@
           ]
         }
       ],
-      "tags": [1],
+      "tags": [
+        1
+      ],
       "characters": [],
       "places": [],
       "lastEdited": 1597186957639,
@@ -888,7 +951,9 @@
           ]
         }
       ],
-      "tags": [3],
+      "tags": [
+        3
+      ],
       "characters": [],
       "places": [],
       "lastEdited": 1597186607532,
@@ -930,7 +995,9 @@
           ]
         }
       ],
-      "tags": [5],
+      "tags": [
+        5
+      ],
       "characters": [],
       "places": [],
       "lastEdited": 1597183102925,
@@ -939,111 +1006,46 @@
       "bookIds": []
     }
   ],
-  "places": [
+  "beats": [
     {
       "id": 1,
-      "name": "Forest",
-      "description": "Surrounds the bear cottage",
-      "notes": [
-        {
-          "children": [
-            {
-              "text": ""
-            }
-          ]
-        }
-      ],
-      "color": null,
-      "cards": [1, 5],
-      "noteIds": [],
+      "position": 0,
+      "title": "Beat 1",
+      "time": 0,
       "templates": [],
-      "tags": [],
-      "imageId": "5",
-      "bookIds": []
-    },
-    {
-      "id": 2,
-      "name": "Bear Cottage",
-      "description": "Where the bears live",
-      "notes": [
-        {
-          "children": [
-            {
-              "text": "The home Goldilocks enters"
-            }
-          ]
-        }
-      ],
-      "color": null,
-      "cards": [7, 2, 8, 3, 4, 5, 11],
-      "noteIds": [],
-      "templates": [],
-      "tags": [],
-      "imageId": "6",
-      "bookIds": []
+      "autoOutlineSort": true
     }
   ],
-  "tags": [
+  "seriesLines": [
     {
       "id": 1,
-      "title": "Theme: Stranger Danger",
-      "color": "MediumAquaMarine"
-    },
-    {
-      "id": 2,
-      "title": "Theme: Trust",
-      "color": "MediumAquaMarine"
-    },
-    {
-      "id": 3,
-      "title": "Theme: Greed",
-      "color": "MediumAquaMarine"
-    },
-    {
-      "id": 4,
-      "title": "Status: Completed",
-      "color": "DarkOrange"
-    },
-    {
-      "id": 5,
-      "title": "Status: To Do",
-      "color": "DarkOrange"
-    },
-    {
-      "id": 6,
-      "title": "Item: Chair",
-      "color": "#0b1117"
-    },
-    {
-      "id": 7,
-      "title": "Item: Bed",
-      "color": "#0b1117"
-    },
-    {
-      "id": 8,
-      "title": "Item: Porridge",
-      "color": "#0b1117"
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "expanded": null
     }
   ],
-  "hierarchyLevels": {
-    "0": {
-      "name": "Chapter",
-      "level": 0,
-      "autoNumber": true,
-      "textColor": "#0b1117",
-      "textSize": 24,
-      "borderColor": "#6cace4",
-      "borderStyle": "NONE",
-      "backgroundColor": "none",
-      "dark": {
-        "borderColor": "#c9e6ff",
-        "textColor": "#c9e6ff"
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
       },
-      "light": {
-        "borderColor": "#6cace4",
-        "textColor": "#0b1117"
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
       }
-    }
+    ],
+    "places": [],
+    "notes": [],
+    "tags": []
   },
   "images": {
     "1": {
@@ -1088,12 +1090,5 @@
       "path": "/Users/ryanzitofsky/Downloads/Goldilocks_Cover.jpg",
       "data": "data:image/jpeg;base64,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"
     }
-  },
-  "editors": {},
-  "client": {
-    "userId": null,
-    "clientId": null,
-    "emailAddress": null,
-    "hasPro": null
   }
 }

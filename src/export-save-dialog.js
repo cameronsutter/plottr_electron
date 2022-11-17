@@ -1,8 +1,8 @@
-import { getCurrentWindow, dialog } from '@electron/remote'
-
 import { t } from 'plottr_locales'
 
-const win = getCurrentWindow()
+import { makeMainProcessClient } from './app/mainProcessClient'
+
+const { showSaveDialog } = makeMainProcessClient()
 
 export const exportSaveDialog = (defaultPath, type) => {
   let label = t('Where would you like to save the export?')
@@ -15,5 +15,5 @@ export const exportSaveDialog = (defaultPath, type) => {
       filters = [{ name: t('Scrivener Project'), extensions: ['scriv'] }]
       break
   }
-  return dialog.showSaveDialogSync(win, { title: label, filters, defaultPath })
+  return showSaveDialog(label, filters, defaultPath)
 }

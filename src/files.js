@@ -1,7 +1,4 @@
-import { ipcRenderer, shell } from 'electron'
-import { getCurrentWindow, app, dialog } from '@electron/remote'
-import fs, { readFileSync } from 'fs'
-import path from 'path'
+import { ipcRenderer } from 'electron'
 
 import { t } from 'plottr_locales'
 import { helpers, actions, reducers, emptyFile, selectors } from 'pltr/v2'
@@ -11,15 +8,11 @@ import { store } from './app/store'
 import logger from '../shared/logger'
 import { uploadToFirebase } from './upload-to-firebase'
 import { whenClientIsReady } from '../shared/socket-client'
-
-const fsPromises = fs.promises
-
-const version = app.getVersion()
-const moveItemToTrash = shell.trashItem
+import { makeMainProcessClient } from './app/mainProcessClient'
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
+const { getVersion } = makeMainProcessClient()
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -54,34 +47,37 @@ export const newFile = (
   name
 ) => {
   const fileName = newFileName(fileList, name)
-  const newFile = newEmptyFile(fileName, version, fullState.present)
-  const file = Object.assign({}, newFile, template || {})
-  if (!file.beats.series) {
-    file.beats.series = newFile.beats.series
-  }
-  if (file.books[1]) {
-    file.books[1].title = fileName
-  }
-  if (fileName) {
-    file.series.name = fileName
-  }
-  return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
-    const fileId = response.data.fileId
-    const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
-    openFile(fileURL, false)
-    closeDashboard()
-    return fileId
+  return getVersion().then((version) => {
+    const newFile = newEmptyFile(fileName, version, fullState.present)
+    const file = Object.assign({}, newFile, template || {})
+    if (!file.beats.series) {
+      file.beats.series = newFile.beats.series
+    }
+    if (file.books[1]) {
+      file.books[1].title = fileName
+    }
+    if (fileName) {
+      file.series.name = fileName
+    }
+    return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
+      const fileId = response.data.fileId
+      const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
+      openFile(fileURL, false)
+      closeDashboard()
+      return fileId
+    })
   })
 }
 
 export const uploadExisting = (emailAddress, userId, fullState) => {
   const filePath = fullState.file.fileName
-  return uploadToFirebase(
-    emailAddress,
-    userId,
-    fullState,
-    path.basename(filePath, path.extname(filePath))
-  )
+  return whenClientIsReady(({ basename, extname }) => {
+    return extname(filePath).then((extension) => {
+      return basename(filePath, extension)
+    })
+  }).then((fileName) => {
+    return uploadToFirebase(emailAddress, userId, fullState, fileName)
+  })
 }
 
 export const messageRenameFile = (fileId) => {
@@ -102,16 +98,15 @@ export const editKnownFilePath = (oldFileURL, newFileURL) => {
   ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
 }
 
-const win = getCurrentWindow()
-
-export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
-
 export const offlineFileURLFromFile = (file) => {
   if (!file?.project?.fileURL) {
     return null
   }
 
   const fileURL = file?.project?.fileURL
+  return whenClientIsReady(({ offlineF }) => {
+    
+  })
   if (helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)) {
     return fileURL
   }

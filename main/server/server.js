@@ -79,6 +79,8 @@ import {
   JOIN,
   PATH_SEP,
   TRASH_FILE,
+  EXTNAME,
+  OFFLINE_FILE_URL,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -164,6 +166,8 @@ const setupListeners = (port, userDataPath) => {
       writeFile,
       join,
       separator,
+      extname,
+      offlineFileURL,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -531,6 +535,14 @@ const setupListeners = (port, userDataPath) => {
               () => 'Error getting the offline file path'
             )
           }
+          case OFFLINE_FILE_URL: {
+            const { fileURL } = payload
+            return handlePromise(
+              () => ['Computing the offline file URL of', fileURL],
+              () => statusManager.registerTask(offlineFileURL(fileURL), OFFLINE_FILE_URL),
+              () => ['Error computing the offline file URL of', fileURL]
+            )
+          }
           case ATTEMPT_TO_FETCH_TEMPLATES: {
             return handlePromise(
               () =>
@@ -873,6 +885,14 @@ const setupListeners = (port, userDataPath) => {
               () => ['Trashing file at', fileURL],
               () => statusManager.registerTask(trashByURL(fileURL)),
               () => ['Error trashing file at', fileURL]
+            )
+          }
+          case EXTNAME: {
+            const { filePath } = payload
+            return handleSync(
+              () => ['Computing extname of', filePath],
+              () => extname(filePath),
+              () => ['Error computing extname of', filePath]
             )
           }
           // Subscriptions

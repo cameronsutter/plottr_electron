@@ -8,6 +8,8 @@ const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const basename = path.basename
 
+const extname = path.extname
+
 function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
@@ -304,6 +306,7 @@ const fileModule = (userDataPath) => {
       saveFile,
       saveOfflineFile,
       basename,
+      extname,
       readFile: readFileToString,
       fileExists,
       backupOfflineBackupForResume,
@@ -315,6 +318,7 @@ const fileModule = (userDataPath) => {
       writeFile: _writeFile,
       join: _join,
       separator,
+      offlineFileURL,
     }
   }
 }

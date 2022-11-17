@@ -129,6 +129,10 @@ import {
   PATH_SEP_ERROR_REPLY,
   TRASH_FILE,
   TRASH_FILE_ERROR_REPLY,
+  EXTNAME,
+  EXTNAME_ERROR_REPLY,
+  OFFLINE_FILE_URL,
+  OFFLINE_FILE_URL_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -335,6 +339,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case SAVE_AS_TEMP_FILE_ERROR_REPLY:
           case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
           case OFFLINE_FILE_PATH_ERROR_REPLY:
+          case OFFLINE_FILE_URL_ERROR_REPLY:
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
@@ -373,6 +378,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case JOIN_ERROR_REPLY:
           case PATH_SEP_ERROR_REPLY:
           case TRASH_FILE_ERROR_REPLY:
+          case EXTNAME_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -480,7 +486,11 @@ const connect = (port, logger, { onBusy, onDone }) => {
     }
 
     const offlineFileURL = (fileURL) => {
-      return sendPromise(OFFLINE_FILE_PATH, { fileURL })
+      return sendPromise(OFFLINE_FILE_URL, { fileURL })
+    }
+
+    const offlineFileBasePath = () => {
+      return sendPromise(OFFLINE_FILE_PATH)
     }
 
     const attemptToFetchTemplates = () => {
@@ -557,6 +567,10 @@ const connect = (port, logger, { onBusy, onDone }) => {
 
     const trash = (fileURL) => {
       return sendPromise(TRASH_FILE, { fileURL })
+    }
+
+    const extname = (filePath) => {
+      return sendPromise(EXTNAME, { filePath })
     }
 
     // ===File System APIs===
@@ -699,6 +713,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           deleteCustomTemplate,
           defaultBackupLocation,
           offlineFileURL,
+          offlineFileBasePath,
           customTemplatesPath,
           copyFile,
           attemptToFetchTemplates,
@@ -748,6 +763,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           join,
           pathSep,
           trash,
+          extname,
           close: clientConnection.close.bind(clientConnection),
         })
       })

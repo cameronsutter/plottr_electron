@@ -40,6 +40,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const showOpenDialog = (filters, properties) => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -52,5 +56,6 @@ export const makeMainProcessClient = () => {
     userDataPath,
     userDocumentsPath,
     logsPath,
+    showOpenDialog,
   }
 }

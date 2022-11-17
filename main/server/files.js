@@ -298,6 +298,8 @@ const fileModule = (userDataPath) => {
       return Promise.resolve(path.join(...pathArgs))
     }
 
+    const separator = path.sep
+
     return {
       saveFile,
       saveOfflineFile,
@@ -312,6 +314,7 @@ const fileModule = (userDataPath) => {
       saveTempFile,
       writeFile: _writeFile,
       join: _join,
+      separator,
     }
   }
 }

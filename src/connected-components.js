@@ -1,9 +1,5 @@
 import electron, { shell, ipcRenderer } from 'electron'
-import { getCurrentWindow, app, dialog } from '@electron/remote'
-import * as remote from '@electron/remote'
-import path from 'path'
 import { ActionCreators } from 'redux-undo'
-import { readFileSync } from 'fs'
 import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
@@ -66,9 +62,9 @@ import { handleCustomerServiceCode } from './common/utils/customer_service_codes
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
+import { makeMainProcessClient } from './app/mainProcessClient'
 
-const win = getCurrentWindow()
-const version = app.getVersion()
+const { getVersion, hostLocale } = makeMainProcessClient()
 
 const moveItemToTrash = shell.trashItem
 
@@ -78,8 +74,14 @@ export const rmRF = (path, ...args) => {
   })
 }
 
-const { saveAppSetting, startTrial, deleteLicense, saveLicenseInfo, saveExportConfigSettings } =
-  makeFileSystemAPIs(whenClientIsReady)
+const {
+  saveAppSetting,
+  startTrial,
+  deleteLicense,
+  saveLicenseInfo,
+  saveExportConfigSettings,
+  showErrorBox,
+} = makeFileSystemAPIs(whenClientIsReady)
 
 export const openFile = (fileURL, unknown) => {
   ipcRenderer.send('open-known-file', fileURL, unknown)
@@ -92,8 +94,8 @@ const platform = {
   redo: () => {
     store.dispatch(ActionCreators.redo())
   },
-  electron: { ...electron, remote },
-  appVersion: version,
+  hostLocale,
+  appVersion: getVersion,
   defaultBackupLocation: () => {
     return whenClientIsReady(({ defaultBackupLocation }) => {
       return defaultBackupLocation()
@@ -151,16 +153,25 @@ const platform = {
         })
         .catch((error) => {
           logger.error('Error opening existing file', error)
-          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again.'))
-          store.dispatch(actions.project.showLoader(false))
-          if (isLoggedIn) {
-            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
-          }
+          showErrorBox(t('Error'), t('There was an error doing that. Try again.')).then(() => {
+            store.dispatch(actions.project.showLoader(false))
+            if (isLoggedIn) {
+              store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+            }
+          })
         })
     },
     doesFileExist,
-    pathSep: path.sep,
-    basename: path.basename,
+    pathSep: () => {
+      return whenClientIsReady(({ pathSep }) => {
+        return pathSep()
+      })
+    },
+    basename: (filePath) => {
+      return whenClientIsReady(({ basename }) => {
+        return basename(filePath)
+      })
+    },
     // FIXME: this is very poorly named.  Esp. since the second
     // parametor is a flag for whether the file is known XD
     openKnownFile: (fileURL, unknown) => {

@@ -125,6 +125,8 @@ import {
   WRITE_FILE_ERROR_REPLY,
   JOIN,
   JOIN_ERROR_REPLY,
+  PATH_SEP,
+  PATH_SEP_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -367,6 +369,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case SHUTDOWN_ERROR_REPLY:
           case WRITE_FILE_ERROR_REPLY:
           case JOIN_ERROR_REPLY:
+          case PATH_SEP_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -543,6 +546,10 @@ const connect = (port, logger, { onBusy, onDone }) => {
 
     const join = (...pathArgs) => {
       return sendPromise(JOIN, { pathArgs })
+    }
+
+    const pathSep = () => {
+      return sendPromise(PATH_SEP)
     }
 
     // ===File System APIs===
@@ -732,6 +739,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           shutdown,
           writeFile,
           join,
+          pathSep,
           close: clientConnection.close.bind(clientConnection),
         })
       })

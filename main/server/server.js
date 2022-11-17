@@ -77,6 +77,7 @@ import {
   SHUTDOWN,
   WRITE_FILE,
   JOIN,
+  PATH_SEP,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -161,6 +162,7 @@ const setupListeners = (port, userDataPath) => {
       saveTempFile,
       writeFile,
       join,
+      separator,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -854,6 +856,13 @@ const setupListeners = (port, userDataPath) => {
               () => ['Joining path args to create an OS path', pathArgs],
               () => statusManager.registerTask(join(...pathArgs), JOIN),
               () => ['Joining path args to create an OS path', pathArgs]
+            )
+          }
+          case PATH_SEP: {
+            return handleSync(
+              () => 'Requested the path separator for the host operating system',
+              () => separator,
+              () => 'Error requesting the path separator for the host operating system'
             )
           }
           // Subscriptions

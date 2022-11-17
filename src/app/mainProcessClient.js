@@ -44,6 +44,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const hostLocale = () => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -57,5 +61,6 @@ export const makeMainProcessClient = () => {
     userDocumentsPath,
     logsPath,
     showOpenDialog,
+    hostLocale,
   }
 }

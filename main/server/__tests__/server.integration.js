@@ -23,13 +23,23 @@ const CONSOLE_LOGGER = {
   },
 }
 
+const baseTestDirectory = path.join(__dirname, '..', '..', '..', '.test-output')
+
 afterAll(async () => {
-  for (const file of await fs.promises.readdir(path.join(__dirname, '../../../.test-output/'))) {
+  for (const file of await fs.promises.readdir(baseTestDirectory)) {
     if (file !== '.gitkeep') {
-      await fs.promises.rm(path.join(__dirname, '../../../.test-output/', file), {
+      await fs.promises.rm(path.join(baseTestDirectory, file), {
         recursive: true,
       })
     }
+  }
+  // ==========Shut Down the Server==========
+  try {
+    await whenClientIsReady(({ shutdown }) => {
+      return shutdown()
+    })
+  } catch (error) {
+    console.error('Failed to shut down the server!', error)
   }
 })
 
@@ -41,7 +51,7 @@ describe('startServer', () => {
     // ==========Basic Initialisation==========
     let portBroadcasted = null
     const userDataDirectory = await fs.promises.mkdtemp(
-      '.test-output/plottr_test_socket_server_userData'
+      path.join('.test-output', 'plottr_test_socket_server_userData')
     )
     const broadcastPort = (newPort) => {
       portBroadcasted = newPort
@@ -143,15 +153,13 @@ describe('startServer', () => {
     await whenClientIsReady(({ nukeLastOpenedFileURL }) => {
       return nukeLastOpenedFileURL()
     })
+    // It might take time for (Windows, e.g.) to flush the operation
+    // to disk.
+    await new Promise((resolve) => setTimeout(resolve, 1000))
     const lastOpenedAfter = await fs.promises.readFile(
       path.join(userDataDirectory, 'last_opened.json')
     )
     const parsedLastOpenedAfter = JSON.parse(lastOpenedAfter)
     expect(parsedLastOpenedAfter).toMatchObject({})
-
-    // ==========Shut Down the Server==========
-    await whenClientIsReady(({ shutdown }) => {
-      return shutdown()
-    })
   })
 })

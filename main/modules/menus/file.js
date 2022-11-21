@@ -87,6 +87,7 @@ function buildFileMenu(fileURL, getTrialInfo) {
         },
         {
           label: t('Duplicate'),
+          accelerator: 'CmdOrCtrl+D',
           visible: !!fileURL,
           click: function (event, focusedWindow) {
             focusedWindow.webContents.send('save-as')

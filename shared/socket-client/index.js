@@ -133,6 +133,8 @@ import {
   EXTNAME_ERROR_REPLY,
   OFFLINE_FILE_URL,
   OFFLINE_FILE_URL_ERROR_REPLY,
+  RESOLVE,
+  RESOLVE_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -379,6 +381,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case PATH_SEP_ERROR_REPLY:
           case TRASH_FILE_ERROR_REPLY:
           case EXTNAME_ERROR_REPLY:
+          case RESOLVE_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -573,6 +576,10 @@ const connect = (port, logger, { onBusy, onDone }) => {
       return sendPromise(EXTNAME, { filePath })
     }
 
+    const resolvePath = (...args) => {
+      return sendPromise(RESOLVE, { args })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -764,6 +771,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           pathSep,
           trash,
           extname,
+          resolvePath,
           close: clientConnection.close.bind(clientConnection),
         })
       })

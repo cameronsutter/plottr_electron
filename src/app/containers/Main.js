@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 import { ipcRenderer, shell } from 'electron'
-import path from 'path'
 import { IoIosAlert } from 'react-icons/io'
 
 import { t } from 'plottr_locales'
@@ -26,20 +25,24 @@ import logger from '../../../shared/logger'
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
   const withoutProtocol = helpers.file.withoutProtocol(fileURL)
-  const computedFileName = isOnCloud
-    ? fileName
-    : withoutProtocol
-    ? path.basename(withoutProtocol)
-    : ''
-  const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
-  const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
-  try {
-    const decodedFileName = decodeURIComponent(baseFileName)
-    return `${plottr}${decodedFileName}${devMessage}`
-  } catch (error) {
-    return `${plottr}${baseFileName}${devMessage}`
-  }
+  return whenClientIsReady(({ basename }) => {
+    const fileNamePromise = isOnCloud
+      ? fileName
+      : Promise.resolve(withoutProtocol)
+      ? basename(withoutProtocol)
+      : Promise.resolve('')
+    return fileNamePromise.then((computedFileName) => {
+      const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
+      const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
+      const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
+      try {
+        const decodedFileName = decodeURIComponent(baseFileName)
+        return `${plottr}${decodedFileName}${devMessage}`
+      } catch (error) {
+        return `${plottr}${baseFileName}${devMessage}`
+      }
+    })
+  })
 }
 
 const LoadingSplash = ({ loadingState, loadingProgress }) => {
@@ -118,12 +121,16 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        setWindowTitle(displayFileName(fileName, fileURL, false))
+        displayFileName(fileName, fileURL, false).then((fileName) => {
+          setWindowTitle(fileName)
+        })
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        setWindowTitle(displayFileName(fileName, fileURL, true))
+        displayFileName(fileName, fileURL, true).then((fileName) => {
+          setWindowTitle(fileName)
+        })
       }
     }
   }, [fileName, fileURL, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])

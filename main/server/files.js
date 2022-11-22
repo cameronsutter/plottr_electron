@@ -10,6 +10,8 @@ const basename = path.basename
 
 const extname = path.extname
 
+const resolvePath = path.resolve
+
 function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
@@ -307,6 +309,7 @@ const fileModule = (userDataPath) => {
       saveOfflineFile,
       basename,
       extname,
+      resolvePath,
       readFile: readFileToString,
       fileExists,
       backupOfflineBackupForResume,

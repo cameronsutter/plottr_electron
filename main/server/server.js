@@ -81,6 +81,7 @@ import {
   TRASH_FILE,
   EXTNAME,
   OFFLINE_FILE_URL,
+  RESOLVE,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -167,6 +168,7 @@ const setupListeners = (port, userDataPath) => {
       join,
       separator,
       extname,
+      resolvePath,
       offlineFileURL,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
@@ -893,6 +895,14 @@ const setupListeners = (port, userDataPath) => {
               () => ['Computing extname of', filePath],
               () => extname(filePath),
               () => ['Error computing extname of', filePath]
+            )
+          }
+          case RESOLVE: {
+            const { args } = payload
+            return handleSync(
+              () => ['Resolving a path for', args],
+              () => resolvePath(...args),
+              () => ['Error computing a path for', args]
             )
           }
           // Subscriptions

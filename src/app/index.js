@@ -12,7 +12,6 @@
 import electron, { ipcRenderer } from 'electron'
 import { setupI18n, t } from 'plottr_locales'
 
-import path from 'path'
 import { store } from 'store'
 
 import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
@@ -60,8 +59,7 @@ setupRollbar('app.html').then((newRollbar) => {
   rollbar = newRollbar
 })
 
-const { showErrorBox, showSaveDialog, showMessageBox, setRepresentedFilename, setFileURL } =
-  makeMainProcessClient()
+const { showErrorBox, showSaveDialog, setRepresentedFilename, setFileURL } = makeMainProcessClient()
 
 const socketServerEventHandlers = {
   onBusy: () => {
@@ -100,7 +98,11 @@ fileSystemAPIs.currentAppSettings().then((settings) => {
 
 instrumentLongRunningTasks()
 
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') })
+whenClientIsReady(({ resolve }) => {
+  resolve(__dirname, '..', '.env').then((path) => {
+    require('dotenv').config({ path })
+  })
+})
 
 process.on('uncaughtException', (err) => {
   logger.error(err)
@@ -195,20 +197,23 @@ ipcRenderer.on('save-as', () => {
     return
   }
 
-  const defaultPath = path.basename(present.file.fileName, '.pltr')
-  const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-  showSaveDialog({
-    filters,
-    title: t('Where would you like to save this copy?'),
-    defaultPath,
-  }).then((fileName) => {
-    if (fileName) {
-      const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-      const newFileURL = helpers.file.filePathToFileURL(newFilePath)
-      saveFile(newFileURL, present).then(() => {
-        ipcRenderer.send('pls-open-window', newFileURL, true)
+  whenClientIsReady(({ basename }) => {
+    return basename(present.file.fileName, '.pltr').then((defaultPath) => {
+      const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
+      showSaveDialog({
+        filters,
+        title: t('Where would you like to save this copy?'),
+        defaultPath,
+      }).then((fileName) => {
+        if (fileName) {
+          const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+          const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+          saveFile(newFileURL, present).then(() => {
+            ipcRenderer.send('pls-open-window', newFileURL, true)
+          })
+        }
       })
-    }
+    })
   })
 })
 

@@ -225,7 +225,7 @@ const ensureEndsInPltr = (filePath) => {
   return filePath
 }
 
-ipcRenderer.on('move-from-temp', () => {
+document.addEventListener('move-from-temp', () => {
   const { present } = store.getState()
   const isCloudFile = selectors.isCloudFileSelector(present)
   if (isCloudFile) {

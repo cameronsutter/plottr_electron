@@ -362,7 +362,8 @@ const platform = {
     exportSaveDialog,
   },
   moveFromTemp: () => {
-    ipcRenderer.send('move-from-temp')
+    const event = new Event('move-from-temp')
+    document.dispatchEvent(event)
   },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {

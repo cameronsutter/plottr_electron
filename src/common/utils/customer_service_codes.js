@@ -86,7 +86,7 @@ export function handleCustomerServiceCode(code) {
 
     case 'templates version':
       fileSystemAPIs.currentTemplateManifest().then((manifest) => {
-        showMessageBox(
+        return showMessageBox(
           'Templates Version',
           manifest.manifest.version,
           'info',

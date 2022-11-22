@@ -201,19 +201,17 @@ ipcRenderer.on('save-as', () => {
   whenClientIsReady(({ basename }) => {
     return basename(present.file.fileName, '.pltr').then((defaultPath) => {
       const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-      showSaveDialog({
-        filters,
-        title: t('Where would you like to save this copy?'),
-        defaultPath,
-      }).then((fileName) => {
-        if (fileName) {
-          const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-          const newFileURL = helpers.file.filePathToFileURL(newFilePath)
-          saveFile(newFileURL, present).then(() => {
-            ipcRenderer.send('pls-open-window', newFileURL, true)
-          })
+      showSaveDialog(filters, t('Where would you like to save this copy?'), defaultPath).then(
+        (fileName) => {
+          if (fileName) {
+            const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+            const newFileURL = helpers.file.filePathToFileURL(newFilePath)
+            saveFile(newFileURL, present).then(() => {
+              ipcRenderer.send('pls-open-window', newFileURL, true)
+            })
+          }
         }
-      })
+      )
     })
   })
 })
@@ -245,10 +243,7 @@ ipcRenderer.on('move-from-temp', () => {
       return
     }
     const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
-    showSaveDialog({
-      filters: filters,
-      title: t('Where would you like to save this file?'),
-    }).then((filePath) => {
+    showSaveDialog(filters, t('Where would you like to save this file?')).then((filePath) => {
       const newFilePath = ensureEndsInPltr(filePath)
       if (newFilePath) {
         // Point at the new file

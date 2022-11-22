@@ -63,8 +63,7 @@ import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
 import { makeMainProcessClient } from './app/mainProcessClient'
 
-const { getVersion, hostLocale, openExternal, showSaveDialog, showOpenDialog } =
-  makeMainProcessClient()
+const { getVersion, hostLocale, openExternal, showOpenDialog } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
   return whenClientIsReady(({ rmRf }) => {
@@ -347,7 +346,6 @@ const platform = {
   createFullErrorReport,
   handleCustomerServiceCode,
   log: logger,
-  showSaveDialog,
   showOpenDialog,
   node: {
     env: isDevelopment() ? 'development' : 'production',

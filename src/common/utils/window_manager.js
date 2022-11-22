@@ -20,7 +20,7 @@ export function openExistingFile(loggedIn, userId, email) {
   const properties = ['openFile', 'createDirectory']
   const filters = [{ name: t('Plottr project file'), extensions: ['pltr'] }]
 
-  return showOpenDialog(filters, properties).then((files) => {
+  return showOpenDialog('', filters, properties).then((files) => {
     const filePath = files && files.length && files[0]
 
     if (typeof filePath !== 'string') {

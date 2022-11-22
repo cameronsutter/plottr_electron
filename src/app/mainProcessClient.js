@@ -40,7 +40,7 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
-  const showOpenDialog = (filters, properties) => {
+  const showOpenDialog = (title, filters, properties) => {
     return Promise.resolve()
   }
 

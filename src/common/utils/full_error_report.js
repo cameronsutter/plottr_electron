@@ -15,7 +15,7 @@ const { userDocumentsPath, showErrorBox, logsPath, getVersion } = makeMainProces
 const machineID = machineIdSync(true)
 
 export function createFullErrorReport() {
-  Promise.all([prepareErrorReport(), userDocumentsPath()]).then((body, userDocumentsPath) => {
+  Promise.all([prepareErrorReport(), userDocumentsPath()]).then(([body, userDocumentsPath]) => {
     return whenClientIsReady(({ writeFile, join }) => {
       return join(userDocumentsPath, `plottr_error_report_${Date.now()}.txt`).then((filePath) => {
         return writeFile(filePath, body)
@@ -44,7 +44,7 @@ function prepareErrorReport() {
     log.info('appLogPath', appLogPath)
     return whenClientIsReady(({ join, readFile }) => {
       return Promise.all([join(appLogPath, 'main.log'), join(appLogPath, 'renderer.log')]).then(
-        (mainLogFile, rendererLogFile) => {
+        ([mainLogFile, rendererLogFile]) => {
           return readFile(mainLogFile)
             .catch(() => null)
             .then((mainLogContents) => {

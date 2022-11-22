@@ -201,8 +201,12 @@ const rendererConfig = {
         'node_modules/@firebase/storage/dist/index.esm2017.js'
       ),
     },
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      http: require.resolve('stream-http'),
+    },
   },
-  target: 'electron-renderer',
+  target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
@@ -296,7 +300,7 @@ const loginPopupConfig = {
       ),
     },
   },
-  target: 'electron-renderer',
+  target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
@@ -304,6 +308,9 @@ const loginPopupConfig = {
     sharp: 'sharp',
   },
 }
+
+// PROBLEM SEEMS TO BE THAT PLOTTR_IMPORT_EXPORT STILL USES NODE
+// DEPENDENCIES.
 
 const socketServerConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',

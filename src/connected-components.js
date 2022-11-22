@@ -330,7 +330,9 @@ const platform = {
       document.dispatchEvent(event)
     },
     saveTemplate: (payload) => {
-      ipcRenderer.send('save-custom-template', payload)
+      const event = new Event('save-custom-template', { bubbles: true, cancelable: false })
+      event.payload = payload
+      document.dispatchEvent(event)
     },
   },
   settings: {

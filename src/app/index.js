@@ -140,8 +140,9 @@ ipcRenderer.on('unset-beat-hierarchy', (event) => {
   store.dispatch(actions.featureFlags.unsetBeatHierarchy())
 })
 
-ipcRenderer.on('save-custom-template', (event, options) => {
+document.addEventListener('save-custom-template', (event) => {
   const currentState = store.getState()
+  const options = event.payload
   addNewCustomTemplate(currentState.present, options)
 })
 

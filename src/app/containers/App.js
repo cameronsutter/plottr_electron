@@ -77,10 +77,11 @@ const App = ({
   }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
 
   useEffect(() => {
-    ipcRenderer.on('save-as-template-start', (event, type) => {
+    const saveAsTemplateListener = (event, type) => {
       setType(type)
       setShowTemplateCreate(true)
-    })
+    }
+    document.addEventListener('save-as-template-start', saveAsTemplateListener)
     ipcRenderer.on('advanced-export-file-from-menu', (event) => {
       setShowExportDialog(true)
     })
@@ -89,7 +90,7 @@ const App = ({
     })
 
     return () => {
-      ipcRenderer.removeAllListeners('save-as-template-start')
+      document.removeEventListener('save-as-template-start', saveAsTemplateListener)
       ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
       ipcRenderer.removeAllListeners('turn-on-acts-help')
     }

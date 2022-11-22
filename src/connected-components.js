@@ -242,11 +242,6 @@ const platform = {
       })
     },
     rmRF,
-    moveItemToTrash: (fileURL) => {
-      return whenClientIsReady(({ trash }) => {
-        return trash(fileURL)
-      })
-    },
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
@@ -330,7 +325,9 @@ const platform = {
       editTemplateDetails(templateId, templateDetails, userId)
     },
     startSaveAsTemplate: (itemType) => {
-      ipcRenderer.send('save-as-template-start', itemType) // sends this message to this same process
+      const event = new Event('save-as-template-start', { bubbles: true, cancelable: false })
+      event.itemType = itemType
+      document.dispatchEvent(event)
     },
     saveTemplate: (payload) => {
       ipcRenderer.send('save-custom-template', payload)

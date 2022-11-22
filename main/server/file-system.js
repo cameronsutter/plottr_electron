@@ -180,7 +180,14 @@ const fileSystemModule = (userDataPath) => {
             return isValidKnownFile(file)
           })
           .map(([key, file]) => {
+            const withoutProtocol = helpers.file.withoutProtocol(file.fileURL)
+            const fileBasename = path.basename(withoutProtocol)
+            const pathToContainingFolder = withoutProtocol
+              .replace(fileBasename, '')
+              .split(path.sep)
+              .filter(Boolean)
             return {
+              pathToContainingFolder,
               fileURL: file.fileURL,
               fileName: file.fileName,
               lastOpened: file.lastOpened,

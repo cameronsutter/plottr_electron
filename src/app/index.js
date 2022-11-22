@@ -100,7 +100,9 @@ instrumentLongRunningTasks()
 
 whenClientIsReady(({ resolve }) => {
   resolve(__dirname, '..', '.env').then((path) => {
-    require('dotenv').config({ path })
+    import('dotenv').then((dotenv) => {
+      dotenv.config({ path })
+    })
   })
 })
 

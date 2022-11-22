@@ -104,18 +104,9 @@ export const offlineFileURLFromFile = (file) => {
   }
 
   const fileURL = file?.project?.fileURL
-  return whenClientIsReady(({ offlineF }) => {
-    
+  return whenClientIsReady(({ offlineFileURL }) => {
+    return offlineFileURL(fileURL)
   })
-  if (helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)) {
-    return fileURL
-  }
-
-  if (!helpers.file.urlPointsToPlottrCloud(fileURL)) {
-    return null
-  }
-  const fileId = helpers.file.fileIdFromPlottrProFile(fileURL)
-  return helpers.file.filePathToFileURL(path.join(OFFLINE_FILE_FILES_PATH, fileId))
 }
 
 export const renameFile = (fileURL) => {

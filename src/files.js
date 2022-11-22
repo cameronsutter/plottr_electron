@@ -12,7 +12,7 @@ import { makeMainProcessClient } from './app/mainProcessClient'
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
-const { getVersion } = makeMainProcessClient()
+const { getVersion, showSaveDialog, showErrorBox } = makeMainProcessClient()
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -115,53 +115,64 @@ export const renameFile = (fileURL) => {
   const isOffline = selectors.isOfflineSelector(present)
   if (isOffline && isCloudFile) {
     logger.info('Tried to save-as a file, but it is offline', fileURL)
-    return
+    return Promise.resolve()
   }
   if (helpers.file.urlPointsToPlottrCloud(fileURL)) {
     const fileList = selectors.knownFilesSelector(present)
     const fileId = fileURL.replace(/^plottr:\/\//, '')
     if (!fileList.find(({ id }) => id === fileId)) {
       logger.error(`Coludn't find file with id: ${fileId} to rename`)
-      return
+      return Promise.resolve()
     }
     if (fileId) messageRenameFile(fileId)
-    return
+    return Promise.resolve()
   }
-  const fileName = showSaveDialogSync({
-    filters,
-    title: t('Give this file a new name'),
-    defaultPath: fileURL,
-  })
+  const fileName = showSaveDialog(filters, t('Give this file a new name'), fileURL)
   if (fileName) {
     try {
       const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
       const newFileURL = `device://${newFilePath}`
       editKnownFilePath(fileURL, newFileURL)
-      const contents = JSON.parse(readFileSync(helpers.file.withoutProtocol(fileURL), 'utf-8'))
-      saveFile(newFileURL, contents)
-      moveItemToTrash(fileURL, true)
-      store.dispatch(actions.applicationState.finishRenamingFile())
+      return whenClientIsReady(({ readFile, moveItemToTrash }) => {
+        return readFile(helpers.file.withoutProtocol(fileURL), 'utf-8').then((rawFile) => {
+          const contents = JSON.parse()
+          return saveFile(newFileURL, contents)
+            .then(() => {
+              return moveItemToTrash(fileURL, true)
+            })
+            .then(() => {
+              store.dispatch(actions.applicationState.finishRenamingFile())
+            })
+        })
+      })
     } catch (error) {
       logger.error(error)
       store.dispatch(actions.applicationState.finishRenamingFile())
-      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+      return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+        return Promise.reject(error)
+      })
     }
   }
+  return Promise.resolve()
 }
 
 export const deleteCloudBackupFile = (fileURL) => {
-  if (
-    !helpers.file.isDeviceFileURL(fileURL) ||
-    !helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)
-  ) {
-    return Promise.reject(
-      new Error(`Attempted to delete an offline file for non-offline file: ${fileURL}`)
-    )
-  }
+  return whenClientIsReady(({ offlineFileBasePath, rmRf }) => {
+    return offlineFileBasePath().then((offlineFileFilesPath) => {
+      if (
+        !helpers.file.isDeviceFileURL(fileURL) ||
+        !helpers.file.withoutProtocol(fileURL).startsWith(offlineFileFilesPath)
+      ) {
+        return Promise.reject(
+          new Error(`Attempted to delete an offline file for non-offline file: ${fileURL}`)
+        )
+      }
 
-  const filePath = helpers.file.withoutProtocol(fileURL)
-  return fsPromises.unlink(filePath).catch((error) => {
-    // Ignore errors deleting the backup file.
-    return true
+      const filePath = helpers.file.withoutProtocol(fileURL)
+      return rmRf(filePath).catch((error) => {
+        // Ignore errors deleting the backup file.
+        return true
+      })
+    })
   })
 }

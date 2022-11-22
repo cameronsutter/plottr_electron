@@ -347,6 +347,7 @@ const platform = {
   handleCustomerServiceCode,
   log: logger,
   showOpenDialog,
+  showErrorBox,
   node: {
     env: isDevelopment() ? 'development' : 'production',
   },

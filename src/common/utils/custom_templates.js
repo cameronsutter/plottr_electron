@@ -1,5 +1,4 @@
 import { cloneDeep } from 'lodash'
-import { ipcRenderer } from 'electron'
 
 import { t } from 'plottr_locales'
 import { tree, helpers, selectors } from 'pltr/v2'
@@ -8,7 +7,7 @@ import { saveCustomTemplate } from './templates_from_firestore'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 import { makeMainProcessClient } from '../../app/mainProcessClient'
 
-const { getVersion } = makeMainProcessClient()
+const { getVersion, notify } = makeMainProcessClient()
 
 export function addNewCustomTemplate(pltrData, { type, data }) {
   let templatePromise = null
@@ -32,16 +31,7 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
       })
     }
 
-    try {
-      ipcRenderer.send(
-        'notify',
-        t('Template Saved'),
-        t('Your template has been saved and is ready to use')
-      )
-    } catch (error) {
-      // ignore
-      // on windows you need something called an Application User Model ID which may not work
-    }
+    notify(t('Template Saved'), t('Your template has been saved and is ready to use'))
   })
 }
 

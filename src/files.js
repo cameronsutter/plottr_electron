@@ -1,5 +1,3 @@
-import { ipcRenderer } from 'electron'
-
 import { t } from 'plottr_locales'
 import { helpers, actions, reducers, emptyFile, selectors } from 'pltr/v2'
 
@@ -12,7 +10,7 @@ import { makeMainProcessClient } from './app/mainProcessClient'
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
-const { getVersion, showSaveDialog, showErrorBox } = makeMainProcessClient()
+const { getVersion, showSaveDialog, showErrorBox, editKnownFilePath } = makeMainProcessClient()
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -94,9 +92,7 @@ export const saveFile = (fileURL, file) => {
   })
 }
 
-export const editKnownFilePath = (oldFileURL, newFileURL) => {
-  ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
-}
+export { editKnownFilePath }
 
 export const offlineFileURLFromFile = (file) => {
   if (!file?.project?.fileURL) {

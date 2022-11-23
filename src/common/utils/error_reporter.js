@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
 
@@ -23,7 +22,7 @@ export function getPreviousAction() {
   return previousAction
 }
 
-const { userDocumentsPath, appVersion, showItemInFolder } = makeMainProcessClient()
+const { userDocumentsPath, appVersion, showItemInFolder, notify } = makeMainProcessClient()
 
 export function createErrorReport(error, errorInfo) {
   return userDocumentsPath().then((documentsPath) => {
@@ -77,8 +76,7 @@ ${JSON.stringify(previousAction)}
 function notifyUser(filePath) {
   return whenClientIsReady(({ basename }) => {
     return basename(filePath).then((fileName) => {
-      ipcRenderer.send(
-        'notify',
+      notify(
         i18n('Error Report created'),
         i18n('Plottr created a file named {filePath} in your Documents folder', {
           filePath: fileName,

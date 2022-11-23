@@ -1,9 +1,8 @@
-import { shell } from 'electron'
 import { makeFileSystemAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import { makeMainProcessClient } from '../../app/mainProcessClient'
 
-const { userDataPath, showMessageBox } = makeMainProcessClient()
+const { userDataPath, showMessageBox, openPath, showItemInFolder } = makeMainProcessClient()
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
@@ -19,7 +18,7 @@ export function handleCustomerServiceCode(code) {
     case '941ff8':
       // view backups
       fileSystemAPIs.backupBasePath().then((basePath) => {
-        shell.openPath(basePath)
+        openPath(basePath)
       })
       break
 
@@ -73,14 +72,14 @@ export function handleCustomerServiceCode(code) {
     case '16329e':
       // show the custom templates file
       fileSystemAPIs.customTemplatesPath().then((path) => {
-        shell.showItemInFolder(path)
+        return showItemInFolder(path)
       })
       break
 
     case '8bb9de':
       // open the Plottr internal User Data folder
       userDataPath().then((userData) => {
-        return shell.openPath(userData)
+        return openPath(userData)
       })
       break
 

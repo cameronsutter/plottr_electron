@@ -1,5 +1,3 @@
-import { ipcRenderer, shell } from 'electron'
-
 import { t } from 'plottr_locales'
 
 import log from '../../../shared/logger'
@@ -9,7 +7,15 @@ import makeFileSystemAPIs from '../../api/file-system-apis'
 import { makeMainProcessClient } from '../../app/mainProcessClient'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 
-const { userDocumentsPath, showErrorBox, logsPath, getVersion, machineId } = makeMainProcessClient()
+const {
+  userDocumentsPath,
+  showErrorBox,
+  logsPath,
+  getVersion,
+  machineId,
+  notify,
+  showItemInFolder,
+} = makeMainProcessClient()
 
 export function createFullErrorReport() {
   Promise.all([prepareErrorReport(), userDocumentsPath()]).then(([body, userDocumentsPath]) => {
@@ -98,8 +104,7 @@ ${rendererLogContents}
 function notifyUser(filePath) {
   try {
     whenClientIsReady(({ basename }) => {
-      ipcRenderer(
-        'notify',
+      notify(
         t('Error Report created'),
         t('Plottr created a file named {filePath} in your Documents folder', {
           filePath: basename(filePath),
@@ -110,5 +115,5 @@ function notifyUser(filePath) {
     // ignore
     // on windows you need something called an Application User Model ID which may not work
   }
-  shell.showItemInFolder(filePath)
+  showItemInFolder(filePath)
 }

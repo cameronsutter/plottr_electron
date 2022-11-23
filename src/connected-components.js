@@ -1,4 +1,3 @@
-import { ipcRenderer } from 'electron'
 import { ActionCreators } from 'redux-undo'
 
 import { t } from 'plottr_locales'
@@ -62,7 +61,34 @@ import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
 import { makeMainProcessClient } from './app/mainProcessClient'
 
-const { getVersion, hostLocale, openExternal, showOpenDialog, machineId } = makeMainProcessClient()
+const {
+  getVersion,
+  hostLocale,
+  openExternal,
+  showOpenDialog,
+  machineId,
+  openKnownFile,
+  pleaseSetDarkModeSetting,
+  pleaseQuit,
+  createNewFile,
+  deleteKnownFile,
+  createFromSnowflake,
+  createFromScrivener,
+  pleaseQuitAndInstall,
+  pleaseDownloadUpdate,
+  pleaseCheckForUpdates,
+  onUpdateError,
+  onUpdaterUpdateAvailable,
+  onUpdaterUpdateNotAvailable,
+  onUpdaterDownloadProgress,
+  onUpdaterUpdateDownloaded,
+  pleaseUpdateLanguage,
+  updateBeatHierarchy,
+  pleaseReloadMenu,
+  showItemInFolder,
+  downloadFileAndShow,
+  pleaseOpenLoginPopup,
+} = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
   return whenClientIsReady(({ rmRf }) => {
@@ -86,8 +112,14 @@ const {
 } = makeFileSystemAPIs(whenClientIsReady)
 
 export const openFile = (fileURL, unknown) => {
-  ipcRenderer.send('open-known-file', fileURL, unknown)
+  openKnownFile(fileURL, unknown)
 }
+
+let unsubscribeFromUpdateError = null
+let unsubscribeFromUpdateerUpdateAvailable = null
+let unsubscribeFromUpdaterUpdateNotAvailable = null
+let unsubscribeFromUpdaterDownloadProgress = null
+let unsubscribeFromUpdaterUpdateDownloaded = null
 
 const platform = {
   undo: () => {
@@ -104,10 +136,10 @@ const platform = {
     })
   },
   setDarkMode: (value) => {
-    ipcRenderer.send('pls-set-dark-setting', value)
+    pleaseSetDarkModeSetting(value)
   },
   appQuit: () => {
-    ipcRenderer.send('pls-quit')
+    pleaseQuit()
   },
   file: {
     createNew: (template, name) => {
@@ -131,7 +163,7 @@ const platform = {
             store.dispatch(actions.applicationState.finishCreatingCloudFile())
           })
       } else {
-        ipcRenderer.send('create-new-file', template, name)
+        createNewFile(template, name)
       }
     },
     openExistingFile: () => {
@@ -233,7 +265,7 @@ const platform = {
             store.dispatch(actions.applicationState.finishDeletingFile())
           })
       } else {
-        ipcRenderer.send('delete-known-file', fileURL)
+        deleteKnownFile(fileURL)
       }
     },
     editKnownFilePath,
@@ -250,12 +282,12 @@ const platform = {
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
-      ipcRenderer.send('create-from-snowflake', importedPath, isLoggedIntoPro)
+      createFromSnowflake(importedPath, isLoggedIntoPro)
     },
     createFromScrivener: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
-      ipcRenderer.send('create-from-scrivener', importedPath, isLoggedIntoPro)
+      createFromScrivener(importedPath, isLoggedIntoPro)
     },
     joinPath: (...args) => {
       return whenClientIsReady(({ join }) => {
@@ -266,42 +298,52 @@ const platform = {
   },
   update: {
     quitToInstall: () => {
-      ipcRenderer.send('pls-quit-and-install')
+      pleaseQuitAndInstall()
     },
     downloadUpdate: () => {
-      ipcRenderer.send('pls-download-update')
+      pleaseDownloadUpdate()
     },
     checkForUpdates: () => {
-      ipcRenderer.send('pls-check-for-updates')
+      pleaseCheckForUpdates()
     },
     onUpdateError: (cb) => {
-      ipcRenderer.on('updater-error', cb)
+      unsubscribeFromUpdateError = onUpdateError(cb)
     },
     onUpdaterUpdateAvailable: (cb) => {
-      ipcRenderer.on('updater-update-available', cb)
+      unsubscribeFromUpdateerUpdateAvailable = onUpdaterUpdateAvailable(cb)
     },
     onUpdaterUpdateNotAvailable: (cb) => {
-      ipcRenderer.on('updater-update-not-available', cb)
+      unsubscribeFromUpdaterUpdateNotAvailable = onUpdaterUpdateNotAvailable(cb)
     },
     onUpdaterDownloadProgress: (cb) => {
-      ipcRenderer.on('updater-download-progress', cb)
+      unsubscribeFromUpdaterDownloadProgress = onUpdaterDownloadProgress(cb)
     },
     onUpdatorUpdateDownloaded: (cb) => {
-      ipcRenderer.on('updater-update-downloaded', cb)
+      unsubscribeFromUpdaterUpdateDownloaded = onUpdaterUpdateDownloaded(cb)
     },
     deregisterUpdateListeners: () => {
-      ipcRenderer.removeAllListeners('updater-error')
-      ipcRenderer.removeAllListeners('updater-update-available')
-      ipcRenderer.removeAllListeners('updater-update-not-available')
-      ipcRenderer.removeAllListeners('updater-download-progress')
-      ipcRenderer.removeAllListeners('updater-update-downloaded')
+      if (typeof unsubscribeFromUpdateError === 'function') {
+        unsubscribeFromUpdateError()
+      }
+      if (typeof unsubscribeFromUpdateerUpdateAvailable === 'function') {
+        unsubscribeFromUpdateerUpdateAvailable()
+      }
+      if (typeof unsubscribeFromUpdaterUpdateNotAvailable === 'function') {
+        unsubscribeFromUpdaterUpdateNotAvailable()
+      }
+      if (typeof unsubscribeFromUpdaterDownloadProgress === 'function') {
+        unsubscribeFromUpdaterDownloadProgress()
+      }
+      if (typeof unsubscribeFromUpdaterUpdateDownloaded === 'function') {
+        unsubscribeFromUpdaterUpdateDownloaded()
+      }
     },
   },
   updateLanguage: (newLanguage) => {
-    ipcRenderer.send('pls-update-language', newLanguage)
+    return pleaseUpdateLanguage(newLanguage)
   },
   updateBeatHierarchyFlag: (newValue) => {
-    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+    return updateBeatHierarchy(newValue)
   },
   license: {
     checkForActiveLicense: licenseServerAPIs.checkForActiveLicense,
@@ -314,7 +356,7 @@ const platform = {
     saveLicenseInfo,
   },
   reloadMenu: () => {
-    ipcRenderer.send('pls-reload-menu')
+    pleaseReloadMenu()
   },
   template: {
     deleteTemplate: (templateId) => {
@@ -375,9 +417,9 @@ const platform = {
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {
       if (!storageURL) {
-        ipcRenderer.send('show-item-in-folder', fileURL)
+        showItemInFolder(fileURL)
       } else {
-        backupPublicURL(fileURL).then((url) => ipcRenderer.send('download-file-and-show', url))
+        backupPublicURL(fileURL).then((url) => downloadFileAndShow(url))
       }
     })
   },
@@ -407,7 +449,7 @@ const platform = {
   },
   login: {
     launchLoginPopup: () => {
-      ipcRenderer.send('pls-open-login-popup')
+      pleaseOpenLoginPopup()
     },
   },
   storage: {

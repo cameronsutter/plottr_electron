@@ -1,11 +1,12 @@
-import { ipcRenderer } from 'electron'
-
 import { helpers } from 'pltr/v2'
 
 import { makeFileModule } from '../../app/files'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 
 const { readOfflineFiles } = makeFileModule(whenClientIsReady)
+
+const { removeFromKnownFiles } = makeMainProcessClient()
 
 export function doesFileExist(fileURL) {
   return whenClientIsReady(({ fileExists }) => {
@@ -13,9 +14,7 @@ export function doesFileExist(fileURL) {
   })
 }
 
-export function removeFromKnownFiles(fileURL) {
-  ipcRenderer.send('remove-from-known-files', fileURL)
-}
+export { removeFromKnownFiles }
 
 export function listOfflineFiles() {
   return readOfflineFiles()

@@ -86,6 +86,8 @@ const {
   onUpdateWorkerPort,
   onReloadDarkMode,
   onImportScrivenerFile,
+  createFromScrivener,
+  listenersRegistered,
 } = makeMainProcessClient()
 
 let rollbar
@@ -482,7 +484,7 @@ tellMeWhatOSImOn()
 
         onImportScrivenerFile((sourceFile, destinationFile) => {
           logger.info(`Received instruction to import from ${sourceFile} to ${destinationFile}`)
-          ipcRenderer.send('create-from-scrivener', sourceFile, false, destinationFile)
+          createFromScrivener(sourceFile, false, destinationFile)
         })
 
         // TODO: not sure when/whether we should unsubscribe.  Presumably
@@ -496,6 +498,6 @@ tellMeWhatOSImOn()
 
         renderFile(root, whenClientIsReady)
 
-        ipcRenderer.send('listeners-registered')
+        listenersRegistered()
       })
   })

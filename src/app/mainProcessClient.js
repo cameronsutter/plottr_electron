@@ -274,6 +274,103 @@ export const makeMainProcessClient = () => {
     return () => {}
   }
 
+  const createFromScrivener = () => {
+    return Promise.resolve()
+  }
+
+  const listenersRegistered = () => {
+    return Promise.resolve()
+  }
+
+  const notify = (title, message) => {
+    return Promise.resolve()
+  }
+
+  const openPath = (path) => {
+    return Promise.resolve()
+  }
+
+  const removeFromKnownFiles = (fileURL) => {
+    return Promise.resolve()
+  }
+
+  const addToKnownFilesAndOpen = (fileURL) => {
+    return Promise.resolve()
+  }
+
+  const pleaseSetDarkModeSetting = (value) => {
+    return Promise.resolve()
+  }
+
+  const pleaseQuit = () => {
+    return Promise.resolve()
+  }
+
+  const createNewFile = (template, name) => {
+    return Promise.resolve()
+  }
+
+  const deleteKnownFile = (fileURL) => {
+    return Promise.resolve()
+  }
+
+  const createFromSnowflake = (importedPath, isLoggedIntoPro) => {
+    return Promise.resolve()
+  }
+
+  const pleaseQuitAndInstall = () => {
+    return Promise.resolve()
+  }
+
+  const pleaseDownloadUpdate = () => {
+    return Promise.resolve()
+  }
+
+  const pleaseCheckForUpdates = () => {
+    return Promise.resolve()
+  }
+
+  const onUpdateError = (cb) => {
+    // This should be the unsubscribe function
+    return () => {}
+  }
+
+  const onUpdaterUpdateAvailable = (cb) => {
+    // This should be the unsubscribe function
+    return () => {}
+  }
+
+  const onUpdaterUpdateNotAvailable = (cb) => {
+    // This should be the unsubscribe function
+    return () => {}
+  }
+
+  const onUpdaterDownloadProgress = (cb) => {
+    // This should be the unsubscribe function
+    return () => {}
+  }
+
+  const onUpdaterUpdateDownloaded = (cb) => {
+    // This should be the unsubscribe function
+    return () => {}
+  }
+
+  const pleaseUpdateLanguage = (newLanguage) => {
+    return Promise.resolve()
+  }
+
+  const updateBeatHierarchy = (newValue) => {
+    return Promise.resolve()
+  }
+
+  const downloadFileAndShow = (fileURL) => {
+    return Promise.resolve()
+  }
+
+  const pleaseOpenLoginPopup = () => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -338,5 +435,28 @@ export const makeMainProcessClient = () => {
     onUpdateWorkerPort,
     onReloadDarkMode,
     onImportScrivenerFile,
+    createFromScrivener,
+    listenersRegistered,
+    notify,
+    openPath,
+    removeFromKnownFiles,
+    addToKnownFilesAndOpen,
+    pleaseSetDarkModeSetting,
+    pleaseQuit,
+    createNewFile,
+    deleteKnownFile,
+    createFromSnowflake,
+    pleaseQuitAndInstall,
+    pleaseDownloadUpdate,
+    pleaseCheckForUpdates,
+    onUpdateError,
+    onUpdaterUpdateAvailable,
+    onUpdaterUpdateNotAvailable,
+    onUpdaterDownloadProgress,
+    onUpdaterUpdateDownloaded,
+    pleaseUpdateLanguage,
+    updateBeatHierarchy,
+    downloadFileAndShow,
+    pleaseOpenLoginPopup,
   }
 }

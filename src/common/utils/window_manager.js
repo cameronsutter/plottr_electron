@@ -1,5 +1,3 @@
-import { ipcRenderer } from 'electron'
-
 import { t } from 'plottr_locales'
 import { helpers } from 'pltr/v2'
 
@@ -9,10 +7,10 @@ import { closeDashboard } from '../../dashboard-events'
 import { uploadProject } from './upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
 
-const { showOpenDialog } = makeMainProcessClient()
+const { showOpenDialog, openKnownFile, addToKnownFilesAndOpen } = makeMainProcessClient()
 
 export const openFile = (fileURL, unknown) => {
-  ipcRenderer.send('open-known-file', fileURL, unknown)
+  openKnownFile(fileURL, unknown)
 }
 
 export function openExistingFile(loggedIn, userId, email) {
@@ -67,7 +65,6 @@ export function openExistingFile(loggedIn, userId, email) {
       })
     }
 
-    ipcRenderer.send('add-to-known-files-and-open', helpers.file.filePathToFileURL(filePath))
-    return Promise.resolve()
+    return addToKnownFilesAndOpen(helpers.file.filePathToFileURL(filePath))
   })
 }

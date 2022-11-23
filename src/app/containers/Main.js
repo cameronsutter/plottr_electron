@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { ipcRenderer, shell } from 'electron'
 import { IoIosAlert } from 'react-icons/io'
 
 import { t } from 'plottr_locales'
@@ -21,6 +20,16 @@ import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const {
+  reloadFromFile,
+  onStateFetched,
+  pleaseFetchState,
+  openExternal,
+  showItemInFolder,
+  updateLastOpenedFile,
+} = makeMainProcessClient()
 
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
@@ -182,13 +191,15 @@ const Main = ({
         load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
-    ipcRenderer.on('reload-from-file', reloadListener)
+    const unsubscribeFromReloadFromFile = reloadFromFile(reloadListener)
 
     if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {
       return () => {
-        ipcRenderer.removeListener('reload-from-file', reloadListener)
+        unsubscribeFromReloadFromFile()
       }
     }
+
+    let unsubscribeFromStateFetched = null
 
     const stateFetchedListener = (
       event,
@@ -214,16 +225,17 @@ const Main = ({
       if (processSwitches.testUtilitiesEnabled) {
         enableTestUtilities()
       }
-      ipcRenderer.removeListener('state-fetched', stateFetchedListener)
+      if (typeof unsubscribeFromStateFetched === 'function') unsubscribeFromStateFetched()
     }
     windowId().then((id) => {
-      ipcRenderer.on('state-fetched', stateFetchedListener)
-      ipcRenderer.send('pls-fetch-state', id, isInProMode)
-      startCheckingFileToLoad()
+      unsubscribeFromStateFetched = onStateFetched(stateFetchedListener)
+      pleaseFetchState().then(() => {
+        startCheckingFileToLoad()
+      })
     })
 
     return () => {
-      ipcRenderer.removeListener('reload-from-file', reloadListener)
+      unsubscribeFromReloadFromFile()
     }
   }, [
     isInOfflineMode,
@@ -309,7 +321,7 @@ const Main = ({
   }, [dismissPromptToUploadFile])
 
   const goToSupport = () => {
-    shell.openExternal('https://plottr.com/support/')
+    openExternal('https://plottr.com/support/')
   }
 
   const viewBackups = () => {
@@ -319,7 +331,7 @@ const Main = ({
   }
 
   const showFile = () => {
-    shell.showItemInFolder(helpers.file.withoutProtocol(pathToProject))
+    showItemInFolder(helpers.file.withoutProtocol(pathToProject))
   }
 
   // IMPORTANT: the order of these return statements is significant.
@@ -378,7 +390,7 @@ const Main = ({
                         bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup).then(
                           closeDashboard
                         )
-                        ipcRenderer.send('update-last-opened-file', newFileURL)
+                        updateLastOpenedFile(newFileURL)
                       })
                       .catch((error) => {})
                   })

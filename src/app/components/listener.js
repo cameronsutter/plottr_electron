@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { ipcRenderer } from 'electron'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -12,6 +11,9 @@ import logger from '../../../shared/logger'
 import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import { makeFileModule } from '../files'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { pleaseOpenWindow } = makeMainProcessClient()
 
 const Listener = ({
   hasPro,
@@ -56,8 +58,9 @@ const Listener = ({
         if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
           withFullFileState((state) => {
             saveAsTempFile(state.present).then((newFileURL) => {
-              ipcRenderer.send('pls-open-window', newFileURL, true)
-              window.close()
+              pleaseOpenWindow(newFileURL).then(() => {
+                window.close()
+              })
             })
           })
         }

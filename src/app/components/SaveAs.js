@@ -1,5 +1,4 @@
 import React from 'react'
-import { ipcRenderer } from 'electron'
 import { useState, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
@@ -10,9 +9,12 @@ import { InputModal } from 'connected-components'
 import { uploadToFirebase } from '../../upload-to-firebase'
 
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { openKnownFile } = makeMainProcessClient()
 
 export const openFile = (fileURL, unknown) => {
-  ipcRenderer.send('open-known-file', fileURL, unknown)
+  return openKnownFile(fileURL, unknown)
 }
 
 const SaveAs = ({

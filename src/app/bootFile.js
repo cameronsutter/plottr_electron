@@ -1,5 +1,3 @@
-import { ipcRenderer } from 'electron'
-
 import {
   helpers,
   SYSTEM_REDUCER_KEYS,
@@ -43,6 +41,7 @@ const {
   showErrorBox,
   showMessageBox,
   machineId,
+  setMyFilePath,
 } = makeMainProcessClient()
 
 let rollbar
@@ -210,18 +209,20 @@ export function bootFile(
         logger.info(
           `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
         )
-        return overwriteAllKeys(fileId, clientId, {
-          ...removeSystemKeys(offlineFile),
-          file: {
-            ...offlineFile.file,
-            fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-          },
-        }).catch((error) => {
-          logger.error(`Erorr uploading our offline file ${fileId}`, error)
-          return showErrorBox(
-            t('Error'),
-            t('There was an error uploading your offline backup. Please exit and start again')
-          )
+        return machineId().then((clientId) => {
+          return overwriteAllKeys(fileId, clientId, {
+            ...removeSystemKeys(offlineFile),
+            file: {
+              ...offlineFile.file,
+              fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+            },
+          }).catch((error) => {
+            logger.error(`Erorr uploading our offline file ${fileId}`, error)
+            return showErrorBox(
+              t('Error'),
+              t('There was an error uploading your offline backup. Please exit and start again')
+            )
+          })
         })
       }
       return Promise.resolve(false)
@@ -327,7 +328,7 @@ export function bootFile(
   const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
-    return getVersion().then((version) => {
+    return [getVersion(), machineId()].then(([version, clientId]) => {
       return initialFetch(userId, fileId, clientId, version)
         .then((fetchedFile) => {
           return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
@@ -349,11 +350,13 @@ export function bootFile(
   }
 
   const handleErrorBootingFile = (fileId) => (error) => {
-    const errorMessage = `Error booting ${fileId} clientId: ${clientId}`
-    logger.error(errorMessage, error)
-    rollbar.error(errorMessage, error)
-    return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
-      return Promise.reject(error)
+    machineId().then((clientId) => {
+      const errorMessage = `Error booting ${fileId} clientId: ${clientId}`
+      logger.error(errorMessage, error)
+      rollbar.error(errorMessage, error)
+      return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+        return Promise.reject(error)
+      })
     })
   }
 
@@ -472,9 +475,11 @@ export function bootFile(
                     if (state && state.tour && state.tour.showTour)
                       store.dispatch(actions.ui.changeOrientation('horizontal'))
 
-                    store.dispatch(actions.client.setClientId(clientId))
+                    return machineId().then((clientId) => {
+                      store.dispatch(actions.client.setClientId(clientId))
 
-                    resolve()
+                      resolve()
+                    })
                   },
                   logger
                 )
@@ -494,7 +499,7 @@ export function bootFile(
 
     // Now that we know what the file path for this window should be,
     // tell the main process.
-    ipcRenderer.send('pls-set-my-file-path', fileURL)
+    setMyFilePath(fileURL)
 
     // And then boot the file.
     const { beatHierarchy } = options

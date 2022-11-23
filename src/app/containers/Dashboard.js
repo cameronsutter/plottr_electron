@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { ipcRenderer } from 'electron'
 import cx from 'classnames'
 
 import { selectors } from 'pltr/v2'
 import { DashboardBody, DashboardNav, FullPageSpinner as Spinner } from 'connected-components'
 
 import OfflineBanner from '../components/OfflineBanner'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { onReload } = makeMainProcessClient()
 
 const Dashboard = ({ darkMode, closeDashboard, cantShowFile, busy, openTo }) => {
   const [activeView, setActiveView] = useState(openTo || 'files')
 
   useEffect(() => {
     const closeListener = document.addEventListener('close-dashboard', closeDashboard)
-    ipcRenderer.on('reload', () => {
+    const unsubscribeFromReload = onReload(() => {
       window.location.reload()
     })
+
     return () => {
       document.removeEventListener('close-dashboard', closeListener)
+      unsubscribeFromReload()
     }
   }, [])
 

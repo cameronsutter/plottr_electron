@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ipcRenderer } from 'electron'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
@@ -24,6 +23,9 @@ import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import MainIntegrationContext from '../../mainIntegrationContext'
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { onAdvancedExportFileFromMenu, onTurnOnActsHelp } = makeMainProcessClient()
 
 const App = ({
   forceProjectDashboard,
@@ -82,17 +84,17 @@ const App = ({
       setShowTemplateCreate(true)
     }
     document.addEventListener('save-as-template-start', saveAsTemplateListener)
-    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
+    const unsubscribeFromAdvancedExportFromMenu = onAdvancedExportFileFromMenu(() => {
       setShowExportDialog(true)
     })
-    ipcRenderer.on('turn-on-acts-help', () => {
+    const unsubscribeFromTurnOnActsHelp = onTurnOnActsHelp(() => {
       setShowActsGuideHelp(true)
     })
 
     return () => {
       document.removeEventListener('save-as-template-start', saveAsTemplateListener)
-      ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
-      ipcRenderer.removeAllListeners('turn-on-acts-help')
+      unsubscribeFromAdvancedExportFromMenu()
+      unsubscribeFromTurnOnActsHelp()
     }
   }, [])
 

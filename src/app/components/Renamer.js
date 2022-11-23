@@ -1,5 +1,4 @@
 import React from 'react'
-import { ipcRenderer } from 'electron'
 import { useState, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
@@ -10,6 +9,9 @@ import { InputModal } from 'connected-components'
 import { editFileName as editFileNameOnFirebase } from 'wired-up-firebase'
 
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { onRenameFile } = makeMainProcessClient()
 
 const Renamer = ({
   userId,
@@ -56,7 +58,7 @@ const Renamer = ({
   }
 
   useEffect(() => {
-    ipcRenderer.on('rename-file', (event, fileId) => {
+    const unsubscribeFromRenameFile = onRenameFile((fileId) => {
       setVisible(true)
       setFileId(fileId)
       renameOpenFile.current = true
@@ -67,7 +69,7 @@ const Renamer = ({
     })
     return () => {
       document.removeEventListener('rename-file', renameListener)
-      ipcRenderer.removeAllListeners('rename-file')
+      unsubscribeFromRenameFile()
     }
   }, [])
 

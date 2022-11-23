@@ -1,5 +1,4 @@
 import { ipcRenderer, shell } from 'electron'
-import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
 
@@ -10,9 +9,7 @@ import makeFileSystemAPIs from '../../api/file-system-apis'
 import { makeMainProcessClient } from '../../app/mainProcessClient'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 
-const { userDocumentsPath, showErrorBox, logsPath, getVersion } = makeMainProcessClient()
-
-const machineID = machineIdSync(true)
+const { userDocumentsPath, showErrorBox, logsPath, getVersion, machineId } = makeMainProcessClient()
 
 export function createFullErrorReport() {
   Promise.all([prepareErrorReport(), userDocumentsPath()]).then(([body, userDocumentsPath]) => {
@@ -43,29 +40,32 @@ function prepareErrorReport() {
     }
     log.info('appLogPath', appLogPath)
     return whenClientIsReady(({ join, readFile }) => {
-      return Promise.all([join(appLogPath, 'main.log'), join(appLogPath, 'renderer.log')]).then(
-        ([mainLogFile, rendererLogFile]) => {
-          return readFile(mainLogFile)
-            .catch(() => null)
-            .then((mainLogContents) => {
-              return readFile(rendererLogFile)
-                .catch(() => null)
-                .then((rendererLogContents) => {
-                  const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
-                  return Promise.all([
-                    fileSystemAPIs.currentUserSettings(),
-                    fileSystemAPIs.currentTrial(),
-                    fileSystemAPIs.currentAppSettings(),
-                    getVersion(),
-                  ]).then(([user, trial, settings, version]) => {
-                    const report = `
+      return Promise.all([
+        join(appLogPath, 'main.log'),
+        join(appLogPath, 'renderer.log'),
+        machineId(),
+      ]).then(([mainLogFile, rendererLogFile, generatedMachineID]) => {
+        return readFile(mainLogFile)
+          .catch(() => null)
+          .then((mainLogContents) => {
+            return readFile(rendererLogFile)
+              .catch(() => null)
+              .then((rendererLogContents) => {
+                const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
+                return Promise.all([
+                  fileSystemAPIs.currentUserSettings(),
+                  fileSystemAPIs.currentTrial(),
+                  fileSystemAPIs.currentAppSettings(),
+                  getVersion(),
+                ]).then(([user, trial, settings, version]) => {
+                  const report = `
 ----------------------------------
 INFO
 ----------------------------------
 DATE: ${new Date().toString()}
 VERSION: ${version}
 PLATFORM: ${process.platform}
-MACHINE ID: ${machineID}
+MACHINE ID: ${generatedMachineID}
 
 USER INFO:
 ${JSON.stringify(user)}
@@ -86,12 +86,11 @@ ERROR LOG - RENDERER
 ----------------------------------
 ${rendererLogContents}
   `
-                    return report
-                  })
+                  return report
                 })
-            })
-        }
-      )
+              })
+          })
+      })
     })
   })
 }

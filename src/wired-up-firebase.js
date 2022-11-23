@@ -1,11 +1,11 @@
 import { firebaseWorker } from 'plottr_firebase/worker/firebase-worker'
-import { machineIdSync } from 'node-machine-id'
 
 import logger from '../shared/logger'
+import { makeMainProcessClient } from './app/mainProcessClient'
 
-const mintSessionClientId = machineIdSync
+const { machineId } = makeMainProcessClient()
 
-const worker = firebaseWorker(logger, mintSessionClientId)
+const worker = firebaseWorker(logger, machineId)
 
 export const editFileName = worker.editFileName
 export const updateAuthFileName = worker.updateAuthFileName

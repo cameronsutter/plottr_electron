@@ -1,4 +1,3 @@
-import WebSocket from 'ws'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -150,7 +149,7 @@ const defer =
         setTimeout(f, 0)
       }
 
-const connect = (port, logger, { onBusy, onDone }) => {
+const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
     const promises = new Map()
@@ -807,9 +806,9 @@ const instance = () => {
 
   // See the destructured argument of the connect function for the
   // structure of `eventHandlers`.
-  const createClient = (port, logger, onFailedToConnect, eventHandlers) => {
+  const createClient = (port, logger, WebSocket, onFailedToConnect, eventHandlers) => {
     initialised = true
-    connect(port, logger, eventHandlers)
+    connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
         if (client) client.close(0, 'New client requested')
         client = newClient

@@ -204,9 +204,12 @@ const rendererConfig = {
     fallback: {
       stream: require.resolve('stream-browserify'),
       http: require.resolve('stream-http'),
+      assert: require.resolve('assert/'),
+      crypto: require.resolve('crypto-browserify'),
+      url: require.resolve('url/'),
     },
   },
-  target: 'web',
+  target: 'electron-renderer',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },

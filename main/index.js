@@ -1,4 +1,5 @@
 import electron, { dialog } from 'electron'
+import WebSocket from 'ws'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import yargs from 'yargs/yargs'
@@ -107,6 +108,7 @@ const broadcastPortChange = (port) => {
     createClient(
       port,
       log,
+      WebSocket,
       (error) => {
         log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
         app.quit()

@@ -1,6 +1,5 @@
 import { ipcRenderer } from 'electron'
 import { ActionCreators } from 'redux-undo'
-import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
@@ -63,7 +62,7 @@ import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
 import { makeMainProcessClient } from './app/mainProcessClient'
 
-const { getVersion, hostLocale, openExternal, showOpenDialog } = makeMainProcessClient()
+const { getVersion, hostLocale, openExternal, showOpenDialog, machineId } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
   return whenClientIsReady(({ rmRf }) => {
@@ -394,7 +393,7 @@ const platform = {
   listenForRCELock,
   lockRCE,
   releaseRCELock,
-  machineIdSync,
+  machineId,
   extractImages,
   firebase: {
     startUI,

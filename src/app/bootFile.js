@@ -1,5 +1,4 @@
 import { ipcRenderer } from 'electron'
-import { machineIdSync } from 'node-machine-id'
 
 import {
   helpers,
@@ -37,10 +36,14 @@ import {
 } from '../common/downloadStorageImage'
 import { makeMainProcessClient } from './mainProcessClient'
 
-const clientId = machineIdSync()
-
-const { setWindowTitle, setRepresentedFileName, getVersion, showErrorBox, showMessageBox } =
-  makeMainProcessClient()
+const {
+  setWindowTitle,
+  setRepresentedFileName,
+  getVersion,
+  showErrorBox,
+  showMessageBox,
+  machineId,
+} = makeMainProcessClient()
 
 let rollbar
 setupRollbar('app.html').then((newRollbar) => {
@@ -124,22 +127,24 @@ const migrate = (originalFile, fileId) => (overwrittenFile) => {
             }
             return reject(error)
           }
-          if (migrated) {
-            logger.info(
-              `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-            )
-            overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
-              .then((results) => {
-                loadFileIntoRedux(data, fileId)
-                store.dispatch(actions.client.setClientId(clientId))
-                return results
-              })
-              .then(resolve, reject)
-          } else {
-            loadFileIntoRedux(data, fileId)
-            store.dispatch(actions.client.setClientId(clientId))
-            resolve(data)
-          }
+          machineId().then((clientId) => {
+            if (migrated) {
+              logger.info(
+                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+              )
+              overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
+                .then((results) => {
+                  loadFileIntoRedux(data, fileId)
+                  store.dispatch(actions.client.setClientId(clientId))
+                  return results
+                })
+                .then(resolve, reject)
+            } else {
+              loadFileIntoRedux(data, fileId)
+              store.dispatch(actions.client.setClientId(clientId))
+              resolve(data)
+            }
+          })
         },
         logger
       )

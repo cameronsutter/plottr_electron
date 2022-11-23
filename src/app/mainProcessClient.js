@@ -56,6 +56,26 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const getEnvObject = () => {
+    return Promise.resolve()
+  }
+
+  const logInfo = () => {
+    return Promise.resolve()
+  }
+
+  const logWarn = () => {
+    return Promise.resolve()
+  }
+
+  const logError = () => {
+    return Promise.resolve()
+  }
+
+  const machineId = () => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -72,5 +92,10 @@ export const makeMainProcessClient = () => {
     hostLocale,
     openExternal,
     showItemInFolder,
+    getEnvObject,
+    logInfo,
+    logWarn,
+    logError,
+    machineId,
   }
 }

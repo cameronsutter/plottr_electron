@@ -1,5 +1,4 @@
-import rp from 'request-promise-native'
-import { machineIdSync } from 'node-machine-id'
+import axios from 'axios'
 
 import { getIdTokenResult } from 'wired-up-firebase'
 
@@ -9,48 +8,54 @@ import { makeFileSystemAPIs } from './'
 import { isMacOS } from '../isOS'
 import { whenClientIsReady } from '../../shared/socket-client'
 import logger from '../../shared/logger'
+import { makeMainProcessClient } from '../app/mainProcessClient'
 
 export const trial90days = ['nanoCAMP@90', 'infoSTACK90!']
 export const trial60days = ['infoSTACK60!']
 
+const { machineId } = makeMainProcessClient()
+
 export function checkForActiveLicense(licenseInfo, callback) {
   if (!licenseInfo || !Object.keys(licenseInfo).length) {
     callback(null, false)
-    return
+    return Promise.resolve()
   }
 
   const key = licenseInfo.licenseKey
   const itemID = licenseInfo.item_id
   log.info('checking for active license', itemID, key)
-  rp(makeRequest(licenseURL('check_license', itemID, key)))
-    .then((json) => {
-      const activeLicense = isActiveLicense(json)
-      log.info('[license_checker]', 'active license?', itemID, activeLicense)
-      // TODO: update site_count and/or activations_left locally
-      productMapping[`${itemID}`](activeLicense)
-      callback(null, activeLicense)
-    })
-    .catch((err) => {
-      log.error(err)
-      setupRollbar('license_checker').then((rollbar) => {
-        rollbar.warn(err)
-        // conscious choice not to turn premium off here
-        // User may be disconnected from internet or something else going on
-        log.info('[license_checker]', 'license check request failed')
-        callback(err, null)
+  return machineId().then((generatedMachineId) => {
+    axios
+      .get(licenseURL('check_license', itemID, key, generatedMachineId))
+      .then(({ data }) => {
+        const activeLicense = isActiveLicense(data)
+        log.info('[license_checker]', 'active license?', itemID, activeLicense)
+        // TODO: update site_count and/or activations_left locally
+        productMapping[`${itemID}`](activeLicense)
+        callback(null, activeLicense)
       })
-    })
+      .catch((err) => {
+        log.error(err)
+        setupRollbar('license_checker').then((rollbar) => {
+          rollbar.warn(err)
+          // conscious choice not to turn premium off here
+          // User may be disconnected from internet or something else going on
+          log.info('[license_checker]', 'license check request failed')
+          callback(err, null)
+        })
+      })
+  })
 }
 
 // callback(isValid, data)
 export function verifyLicense(license, callback) {
   // this is going to fire all 3 requests no matter what
   Promise.allSettled(
-    productIds().map((id) => rp(makeRequest(licenseURL('activate_license', id, license))))
-  ).then((results) => {
+    productIds().map((id) => axios.get(licenseURL('activate_license', id, license)))
+  ).then(({ data }) => {
     // find the product that this key belongs to
     let productForKey = null
-    results.some((res, index) => {
+    data.some((res, index) => {
       const productID = productIds()[index]
       if (process.env.NODE_ENV === 'development') {
         log.info(productID, res)
@@ -157,10 +162,10 @@ const WRONG_PRODUCT_ERRORS = ['invalid_item_id', 'key_mismatch', 'item_name_mism
 
 const GRACE_PERIOD_DAYS = 30
 
-function licenseURL(action, productID, license) {
+function licenseURL(action, productID, license, generatedMachineId) {
   let url = `${BASE_URL}`
   url += `?edd_action=${action}&item_id=${productID}&license=${license}`
-  url += `&url=${machineIdSync(true)}`
+  url += `&url=${generatedMachineId}`
   return url
 }
 
@@ -266,12 +271,4 @@ function apiURL(path = '', params = '') {
 
 function subscriptionsURL(email) {
   return apiURL('subscriptions', `&customer=${email}`)
-}
-
-function makeRequest(url) {
-  return {
-    url: url,
-    method: 'GET',
-    json: true,
-  }
 }

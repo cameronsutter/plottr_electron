@@ -322,6 +322,8 @@ const fileModule = (userDataPath) => {
       join: _join,
       separator,
       offlineFileURL,
+      stat: lstat,
+      readdir,
     }
   }
 }

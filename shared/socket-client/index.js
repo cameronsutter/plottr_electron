@@ -135,6 +135,10 @@ import {
   OFFLINE_FILE_URL_ERROR_REPLY,
   RESOLVE,
   RESOLVE_ERROR_REPLY,
+  READDIR,
+  STAT,
+  READDIR_ERROR_REPLY,
+  STAT_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -382,6 +386,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case TRASH_FILE_ERROR_REPLY:
           case EXTNAME_ERROR_REPLY:
           case RESOLVE_ERROR_REPLY:
+          case READDIR_ERROR_REPLY:
+          case STAT_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -580,6 +586,14 @@ const connect = (port, logger, { onBusy, onDone }) => {
       return sendPromise(RESOLVE, { args })
     }
 
+    const readdir = (path) => {
+      return sendPromise(READDIR, { path })
+    }
+
+    const stat = (path) => {
+      return sendPromise(STAT, { path })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -772,6 +786,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
           trash,
           extname,
           resolvePath,
+          readdir,
+          stat,
           close: clientConnection.close.bind(clientConnection),
         })
       })

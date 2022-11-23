@@ -48,6 +48,7 @@ import { createClient, getPort, whenClientIsReady, setPort } from '../../shared/
 import logger from '../../shared/logger'
 import { removeSystemKeys } from './bootFile'
 import { makeMainProcessClient } from './mainProcessClient'
+import { downloadStorageImage } from '../common/downloadStorageImage'
 
 const osIAmOn = ipcRenderer.sendSync('tell-me-what-os-i-am-on')
 setOS(osIAmOn)
@@ -148,6 +149,12 @@ document.addEventListener('save-custom-template', (event) => {
   addNewCustomTemplate(currentState.present, options)
 })
 
+const writeFile = (path, data) => {
+  whenClientIsReady(({ writeFile }) => {
+    return writeFile(path, data)
+  })
+}
+
 ipcRenderer.on('export-file-from-menu', (event, { type }) => {
   const currentState = store.getState()
   const {
@@ -170,6 +177,8 @@ ipcRenderer.on('export-file-from-menu', (event, { type }) => {
     exportSaveDialog,
     MPQ,
     rmRF,
+    downloadStorageImage,
+    writeFile,
     (error, success) => {
       if (error) {
         logger.error(error)

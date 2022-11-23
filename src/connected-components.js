@@ -71,6 +71,12 @@ export const rmRF = (path, ...args) => {
   })
 }
 
+const writeFile = (filePath, data) => {
+  return whenClientIsReady(({ writeFile }) => {
+    return writeFile(filePath, data)
+  })
+}
+
 const {
   saveAppSetting,
   startTrial,
@@ -241,6 +247,7 @@ const platform = {
       })
     },
     rmRF,
+    writeFile,
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)

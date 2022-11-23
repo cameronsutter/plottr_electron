@@ -82,6 +82,8 @@ import {
   EXTNAME,
   OFFLINE_FILE_URL,
   RESOLVE,
+  READDIR,
+  STAT,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -170,6 +172,8 @@ const setupListeners = (port, userDataPath) => {
       extname,
       resolvePath,
       offlineFileURL,
+      stat,
+      readdir,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -674,6 +678,22 @@ const setupListeners = (port, userDataPath) => {
               () =>
                 statusManager.registerTask(updateLastOpenedDate(fileURL), UPDATE_LAST_OPENED_DATE),
               () => `Error updating the last opened date for file with id ${fileURL}`
+            )
+          }
+          case READDIR: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Reading the contents of', path],
+              () => statusManager.registerTask(readdir(path), READDIR),
+              () => ['Error reading the contents of', path]
+            )
+          }
+          case STAT: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Reading the FS stats of', path],
+              () => statusManager.registerTask(stat(path), STAT),
+              () => ['Error reading the FS stats of', path]
             )
           }
           // ===File System APIs===

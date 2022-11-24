@@ -89,6 +89,7 @@ const {
   downloadFileAndShow,
   pleaseOpenLoginPopup,
   pleaseTellMeWhatPlatformIAmOn,
+  showErrorBox,
 } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
@@ -103,14 +104,8 @@ const writeFile = (filePath, data) => {
   })
 }
 
-const {
-  saveAppSetting,
-  startTrial,
-  deleteLicense,
-  saveLicenseInfo,
-  saveExportConfigSettings,
-  showErrorBox,
-} = makeFileSystemAPIs(whenClientIsReady)
+const { saveAppSetting, startTrial, deleteLicense, saveLicenseInfo, saveExportConfigSettings } =
+  makeFileSystemAPIs(whenClientIsReady)
 
 export const openFile = (fileURL, unknown) => {
   openKnownFile(fileURL, unknown)

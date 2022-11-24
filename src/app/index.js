@@ -147,7 +147,7 @@ tellMeWhatOSImOn()
 
     // instrumentLongRunningTasks()
 
-    process.on('uncaughtException', (err) => {
+    window.onerror((_msg, _url, _lineNo, _columnNo, err) => {
       logger.error(err)
       rollbar.error(err)
     })

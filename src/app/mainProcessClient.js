@@ -46,7 +46,7 @@ const _makeMainProcessClient = () => {
   }
 
   const windowId = () => {
-    throw new Error('Implement!')
+    return ask('window-id')
   }
 
   const showMessageBox = (title, message, type, detail) => {
@@ -110,12 +110,7 @@ const _makeMainProcessClient = () => {
   }
 
   const setMyFilePath = (filePath) => {
-    throw new Error('Implement!')
-  }
-
-  const onRenameFile = (cb) => {
-    // This should be the unsubscribe function...
-    throw new Error('IMPLEMENT LISTENER!')
+    return ask('pls-set-my-file-path', filePath)
   }
 
   const openKnownFile = (fileURL, unknown) => {
@@ -129,7 +124,7 @@ const _makeMainProcessClient = () => {
   // NOTE: there used to be an 'unknown' param for this message.  I
   // don't think it actually gets used.
   const pleaseOpenWindow = (fileURL) => {
-    throw new Error('Implement!')
+    return ask('pls-open-window', fileURL)
   }
 
   const onAdvancedExportFileFromMenu = (cb) => {
@@ -147,18 +142,12 @@ const _makeMainProcessClient = () => {
     throw new Error('IMPLEMENT LISTENER!')
   }
 
-  const reloadFromFile = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+  const onReloadFromFile = (cb) => {
+    return subscribeTo('reload-from-file', cb)
   }
 
-  const onStateFetched = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
-  }
-
-  const pleaseFetchState = (id, isInProMode) => {
-    throw new Error('Implement!')
+  const pleaseFetchState = (isInProMode) => {
+    return ask('pls-fetch-state', isInProMode)
   }
 
   const updateLastOpenedFile = (fileURL) => {
@@ -290,7 +279,7 @@ const _makeMainProcessClient = () => {
   }
 
   const listenersRegistered = () => {
-    throw new Error('Implement!')
+    return ask('listeners-registered')
   }
 
   const notify = (title, message) => {
@@ -379,11 +368,15 @@ const _makeMainProcessClient = () => {
   }
 
   const pleaseOpenLoginPopup = () => {
-    throw new Error('Implement!')
+    return ask('pls-open-login-popup')
   }
 
   const pleaseTellMeWhatPlatformIAmOn = () => {
     return ask('please-tell-me-what-platform-i-am-on')
+  }
+
+  const onSaveAsOnPro = (cb) => {
+    return subscribeTo('save-as--pro', cb)
   }
 
   return {
@@ -408,15 +401,13 @@ const _makeMainProcessClient = () => {
     logError,
     machineId,
     setMyFilePath,
-    onRenameFile,
     openKnownFile,
     devOpenAnalyzerFile,
     pleaseOpenWindow,
     onAdvancedExportFileFromMenu,
     onTurnOnActsHelp,
     onReload,
-    reloadFromFile,
-    onStateFetched,
+    onReloadFromFile,
     pleaseFetchState,
     updateLastOpenedFile,
     openBuyWindow,
@@ -473,6 +464,7 @@ const _makeMainProcessClient = () => {
     downloadFileAndShow,
     pleaseOpenLoginPopup,
     pleaseTellMeWhatPlatformIAmOn,
+    onSaveAsOnPro,
   }
 }
 

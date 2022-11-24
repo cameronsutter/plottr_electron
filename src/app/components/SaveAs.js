@@ -11,7 +11,7 @@ import { uploadToFirebase } from '../../upload-to-firebase'
 import logger from '../../../shared/logger'
 import { makeMainProcessClient } from '../mainProcessClient'
 
-const { openKnownFile } = makeMainProcessClient()
+const { openKnownFile, pleaseOpenWindow, onSaveAsOnPro } = makeMainProcessClient()
 
 export const openFile = (fileURL, unknown) => {
   return openKnownFile(fileURL, unknown)
@@ -58,8 +58,9 @@ const SaveAs = ({
           return fileId
         })
         .then((fileId) => {
-          ipcRenderer.send('pls-open-window', helpers.file.fileIdToPlottrCloudFileURL(fileId), true)
-          window.close()
+          pleaseOpenWindow(helpers.file.fileIdToPlottrCloudFileURL(fileId), true).then(() => {
+            window.close()
+          })
         })
         .catch((error) => {
           logger.error(`Error saving file with id ${fileId} as ${newName}`, error)
@@ -69,7 +70,7 @@ const SaveAs = ({
   }
 
   useEffect(() => {
-    ipcRenderer.on('save-as--pro', (event, fileId) => {
+    const unsubscribe = onSaveAsOnPro((fileId) => {
       if (isOfflineMode) return
 
       setVisible(true)
@@ -77,7 +78,7 @@ const SaveAs = ({
       saveFileAs.current = true
     })
     return () => {
-      ipcRenderer.removeAllListeners('save-as--pro')
+      unsubscribe()
     }
   }, [isOfflineMode])
 

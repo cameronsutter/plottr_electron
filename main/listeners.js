@@ -43,7 +43,7 @@ const { readFile } = fs.promises
 const { app, ipcMain } = electron
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
-  ipcMain.on('pls-fetch-state', function (event, id, proMode) {
+  ipcMain.on('pls-fetch-state', (event, replyChannel, proMode) => {
     lastOpenedFile()
       .catch((error) => {
         return null
@@ -60,12 +60,12 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
           (lastFile && !helpers.file.isProtocolString(lastFile)
             ? helpers.file.filePathToFileURL(lastFile)
             : lastFile) || null
-        const win = getWindowById(id)
+        const win = getWindowById(event.sender.getOwnerBrowserWindow().id)
         const fileURL = win.fileURL || lastFileURL
         if (win) {
           featureFlags().then((flags) => {
             event.sender.send(
-              'state-fetched',
+              replyChannel,
               fileURL,
               flags,
               numberOfWindows(),
@@ -244,12 +244,18 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     shell.showItemInFolder(helpers.file.withoutProtocol(fileURL))
   })
 
-  ipcMain.on('pls-set-my-file-path', (event, fileURL) => {
+  ipcMain.on('pls-set-my-file-path', (event, replyChannel, fileURL) => {
     setFilePathForWindowWithId(event.sender.getOwnerBrowserWindow().id, fileURL)
+    event.sender.send(replyChannel, fileURL)
   })
 
-  ipcMain.on('pls-open-login-popup', () => {
-    openLoginPopupWindow()
+  ipcMain.on('pls-open-login-popup', (event, replyChannel) => {
+    try {
+      openLoginPopupWindow()
+      event.sender.send(replyChannel, 'done')
+    } catch (error) {
+      event.sender.send(replyChannel, 'failed')
+    }
   })
 
   ipcMain.on('notify', (event, title, body) => {

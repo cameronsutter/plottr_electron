@@ -156,8 +156,11 @@ tellMeWhatOSImOn()
       })
       .then(() => {
         getEnvObject().then((envObject) => {
+          if (!window.env) {
+            window.env = {}
+          }
           Object.entries(envObject).forEach(([key, value]) => {
-            process.env[key] = value
+            window.env[key] = value
           })
         })
       })

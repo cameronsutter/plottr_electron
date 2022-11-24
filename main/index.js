@@ -183,8 +183,9 @@ app.whenReady().then(() => {
               throw new Error('Could not create window to export with.')
             }
             newWindow.on('ready-to-show', () => {
-              ipcMain.once('listeners-registered', () => {
+              ipcMain.once('listeners-registered', (event, replyChannel) => {
                 newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+                event.sender.send(replyChannel, 'done')
               })
             })
           })

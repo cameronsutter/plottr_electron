@@ -22,14 +22,8 @@ import { whenClientIsReady } from '../../../shared/socket-client'
 import logger from '../../../shared/logger'
 import { makeMainProcessClient } from '../mainProcessClient'
 
-const {
-  reloadFromFile,
-  onStateFetched,
-  pleaseFetchState,
-  openExternal,
-  showItemInFolder,
-  updateLastOpenedFile,
-} = makeMainProcessClient()
+const { onReloadFromFile, pleaseFetchState, openExternal, showItemInFolder, updateLastOpenedFile } =
+  makeMainProcessClient()
 
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
@@ -191,7 +185,7 @@ const Main = ({
         load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
-    const unsubscribeFromReloadFromFile = reloadFromFile(reloadListener)
+    const unsubscribeFromReloadFromFile = onReloadFromFile(reloadListener)
 
     if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {
       return () => {
@@ -199,10 +193,7 @@ const Main = ({
       }
     }
 
-    let unsubscribeFromStateFetched = null
-
     const stateFetchedListener = (
-      event,
       fileURL,
       options,
       numOpenFiles,
@@ -225,14 +216,19 @@ const Main = ({
       if (processSwitches.testUtilitiesEnabled) {
         enableTestUtilities()
       }
-      if (typeof unsubscribeFromStateFetched === 'function') unsubscribeFromStateFetched()
     }
-    windowId().then((id) => {
-      unsubscribeFromStateFetched = onStateFetched(stateFetchedListener)
-      pleaseFetchState().then(() => {
-        startCheckingFileToLoad()
-      })
-    })
+    startCheckingFileToLoad()
+    pleaseFetchState(isInProMode).then(
+      (fileURL, options, numOpenFiles, windowOpenedWithKnownPath, processSwitches) => {
+        return stateFetchedListener(
+          fileURL,
+          options,
+          numOpenFiles,
+          windowOpenedWithKnownPath,
+          processSwitches
+        )
+      }
+    )
 
     return () => {
       unsubscribeFromReloadFromFile()

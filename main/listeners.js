@@ -72,8 +72,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       })
   })
 
-  ipcMain.on('pls-tell-me-the-socket-worker-port', (event) => {
-    event.returnValue = getSocketWorkerPort()
+  ipcMain.on('pls-tell-me-the-socket-worker-port', (event, replyChannel) => {
+    event.sender.send(replyChannel, getSocketWorkerPort())
   })
 
   ipcMain.on('pls-set-dark-setting', (event, newValue) => {

@@ -160,7 +160,7 @@ export const makeMainProcessClient = () => {
   }
 
   const pleaseTellMeTheSocketServerPort = () => {
-    return Promise.resolve()
+    return ask('pls-tell-me-the-socket-worker-port')
   }
 
   const getLocale = () => {

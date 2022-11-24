@@ -122,7 +122,6 @@ const connectToSocketServer = (port) => {
 let rollbar
 tellMeWhatOSImOn()
   .then((osIAmOn) => {
-    debugger
     setOS(osIAmOn)
     onUpdateWorkerPort('update-worker-port', (_event, newPort) => {
       logger.info(`Updating the socket server port to: ${newPort}`)

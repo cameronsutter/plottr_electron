@@ -190,18 +190,15 @@ const _makeMainProcessClient = () => {
   }
 
   const onExportFileFromMenu = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('export-file-from-menu', cb)
   }
 
   const onSave = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('save', cb)
   }
 
   const onSaveAs = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('save-as', cb)
   }
 
   const removeFromTempFilesIfTemp = (fileURL) => {
@@ -217,30 +214,23 @@ const _makeMainProcessClient = () => {
   }
 
   const onUndo = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('undo', cb)
   }
 
   const onRedu = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('redo', cb)
   }
 
-  const listenOnceToSendLaunch = (cb) => {}
-
   const onCreateErrorReport = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('create-error-report', cb)
   }
 
   const onCloseDashboard = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('close-dashboard', cb)
   }
 
   const onCreatePlottrCloudFile = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('create-plottr-cloud-file', cb)
   }
 
   const errorImportingScrivener = (error) => {
@@ -248,18 +238,15 @@ const _makeMainProcessClient = () => {
   }
 
   const onFinishCreatingLocalScrivenerImportedFile = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('finish-creating-local-scrivener-imported-file', cb)
   }
 
   const onErrorImportingScrivener = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('error-importing-scrivener', cb)
   }
 
   const onConvertRTFStringToSlate = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('convert-rtf-string-to-slate', cb)
   }
 
   const replyToConvertRTFStringToSlateRequest = (conversionId, converted) => {
@@ -267,42 +254,35 @@ const _makeMainProcessClient = () => {
   }
 
   const pleaseReloadMenu = () => {
-    throw new Error('Implement!')
+    return ask('please-reload-menu')
   }
 
   const onNewProject = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('new-project', cb)
   }
 
   const onOpenExisting = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('open-existing', cb)
   }
 
   const onFromTemplate = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('from-template', cb)
   }
 
   const onError = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('error', cb)
   }
 
   const onUpdateWorkerPort = (cb) => {
-    // This should be the unsubscribe function
     return subscribeTo('update-worker-port', cb)
   }
 
   const onReloadDarkMode = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('reload-dark-mode', cb)
   }
 
   const onImportScrivenerFile = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('import-scrivener-file', cb)
   }
 
   const createFromScrivener = () => {
@@ -453,7 +433,6 @@ const _makeMainProcessClient = () => {
     pleaseTellDashboardToReloadRecents,
     onUndo,
     onRedu,
-    listenOnceToSendLaunch,
     onCreateErrorReport,
     onCloseDashboard,
     onCreatePlottrCloudFile,

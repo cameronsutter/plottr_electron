@@ -412,22 +412,6 @@ tellMeWhatOSImOn()
           process.env.LOGGER = which.toString()
         }
 
-        listenOnceToSendLaunch((version) => {
-          fileSystemAPIs.currentAppSettings().then((settings) => {
-            const settingsWeCareAbout = {
-              auto_download: settings.user?.autoDownloadUpdate,
-              backup_on: settings.backup,
-              locale: settings.locale,
-              dark: settings.user?.dark,
-            }
-            MPQ.push('Launch', {
-              online: navigator.onLine,
-              version: version,
-              ...settingsWeCareAbout,
-            })
-          })
-        })
-
         onCreateErrorReport(() => {
           createFullErrorReport()
         })

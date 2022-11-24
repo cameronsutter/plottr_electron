@@ -90,7 +90,7 @@ const _makeMainProcessClient = () => {
   }
 
   const getEnvObject = () => {
-    throw new Error('Implement!')
+    return ask('get-env-object')
   }
 
   const logInfo = (...args) => {

@@ -4,6 +4,7 @@ import { setupI18n } from 'plottr_locales'
 import https from 'https'
 import fs from 'fs'
 import { machineId } from 'node-machine-id'
+import { parse } from 'dotenv'
 
 import { helpers } from 'pltr/v2'
 
@@ -36,6 +37,8 @@ import {
 } from './modules/files'
 import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
 import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
+
+const { readFile } = fs.promises
 
 const { app, ipcMain } = electron
 
@@ -297,5 +300,11 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
 
   ipcMain.on('get-locale', (event, replyChannel) => {
     event.sender.send(replyChannel, app.getLocale())
+  })
+
+  ipcMain.on('get-env-object', (event, replyChannel) => {
+    readFile(path.resolve(__dirname, '..', '.env')).then((rawEnvFile) => {
+      event.sender.send(replyChannel, parse(rawEnvFile))
+    })
   })
 }

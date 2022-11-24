@@ -210,12 +210,21 @@ const fileSystemModule = (userDataPath) => {
           .filter(([key, file]) => {
             return isValidKnownFile(file)
           })
-          .map(([key, file]) => ({
-            fileURL: file.fileURL,
-            fileName: file.fileName,
-            lastOpened: file.lastOpened,
-            isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
-          }))
+          .map(([key, file]) => {
+            const withoutProtocol = helpers.file.withoutProtocol(file.fileURL)
+            const fileBasename = path.basename(withoutProtocol)
+            const pathToContainingFolder = withoutProtocol
+              .replace(fileBasename, '')
+              .split(path.sep)
+              .filter(Boolean)
+            return {
+              fileURL: file.fileURL,
+              fileName: file.fileName,
+              lastOpened: file.lastOpened,
+              isTempFile: file.fileURL.includes(TEMP_FILES_PATH),
+              pathToContainingFolder,
+            }
+          })
       })
     }
 

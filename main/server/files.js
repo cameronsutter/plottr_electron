@@ -304,6 +304,19 @@ const fileModule = (userDataPath) => {
 
     const separator = path.sep
 
+    const stat = (path) => {
+      return lstat(path).then((stats) => {
+        return {
+          ...stats,
+          isDirectory: stats.isDirectory(),
+        }
+      })
+    }
+
+    const makeDirectory = (path) => {
+      return mkdir(path, { recursive: true })
+    }
+
     return {
       saveFile,
       saveOfflineFile,
@@ -322,8 +335,9 @@ const fileModule = (userDataPath) => {
       join: _join,
       separator,
       offlineFileURL,
-      stat: lstat,
+      stat,
       readdir,
+      mkdir: makeDirectory,
     }
   }
 }

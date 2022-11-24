@@ -138,6 +138,8 @@ import {
   STAT,
   READDIR_ERROR_REPLY,
   STAT_ERROR_REPLY,
+  MKDIR,
+  MKDIR_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -387,6 +389,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case RESOLVE_ERROR_REPLY:
           case READDIR_ERROR_REPLY:
           case STAT_ERROR_REPLY:
+          case MKDIR_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -593,6 +596,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
       return sendPromise(STAT, { path })
     }
 
+    const mkdir = (path) => {
+      return sendPromise(MKDIR, { path })
+    }
+
     // ===File System APIs===
 
     const backupBasePath = () => {
@@ -787,6 +794,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           resolvePath,
           readdir,
           stat,
+          mkdir,
           close: clientConnection.close.bind(clientConnection),
         })
       })

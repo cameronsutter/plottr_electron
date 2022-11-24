@@ -84,6 +84,7 @@ import {
   RESOLVE,
   READDIR,
   STAT,
+  MKDIR,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -174,6 +175,7 @@ const setupListeners = (port, userDataPath) => {
       offlineFileURL,
       stat,
       readdir,
+      mkdir,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -694,6 +696,14 @@ const setupListeners = (port, userDataPath) => {
               () => ['Reading the FS stats of', path],
               () => statusManager.registerTask(stat(path), STAT),
               () => ['Error reading the FS stats of', path]
+            )
+          }
+          case MKDIR: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Creating a directory (recursively) at', path],
+              () => statusManager.registerTask(mkdir(path), MKDIR),
+              () => ['Error creating a directory (recursively) at', path]
             )
           }
           // ===File System APIs===

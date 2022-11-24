@@ -209,7 +209,7 @@ const rendererConfig = {
       url: require.resolve('url/'),
     },
   },
-  target: 'electron-renderer',
+  target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },

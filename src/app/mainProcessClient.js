@@ -178,7 +178,7 @@ const _makeMainProcessClient = () => {
   }
 
   const getLocale = () => {
-    throw new Error('Implement!')
+    return ask('get-locale')
   }
 
   const onSetBeatHierarchy = (cb) => {

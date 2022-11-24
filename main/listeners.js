@@ -294,4 +294,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       event.sender.send(replyChannel, id)
     })
   })
+
+  ipcMain.on('get-locale', (event, replyChannel) => {
+    event.sender.send(replyChannel, app.getLocale())
+  })
 }

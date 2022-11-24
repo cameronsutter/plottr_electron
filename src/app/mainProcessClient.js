@@ -182,13 +182,11 @@ const _makeMainProcessClient = () => {
   }
 
   const onSetBeatHierarchy = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('set-beat-hierarchy', cb)
   }
 
   const onUnsetBeatHierachy = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('unset-beat-hierarchy', cb)
   }
 
   const onExportFileFromMenu = (cb) => {

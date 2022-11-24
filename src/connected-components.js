@@ -294,6 +294,16 @@ const platform = {
         return join(...args)
       })
     },
+    stat: (path) => {
+      return whenClientIsReady(({ stat }) => {
+        return stat(path)
+      })
+    },
+    mkdir: (path) => {
+      return whenClientIsReady(({ mkdir }) => {
+        return mkdir(path)
+      })
+    },
     listOfflineFiles,
   },
   update: {

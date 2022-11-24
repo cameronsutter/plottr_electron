@@ -197,8 +197,26 @@ tellMeWhatOSImOn()
         })
 
         const writeFile = (path, data) => {
-          whenClientIsReady(({ writeFile }) => {
+          return whenClientIsReady(({ writeFile }) => {
             return writeFile(path, data)
+          })
+        }
+
+        const joinPath = (...args) => {
+          return whenClientIsReady(({ join }) => {
+            return join(...args)
+          })
+        }
+
+        const stat = (path) => {
+          return whenClientIsReady(({ stat }) => {
+            return stat(path)
+          })
+        }
+
+        const mkdir = (path) => {
+          return whenClientIsReady(({ mkdir }) => {
+            return mkdir(path)
           })
         }
 
@@ -226,6 +244,9 @@ tellMeWhatOSImOn()
             rmRF,
             downloadStorageImage,
             writeFile,
+            joinPath,
+            stat,
+            mkdir,
             (error, success) => {
               if (error) {
                 logger.error(error)

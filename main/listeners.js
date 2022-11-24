@@ -3,7 +3,7 @@ import currentSettings, { saveAppSetting } from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import https from 'https'
 import fs from 'fs'
-const { app, ipcMain } = electron
+import { machineId } from 'node-machine-id'
 
 import { helpers } from 'pltr/v2'
 
@@ -36,6 +36,8 @@ import {
 } from './modules/files'
 import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
 import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
+
+const { app, ipcMain } = electron
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', function (event, id, proMode) {
@@ -285,5 +287,11 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
 
   ipcMain.on('please-tell-me-what-platform-i-am-on', (event, replyChannel) => {
     event.sender.send(replyChannel, process.platform)
+  })
+
+  ipcMain.on('machine-id', (event, replyChannel) => {
+    machineId().then((id) => {
+      event.sender.send(replyChannel, id)
+    })
   })
 }

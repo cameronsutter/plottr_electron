@@ -24,64 +24,64 @@ const tell = (channel, ...args) => {
 
 export const makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
   const setRepresentedFileName = (newFileName) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
   const getVersion = () => {
     return ask('please-tell-me-my-version')
   }
   const showErrorBox = (title, message) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const windowId = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const showMessageBox = (title, message, type, detail) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const showSaveDialog = (filters, title, defaultPath) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const setFileURL = (newFileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const userDataPath = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const userDocumentsPath = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const logsPath = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const showOpenDialog = (title, filters, properties) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const hostLocale = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const openExternal = (url) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const showItemInFolder = (filePath) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const getEnvObject = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const logInfo = (...args) => {
@@ -97,67 +97,67 @@ export const makeMainProcessClient = () => {
   }
 
   const machineId = () => {
-    return Promise.resolve()
+    return ask('machine-id')
   }
 
   const setMyFilePath = (filePath) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onRenameFile = (cb) => {
     // This should be the unsubscribe function...
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const openKnownFile = (fileURL, unknown) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const devOpenAnalyzerFile = (fileName, filePath) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   // NOTE: there used to be an 'unknown' param for this message.  I
   // don't think it actually gets used.
   const pleaseOpenWindow = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onAdvancedExportFileFromMenu = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onTurnOnActsHelp = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onReload = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const reloadFromFile = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onStateFetched = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const pleaseFetchState = (id, isInProMode) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const updateLastOpenedFile = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const openBuyWindow = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const tellMeWhatOSImOn = () => {
@@ -169,230 +169,230 @@ export const makeMainProcessClient = () => {
   }
 
   const getLocale = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onSetBeatHierarchy = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUnsetBeatHierachy = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onExportFileFromMenu = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onSave = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onSaveAs = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const removeFromTempFilesIfTemp = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const editKnownFilePath = (oldFileURL, newFileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseTellDashboardToReloadRecents = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onUndo = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onRedu = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const listenOnceToSendLaunch = (cb) => {}
 
   const onCreateErrorReport = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onCloseDashboard = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onCreatePlottrCloudFile = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const errorImportingScrivener = (error) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onFinishCreatingLocalScrivenerImportedFile = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onErrorImportingScrivener = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onConvertRTFStringToSlate = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const replyToConvertRTFStringToSlateRequest = (conversionId, converted) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseReloadMenu = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onNewProject = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onOpenExisting = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onFromTemplate = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onError = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUpdateWorkerPort = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onReloadDarkMode = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onImportScrivenerFile = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const createFromScrivener = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const listenersRegistered = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const notify = (title, message) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const openPath = (path) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const removeFromKnownFiles = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const addToKnownFilesAndOpen = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseSetDarkModeSetting = (value) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseQuit = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const createNewFile = (template, name) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const deleteKnownFile = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const createFromSnowflake = (importedPath, isLoggedIntoPro) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseQuitAndInstall = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseDownloadUpdate = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseCheckForUpdates = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const onUpdateError = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUpdaterUpdateAvailable = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUpdaterUpdateNotAvailable = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUpdaterDownloadProgress = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const onUpdaterUpdateDownloaded = (cb) => {
     // This should be the unsubscribe function
-    return () => {}
+    throw new Error('IMPLEMENT LISTENER!')
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const updateBeatHierarchy = (newValue) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const downloadFileAndShow = (fileURL) => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseOpenLoginPopup = () => {
-    return Promise.resolve()
+    throw new Error('Implement!')
   }
 
   const pleaseTellMeWhatPlatformIAmOn = () => {

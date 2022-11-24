@@ -278,4 +278,12 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   ipcMain.on('log-error', (_event, ...args) => {
     log.error(...args)
   })
+
+  ipcMain.on('please-tell-me-my-version', (event, replyChannel) => {
+    event.sender.send(replyChannel, app.getVersion())
+  })
+
+  ipcMain.on('please-tell-me-what-platform-i-am-on', (event, replyChannel) => {
+    event.sender.send(replyChannel, process.platform)
+  })
 }

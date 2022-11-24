@@ -30,7 +30,7 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
   const getVersion = () => {
-    return Promise.resolve()
+    return ask('please-tell-me-my-version')
   }
   const showErrorBox = (title, message) => {
     return Promise.resolve()
@@ -396,7 +396,7 @@ export const makeMainProcessClient = () => {
   }
 
   const pleaseTellMeWhatPlatformIAmOn = () => {
-    return Promise.resolve()
+    return ask('please-tell-me-what-platform-i-am-on')
   }
 
   return {

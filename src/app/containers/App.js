@@ -25,7 +25,8 @@ import MainIntegrationContext from '../../mainIntegrationContext'
 import logger from '../../../shared/logger'
 import { makeMainProcessClient } from '../mainProcessClient'
 
-const { onAdvancedExportFileFromMenu, onTurnOnActsHelp } = makeMainProcessClient()
+const { onAdvancedExportFileFromMenu, onTurnOnActsHelp, onReload, onWantsToClose } =
+  makeMainProcessClient()
 
 const App = ({
   forceProjectDashboard,
@@ -142,19 +143,19 @@ const App = ({
   }
 
   useEffect(() => {
-    ipcRenderer.on('reload', () => {
+    const unsubscribeFromReload = onReload('reload', () => {
       isTryingToReload.current = true
       askToSave({})
     })
-    ipcRenderer.on('wants-to-close', () => {
+    const unsubscribeFromWantsToClose = onWantsToClose(() => {
       log.info('received wants-to-close')
       isTryingToClose.current = true
       askToSave({})
     })
     window.addEventListener('beforeunload', askToSave)
     return () => {
-      ipcRenderer.removeAllListeners('reload')
-      ipcRenderer.removeAllListeners('wants-to-close')
+      unsubscribeFromReload()
+      unsubscribeFromWantsToClose()
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [blockClosing, applicationIsBusyAndCannotBeQuit, closeOrRefresh])

@@ -219,7 +219,7 @@ const Main = ({
     }
     startCheckingFileToLoad()
     pleaseFetchState(isInProMode).then(
-      (fileURL, options, numOpenFiles, windowOpenedWithKnownPath, processSwitches) => {
+      ([fileURL, options, numOpenFiles, windowOpenedWithKnownPath, processSwitches]) => {
         return stateFetchedListener(
           fileURL,
           options,

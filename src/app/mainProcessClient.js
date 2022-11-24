@@ -7,7 +7,11 @@ const ask = (channel, ...args) => {
     try {
       const listener = (event, ...args) => {
         window.api.stopListening(listenToken, listener)
-        resolve(...args)
+        if (args.length === 1) {
+          resolve(args[0])
+        } else {
+          resolve(args)
+        }
       }
       window.api.listen(listenToken, listener)
       window.api.send(channel, listenToken, ...args)
@@ -138,8 +142,7 @@ const _makeMainProcessClient = () => {
   }
 
   const onReload = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('reload', cb)
   }
 
   const onReloadFromFile = (cb) => {
@@ -331,28 +334,23 @@ const _makeMainProcessClient = () => {
   }
 
   const onUpdateError = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('updater-error', cb)
   }
 
   const onUpdaterUpdateAvailable = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('update-available', cb)
   }
 
   const onUpdaterUpdateNotAvailable = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('update-not-available', cb)
   }
 
   const onUpdaterDownloadProgress = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('download-progress', cb)
   }
 
   const onUpdaterUpdateDownloaded = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('update-downloaded', cb)
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {
@@ -377,6 +375,10 @@ const _makeMainProcessClient = () => {
 
   const onSaveAsOnPro = (cb) => {
     return subscribeTo('save-as--pro', cb)
+  }
+
+  const onWantsToClose = (cb) => {
+    return subscribeTo('wants-to-close', cb)
   }
 
   return {
@@ -465,6 +467,7 @@ const _makeMainProcessClient = () => {
     pleaseOpenLoginPopup,
     pleaseTellMeWhatPlatformIAmOn,
     onSaveAsOnPro,
+    onWantsToClose,
   }
 }
 

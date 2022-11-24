@@ -147,11 +147,6 @@ tellMeWhatOSImOn()
 
     // instrumentLongRunningTasks()
 
-    window.onerror((_msg, _url, _lineNo, _columnNo, err) => {
-      logger.error(err)
-      rollbar.error(err)
-    })
-
     fileSystemAPIs
       .currentAppSettings()
       .then((settings) => {
@@ -382,10 +377,10 @@ tellMeWhatOSImOn()
           store.dispatch(ActionCreators.redo())
         })
 
-        window.onerror = function (message, file, line, column, err) {
+        window.addEventListener('error', (message, file, line, column, err) => {
           logger.error(err)
           rollbar.error(err)
-        }
+        })
 
         window.SCROLLWITHKEYS = true
         document.addEventListener('keydown', (e) => {

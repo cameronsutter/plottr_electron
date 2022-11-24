@@ -32,7 +32,16 @@ const logger = {
       args[0],
       JSON.stringify(
         {
-          extraArgs: args.slice(1),
+          extraArgs: args.slice(1).map((arg) => {
+            if (arg.stack) {
+              return {
+                message: arg.message,
+                stack: arg.stack,
+              }
+            }
+
+            return arg
+          }),
         },
         null,
         2

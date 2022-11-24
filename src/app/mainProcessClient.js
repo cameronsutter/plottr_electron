@@ -17,6 +17,11 @@ const ask = (channel, ...args) => {
   })
 }
 
+const tell = (channel, ...args) => {
+  window.api.send(channel, ...args)
+  return Promise.resolve()
+}
+
 export const makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
     return Promise.resolve()
@@ -79,16 +84,16 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
-  const logInfo = () => {
-    return Promise.resolve()
+  const logInfo = (...args) => {
+    return tell('log-info', ...args)
   }
 
-  const logWarn = () => {
-    return Promise.resolve()
+  const logWarn = (...args) => {
+    return tell('log-warn', ...args)
   }
 
-  const logError = () => {
-    return Promise.resolve()
+  const logError = (...args) => {
+    return tell('log-error', ...args)
   }
 
   const machineId = () => {

@@ -90,44 +90,50 @@ const {
   listenersRegistered,
 } = makeMainProcessClient()
 
+const connectToSocketServer = (port) => {
+  const socketServerEventHandlers = {
+    onBusy: () => {
+      store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
+    },
+    onDone: () => {
+      store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+    },
+  }
+  createClient(
+    getPort(),
+    logger,
+    WebSocket,
+    (error) => {
+      logger.error(
+        `Failed to reconnect to socket server on port: <${port}>.  Killing the window.`,
+        error
+      )
+      showErrorBox(
+        t('Error'),
+        t('Plottr ran into a problem and needs to close.  Please contact support.')
+      ).then(() => {
+        window.close()
+      })
+    },
+    socketServerEventHandlers
+  )
+}
+
 let rollbar
 tellMeWhatOSImOn()
   .then((osIAmOn) => {
+    debugger
     setOS(osIAmOn)
     onUpdateWorkerPort('update-worker-port', (_event, newPort) => {
       logger.info(`Updating the socket server port to: ${newPort}`)
       setPort(newPort)
-      const socketServerEventHandlers = {
-        onBusy: () => {
-          store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
-        },
-        onDone: () => {
-          store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
-        },
-      }
-      createClient(
-        getPort(),
-        logger,
-        WebSocket,
-        (error) => {
-          logger.error(
-            `Failed to reconnect to socket server on port: <${newPort}>.  Killing the window.`,
-            error
-          )
-          showErrorBox(
-            t('Error'),
-            t('Plottr ran into a problem and needs to close.  Please contact support.')
-          ).then(() => {
-            window.close()
-          })
-        },
-        socketServerEventHandlers
-      )
+      connectToSocketServer(newPort)
     })
     return pleaseTellMeTheSocketServerPort()
   })
   .then((socketWorkerPort) => {
     setPort(socketWorkerPort)
+    connectToSocketServer(socketWorkerPort)
   })
   .then(() => {
     return setupRollbar('app.html').then((newRollbar) => {

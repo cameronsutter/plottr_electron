@@ -266,4 +266,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   ipcMain.on('update-last-opened-file', (_event, newFileURL) => {
     setLastOpenedFilePath(newFileURL)
   })
+
+  ipcMain.on('log-info', (_event, ...args) => {
+    log.info(...args)
+  })
+
+  ipcMain.on('log-warn', (_event, ...args) => {
+    log.warn(...args)
+  })
+
+  ipcMain.on('log-error', (_event, ...args) => {
+    log.error(...args)
+  })
 }

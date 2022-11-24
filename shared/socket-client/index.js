@@ -154,6 +154,10 @@ const defer =
 const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
+    const usingBrowserWebsocketClient = !clientConnection.on
+    const on = (
+      usingBrowserWebsocketClient ? clientConnection.addEventListener : clientConnection.on
+    ).bind(clientConnection)
     const promises = new Map()
     const callbacks = new Map()
 
@@ -208,7 +212,8 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
       }
     }
 
-    clientConnection.on('message', (data) => {
+    on('message', (eventOrData) => {
+      const data = usingBrowserWebsocketClient ? eventOrData.data : eventOrData
       try {
         const { type, payload, messageId, result } = JSON.parse(data)
         const resolvePromise = () => {
@@ -720,7 +725,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
     }
 
     return new Promise((resolve, reject) => {
-      clientConnection.on('open', () => {
+      on('open', () => {
         resolve({
           ping,
           rmRf,

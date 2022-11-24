@@ -22,7 +22,16 @@ const tell = (channel, ...args) => {
   return Promise.resolve()
 }
 
-export const makeMainProcessClient = () => {
+const subscribeTo = (channel, cb) => {
+  window.api.listen(channel, (event, ...args) => {
+    cb(...args)
+  })
+  return () => {
+    window.api.stopListening(channel, cb)
+  }
+}
+
+const _makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
     throw new Error('Implement!')
   }
@@ -285,7 +294,7 @@ export const makeMainProcessClient = () => {
 
   const onUpdateWorkerPort = (cb) => {
     // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('update-worker-port', cb)
   }
 
   const onReloadDarkMode = (cb) => {
@@ -488,4 +497,12 @@ export const makeMainProcessClient = () => {
     pleaseOpenLoginPopup,
     pleaseTellMeWhatPlatformIAmOn,
   }
+}
+
+let singletonMainProcessClient = null
+export const makeMainProcessClient = () => {
+  if (!singletonMainProcessClient) {
+    singletonMainProcessClient = _makeMainProcessClient()
+  }
+  return singletonMainProcessClient
 }

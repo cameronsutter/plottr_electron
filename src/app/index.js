@@ -123,7 +123,7 @@ let rollbar
 tellMeWhatOSImOn()
   .then((osIAmOn) => {
     setOS(osIAmOn)
-    onUpdateWorkerPort('update-worker-port', (_event, newPort) => {
+    onUpdateWorkerPort((newPort) => {
       logger.info(`Updating the socket server port to: ${newPort}`)
       setPort(newPort)
       connectToSocketServer(newPort)

@@ -88,6 +88,7 @@ const {
   showItemInFolder,
   downloadFileAndShow,
   pleaseOpenLoginPopup,
+  pleaseTellMeWhatPlatformIAmOn,
 } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
@@ -411,7 +412,7 @@ const platform = {
   },
   rollbar: {
     rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
-    platform: process.platform,
+    platform: pleaseTellMeWhatPlatformIAmOn,
   },
   export: {
     askToExport,

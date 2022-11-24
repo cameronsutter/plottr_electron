@@ -371,6 +371,10 @@ export const makeMainProcessClient = () => {
     return Promise.resolve()
   }
 
+  const pleaseTellMeWhatPlatformIAmOn = () => {
+    return Promise.resolve()
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -458,5 +462,6 @@ export const makeMainProcessClient = () => {
     updateBeatHierarchy,
     downloadFileAndShow,
     pleaseOpenLoginPopup,
+    pleaseTellMeWhatPlatformIAmOn,
   }
 }

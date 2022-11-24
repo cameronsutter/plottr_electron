@@ -104,6 +104,39 @@ const mainConfig = {
   },
 }
 
+const preloadConfig = {
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+  watch: process.env.NODE_ENV === 'dev',
+  context: path.resolve(__dirname, 'main'),
+  entry: {
+    preload: path.resolve('.', 'main', 'modules', 'preload.js'),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  output: {
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: 'preload.js',
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
+    modules: ['node_modules', 'main'],
+  },
+  target: 'electron-main',
+  plugins: [...plugins, duplicateDependencyChecker, mainCircularDependencyChecker],
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  node: {
+    __dirname: false,
+  },
+}
+
 const appCircularDependencyChecker = new CircularDependencyPlugin({
   // exclude detection of files based on a RegExp
   exclude: /node_modules/,
@@ -359,4 +392,4 @@ const socketServerConfig = {
   },
 }
 
-module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig]
+module.exports = [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig]

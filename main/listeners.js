@@ -199,8 +199,11 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     safelyExitModule.quitWhenDone()
   })
 
-  ipcMain.on('tell-me-what-os-i-am-on', (event) => {
-    event.returnValue = is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
+  ipcMain.on('tell-me-what-os-i-am-on', (event, replyChannel) => {
+    event.sender.send(
+      replyChannel,
+      is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
+    )
   })
 
   ipcMain.on('download-file-and-show', (_event, url) => {

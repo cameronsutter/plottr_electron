@@ -58,6 +58,7 @@ function makeBrowserWindow(fileURL) {
             settings.user?.useSpellcheck === undefined ? true : settings.user?.useSpellcheck,
           webviewTag: true,
           contextIsolation: true,
+          preload: path.join(__dirname, 'preload.js'),
         },
       }
 

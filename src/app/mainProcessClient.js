@@ -1,3 +1,22 @@
+import { v4 as uuid } from 'uuid'
+
+const ask = (channel, ...args) => {
+  const listenToken = `${channel}-${uuid()}`
+  // Maybe add a timeout?
+  return new Promise((resolve, reject) => {
+    try {
+      const listener = (event, ...args) => {
+        window.api.stopListening(listenToken, listener)
+        resolve(...args)
+      }
+      window.api.listen(listenToken, listener)
+      window.api.send(channel, listenToken, ...args)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
 export const makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
     return Promise.resolve()
@@ -137,7 +156,7 @@ export const makeMainProcessClient = () => {
   }
 
   const tellMeWhatOSImOn = () => {
-    return Promise.resolve()
+    return ask('tell-me-what-os-i-am-on')
   }
 
   const pleaseTellMeTheSocketServerPort = () => {

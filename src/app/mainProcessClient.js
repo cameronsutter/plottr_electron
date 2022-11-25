@@ -66,31 +66,27 @@ const _makeMainProcessClient = () => {
   }
 
   const userDataPath = () => {
-    throw new Error('Implement!  userDataPath')
+    return ask('user-data-path')
   }
 
   const userDocumentsPath = () => {
-    throw new Error('Implement!  userDocumentsPath')
+    return ask('user-documents-path')
   }
 
   const logsPath = () => {
-    throw new Error('Implement!  logsPath')
+    return ask('user-logs-path')
   }
 
   const showOpenDialog = (title, filters, properties) => {
-    throw new Error('Implement!  showOpenDialog')
-  }
-
-  const hostLocale = () => {
-    throw new Error('Implement!  hostLocale')
+    return ask('show-open-dialog', title, filters, properties)
   }
 
   const openExternal = (url) => {
-    throw new Error('Implement!  openExternal')
+    return ask('open-external', url)
   }
 
   const showItemInFolder = (filePath) => {
-    throw new Error('Implement!  showItemInFolder')
+    return ask('show-item-in-folder', filePath)
   }
 
   const getEnvObject = () => {
@@ -170,6 +166,7 @@ const _makeMainProcessClient = () => {
   const getLocale = () => {
     return ask('get-locale')
   }
+  const hostLocale = getLocale
 
   const onSetBeatHierarchy = (cb) => {
     return subscribeTo('set-beat-hierarchy', cb)

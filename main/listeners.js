@@ -242,8 +242,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       })
   })
 
-  ipcMain.on('show-item-in-folder', (_event, fileURL) => {
+  ipcMain.on('show-item-in-folder', (event, replyChannel, fileURL) => {
     shell.showItemInFolder(helpers.file.withoutProtocol(fileURL))
+    event.sender.send(replyChannel, 'done')
   })
 
   ipcMain.on('pls-set-my-file-path', (event, replyChannel, fileURL) => {
@@ -360,5 +361,34 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   ipcMain.on('set-file-url', (event, replyChannel, fileURL) => {
     event.sender.getOwnerBrowserWindow().fileURL = fileURL
     event.sender.send(replyChannel, fileURL)
+  })
+
+  ipcMain.on('user-data-path', (event, replyChannel) => {
+    event.sender.send(replyChannel, app.getPath('userData'))
+  })
+
+  ipcMain.on('user-documents-path', (event, replyChannel) => {
+    event.sender.send(replyChannel, app.getPath('documents'))
+  })
+
+  ipcMain.on('user-logs-path', (event, replyChannel) => {
+    event.sender.send(replyChannel, app.getPath('logs'))
+  })
+
+  ipcMain.on('show-open-dialog', (event, replyChannel, title, filters, properties) => {
+    dialog
+      .showOpenDialog(event.sender.getOwnerBrowserWindow(), {
+        title,
+        filters,
+        properties,
+      })
+      .then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
+  })
+
+  ipcMain.on('open-external', (event, replyChannel, url) => {
+    shell.openExternal(url)
+    event.sender.send(replyChannel, 'done')
   })
 }

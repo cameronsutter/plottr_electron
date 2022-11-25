@@ -356,4 +356,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         event.sender.send(replyChannel, 'done')
       })
   })
+
+  ipcMain.on('set-file-url', (event, replyChannel, fileURL) => {
+    event.sender.getOwnerBrowserWindow().fileURL = fileURL
+    event.sender.send(replyChannel, fileURL)
+  })
 }

@@ -62,7 +62,7 @@ const _makeMainProcessClient = () => {
   }
 
   const setFileURL = (newFileURL) => {
-    throw new Error('Implement!  setFileURL')
+    return ask('set-file-url', newFileURL)
   }
 
   const userDataPath = () => {

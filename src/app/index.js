@@ -69,7 +69,6 @@ const {
   pleaseTellDashboardToReloadRecents,
   onUndo,
   onRedu,
-  listenOnceToSendLaunch,
   onCreateErrorReport,
   onCloseDashboard,
   onCreatePlottrCloudFile,
@@ -357,13 +356,21 @@ tellMeWhatOSImOn()
                       )
                       // remove from tmp store
                       removeFromTempFilesIfTemp(oldFileURL)
-                      // update in known files
-                      editKnownFilePath(oldFileURL, newFileURL)
-                      // change the window's title
-                      setRepresentedFilename(newFilePath)
-                      setFileURL(newFileURL)
-                      // send event to dashboard
-                      pleaseTellDashboardToReloadRecents()
+                        .then(() => {
+                          // update in known files
+                          return editKnownFilePath(oldFileURL, newFileURL)
+                        })
+                        .then(() => {
+                          // change the window's title
+                          setRepresentedFilename(newFilePath)
+                        })
+                        .then(() => {
+                          setFileURL(newFileURL)
+                        })
+                        .then(() => {
+                          // send event to dashboard
+                          pleaseTellDashboardToReloadRecents()
+                        })
                     })
                   })
                 }

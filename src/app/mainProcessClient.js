@@ -190,15 +190,15 @@ const _makeMainProcessClient = () => {
   }
 
   const removeFromTempFilesIfTemp = (fileURL) => {
-    throw new Error('Implement!  removeFromTempFilesIfTemp')
+    return ask('remove-from-temp-files-if-temp', fileURL)
   }
 
   const editKnownFilePath = (oldFileURL, newFileURL) => {
-    throw new Error('Implement!  editKnownFilePath')
+    return ask('edit-known-file-path', oldFileURL, newFileURL)
   }
 
   const pleaseTellDashboardToReloadRecents = () => {
-    throw new Error('Implement!  pleaseTellDashboardToReloadRecents')
+    return ask('pls-tell-dashboard-to-reload-recents')
   }
 
   const onUndo = (cb) => {

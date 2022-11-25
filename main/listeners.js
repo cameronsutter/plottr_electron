@@ -116,8 +116,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       })
   })
 
-  ipcMain.on('pls-tell-dashboard-to-reload-recents', () => {
+  ipcMain.on('pls-tell-dashboard-to-reload-recents', (event, replyChannel) => {
     broadcastToAllWindows('reload-recents')
+    event.sender.send(replyChannel, 'done')
   })
 
   ipcMain.on('add-to-known-files-and-open', (_event, fileURL) => {
@@ -176,9 +177,13 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       })
   })
 
-  ipcMain.on('remove-from-temp-files-if-temp', (_event, fileURL) => {
+  ipcMain.on('remove-from-temp-files-if-temp', (event, replyChannel, fileURL) => {
     if (fileURL.includes(TEMP_FILES_PATH)) {
-      removeFromTempFiles(fileURL, false)
+      removeFromTempFiles(fileURL, false).then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
+    } else {
+      event.sender.send(replyChannel, 'Not temp')
     }
   })
 
@@ -196,10 +201,12 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('edit-known-file-path', (_event, oldFileURL, newFileURL) => {
-    editKnownFilePath(oldFileURL, newFileURL)
-    editWindowPath(oldFileURL, newFileURL)
-    broadcastToAllWindows('reload-recents')
+  ipcMain.on('edit-known-file-path', (event, replyChannel, oldFileURL, newFileURL) => {
+    editKnownFilePath(oldFileURL, newFileURL).then(() => {
+      editWindowPath(oldFileURL, newFileURL)
+      broadcastToAllWindows('reload-recents')
+      event.sender.send(replyChannel, newFileURL)
+    })
   })
 
   ipcMain.on('pls-quit', () => {

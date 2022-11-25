@@ -37,7 +37,7 @@ const subscribeTo = (channel, cb) => {
 
 const _makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
-    throw new Error('Implement!')
+    return ask('set-window-title', newTitle)
   }
   const setRepresentedFileName = (newFileName) => {
     throw new Error('Implement!')
@@ -136,8 +136,7 @@ const _makeMainProcessClient = () => {
   }
 
   const onTurnOnActsHelp = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('turn-on-acts-help', cb)
   }
 
   const onReload = (cb) => {

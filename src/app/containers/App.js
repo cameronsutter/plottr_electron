@@ -143,7 +143,7 @@ const App = ({
   }
 
   useEffect(() => {
-    const unsubscribeFromReload = onReload('reload', () => {
+    const unsubscribeFromReload = onReload(() => {
       isTryingToReload.current = true
       askToSave({})
     })

@@ -320,4 +320,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     dialog.showErrorBox(title, message)
     event.sender.send(replyChannel, 'done')
   })
+
+  ipcMain.on('set-window-title', (event, replyChannel, newTitle) => {
+    event.sender.getOwnerBrowserWindow().setTitle(newTitle)
+  })
 }

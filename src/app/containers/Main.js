@@ -30,8 +30,8 @@ function displayFileName(fileName, fileURL, displayFilePath) {
   const withoutProtocol = helpers.file.withoutProtocol(fileURL)
   return whenClientIsReady(({ basename }) => {
     const fileNamePromise = isOnCloud
-      ? fileName
-      : Promise.resolve(withoutProtocol)
+      ? Promise.resolve(fileName)
+      : withoutProtocol
       ? basename(withoutProtocol)
       : Promise.resolve('')
     return fileNamePromise.then((computedFileName) => {

@@ -46,7 +46,7 @@ const _makeMainProcessClient = () => {
     return ask('please-tell-me-my-version')
   }
   const showErrorBox = (title, message) => {
-    throw new Error('Implement!')
+    return ask('show-error-box', title, message)
   }
 
   const windowId = () => {
@@ -118,7 +118,7 @@ const _makeMainProcessClient = () => {
   }
 
   const openKnownFile = (fileURL, unknown) => {
-    throw new Error('Implement!')
+    return ask('open-known-file', fileURL, unknown)
   }
 
   const devOpenAnalyzerFile = (fileName, filePath) => {
@@ -132,8 +132,7 @@ const _makeMainProcessClient = () => {
   }
 
   const onAdvancedExportFileFromMenu = (cb) => {
-    // This should be the unsubscribe function
-    throw new Error('IMPLEMENT LISTENER!')
+    return subscribeTo('advanced-export-file-from-menu', cb)
   }
 
   const onTurnOnActsHelp = (cb) => {

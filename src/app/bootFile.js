@@ -328,7 +328,7 @@ export function bootFile(
   const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
-    return [getVersion(), machineId()].then(([version, clientId]) => {
+    return Promise.all([getVersion(), machineId()]).then(([version, clientId]) => {
       return initialFetch(userId, fileId, clientId, version)
         .then((fetchedFile) => {
           return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)

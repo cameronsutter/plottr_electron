@@ -1,4 +1,4 @@
-import electron, { shell, Notification } from 'electron'
+import electron, { shell, Notification, dialog } from 'electron'
 import currentSettings, { saveAppSetting } from './modules/settings'
 import { setupI18n } from 'plottr_locales'
 import https from 'https'
@@ -163,14 +163,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     )
   })
 
-  ipcMain.on('open-known-file', (_event, fileURL, unknown) => {
+  ipcMain.on('open-known-file', (event, replyChannel, fileURL, unknown) => {
     log.info('Opening known file', fileURL, unknown)
     openFile(fileURL, unknown)
       .then(() => {
         log.info('Opened file', fileURL)
+        event.sender.send(replyChannel, fileURL)
       })
       .catch((error) => {
         log.error('Error opening known file', fileURL, error)
+        event.sender.send(replyChannel, `Failed ${error.message}`)
       })
   })
 
@@ -312,5 +314,10 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     readFile(path.resolve(__dirname, '..', '.env')).then((rawEnvFile) => {
       event.sender.send(replyChannel, parse(rawEnvFile))
     })
+  })
+
+  ipcMain.on('show-error-box', (event, replyChannel, title, message) => {
+    dialog.showErrorBox(title, message)
+    event.sender.send(replyChannel, 'done')
   })
 }

@@ -96,7 +96,7 @@ export { editKnownFilePath }
 
 export const offlineFileURLFromFile = (file) => {
   if (!file?.project?.fileURL) {
-    return null
+    return Promise.resolve(null)
   }
 
   const fileURL = file?.project?.fileURL

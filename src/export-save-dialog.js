@@ -15,5 +15,5 @@ export const exportSaveDialog = (defaultPath, type) => {
       filters = [{ name: t('Scrivener Project'), extensions: ['scriv'] }]
       break
   }
-  return showSaveDialog(label, filters, defaultPath)
+  return showSaveDialog(filters, label, defaultPath)
 }

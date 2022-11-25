@@ -40,7 +40,7 @@ const _makeMainProcessClient = () => {
     return ask('set-window-title', newTitle)
   }
   const setRepresentedFileName = (newFileName) => {
-    throw new Error('Implement!')
+    return ask('set-represented-file-name', newFileName)
   }
   const getVersion = () => {
     return ask('please-tell-me-my-version')
@@ -54,43 +54,43 @@ const _makeMainProcessClient = () => {
   }
 
   const showMessageBox = (title, message, type, detail) => {
-    throw new Error('Implement!')
+    return ask('show-message-box', title, message, type, detail)
   }
 
   const showSaveDialog = (filters, title, defaultPath) => {
-    throw new Error('Implement!')
+    return ask('show-save-dialog', filters, title, defaultPath)
   }
 
   const setFileURL = (newFileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  setFileURL')
   }
 
   const userDataPath = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  userDataPath')
   }
 
   const userDocumentsPath = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  userDocumentsPath')
   }
 
   const logsPath = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  logsPath')
   }
 
   const showOpenDialog = (title, filters, properties) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  showOpenDialog')
   }
 
   const hostLocale = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  hostLocale')
   }
 
   const openExternal = (url) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  openExternal')
   }
 
   const showItemInFolder = (filePath) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  showItemInFolder')
   }
 
   const getEnvObject = () => {
@@ -122,7 +122,7 @@ const _makeMainProcessClient = () => {
   }
 
   const devOpenAnalyzerFile = (fileName, filePath) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  devOpenAnalyzerFile')
   }
 
   // NOTE: there used to be an 'unknown' param for this message.  I
@@ -152,11 +152,11 @@ const _makeMainProcessClient = () => {
   }
 
   const updateLastOpenedFile = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  updateLastOpenedFile')
   }
 
   const openBuyWindow = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  openBuyWindow')
   }
 
   const tellMeWhatOSImOn = () => {
@@ -192,15 +192,15 @@ const _makeMainProcessClient = () => {
   }
 
   const removeFromTempFilesIfTemp = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  removeFromTempFilesIfTemp')
   }
 
   const editKnownFilePath = (oldFileURL, newFileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  editKnownFilePath')
   }
 
   const pleaseTellDashboardToReloadRecents = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseTellDashboardToReloadRecents')
   }
 
   const onUndo = (cb) => {
@@ -224,7 +224,7 @@ const _makeMainProcessClient = () => {
   }
 
   const errorImportingScrivener = (error) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  errorImportingScrivener')
   }
 
   const onFinishCreatingLocalScrivenerImportedFile = (cb) => {
@@ -240,7 +240,7 @@ const _makeMainProcessClient = () => {
   }
 
   const replyToConvertRTFStringToSlateRequest = (conversionId, converted) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  replyToConvertRTFStringToSlateRequest')
   }
 
   const pleaseReloadMenu = () => {
@@ -276,7 +276,7 @@ const _makeMainProcessClient = () => {
   }
 
   const createFromScrivener = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  createFromScrivener')
   }
 
   const listenersRegistered = () => {
@@ -284,51 +284,51 @@ const _makeMainProcessClient = () => {
   }
 
   const notify = (title, message) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  notify')
   }
 
   const openPath = (path) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  openPath')
   }
 
   const removeFromKnownFiles = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  removeFromKnownFiles')
   }
 
   const addToKnownFilesAndOpen = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  addToKnownFilesAndOpen')
   }
 
   const pleaseSetDarkModeSetting = (value) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseSetDarkModeSetting')
   }
 
   const pleaseQuit = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseQuit')
   }
 
   const createNewFile = (template, name) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  createNewFile')
   }
 
   const deleteKnownFile = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  deleteKnownFile')
   }
 
   const createFromSnowflake = (importedPath, isLoggedIntoPro) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  createFromSnowflake')
   }
 
   const pleaseQuitAndInstall = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseQuitAndInstall')
   }
 
   const pleaseDownloadUpdate = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseDownloadUpdate')
   }
 
   const pleaseCheckForUpdates = () => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseCheckForUpdates')
   }
 
   const onUpdateError = (cb) => {
@@ -352,15 +352,15 @@ const _makeMainProcessClient = () => {
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  pleaseUpdateLanguage')
   }
 
   const updateBeatHierarchy = (newValue) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  updateBeatHierarchy')
   }
 
   const downloadFileAndShow = (fileURL) => {
-    throw new Error('Implement!')
+    throw new Error('Implement!  downloadFileAndShow')
   }
 
   const pleaseOpenLoginPopup = () => {

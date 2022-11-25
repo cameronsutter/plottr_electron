@@ -317,11 +317,43 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   })
 
   ipcMain.on('show-error-box', (event, replyChannel, title, message) => {
-    dialog.showErrorBox(title, message)
-    event.sender.send(replyChannel, 'done')
+    dialog.showErrorBox(title, message).then(() => {
+      event.sender.send(replyChannel, 'done')
+    })
   })
 
   ipcMain.on('set-window-title', (event, replyChannel, newTitle) => {
     event.sender.getOwnerBrowserWindow().setTitle(newTitle)
+    event.sender.send(replyChannel, newTitle)
+  })
+
+  ipcMain.on('set-represented-file-name', (event, replyChannel, newFileName) => {
+    event.sender.getOwnerBrowserWindow().setRepresentedFilename(newFileName)
+    event.sender.send(replyChannel, newFileName)
+  })
+
+  ipcMain.on('show-save-dialog', (event, replyChannel, filters, title, defaultPath) => {
+    dialog
+      .showSaveDialog(event.sender.getOwnerBrowserWindow(), {
+        filters,
+        title,
+        defaultPath,
+      })
+      .then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
+  })
+
+  ipcMain.on('show-message-box', (event, replyChannel, title, message, type, detail) => {
+    dialog
+      .showMessageBox(event.sender.getOwnerBrowserWindow(), {
+        title,
+        message,
+        type,
+        detail,
+      })
+      .then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
   })
 }

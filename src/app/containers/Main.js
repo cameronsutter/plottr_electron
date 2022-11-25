@@ -141,7 +141,7 @@ const Main = ({
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 
-    const load = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const load = (fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       // We wont load a file at all on boot if this is supposed to be
       // the dashboard.
       if (!windowOpenedWithKnownPath && showDashboard && numOpenFiles <= 1) {
@@ -158,8 +158,7 @@ const Main = ({
       // the offline file counterpart.
       if (!!isInProMode === !!helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup).then(closeDashboard)
-      }
-      if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
+      } else if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true).then(
           closeDashboard
         )
@@ -177,12 +176,12 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const reloadListener = (fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
       if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(fileURL)
       } else {
-        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
     const unsubscribeFromReloadFromFile = onReloadFromFile(reloadListener)
@@ -209,7 +208,7 @@ const Main = ({
       if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(fileURL)
       } else if (fileURL) {
-        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
       }

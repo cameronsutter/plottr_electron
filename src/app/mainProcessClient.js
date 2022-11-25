@@ -118,7 +118,8 @@ const _makeMainProcessClient = () => {
   }
 
   const devOpenAnalyzerFile = (fileName, filePath) => {
-    throw new Error('Implement!  devOpenAnalyzerFile')
+    // I'm not sure where the listener for this went(?)
+    throw new Error('Implement devOpenAnalyzerFile!')
   }
 
   // NOTE: there used to be an 'unknown' param for this message.  I
@@ -148,11 +149,11 @@ const _makeMainProcessClient = () => {
   }
 
   const updateLastOpenedFile = (fileURL) => {
-    throw new Error('Implement!  updateLastOpenedFile')
+    return ask('update-last-opened-file', fileURL)
   }
 
   const openBuyWindow = () => {
-    throw new Error('Implement!  openBuyWindow')
+    return ask('open-buy-window')
   }
 
   const tellMeWhatOSImOn = () => {

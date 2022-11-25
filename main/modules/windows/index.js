@@ -4,8 +4,9 @@ import { openBuyWindow } from './buy'
 import { offlineFileURL } from '../offlineFilePath'
 import { featureFlags } from '../feature_flags'
 
-ipcMain.on('open-buy-window', (event) => {
+ipcMain.on('open-buy-window', (event, replyChannel) => {
   openBuyWindow()
+  event.sender.send(replyChannel, 'done')
 })
 
 let windows = []

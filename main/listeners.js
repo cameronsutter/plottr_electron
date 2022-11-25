@@ -277,8 +277,10 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       // on windows you need something called an Application User Model ID which may not work
     }
   })
-  ipcMain.on('update-last-opened-file', (_event, newFileURL) => {
-    setLastOpenedFilePath(newFileURL)
+  ipcMain.on('update-last-opened-file', (event, replyChannel, newFileURL) => {
+    setLastOpenedFilePath(newFileURL).then(() => {
+      event.sender.send(replyChannel, newFileURL)
+    })
   })
 
   ipcMain.on('log-info', (_event, ...args) => {

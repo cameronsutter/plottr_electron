@@ -67,18 +67,6 @@ function buildFileMenu(fileURL, getTrialInfo) {
           },
         },
         {
-          label: t('Save as') + '...',
-          accelerator: 'CmdOrCtrl+Shift+S',
-          visible: !!fileURL,
-          click: function (event, focusedWindow) {
-            if (isPro) {
-              focusedWindow.webContents.send('save-as--pro', fileURL)
-            } else {
-              focusedWindow.webContents.send('save-as')
-            }
-          },
-        },
-        {
           label: showInMessage,
           visible: !isPro && !isTemp,
           click: function () {
@@ -90,7 +78,11 @@ function buildFileMenu(fileURL, getTrialInfo) {
           accelerator: 'CmdOrCtrl+D',
           visible: !!fileURL,
           click: function (event, focusedWindow) {
-            focusedWindow.webContents.send('save-as')
+            if (isPro) {
+              focusedWindow.webContents.send('save-as--pro', fileURL)
+            } else {
+              focusedWindow.webContents.send('save-as')
+            }
           },
         },
         {

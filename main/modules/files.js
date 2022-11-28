@@ -133,11 +133,11 @@ const makeFileModule = () => {
     return function (rtfString) {
       return new Promise((resolve, reject) => {
         const conversionId = uuidv4()
-        sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
         ipcMain.once(conversionId, (event, replyChannel, slate) => {
           event.sender.send(replyChannel, conversionId)
           resolve(slate)
         })
+        sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
       })
     }
   }

@@ -22,15 +22,26 @@ currentSettings()
 // RECEIVE EVENTS //
 ////////////////////
 ipcMain.on('pls-download-update', (event, replyChannel) => {
-  autoUpdater.downloadUpdate().finally(() => {
-    event.sender.send(replyChannel, 'heard')
-  })
+  autoUpdater
+    .downloadUpdate()
+    .then(() => {
+      event.sender.send(replyChannel, 'heard')
+    })
+    .catch((error) => {
+      log.error('Failed to start downloading update', error)
+      event.sender.send(replyChannel, { error: error.message })
+    })
 })
 
 ipcMain.on('pls-quit-and-install', (event, replyChannel) => {
-  // Reply first so that the renderer can deregister its listener.
-  event.sender.send(replyChannel, 'done')
-  autoUpdater.quitAndInstall(true, true)
+  try {
+    // Reply first so that the renderer can deregister its listener.
+    event.sender.send(replyChannel, 'done')
+    autoUpdater.quitAndInstall(true, true)
+  } catch (error) {
+    log.error('Failed to quit and install an update', error)
+    event.sender.send(replyChannel, { error: error.message })
+  }
 })
 
 ipcMain.on('pls-check-for-updates', (event, replyChannel) => {
@@ -39,12 +50,11 @@ ipcMain.on('pls-check-for-updates', (event, replyChannel) => {
       autoUpdater.allowPrerelease = settings.allowPrerelease
       autoUpdater.autoDownload = settings.user?.autoDownloadUpdate
       autoUpdater.checkForUpdates()
+      event.sender.send(replyChannel, 'done')
     })
     .catch((error) => {
       log.error('Error checking for updates', error)
-    })
-    .finally(() => {
-      event.sender.send(replyChannel, 'done')
+      event.sender.send(replyChannel, { error: error.message })
     })
 })
 

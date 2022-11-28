@@ -20,12 +20,13 @@ ipcMain.on('pls-reload-menu', (event, replyChannel) => {
     return
   }
   loadMenu(safelyExitModule)
-    .catch((error) => {
-      log.error('Error reloading menu', error)
-    })
     .then(() => {
       log.info('Reloaded menu')
       event.sender.send(replyChannel, 'done')
+    })
+    .catch((error) => {
+      log.error('Error reloading menu', error)
+      event.sender.send(replyChannel, { error: error.message })
     })
 })
 

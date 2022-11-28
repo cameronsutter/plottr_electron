@@ -18,11 +18,12 @@ ipcMain.on('pls-open-window', (event, replyChannel, fileURL, unknown) => {
       }
       return true
     })
-    .catch((error) => {
-      log.error('Error opening a new window', error)
-    })
     .then(() => {
       event.sender.send(replyChannel, 'fileURL')
+    })
+    .catch((error) => {
+      log.error('Error opening a new window', error)
+      event.sender.send(replyChannel, { error: error.message })
     })
 })
 

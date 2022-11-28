@@ -5,8 +5,13 @@ import { offlineFileURL } from '../offlineFilePath'
 import { featureFlags } from '../feature_flags'
 
 ipcMain.on('open-buy-window', (event, replyChannel) => {
-  openBuyWindow()
-  event.sender.send(replyChannel, 'done')
+  try {
+    openBuyWindow()
+    event.sender.send(replyChannel, 'done')
+  } catch (error) {
+    log.error('Error opening buy window', error)
+    event.sender.send(replyChannel, { error: error.message })
+  }
 })
 
 let windows = []

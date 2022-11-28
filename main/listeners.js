@@ -452,15 +452,13 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   })
 
   ipcMain.on('show-error-box', (event, replyChannel, title, message) => {
-    dialog
-      .showErrorBox(title, message)
-      .then(() => {
-        event.sender.send(replyChannel, 'done')
-      })
-      .catch((error) => {
-        log.error(`Error showing error box for ${title}, ${message}`, error)
-        event.sender.send(replyChannel, { error: error.message })
-      })
+    try {
+      dialog.showErrorBox(title, message)
+      event.sender.send(replyChannel, 'done')
+    } catch (error) {
+      log.error(`Error showing error box for ${title}, ${message}`, error)
+      event.sender.send(replyChannel, { error: error.message })
+    }
   })
 
   ipcMain.on('set-window-title', (event, replyChannel, newTitle) => {
@@ -560,8 +558,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         filters,
         properties,
       })
-      .then(() => {
-        event.sender.send(replyChannel, 'done')
+      .then((files) => {
+        event.sender.send(replyChannel, files.filePaths)
       })
       .catch((error) => {
         log.error(`Error showing the open dialog for ${title}`, error)

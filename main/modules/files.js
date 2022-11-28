@@ -109,7 +109,7 @@ const makeFileModule = () => {
     }
     json.lines = []
     return whenClientIsReady(({ readFile }) => {
-      return importFromSnowflake(importedPath, true, json, readFile).then(({ importedJson }) => {
+      return importFromSnowflake(importedPath, true, json, readFile).then((importedJson) => {
         if (isLoggedIntoPro) {
           sender.send('create-plottr-cloud-file', importedJson, storyName)
           return Promise.resolve()

@@ -319,9 +319,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
             if (error) {
               log.error(`Error closing write stream for file download: of ${url}`, error)
             } else {
-              shell.showItemInFolder(fullPath).then(() => {
-                event.sender.send(replyChannel, url)
-              })
+              shell.showItemInFolder(fullPath)
+              event.sender.send(replyChannel, url)
             }
           })
         })

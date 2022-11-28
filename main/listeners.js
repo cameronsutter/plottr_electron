@@ -76,6 +76,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         }
       })
       .catch((error) => {
+        log.error('Error fetching state', error)
         event.sender.send(replyChannel, { error: error.message })
       })
   })
@@ -84,6 +85,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     try {
       event.sender.send(replyChannel, getSocketWorkerPort())
     } catch (error) {
+      log.error('Error retrieving the current worker socket port', error)
       event.sender.send(replyChannel, { error: error.message })
     }
   })

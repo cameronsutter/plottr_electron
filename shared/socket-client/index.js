@@ -313,6 +313,8 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case SHUTDOWN:
           case WRITE_FILE:
           case JOIN:
+          case PATH_SEP:
+          case TRASH_FILE:
           case PING: {
             resolvePromise()
             return

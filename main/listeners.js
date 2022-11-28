@@ -144,6 +144,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       broadcastToAllWindows('reload-recents')
       event.sender.send(replyChannel, 'done')
     } catch (error) {
+      log.error('Error reloading recents', error)
       event.sender.send(replyChannel, { error: error.message })
     }
   })
@@ -165,6 +166,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         event.sender.send(replyChannel, fileURL)
       })
       .catch((error) => {
+        log.error(`Error adding ${fileURL} to known files and opening it`, error)
         event.sender.send(replyChannel, { error: error.mesasge })
       })
   })
@@ -175,6 +177,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         event.sender.send(replyChannel, name)
       })
       .catch((error) => {
+        log.error('Error creating new file', error)
         event.sender.send('error', {
           message: error.message,
           source: 'create-new-file',
@@ -189,6 +192,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         event.sender.send(replyChannel, importedPath)
       })
       .catch((error) => {
+        log.error(`Error creating from snowflake (${importedPath})`, error)
         event.sender.send('error', {
           message: error.message,
           source: 'create-new-file',
@@ -205,6 +209,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
           event.sender.send(replyChannel, importedPath)
         })
         .catch((error) => {
+          log.error(`Error creating from scrivener (${importedPath}, ${destinationFile})`, error)
           event.sender.send('error', {
             message: error.message,
             source: 'create-new-file',
@@ -234,15 +239,12 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
           event.sender.send(replyChannel, 'done')
         })
         .catch((error) => {
+          log.error(`Error removing ${fileURL} from temp files`, error)
           event.sender.send(replyChannel, { error: error.message })
         })
     } else {
       event.sender.send(replyChannel, 'Not temp')
     }
-  })
-
-  ipcMain.on('broadcast-reload-options', () => {
-    broadcastToAllWindows('reload-options')
   })
 
   ipcMain.on('remove-from-known-files', (event, replyChannel, fileURL) => {
@@ -287,6 +289,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       safelyExitModule.quitWhenDone()
       event.sender.send(replyChannel, 'will-exit-when-ready')
     } catch (error) {
+      log.error('Error while attempting to quit Plottr', error)
       event.sender.send(replyChannel, { error: error.message })
     }
   })
@@ -298,6 +301,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         is.windows ? 'WINDOWS' : is.macos ? 'MACOS' : is.linux ? 'LINUX' : null
       )
     } catch (error) {
+      log.error('Error while figuring out what OS we are running', error)
       event.sender.send(replyChannel, { error: error.message })
     }
   })
@@ -358,6 +362,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       openLoginPopupWindow()
       event.sender.send(replyChannel, 'done')
     } catch (error) {
+      log.error('Error while trying to start the login popup', error)
       event.sender.send(replyChannel, { error: error.message })
     }
   })
@@ -490,8 +495,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         title,
         defaultPath,
       })
-      .then(() => {
-        event.sender.send(replyChannel, 'done')
+      .then((files) => {
+        event.sender.send(replyChannel, files.filePath)
       })
       .catch((error) => {
         log.error(`Error showing save dialog for ${title}`, error)

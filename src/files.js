@@ -123,33 +123,34 @@ export const renameFile = (fileURL) => {
     if (fileId) messageRenameFile(fileId)
     return Promise.resolve()
   }
-  const fileName = showSaveDialog(filters, t('Give this file a new name'), fileURL)
-  if (fileName) {
-    try {
-      const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-      const newFileURL = `device://${newFilePath}`
-      editKnownFilePath(fileURL, newFileURL)
-      return whenClientIsReady(({ readFile, moveItemToTrash }) => {
-        return readFile(helpers.file.withoutProtocol(fileURL), 'utf-8').then((rawFile) => {
-          const contents = JSON.parse()
-          return saveFile(newFileURL, contents)
-            .then(() => {
-              return moveItemToTrash(fileURL, true)
-            })
-            .then(() => {
-              store.dispatch(actions.applicationState.finishRenamingFile())
-            })
+  return showSaveDialog(filters, t('Give this file a new name'), fileURL).then((fileName) => {
+    if (fileName) {
+      try {
+        const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+        const newFileURL = `device://${newFilePath}`
+        editKnownFilePath(fileURL, newFileURL)
+        return whenClientIsReady(({ readFile, trash }) => {
+          return readFile(helpers.file.withoutProtocol(fileURL), 'utf-8').then((rawFile) => {
+            const contents = JSON.parse(rawFile)
+            return saveFile(newFileURL, contents)
+              .then(() => {
+                return trash(fileURL, true)
+              })
+              .then(() => {
+                store.dispatch(actions.applicationState.finishRenamingFile())
+              })
+          })
         })
-      })
-    } catch (error) {
-      logger.error(error)
-      store.dispatch(actions.applicationState.finishRenamingFile())
-      return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
-        return Promise.reject(error)
-      })
+      } catch (error) {
+        logger.error(error)
+        store.dispatch(actions.applicationState.finishRenamingFile())
+        return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+          return Promise.reject(error)
+        })
+      }
     }
-  }
-  return Promise.resolve()
+    return Promise.resolve()
+  })
 }
 
 export const deleteCloudBackupFile = (fileURL) => {

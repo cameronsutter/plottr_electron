@@ -21,15 +21,19 @@ currentSettings()
 ////////////////////
 // RECEIVE EVENTS //
 ////////////////////
-ipcMain.on('pls-download-update', () => {
-  autoUpdater.downloadUpdate()
+ipcMain.on('pls-download-update', (event, replyChannel) => {
+  autoUpdater.downloadUpdate().finally(() => {
+    event.sender.send(replyChannel, 'heard')
+  })
 })
 
-ipcMain.on('pls-quit-and-install', () => {
+ipcMain.on('pls-quit-and-install', (event, replyChannel) => {
+  // Reply first so that the renderer can deregister its listener.
+  event.sender.send(replyChannel, 'done')
   autoUpdater.quitAndInstall(true, true)
 })
 
-ipcMain.on('pls-check-for-updates', () => {
+ipcMain.on('pls-check-for-updates', (event, replyChannel) => {
   currentSettings()
     .then((settings) => {
       autoUpdater.allowPrerelease = settings.allowPrerelease
@@ -38,6 +42,9 @@ ipcMain.on('pls-check-for-updates', () => {
     })
     .catch((error) => {
       log.error('Error checking for updates', error)
+    })
+    .finally(() => {
+      event.sender.send(replyChannel, 'done')
     })
 })
 

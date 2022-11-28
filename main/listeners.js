@@ -81,27 +81,31 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     event.sender.send(replyChannel, getSocketWorkerPort())
   })
 
-  ipcMain.on('pls-set-dark-setting', (event, newValue) => {
+  ipcMain.on('pls-set-dark-setting', (event, replyChannel, newValue) => {
     setDarkMode(newValue)
       .then(() => {
         return currentSettings().then((settings) => {
-          broadcastToAllWindows('reload-dark-mode', settings.user.dark)
+          return broadcastToAllWindows('reload-dark-mode', settings.user.dark)
         })
       })
       .catch((error) => {
         log.error('Failed to set dark mode setting from main listener', error)
       })
+      .finally(() => {
+        event.sender.send(replyChannel, newValue)
+      })
   })
 
-  ipcMain.on('pls-update-beat-hierarchy-flag', (_event, newValue) => {
+  ipcMain.on('pls-update-beat-hierarchy-flag', (event, replyChannel, newValue) => {
     if (newValue) {
       broadcastSetBeatHierarchy()
     } else {
       broadcastUnsetBeatHierarchy()
     }
+    event.sender.send(replyChannel, newValue)
   })
 
-  ipcMain.on('pls-update-language', (_event, newLanguage) => {
+  ipcMain.on('pls-update-language', (event, replyChannel, newLanguage) => {
     saveAppSetting('locale', newLanguage)
       .then(() => {
         currentSettings().then((settings) => {
@@ -114,6 +118,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
       .catch((error) => {
         log.error('Error updating language', error)
       })
+      .finally(() => {
+        event.sender.send(replyChannel, newLanguage)
+      })
   })
 
   ipcMain.on('pls-tell-dashboard-to-reload-recents', (event, replyChannel) => {
@@ -121,48 +128,65 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     event.sender.send(replyChannel, 'done')
   })
 
-  ipcMain.on('add-to-known-files-and-open', (_event, fileURL) => {
+  ipcMain.on('add-to-known-files-and-open', (event, replyChannel, fileURL) => {
     if (!fileURL || fileURL === '') return
-    addToKnownFiles(fileURL).then(() => {
-      log.info('Adding to known files and opening', fileURL)
-      openFile(fileURL, false)
-        .then(() => {
-          log.info('Opened file', fileURL)
-        })
-        .catch((error) => {
-          log.error('Error opening file and adding to known', fileURL, error)
-        })
-    })
-  })
-
-  ipcMain.on('create-new-file', (event, template, name) => {
-    createNew(template, name).catch((error) => {
-      event.sender.send('error', {
-        message: error.message,
-        source: 'create-new-file',
+    addToKnownFiles(fileURL)
+      .then(() => {
+        log.info('Adding to known files and opening', fileURL)
+        openFile(fileURL, false)
+          .then(() => {
+            log.info('Opened file', fileURL)
+          })
+          .catch((error) => {
+            log.error('Error opening file and adding to known', fileURL, error)
+          })
       })
-    })
-  })
-
-  ipcMain.on('create-from-snowflake', (event, importedPath, isLoggedIntoPro) => {
-    createFromSnowflake(importedPath, event.sender, isLoggedIntoPro).catch((error) => {
-      event.sender.send('error', {
-        message: error.message,
-        source: 'create-new-file',
+      .finally(() => {
+        event.sender.send(replyChannel, fileURL)
       })
-    })
   })
 
-  ipcMain.on('create-from-scrivener', (event, importedPath, isLoggedIntoPro, destinationFile) => {
-    createFromScrivener(importedPath, event.sender, isLoggedIntoPro, destinationFile).catch(
-      (error) => {
+  ipcMain.on('create-new-file', (event, replyChannel, template, name) => {
+    createNew(template, name)
+      .catch((error) => {
         event.sender.send('error', {
           message: error.message,
           source: 'create-new-file',
         })
-      }
-    )
+      })
+      .finally(() => {
+        event.sender.send(replyChannel, name)
+      })
   })
+
+  ipcMain.on('create-from-snowflake', (event, replyChannel, importedPath, isLoggedIntoPro) => {
+    createFromSnowflake(importedPath, event.sender, isLoggedIntoPro)
+      .catch((error) => {
+        event.sender.send('error', {
+          message: error.message,
+          source: 'create-new-file',
+        })
+      })
+      .finally(() => {
+        event.sender.send(replyChannel, importedPath)
+      })
+  })
+
+  ipcMain.on(
+    'create-from-scrivener',
+    (event, replyChannel, importedPath, isLoggedIntoPro, destinationFile) => {
+      createFromScrivener(importedPath, event.sender, isLoggedIntoPro, destinationFile)
+        .catch((error) => {
+          event.sender.send('error', {
+            message: error.message,
+            source: 'create-new-file',
+          })
+        })
+        .then(() => {
+          event.sender.send(replyChannel, importedPath)
+        })
+    }
+  )
 
   ipcMain.on('open-known-file', (event, replyChannel, fileURL, unknown) => {
     log.info('Opening known file', fileURL, unknown)
@@ -191,14 +215,28 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     broadcastToAllWindows('reload-options')
   })
 
-  ipcMain.on('remove-from-known-files', (_event, fileURL) => {
+  ipcMain.on('remove-from-known-files', (event, replyChannel, fileURL) => {
     removeFromKnownFiles(fileURL)
+      .catch((error) => {
+        log.error(`Error removing file at ${fileURL} from known files`, error)
+      })
+      .finally(() => {
+        event.sender.send(replyChannel, fileURL)
+      })
     broadcastToAllWindows('reload-recents')
   })
 
-  ipcMain.on('delete-known-file', (_event, fileURL) => {
+  ipcMain.on('delete-known-file', (event, replyChannel, fileURL) => {
     deleteKnownFile(fileURL)
-    broadcastToAllWindows('reload-recents')
+      .then(() => {
+        broadcastToAllWindows('reload-recents')
+      })
+      .catch((error) => {
+        log.error(`Failed to delete known file at: ${fileURL}`, error)
+      })
+      .finally(() => {
+        event.sender.send(replyChannel, fileURL)
+      })
   })
 
   ipcMain.on('edit-known-file-path', (event, replyChannel, oldFileURL, newFileURL) => {
@@ -209,8 +247,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     })
   })
 
-  ipcMain.on('pls-quit', () => {
+  ipcMain.on('pls-quit', (event, replyChannel) => {
     safelyExitModule.quitWhenDone()
+    event.sender.send(replyChannel, 'will-exit-when-ready')
   })
 
   ipcMain.on('tell-me-what-os-i-am-on', (event, replyChannel) => {
@@ -220,7 +259,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     )
   })
 
-  ipcMain.on('download-file-and-show', (_event, url) => {
+  ipcMain.on('download-file-and-show', (event, replyChannel, url) => {
     const downloadDirectory = app.getPath('downloads')
     const fullPath = path.join(downloadDirectory, 'backup-download.pltr')
     const outputStream = fs.createWriteStream(fullPath)
@@ -239,13 +278,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
             if (error) {
               log.error(`Error closing write stream for file download: of ${url}`, error)
             } else {
-              shell.showItemInFolder(fullPath)
+              shell.showItemInFolder(fullPath).then(() => {
+                event.sender.send(replyChannel, url)
+              })
             }
           })
         })
       })
       .on('error', (error) => {
         log.error(`Error downloading file from ${url}`, error)
+        event.sender.send(replyChannel, url)
       })
   })
 
@@ -268,7 +310,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     }
   })
 
-  ipcMain.on('notify', (event, title, body) => {
+  ipcMain.on('notify', (event, replyChannel, title, body) => {
     try {
       const notification = new Notification({
         title,
@@ -282,6 +324,8 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     } catch (error) {
       // ignore
       // on windows you need something called an Application User Model ID which may not work
+    } finally {
+      event.sender.send(replyChannel, title, body)
     }
   })
   ipcMain.on('update-last-opened-file', (event, replyChannel, newFileURL) => {
@@ -399,5 +443,16 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   ipcMain.on('open-external', (event, replyChannel, url) => {
     shell.openExternal(url)
     event.sender.send(replyChannel, 'done')
+  })
+
+  ipcMain.on('open-path', (event, replyChannel, path) => {
+    shell
+      .open(path)
+      .catch((error) => {
+        log.error(`Error opening path: ${path}`, error)
+      })
+      .finally(() => {
+        event.sender.send(replyChannel, path)
+      })
   })
 }

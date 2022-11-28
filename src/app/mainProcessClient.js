@@ -238,7 +238,7 @@ const _makeMainProcessClient = () => {
   }
 
   const replyToConvertRTFStringToSlateRequest = (conversionId, converted) => {
-    throw new Error('Implement!  replyToConvertRTFStringToSlateRequest')
+    return ask(conversionId, converted)
   }
 
   const pleaseReloadMenu = () => {
@@ -273,8 +273,8 @@ const _makeMainProcessClient = () => {
     return subscribeTo('import-scrivener-file', cb)
   }
 
-  const createFromScrivener = () => {
-    throw new Error('Implement!  createFromScrivener')
+  const createFromScrivener = (importedPath, isLoggedIntoPro, destinationFile) => {
+    return ask('create-from-scrivener', importedPath, isLoggedIntoPro, destinationFile)
   }
 
   const listenersRegistered = () => {
@@ -282,51 +282,51 @@ const _makeMainProcessClient = () => {
   }
 
   const notify = (title, message) => {
-    throw new Error('Implement!  notify')
+    return ask('notify', title, message)
   }
 
   const openPath = (path) => {
-    throw new Error('Implement!  openPath')
+    return ask('open-path', path)
   }
 
   const removeFromKnownFiles = (fileURL) => {
-    throw new Error('Implement!  removeFromKnownFiles')
+    return ask('remove-from-known-files', fileURL)
   }
 
   const addToKnownFilesAndOpen = (fileURL) => {
-    throw new Error('Implement!  addToKnownFilesAndOpen')
+    return ask('add-to-known-files-and-open', fileURL)
   }
 
   const pleaseSetDarkModeSetting = (value) => {
-    throw new Error('Implement!  pleaseSetDarkModeSetting')
+    return ask('pls-set-dark-setting', value)
   }
 
   const pleaseQuit = () => {
-    throw new Error('Implement!  pleaseQuit')
+    return ask('pls-quit')
   }
 
   const createNewFile = (template, name) => {
-    throw new Error('Implement!  createNewFile')
+    return ask('create-new-file', template, name)
   }
 
   const deleteKnownFile = (fileURL) => {
-    throw new Error('Implement!  deleteKnownFile')
+    return ask('delete-known-file', fileURL)
   }
 
   const createFromSnowflake = (importedPath, isLoggedIntoPro) => {
-    throw new Error('Implement!  createFromSnowflake')
+    return ask('create-from-snowflake', importedPath, isLoggedIntoPro)
   }
 
   const pleaseQuitAndInstall = () => {
-    throw new Error('Implement!  pleaseQuitAndInstall')
+    return ask('pls-quit-and-install')
   }
 
   const pleaseDownloadUpdate = () => {
-    throw new Error('Implement!  pleaseDownloadUpdate')
+    return ask('pls-download-update')
   }
 
   const pleaseCheckForUpdates = () => {
-    throw new Error('Implement!  pleaseCheckForUpdates')
+    return ask('pls-check-for-updates')
   }
 
   const onUpdateError = (cb) => {
@@ -350,15 +350,15 @@ const _makeMainProcessClient = () => {
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {
-    throw new Error('Implement!  pleaseUpdateLanguage')
+    return ask('pls-update-language', newLanguage)
   }
 
   const updateBeatHierarchy = (newValue) => {
-    throw new Error('Implement!  updateBeatHierarchy')
+    return ask('pls-update-beat-hierarchy-flag', newValue)
   }
 
   const downloadFileAndShow = (fileURL) => {
-    throw new Error('Implement!  downloadFileAndShow')
+    return ask('download-file-and-show', fileURL)
   }
 
   const pleaseOpenLoginPopup = () => {

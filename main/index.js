@@ -184,8 +184,16 @@ app.whenReady().then(() => {
             }
             newWindow.on('ready-to-show', () => {
               ipcMain.once('listeners-registered', (event, replyChannel) => {
-                newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
-                event.sender.send(replyChannel, 'done')
+                try {
+                  newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+                  event.sender.send(replyChannel, 'done')
+                } catch (error) {
+                  log.error(
+                    `Error exporting ${sourceFile} to scrivener file at ${destinationFile}`,
+                    error
+                  )
+                  event.sender.send(replyChannel, { error: error.message })
+                }
               })
             })
           })

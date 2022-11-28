@@ -499,35 +499,35 @@ export function bootFile(
 
     // Now that we know what the file path for this window should be,
     // tell the main process.
-    setMyFilePath(fileURL)
+    return setMyFilePath(fileURL).then(() => {
+      // And then boot the file.
+      const { beatHierarchy } = options
+      const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
-    // And then boot the file.
-    const { beatHierarchy } = options
-    const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
-
-    try {
-      store.dispatch(actions.applicationState.startLoadingFile())
-      return (
-        isCloudFile
-          ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
-          : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
-      )
-        .then(() => {
-          store.dispatch(actions.applicationState.finishLoadingFile())
-        })
-        .catch((error) => {
-          logger.error(error)
-          rollbar.error(error)
-          store.dispatch(
-            actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
-          )
-        })
-    } catch (error) {
-      logger.error(error)
-      rollbar.error(error)
-      store.dispatch(actions.applicationState.errorLoadingFile())
-      return Promise.reject(error)
-    }
+      try {
+        store.dispatch(actions.applicationState.startLoadingFile())
+        return (
+          isCloudFile
+            ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
+            : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
+        )
+          .then(() => {
+            store.dispatch(actions.applicationState.finishLoadingFile())
+          })
+          .catch((error) => {
+            logger.error(error)
+            rollbar.error(error)
+            store.dispatch(
+              actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
+            )
+          })
+      } catch (error) {
+        logger.error(error)
+        rollbar.error(error)
+        store.dispatch(actions.applicationState.errorLoadingFile())
+        return Promise.reject(error)
+      }
+    })
   }
 
   return _bootFile(fileURL, options, numOpenFiles, saveBackup).then(() => {

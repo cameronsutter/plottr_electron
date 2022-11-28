@@ -122,7 +122,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
     saveAppSetting('locale', newLanguage)
       .then(() => {
         currentSettings().then((settings) => {
-          setupI18n(settings, { electron })
+          setupI18n(settings, { locale: electron.app.getLocale() })
           return loadMenu(safelyExitModule).then(() => {
             reloadAllWindows()
           })

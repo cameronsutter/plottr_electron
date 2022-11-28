@@ -5,7 +5,7 @@ import { setupI18n } from 'plottr_locales'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
 
-setupI18n(SETTINGS, { electron })
+setupI18n(SETTINGS, { locale: electron.app.getLocale() })
 
 const { app, BrowserWindow, globalShortcut } = electron
 import path from 'path'

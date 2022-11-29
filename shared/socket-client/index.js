@@ -315,6 +315,9 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case JOIN:
           case PATH_SEP:
           case TRASH_FILE:
+          case EXTNAME:
+          case STAT:
+          case MKDIR:
           case PING: {
             resolvePromise()
             return

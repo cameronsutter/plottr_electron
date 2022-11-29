@@ -80,8 +80,8 @@ const App = ({
   }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
 
   useEffect(() => {
-    const saveAsTemplateListener = (event, type) => {
-      setType(type)
+    const saveAsTemplateListener = (event) => {
+      setType(event.itemType)
       setShowTemplateCreate(true)
     }
     document.addEventListener('save-as-template-start', saveAsTemplateListener)

@@ -104,20 +104,15 @@ ${rendererLogContents}
 }
 
 function notifyUser(filePath) {
-  try {
-    whenClientIsReady(({ basename }) => {
-      basename(filePath).then((basenamedFilePath) => {
-        notify(
-          t('Error Report created'),
-          t('Plottr created a file named {filePath} in your Documents folder', {
-            filePath: basenamedFilePath,
-          })
-        )
-      })
+  whenClientIsReady(({ basename }) => {
+    basename(filePath).then((basenamedFilePath) => {
+      notify(
+        t('Error Report created'),
+        t('Plottr created a file named {filePath} in your Documents folder', {
+          filePath: basenamedFilePath,
+        })
+      )
     })
-  } catch (error) {
-    // ignore
-    // on windows you need something called an Application User Model ID which may not work
-  }
+  })
   showItemInFolder(filePath)
 }

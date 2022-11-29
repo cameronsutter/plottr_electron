@@ -12,7 +12,7 @@ import { whenClientIsReady } from '../../../shared/socket-client/index'
 
 let safelyExitModule = null
 
-ipcMain.on('pls-reload-menu', (event, replyChannel) => {
+ipcMain.on('please-reload-menu', (event, replyChannel) => {
   log.info('Menu reload requested.')
   if (!safelyExitModule) {
     log.error('Requesting a menu reload, but we have not built them before.')

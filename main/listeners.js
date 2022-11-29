@@ -523,7 +523,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
 
   ipcMain.on('set-file-url', (event, replyChannel, fileURL) => {
     try {
-      event.sender.getOwnerBrowserWindow().fileURL = fileURL
+      setFilePathForWindowWithId(event.sender.getOwnerBrowserWindow().id, fileURL)
       event.sender.send(replyChannel, fileURL)
     } catch (error) {
       log.error(`Error setting my fileURL to ${fileURL}`, error)

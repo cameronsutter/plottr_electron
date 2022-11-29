@@ -889,11 +889,11 @@ const setupListeners = (port, userDataPath) => {
             )
           }
           case WRITE_FILE: {
-            const { filePath, file } = payload
+            const { path, file } = payload
             return handlePromise(
-              () => ['Writing a file to', filePath],
-              () => statusManager.registerTask(writeFile(filePath, file), WRITE_FILE),
-              () => ['Failed writing a file to', filePath]
+              () => ['Writing a file to', path],
+              () => statusManager.registerTask(writeFile(path, file), WRITE_FILE),
+              () => ['Failed writing a file to', path]
             )
           }
           case JOIN: {

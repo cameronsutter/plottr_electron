@@ -107,18 +107,19 @@ export function checkForPro(email, callback) {
     .then((token) => {
       if (token?.claims?.beta || token?.claims?.admin || token?.claims?.lifetime) {
         callback(true)
-        return
+        return Promise.resolve()
       } else {
         // now check for Pro subscription
-        return rp(makeRequest(subscriptionsURL(email)))
-          .then((response) => {
+        return axios
+          .get(subscriptionsURL(email))
+          .then(({ data }) => {
             log.info('successful pro request')
-            if (!response.subscriptions) {
-              log.info(response)
+            if (!data.subscriptions) {
+              log.info(data)
               callback(false)
               return
             }
-            const activeSub = response.subscriptions.find((sub) => {
+            const activeSub = data.subscriptions.find((sub) => {
               return sub.info && isProProduct(sub.info) && isActiveSub(sub.info)
             })
             if (activeSub) {

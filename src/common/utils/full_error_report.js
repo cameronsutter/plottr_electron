@@ -15,6 +15,7 @@ const {
   machineId,
   notify,
   showItemInFolder,
+  pleaseTellMeWhatPlatformIAmOn,
 } = makeMainProcessClient()
 
 export function createFullErrorReport() {
@@ -50,7 +51,8 @@ function prepareErrorReport() {
         join(appLogPath, 'main.log'),
         join(appLogPath, 'renderer.log'),
         machineId(),
-      ]).then(([mainLogFile, rendererLogFile, generatedMachineID]) => {
+        pleaseTellMeWhatPlatformIAmOn(),
+      ]).then(([mainLogFile, rendererLogFile, generatedMachineID, platform]) => {
         return readFile(mainLogFile)
           .catch(() => null)
           .then((mainLogContents) => {
@@ -70,7 +72,7 @@ INFO
 ----------------------------------
 DATE: ${new Date().toString()}
 VERSION: ${version}
-PLATFORM: ${process.platform}
+PLATFORM: ${platform}
 MACHINE ID: ${generatedMachineID}
 
 USER INFO:

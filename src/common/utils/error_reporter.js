@@ -22,7 +22,8 @@ export function getPreviousAction() {
   return previousAction
 }
 
-const { userDocumentsPath, appVersion, showItemInFolder, notify } = makeMainProcessClient()
+const { userDocumentsPath, appVersion, showItemInFolder, notify, pleaseTellMeWhatPlatformIAmOn } =
+  makeMainProcessClient()
 
 export function createErrorReport(error, errorInfo) {
   return userDocumentsPath().then((documentsPath) => {
@@ -45,7 +46,7 @@ export function createErrorReport(error, errorInfo) {
 function prepareErrorReport(error, errorInfo) {
   const { currentUserSettings } = makeFileSystemAPIs(whenClientIsReady)
 
-  return appVersion().then((version) => {
+  return Promise.all([appVersion(), pleaseTellMeWhatPlatformIAmOn]).then(([version, platform]) => {
     return currentUserSettings().then((user) => {
       const hasLicense = !!user.licenseKey
       const report = `
@@ -55,7 +56,7 @@ INFO
 DATE: ${new Date().toString()}
 VERSION: ${version}
 USER HAS LICENSE: ${hasLicense}
-PLATFORM: ${process.platform}
+PLATFORM: ${platform}
 ----------------------------------
 ERROR
 ----------------------------------

@@ -318,6 +318,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case EXTNAME:
           case STAT:
           case MKDIR:
+          case RESOLVE:
           case PING: {
             resolvePromise()
             return

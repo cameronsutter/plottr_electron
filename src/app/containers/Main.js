@@ -111,6 +111,7 @@ const Main = ({
   saveBackup,
   settings,
   generalError,
+  clearErrorLoadingFile,
   windowId,
   setWindowTitle,
 }) => {
@@ -323,6 +324,7 @@ const Main = ({
     setFirstTimeBooting(false)
     setOpenDashboardTo('backups')
     setCurrentAppStateToDashboard()
+    clearErrorLoadingFile()
   }
 
   const showFile = () => {
@@ -400,11 +402,7 @@ const Main = ({
     )
   }
 
-  if (firstTimeBooting) {
-    // TODO: @cameron, @jeana, this is where we can put a more
-    // interesting loading component for users and let them know what
-    // we're loading based on the `applicationState` key in Redux ^_^
-
+  if (errorLoadingFile) {
     let errorMessage = isInProMode
       ? t(
           'Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
@@ -419,7 +417,7 @@ const Main = ({
         )
       : errorMessage
 
-    const body = errorLoadingFile ? (
+    const body = (
       <>
         <div className="error-boundary">
           <div className="text-center">
@@ -461,7 +459,21 @@ const Main = ({
           )}
         </div>
       </>
-    ) : (
+    )
+
+    return (
+      <div id="temporary-inner">
+        <div className="loading-splash">{body}</div>
+      </div>
+    )
+  }
+
+  if (firstTimeBooting) {
+    // TODO: @cameron, @jeana, this is where we can put a more
+    // interesting loading component for users and let them know what
+    // we're loading based on the `applicationState` key in Redux ^_^
+
+    const body = (
       <>
         <img src="../icons/logo_28_500.png" height="500" />
         <h3>{loadingState}</h3>
@@ -546,6 +558,7 @@ Main.propTypes = {
   saveBackup: PropTypes.func.isRequired,
   settings: PropTypes.object,
   generalError: PropTypes.func,
+  clearErrorLoadingFile: PropTypes.func.isRequired,
   windowId: PropTypes.func.isRequired,
   setWindowTitle: PropTypes.func.isRequired,
 }
@@ -592,5 +605,6 @@ export default connect(
     finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
     enableTestUtilities: actions.testingAndDiagnosis.enableTestUtilities,
     generalError: actions.error.generalError,
+    clearErrorLoadingFile: actions.applicationState.clearErrorLoadingFile,
   }
 )(Main)

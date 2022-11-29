@@ -109,7 +109,7 @@ const connectToSocketServer = (port) => {
       )
       showErrorBox(
         t('Error'),
-        t('Plottr ran into a problem and needs to close.  Please contact support.')
+        t("Plottr ran into a problem and can't start.  Please contact support.")
       ).then(() => {
         window.close()
       })

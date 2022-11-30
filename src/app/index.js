@@ -249,6 +249,7 @@ tellMeWhatOSImOn()
             joinPath,
             stat,
             mkdir,
+            basename,
             (error, success) => {
               if (error) {
                 logger.error(error)

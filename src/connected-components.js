@@ -2,7 +2,6 @@ import { ActionCreators } from 'redux-undo'
 
 import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
-import { askToExport } from 'plottr_import_export'
 import export_config from 'plottr_import_export/src/exporter/default_config'
 import { actions, selectors, helpers } from 'pltr/v2'
 import {
@@ -90,6 +89,7 @@ const {
   pleaseOpenLoginPopup,
   pleaseTellMeWhatPlatformIAmOn,
   showErrorBox,
+  askToExport,
 } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {

@@ -37,6 +37,18 @@ const subscribeTo = (channel, cb) => {
   }
 }
 
+const subscribeToWithReply = (channel, cb) => {
+  window.api.listen(channel, (event, replyChannel, ...args) => {
+    const reply = (...replyArgs) => {
+      event.sender.send(replyChannel, ...replyArgs)
+    }
+    cb(reply, ...args)
+  })
+  return () => {
+    window.api.stopListening(channel, cb)
+  }
+}
+
 const _makeMainProcessClient = () => {
   const setWindowTitle = (newTitle) => {
     return ask('set-window-title', newTitle)
@@ -379,6 +391,18 @@ const _makeMainProcessClient = () => {
     return subscribeTo('wants-to-close', cb)
   }
 
+  const askToExport = (defaultPath, fullState, type, options, userId) => {
+    return ask('export', defaultPath, fullState, type, options, userId)
+  }
+
+  const onMPQMessage = (cb) => {
+    return subscribeTo('mpq', cb)
+  }
+
+  const onDownloadStorageImage = (cb) => {
+    return subscribeToWithReply('download-storage-image', cb)
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -466,6 +490,9 @@ const _makeMainProcessClient = () => {
     pleaseTellMeWhatPlatformIAmOn,
     onSaveAsOnPro,
     onWantsToClose,
+    askToExport,
+    onMPQMessage,
+    onDownloadStorageImage,
   }
 }
 

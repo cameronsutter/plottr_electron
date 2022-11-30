@@ -87,6 +87,8 @@ const {
   onImportScrivenerFile,
   createFromScrivener,
   listenersRegistered,
+  onMPQMessage,
+  onDownloadStorageImage,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -136,6 +138,18 @@ tellMeWhatOSImOn()
   .then(() => {
     return setupRollbar('app.html').then((newRollbar) => {
       rollbar = newRollbar
+    })
+  })
+  .then(() => {
+    const _unsubscribeToMPQMessage = onMPQMessage((args) => {
+      MPQ.push(...args)
+    })
+  })
+  .then(() => {
+    const _unsubscribeToDownloadImage = onDownloadStorageImage((reply, url, fileId, userId) => {
+      return downloadStorageImage(url, fileId, userId).then((image) => {
+        reply(image)
+      })
     })
   })
   .then(() => {
@@ -198,30 +212,6 @@ tellMeWhatOSImOn()
           addNewCustomTemplate(currentState.present, options)
         })
 
-        const writeFile = (path, data) => {
-          return whenClientIsReady(({ writeFile }) => {
-            return writeFile(path, data)
-          })
-        }
-
-        const joinPath = (...args) => {
-          return whenClientIsReady(({ join }) => {
-            return join(...args)
-          })
-        }
-
-        const stat = (path) => {
-          return whenClientIsReady(({ stat }) => {
-            return stat(path)
-          })
-        }
-
-        const mkdir = (path) => {
-          return whenClientIsReady(({ mkdir }) => {
-            return mkdir(path)
-          })
-        }
-
         onExportFileFromMenu(({ type }) => {
           const currentState = store.getState()
           const {
@@ -232,30 +222,13 @@ tellMeWhatOSImOn()
           const bookId = ui.currentTimeline
           const defaultPath =
             bookId == 'series' ? name + ' ' + t('(Series View)') : books[`${bookId}`].title
+          const userId = selectors.userIdSelector(currentState.present)
 
-          askToExport(
-            defaultPath,
-            currentState.present,
-            type,
-            exportConfig[type],
-            isWindows(),
-            notifyUser,
-            logger,
-            exportSaveDialog,
-            MPQ,
-            rmRF,
-            downloadStorageImage,
-            writeFile,
-            joinPath,
-            stat,
-            mkdir,
-            basename,
-            (error, success) => {
-              if (error) {
-                logger.error(error)
-                showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-                return
-              }
+          askToExport(defaultPath, currentState.present, type, exportConfig[type], userId).catch(
+            (error) => {
+              logger.error(error)
+              showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+              return
             }
           )
         })

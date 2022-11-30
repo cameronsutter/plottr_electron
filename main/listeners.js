@@ -5,8 +5,11 @@ import https from 'https'
 import fs from 'fs'
 import { machineId } from 'node-machine-id'
 import { parse } from 'dotenv'
+import { v4 as uuid } from 'uuid'
 
 import { helpers } from 'pltr/v2'
+import { askToExport } from 'plottr_import_export'
+import { t } from 'plottr_locales'
 
 import path from 'path'
 import log from 'electron-log'
@@ -37,10 +40,74 @@ import {
 } from './modules/files'
 import { editWindowPath, setFilePathForWindowWithId } from './modules/windows/index'
 import { lastOpenedFile, setLastOpenedFilePath } from './modules/lastOpened'
+import { whenClientIsReady } from '../shared/socket-client/index'
 
 const { readFile } = fs.promises
 
 const { app, ipcMain } = electron
+
+const ask = (sender, channel, ...args) => {
+  const listenToken = `${channel}-${uuid()}`
+  // Maybe add a timeout?
+  return new Promise((resolve, reject) => {
+    try {
+      const listener = (event, ...args) => {
+        ipcMain.removeListener(listenToken, listener)
+        if (args[0] && args[0].error) {
+          reject(new Error(args[0].error))
+        } else if (args.length === 1) {
+          resolve(args[0])
+        } else {
+          resolve(args)
+        }
+      }
+      ipcMain.on(listenToken, listener)
+      sender.send(channel, listenToken, ...args)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+const makeDownloadStorageImage = (sender) => (url, fileId, userId) => {
+  return ask('download-storage-image', url, fileId, userId)
+}
+
+const makeMPQ =
+  (sender) =>
+  (...args) => {
+    sender.send('mpq', ...args)
+  }
+
+function saveDialog(windowId, filters, title, defaultPath) {
+  return dialog.showSaveDialog(windowId, {
+    filters,
+    title,
+    defaultPath,
+  })
+}
+
+function showNotification(title, body) {
+  const notification = new Notification({
+    title,
+    body,
+    silent: true,
+  })
+  notification.show()
+  setTimeout(() => {
+    notification.close()
+  }, 5000)
+}
+
+export function notifyUser(exportPath, type) {
+  const messageForType = {
+    word: t('Your Plottr file was exported to a .docx file'),
+    scrivener: t('Your Plottr file was exported to a Scrivener project package'),
+  }
+  showNotification(t('File Exported'), messageForType[type]).then(() => {
+    shell.showItemInFolder(exportPath)
+  })
+}
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
   ipcMain.on('pls-fetch-state', (event, replyChannel, proMode) => {
@@ -369,15 +436,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
 
   ipcMain.on('notify', (event, replyChannel, title, body) => {
     try {
-      const notification = new Notification({
-        title,
-        body,
-        silent: true,
-      })
-      notification.show()
-      setTimeout(() => {
-        notification.close()
-      }, 5000)
+      showNotification(title, body)
       event.sender.send(replyChannel, title, body)
     } catch (error) {
       // ignore
@@ -489,12 +548,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   })
 
   ipcMain.on('show-save-dialog', (event, replyChannel, filters, title, defaultPath) => {
-    dialog
-      .showSaveDialog(event.sender.getOwnerBrowserWindow(), {
-        filters,
-        title,
-        defaultPath,
-      })
+    saveDialog(event.sender.getOwnerBrowserWindow(), filters, title, defaultPath)
       .then((files) => {
         event.sender.send(replyChannel, files.filePath)
       })
@@ -594,5 +648,36 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         log.error(`Error opening path: ${path}`, error)
         event.sender.send(replyChannel, { error: error.message })
       })
+  })
+
+  ipcMain.on('export', (event, replyChannel, defaultPath, fullState, type, options, userId) => {
+    whenClientIsReady(({ rm, writeFile, join, stat, mkdir, basename }) => {
+      return askToExport(
+        defaultPath,
+        fullState,
+        type,
+        options,
+        is.windows,
+        notifyUser,
+        log,
+        saveDialog,
+        makeMPQ(event.sender),
+        rm,
+        userId,
+        makeDownloadStorageImage(event.sender),
+        writeFile,
+        join,
+        stat,
+        mkdir,
+        basename,
+        (error, success) => {
+          if (error) {
+            event.sender.send(replyChannel, { error: error.message })
+            return
+          }
+          event.sender.send(replyChannel, defaultPath)
+        }
+      )
+    })
   })
 }

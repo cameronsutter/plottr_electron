@@ -70,7 +70,7 @@ const ask = (sender, channel, ...args) => {
 }
 
 const makeDownloadStorageImage = (sender) => (url, fileId, userId) => {
-  return ask('download-storage-image', url, fileId, userId)
+  return ask(sender, 'download-storage-image', url, fileId, userId)
 }
 
 const makeMPQ = (sender) => {

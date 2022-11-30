@@ -100,7 +100,7 @@ const mainConfig = {
     __dirname: false,
   },
   externals: {
-    sharp: 'sharp',
+    sharp: 'commonjs sharp',
   },
 }
 

@@ -17,7 +17,7 @@ import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
-import { askToExport } from 'plottr_import_export'
+import { askToExport, imageToWebpDataURL } from 'plottr_import_export'
 import exportConfig from 'plottr_import_export/src/exporter/default_config'
 import world from 'world-api'
 
@@ -148,7 +148,7 @@ tellMeWhatOSImOn()
   .then(() => {
     const _unsubscribeToDownloadImage = onDownloadStorageImage((reply, url, fileId, userId) => {
       return downloadStorageImage(url, fileId, userId).then((image) => {
-        reply(image)
+        imageToWebpDataURL(image).then((imageURL) => reply(imageURL))
       })
     })
   })

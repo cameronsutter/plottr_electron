@@ -100,15 +100,15 @@ const makeSaveDialog = (sender) => {
 }
 
 function showNotification(title, body) {
-  const notification = new Notification({
-    title,
-    body,
-    silent: true,
-  })
-  notification.show()
-  setTimeout(() => {
-    notification.close()
-  }, 5000)
+  // const notification = new Notification({
+  //   title,
+  //   body,
+  //   silent: true,
+  // })
+  // notification.show()
+  // setTimeout(() => {
+  //   notification.close()
+  // }, 5000)
 }
 
 export function notifyUser(exportPath, type) {

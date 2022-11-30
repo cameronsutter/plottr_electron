@@ -890,7 +890,7 @@ const setupListeners = (port, userDataPath) => {
           }
           case WRITE_FILE: {
             const { path, file, base64 } = payload
-            const data = file ? file : Buffer.from(base64, 'base64')
+            const data = file || file === '' ? file : Buffer.from(base64, 'base64')
             return handlePromise(
               () => ['Writing a file to', path],
               () => statusManager.registerTask(writeFile(path, data), WRITE_FILE),

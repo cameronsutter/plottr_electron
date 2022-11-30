@@ -1,3 +1,4 @@
+bin/preload.js
 bin/*.bundle.js
 bin/electron_main.js
 **/*.scss

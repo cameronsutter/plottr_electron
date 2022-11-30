@@ -316,6 +316,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case PATH_SEP:
           case TRASH_FILE:
           case EXTNAME:
+          case READDIR:
           case STAT:
           case MKDIR:
           case RESOLVE:

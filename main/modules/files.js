@@ -150,17 +150,22 @@ const makeFileModule = () => {
       series: tree.newTree('id'),
     }
     json.lines = []
-    const importedJsonPromise = whenClientIsReady(({ readFile, readdir, stat }) => {
-      return importFromScrivener(
-        importedPath,
-        true,
-        json,
-        createRTFConversionFunction(sender),
-        readFile,
-        readdir,
-        stat
-      )
-    })
+    const importedJsonPromise = whenClientIsReady(
+      ({ readFile, readdir, stat, extname, basename, join }) => {
+        return importFromScrivener(
+          importedPath,
+          true,
+          json,
+          createRTFConversionFunction(sender),
+          readFile,
+          readdir,
+          stat,
+          extname,
+          basename,
+          join
+        )
+      }
+    )
 
     if (isLoggedIntoPro) {
       importedJsonPromise

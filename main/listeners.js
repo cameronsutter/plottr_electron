@@ -73,11 +73,13 @@ const makeDownloadStorageImage = (sender) => (url, fileId, userId) => {
   return ask('download-storage-image', url, fileId, userId)
 }
 
-const makeMPQ =
-  (sender) =>
-  (...args) => {
-    sender.send('mpq', ...args)
+const makeMPQ = (sender) => {
+  return {
+    push: (...args) => {
+      sender.send('mpq', ...args)
+    },
   }
+}
 
 function saveDialog(windowId, filters, title, defaultPath) {
   return dialog.showSaveDialog(windowId, {
@@ -85,6 +87,16 @@ function saveDialog(windowId, filters, title, defaultPath) {
     title,
     defaultPath,
   })
+}
+
+const makeSaveDialog = (sender) => {
+  return (filters, title, defaultPath) => {
+    return saveDialog(sender.getOwnerBrowserWindow().id, filters, title, defaultPath).then(
+      (result) => {
+        return result.filePath
+      }
+    )
+  }
 }
 
 function showNotification(title, body) {
@@ -651,7 +663,7 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
   })
 
   ipcMain.on('export', (event, replyChannel, defaultPath, fullState, type, options, userId) => {
-    whenClientIsReady(({ rm, writeFile, join, stat, mkdir, basename }) => {
+    whenClientIsReady(({ rmRf, writeFile, join, stat, mkdir, basename }) => {
       return askToExport(
         defaultPath,
         fullState,
@@ -660,9 +672,9 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         is.windows,
         notifyUser,
         log,
-        saveDialog,
+        makeSaveDialog(event.sender),
         makeMPQ(event.sender),
-        rm,
+        rmRf,
         userId,
         makeDownloadStorageImage(event.sender),
         writeFile,

@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/Plotinator/plottr_import_export#readme",
   "dependencies": {
+    "axios": "^1.2.0",
     "docx": "^7.3.0",
     "image-conversion": "^2.1.1",
     "jsrtf": "0.0.3",

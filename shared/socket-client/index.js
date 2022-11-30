@@ -576,6 +576,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
     }
 
     const writeFile = (path, file) => {
+      if (Buffer.isBuffer(file)) {
+        const base64 = file.toString('base64')
+        return sendPromise(WRITE_FILE, { path, base64 })
+      }
       return sendPromise(WRITE_FILE, { path, file })
     }
 

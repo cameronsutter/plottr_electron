@@ -116,9 +116,8 @@ export function notifyUser(exportPath, type) {
     word: t('Your Plottr file was exported to a .docx file'),
     scrivener: t('Your Plottr file was exported to a Scrivener project package'),
   }
-  showNotification(t('File Exported'), messageForType[type]).then(() => {
-    shell.showItemInFolder(exportPath)
-  })
+  showNotification(t('File Exported'), messageForType[type])
+  shell.showItemInFolder(exportPath)
 }
 
 export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {

@@ -50,7 +50,7 @@ import { downloadStorageImage } from '../common/downloadStorageImage'
 const {
   showErrorBox,
   showSaveDialog,
-  setRepresentedFilename,
+  setRepresentedFileName,
   setFileURL,
   getEnvObject,
   tellMeWhatOSImOn,
@@ -87,6 +87,7 @@ const {
   listenersRegistered,
   onMPQMessage,
   onDownloadStorageImage,
+  onMoveFromTemp,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -280,7 +281,7 @@ tellMeWhatOSImOn()
           return filePath
         }
 
-        document.addEventListener('move-from-temp', () => {
+        const moveFromTempHandler = () => {
           const { present } = store.getState()
           const isCloudFile = selectors.isCloudFileSelector(present)
           if (isCloudFile) {
@@ -334,7 +335,7 @@ tellMeWhatOSImOn()
                         })
                         .then(() => {
                           // change the window's title
-                          setRepresentedFilename(newFilePath)
+                          setRepresentedFileName(newFilePath)
                         })
                         .then(() => {
                           setFileURL(newFileURL)
@@ -349,7 +350,9 @@ tellMeWhatOSImOn()
               }
             )
           })
-        })
+        }
+        const _unsubscribeFromMoveFromTemp = onMoveFromTemp(moveFromTempHandler)
+        document.addEventListener('move-from-temp', moveFromTempHandler)
 
         onUndo(() => {
           store.dispatch(ActionCreators.undo())

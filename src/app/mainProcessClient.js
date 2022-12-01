@@ -403,6 +403,10 @@ const _makeMainProcessClient = () => {
     return subscribeToWithReply('download-storage-image', cb)
   }
 
+  const onMoveFromTemp = (cb) => {
+    return subscribeTo('move-from-temp', cb)
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -493,6 +497,7 @@ const _makeMainProcessClient = () => {
     askToExport,
     onMPQMessage,
     onDownloadStorageImage,
+    onMoveFromTemp,
   }
 }
 

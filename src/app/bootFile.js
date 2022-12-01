@@ -496,6 +496,7 @@ export function bootFile(
       store.dispatch(actions.applicationState.errorLoadingFile())
       return Promise.reject(new Error(message))
     }
+    store.dispatch(actions.applicationState.startLoadingFile())
 
     // Now that we know what the file path for this window should be,
     // tell the main process.
@@ -505,7 +506,6 @@ export function bootFile(
       const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
       try {
-        store.dispatch(actions.applicationState.startLoadingFile())
         return (
           isCloudFile
             ? bootCloudFile(fileURL, beatHierarchy, saveBackup)

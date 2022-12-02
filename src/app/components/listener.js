@@ -1,6 +1,4 @@
 import { useEffect } from 'react'
-import { ipcRenderer } from 'electron'
-import { dialog } from '@electron/remote'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -13,6 +11,9 @@ import logger from '../../../shared/logger'
 import { makeFileSystemAPIs, licenseServerAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import { makeFileModule } from '../files'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { pleaseOpenWindow } = makeMainProcessClient()
 
 const Listener = ({
   hasPro,
@@ -44,6 +45,7 @@ const Listener = ({
   setProLicenseInfo,
   startLoadingALicenseType,
   finishLoadingALicenseType,
+  showErrorBox,
 }) => {
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
   const { saveAsTempFile } = makeFileModule(whenClientIsReady)
@@ -56,8 +58,9 @@ const Listener = ({
         if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
           withFullFileState((state) => {
             saveAsTempFile(state.present).then((newFileURL) => {
-              ipcRenderer.send('pls-open-window', newFileURL, true)
-              window.close()
+              pleaseOpenWindow(newFileURL).then(() => {
+                window.close()
+              })
             })
           })
         }
@@ -109,7 +112,7 @@ const Listener = ({
       logOut().then(() => {
         setUserId(null)
         setEmailAddress(null)
-        dialog.showErrorBox(t('Error'), t("It doesn't look like you have a pro license."))
+        showErrorBox(t('Error'), t("It doesn't look like you have a pro license."))
       })
     }
   }
@@ -199,6 +202,7 @@ Listener.propTypes = {
   setProLicenseInfo: PropTypes.func.isRequired,
   startLoadingALicenseType: PropTypes.func.isRequired,
   finishLoadingALicenseType: PropTypes.func.isRequired,
+  showErrorBox: PropTypes.func.isRequired,
 }
 
 export default connect(

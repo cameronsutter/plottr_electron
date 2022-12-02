@@ -4,7 +4,6 @@ import { dialog, app, screen, BrowserWindow } from 'electron'
 import windowStateKeeper from 'electron-window-state'
 import i18n from 'plottr_locales'
 import log from 'electron-log'
-import { enable } from '@electron/remote/main'
 
 import { hasWindows } from './windows'
 import { is } from 'electron-util'
@@ -54,11 +53,12 @@ function makeBrowserWindow(fileURL) {
         show: false,
         fullscreenable: true,
         webPreferences: {
-          nodeIntegration: true,
+          nodeIntegration: false,
           spellcheck:
             settings.user?.useSpellcheck === undefined ? true : settings.user?.useSpellcheck,
           webviewTag: true,
-          contextIsolation: false,
+          contextIsolation: true,
+          preload: path.join(__dirname, 'preload.js'),
         },
       }
 
@@ -66,8 +66,6 @@ function makeBrowserWindow(fileURL) {
 
       // Create the browser window
       let newWindow = new BrowserWindow(config)
-      // Enable the remote module.
-      enable(newWindow.webContents)
 
       // register listeners on the window
       stateKeeper.manage(newWindow)

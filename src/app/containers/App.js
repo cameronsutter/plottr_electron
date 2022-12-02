@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { ipcRenderer } from 'electron'
-import { dialog } from '@electron/remote'
 import { connect } from 'react-redux'
 import PropTypes from 'react-proptypes'
 
@@ -25,6 +23,10 @@ import { store } from '../store'
 import { focusIsEditable } from '../../common/utils/undo'
 import MainIntegrationContext from '../../mainIntegrationContext'
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
+
+const { onAdvancedExportFileFromMenu, onTurnOnActsHelp, onReload, onWantsToClose } =
+  makeMainProcessClient()
 
 const App = ({
   forceProjectDashboard,
@@ -36,6 +38,7 @@ const App = ({
   sessionChecked,
   clickOnDom,
   applicationIsBusyAndCannotBeQuit,
+  showErrorBox,
 }) => {
   const [showTemplateCreate, setShowTemplateCreate] = useState(false)
   const [type, setType] = useState(null)
@@ -72,26 +75,27 @@ const App = ({
       sessionChecked
     ) {
       log.error('Attempting to open a cloud file locally without being logged in.')
-      dialog.showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
+      showErrorBox(t('Error'), t('This appears to be a Plottr Pro file.  Please log in.'))
     }
   }, [isResuming, userId, isCloudFile, userNeedsToLogin, isOffline, sessionChecked])
 
   useEffect(() => {
-    ipcRenderer.on('save-as-template-start', (event, type) => {
-      setType(type)
+    const saveAsTemplateListener = (event) => {
+      setType(event.itemType)
       setShowTemplateCreate(true)
-    })
-    ipcRenderer.on('advanced-export-file-from-menu', (event) => {
+    }
+    document.addEventListener('save-as-template-start', saveAsTemplateListener)
+    const unsubscribeFromAdvancedExportFromMenu = onAdvancedExportFileFromMenu(() => {
       setShowExportDialog(true)
     })
-    ipcRenderer.on('turn-on-acts-help', () => {
+    const unsubscribeFromTurnOnActsHelp = onTurnOnActsHelp(() => {
       setShowActsGuideHelp(true)
     })
 
     return () => {
-      ipcRenderer.removeAllListeners('save-as-template-start')
-      ipcRenderer.removeAllListeners('advanced-export-file-from-menu')
-      ipcRenderer.removeAllListeners('turn-on-acts-help')
+      document.removeEventListener('save-as-template-start', saveAsTemplateListener)
+      unsubscribeFromAdvancedExportFromMenu()
+      unsubscribeFromTurnOnActsHelp()
     }
   }, [])
 
@@ -139,19 +143,19 @@ const App = ({
   }
 
   useEffect(() => {
-    ipcRenderer.on('reload', () => {
+    const unsubscribeFromReload = onReload(() => {
       isTryingToReload.current = true
       askToSave({})
     })
-    ipcRenderer.on('wants-to-close', () => {
+    const unsubscribeFromWantsToClose = onWantsToClose(() => {
       log.info('received wants-to-close')
       isTryingToClose.current = true
       askToSave({})
     })
     window.addEventListener('beforeunload', askToSave)
     return () => {
-      ipcRenderer.removeAllListeners('reload')
-      ipcRenderer.removeAllListeners('wants-to-close')
+      unsubscribeFromReload()
+      unsubscribeFromWantsToClose()
       window.removeEventListener('beforeunload', askToSave)
     }
   }, [blockClosing, applicationIsBusyAndCannotBeQuit, closeOrRefresh])
@@ -249,6 +253,7 @@ App.propTypes = {
   sessionChecked: PropTypes.bool,
   clickOnDom: PropTypes.func,
   applicationIsBusyAndCannotBeQuit: PropTypes.bool,
+  showErrorBox: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

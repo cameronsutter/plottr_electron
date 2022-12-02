@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { ipcRenderer } from 'electron'
 import { FaRegUser, FaKey } from 'react-icons/fa'
 import DashboardModal from './DashboardModal'
 import OfflineBanner from '../components/OfflineBanner'
@@ -10,8 +9,11 @@ import { t } from 'plottr_locales'
 
 import { Navbar, NavItem, Nav, Beamer, BookChooser, Button } from 'connected-components'
 import { selectors, actions } from 'pltr/v2'
+import { makeMainProcessClient } from '../mainProcessClient'
 
 const isDev = process.env.NODE_ENV == 'development'
+
+const { openBuyWindow } = makeMainProcessClient()
 
 const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, clickOnDom }) => {
   const [dashboardView, setDashboardView] = useState(null)
@@ -37,7 +39,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, c
     if (!isInTrialMode) return null
 
     return (
-      <Button bsStyle="link" onClick={() => ipcRenderer.send('open-buy-window')}>
+      <Button bsStyle="link" onClick={() => openBuyWindow()}>
         <FaKey /> {t('Get a License')}
       </Button>
     )

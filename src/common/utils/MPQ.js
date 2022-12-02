@@ -9,8 +9,6 @@ const {
   beats: { reduce },
 } = helpers
 
-const superProps = { platform: process.platform }
-
 let daysLeft
 let isTrial = false
 export function setTrialInfo(isTrialMode, num) {
@@ -87,6 +85,8 @@ class MixpanelQueue {
 
   flush() {
     if (process.env.NODE_ENV == 'development') return
+
+    const superProps = { platform: process.platform }
 
     // TODO: read from localStorage
     do {

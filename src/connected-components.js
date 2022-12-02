@@ -1,14 +1,7 @@
-import electron, { shell, ipcRenderer } from 'electron'
-import { getCurrentWindow, app, dialog } from '@electron/remote'
-import * as remote from '@electron/remote'
-import path from 'path'
 import { ActionCreators } from 'redux-undo'
-import { readFileSync } from 'fs'
-import { machineIdSync } from 'node-machine-id'
 
 import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
-import { askToExport } from 'plottr_import_export'
 import export_config from 'plottr_import_export/src/exporter/default_config'
 import { actions, selectors, helpers } from 'pltr/v2'
 import {
@@ -39,7 +32,6 @@ import {
   renameFile,
   saveFile,
   editKnownFilePath,
-  showSaveDialogSync,
   newFile,
   uploadExisting,
   deleteCloudBackupFile,
@@ -66,11 +58,39 @@ import { handleCustomerServiceCode } from './common/utils/customer_service_codes
 import { notifyUser } from './notifyUser'
 import { exportSaveDialog } from './export-save-dialog'
 import { whenClientIsReady } from '../shared/socket-client'
+import { makeMainProcessClient } from './app/mainProcessClient'
 
-const win = getCurrentWindow()
-const version = app.getVersion()
-
-const moveItemToTrash = shell.trashItem
+const {
+  getVersion,
+  hostLocale,
+  openExternal,
+  showOpenDialog,
+  machineId,
+  openKnownFile,
+  pleaseSetDarkModeSetting,
+  pleaseQuit,
+  createNewFile,
+  deleteKnownFile,
+  createFromSnowflake,
+  createFromScrivener,
+  pleaseQuitAndInstall,
+  pleaseDownloadUpdate,
+  pleaseCheckForUpdates,
+  onUpdateError,
+  onUpdaterUpdateAvailable,
+  onUpdaterUpdateNotAvailable,
+  onUpdaterDownloadProgress,
+  onUpdaterUpdateDownloaded,
+  pleaseUpdateLanguage,
+  updateBeatHierarchy,
+  pleaseReloadMenu,
+  showItemInFolder,
+  downloadFileAndShow,
+  pleaseOpenLoginPopup,
+  pleaseTellMeWhatPlatformIAmOn,
+  showErrorBox,
+  askToExport,
+} = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
   return whenClientIsReady(({ rmRf }) => {
@@ -78,12 +98,24 @@ export const rmRF = (path, ...args) => {
   })
 }
 
+const writeFile = (filePath, data) => {
+  return whenClientIsReady(({ writeFile }) => {
+    return writeFile(filePath, data)
+  })
+}
+
 const { saveAppSetting, startTrial, deleteLicense, saveLicenseInfo, saveExportConfigSettings } =
   makeFileSystemAPIs(whenClientIsReady)
 
 export const openFile = (fileURL, unknown) => {
-  ipcRenderer.send('open-known-file', fileURL, unknown)
+  openKnownFile(fileURL, unknown)
 }
+
+let unsubscribeFromUpdateError = null
+let unsubscribeFromUpdateerUpdateAvailable = null
+let unsubscribeFromUpdaterUpdateNotAvailable = null
+let unsubscribeFromUpdaterDownloadProgress = null
+let unsubscribeFromUpdaterUpdateDownloaded = null
 
 const platform = {
   undo: () => {
@@ -92,18 +124,18 @@ const platform = {
   redo: () => {
     store.dispatch(ActionCreators.redo())
   },
-  electron: { ...electron, remote },
-  appVersion: version,
+  hostLocale,
+  appVersion: getVersion,
   defaultBackupLocation: () => {
     return whenClientIsReady(({ defaultBackupLocation }) => {
       return defaultBackupLocation()
     })
   },
   setDarkMode: (value) => {
-    ipcRenderer.send('pls-set-dark-setting', value)
+    pleaseSetDarkModeSetting(value)
   },
   appQuit: () => {
-    ipcRenderer.send('pls-quit')
+    pleaseQuit()
   },
   file: {
     createNew: (template, name) => {
@@ -127,7 +159,7 @@ const platform = {
             store.dispatch(actions.applicationState.finishCreatingCloudFile())
           })
       } else {
-        ipcRenderer.send('create-new-file', template, name)
+        createNewFile(template, name)
       }
     },
     openExistingFile: () => {
@@ -151,16 +183,25 @@ const platform = {
         })
         .catch((error) => {
           logger.error('Error opening existing file', error)
-          dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again.'))
-          store.dispatch(actions.project.showLoader(false))
-          if (isLoggedIn) {
-            store.dispatch(actions.applicationState.finishUploadingFileToCloud())
-          }
+          showErrorBox(t('Error'), t('There was an error doing that. Try again.')).then(() => {
+            store.dispatch(actions.project.showLoader(false))
+            if (isLoggedIn) {
+              store.dispatch(actions.applicationState.finishUploadingFileToCloud())
+            }
+          })
         })
     },
     doesFileExist,
-    pathSep: path.sep,
-    basename: path.basename,
+    pathSep: () => {
+      return whenClientIsReady(({ pathSep }) => {
+        return pathSep()
+      })
+    },
+    basename: (filePath) => {
+      return whenClientIsReady(({ basename }) => {
+        return basename(filePath)
+      })
+    },
     // FIXME: this is very poorly named.  Esp. since the second
     // parametor is a flag for whether the file is known XD
     openKnownFile: (fileURL, unknown) => {
@@ -182,9 +223,7 @@ const platform = {
       const isOnCloud = file?.isCloudFile
       if (isLoggedIn && isOnCloud) {
         if (!file) {
-          logger.error(
-            `Error deleting file at path: ${path} with url: ${fileURL}.  File is not known to Plottr`
-          )
+          logger.error(`Error deleting file at url: ${fileURL}.  File is not known to Plottr`)
           store.dispatch(actions.error.generalError('file-not-found'))
           store.dispatch(actions.project.showLoader(false))
           store.dispatch(actions.applicationState.finishDeletingFile())
@@ -222,67 +261,95 @@ const platform = {
             store.dispatch(actions.applicationState.finishDeletingFile())
           })
       } else {
-        ipcRenderer.send('delete-known-file', fileURL)
+        deleteKnownFile(fileURL)
       }
     },
     editKnownFilePath,
     renameFile,
     removeFromKnownFiles,
     saveFile,
-    readFileSync,
+    readFile: (fileURL) => {
+      return whenClientIsReady(({ readFile }) => {
+        return readFile(fileURL)
+      })
+    },
     rmRF,
-    moveItemToTrash,
+    writeFile,
     createFromSnowflake: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
-      ipcRenderer.send('create-from-snowflake', importedPath, isLoggedIntoPro)
+      createFromSnowflake(importedPath, isLoggedIntoPro)
     },
     createFromScrivener: (importedPath) => {
       const state = store.getState().present
       const isLoggedIntoPro = selectors.hasProSelector(state)
-      ipcRenderer.send('create-from-scrivener', importedPath, isLoggedIntoPro)
+      createFromScrivener(importedPath, isLoggedIntoPro)
     },
-    joinPath: path.join,
+    joinPath: (...args) => {
+      return whenClientIsReady(({ join }) => {
+        return join(...args)
+      })
+    },
+    stat: (path) => {
+      return whenClientIsReady(({ stat }) => {
+        return stat(path)
+      })
+    },
+    mkdir: (path) => {
+      return whenClientIsReady(({ mkdir }) => {
+        return mkdir(path)
+      })
+    },
     listOfflineFiles,
   },
   update: {
     quitToInstall: () => {
-      ipcRenderer.send('pls-quit-and-install')
+      pleaseQuitAndInstall()
     },
     downloadUpdate: () => {
-      ipcRenderer.send('pls-download-update')
+      pleaseDownloadUpdate()
     },
     checkForUpdates: () => {
-      ipcRenderer.send('pls-check-for-updates')
+      pleaseCheckForUpdates()
     },
     onUpdateError: (cb) => {
-      ipcRenderer.on('updater-error', cb)
+      unsubscribeFromUpdateError = onUpdateError(cb)
     },
     onUpdaterUpdateAvailable: (cb) => {
-      ipcRenderer.on('updater-update-available', cb)
+      unsubscribeFromUpdateerUpdateAvailable = onUpdaterUpdateAvailable(cb)
     },
     onUpdaterUpdateNotAvailable: (cb) => {
-      ipcRenderer.on('updater-update-not-available', cb)
+      unsubscribeFromUpdaterUpdateNotAvailable = onUpdaterUpdateNotAvailable(cb)
     },
     onUpdaterDownloadProgress: (cb) => {
-      ipcRenderer.on('updater-download-progress', cb)
+      unsubscribeFromUpdaterDownloadProgress = onUpdaterDownloadProgress(cb)
     },
     onUpdatorUpdateDownloaded: (cb) => {
-      ipcRenderer.on('updater-update-downloaded', cb)
+      unsubscribeFromUpdaterUpdateDownloaded = onUpdaterUpdateDownloaded(cb)
     },
     deregisterUpdateListeners: () => {
-      ipcRenderer.removeAllListeners('updater-error')
-      ipcRenderer.removeAllListeners('updater-update-available')
-      ipcRenderer.removeAllListeners('updater-update-not-available')
-      ipcRenderer.removeAllListeners('updater-download-progress')
-      ipcRenderer.removeAllListeners('updater-update-downloaded')
+      if (typeof unsubscribeFromUpdateError === 'function') {
+        unsubscribeFromUpdateError()
+      }
+      if (typeof unsubscribeFromUpdateerUpdateAvailable === 'function') {
+        unsubscribeFromUpdateerUpdateAvailable()
+      }
+      if (typeof unsubscribeFromUpdaterUpdateNotAvailable === 'function') {
+        unsubscribeFromUpdaterUpdateNotAvailable()
+      }
+      if (typeof unsubscribeFromUpdaterDownloadProgress === 'function') {
+        unsubscribeFromUpdaterDownloadProgress()
+      }
+      if (typeof unsubscribeFromUpdaterUpdateDownloaded === 'function') {
+        unsubscribeFromUpdaterUpdateDownloaded()
+      }
     },
   },
   updateLanguage: (newLanguage) => {
-    ipcRenderer.send('pls-update-language', newLanguage)
+    return pleaseUpdateLanguage(newLanguage)
   },
   updateBeatHierarchyFlag: (newValue) => {
-    ipcRenderer.send('pls-update-beat-hierarchy-flag', newValue)
+    return updateBeatHierarchy(newValue)
   },
   license: {
     checkForActiveLicense: licenseServerAPIs.checkForActiveLicense,
@@ -295,7 +362,7 @@ const platform = {
     saveLicenseInfo,
   },
   reloadMenu: () => {
-    ipcRenderer.send('pls-reload-menu')
+    pleaseReloadMenu()
   },
   template: {
     deleteTemplate: (templateId) => {
@@ -311,12 +378,14 @@ const platform = {
       editTemplateDetails(templateId, templateDetails, userId)
     },
     startSaveAsTemplate: (itemType) => {
-      const win = getCurrentWindow()
-      ipcRenderer.sendTo(win.webContents.id, 'save-as-template-start', itemType) // sends this message to this same process
+      const event = new Event('save-as-template-start', { bubbles: true, cancelable: false })
+      event.itemType = itemType
+      document.dispatchEvent(event)
     },
     saveTemplate: (payload) => {
-      const win = getCurrentWindow()
-      ipcRenderer.sendTo(win.webContents.id, 'save-custom-template', payload)
+      const event = new Event('save-custom-template', { bubbles: true, cancelable: false })
+      event.payload = payload
+      document.dispatchEvent(event)
     },
   },
   settings: {
@@ -326,20 +395,19 @@ const platform = {
   isDevelopment: isDevelopment(),
   isWindows: () => !!isWindows(),
   isMacOS: () => !!isMacOS(),
-  openExternal: shell.openExternal,
+  openExternal,
   createErrorReport,
   createFullErrorReport,
   handleCustomerServiceCode,
   log: logger,
-  dialog,
-  showSaveDialogSync,
-  showOpenDialogSync: (options) => dialog.showOpenDialogSync(win, options),
+  showOpenDialog,
+  showErrorBox,
   node: {
     env: isDevelopment() ? 'development' : 'production',
   },
   rollbar: {
     rollbarAccessToken: process.env.ROLLBAR_ACCESS_TOKEN || '',
-    platform: process.platform,
+    platform: pleaseTellMeWhatPlatformIAmOn,
   },
   export: {
     askToExport,
@@ -349,15 +417,15 @@ const platform = {
     exportSaveDialog,
   },
   moveFromTemp: () => {
-    const win = getCurrentWindow()
-    ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
+    const event = new Event('move-from-temp')
+    document.dispatchEvent(event)
   },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {
       if (!storageURL) {
-        ipcRenderer.send('show-item-in-folder', fileURL)
+        showItemInFolder(fileURL)
       } else {
-        backupPublicURL(fileURL).then((url) => ipcRenderer.send('download-file-and-show', url))
+        backupPublicURL(fileURL).then((url) => downloadFileAndShow(url))
       }
     })
   },
@@ -373,7 +441,7 @@ const platform = {
   listenForRCELock,
   lockRCE,
   releaseRCELock,
-  machineIdSync,
+  machineId,
   extractImages,
   firebase: {
     startUI,
@@ -387,7 +455,7 @@ const platform = {
   },
   login: {
     launchLoginPopup: () => {
-      ipcRenderer.send('pls-open-login-popup')
+      pleaseOpenLoginPopup()
     },
   },
   storage: {

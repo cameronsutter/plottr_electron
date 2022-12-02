@@ -50,7 +50,7 @@ export const backupFile =
       !isOffline && isCloudFile ? saveBackupOnFirebase(userId, state) : Promise.resolve()
 
     return cloudBackup.then(() => {
-      return whenClientIsReady(({ saveBackup, offlineFileURL }) => {
+      return whenClientIsReady(({ saveBackup, offlineFileBasePath }) => {
         const hasAllKeys = selectors.hasAllKeysSelector(state)
         if (!hasAllKeys) {
           const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
@@ -66,7 +66,7 @@ export const backupFile =
           return Promise.resolve()
         }
 
-        return offlineFileURL().then((offlineFilePath) => {
+        return offlineFileBasePath().then((offlineFilePath) => {
           const fileURL = selectors.fileURLSelector(state)
           if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilePath)) {
             logger.warn(

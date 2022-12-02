@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
-import { ipcRenderer, shell } from 'electron'
-import { getCurrentWindow } from '@electron/remote'
-import path from 'path'
 import { IoIosAlert } from 'react-icons/io'
 
 import { t } from 'plottr_locales'
@@ -23,26 +20,32 @@ import UploadOfflineFile from '../components/UploadOfflineFile'
 import { uploadProject } from '../../common/utils/upload_project'
 import { whenClientIsReady } from '../../../shared/socket-client'
 import logger from '../../../shared/logger'
+import { makeMainProcessClient } from '../mainProcessClient'
 
-const win = getCurrentWindow()
+const { onReloadFromFile, pleaseFetchState, openExternal, showItemInFolder, updateLastOpenedFile } =
+  makeMainProcessClient()
 
 function displayFileName(fileName, fileURL, displayFilePath) {
   const isOnCloud = helpers.file.urlPointsToPlottrCloud(fileURL)
   const withoutProtocol = helpers.file.withoutProtocol(fileURL)
-  const computedFileName = isOnCloud
-    ? fileName
-    : withoutProtocol
-    ? path.basename(withoutProtocol)
-    : ''
-  const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
-  const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
-  const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
-  try {
-    const decodedFileName = decodeURIComponent(baseFileName)
-    return `${plottr}${decodedFileName}${devMessage}`
-  } catch (error) {
-    return `${plottr}${baseFileName}${devMessage}`
-  }
+  return whenClientIsReady(({ basename }) => {
+    const fileNamePromise = isOnCloud
+      ? Promise.resolve(fileName)
+      : withoutProtocol
+      ? basename(withoutProtocol)
+      : Promise.resolve('')
+    return fileNamePromise.then((computedFileName) => {
+      const devMessage = process.env.NODE_ENV == 'development' ? ' - DEV' : ''
+      const baseFileName = displayFilePath ? ` - ${computedFileName}` : ''
+      const plottr = isOnCloud ? 'Plottr Pro' : 'Plottr'
+      try {
+        const decodedFileName = decodeURIComponent(baseFileName)
+        return `${plottr}${decodedFileName}${devMessage}`
+      } catch (error) {
+        return `${plottr}${baseFileName}${devMessage}`
+      }
+    })
+  })
 }
 
 const LoadingSplash = ({ loadingState, loadingProgress }) => {
@@ -108,6 +111,9 @@ const Main = ({
   saveBackup,
   settings,
   generalError,
+  clearErrorLoadingFile,
+  windowId,
+  setWindowTitle,
 }) => {
   // The user needs a way to dismiss the files dashboard and continue
   // to the file that's open.
@@ -119,12 +125,16 @@ const Main = ({
   useEffect(() => {
     if (showDashboard && !dashboardClosed) {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, fileURL, false))
+        displayFileName(fileName, fileURL, false).then((fileName) => {
+          setWindowTitle(fileName)
+        })
       }
       setCurrentAppStateToDashboard()
     } else {
       if (fileName && fileName.length > 0) {
-        win.setTitle(displayFileName(fileName, fileURL, true))
+        displayFileName(fileName, fileURL, true).then((fileName) => {
+          setWindowTitle(fileName)
+        })
       }
     }
   }, [fileName, fileURL, dashboardClosed, setCurrentAppStateToDashboard, showDashboard])
@@ -132,7 +142,7 @@ const Main = ({
   useEffect(() => {
     if (!readyToCheckFileToLoad) return () => {}
 
-    const load = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const load = (fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       // We wont load a file at all on boot if this is supposed to be
       // the dashboard.
       if (!windowOpenedWithKnownPath && showDashboard && numOpenFiles <= 1) {
@@ -149,8 +159,7 @@ const Main = ({
       // the offline file counterpart.
       if (!!isInProMode === !!helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup).then(closeDashboard)
-      }
-      if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
+      } else if (isInOfflineMode && helpers.file.urlPointsToPlottrCloud(fileURL)) {
         bootFile(whenClientIsReady, fileURL, options, numOpenFiles, saveBackup, true).then(
           closeDashboard
         )
@@ -168,24 +177,23 @@ const Main = ({
     // This might look like unnecessary lambda wrapping, but I've done
     // it to make sure that we have destinct lambdas to de-register
     // later.
-    const reloadListener = (event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
+    const reloadListener = (fileURL, options, numOpenFiles, windowOpenedWithKnownPath) => {
       const lastFileIsClassicAndWeAreInPro = isInProMode && helpers.file.isDeviceFileURL(fileURL)
       if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(fileURL)
       } else {
-        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       }
     }
-    ipcRenderer.on('reload-from-file', reloadListener)
+    const unsubscribeFromReloadFromFile = onReloadFromFile(reloadListener)
 
     if (checkedFileToLoad || checkingFileToLoad || needsToLogin) {
       return () => {
-        ipcRenderer.removeListener('reload-from-file', reloadListener)
+        unsubscribeFromReloadFromFile()
       }
     }
 
     const stateFetchedListener = (
-      event,
       fileURL,
       options,
       numOpenFiles,
@@ -201,21 +209,29 @@ const Main = ({
       if (lastFileIsClassicAndWeAreInPro) {
         promptToUploadFile(fileURL)
       } else if (fileURL) {
-        load(event, fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
+        load(fileURL, options, numOpenFiles, windowOpenedWithKnownPath)
       } else {
         finishCheckingFileToLoad()
       }
       if (processSwitches.testUtilitiesEnabled) {
         enableTestUtilities()
       }
-      ipcRenderer.removeListener('state-fetched', stateFetchedListener)
     }
-    ipcRenderer.on('state-fetched', stateFetchedListener)
-    ipcRenderer.send('pls-fetch-state', win.id, isInProMode)
     startCheckingFileToLoad()
+    pleaseFetchState(isInProMode).then(
+      ([fileURL, options, numOpenFiles, windowOpenedWithKnownPath, processSwitches]) => {
+        return stateFetchedListener(
+          fileURL,
+          options,
+          numOpenFiles,
+          windowOpenedWithKnownPath,
+          processSwitches
+        )
+      }
+    )
 
     return () => {
-      ipcRenderer.removeListener('reload-from-file', reloadListener)
+      unsubscribeFromReloadFromFile()
     }
   }, [
     isInOfflineMode,
@@ -301,17 +317,18 @@ const Main = ({
   }, [dismissPromptToUploadFile])
 
   const goToSupport = () => {
-    shell.openExternal('https://plottr.com/support/')
+    openExternal('https://plottr.com/support/')
   }
 
   const viewBackups = () => {
     setFirstTimeBooting(false)
     setOpenDashboardTo('backups')
     setCurrentAppStateToDashboard()
+    clearErrorLoadingFile()
   }
 
   const showFile = () => {
-    shell.showItemInFolder(helpers.file.withoutProtocol(pathToProject))
+    showItemInFolder(helpers.file.withoutProtocol(pathToProject))
   }
 
   // IMPORTANT: the order of these return statements is significant.
@@ -370,7 +387,7 @@ const Main = ({
                         bootFile(whenClientIsReady, newFileURL, {}, 2, saveBackup).then(
                           closeDashboard
                         )
-                        ipcRenderer.send('update-last-opened-file', newFileURL)
+                        updateLastOpenedFile(newFileURL)
                       })
                       .catch((error) => {})
                   })
@@ -385,11 +402,7 @@ const Main = ({
     )
   }
 
-  if (firstTimeBooting) {
-    // TODO: @cameron, @jeana, this is where we can put a more
-    // interesting loading component for users and let them know what
-    // we're loading based on the `applicationState` key in Redux ^_^
-
+  if (errorLoadingFile) {
     let errorMessage = isInProMode
       ? t(
           'Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.'
@@ -404,7 +417,7 @@ const Main = ({
         )
       : errorMessage
 
-    const body = errorLoadingFile ? (
+    const body = (
       <>
         <div className="error-boundary">
           <div className="text-center">
@@ -446,7 +459,21 @@ const Main = ({
           )}
         </div>
       </>
-    ) : (
+    )
+
+    return (
+      <div id="temporary-inner">
+        <div className="loading-splash">{body}</div>
+      </div>
+    )
+  }
+
+  if (firstTimeBooting) {
+    // TODO: @cameron, @jeana, this is where we can put a more
+    // interesting loading component for users and let them know what
+    // we're loading based on the `applicationState` key in Redux ^_^
+
+    const body = (
       <>
         <img src="../icons/logo_28_500.png" height="500" />
         <h3>{loadingState}</h3>
@@ -481,7 +508,13 @@ const Main = ({
     )
   }
 
-  return <App forceProjectDashboard={showDashboard} />
+  return (
+    <MainIntegrationContext.Consumer>
+      {({ showErrorBox }) => {
+        return <App forceProjectDashboard={showDashboard} showErrorBox={showErrorBox} />
+      }}
+    </MainIntegrationContext.Consumer>
+  )
 }
 
 Main.propTypes = {
@@ -525,6 +558,9 @@ Main.propTypes = {
   saveBackup: PropTypes.func.isRequired,
   settings: PropTypes.object,
   generalError: PropTypes.func,
+  clearErrorLoadingFile: PropTypes.func.isRequired,
+  windowId: PropTypes.func.isRequired,
+  setWindowTitle: PropTypes.func.isRequired,
 }
 
 export default connect(
@@ -569,5 +605,6 @@ export default connect(
     finishUploadingFileToCloud: actions.applicationState.finishUploadingFileToCloud,
     enableTestUtilities: actions.testingAndDiagnosis.enableTestUtilities,
     generalError: actions.error.generalError,
+    clearErrorLoadingFile: actions.applicationState.clearErrorLoadingFile,
   }
 )(Main)

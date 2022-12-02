@@ -1,8 +1,10 @@
-import log from 'electron-log'
+import { makeMainProcessClient } from '../src/app/mainProcessClient'
+
+const { logInfo, logWarn, logError } = makeMainProcessClient()
 
 const logger = {
   info: (...args) => {
-    log.info(
+    return logInfo(
       args[0],
       JSON.stringify(
         {
@@ -14,7 +16,7 @@ const logger = {
     )
   },
   warn: (...args) => {
-    log.warn(
+    return logWarn(
       args[0],
       JSON.stringify(
         {
@@ -26,11 +28,20 @@ const logger = {
     )
   },
   error: (...args) => {
-    log.error(
+    return logError(
       args[0],
       JSON.stringify(
         {
-          extraArgs: args.slice(1),
+          extraArgs: args.slice(1).map((arg) => {
+            if (arg.stack) {
+              return {
+                message: arg.message,
+                stack: arg.stack,
+              }
+            }
+
+            return arg
+          }),
         },
         null,
         2

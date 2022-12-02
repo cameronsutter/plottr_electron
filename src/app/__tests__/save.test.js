@@ -576,7 +576,7 @@ describe('backupFile', () => {
         const whenClientIsReady = (f) => {
           return f({
             saveBackup: _backupFile,
-            offlineFileURL: () => Promise.resolve('/offline/'),
+            offlineFileBasePath: () => Promise.resolve('/offline/'),
           })
         }
         let threw = false
@@ -611,7 +611,7 @@ describe('backupFile', () => {
         const whenClientIsReady = (f) => {
           return f({
             saveBackup: _backupFile,
-            offlineFileURL: () => Promise.resolve('/offline/'),
+            offlineFileBasePath: () => Promise.resolve('/offline/'),
           })
         }
         await backupFile(
@@ -642,7 +642,7 @@ describe('backupFile', () => {
             const whenClientIsReady = (f) => {
               return f({
                 saveBackup: _backupFile,
-                offlineFileURL: () => Promise.resolve('/offline/'),
+                offlineFileBasePath: () => Promise.resolve('/offline/'),
               })
             }
             await backupFile(
@@ -671,7 +671,7 @@ describe('backupFile', () => {
             const whenClientIsReady = (f) => {
               return f({
                 saveBackup: _backupFile,
-                offlineFileURL: () => Promise.resolve('/offline/'),
+                offlineFileBasePath: () => Promise.resolve('/offline/'),
               })
             }
             await backupFile(
@@ -703,7 +703,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
-                  offlineFileURL: () => Promise.resolve('/offline/'),
+                  offlineFileBasePath: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(
@@ -732,7 +732,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
-                  offlineFileURL: () => Promise.resolve('/offline/'),
+                  offlineFileBasePath: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(
@@ -763,7 +763,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
-                  offlineFileURL: () => Promise.resolve('/offline/'),
+                  offlineFileBasePath: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(
@@ -792,7 +792,7 @@ describe('backupFile', () => {
               const whenClientIsReady = (f) => {
                 return f({
                   saveBackup: _backupFile,
-                  offlineFileURL: () => Promise.resolve('/offline/'),
+                  offlineFileBasePath: () => Promise.resolve('/offline/'),
                 })
               }
               await backupFile(
@@ -825,7 +825,7 @@ describe('backupFile', () => {
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
-              offlineFileURL: () => Promise.resolve('/offline/'),
+              offlineFileBasePath: () => Promise.resolve('/offline/'),
             })
           }
           await backupFile(
@@ -854,7 +854,7 @@ describe('backupFile', () => {
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
-              offlineFileURL: () => Promise.resolve('/offline/'),
+              offlineFileBasePath: () => Promise.resolve('/offline/'),
             })
           }
           await backupFile(
@@ -883,7 +883,7 @@ describe('backupFile', () => {
           const whenClientIsReady = (f) => {
             return f({
               saveBackup: _backupFile,
-              offlineFileURL: () => Promise.resolve('/offline/'),
+              offlineFileBasePath: () => Promise.resolve('/offline/'),
             })
           }
           await backupFile(

@@ -65,6 +65,7 @@ describe('startServer', () => {
     createClient(
       port,
       CONSOLE_LOGGER,
+      WebSocket,
       (error) => {
         CONSOLE_LOGGER.error(
           `Failed to connect to socket server on port: <${port}>.  Killing the app.`,

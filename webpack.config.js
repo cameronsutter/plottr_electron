@@ -100,7 +100,40 @@ const mainConfig = {
     __dirname: false,
   },
   externals: {
-    sharp: 'sharp',
+    sharp: 'commonjs sharp',
+  },
+}
+
+const preloadConfig = {
+  mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
+  watch: process.env.NODE_ENV === 'dev',
+  context: path.resolve(__dirname, 'main'),
+  entry: {
+    preload: path.resolve('.', 'main', 'modules', 'preload.js'),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+        include: path.resolve(__dirname, 'lib', 'pltr'),
+        exclude: /node_modules/,
+      },
+    ],
+  },
+  output: {
+    path: isForMaps ? sourceMapsPath : path.resolve(__dirname, 'bin'),
+    filename: 'preload.js',
+  },
+  resolve: {
+    extensions: ['.js', '.json'],
+    modules: ['node_modules', 'main'],
+  },
+  target: 'electron-main',
+  plugins: [...plugins, duplicateDependencyChecker, mainCircularDependencyChecker],
+  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
+  node: {
+    __dirname: false,
   },
 }
 
@@ -201,8 +234,15 @@ const rendererConfig = {
         'node_modules/@firebase/storage/dist/index.esm2017.js'
       ),
     },
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      http: require.resolve('stream-http'),
+      assert: require.resolve('assert/'),
+      crypto: require.resolve('crypto-browserify'),
+      url: require.resolve('url/'),
+    },
   },
-  target: 'electron-renderer',
+  target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
@@ -296,7 +336,7 @@ const loginPopupConfig = {
       ),
     },
   },
-  target: 'electron-renderer',
+  target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   optimization: { splitChunks: false },
@@ -304,6 +344,9 @@ const loginPopupConfig = {
     sharp: 'sharp',
   },
 }
+
+// PROBLEM SEEMS TO BE THAT PLOTTR_IMPORT_EXPORT STILL USES NODE
+// DEPENDENCIES.
 
 const socketServerConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
@@ -349,4 +392,4 @@ const socketServerConfig = {
   },
 }
 
-module.exports = [rendererConfig, mainConfig, loginPopupConfig, socketServerConfig]
+module.exports = [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig]

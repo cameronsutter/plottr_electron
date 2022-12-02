@@ -2,6 +2,8 @@ import fs from 'fs'
 import { join, basename } from 'path'
 import { sortBy } from 'lodash'
 
+import { helpers } from 'pltr/v2'
+
 const { lstat, mkdir, rename, readdir, rm } = fs.promises
 
 const TRASHED_LIMIT = 30
@@ -58,8 +60,20 @@ const makeTrashModile = (userDataPath, logger) => {
       })
   }
 
+  const trashByURL = (fileURL) => {
+    if (!helpers.file.isDeviceFileURL(fileURL)) {
+      const message = `Requested to delete ${fileURL}, but it doesn't point at a device file`
+      logger.error(message)
+      return Promise.reject(new Error(message))
+    }
+    const filePath = helpers.file.withoutProtocol(fileURL)
+
+    return trash(filePath)
+  }
+
   return {
     trash,
+    trashByURL,
   }
 }
 

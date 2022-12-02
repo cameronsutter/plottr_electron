@@ -1,12 +1,11 @@
 import electron, { dialog } from 'electron'
+import WebSocket from 'ws'
 import SETTINGS from './modules/settings'
 import { setupI18n } from 'plottr_locales'
-import { initialize } from '@electron/remote/main'
 import yargs from 'yargs/yargs'
 import { hideBin } from 'yargs/helpers'
 
-initialize()
-setupI18n(SETTINGS, { electron })
+setupI18n(SETTINGS, { locale: electron.app.getLocale() })
 
 const { app, BrowserWindow, globalShortcut } = electron
 import path from 'path'
@@ -109,6 +108,7 @@ const broadcastPortChange = (port) => {
     createClient(
       port,
       log,
+      WebSocket,
       (error) => {
         log.error(`Failed to connect to socket server on port: <${port}>.  Killing the app.`, error)
         app.quit()
@@ -183,8 +183,17 @@ app.whenReady().then(() => {
               throw new Error('Could not create window to export with.')
             }
             newWindow.on('ready-to-show', () => {
-              ipcMain.once('listeners-registered', () => {
-                newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+              ipcMain.once('listeners-registered', (event, replyChannel) => {
+                try {
+                  newWindow.webContents.send('import-scrivener-file', sourceFile, destinationFile)
+                  event.sender.send(replyChannel, 'done')
+                } catch (error) {
+                  log.error(
+                    `Error exporting ${sourceFile} to scrivener file at ${destinationFile}`,
+                    error
+                  )
+                  event.sender.send(replyChannel, { error: error.message })
+                }
               })
             })
           })

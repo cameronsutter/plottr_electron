@@ -1,7 +1,8 @@
-import { shell } from 'electron'
-import { app, dialog } from '@electron/remote'
 import { makeFileSystemAPIs } from '../../api'
 import { whenClientIsReady } from '../../../shared/socket-client'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
+
+const { userDataPath, showMessageBox, openPath, showItemInFolder } = makeMainProcessClient()
 
 // generate with `Math.random().toString(16)`
 export function handleCustomerServiceCode(code) {
@@ -17,7 +18,7 @@ export function handleCustomerServiceCode(code) {
     case '941ff8':
       // view backups
       fileSystemAPIs.backupBasePath().then((basePath) => {
-        shell.openPath(basePath)
+        openPath(basePath)
       })
       break
 
@@ -71,23 +72,25 @@ export function handleCustomerServiceCode(code) {
     case '16329e':
       // show the custom templates file
       fileSystemAPIs.customTemplatesPath().then((path) => {
-        shell.showItemInFolder(path)
+        return showItemInFolder(path)
       })
       break
 
     case '8bb9de':
       // open the Plottr internal User Data folder
-      shell.openPath(app.getPath('userData'))
+      userDataPath().then((userData) => {
+        return openPath(userData)
+      })
       break
 
     case 'templates version':
       fileSystemAPIs.currentTemplateManifest().then((manifest) => {
-        dialog.showMessageBox({
-          title: 'Templates Version',
-          type: 'info',
-          message: manifest.manifest.version,
-          detail: 'Templates Version',
-        })
+        return showMessageBox(
+          'Templates Version',
+          manifest.manifest.version,
+          'info',
+          'Templates Version'
+        )
       })
       break
 

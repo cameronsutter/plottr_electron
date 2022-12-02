@@ -17,6 +17,7 @@ import MainIntegrationContext from './mainIntegrationContext'
 
 import { store } from './app/store'
 import makeFileSystemAPIs from './api/file-system-apis'
+import { makeMainProcessClient } from './app/mainProcessClient'
 
 export const renderFile = (root, whenClientIsReady) => {
   const saveOfflineFile = (file) => {
@@ -67,6 +68,8 @@ export const renderFile = (root, whenClientIsReady) => {
     })
   }
 
+  const { showErrorBox, getVersion, windowId, setWindowTitle } = makeMainProcessClient()
+
   const { saveAppSetting } = makeFileSystemAPIs(whenClientIsReady)
 
   render(
@@ -80,15 +83,20 @@ export const renderFile = (root, whenClientIsReady) => {
           saveBackup,
           backupOfflineBackupForResume,
           saveAppSetting,
+          showErrorBox,
         }}
       >
-        <Listener />
+        <Listener showErrorBox={showErrorBox} />
         <Renamer />
         <SaveAs />
-        <Error />
-        <Resume backupOfflineBackupForResume={backupOfflineBackupForResume} />
+        <Error showErrorBox={showErrorBox} />
+        <Resume
+          backupOfflineBackupForResume={backupOfflineBackupForResume}
+          getVersion={getVersion}
+          showErrorBox={showErrorBox}
+        />
         <Busy />
-        <Main saveBackup={saveBackup} />
+        <Main saveBackup={saveBackup} windowId={windowId} setWindowTitle={setWindowTitle} />
       </MainIntegrationContext.Provider>
     </Provider>,
     root

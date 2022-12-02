@@ -36,6 +36,9 @@ const MainIntegrationContext = React.createContext({
       `Couldn't save an app setting for ${key} to ${value}.  Please wire up the MainIntegrationContext provider`
     )
   },
+  showErrorBox: (title, message) => {
+    throw new Error(`Couldn't display an error box for title ${title} and message ${message}`)
+  },
 })
 
 export default MainIntegrationContext

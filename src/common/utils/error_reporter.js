@@ -1,13 +1,10 @@
-import { shell, ipcRenderer } from 'electron'
-import { app } from '@electron/remote'
-import fs from 'fs'
-import path from 'path'
 import { ActionTypes } from 'pltr/v2'
 import { t as i18n } from 'plottr_locales'
 
 import log from '../../../shared/logger'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 import makeFileSystemAPIs from '../../api/file-system-apis'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 
 let previousAction = null
 
@@ -25,15 +22,23 @@ export function getPreviousAction() {
   return previousAction
 }
 
+const { userDocumentsPath, appVersion, showItemInFolder, notify, pleaseTellMeWhatPlatformIAmOn } =
+  makeMainProcessClient()
+
 export function createErrorReport(error, errorInfo) {
-  prepareErrorReport(error, errorInfo).then((body) => {
-    const filePath = path.join(app.getPath('documents'), `plottr_error_report_${Date.now()}.txt`)
-    fs.writeFile(filePath, body, function (err) {
-      if (err) {
-        log.warn(err)
-      } else {
-        notifyUser(filePath)
-      }
+  return userDocumentsPath().then((documentsPath) => {
+    return prepareErrorReport(error, errorInfo).then((body) => {
+      return whenClientIsReady(({ join, writeFile }) => {
+        return join(documentsPath, `plottr_error_report_${Date.now()}.txt`).then((filePath) => {
+          return writeFile(filePath, body, function (err) {
+            if (err) {
+              log.warn(err)
+            } else {
+              notifyUser(filePath)
+            }
+          })
+        })
+      })
     })
   })
 }
@@ -41,16 +46,17 @@ export function createErrorReport(error, errorInfo) {
 function prepareErrorReport(error, errorInfo) {
   const { currentUserSettings } = makeFileSystemAPIs(whenClientIsReady)
 
-  return currentUserSettings().then((user) => {
-    const hasLicense = !!user.licenseKey
-    const report = `
+  return Promise.all([appVersion(), pleaseTellMeWhatPlatformIAmOn]).then(([version, platform]) => {
+    return currentUserSettings().then((user) => {
+      const hasLicense = !!user.licenseKey
+      const report = `
 ----------------------------------
 INFO
 ----------------------------------
 DATE: ${new Date().toString()}
-VERSION: ${app.getVersion()}
+VERSION: ${version}
 USER HAS LICENSE: ${hasLicense}
-PLATFORM: ${process.platform}
+PLATFORM: ${platform}
 ----------------------------------
 ERROR
 ----------------------------------
@@ -63,22 +69,21 @@ PREVIOUS ACTION
 ----------------------------------
 ${JSON.stringify(previousAction)}
   `
-    return report
+      return report
+    })
   })
 }
 
 function notifyUser(filePath) {
-  try {
-    ipcRenderer.send(
-      'notify',
-      i18n('Error Report created'),
-      i18n('Plottr created a file named {filePath} in your Documents folder', {
-        filePath: path.basename(filePath),
-      })
-    )
-  } catch (error) {
-    // ignore
-    // on windows you need something called an Application User Model ID which may not work
-  }
-  shell.showItemInFolder(filePath)
+  return whenClientIsReady(({ basename }) => {
+    return basename(filePath).then((fileName) => {
+      notify(
+        i18n('Error Report created'),
+        i18n('Plottr created a file named {filePath} in your Documents folder', {
+          filePath: fileName,
+        })
+      )
+      return showItemInFolder(filePath)
+    })
+  })
 }

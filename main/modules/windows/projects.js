@@ -9,14 +9,21 @@ import { getWindowById, addNewWindow, dereferenceWindow, focusIfOpen } from '.'
 import { addToKnown } from '../known_files'
 import { setLastOpenedFilePath } from '../lastOpened'
 
-ipcMain.on('pls-open-window', (event, fileURL, unknown) => {
+ipcMain.on('pls-open-window', (event, replyChannel, fileURL, unknown) => {
   log.info('Received command to open window for', fileURL)
   openProjectWindow(fileURL)
     .then(() => {
-      if (unknown) addToKnown(fileURL)
+      if (unknown) {
+        return addToKnown(fileURL)
+      }
+      return true
+    })
+    .then(() => {
+      event.sender.send(replyChannel, 'fileURL')
     })
     .catch((error) => {
       log.error('Error opening a new window', error)
+      event.sender.send(replyChannel, { error: error.message })
     })
 })
 

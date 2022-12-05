@@ -8,6 +8,10 @@ const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
 const basename = path.basename
 
+const extname = path.extname
+
+const resolvePath = path.resolve
+
 function removeSystemKeys(jsonData) {
   const withoutSystemKeys = {}
   Object.keys(jsonData).map((key) => {
@@ -290,10 +294,35 @@ const fileModule = (userDataPath) => {
       })
     }
 
+    const _writeFile = (filePath, data) => {
+      return writeFile(filePath, data)
+    }
+
+    const _join = (...pathArgs) => {
+      return Promise.resolve(path.join(...pathArgs))
+    }
+
+    const separator = path.sep
+
+    const stat = (path) => {
+      return lstat(path).then((stats) => {
+        return {
+          ...stats,
+          isDirectory: stats.isDirectory(),
+        }
+      })
+    }
+
+    const makeDirectory = (path) => {
+      return mkdir(path, { recursive: true })
+    }
+
     return {
       saveFile,
       saveOfflineFile,
       basename,
+      extname,
+      resolvePath,
       readFile: readFileToString,
       fileExists,
       backupOfflineBackupForResume,
@@ -302,6 +331,13 @@ const fileModule = (userDataPath) => {
       offlineFilesFilesPath: OFFLINE_FILE_FILES_PATH,
       OFFLINE_FILE_FILES_PATH,
       saveTempFile,
+      writeFile: _writeFile,
+      join: _join,
+      separator,
+      offlineFileURL,
+      stat,
+      readdir,
+      mkdir: makeDirectory,
     }
   }
 }

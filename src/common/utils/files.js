@@ -1,31 +1,31 @@
-import { ipcRenderer } from 'electron'
-import { app } from '@electron/remote'
-import fs from 'fs'
-import path from 'path'
-
 import { helpers } from 'pltr/v2'
 
 import { makeFileModule } from '../../app/files'
 import { whenClientIsReady } from '../../../shared/socket-client'
-
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 
 const { readOfflineFiles } = makeFileModule(whenClientIsReady)
 
+const { removeFromKnownFiles } = makeMainProcessClient()
+
 export function doesFileExist(fileURL) {
-  return fs.existsSync(helpers.file.withoutProtocol(fileURL))
+  return whenClientIsReady(({ fileExists }) => {
+    return fileExists(helpers.file.withoutProtocol(fileURL))
+  })
 }
 
-export function removeFromKnownFiles(fileURL) {
-  ipcRenderer.send('remove-from-known-files', fileURL)
-}
+export { removeFromKnownFiles }
 
 export function listOfflineFiles() {
   return readOfflineFiles()
 }
 
 export function offlineFileURL(fileURL) {
-  return helpers.file.filePathToFileURL(
-    path.join(OFFLINE_FILE_FILES_PATH, helpers.file.withoutProtocol(fileURL))
-  )
+  return whenClientIsReady(({ join, offlineFileBasePath }) => {
+    return offlineFileBasePath().then((offlineFileFilesPath) => {
+      return join(offlineFileFilesPath, helpers.file.withoutProtocol(fileURL)).then((filePath) => {
+        return helpers.file.filePathToFileURL(filePath)
+      })
+    })
+  })
 }

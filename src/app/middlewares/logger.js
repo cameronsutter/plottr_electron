@@ -1,5 +1,3 @@
-import jsonDiff from 'json-diff'
-
 const logger = (store) => (next) => (action) => {
   // eslint-disable-next-line
   if (LOGGER === 'true') {
@@ -11,7 +9,8 @@ const logger = (store) => (next) => (action) => {
     Object.keys(oldState).forEach((key) => {
       if (oldState[key] !== newState[key]) {
         console.log(`${key} changed:`)
-        console.log(jsonDiff.diffString(oldState[key], newState[key]))
+        console.log('Old', oldState[key])
+        console.log('New', newState[key])
       }
     })
     console.info('----------END Redux Change Logger END----------')

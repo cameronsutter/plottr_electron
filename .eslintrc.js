@@ -32,6 +32,7 @@ module.exports = {
     'lib/plottr_components/dist/**',
     'lib/plottr_check-prop-types/**',
     'lib/tree-changes',
+    'bin/electron_main.js',
   ],
   rules: {
     'no-unused-vars': [

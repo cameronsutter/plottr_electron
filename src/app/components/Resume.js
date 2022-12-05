@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { PropTypes } from 'prop-types'
-import { app, dialog } from '@electron/remote'
 import { connect } from 'react-redux'
 import { Spinner } from 'connected-components'
 
@@ -31,6 +30,8 @@ const Resume = ({
   setShowResumeMessageDialog,
   setBackingUpOfflineFile,
   backupOfflineBackupForResume,
+  getVersion,
+  showErrorBox,
 }) => {
   useEffect(() => {
     if (!offlineModeEnabled) return
@@ -56,8 +57,10 @@ const Resume = ({
             const offlineFile = state.present
             return backupOfflineBackupForResume(offlineFile)
               .then(() => {
-                return retryWithBackOff(() => {
-                  return initialFetch(userId, fileId, clientId, app.getVersion())
+                return getVersion().then((version) => {
+                  return retryWithBackOff(() => {
+                    return initialFetch(userId, fileId, clientId, version)
+                  })
                 })
               })
               .then((cloudFile) => {
@@ -126,7 +129,7 @@ const Resume = ({
         setResuming(false)
         setCheckingForOfflineDrift(false)
         setOverwritingCloudWithBackup(false)
-        dialog.showErrorBox(
+        showErrorBox(
           t('Error'),
           t('There was an error reconnecting.  Please save the file and restart Plottr.')
         )
@@ -200,6 +203,8 @@ Resume.propTypes = {
   setBackingUpOfflineFile: PropTypes.func.isRequired,
   offlineModeEnabled: PropTypes.bool,
   backupOfflineBackupForResume: PropTypes.func.isRequired,
+  getVersion: PropTypes.func.isRequired,
+  showErrorBox: PropTypes.func.isRequired,
 }
 
 export default connect(

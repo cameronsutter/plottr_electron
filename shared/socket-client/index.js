@@ -1,4 +1,3 @@
-import WebSocket from 'ws'
 import { v4 as uuidv4 } from 'uuid'
 
 import {
@@ -121,6 +120,26 @@ import {
   NUKE_LAST_OPENED_FILE_URL_ERROR_REPLY,
   SHUTDOWN,
   SHUTDOWN_ERROR_REPLY,
+  WRITE_FILE,
+  WRITE_FILE_ERROR_REPLY,
+  JOIN,
+  JOIN_ERROR_REPLY,
+  PATH_SEP,
+  PATH_SEP_ERROR_REPLY,
+  TRASH_FILE,
+  TRASH_FILE_ERROR_REPLY,
+  EXTNAME,
+  EXTNAME_ERROR_REPLY,
+  OFFLINE_FILE_URL,
+  OFFLINE_FILE_URL_ERROR_REPLY,
+  RESOLVE,
+  RESOLVE_ERROR_REPLY,
+  READDIR,
+  STAT,
+  READDIR_ERROR_REPLY,
+  STAT_ERROR_REPLY,
+  MKDIR,
+  MKDIR_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -132,9 +151,13 @@ const defer =
         setTimeout(f, 0)
       }
 
-const connect = (port, logger, { onBusy, onDone }) => {
+const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
   try {
     const clientConnection = new WebSocket(`ws://localhost:${port}`)
+    const usingBrowserWebsocketClient = !clientConnection.on
+    const on = (
+      usingBrowserWebsocketClient ? clientConnection.addEventListener : clientConnection.on
+    ).bind(clientConnection)
     const promises = new Map()
     const callbacks = new Map()
 
@@ -189,7 +212,8 @@ const connect = (port, logger, { onBusy, onDone }) => {
       }
     }
 
-    clientConnection.on('message', (data) => {
+    on('message', (eventOrData) => {
+      const data = usingBrowserWebsocketClient ? eventOrData.data : eventOrData
       try {
         const { type, payload, messageId, result } = JSON.parse(data)
         const resolvePromise = () => {
@@ -287,6 +311,15 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case SET_LAST_OPENED_FILE:
           case NUKE_LAST_OPENED_FILE_URL:
           case SHUTDOWN:
+          case WRITE_FILE:
+          case JOIN:
+          case PATH_SEP:
+          case TRASH_FILE:
+          case EXTNAME:
+          case READDIR:
+          case STAT:
+          case MKDIR:
+          case RESOLVE:
           case PING: {
             resolvePromise()
             return
@@ -325,6 +358,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case SAVE_AS_TEMP_FILE_ERROR_REPLY:
           case ATTEMPT_TO_FETCH_TEMPLATES_ERROR_REPLY:
           case OFFLINE_FILE_PATH_ERROR_REPLY:
+          case OFFLINE_FILE_URL_ERROR_REPLY:
           case DEFAULT_BACKUP_LOCATION_ERROR_REPLY:
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
@@ -359,6 +393,15 @@ const connect = (port, logger, { onBusy, onDone }) => {
           case LAST_OPENED_FILE_ERROR_REPLY:
           case SET_LAST_OPENED_FILE_ERROR_REPLY:
           case SHUTDOWN_ERROR_REPLY:
+          case WRITE_FILE_ERROR_REPLY:
+          case JOIN_ERROR_REPLY:
+          case PATH_SEP_ERROR_REPLY:
+          case TRASH_FILE_ERROR_REPLY:
+          case EXTNAME_ERROR_REPLY:
+          case RESOLVE_ERROR_REPLY:
+          case READDIR_ERROR_REPLY:
+          case STAT_ERROR_REPLY:
+          case MKDIR_ERROR_REPLY:
           case FILE_EXISTS_ERROR_REPLY: {
             rejectPromise()
             return
@@ -466,7 +509,11 @@ const connect = (port, logger, { onBusy, onDone }) => {
     }
 
     const offlineFileURL = (fileURL) => {
-      return sendPromise(OFFLINE_FILE_PATH, { fileURL })
+      return sendPromise(OFFLINE_FILE_URL, { fileURL })
+    }
+
+    const offlineFileBasePath = () => {
+      return sendPromise(OFFLINE_FILE_PATH)
     }
 
     const attemptToFetchTemplates = () => {
@@ -527,6 +574,46 @@ const connect = (port, logger, { onBusy, onDone }) => {
 
     const shutdown = () => {
       return sendPromise(SHUTDOWN)
+    }
+
+    const writeFile = (path, file) => {
+      if (Buffer.isBuffer(file)) {
+        const base64 = file.toString('base64')
+        return sendPromise(WRITE_FILE, { path, base64 })
+      }
+      return sendPromise(WRITE_FILE, { path, file })
+    }
+
+    const join = (...pathArgs) => {
+      return sendPromise(JOIN, { pathArgs })
+    }
+
+    const pathSep = () => {
+      return sendPromise(PATH_SEP)
+    }
+
+    const trash = (fileURL) => {
+      return sendPromise(TRASH_FILE, { fileURL })
+    }
+
+    const extname = (filePath) => {
+      return sendPromise(EXTNAME, { filePath })
+    }
+
+    const resolvePath = (...args) => {
+      return sendPromise(RESOLVE, { args })
+    }
+
+    const readdir = (path) => {
+      return sendPromise(READDIR, { path })
+    }
+
+    const stat = (path) => {
+      return sendPromise(STAT, { path })
+    }
+
+    const mkdir = (path) => {
+      return sendPromise(MKDIR, { path })
     }
 
     // ===File System APIs===
@@ -649,7 +736,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
     }
 
     return new Promise((resolve, reject) => {
-      clientConnection.on('open', () => {
+      on('open', () => {
         resolve({
           ping,
           rmRf,
@@ -669,6 +756,7 @@ const connect = (port, logger, { onBusy, onDone }) => {
           deleteCustomTemplate,
           defaultBackupLocation,
           offlineFileURL,
+          offlineFileBasePath,
           customTemplatesPath,
           copyFile,
           attemptToFetchTemplates,
@@ -714,6 +802,15 @@ const connect = (port, logger, { onBusy, onDone }) => {
           setLastOpenedFilePath,
           nukeLastOpenedFileURL,
           shutdown,
+          writeFile,
+          join,
+          pathSep,
+          trash,
+          extname,
+          resolvePath,
+          readdir,
+          stat,
+          mkdir,
           close: clientConnection.close.bind(clientConnection),
         })
       })
@@ -733,9 +830,9 @@ const instance = () => {
 
   // See the destructured argument of the connect function for the
   // structure of `eventHandlers`.
-  const createClient = (port, logger, onFailedToConnect, eventHandlers) => {
+  const createClient = (port, logger, WebSocket, onFailedToConnect, eventHandlers) => {
     initialised = true
-    connect(port, logger, eventHandlers)
+    connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
         if (client) client.close(0, 'New client requested')
         client = newClient

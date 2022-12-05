@@ -1,11 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 import { render } from 'react-dom'
-import { getCurrentWindow } from '@electron/remote'
 
 import { onSessionChange } from 'wired-up-firebase'
 import { startUI } from 'plottr_firebase'
-
-const win = getCurrentWindow()
 
 const Login = () => {
   const firebaseLoginComponentRef = useRef(null)
@@ -19,7 +16,7 @@ const Login = () => {
   useEffect(() => {
     const unregister = onSessionChange((user) => {
       if (user) {
-        win.close()
+        window.close()
       }
     })
     return () => unregister()

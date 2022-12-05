@@ -5,6 +5,7 @@ setup.el
 jsconfig.json
 
 # Built/bundled
+bin/preload.js
 bin/electron_main.js
 bin/323.bundle.js.LICENSE.txt
 bin/3bd4d476bb1e0e985412

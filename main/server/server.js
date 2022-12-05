@@ -75,6 +75,16 @@ import {
   UPDATE_KNOWN_FILE_NAME,
   NUKE_LAST_OPENED_FILE_URL,
   SHUTDOWN,
+  WRITE_FILE,
+  JOIN,
+  PATH_SEP,
+  TRASH_FILE,
+  EXTNAME,
+  OFFLINE_FILE_URL,
+  RESOLVE,
+  READDIR,
+  STAT,
+  MKDIR,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -157,6 +167,15 @@ const setupListeners = (port, userDataPath) => {
       isTempFile,
       offlineFilesFilesPath,
       saveTempFile,
+      writeFile,
+      join,
+      separator,
+      extname,
+      resolvePath,
+      offlineFileURL,
+      stat,
+      readdir,
+      mkdir,
     } = fileModule
     const fileSystemModule = makeFileSystemModule(stores, logger)
     const {
@@ -196,6 +215,7 @@ const setupListeners = (port, userDataPath) => {
       copyFile,
     } = fileSystemModule
     const trashModule = makeTrashModule(userDataPath, logger)
+    const { trashByURL } = trashModule
     const tempFilesModule = makeTempFilesModule(
       userDataPath,
       stores,
@@ -523,6 +543,14 @@ const setupListeners = (port, userDataPath) => {
               () => 'Error getting the offline file path'
             )
           }
+          case OFFLINE_FILE_URL: {
+            const { fileURL } = payload
+            return handlePromise(
+              () => ['Computing the offline file URL of', fileURL],
+              () => statusManager.registerTask(offlineFileURL(fileURL), OFFLINE_FILE_URL),
+              () => ['Error computing the offline file URL of', fileURL]
+            )
+          }
           case ATTEMPT_TO_FETCH_TEMPLATES: {
             return handlePromise(
               () =>
@@ -652,6 +680,30 @@ const setupListeners = (port, userDataPath) => {
               () =>
                 statusManager.registerTask(updateLastOpenedDate(fileURL), UPDATE_LAST_OPENED_DATE),
               () => `Error updating the last opened date for file with id ${fileURL}`
+            )
+          }
+          case READDIR: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Reading the contents of', path],
+              () => statusManager.registerTask(readdir(path), READDIR),
+              () => ['Error reading the contents of', path]
+            )
+          }
+          case STAT: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Reading the FS stats of', path],
+              () => statusManager.registerTask(stat(path), STAT),
+              () => ['Error reading the FS stats of', path]
+            )
+          }
+          case MKDIR: {
+            const { path } = payload
+            return handlePromise(
+              () => ['Creating a directory (recursively) at', path],
+              () => statusManager.registerTask(mkdir(path), MKDIR),
+              () => ['Error creating a directory (recursively) at', path]
             )
           }
           // ===File System APIs===
@@ -834,6 +886,54 @@ const setupListeners = (port, userDataPath) => {
                   SHUTDOWN
                 ),
               () => 'ERROR SHUTTING DOWN THE SOCKET SERVER'
+            )
+          }
+          case WRITE_FILE: {
+            const { path, file, base64 } = payload
+            const data = file || file === '' ? file : Buffer.from(base64, 'base64')
+            return handlePromise(
+              () => ['Writing a file to', path],
+              () => statusManager.registerTask(writeFile(path, data), WRITE_FILE),
+              () => ['Failed writing a file to', path]
+            )
+          }
+          case JOIN: {
+            const { pathArgs } = payload
+            return handlePromise(
+              () => ['Joining path args to create an OS path', pathArgs],
+              () => statusManager.registerTask(join(...pathArgs), JOIN),
+              () => ['Joining path args to create an OS path', pathArgs]
+            )
+          }
+          case PATH_SEP: {
+            return handleSync(
+              () => 'Requested the path separator for the host operating system',
+              () => separator,
+              () => 'Error requesting the path separator for the host operating system'
+            )
+          }
+          case TRASH_FILE: {
+            const { fileURL } = payload
+            return handlePromise(
+              () => ['Trashing file at', fileURL],
+              () => statusManager.registerTask(trashByURL(fileURL)),
+              () => ['Error trashing file at', fileURL]
+            )
+          }
+          case EXTNAME: {
+            const { filePath } = payload
+            return handleSync(
+              () => ['Computing extname of', filePath],
+              () => extname(filePath),
+              () => ['Error computing extname of', filePath]
+            )
+          }
+          case RESOLVE: {
+            const { args } = payload
+            return handleSync(
+              () => ['Resolving a path for', args],
+              () => resolvePath(...args),
+              () => ['Error computing a path for', args]
             )
           }
           // Subscriptions

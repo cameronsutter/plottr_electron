@@ -100,7 +100,7 @@ const makeFileModule = () => {
     }
   }
 
-  async function createFromSnowflake(importedPath, sender, isLoggedIntoPro) {
+  function createFromSnowflake(importedPath, sender, isLoggedIntoPro) {
     const storyName = path.basename(importedPath, '.snowXML')
     let json = emptyFile(storyName, app.getVersion())
     // clear beats and lines
@@ -108,32 +108,36 @@ const makeFileModule = () => {
       series: tree.newTree('id'),
     }
     json.lines = []
-    const importedJson = importFromSnowflake(importedPath, true, json)
+    return whenClientIsReady(({ readFile }) => {
+      return importFromSnowflake(importedPath, true, json, readFile).then((importedJson) => {
+        if (isLoggedIntoPro) {
+          sender.send('create-plottr-cloud-file', importedJson, storyName)
+          return Promise.resolve()
+        }
 
-    if (isLoggedIntoPro) {
-      sender.send('create-plottr-cloud-file', importedJson, storyName)
-      return Promise.resolve()
-    }
-
-    try {
-      const fileURL = await saveToTempFile(importedJson, storyName)
-      await addToKnownFiles(fileURL)
-      await openFile(fileURL)
-    } catch (error) {
-      log.error('Failed to create file from snowflake', error)
-      throw error
-    }
-    return true
+        return saveToTempFile(importedJson, storyName)
+          .then((fileURL) => {
+            return addToKnownFiles(fileURL).then(() => {
+              return openFile(fileURL)
+            })
+          })
+          .catch((error) => {
+            log.error('Failed to create file from snowflake', error)
+            return Promise.reject(error)
+          })
+      })
+    })
   }
 
   function createRTFConversionFunction(sender) {
     return function (rtfString) {
       return new Promise((resolve, reject) => {
         const conversionId = uuidv4()
-        sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
-        ipcMain.once(conversionId, (_event, slate) => {
+        ipcMain.once(conversionId, (event, replyChannel, slate) => {
+          event.sender.send(replyChannel, conversionId)
           resolve(slate)
         })
+        sender.send('convert-rtf-string-to-slate', rtfString, conversionId)
       })
     }
   }
@@ -146,11 +150,21 @@ const makeFileModule = () => {
       series: tree.newTree('id'),
     }
     json.lines = []
-    const importedJsonPromise = importFromScrivener(
-      importedPath,
-      true,
-      json,
-      createRTFConversionFunction(sender)
+    const importedJsonPromise = whenClientIsReady(
+      ({ readFile, readdir, stat, extname, basename, join }) => {
+        return importFromScrivener(
+          importedPath,
+          true,
+          json,
+          createRTFConversionFunction(sender),
+          readFile,
+          readdir,
+          stat,
+          extname,
+          basename,
+          join
+        )
+      }
     )
 
     if (isLoggedIntoPro) {

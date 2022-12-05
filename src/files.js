@@ -1,8 +1,3 @@
-import { ipcRenderer, shell } from 'electron'
-import { getCurrentWindow, app, dialog } from '@electron/remote'
-import fs, { readFileSync } from 'fs'
-import path from 'path'
-
 import { t } from 'plottr_locales'
 import { helpers, actions, reducers, emptyFile, selectors } from 'pltr/v2'
 
@@ -11,15 +6,11 @@ import { store } from './app/store'
 import logger from '../shared/logger'
 import { uploadToFirebase } from './upload-to-firebase'
 import { whenClientIsReady } from '../shared/socket-client'
-
-const fsPromises = fs.promises
-
-const version = app.getVersion()
-const moveItemToTrash = shell.trashItem
+import { makeMainProcessClient } from './app/mainProcessClient'
 
 const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]
 
-const OFFLINE_FILE_FILES_PATH = path.join(app.getPath('userData'), 'offline')
+const { getVersion, showSaveDialog, showErrorBox, editKnownFilePath } = makeMainProcessClient()
 
 export const newEmptyFile = (fileName, appVersion, currentFile) => {
   const emptyFileState = emptyFile(fileName, appVersion)
@@ -54,34 +45,37 @@ export const newFile = (
   name
 ) => {
   const fileName = newFileName(fileList, name)
-  const newFile = newEmptyFile(fileName, version, fullState.present)
-  const file = Object.assign({}, newFile, template || {})
-  if (!file.beats.series) {
-    file.beats.series = newFile.beats.series
-  }
-  if (file.books[1]) {
-    file.books[1].title = fileName
-  }
-  if (fileName) {
-    file.series.name = fileName
-  }
-  return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
-    const fileId = response.data.fileId
-    const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
-    openFile(fileURL, false)
-    closeDashboard()
-    return fileId
+  return getVersion().then((version) => {
+    const newFile = newEmptyFile(fileName, version, fullState.present)
+    const file = Object.assign({}, newFile, template || {})
+    if (!file.beats.series) {
+      file.beats.series = newFile.beats.series
+    }
+    if (file.books[1]) {
+      file.books[1].title = fileName
+    }
+    if (fileName) {
+      file.series.name = fileName
+    }
+    return uploadToFirebase(emailAddress, userId, file, fileName).then((response) => {
+      const fileId = response.data.fileId
+      const fileURL = helpers.file.fileIdToPlottrCloudFileURL(fileId)
+      openFile(fileURL, false)
+      closeDashboard()
+      return fileId
+    })
   })
 }
 
 export const uploadExisting = (emailAddress, userId, fullState) => {
   const filePath = fullState.file.fileName
-  return uploadToFirebase(
-    emailAddress,
-    userId,
-    fullState,
-    path.basename(filePath, path.extname(filePath))
-  )
+  return whenClientIsReady(({ basename, extname }) => {
+    return extname(filePath).then((extension) => {
+      return basename(filePath, extension)
+    })
+  }).then((fileName) => {
+    return uploadToFirebase(emailAddress, userId, fullState, fileName)
+  })
 }
 
 export const messageRenameFile = (fileId) => {
@@ -98,29 +92,17 @@ export const saveFile = (fileURL, file) => {
   })
 }
 
-export const editKnownFilePath = (oldFileURL, newFileURL) => {
-  ipcRenderer.send('edit-known-file-path', oldFileURL, newFileURL)
-}
-
-const win = getCurrentWindow()
-
-export const showSaveDialogSync = (options) => dialog.showSaveDialogSync(win, options)
+export { editKnownFilePath }
 
 export const offlineFileURLFromFile = (file) => {
   if (!file?.project?.fileURL) {
-    return null
+    return Promise.resolve(null)
   }
 
   const fileURL = file?.project?.fileURL
-  if (helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)) {
-    return fileURL
-  }
-
-  if (!helpers.file.urlPointsToPlottrCloud(fileURL)) {
-    return null
-  }
-  const fileId = helpers.file.fileIdFromPlottrProFile(fileURL)
-  return helpers.file.filePathToFileURL(path.join(OFFLINE_FILE_FILES_PATH, fileId))
+  return whenClientIsReady(({ offlineFileURL }) => {
+    return offlineFileURL(fileURL)
+  })
 }
 
 export const renameFile = (fileURL) => {
@@ -129,53 +111,65 @@ export const renameFile = (fileURL) => {
   const isOffline = selectors.isOfflineSelector(present)
   if (isOffline && isCloudFile) {
     logger.info('Tried to save-as a file, but it is offline', fileURL)
-    return
+    return Promise.resolve()
   }
   if (helpers.file.urlPointsToPlottrCloud(fileURL)) {
     const fileList = selectors.knownFilesSelector(present)
     const fileId = fileURL.replace(/^plottr:\/\//, '')
     if (!fileList.find(({ id }) => id === fileId)) {
       logger.error(`Coludn't find file with id: ${fileId} to rename`)
-      return
+      return Promise.resolve()
     }
     if (fileId) messageRenameFile(fileId)
-    return
+    return Promise.resolve()
   }
-  const fileName = showSaveDialogSync({
-    filters,
-    title: t('Give this file a new name'),
-    defaultPath: fileURL,
-  })
-  if (fileName) {
-    try {
-      const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
-      const newFileURL = `device://${newFilePath}`
-      editKnownFilePath(fileURL, newFileURL)
-      const contents = JSON.parse(readFileSync(helpers.file.withoutProtocol(fileURL), 'utf-8'))
-      saveFile(newFileURL, contents)
-      moveItemToTrash(fileURL, true)
-      store.dispatch(actions.applicationState.finishRenamingFile())
-    } catch (error) {
-      logger.error(error)
-      store.dispatch(actions.applicationState.finishRenamingFile())
-      dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+  return showSaveDialog(filters, t('Give this file a new name'), fileURL).then((fileName) => {
+    if (fileName) {
+      try {
+        const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
+        const newFileURL = `device://${newFilePath}`
+        editKnownFilePath(fileURL, newFileURL)
+        return whenClientIsReady(({ readFile, trash }) => {
+          return readFile(helpers.file.withoutProtocol(fileURL), 'utf-8').then((rawFile) => {
+            const contents = JSON.parse(rawFile)
+            return saveFile(newFileURL, contents)
+              .then(() => {
+                return trash(fileURL, true)
+              })
+              .then(() => {
+                store.dispatch(actions.applicationState.finishRenamingFile())
+              })
+          })
+        })
+      } catch (error) {
+        logger.error(error)
+        store.dispatch(actions.applicationState.finishRenamingFile())
+        return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+          return Promise.reject(error)
+        })
+      }
     }
-  }
+    return Promise.resolve()
+  })
 }
 
 export const deleteCloudBackupFile = (fileURL) => {
-  if (
-    !helpers.file.isDeviceFileURL(fileURL) ||
-    !helpers.file.withoutProtocol(fileURL).startsWith(OFFLINE_FILE_FILES_PATH)
-  ) {
-    return Promise.reject(
-      new Error(`Attempted to delete an offline file for non-offline file: ${fileURL}`)
-    )
-  }
+  return whenClientIsReady(({ offlineFileBasePath, rmRf }) => {
+    return offlineFileBasePath().then((offlineFileFilesPath) => {
+      if (
+        !helpers.file.isDeviceFileURL(fileURL) ||
+        !helpers.file.withoutProtocol(fileURL).startsWith(offlineFileFilesPath)
+      ) {
+        return Promise.reject(
+          new Error(`Attempted to delete an offline file for non-offline file: ${fileURL}`)
+        )
+      }
 
-  const filePath = helpers.file.withoutProtocol(fileURL)
-  return fsPromises.unlink(filePath).catch((error) => {
-    // Ignore errors deleting the backup file.
-    return true
+      const filePath = helpers.file.withoutProtocol(fileURL)
+      return rmRf(filePath).catch((error) => {
+        // Ignore errors deleting the backup file.
+        return true
+      })
+    })
   })
 }

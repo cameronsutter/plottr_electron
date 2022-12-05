@@ -1,16 +1,21 @@
 import Rollbar from 'rollbar'
-import { app } from '@electron/remote'
 
+import { makeMainProcessClient } from '../../app/mainProcessClient'
 import makeFileSystemAPIs from '../../api/file-system-apis'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
+
+const { getVersion, pleaseTellMeWhatPlatformIAmOn } = makeMainProcessClient()
 
 export default function setupRollbar(where) {
   let environment = process.env.NODE_ENV == 'development' ? 'development' : 'production'
   let rollbarToken = process.env.ROLLBAR_ACCESS_TOKEN || ''
-  let version = app.getVersion()
 
   const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
-  return fileSystemAPIs.currentUserSettings().then((user) => {
+  return Promise.all([
+    fileSystemAPIs.currentUserSettings(),
+    getVersion(),
+    pleaseTellMeWhatPlatformIAmOn(),
+  ]).then(([user, version, platform]) => {
     return new Rollbar({
       accessToken: rollbarToken,
       handleUncaughtExceptions: process.env.NODE_ENV != 'development',
@@ -19,7 +24,7 @@ export default function setupRollbar(where) {
       payload: {
         environment: environment,
         version: version,
-        os: process.platform,
+        os: platform,
         context: where,
         client: {
           javascript: {

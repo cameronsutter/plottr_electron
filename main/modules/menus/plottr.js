@@ -20,7 +20,7 @@ const setLocale = (locale) => {
   return saveAppSetting('locale', locale)
     .then(() => {
       return currentSettings().then((settings) => {
-        setupI18n(settings, { electron })
+        setupI18n(settings, { locale: electron.app.getLocale() })
       })
     })
     .catch((error) => {

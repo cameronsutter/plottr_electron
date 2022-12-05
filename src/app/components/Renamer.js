@@ -1,6 +1,5 @@
 import React from 'react'
-import { ipcRenderer } from 'electron'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { PropTypes } from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -22,7 +21,6 @@ const Renamer = ({
 }) => {
   const [visible, setVisible] = useState(false)
   const [fileId, setFileId] = useState(null)
-  const renameOpenFile = useRef(false)
 
   const renameFile = (newName) => {
     // This component is for renaming cloud files only.
@@ -43,10 +41,6 @@ const Renamer = ({
         setVisible(false)
         showLoader(false)
         finishRenamingFile()
-        if (renameOpenFile.current) {
-          document.title = `Plottr - ${newName}`
-        }
-        renameOpenFile.current = false
       })
       .catch((error) => {
         logger.error(`Error renaming file with id ${fileId}`, error)
@@ -56,18 +50,12 @@ const Renamer = ({
   }
 
   useEffect(() => {
-    ipcRenderer.on('rename-file', (event, fileId) => {
-      setVisible(true)
-      setFileId(fileId)
-      renameOpenFile.current = true
-    })
     const renameListener = document.addEventListener('rename-file', (event) => {
       setVisible(true)
       setFileId(event.fileId)
     })
     return () => {
       document.removeEventListener('rename-file', renameListener)
-      ipcRenderer.removeAllListeners('rename-file')
     }
   }, [])
 

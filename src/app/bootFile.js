@@ -1,8 +1,3 @@
-import fs from 'fs'
-import { ipcRenderer } from 'electron'
-import { dialog, app, getCurrentWindow } from '@electron/remote'
-import { machineIdSync } from 'node-machine-id'
-
 import {
   helpers,
   SYSTEM_REDUCER_KEYS,
@@ -37,15 +32,22 @@ import {
   makeCachedDownloadStorageImage,
   downloadStorageImage,
 } from '../common/downloadStorageImage'
+import { makeMainProcessClient } from './mainProcessClient'
 
-const clientId = machineIdSync()
+const {
+  setWindowTitle,
+  setRepresentedFileName,
+  getVersion,
+  showErrorBox,
+  showMessageBox,
+  machineId,
+  setMyFilePath,
+} = makeMainProcessClient()
 
 let rollbar
 setupRollbar('app.html').then((newRollbar) => {
   rollbar = newRollbar
 })
-
-const win = getCurrentWindow()
 
 const withFileId = (fileId, file) => ({
   ...file,
@@ -109,39 +111,43 @@ export function removeSystemKeys(jsonData) {
 
 const migrate = (originalFile, fileId) => (overwrittenFile) => {
   const json = overwrittenFile || originalFile
-  return new Promise((resolve, reject) => {
-    migrateIfNeeded(
-      app.getVersion(),
-      json,
-      helpers.file.fileIdToPlottrCloudFileURL(fileId),
-      null,
-      (error, migrated, data) => {
-        if (error) {
-          rollbar.error(error)
-          if (error === 'Plottr behind file') {
-            return reject(new Error('Need to update Plottr'))
+  return getVersion().then((version) => {
+    return new Promise((resolve, reject) => {
+      migrateIfNeeded(
+        version,
+        json,
+        helpers.file.fileIdToPlottrCloudFileURL(fileId),
+        null,
+        (error, migrated, data) => {
+          if (error) {
+            rollbar.error(error)
+            if (error === 'Plottr behind file') {
+              return reject(new Error('Need to update Plottr'))
+            }
+            return reject(error)
           }
-          return reject(error)
-        }
-        if (migrated) {
-          logger.info(
-            `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
-          )
-          overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
-            .then((results) => {
+          machineId().then((clientId) => {
+            if (migrated) {
+              logger.info(
+                `File was migrated.  Migration history: ${data.file.appliedMigrations}.  Initial version: ${data.file.initialVersion}`
+              )
+              overwriteAllKeys(fileId, clientId, removeSystemKeys(data))
+                .then((results) => {
+                  loadFileIntoRedux(data, fileId)
+                  store.dispatch(actions.client.setClientId(clientId))
+                  return results
+                })
+                .then(resolve, reject)
+            } else {
               loadFileIntoRedux(data, fileId)
               store.dispatch(actions.client.setClientId(clientId))
-              return results
-            })
-            .then(resolve, reject)
-        } else {
-          loadFileIntoRedux(data, fileId)
-          store.dispatch(actions.client.setClientId(clientId))
-          resolve(data)
-        }
-      },
-      logger
-    )
+              resolve(data)
+            }
+          })
+        },
+        logger
+      )
+    })
   })
 }
 
@@ -203,18 +209,20 @@ export function bootFile(
         logger.info(
           `Overwriting the cloud version of ${fileId} with a local offline version because it didn't change but the local version did.`
         )
-        return overwriteAllKeys(fileId, clientId, {
-          ...removeSystemKeys(offlineFile),
-          file: {
-            ...offlineFile.file,
-            fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
-          },
-        }).catch((error) => {
-          logger.error(`Erorr uploading our offline file ${fileId}`, error)
-          dialog.showErrorBox(
-            t('Error'),
-            t('There was an error uploading your offline backup. Please exit and start again')
-          )
+        return machineId().then((clientId) => {
+          return overwriteAllKeys(fileId, clientId, {
+            ...removeSystemKeys(offlineFile),
+            file: {
+              ...offlineFile.file,
+              fileName: offlineFile.file.originalFileName || offlineFile.file.fileName,
+            },
+          }).catch((error) => {
+            logger.error(`Erorr uploading our offline file ${fileId}`, error)
+            return showErrorBox(
+              t('Error'),
+              t('There was an error uploading your offline backup. Please exit and start again')
+            )
+          })
         })
       }
       return Promise.resolve(false)
@@ -231,8 +239,11 @@ export function bootFile(
       `Attempted to open ${fileURL} as a cloud file, but it's not a cloud file.  We think it's id is ${fileId} based on that name.`,
       errorObject
     )
-    dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-    return Promise.reject(new Error(`Cannot open file with id: ${fileId} from fileURL: ${fileURL}`))
+    return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+      return Promise.reject(
+        new Error(`Cannot open file with id: ${fileId} from fileURL: ${fileURL}`)
+      )
+    })
   }
 
   function handleNoUserId(fileURL) {
@@ -253,25 +264,41 @@ export function bootFile(
       if (!settings.user.enableOfflineMode) {
         return Promise.resolve(false)
       }
-      const offlineURL = offlineFileURLFromFile(json)
-      if (!offlineURL) {
-        logger.warn(`Could not compute an offline path for file: ${json?.file}`)
-        return Promise.resolve(json)
-      }
-      const offlinePath = helpers.file.withoutProtocol(offlineURL)
-      const exists = offlinePath && fs.existsSync(offlinePath)
-      // FIXME: the socket server now has a way to read files.  We don't
-      // want to depend on FS from the renderer because that'll call out
-      // to the main process.
-      const offlineFile = exists && JSON.parse(fs.readFileSync(offlinePath))
-      if (!offlineFile.file) {
-        logger.warn(
-          `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
-        )
-        return Promise.resolve(false)
-      }
-      const [uploadOurs, backupOurs] = exists ? resumeDirective(offlineFile, json) : [false, false]
-      return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+      return offlineFileURLFromFile(json).then((offlineURL) => {
+        if (!offlineURL) {
+          logger.warn(`Could not compute an offline path for file: ${json?.file}`)
+          return Promise.resolve(false)
+        }
+        const offlinePath = helpers.file.withoutProtocol(offlineURL)
+        return whenClientIsReady(({ fileExists }) => {
+          return fileExists(offlinePath)
+        })
+          .then((exists) => {
+            return offlinePath && exists
+          })
+          .then((exists) => {
+            return whenClientIsReady(({ readFile }) => {
+              return exists
+                ? readFile(offlinePath).then((file) => {
+                    return JSON.parse(file)
+                  })
+                : Promise.resolve(null)
+            })
+          })
+          .then((offlineFile) => {
+            if (!offlineFile) {
+              return false
+            }
+            if (!offlineFile.file) {
+              logger.warn(
+                `There's an offline backup of file with id ${fileId} at ${offlinePath}, but it appears to be broken or incomplete`
+              )
+              return Promise.resolve(false)
+            }
+            const [uploadOurs, backupOurs] = resumeDirective(offlineFile, json)
+            return handleOfflineBackup(backupOurs, uploadOurs, fileId, offlineFile, email, userId)
+          })
+      })
     })
   }
 
@@ -301,28 +328,36 @@ export function bootFile(
   const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
-    return initialFetch(userId, fileId, clientId, app.getVersion())
-      .then((fetchedFile) => {
-        return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
-          .then(migrate(fetchedFile, fileId))
-          .then(makeFlagsConsistent(beatHierarchy))
-          .then(afterLoading(userId, saveBackup))
-      })
-      .catch((error) => {
-        const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
-        logger.error(errorMessage, error)
-        rollbar.error(errorMessage, error)
-        dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-        return Promise.reject(error)
-      })
+    return Promise.all([getVersion(), machineId()]).then(([version, clientId]) => {
+      return initialFetch(userId, fileId, clientId, version)
+        .then((fetchedFile) => {
+          return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
+            .then(migrate(fetchedFile, fileId))
+            .then(makeFlagsConsistent(beatHierarchy))
+            .then(afterLoading(userId, saveBackup))
+        })
+        .catch((error) => {
+          const errorMessage = `Error fetching ${fileId} for user: ${userId}, clientId: ${clientId}`
+          logger.error(errorMessage, error)
+          rollbar.error(errorMessage, error)
+          return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(
+            () => {
+              return Promise.reject(error)
+            }
+          )
+        })
+    })
   }
 
   const handleErrorBootingFile = (fileId) => (error) => {
-    const errorMessage = `Error booting ${fileId} clientId: ${clientId}`
-    logger.error(errorMessage, error)
-    rollbar.error(errorMessage, error)
-    dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-    return Promise.reject(error)
+    machineId().then((clientId) => {
+      const errorMessage = `Error booting ${fileId} clientId: ${clientId}`
+      logger.error(errorMessage, error)
+      rollbar.error(errorMessage, error)
+      return showErrorBox(t('Error'), t('There was an error doing that. Try again')).then(() => {
+        return Promise.reject(error)
+      })
+    })
   }
 
   function bootCloudFile(fileURL, beatHierarchy, saveBackup) {
@@ -338,92 +373,120 @@ export function bootFile(
   }
 
   function bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup) {
-    win.setTitle('Plottr')
-    win.setRepresentedFilename(helpers.file.withoutProtocol(fileURL))
-    let json
-    try {
-      const filePath = helpers.file.withoutProtocol(
-        bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
-      )
-      json = JSON.parse(fs.readFileSync(filePath, 'utf-8'))
-      // In case this file was downloaded and we want to open it while
-      // logged out, we need to reset the cloud flag.  (This is usually
-      // set when we receive the file from Firebase, but it gets
-      // synchronised back up to the database and if you then download
-      // the file it'll be there.)
-      //
-      // This use case is actually quite common: you might want to
-      // simply open a backup file locally.
-      json.file.isCloudFile = false
-    } catch (error) {
-      logger.error(error)
-      rollbar.error(error)
-      return Promise.reject(`bootLocalFile001: json-parse (${fileURL})`)
-    }
-    saveBackup(fileURL, json)
-    return new Promise((resolve, reject) => {
-      migrateIfNeeded(
-        app.getVersion(),
-        json,
-        fileURL,
-        null,
-        (err, didMigrate, state) => {
-          if (err) {
-            rollbar.error(err)
-            logger.error(err)
-            if (err === 'Plottr behind file') {
-              return reject('Need to update Plottr')
-            }
-            return reject(`bootLocalFile002: migration (${fileURL})`)
-          }
-          store.dispatch(
-            actions.ui.loadFile(
-              state.file.fileName || helpers.file.withoutProtocol(fileURL),
-              didMigrate,
-              {
-                ...state,
-                file: {
-                  ...state.file,
-                  originalVersionStamp: state.file.originalVersionStamp || state.file.versionStamp,
-                },
-              },
-              state.file.version,
-              fileURL
+    return setWindowTitle('Plottr')
+      .then(() => {
+        return setRepresentedFileName(helpers.file.withoutProtocol(fileURL))
+      })
+      .then(() => {
+        return offlineFileURL(fileURL)
+          .then((offlineFileURL) => {
+            const filePath = helpers.file.withoutProtocol(
+              bootingOfflineFile ? offlineFileURL(fileURL) : fileURL
             )
-          )
-          store.dispatch(
-            actions.project.selectFile({
-              ...state.file,
-              fileURL,
-              id: helpers.file.fileIdFromPlottrProFile(fileURL),
+            return whenClientIsReady(({ readFile }) => {
+              return readFile(filePath)
             })
-          )
+              .then((rawFile) => {
+                return JSON.parse(rawFile)
+              })
+              .then((json) => {
+                // In case this file was downloaded and we want to open it while
+                // logged out, we need to reset the cloud flag.  (This is usually
+                // set when we receive the file from Firebase, but it gets
+                // synchronised back up to the database and if you then download
+                // the file it'll be there.)
+                //
+                // This use case is actually quite common: you might
+                // want to simply open a backup file locally.
+                return {
+                  ...json,
+                  file: {
+                    ...json.file,
+                    isCloudFile: false,
+                  },
+                }
+              })
+          })
+          .then((json) => {
+            return saveBackup(fileURL, json).then(() => {
+              return json
+            })
+          })
+          .then((json) => {
+            getVersion().then((version) => {
+              return new Promise((resolve, reject) => {
+                migrateIfNeeded(
+                  version,
+                  json,
+                  fileURL,
+                  null,
+                  (err, didMigrate, state) => {
+                    if (err) {
+                      rollbar.error(err)
+                      logger.error(err)
+                      if (err === 'Plottr behind file') {
+                        return reject('Need to update Plottr')
+                      }
+                      return reject(`bootLocalFile002: migration (${fileURL})`)
+                    }
+                    store.dispatch(
+                      actions.ui.loadFile(
+                        state.file.fileName || helpers.file.withoutProtocol(fileURL),
+                        didMigrate,
+                        {
+                          ...state,
+                          file: {
+                            ...state.file,
+                            originalVersionStamp:
+                              state.file.originalVersionStamp || state.file.versionStamp,
+                          },
+                        },
+                        state.file.version,
+                        fileURL
+                      )
+                    )
+                    store.dispatch(
+                      actions.project.selectFile({
+                        ...state.file,
+                        fileURL,
+                        id: helpers.file.fileIdFromPlottrProFile(fileURL),
+                      })
+                    )
 
-          MPQ.projectEventStats(
-            'open_file',
-            { online: navigator.onLine, version: state.file.version, number_open: numOpenFiles },
-            state
-          )
+                    MPQ.projectEventStats(
+                      'open_file',
+                      {
+                        online: navigator.onLine,
+                        version: state.file.version,
+                        number_open: numOpenFiles,
+                      },
+                      state
+                    )
 
-          const withDispatch = dispatchingToStore(store.dispatch)
-          makeFlagConsistent(
-            state,
-            beatHierarchy,
-            featureFlags.BEAT_HIERARCHY_FLAG,
-            withDispatch(actions.featureFlags.setBeatHierarchy),
-            withDispatch(actions.featureFlags.unsetBeatHierarchy)
-          )
+                    const withDispatch = dispatchingToStore(store.dispatch)
+                    makeFlagConsistent(
+                      state,
+                      beatHierarchy,
+                      featureFlags.BEAT_HIERARCHY_FLAG,
+                      withDispatch(actions.featureFlags.setBeatHierarchy),
+                      withDispatch(actions.featureFlags.unsetBeatHierarchy)
+                    )
 
-          if (state && state.tour && state.tour.showTour)
-            store.dispatch(actions.ui.changeOrientation('horizontal'))
+                    if (state && state.tour && state.tour.showTour)
+                      store.dispatch(actions.ui.changeOrientation('horizontal'))
 
-          store.dispatch(actions.client.setClientId(clientId))
+                    return machineId().then((clientId) => {
+                      store.dispatch(actions.client.setClientId(clientId))
 
-          resolve()
-        },
-        logger
-      )
-    })
+                      resolve()
+                    })
+                  },
+                  logger
+                )
+              })
+            })
+          })
+      })
   }
 
   function _bootFile(fileURL, options, numOpenFiles, saveBackup) {
@@ -433,38 +496,38 @@ export function bootFile(
       store.dispatch(actions.applicationState.errorLoadingFile())
       return Promise.reject(new Error(message))
     }
+    store.dispatch(actions.applicationState.startLoadingFile())
 
     // Now that we know what the file path for this window should be,
     // tell the main process.
-    ipcRenderer.send('pls-set-my-file-path', fileURL)
+    return setMyFilePath(fileURL).then(() => {
+      // And then boot the file.
+      const { beatHierarchy } = options
+      const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
-    // And then boot the file.
-    const { beatHierarchy } = options
-    const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
-
-    try {
-      store.dispatch(actions.applicationState.startLoadingFile())
-      return (
-        isCloudFile
-          ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
-          : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
-      )
-        .then(() => {
-          store.dispatch(actions.applicationState.finishLoadingFile())
-        })
-        .catch((error) => {
-          logger.error(error)
-          rollbar.error(error)
-          store.dispatch(
-            actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
-          )
-        })
-    } catch (error) {
-      logger.error(error)
-      rollbar.error(error)
-      store.dispatch(actions.applicationState.errorLoadingFile())
-      return Promise.reject(error)
-    }
+      try {
+        return (
+          isCloudFile
+            ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
+            : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
+        )
+          .then(() => {
+            store.dispatch(actions.applicationState.finishLoadingFile())
+          })
+          .catch((error) => {
+            logger.error(error)
+            rollbar.error(error)
+            store.dispatch(
+              actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
+            )
+          })
+      } catch (error) {
+        logger.error(error)
+        rollbar.error(error)
+        store.dispatch(actions.applicationState.errorLoadingFile())
+        return Promise.reject(error)
+      }
+    })
   }
 
   return _bootFile(fileURL, options, numOpenFiles, saveBackup).then(() => {
@@ -487,13 +550,10 @@ export function bootFile(
       BACKUP_INTERVAL_MS,
       rollbar,
       (title, message) => {
-        dialog.showMessageBox(win, {
-          title,
-          message,
-        })
+        showMessageBox(title, message)
       },
       (title, message) => {
-        dialog.showErorrBox(title, message)
+        showErrorBox(title, message)
       }
     )
   })

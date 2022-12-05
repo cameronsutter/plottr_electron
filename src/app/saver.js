@@ -165,10 +165,7 @@ class Saver {
     )
   }
   onAutoSaveWorkedThisTime = () => {
-    this.showMessageBox({
-      title: t('Auto-saving worked'),
-      message: t('Saving worked this time 🎉'),
-    })
+    this.showMessageBox(t('Auto-saving worked'), t('Saving worked this time 🎉'))
   }
 
   constructor(

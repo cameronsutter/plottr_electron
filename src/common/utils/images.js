@@ -1,4 +1,4 @@
-const request = require('request').defaults({ encoding: null })
+import makeRequest from 'request'
 import Resizer from 'react-image-file-resizer'
 import imageExtensions from 'image-extensions'
 import isUrl from 'is-url'
@@ -9,6 +9,8 @@ const format = 'WEBP' // PNG or WEBP
 const quality = 50 // out of 100
 const rotation = 0
 const output = 'base64'
+
+const request = makeRequest.defaults({ encoding: null })
 
 export function readImage(file, callback) {
   Resizer.imageFileResizer(file, maxWidth, maxHeight, format, quality, rotation, callback, output)

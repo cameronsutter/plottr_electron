@@ -74,18 +74,6 @@ function buildFileMenu(fileURL, getTrialInfo) {
           },
         },
         {
-          label: t('Duplicate'),
-          accelerator: 'CmdOrCtrl+D',
-          visible: !!fileURL,
-          click: function (event, focusedWindow) {
-            if (isPro) {
-              focusedWindow.webContents.send('save-as--pro', fileURL)
-            } else {
-              focusedWindow.webContents.send('save-as')
-            }
-          },
-        },
-        {
           label: t('Close'),
           accelerator: 'CmdOrCtrl+W',
           visible: !!fileURL,

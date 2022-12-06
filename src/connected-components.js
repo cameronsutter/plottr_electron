@@ -420,6 +420,10 @@ const platform = {
     const event = new Event('move-from-temp')
     document.dispatchEvent(event)
   },
+  duplicateFile: () => {
+    const event = new Event('save-as')
+    document.dispatchEvent(event)
+  },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {
       if (!storageURL) {

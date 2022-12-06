@@ -244,7 +244,7 @@ tellMeWhatOSImOn()
           }
         })
 
-        onSaveAs(() => {
+        const saveAsHandler = () => {
           const { present } = store.getState()
           const isInOfflineMode = selectors.isInOfflineModeSelector(present)
           if (isInOfflineMode) {
@@ -270,7 +270,7 @@ tellMeWhatOSImOn()
               })
             })
           })
-        })
+        }
 
         const ensureEndsInPltr = (filePath) => {
           if (!filePath) return null
@@ -353,6 +353,9 @@ tellMeWhatOSImOn()
         }
         const _unsubscribeFromMoveFromTemp = onMoveFromTemp(moveFromTempHandler)
         document.addEventListener('move-from-temp', moveFromTempHandler)
+
+        const _unsubscribeFromSaveAs = onSaveAs(saveAsHandler)
+        document.addEventListener('save-as', saveAsHandler)
 
         onUndo(() => {
           store.dispatch(ActionCreators.undo())

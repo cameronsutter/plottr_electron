@@ -77,7 +77,7 @@
   "Created By": {
     "message": "Créé par"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "Vos sauvegardes"
   },
   "Settings": {
@@ -1406,8 +1406,8 @@
   "Get access to all your projects": {
     "message": "Get access to all your projects"
   },
-  "Give Feedback": {
-    "message": "Give Feedback"
+  "Links": {
+    "message": "Links"
   },
   "Give this tag a name": {
     "message": "Give this tag a name"
@@ -1661,8 +1661,8 @@
   "Reload from File": {
     "message": "Reload from File"
   },
-  "Remove License": {
-    "message": "Remove License"
+  "Deactivate License Key": {
+    "message": "Deactivate License Key"
   },
   "Remove from this list": {
     "message": "Remove from this list"
@@ -1679,8 +1679,8 @@
   "Rename": {
     "message": "Rename"
   },
-  "Report a Problem": {
-    "message": "Report a Problem"
+  "Contact Support": {
+    "message": "Contact Support"
   },
   "Request a Feature": {
     "message": "Request a Feature"

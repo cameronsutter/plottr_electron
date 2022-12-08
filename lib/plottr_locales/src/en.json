@@ -605,8 +605,8 @@
   "Get access to all your projects": {
     "message": "Get access to all your projects"
   },
-  "Give Feedback": {
-    "message": "Give Feedback"
+  "Links": {
+    "message": "Links"
   },
   "Give this tag a name": {
     "message": "Give this tag a name"
@@ -1061,8 +1061,8 @@
   "Reload": {
     "message": "Reload"
   },
-  "Remove License": {
-    "message": "Remove License"
+  "Deactivate License Key": {
+    "message": "Deactivate License Key"
   },
   "Remove from this list": {
     "message": "Remove from this list"
@@ -1079,8 +1079,8 @@
   "Rename": {
     "message": "Rename"
   },
-  "Report a Problem": {
-    "message": "Report a Problem"
+  "Contact Support": {
+    "message": "Contact Support"
   },
   "Request a Feature": {
     "message": "Request a Feature"
@@ -1598,8 +1598,8 @@
   "You're on the latest version": {
     "message": "You''re on the latest version"
   },
-  "Your Backups": {
-    "message": "Your Backups"
+  "Backups": {
+    "message": "Backups"
   },
   "Your Plottr file was exported to a .docx file": {
     "message": "Your Plottr file was exported to a .docx file"

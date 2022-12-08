@@ -13,3 +13,8 @@ The root reducer and all its children accept a `dataRepairers` object.
   normalizeRCEContent: RCEContent => RCEContent
 }
 ```
+
+## Breaking Changes
+## 2022-23-11
+Old: `function editBook(id, attributes)`
+New: `function editBook(id, title, premise, genre, theme)`

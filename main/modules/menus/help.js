@@ -37,7 +37,7 @@ function buildHelpMenu() {
         type: 'separator',
       },
       {
-        label: t('Report a Problem'),
+        label: t('Contact Support'),
         click: () => shell.openExternal('https://plottr.com/support'),
       },
       {

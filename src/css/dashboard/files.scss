@@ -146,6 +146,10 @@
   svg:nth-child(2), span:nth-child(2) {
     margin: 15px;
   }
+
+  .container-fluid {
+    width: 95%;
+  }
 }
 
 .dashboard__recent-files__table {

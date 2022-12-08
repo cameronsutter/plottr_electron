@@ -569,7 +569,7 @@
   "Get access to all your projects": {
     "message": "Получите доступ ко всем своим проектам"
   },
-  "Give Feedback": {
+  "Links": {
     "message": "Дать обратную связь"
   },
   "Give this tag a name": {
@@ -992,7 +992,7 @@
   "Reload": {
     "message": "Перезагрузить"
   },
-  "Remove License": {
+  "Deactivate License Key": {
     "message": "Удалить лицензию"
   },
   "Remove from this list": {
@@ -1010,7 +1010,7 @@
   "Rename": {
     "message": "Переименовать"
   },
-  "Report a Problem": {
+  "Contact Support": {
     "message": "Сообщить о проблеме"
   },
   "Request a Feature": {
@@ -1436,7 +1436,7 @@
   "You're on the latest version": {
     "message": "У вас установлена последняя версия"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "Ваши резервные копии"
   },
   "Your Plottr file was exported to a .docx file": {

@@ -353,8 +353,8 @@ const platform = {
     ipcRenderer.sendTo(win.webContents.id, 'move-from-temp')
   },
   duplicateFile: () => {
-    const event = new Event('save-as')
-    document.dispatchEvent(event)
+    const win = getCurrentWindow()
+    ipcRenderer.sendTo(win.webContents.id, 'save-as')
   },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {

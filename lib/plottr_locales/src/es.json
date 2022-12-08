@@ -323,7 +323,7 @@
   "Genre": {
     "message": "Género"
   },
-  "Give Feedback": {
+  "Links": {
     "message": "Dejar una valoración"
   },
   "Grays": {
@@ -566,7 +566,7 @@
   "Rename": {
     "message": "Renombrar"
   },
-  "Report a Problem": {
+  "Contact Support": {
     "message": "Informar de un problema"
   },
   "Request a Feature": {
@@ -1505,7 +1505,7 @@
   "Recent Projects": {
     "message": "Proyectos recientes"
   },
-  "Remove License": {
+  "Deactivate License Key": {
     "message": "Eliminar licencia"
   },
   "Remove from this list": {
@@ -1763,7 +1763,7 @@
   "You're on the latest version": {
     "message": "Estás usando la última versión"
   },
-  "Your Backups": {
+  "Backups": {
     "message": "Tus copias"
   },
   "Your Plottr file was exported to a Scrivener project package": {

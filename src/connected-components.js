@@ -420,6 +420,17 @@ const platform = {
     const event = new Event('move-from-temp')
     document.dispatchEvent(event)
   },
+  duplicateFile: () => {
+    const state = store.getState().present
+    const isLoggedIntoPro = selectors.hasProSelector(state)
+    const win = getCurrentWindow()
+
+    if (isLoggedIntoPro) {
+      ipcRenderer.sendTo(win.webContents.id, 'save-as--pro')
+    } else {
+      ipcRenderer.sendTo(win.webContents.id, 'save-as')
+    }
+  },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {
       if (!storageURL) {

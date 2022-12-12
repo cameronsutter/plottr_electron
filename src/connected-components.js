@@ -421,15 +421,8 @@ const platform = {
     document.dispatchEvent(event)
   },
   duplicateFile: () => {
-    const state = store.getState().present
-    const isLoggedIntoPro = selectors.hasProSelector(state)
-    const win = getCurrentWindow()
-
-    if (isLoggedIntoPro) {
-      ipcRenderer.sendTo(win.webContents.id, 'save-as--pro')
-    } else {
-      ipcRenderer.sendTo(win.webContents.id, 'save-as')
-    }
+    const event = new Event('save-as')
+    document.dispatchEvent(event)
   },
   showItemInFolder: (fileURL) => {
     isStorageURL(fileURL).then((storageURL) => {

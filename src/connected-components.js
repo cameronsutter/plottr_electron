@@ -421,7 +421,10 @@ const platform = {
     document.dispatchEvent(event)
   },
   duplicateFile: () => {
-    const event = new Event('save-as')
+    const state = store.getState().present
+    const isLoggedIntoPro = selectors.hasProSelector(state)
+
+    const event = isLoggedIntoPro ? new Event('save-as--pro') : new Event('save-as')
     document.dispatchEvent(event)
   },
   showItemInFolder: (fileURL) => {

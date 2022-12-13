@@ -285,4 +285,3 @@ Please install `rimraf` and `npm-run-all` globally to run these commands.
 # Copyright Notice
 
 Copyright 2016-2021 Fictional Devices LLC
-

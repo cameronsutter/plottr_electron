@@ -218,6 +218,7 @@ const setupListeners = (port, userDataPath) => {
       fileSystemModule,
       tempFilesModule,
       trashModule,
+      backupModule,
       logger
     )
     const attemptToFetchTemplates = () => {

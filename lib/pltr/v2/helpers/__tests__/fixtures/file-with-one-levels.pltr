@@ -8,7 +8,7 @@
     "appliedMigrations": [],
     "initialVersion": "2022.12.7-beta.2",
     "isCloudFile": false,
-    "versionStamp": "52c44b4c-58aa-42ff-a104-1661dcbe33aa"
+    "versionStamp": "0e8ceebe-64cb-4f52-882f-6cbfe2b5fb31"
   },
   "ui": {
     "currentView": "timeline",
@@ -97,38 +97,30 @@
         "3": [],
         "4": [],
         "5": [],
-        "6": [
-          2,
-          3,
-          4,
-          5
-        ],
-        "9": [
-          10,
-          11,
-          12,
-          13
-        ],
         "10": [],
         "11": [],
         "12": [],
         "13": [],
         "null": [
-          6,
-          9
+          2,
+          3,
+          4,
+          5,
+          10,
+          11,
+          12,
+          13
         ]
       },
       "heap": {
-        "2": 6,
-        "3": 6,
-        "4": 6,
-        "5": 6,
-        "6": null,
-        "9": null,
-        "10": 9,
-        "11": 9,
-        "12": 9,
-        "13": 9
+        "2": null,
+        "3": null,
+        "4": null,
+        "5": null,
+        "10": null,
+        "11": null,
+        "12": null,
+        "13": null
       },
       "index": {
         "2": {
@@ -168,27 +160,6 @@
           "fromTemplateId": null,
           "id": 5,
           "position": 3,
-          "time": 0,
-          "title": "auto",
-          "expanded": true
-        },
-        "6": {
-          "id": 6,
-          "bookId": "1",
-          "position": 0,
-          "title": "auto",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "9": {
-          "autoOutlineSort": true,
-          "bookId": 1,
-          "fromTemplateId": null,
-          "id": 9,
-          "position": 0,
           "time": 0,
           "title": "auto",
           "expanded": true
@@ -237,31 +208,16 @@
     "series": {
       "children": {
         "1": [],
-        "6": [
-          1
-        ],
         "null": [
-          6
+          1
         ]
       },
       "heap": {
-        "1": 6,
-        "6": null
+        "1": null
       },
       "index": {
         "1": {
           "id": 1,
-          "bookId": "series",
-          "position": 0,
-          "title": "auto",
-          "time": 0,
-          "templates": [],
-          "autoOutlineSort": true,
-          "fromTemplateId": null,
-          "expanded": true
-        },
-        "6": {
-          "id": 6,
           "bookId": "series",
           "position": 0,
           "title": "auto",
@@ -671,24 +627,6 @@
     "0": {
       "name": "Chapter",
       "level": 0,
-      "autoNumber": true,
-      "textSize": 24,
-      "borderStyle": "DASHED",
-      "backgroundColor": "none",
-      "textColor": "#78be20",
-      "borderColor": "#78be20",
-      "dark": {
-        "textColor": "#baed79",
-        "borderColor": "#baed79"
-      },
-      "light": {
-        "textColor": "#78be20",
-        "borderColor": "#78be20"
-      }
-    },
-    "1": {
-      "name": "Chapter",
-      "level": 1,
       "autoNumber": true,
       "textSize": 24,
       "borderStyle": "NONE",

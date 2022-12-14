@@ -56,6 +56,7 @@ const wiredUp = wireUpAPI(logger)
 
 const editFileName = wiredUp.editFileName
 const updateAuthFileName = wiredUp.updateAuthFileName
+const listenToUI = wiredUp.listenToUI
 const listenToFile = wiredUp.listenToFile
 const listenToBeats = wiredUp.listenToBeats
 const listenToCards = wiredUp.listenToCards
@@ -240,6 +241,7 @@ self.onmessage = (event) => {
           logger.error('Error logging error to main process: ', error.message)
         }
       }
+      const unsubscribeToUI = listenToUI(userId, fileId, clientId, replyWithReduxAction)
       const unsubscribeToFile = listenToFile(userId, fileId, clientId, replyWithReduxAction)
       const unsubscribeToBeats = listenToBeats(
         userId,
@@ -293,6 +295,7 @@ self.onmessage = (event) => {
         replyWithReduxAction
       )
       const unsubscribe = () => {
+        unsubscribeToUI()
         unsubscribeToFile()
         unsubscribeToBeats()
         unsubscribeToCards()

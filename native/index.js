@@ -125,6 +125,7 @@ export const wireUpAPI = (logger) => {
   const wiredUp = api(auth, database, storage, BASE_API_DOMAIN, __DEV__, logger, true)
 
   const listen = (withResponse, userId, fileId, clientId, fileVersion) => {
+    const unsubscribeToUI = wiredUp.listenToUI(userId, fileId, clientId, withResponse)
     const unsubscribeToFile = wiredUp.listenToFile(userId, fileId, clientId, withResponse)
     const unsubscribeToBeats = wiredUp.listenToBeats(
       userId,
@@ -165,9 +166,15 @@ export const wireUpAPI = (logger) => {
       clientId,
       withResponse
     )
-      const unsubscribeToImages = wiredUp.listenToImages(userId, fileId, clientId, withResponse)
-      const unsubscribeToAttributes = wiredUp.listenToAttributes(userId, fileId, clientId, withResponse)
+    const unsubscribeToImages = wiredUp.listenToImages(userId, fileId, clientId, withResponse)
+    const unsubscribeToAttributes = wiredUp.listenToAttributes(
+      userId,
+      fileId,
+      clientId,
+      withResponse
+    )
     const unsubscribe = () => {
+      unsubscribeToUI()
       unsubscribeToFile()
       unsubscribeToBeats()
       unsubscribeToCards()
@@ -183,6 +190,7 @@ export const wireUpAPI = (logger) => {
       unsubscribeToTags()
       unsubscribeToLevels()
       unsubscribeToImages()
+      unsubscribeToAttributes()
     }
     return Promise.resolve(unsubscribe)
   }

@@ -50,6 +50,12 @@ function createTestUser() {
     .createUser({ email: 'test@test.com', password: 'tester' })
     .then(() => {
       console.log('Created user test@test.com')
+      return admin
+        .auth()
+        .getUserByEmail('test@test.com')
+        .then((user) => {
+          return admin.auth().setCustomUserClaims(user.uid, { admin: true })
+        })
     })
     .then(() => {
       admin
@@ -57,6 +63,12 @@ function createTestUser() {
         .createUser({ email: 'test2@test.com', password: 'tester' })
         .then(() => {
           console.log('Created user test2@test.com')
+          return admin
+            .auth()
+            .getUserByEmail('test2@test.com')
+            .then((user) => {
+              return admin.auth().setCustomUserClaims(user.uid, { admin: true })
+            })
         })
     })
 }

@@ -2813,22 +2813,6 @@
         }
       }
     },
-    "tour": {
-      "showTour": false,
-      "feature": {
-        "name": "acts",
-        "id": 1,
-        "endStep": 8
-      },
-      "run": true,
-      "stepIndex": 0,
-      "steps": [],
-      "loading": false,
-      "action": "start",
-      "transitioning": false,
-      "b2bTransition": false,
-      "toursTaken": {}
-    },
     "images": {
       "2": {
         "id": 2,
@@ -15487,22 +15471,6 @@
           "textColor": "#0b1117"
         }
       }
-    },
-    "tour": {
-      "showTour": false,
-      "feature": {
-        "name": "acts",
-        "id": 1,
-        "endStep": 8
-      },
-      "run": true,
-      "stepIndex": 0,
-      "steps": [],
-      "loading": false,
-      "action": "start",
-      "transitioning": false,
-      "b2bTransition": false,
-      "toursTaken": {}
     },
     "images": {
       "1": {

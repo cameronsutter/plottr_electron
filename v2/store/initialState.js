@@ -49,7 +49,7 @@ export const chapter = {
   expanded: true,
 }
 
-export const ui = {
+export const uiState = {
   currentView: 'timeline',
   currentTimeline: 1, // bookId or 'series'
   timelineIsExpanded: true,
@@ -88,6 +88,25 @@ export const ui = {
   },
   customAttributeOrder: {
     characters: [],
+  },
+  cardDialog: {
+    isOpen: false,
+    cardId: null,
+    lineId: null,
+    beatId: null,
+  },
+  collaborators: {},
+  bookDialog: {
+    isOpen: false,
+    bookId: null,
+  },
+}
+
+export const ui = {
+  ...uiState,
+  collaborators: {
+    collaborators: [],
+    viewers: [],
   },
 }
 

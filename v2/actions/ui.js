@@ -36,8 +36,14 @@ import {
   SET_TIMELINE_VIEW,
   SELECT_CHARACTER_ATTRIBUTE_BOOK_TAB,
   SELECT_CHARACTER,
+  SET_CARD_DIALOG_OPEN,
+  SET_CARD_DIALOG_CLOSE,
+  OPEN_NEW_BOOK_DIALOG,
+  OPEN_EDIT_BOOK_DIALOG,
+  CLOSE_BOOK_DIALOG,
 } from '../constants/ActionTypes'
-import { fileURLSelector } from '../selectors/knownFiles'
+import { allCardsSelector } from '../selectors/cards'
+import { fileURLSelector } from '../selectors/project'
 
 export function changeCurrentView(view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -188,4 +194,43 @@ export function selectCharacterAttributeBookTab(bookId) {
 
 export function selectCharacter(id) {
   return { type: SELECT_CHARACTER, id }
+}
+
+export const setCardDialogOpen = (cardId, beatId, lineId) => (dispatch, getState) => {
+  // NOTE: Mobile doesn't use history middleware
+  const fullState = getState()
+  const state = fullState.present ? fullState.present : fullState
+  const allCards = allCardsSelector(state)
+  const cardExists = allCards.find((card) => card.id == cardId)
+  if (cardExists) {
+    dispatch({
+      type: SET_CARD_DIALOG_OPEN,
+      cardId,
+      lineId,
+      beatId,
+    })
+  }
+}
+
+export function setCardDialogClose() {
+  return { type: SET_CARD_DIALOG_CLOSE }
+}
+
+export function openNewBookDialog() {
+  return { type: OPEN_NEW_BOOK_DIALOG }
+}
+
+export function openEditBookDialog(bookId) {
+  return {
+    type: OPEN_EDIT_BOOK_DIALOG,
+    bookId,
+  }
+}
+
+export function closeBookDialog() {
+  return { type: CLOSE_BOOK_DIALOG }
+}
+
+export function load(patching, ui) {
+  return { type: LOAD_UI, patching, ui }
 }

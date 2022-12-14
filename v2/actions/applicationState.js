@@ -39,6 +39,7 @@ import {
   AUTO_CHECK_FOR_UPDATES,
   BUSY_WITH_WORK_THAT_PREVENTS_QUITTING,
   DONE_WITH_WORK_THAT_PREVENTS_QUITTING,
+  CLEAR_ERROR_LOADING_FILE,
 } from '../constants/ActionTypes'
 
 // Project states
@@ -77,6 +78,9 @@ export const finishLoadingFile = () => ({
 export const errorLoadingFile = (needToUpdate) => ({
   type: ERROR_LOADING_FILE,
   errorIsUpdateError: needToUpdate,
+})
+export const clearErrorLoadingFile = () => ({
+  type: CLEAR_ERROR_LOADING_FILE,
 })
 export const startRenamingFile = () => ({
   type: START_RENAMING_FILE,

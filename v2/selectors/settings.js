@@ -1,8 +1,19 @@
 import { createSelector } from 'reselect'
 
-export const exportSettingsSelector = (state) => state.settings.exportSettings
-export const userSettingsSelector = (state) => state.settings.userSettings
-export const appSettingsSelector = (state) => state.settings.appSettings
+const settingsSelector = (state) => {
+  return state.settings || {}
+}
+export const exportSettingsSelector = createSelector(
+  settingsSelector,
+  ({ exportSettings }) => exportSettings
+)
+export const userSettingsSelector = createSelector(
+  settingsSelector,
+  ({ userSettings }) => userSettings
+)
+export const appSettingsSelector = createSelector(settingsSelector, (settings) => {
+  return settings.appSettings
+})
 export const appUserSettingsSelector = createSelector(appSettingsSelector, ({ user }) => user || {})
 export const previouslyLoggedIntoProSelector = createSelector(
   appSettingsSelector,
@@ -10,6 +21,9 @@ export const previouslyLoggedIntoProSelector = createSelector(
     return appSettings && appSettings && appSettings.user && appSettings.user.frbId
   }
 )
+export const backupEnabledSelector = createSelector(appSettingsSelector, ({ backup }) => {
+  return backup
+})
 export const showDashboardOnBootSelector = createSelector(
   appUserSettingsSelector,
   ({ openDashboardFirst }) => openDashboardFirst

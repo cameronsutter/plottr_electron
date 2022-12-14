@@ -12,10 +12,12 @@ import {
   LOAD_BOOKS,
   ADD_BOOK_FROM_TEMPLATE,
   DELETE_IMAGE,
+  EDIT_BOOK_IMAGE,
 } from '../constants/ActionTypes'
 import { isSeries } from '../helpers/books'
 import { book as defaultBook } from '../store/initialState'
 import { newFileBooks } from '../store/newFileState'
+import { objectId } from '../store/newIds'
 
 const initialState = {
   allIds: [1],
@@ -31,21 +33,39 @@ const books =
           ...state,
           [action.id]: {
             ...state[action.id],
-            ...action.attributes,
+            title: action.title,
+            premise: action.premise,
+            genre: action.genre,
+            theme: action.theme,
+          },
+        }
+
+      case EDIT_BOOK_IMAGE:
+        return {
+          ...state,
+          [action.id]: {
+            ...state[action.id],
+            imageId: action.imageId,
           },
         }
 
       case ADD_BOOK_FROM_TEMPLATE:
-      case ADD_BOOK:
+      case ADD_BOOK: {
+        const newBookId = objectId(state.allIds)
         return {
           ...state,
-          allIds: [...state.allIds, action.newBookId],
-          [action.newBookId]: {
+          allIds: [...state.allIds, newBookId],
+          [newBookId]: {
             ...action.book,
-            id: action.newBookId,
+            id: newBookId,
+            title: action.title,
+            premise: action.premise,
+            genre: action.genre,
+            theme: action.theme,
             timelineTemplates: action.templateData ? [action.templateData.id] : [],
           },
         }
+      }
 
       case REORDER_BOOKS:
         return {

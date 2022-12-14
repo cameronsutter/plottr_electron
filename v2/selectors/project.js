@@ -1,6 +1,14 @@
 import { createSelector } from 'reselect'
 import { isDeviceFileURL, urlPointsToPlottrCloud } from '../helpers/file'
 import { isOnWebSelector } from './client'
+import {
+  backupEnabledSelector,
+  localBackupsEnabledSelector,
+  offlineModeEnabledSelector,
+} from './settings'
+import { emptyFile } from '../store/newFileState'
+import { SYSTEM_REDUCER_KEYS } from '../reducers/systemReducers'
+import { difference } from 'lodash'
 
 export const projectSelector = (state) => state.project
 export const selectedFileSelector = (state) => state.project.selectedFile
@@ -28,4 +36,62 @@ export const backingUpOfflineFileSelector = (state) => state.project.backingUpOf
 export const fileURLSelector = (state) => state.project.fileURL
 export const isDeviceFileSelector = createSelector(fileURLSelector, (fileURL) =>
   isDeviceFileURL(fileURL)
+)
+const emptyFileState = emptyFile('DummyFile', '2022.11.2')
+export const hasAllKeysSelector = (state) => {
+  const withoutSystemKeys = difference(Object.keys(state), SYSTEM_REDUCER_KEYS)
+  return difference(Object.keys(emptyFileState), withoutSystemKeys).length === 0
+}
+export const canSaveSelector = createSelector(
+  fileURLSelector,
+  isResumingSelector,
+  isOfflineSelector,
+  offlineModeEnabledSelector,
+  hasAllKeysSelector,
+  isCloudFileSelector,
+  (fileURL, isResuming, isOffline, offlineModeEnabled, hasAllKeys, isCloudFile) => {
+    return (
+      !!fileURL &&
+      !isResuming &&
+      (!isCloudFile || !(isCloudFile && isOffline && !offlineModeEnabled)) &&
+      hasAllKeys
+    )
+  }
+)
+export const canBackupSelector = createSelector(
+  fileURLSelector,
+  isResumingSelector,
+  isOfflineSelector,
+  offlineModeEnabledSelector,
+  hasAllKeysSelector,
+  isCloudFileSelector,
+  localBackupsEnabledSelector,
+  backupEnabledSelector,
+  (
+    fileURL,
+    isResuming,
+    isOffline,
+    offlineModeEnabled,
+    hasAllKeys,
+    isCloudFile,
+    localBackupsEnabled,
+    backupEnabled
+  ) => {
+    return (
+      backupEnabled &&
+      !!fileURL &&
+      !isResuming &&
+      !(isOffline && isCloudFile) &&
+      ((isCloudFile && localBackupsEnabled) || !isCloudFile) &&
+      hasAllKeys
+    )
+  }
+)
+export const shouldSaveOfflineFileSelector = createSelector(
+  canSaveSelector,
+  offlineModeEnabledSelector,
+  isCloudFileSelector,
+  (canSave, offlineModeEnabled, isCloudFile) => {
+    return isCloudFile && canSave && offlineModeEnabled
+  }
 )

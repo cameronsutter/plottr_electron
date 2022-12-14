@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import PropTypes from 'react-proptypes'
+import cx from 'classnames'
+import { isEqual } from 'lodash'
+
 import RichTextConnector from './rce/RichText'
 import DeleteConfirmModal from './dialogs/DeleteConfirmModal'
-import cx from 'classnames'
-
 import Glyphicon from './Glyphicon'
 import ControlLabel from './ControlLabel'
 import FormGroup from './FormGroup'
@@ -12,6 +13,18 @@ import Button from './Button'
 import { checkDependencies } from './checkDependencies'
 
 const areEqual = (prevProps, nextProps) => {
+  if (prevProps.entity !== nextProps.entity && isEqual(prevProps.entity, nextProps.entity)) {
+    return (
+      prevProps.index === nextProps.index &&
+      prevProps.entityType === nextProps.entityType &&
+      prevProps.value === nextProps.value &&
+      prevProps.editorPath === nextProps.editorPath &&
+      prevProps.name === nextProps.name &&
+      prevProps.id === nextProps.id &&
+      prevProps.type === nextProps.type
+    )
+  }
+
   for (const key of Object.keys(prevProps)) {
     if (prevProps[key] !== nextProps[key]) {
       return false
@@ -33,6 +46,7 @@ const EditAttributeConnector = (connector) => {
     entityType,
     templateAttribute,
     name,
+    id,
     type,
     description,
     link,
@@ -75,7 +89,7 @@ const EditAttributeConnector = (connector) => {
         setEditing(false)
         return false
       }
-      editAttribute(index, { name, type }, { name: newName, type })
+      editAttribute(index, { id, name, type }, { id, name: newName, type })
       setEditing(false)
     }
 
@@ -187,7 +201,7 @@ const EditAttributeConnector = (connector) => {
         {deleting ? (
           <DeleteConfirmModal
             name={name}
-            onDelete={() => removeAttribute(name)}
+            onDelete={() => removeAttribute(name, id)}
             onCancel={() => setDeleting(false)}
           />
         ) : null}
@@ -225,6 +239,7 @@ const EditAttributeConnector = (connector) => {
   EditAttribute.propTypes = {
     templateAttribute: PropTypes.bool,
     name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     description: PropTypes.string,
     link: PropTypes.string,
@@ -256,15 +271,32 @@ const EditAttributeConnector = (connector) => {
     const { connect, bindActionCreators } = redux
     const mapDispatchToProps = (dispatch, { entityType }) => {
       const customAttributeActions = bindActionCreators(actions.customAttribute, dispatch)
+      const attributesActions = bindActionCreators(actions.attributes, dispatch)
+      const characterActions = bindActionCreators(actions.character, dispatch)
 
       switch (entityType) {
-        case 'character':
+        case 'character': {
           return {
-            addAttribute: customAttributeActions.addCharacterAttr,
-            removeAttribute: customAttributeActions.removeCharacterAttr,
-            editAttribute: customAttributeActions.editCharacterAttr,
-            reorderAttribute: customAttributeActions.reorderCharacterAttribute,
+            addAttribute: (attribute) =>
+              characterActions.createCharacterAttribute(attribute.type, attribute.name),
+            // Other attributes are still keyed by name :/
+            removeAttribute: (name, id) => {
+              attributesActions.deleteCharacterAttribute(id, name)
+            },
+            // An adaptor because the old interface for editing
+            // attributes is super-janky.
+            editAttribute: (index, oldAttribute, newAttribute) => {
+              attributesActions.editCharacterAttributeMetadata(
+                oldAttribute.id,
+                newAttribute.name,
+                newAttribute.type,
+                oldAttribute.name
+              )
+            },
+            reorderAttribute: (attribute, toIndex) =>
+              attributesActions.reorderCharacterAttribute(attribute.id, toIndex),
           }
+        }
 
         case 'place':
           return {

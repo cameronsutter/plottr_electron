@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 
 import { t } from 'plottr_locales'
@@ -9,11 +9,9 @@ import { checkDependencies } from '../../checkDependencies'
 
 const LicenseInfoConnector = (connector) => {
   const {
-    platform: { machineIdSync, os },
+    platform: { machineId, os },
   } = connector
-  checkDependencies({ machineIdSync, os })
-
-  const deviceID = machineIdSync(true)
+  checkDependencies({ machineId, os })
 
   const LicenseInfo = ({
     expires,
@@ -24,21 +22,32 @@ const LicenseInfoConnector = (connector) => {
     settings,
   }) => {
     const [deleting, setDeleting] = useState(false)
+    const [deviceId, setDeviceId] = useState(null)
+
+    useEffect(() => {
+      if (!deviceId) {
+        machineId().then((id) => {
+          setDeviceId(id)
+        })
+      }
+    }, [deviceId, setDeviceId])
+
     const expiresDate =
       expires == 'lifetime' ? t('Never') : t('{date, date, long}', { date: new Date(expires) })
-    const usableDeviceID = os == 'unknown' ? t('Browser') : deviceID
+    const usableDeviceID = os == 'unknown' ? t('Browser') : deviceId
 
     let deleteModal = false
     if (deleting) {
       deleteModal = (
         <DeleteConfirmModal
           notSubmit
-          customText={t('Are you sure you want to remove your license?')}
+          customText={t('Are you sure you want to deactivate your license key?')}
           onDelete={() => {
             deleteLicense().then(() => {
               setDeleting(false)
             })
           }}
+          confirmText={t('Deactivate')}
           onCancel={() => setDeleting(false)}
         />
       )
@@ -48,13 +57,23 @@ const LicenseInfoConnector = (connector) => {
 
     return (
       <div className="dashboard__user-info">
-        <h2>{t('License Information')}</h2>
+        <div className="dashboard__user-info license-info__label">
+          <h2>{t('License Information')}</h2>
+          {os == 'unknown' ? null : (
+            <div className="text-right">
+              <Button bsStyle="danger" bsSize="small" onClick={() => setDeleting(true)}>
+                {t('Deactivate License Key')}
+              </Button>
+              {deleteModal}
+            </div>
+          )}
+        </div>
         <hr />
         <div className="dashboard__user-info__wrapper">
           <dl className="dl-horizontal">
             <dt>{t('Purchase Email')}</dt>
             <dd className={blurClass}>{customerEmail}</dd>
-            <dt>{t('Product name')}</dt>
+            <dt>{t('Product Name')}</dt>
             <dd>{itemName}</dd>
             <dt>{t('Device ID')}</dt>
             <dd className={blurClass}>{usableDeviceID}</dd>
@@ -66,15 +85,6 @@ const LicenseInfoConnector = (connector) => {
             <dd>{expiresDate}</dd>
           </dl>
         </div>
-        {os == 'unknown' ? null : (
-          <div className="text-right">
-            <Button bsStyle="danger" bsSize="small" onClick={() => setDeleting(true)}>
-              {t('Remove License')}
-            </Button>
-            {deleteModal}
-            <p className="secondary-text">{t('Use this to remove your license on this device')}</p>
-          </div>
-        )}
       </div>
     )
   }

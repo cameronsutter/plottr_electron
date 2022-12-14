@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PropTypes } from 'prop-types'
 
 import { t } from 'plottr_locales'
@@ -28,6 +28,12 @@ const AboutConnector = (connector) => {
   })
 
   const About = ({ settings, inValidLicenseState, requestCheckForUpdates }) => {
+    const [version, setVersion] = useState('')
+
+    useEffect(() => {
+      appVersion(setVersion)
+    })
+
     const osIsUnknown = os() === 'unknown'
 
     const _checkForUpdates = () => {
@@ -71,12 +77,12 @@ const AboutConnector = (connector) => {
         <div className="dashboard__about__wrapper">
           <dl className="dl-horizontal">
             <dt>{t('Version')}</dt>
-            <dd>{appVersion}</dd>
+            <dd>{version}</dd>
             {osIsUnknown ? null : <dt>{t('Updates')}</dt>}
             <UpdateButton />
             <dt>{t('Changelog')}</dt>
             <dd>
-              <a href="#" onClick={seeChangelog}>
+              <a href="#" onClick={seeChangelog} draggable={false}>
                 {t("See What's New")}
               </a>
             </dd>

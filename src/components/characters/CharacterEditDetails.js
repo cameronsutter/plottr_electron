@@ -114,12 +114,7 @@ const CharacterEditDetailsConnector = (connector) => {
     }
 
     const handleNotesChanged = (value, selection) => {
-      actions.editCharacter(
-        character.id,
-        helpers.editors.attrIfPresent('notes', value),
-        editorPath,
-        selection
-      )
+      actions.editDescription(character.id, value)
     }
 
     const handleAttrChange = (attrId) => (value) => {
@@ -133,27 +128,23 @@ const CharacterEditDetailsConnector = (connector) => {
         name
       )
 
-      if (!desc && desc !== '') {
-        actions.editCharacter(character.id, {}, editorPath, selection)
-        return
-      }
       actions.editCharacterTemplateAttribute(character.id, id, name, desc, editorPath, selection)
     }
 
     const changeCategory = (val) => {
-      actions.editCharacter(character.id, { categoryId: val })
+      actions.editCategory(character.id, val)
     }
 
     const changeImage = (newImageId) => {
-      actions.editCharacter(character.id, { imageId: newImageId })
+      actions.editCharacterImage(character.id, newImageId)
     }
 
     const changeName = (newName) => {
-      actions.editCharacter(character.id, { name: newName })
+      actions.editCharacterName(character.id, newName)
     }
 
     const changeShortDescription = (newShortDescription) => {
-      actions.editCharacter(character.id, { description: newShortDescription })
+      actions.editShortDescription(character.id, newShortDescription)
     }
 
     const selectTab = (key) => {
@@ -249,6 +240,7 @@ const CharacterEditDetailsConnector = (connector) => {
               onChange={handleAttrChange(attr.id || attr.name)}
               onSave={finishEditing}
               name={attr.name}
+              id={attr.id}
               type={attr.type}
             />
           </React.Fragment>
@@ -278,6 +270,7 @@ const CharacterEditDetailsConnector = (connector) => {
                 onChange={handleTemplateAttrChange(template.id, attr.name)}
                 onSave={finishEditing}
                 name={attr.name}
+                id={attr.id}
                 type={attr.type}
                 description={attr.description}
                 link={attr.link}
@@ -352,7 +345,7 @@ const CharacterEditDetailsConnector = (connector) => {
                   onChange={withEventTargetValue(changeShortDescription)}
                   onKeyDown={handleEsc}
                   onKeyPress={handleEnter}
-                  defaultValue={character.description}
+                  value={character.description}
                 />
               </FormGroup>
             </div>
@@ -407,7 +400,7 @@ const CharacterEditDetailsConnector = (connector) => {
             </Button>
             <Button onClick={handleDelete}>
               <Glyphicon glyph="trash" />
-              {t('Delete')}
+              {' ' + t('Delete')}
             </Button>
           </ButtonToolbar>
         </div>
@@ -444,7 +437,10 @@ const CharacterEditDetailsConnector = (connector) => {
       (state, ownProps) => {
         const editorPath = helpers.editors.characterNotesEditorPath(ownProps.characterId)
         return {
-          character: selectors.singleCharacterSelector(state.present, ownProps.characterId),
+          character: selectors.displayedSingleCharacterSelector(
+            state.present,
+            ownProps.characterId
+          ),
           attributes: selectors.characterAttributesSelector(state.present, ownProps.characterId),
           selection: selectors.selectionSelector(state.present, editorPath),
           editorPath,

@@ -40,7 +40,8 @@ const CustomAttrFilterListConnector = (connector) => {
       if (state.filteredItems)
         filteredItems = Object.assign({}, filteredItems, state.filteredItems, props.filteredItems)
       filteredItems = props.customAttributes.reduce((result, attr) => {
-        if (attr.type == 'text') result[attr.name] = filteredItems[attr.name] || []
+        if (attr.type == 'text')
+          result[attr.id || attr.name] = filteredItems[attr.id || attr.name] || []
         return result
       }, filteredItems)
       return { filteredItems }
@@ -54,14 +55,15 @@ const CustomAttrFilterListConnector = (connector) => {
       this.setState({ filteredItems })
     }
 
-    filterItem(value, attr) {
+    filterItem(value, attr, id) {
       var filteredItems = this.state.filteredItems
-      if (!filteredItems[attr]) return
-      if (!filteredItems[attr].includes(value)) {
-        filteredItems[attr].push(value)
+      const key = id || attr
+      if (!filteredItems[key]) return
+      if (!filteredItems[key].includes(value)) {
+        filteredItems[key].push(value)
       } else {
-        var index = filteredItems[attr].indexOf(value)
-        if (index !== -1) filteredItems[attr].splice(index, 1)
+        var index = filteredItems[key].indexOf(value)
+        if (index !== -1) filteredItems[key].splice(index, 1)
       }
       this.props.update(filteredItems)
       this.setState({ filteredItems })
@@ -69,25 +71,26 @@ const CustomAttrFilterListConnector = (connector) => {
 
     filterList(attr, id) {
       var filteredItems = this.state.filteredItems
-      if (!filteredItems[attr]) return
-      if (filteredItems[attr].length > 0) {
-        filteredItems[attr] = []
+      const key = id || attr
+      if (!filteredItems[key]) return
+      if (filteredItems[key].length > 0) {
+        filteredItems[key] = []
       } else {
-        filteredItems[attr] = this.values(attr, id)
+        filteredItems[key] = this.values(key, id)
       }
       this.props.update(filteredItems)
       this.setState({ filteredItems: filteredItems })
     }
 
-    isChecked(value, attrName) {
-      if (!this.state.filteredItems[attrName]) return false
-      if (!this.state.filteredItems[attrName].length) return false
-      return this.state.filteredItems[attrName].indexOf(value) !== -1
+    isChecked(value, attrKey) {
+      if (!this.state.filteredItems[attrKey]) return false
+      if (!this.state.filteredItems[attrKey].length) return false
+      return this.state.filteredItems[attrKey].indexOf(value) !== -1
     }
 
     values(attrName, id) {
       if (id) {
-        return this.props.customAttributeValues[id]
+        return this.props.customAttributeValues[id] || []
       }
       // TODO: this should be a selector
       let values = this.props.items.map((item) => item[attrName])
@@ -106,11 +109,14 @@ const CustomAttrFilterListConnector = (connector) => {
 
     renderFilterItem(value, attr) {
       var checked = 'unchecked'
-      if (this.isChecked(value, attr.name)) {
+      if (this.isChecked(value, attr.id || attr.name)) {
         checked = 'eye-open'
       }
       return (
-        <li key={`${value}-${attr.name}`} onMouseDown={() => this.filterItem(value, attr.name)}>
+        <li
+          key={`${value}-${attr.name}`}
+          onMouseDown={() => this.filterItem(value, attr.name, attr.id)}
+        >
           <Glyphicon glyph={checked} /> {value.substr(0, 18)}
         </li>
       )
@@ -118,11 +124,11 @@ const CustomAttrFilterListConnector = (connector) => {
 
     renderBlank(attr) {
       var checked = 'unchecked'
-      if (this.isChecked('', attr.name)) {
+      if (this.isChecked('', attr.id || attr.name)) {
         checked = 'eye-open'
       }
       return (
-        <li onMouseDown={() => this.filterItem('', attr.name)}>
+        <li onMouseDown={() => this.filterItem('', attr.name, attr.id)}>
           <Glyphicon glyph={checked} /> <em className="secondary-text">[{i18n('blank')}]</em>
         </li>
       )
@@ -220,22 +226,12 @@ const CustomAttrFilterListConnector = (connector) => {
 
   const {
     redux,
-    pltr: {
-      actions,
-      selectors: {
-        sortedTagsSelector,
-        characterAttributesForCurrentBookSelector,
-        characterAttributeValuesForCurrentBookSelector,
-      },
-    },
+    pltr: { actions, selectors },
   } = connector
 
   checkDependencies({
     redux,
     actions,
-    sortedTagsSelector,
-    characterAttributesForCurrentBookSelector,
-    characterAttributeValuesForCurrentBookSelector,
   })
 
   if (redux) {
@@ -244,13 +240,13 @@ const CustomAttrFilterListConnector = (connector) => {
     const chooseFilteredItems = (state, type) => {
       switch (type) {
         case 'characters':
-          return state.present.ui.characterFilter
+          return selectors.characterFilterSelector(state.present)
         case 'places':
-          return state.present.ui.placeFilter
+          return selectors.placeFilterSelector(state.present)
         case 'cards':
-          return state.present.ui.timelineFilter
+          return selectors.timelineFilterSelector(state.present)
         case 'notes':
-          return state.present.ui.noteFilter
+          return selectors.noteFilterSelector(state.present)
         default:
           log.error(`Trying to get filter for unsuported filter type: ${type}`)
           return {}
@@ -260,7 +256,7 @@ const CustomAttrFilterListConnector = (connector) => {
     const chooseCustomAttributes = (state, type) => {
       switch (type) {
         case 'characters':
-          return characterAttributesForCurrentBookSelector(state.present)
+          return selectors.characterAttributesForCurrentBookSelector(state.present)
         case 'places':
           return state.present.customAttributes.places
         case 'cards':
@@ -276,7 +272,7 @@ const CustomAttrFilterListConnector = (connector) => {
     const chooseAttributeValuesPerType = (state, type) => {
       switch (type) {
         case 'characters': {
-          return characterAttributeValuesForCurrentBookSelector(state.present)
+          return selectors.characterAttributeValuesForCurrentBookSelector(state.present)
         }
         default: {
           return {}
@@ -287,7 +283,7 @@ const CustomAttrFilterListConnector = (connector) => {
     const mapStateToProps = (state, { type }) => {
       const filteredItems = chooseFilteredItems(state, type)
       return {
-        tags: sortedTagsSelector(state.present),
+        tags: selectors.sortedTagsSelector(state.present),
         books: state.present.books,
         customAttributes: chooseCustomAttributes(state, type),
         customAttributeValues: chooseAttributeValuesPerType(state, type),

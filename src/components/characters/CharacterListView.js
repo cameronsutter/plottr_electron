@@ -95,6 +95,7 @@ const CharacterListViewConnector = (connector) => {
     books,
     attributeTabId,
     selectedCharacteId,
+    showTabs,
     actions,
     customAttributeActions,
     uiActions,
@@ -107,6 +108,7 @@ const CharacterListViewConnector = (connector) => {
     const [templateData, setTemplateData] = useState(null)
     const [filterVisible, setFilterVisible] = useState(false)
     const [sortVisible, setSortVisible] = useState(false)
+    const [detailsVisible, setDetailsVisible] = useState(true)
 
     useEffect(() => {
       uiActions.selectCharacter(
@@ -187,6 +189,15 @@ const CharacterListViewConnector = (connector) => {
       }
       event.preventDefault()
       event.stopPropagation()
+    }
+
+    // If we don't do this, then all the rich text editors will be
+    // re-used.
+    const flickerDetails = () => {
+      setDetailsVisible(false)
+      window.requestIdleCallback(() => {
+        setDetailsVisible(true)
+      })
     }
 
     const renderSubNav = () => {
@@ -308,7 +319,7 @@ const CharacterListViewConnector = (connector) => {
       return visibleCharactersByCategory[categoryId].map((ch) => (
         <CharacterItem
           key={ch.id}
-          character={ch}
+          characterId={ch.id}
           selected={ch.id == selectedCharacteId}
           startEdit={editSelected}
           stopEdit={stopEditing}
@@ -341,6 +352,8 @@ const CharacterListViewConnector = (connector) => {
     }
 
     const renderCharacterDetails = () => {
+      if (!detailsVisible) return null
+
       let character = characters.find((char) => char.id == selectedCharacteId)
       if (!character) return null
 
@@ -405,26 +418,29 @@ const CharacterListViewConnector = (connector) => {
               <div className="character-list__category-list">{renderCharacters()}</div>
             </Col>
             <Col sm={9}>
-              <div className="item-list__book-tabs-wrapper">
-                <Tabs
-                  bsStyle="pills"
-                  activeKey={attributeTabId}
-                  onSelect={(key) => {
-                    uiActions.selectCharacterAttributeBookTab(key)
-                  }}
-                  id="book-chooser"
-                  style={{ marginBottom: '16px' }}
-                >
-                  <Tab eventKey={'all'} title={t('All')}></Tab>
-                  {Object.values(books).map((book, index) => {
-                    if (Array.isArray(book)) {
-                      return null
-                    }
-                    const title = (book.title && truncateTitle(book.title, 40)) || t('Untitled')
-                    return <Tab key={index} eventKey={book.id} title={title}></Tab>
-                  })}
-                </Tabs>
-              </div>
+              {showTabs ? (
+                <div className="item-list__book-tabs-wrapper">
+                  <Tabs
+                    bsStyle="pills"
+                    activeKey={attributeTabId}
+                    onSelect={(key) => {
+                      uiActions.selectCharacterAttributeBookTab(key)
+                      flickerDetails()
+                    }}
+                    id="book-chooser"
+                    style={{ marginBottom: '16px' }}
+                  >
+                    <Tab eventKey={'all'} title={t('Series')}></Tab>
+                    {Object.values(books).map((book, index) => {
+                      if (Array.isArray(book)) {
+                        return null
+                      }
+                      const title = (book.title && truncateTitle(book.title, 40)) || t('Untitled')
+                      return <Tab key={index} eventKey={book.id} title={title}></Tab>
+                    })}
+                  </Tabs>
+                </div>
+              ) : null}
               {renderCharacterDetails()}
             </Col>
           </Row>
@@ -445,6 +461,7 @@ const CharacterListViewConnector = (connector) => {
     charactersSearchTerm: PropTypes.string,
     books: PropTypes.object.isRequired,
     selectedCharacteId: PropTypes.number,
+    showTabs: PropTypes.bool,
     attributeTabId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     actions: PropTypes.object.isRequired,
     customAttributeActions: PropTypes.object.isRequired,
@@ -481,9 +498,10 @@ const CharacterListViewConnector = (connector) => {
           characterSort: selectors.characterSortSelector(state.present),
           darkMode: selectors.isDarkModeSelector(state.present),
           charactersSearchTerm: selectors.charactersSearchTermSelector(state.present),
-          books: selectors.allBooksSelector(state.present),
+          books: selectors.allBooksWithCharactersInThemSelector(state.present),
           attributeTabId: selectors.characterAttributeTabSelector(state.present),
           selectedCharacteId: selectors.selectedCharacterSelector(state.present),
+          showTabs: selectors.showBookTabsSelector(state.present),
         }
       },
       (dispatch) => {

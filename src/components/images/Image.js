@@ -13,12 +13,23 @@ const ImageConnector = (connector) => {
   } = connector
   checkDependencies({ resolveToPublicUrl })
 
-  const Image = ({ size, shape, image, responsive, className }) => {
+  const Image = ({ size, shape, image, responsive, className, imageCache, cacheImage }) => {
     const [imageSrc, setImageSrc] = useState(null)
+
+    const publicImageUrl = imageCache[image?.path]?.publicUrl
 
     const isOnStorage = () => {
       return image?.path?.startsWith('storage://')
     }
+
+    useEffect(() => {
+      if (!publicImageUrl && image?.path && isOnStorage()) {
+        resolveToPublicUrl(image?.path).then((imageUrl) => {
+          cacheImage(image?.path, imageUrl)
+          setImageSrc(imageUrl)
+        })
+      }
+    }, [cacheImage, imageCache, resolveToPublicUrl, publicImageUrl, image?.path])
 
     useEffect(() => {
       setImageSrc(null)
@@ -28,9 +39,7 @@ const ImageConnector = (connector) => {
       if (!image || imageSrc) return
 
       if (isOnStorage()) {
-        resolveToPublicUrl(image.path).then((url) => {
-          setImageSrc(url)
-        })
+        setImageSrc(publicImageUrl)
       } else {
         setImageSrc(image.data)
       }
@@ -60,18 +69,29 @@ const ImageConnector = (connector) => {
     responsive: PropTypes.bool,
     className: PropTypes.string,
     image: PropTypes.object,
+    imageCache: PropTypes.object.isRequired,
+    cacheImage: PropTypes.func.isRequired,
   }
 
-  const { redux } = connector
-  checkDependencies({ redux })
+  const {
+    redux,
+    pltr: { selectors, actions },
+  } = connector
+  checkDependencies({ redux, selectors })
   if (redux) {
     const { connect } = redux
 
-    return connect((state, ownProps) => {
-      return {
-        image: state.present.images[ownProps.imageId],
+    return connect(
+      (state, ownProps) => {
+        return {
+          image: state.present.images[ownProps.imageId],
+          imageCache: selectors.imageCacheSelector(state.present),
+        }
+      },
+      {
+        cacheImage: actions.imageCache.cacheImage,
       }
-    })(Image)
+    )(Image)
   }
 
   throw new Error('Couldnt find connector for Image.js')

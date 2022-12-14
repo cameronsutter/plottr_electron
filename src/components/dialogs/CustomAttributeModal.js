@@ -123,9 +123,11 @@ const CustomAttributeModalConnector = (connector) => {
         switch (type) {
           case 'characters':
             return {
-              addAttribute: characterActions.createCharacterAttribute,
+              addAttribute: (attribute) =>
+                characterActions.createCharacterAttribute(attribute.type, attribute.name),
+              // Other attributes are still keyed by name :/
               removeAttribute: (name, id) => {
-                attributesActions.deleteCharacterAttribute(name, id)
+                attributesActions.deleteCharacterAttribute(id, name)
               },
               // An adaptor because the old interface for editing
               // attributes is super-janky.
@@ -137,7 +139,8 @@ const CustomAttributeModalConnector = (connector) => {
                   oldAttribute.name
                 )
               },
-              reorderAttribute: attributesActions.reorderCharacterAttribute,
+              reorderAttribute: (attribute, toIndex) =>
+                attributesActions.reorderCharacterAttribute(attribute.id, toIndex, attribute.name),
             }
 
           case 'places':

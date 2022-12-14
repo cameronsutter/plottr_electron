@@ -67,6 +67,11 @@
     margin: 0;
     & > li > a {
       border-radius: 0;
+      padding-left: 8px;
+    }
+
+    .file-actions-wrapper button {
+      margin-right: 5px;
     }
   }
   li.dropdown {

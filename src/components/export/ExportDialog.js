@@ -27,9 +27,9 @@ const ExportDialogConnector = (connector) => {
   const {
     platform: {
       log,
-      dialog,
+      showErrorBox,
       export: { askToExport, saveExportConfigSettings, notifyUser, exportSaveDialog },
-      file: { rmRF },
+      file: { rmRF, writeFile, joinPath, stat, mkdir, basename },
       isWindows,
       mpq,
       storage: { downloadStorageImage },
@@ -37,7 +37,7 @@ const ExportDialogConnector = (connector) => {
   } = connector
   checkDependencies({
     log,
-    dialog,
+    showErrorBox,
     askToExport,
     saveExportConfigSettings,
     isWindows,
@@ -45,7 +45,12 @@ const ExportDialogConnector = (connector) => {
     exportSaveDialog,
     mpq,
     rmRF,
+    writeFile,
     downloadStorageImage,
+    joinPath,
+    stat,
+    mkdir,
+    basename,
   })
 
   function ExportDialog(props) {
@@ -68,20 +73,8 @@ const ExportDialogConnector = (connector) => {
 
       projectActions.withFullFileState((state) => {
         const withoutSystemKeys = removeSystemKeys(state.present)
-        askToExport(
-          defaultPath,
-          withoutSystemKeys,
-          type,
-          options[type],
-          isWindows(),
-          notifyUser,
-          log,
-          exportSaveDialog,
-          mpq,
-          rmRF,
-          userId,
-          downloadStorageImage,
-          (error, success) => {
+        askToExport(defaultPath, withoutSystemKeys, type, options[type], userId)
+          .then(() => {
             if (saveOptions) {
               saveExportConfigSettings('savedType', type)
               // We don't want to maintain the filter across projects
@@ -92,18 +85,13 @@ const ExportDialogConnector = (connector) => {
                 filter: null,
               })
             }
-
-            if (error) {
-              log.error(error)
-              dialog.showErrorBox(t('Error'), t('There was an error doing that. Try again'))
-              return
-            }
-
-            if (success) {
-              props.close()
-            }
-          }
-        )
+            props.close()
+          })
+          .catch((error) => {
+            log.error(error)
+            showErrorBox(t('Error'), t('There was an error doing that. Try again'))
+            return
+          })
       })
     }
 

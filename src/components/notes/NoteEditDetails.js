@@ -148,6 +148,7 @@ const NoteEditDetailsConnector = (connector) => {
               onChange={handleAttrChange(attr.name)}
               onSave={finishEditing}
               name={attr.name}
+              id={attr.id}
               type={attr.type}
             />
           </React.Fragment>
@@ -210,7 +211,7 @@ const NoteEditDetailsConnector = (connector) => {
             </Button>
             <Button onClick={handleDelete}>
               <Glyphicon glyph="trash" />
-              {i18n('Delete')}
+              {' ' + i18n('Delete')}
             </Button>
           </ButtonToolbar>
         </div>

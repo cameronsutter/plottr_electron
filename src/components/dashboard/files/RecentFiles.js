@@ -16,6 +16,7 @@ import RecentsHeader from './RecentsHeader'
 import { checkDependencies } from '../../checkDependencies'
 import { Spinner } from '../../Spinner'
 import prettydate from 'pretty-date'
+import Grid from '../../Grid'
 
 const oneDay = 1000 * 60 * 60 * 24
 
@@ -63,14 +64,12 @@ const formatFileName = (fileName) => {
 const RecentFilesConnector = (connector) => {
   const {
     platform: {
-      file: { doesFileExist, pathSep, basename, openKnownFile, listOfflineFiles },
+      file: { doesFileExist, openKnownFile, listOfflineFiles },
       log,
     },
   } = connector
   checkDependencies({
     doesFileExist,
-    pathSep,
-    basename,
     openKnownFile,
     log,
     listOfflineFiles,
@@ -96,20 +95,27 @@ const RecentFilesConnector = (connector) => {
 
     useEffect(() => {
       setTimeout(() => {
-        let newMissing = []
-        sortedFiles.forEach((file) => {
-          const fileURL = file.fileURL
-          if (!fileURL) {
-            return
-          }
-          if (helpers.file.isPlottrCloudFile(file)) {
-            return
-          }
-          if (!doesFileExist(fileURL)) {
-            newMissing.push(fileURL)
-          }
+        Promise.all(
+          sortedFiles
+            .map((file) => {
+              const fileURL = file.fileURL
+              if (!fileURL) {
+                return null
+              }
+              if (helpers.file.isPlottrCloudFile(file)) {
+                return null
+              }
+              return doesFileExist(fileURL).then((exists) => {
+                if (!exists) {
+                  return fileURL
+                }
+                return null
+              })
+            })
+            .filter(Boolean)
+        ).then((newMissing) => {
+          setMissing(newMissing.filter(Boolean))
         })
-        setMissing(newMissing)
       }, 2000)
     }, [sortedFiles])
 
@@ -179,15 +185,9 @@ const RecentFilesConnector = (connector) => {
 
         const isProFile = helpers.file.isPlottrCloudFile(f)
         const lastOpen = helpers.file.getDateValue(f)
-        const withoutProtocol = helpers.file.withoutProtocol(f.fileURL)
-        const fileBasename = (!isProFile && f.path && basename(withoutProtocol)) || ''
         let formattedPath = ''
         if (!isProFile && f.fileURL && !f.isTempFile) {
-          formattedPath = withoutProtocol
-            .replace(fileBasename, '')
-            .split(pathSep)
-            .filter(Boolean)
-            .join(' » ')
+          formattedPath = f.pathToContainingFolder.join(' » ')
         }
         let missing = null
         if (missingFiles.includes(f.fileURL)) {
@@ -197,11 +197,13 @@ const RecentFilesConnector = (connector) => {
         return (
           <Row
             key={idx}
-            onDoubleClick={() => openFile(f.fileURL)}
+            onDoubleClick={() => {
+              if (!missing) openFile(f.fileURL)
+            }}
             onClick={() => selectFile(selected ? null : f.fileURL)}
             className={cx({ selected: selected })}
           >
-            <Cell>
+            <Cell className={cx({ disabled: !!missing })}>
               <div className="dashboard__recent-files__file-cell">
                 <div>
                   <div className="title">
@@ -232,7 +234,7 @@ const RecentFilesConnector = (connector) => {
             ) : fileWithPermissionsExists ? (
               <Cell> </Cell>
             ) : null}
-            <Cell>
+            <Cell className={cx({ disabled: !!missing })}>
               <div className="lastOpen">
                 <span>{t.date(lastOpen, 'monthDay')}</span>
                 <span> </span>
@@ -244,7 +246,7 @@ const RecentFilesConnector = (connector) => {
       })
 
       return (isInOfflineMode || !loadingFileList) && renderedFiles ? (
-        <div className="dashboard__recent-files__table">
+        <Grid fluid className="dashboard__recent-files__table">
           <StickyTable leftStickyColumnCount={0}>
             <Row>
               <Cell>{t('Name')}</Cell>
@@ -253,7 +255,7 @@ const RecentFilesConnector = (connector) => {
             </Row>
             {renderedFiles}
           </StickyTable>
-        </div>
+        </Grid>
       ) : (
         <Spinner />
       )

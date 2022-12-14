@@ -134,6 +134,9 @@ const TemplatePickerConnector = (connector) => {
       )
       setDeleting(false)
       setDeleteWhich(null)
+      if (deleteWhich.id === selectedId) {
+        setSelectedId(null)
+      }
     }
 
     const cancelDelete = (e) => {
@@ -182,24 +185,26 @@ const TemplatePickerConnector = (connector) => {
       if (!selectedId) return
       const selectedTemplate = findSelectedTemplate()
       const { type } = selectedTemplate
-      if (type === 'project' || type === 'plotlines') {
-        const migrator = newProject ? projectFromTemplate : lineFromTemplate
-        migrator(
-          selectedTemplate,
-          appVersion,
-          '',
-          (error, template) => {
-            if (error) {
-              // Let the ErrorBoundary handle the error
-              throw new Error(error)
-            }
-            onChooseTemplate(template)
-          },
-          log
-        )
-      } else {
-        onChooseTemplate(selectedTemplate)
-      }
+      appVersion().then((version) => {
+        if (type === 'project' || type === 'plotlines') {
+          const migrator = newProject ? projectFromTemplate : lineFromTemplate
+          migrator(
+            selectedTemplate,
+            version,
+            '',
+            (error, template) => {
+              if (error) {
+                // Let the ErrorBoundary handle the error
+                throw new Error(error)
+              }
+              onChooseTemplate(template)
+            },
+            log
+          )
+        } else {
+          onChooseTemplate(selectedTemplate)
+        }
+      })
     }
 
     const renderDelete = () => {

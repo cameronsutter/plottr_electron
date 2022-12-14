@@ -343,15 +343,11 @@ const BlankCardConnector = (connector) => {
     pltr: { actions, selectors },
   } = connector
   const CardActions = actions.card
-  const { isSmallSelector, isMediumSelector, canWriteSelector } = selectors
   checkDependencies({
     redux,
     actions,
     selectors,
     CardActions,
-    isSmallSelector,
-    isMediumSelector,
-    canWriteSelector,
   })
 
   if (redux) {
@@ -360,11 +356,11 @@ const BlankCardConnector = (connector) => {
     return connect(
       (state) => {
         return {
-          currentTimeline: state.present.ui.currentTimeline,
-          orientation: state.present.ui.orientation,
-          isSmall: isSmallSelector(state.present),
-          isMedium: isMediumSelector(state.present),
-          readOnly: !canWriteSelector(state.present),
+          currentTimeline: selectors.currentTimelineSelector(state.present),
+          orientation: selectors.orientationSelector(state.present),
+          isSmall: selectors.isSmallSelector(state.present),
+          isMedium: selectors.isMediumSelector(state.present),
+          readOnly: !selectors.canWriteSelector(state.present),
         }
       },
       (dispatch) => {

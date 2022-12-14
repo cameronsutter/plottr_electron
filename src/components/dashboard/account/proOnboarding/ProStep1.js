@@ -31,6 +31,7 @@ const ProStep1Connector = (connector) => {
     checkingProSubscription,
     startLoadingALicenseType,
     finishLoadingALicenseType,
+    finishCheckingSession,
   }) => {
     const noPro = checkedProSubscription && !hasCurrentProLicense
     const showFrb = !hasCurrentProLicense
@@ -55,7 +56,10 @@ const ProStep1Connector = (connector) => {
     }
 
     const cancelAndLogout = () => {
-      logOut().then(() => cancel())
+      logOut().then(() => {
+        finishCheckingSession()
+        cancel()
+      })
     }
 
     return (
@@ -94,6 +98,7 @@ const ProStep1Connector = (connector) => {
     checkedProSubscription: PropTypes.bool,
     startLoadingALicenseType: PropTypes.func.isRequired,
     finishLoadingALicenseType: PropTypes.func.isRequired,
+    finishCheckingSession: PropTypes.func.isRequired,
   }
 
   const {
@@ -112,6 +117,7 @@ const ProStep1Connector = (connector) => {
       {
         startLoadingALicenseType: actions.applicationState.startLoadingALicenseType,
         finishLoadingALicenseType: actions.applicationState.finishLoadingALicenseType,
+        finishCheckingSession: actions.applicationState.finishCheckingSession,
       }
     )(ProStep1)
   }

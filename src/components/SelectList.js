@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
+import { endsWith } from 'lodash'
 
 import { t as i18n } from 'plottr_locales'
 
@@ -21,6 +22,7 @@ const SelectListConnector = (connector) => {
     type,
     selectedItems,
     allItems,
+    categories,
     remove,
     parentId,
     add,
@@ -74,10 +76,11 @@ const SelectListConnector = (connector) => {
       return selectedItems.map((itemId) => {
         var item = allItems.find((item) => item.id == itemId)
         if (!item) return null
+        const fallbackName = type && endsWith(type, 's') ? type.slice(0, -1) : type
         return (
           <div key={itemId} className="chip">
             <Image size="xs" shape="circle" imageId={item.imageId} />
-            <span>{item.name}</span>
+            <span>{item.name || item.title || i18n('New') + ' ' + fallbackName}</span>
             <Glyphicon glyph="remove" onClick={() => remove(parentId, itemId)} />
           </div>
         )
@@ -85,7 +88,7 @@ const SelectListConnector = (connector) => {
     }
 
     const renderUnSelected = () => {
-      const type = type
+      const listType = type
       const itemsToList = !selectedItems
         ? allItems
         : allItems.filter((i) => !selectedItems.includes(i.id))
@@ -94,22 +97,75 @@ const SelectListConnector = (connector) => {
           <i>{i18n('no more to add')}</i>
         </small>
       )
-      if (itemsToList.length > 0) {
+      if (categories) {
+        const available = categories.reduce((acc, category) => {
+          const key = category.key
+          const ids = category[key]
+          const displayHeading = category.displayHeading
+          const lineAbove = category.lineAbove
+          const glyph = category.glyph
+          const availableIds = ids.filter((id) => {
+            return selectedItems.indexOf(id) === -1
+          })
+          if (availableIds.length > 0) {
+            return [...acc, { [key]: availableIds, displayHeading, key, lineAbove, glyph }]
+          }
+
+          return acc
+        }, [])
+        listItems = available.map((category) => {
+          const categoryName = category.key
+          const categoryValues = category[categoryName]
+          const displayHeading = category.displayHeading
+          const glyph = category.glyph
+          const lineAbove = category.lineAbove
+          return [
+            lineAbove ? (
+              <li className="select-list__line" key={`${categoryName}-lineAbove`}>
+                <hr />
+              </li>
+            ) : null,
+            displayHeading ? (
+              <small key={categoryName}>
+                <i>{categoryName}</i>
+              </small>
+            ) : null,
+            ...categoryValues.map((id) => {
+              const item = allItems.find((indexItem) => indexItem.id === id)
+              let colorSpan = <span></span>
+              if (listType === 'Tags') {
+                colorSpan = (
+                  <span className="colored" style={{ backgroundColor: item.color }}></span>
+                )
+              }
+              return (
+                <li key={`${listType}-${item.id}`} onClick={() => add(parentId, item.id)}>
+                  {colorSpan}
+                  {glyph ? <Glyphicon glyph={glyph} style={{ fontSize: '12px' }} /> : null}{' '}
+                  {item.name || item.title}
+                </li>
+              )
+            }),
+          ]
+        })
+      } else if (itemsToList.length > 0) {
         listItems = itemsToList.map((i) => {
           let colorSpan = <span></span>
-          if (type === 'Tags') {
+          if (listType === 'Tags') {
             colorSpan = <span className="colored" style={{ backgroundColor: i.color }}></span>
           }
+          const fallbackName =
+            listType && endsWith(listType, 's') ? listType.slice(0, -1) : listType
           return (
-            <li key={`${type}-${i.id}`} onClick={() => add(parentId, i.id)}>
+            <li key={`${listType}-${i.id}`} onClick={() => add(parentId, i.id)}>
               {colorSpan}
-              {i.name || i.title}
+              {i.name || i.title || i18n('New') + ` ${fallbackName}`}
             </li>
           )
         })
       }
       let title = ''
-      switch (type) {
+      switch (listType) {
         case 'Characters':
           title = i18n('Characters list')
           break
@@ -182,6 +238,7 @@ const SelectListConnector = (connector) => {
     remove: PropTypes.func.isRequired,
     selectedItems: PropTypes.array.isRequired,
     allItems: PropTypes.array.isRequired,
+    categories: PropTypes.object,
     horizontal: PropTypes.bool,
     click: PropTypes.object,
   }

@@ -59,6 +59,7 @@ const CardDialogConnector = (connector) => {
     places,
     tags,
     characters,
+    characterBookCategories,
     actions,
     uiActions,
     customAttributes,
@@ -252,6 +253,9 @@ const CardDialogConnector = (connector) => {
         openTemplatePicker()
       } else if (typeof key === 'number') {
         setActiveTab(key)
+        if (key === 2 && !customAttributes.length) {
+          uiActions.openAttributesDialog()
+        }
       }
     }
 
@@ -308,6 +312,7 @@ const CardDialogConnector = (connector) => {
               onSave={saveEdit}
               onSaveAndClose={saveAndClose}
               name={attr.name}
+              id={attr.id}
               type={attr.type}
             />
           </React.Fragment>
@@ -341,6 +346,7 @@ const CardDialogConnector = (connector) => {
                 onSave={saveEdit}
                 onSaveAndClose={saveAndClose}
                 name={attr.name}
+                id={attr.id}
                 type={attr.type}
                 description={attr.description}
                 link={attr.link}
@@ -536,6 +542,7 @@ const CardDialogConnector = (connector) => {
             type={'Characters'}
             selectedItems={cardMetaData.characters}
             allItems={characters}
+            categories={characterBookCategories}
             add={actions.addCharacter}
             remove={actions.removeCharacter}
           />
@@ -653,6 +660,7 @@ const CardDialogConnector = (connector) => {
     customAttributes: PropTypes.array.isRequired,
     uiActions: PropTypes.object.isRequired,
     notificationActions: PropTypes.object.isRequired,
+    characterBookCategories: PropTypes.array.isRequired,
     currentTimeline: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     destinationLineId: PropTypes.func,
     destinationBeatId: PropTypes.func,
@@ -678,6 +686,7 @@ const CardDialogConnector = (connector) => {
           lines: selectors.sortedLinesByBookSelector(state.present),
           tags: selectors.sortedTagsSelector(state.present),
           characters: selectors.charactersSortedAtoZSelector(state.present),
+          characterBookCategories: selectors.characterBookCategoriesSelector(state.present),
           places: selectors.placesSortedAtoZSelector(state.present),
           customAttributes: state.present.customAttributes.scenes,
           darkMode: selectors.isDarkModeSelector(state.present),

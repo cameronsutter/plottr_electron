@@ -64,12 +64,14 @@ const BackupsHomeConnector = (connector) => {
     // <FormControl type='search' placeholder={t('Search')} className='dashboard__search' />
     return (
       <div className="dashboard__backups">
-        <h1>{t('Your Backups')}</h1>
+        <h1>{t('Backups')}</h1>
         <Grid fluid>
           <Row>
             <Col xs={4} sm={6} md={8} lg={9}>
               {breadcrumb}
             </Col>
+          </Row>
+          <Row>
             <Col xs={8} sm={6} md={4} lg={3}>
               <FormControl
                 type="search"

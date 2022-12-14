@@ -3,7 +3,6 @@ import PropTypes from 'react-proptypes'
 import { IoOpenOutline } from 'react-icons/io5'
 
 import { t } from 'plottr_locales'
-import { helpers } from 'pltr/v2'
 
 import Glyphicon from '../../Glyphicon'
 import MenuItem from '../../MenuItem'
@@ -16,7 +15,7 @@ import Button from '../../Button'
 const FileActionsConnector = (connector) => {
   const {
     platform: {
-      file: { deleteKnownFile, removeFromKnownFiles, basename, renameFile },
+      file: { deleteKnownFile, removeFromKnownFiles, renameFile },
       isMacOS,
       showItemInFolder,
       os,
@@ -25,7 +24,6 @@ const FileActionsConnector = (connector) => {
   checkDependencies({
     deleteKnownFile,
     removeFromKnownFiles,
-    basename,
     renameFile,
     isMacOS,
     showItemInFolder,
@@ -66,11 +64,9 @@ const FileActionsConnector = (connector) => {
     const renderDeleteFile = () => {
       if (!deleting) return null
 
-      const name = basename(helpers.file.withoutProtocol(fileURL))
-
       return (
         <DeleteConfirmModal
-          name={fileName || name}
+          name={fileName}
           onDelete={deleteFile}
           onCancel={() => setDeleting(false)}
         />

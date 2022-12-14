@@ -3,6 +3,7 @@ import PropTypes from 'react-proptypes'
 import { StickyTable } from 'react-sticky-table'
 import cx from 'classnames'
 import { VscSymbolStructure } from 'react-icons/vsc'
+import { CgArrowLongRight, CgArrowLongDown } from 'react-icons/cg'
 
 import { t } from 'plottr_locales'
 import { helpers } from 'pltr/v2'
@@ -30,6 +31,8 @@ import { FunSpinner } from '../Spinner'
 import UnconnectedSubNav from '../containers/SubNav'
 import { checkDependencies } from '../checkDependencies'
 import { withEventTargetValue } from '../withEventTargetValue'
+import Scrollable from '../../utils/scrollable'
+import UnconnectedCardDialog from './CardDialog'
 
 const BREAKPOINT = 890
 
@@ -45,6 +48,7 @@ const TimelineWrapperConnector = (connector) => {
   const CustomAttrFilterList = UnconnectedCustomAttrFilterList(connector)
   const ExportNavItem = UnconnectedExportNavItem(connector)
   const SubNav = UnconnectedSubNav(connector)
+  const CardDialog = UnconnectedCardDialog(connector)
 
   const {
     platform: {
@@ -76,6 +80,10 @@ const TimelineWrapperConnector = (connector) => {
     topLevelBeatName,
     beatActions,
     timelineTabBeatIds,
+    isCardDialogVisible,
+    cardDialogBeatId,
+    cardDialogCardId,
+    cardDialogLineId,
   }) => {
     const [mounted, setMounted] = useState(false)
     const [beatConfigIsOpen, setBeatConfigIsOpen] = useState(false)
@@ -86,6 +94,11 @@ const TimelineWrapperConnector = (connector) => {
 
     const scrollTimeoutRef = useRef(null)
     const tableRef = useRef(null)
+    const scrollableRef = useRef(
+      new Scrollable(() => {
+        return timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
+      })
+    )
 
     useEffect(() => {
       if (timelineBundle.isSmall) return
@@ -96,11 +109,11 @@ const TimelineWrapperConnector = (connector) => {
         setMounted(true)
         if (timelineBundle.timelineScrollPosition == null) return
         if (tableRef.current) {
-          tableRef.current.scrollTo({
-            top: timelineBundle.timelineScrollPosition.y,
-            left: timelineBundle.timelineScrollPosition.x,
-            behavior: 'auto',
-          })
+          scrollableRef.current.scrollTo(
+            timelineBundle.timelineScrollPosition.x,
+            timelineBundle.timelineScrollPosition.y,
+            true
+          )
         }
       }, 10)
 
@@ -117,11 +130,11 @@ const TimelineWrapperConnector = (connector) => {
       if (mounted) {
         if (timelineBundle.timelineScrollPosition == null) return
         if (tableRef.current) {
-          tableRef.current.scrollTo({
-            top: timelineBundle.timelineScrollPosition.y,
-            left: timelineBundle.timelineScrollPosition.x,
-            behavior: 'auto',
-          })
+          scrollableRef.current.scrollTo(
+            timelineBundle.timelineScrollPosition.x,
+            timelineBundle.timelineScrollPosition.y,
+            true
+          )
         }
       }
     }, [mounted])
@@ -210,9 +223,7 @@ const TimelineWrapperConnector = (connector) => {
     // //////////////
 
     const scrollTo = (position) => {
-      const options = {
-        behavior: 'smooth',
-      }
+      const options = {}
 
       if (timelineBundle.orientation === 'vertical') {
         options.top = position
@@ -220,9 +231,19 @@ const TimelineWrapperConnector = (connector) => {
         options.left = position
       }
 
-      const ref = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
+      scrollableRef.current.scrollTo(options.left, options.top)
+    }
 
-      ref.scrollTo(options)
+    const scrollBy = (position) => {
+      const options = {}
+
+      if (timelineBundle.orientation === 'vertical') {
+        options.top = position
+      } else {
+        options.left = position
+      }
+
+      scrollableRef.current.scrollBy(options.left, options.top)
     }
 
     const scrollDistance = () => {
@@ -234,19 +255,13 @@ const TimelineWrapperConnector = (connector) => {
     const scrollLeft = () => {
       if (!tableRef.current) return
       // mpq.push('btn_scroll_left')
-      const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
-      const current =
-        timelineBundle?.orientation === 'vertical' ? element.scrollTop : element.scrollLeft
-      scrollTo(current - scrollDistance())
+      scrollBy(-scrollDistance())
     }
 
     const scrollRight = () => {
       if (!tableRef.current) return
       // mpq.push('btn_scroll_right')
-      const element = timelineBundle.isSmall ? tableRef.current.parentElement : tableRef.current
-      const current =
-        timelineBundle?.orientation === 'vertical' ? element.scrollTop : element.scrollLeft
-      scrollTo(current + scrollDistance())
+      scrollBy(scrollDistance())
     }
 
     const scrollBeginning = () => {
@@ -357,11 +372,11 @@ const TimelineWrapperConnector = (connector) => {
     }
 
     const renderSubNav = () => {
-      let glyph = 'option-vertical'
+      let glyph = <CgArrowLongDown style={{ marginBottom: -2, marginRight: -2 }} />
       let scrollDirectionFirst = 'menu-left'
       let scrollDirectionSecond = 'menu-right'
       if (timelineBundle.orientation === 'vertical') {
-        glyph = 'option-horizontal'
+        glyph = <CgArrowLongRight style={{ marginBottom: -2 }} />
         scrollDirectionFirst = 'menu-up'
         scrollDirectionSecond = 'menu-down'
       }
@@ -444,17 +459,17 @@ const TimelineWrapperConnector = (connector) => {
               {filterDeclaration}
             </NavItem>
             <NavItem>
+              <Button bsSize="small" onClick={openCustomAttributesDialog}>
+                <Glyphicon glyph="list" /> {t('Attributes')}
+              </Button>
+            </NavItem>
+            <NavItem>
               <Button
                 bsSize="small"
                 onClick={flipOrientation}
                 disabled={timelineViewIsStacked && !timelineBundle.isSmall}
               >
-                <Glyphicon glyph={glyph} /> {t('Flip')}
-              </Button>
-            </NavItem>
-            <NavItem>
-              <Button bsSize="small" onClick={openCustomAttributesDialog}>
-                <Glyphicon glyph="list" /> {t('Attributes')}
+                {glyph} {t('Flip')}
               </Button>
             </NavItem>
             <NavItem>
@@ -541,6 +556,24 @@ const TimelineWrapperConnector = (connector) => {
       )
 
       return <Tab key="add-top-level-beat-tab" title={addTopLevelbeatTitle} />
+    }
+
+    const closeDialog = () => {
+      actions.setCardDialogClose()
+    }
+
+    const renderCardDialog = () => {
+      if (isCardDialogVisible) {
+        return (
+          <CardDialog
+            cardId={cardDialogCardId}
+            beatId={cardDialogBeatId}
+            lineId={cardDialogLineId}
+            closeDialog={closeDialog}
+          />
+        )
+      }
+      return null
     }
 
     const renderBody = () => {
@@ -664,6 +697,7 @@ const TimelineWrapperConnector = (connector) => {
           {renderCustomAttributes()}
           {renderBeatConfig()}
           {renderDelete()}
+          {renderCardDialog()}
           <div
             id="timelineview__root"
             className={cx('tab-body', { 'timeline-tabbed-view-body': timelineViewIsTabbed })}
@@ -695,6 +729,10 @@ const TimelineWrapperConnector = (connector) => {
     topLevelBeatName: PropTypes.string.isRequired,
     beatActions: PropTypes.object.isRequired,
     timelineTabBeatIds: PropTypes.array.isRequired,
+    cardDialogCardId: PropTypes.number,
+    cardDialogLineId: PropTypes.number,
+    cardDialogBeatId: PropTypes.number,
+    isCardDialogVisible: PropTypes.bool,
   }
 
   const {
@@ -724,6 +762,10 @@ const TimelineWrapperConnector = (connector) => {
           timelineViewIsTabbed: selectors.timelineViewIsTabbedSelector(state.present),
           hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
           topLevelBeatName: selectors.topLevelBeatNameSelector(state.present),
+          cardDialogCardId: selectors.cardDialogCardIdSelector(state.present),
+          cardDialogLineId: selectors.cardDialogLineIdSelector(state.present),
+          cardDialogBeatId: selectors.cardDialogBeatIdSelector(state.present),
+          isCardDialogVisible: selectors.isCardDialogVisibleSelector(state.present),
         }
       },
       (dispatch) => {

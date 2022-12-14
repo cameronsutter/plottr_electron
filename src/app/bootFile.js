@@ -13,7 +13,7 @@ import {
   overwriteAllKeys,
   saveBackup as saveBackupOnFirebase,
 } from 'wired-up-firebase'
-import { exportToSelfContainedPlottrFile } from 'plottr_import_export'
+import exportToSelfContainedPlottrFile from 'plottr_import_export/src/exporter/plottr'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'

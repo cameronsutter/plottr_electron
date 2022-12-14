@@ -264,7 +264,7 @@ tellMeWhatOSImOn()
                   const newFilePath = fileName.includes('.pltr') ? fileName : `${fileName}.pltr`
                   const newFileURL = helpers.file.filePathToFileURL(newFilePath)
                   saveFile(newFileURL, present).then(() => {
-                    pleaseOpenWindow('pls-open-window', newFileURL, true)
+                    pleaseOpenWindow(newFileURL, true)
                   })
                 }
               })

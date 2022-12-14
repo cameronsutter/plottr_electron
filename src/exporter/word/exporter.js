@@ -1,8 +1,7 @@
 import { Document, Packer, Paragraph, AlignmentType, HeadingLevel } from 'docx'
-import fs from 'fs'
 
 import { t as t } from 'plottr_locales'
-import { helpers } from 'pltr/v2'
+import { helpers, selectors } from 'pltr/v2'
 
 import exportOutline from './exporters/outline'
 import exportCharacters from './exporters/characters'
@@ -20,11 +19,12 @@ export default function Exporter(
   options,
   notifyUser,
   userId,
-  downloadStorageImage
+  downloadStorageImage,
+  writeFile
 ) {
   return convertImages(rawData, userId, downloadStorageImage).then((data) => {
     const names = namesMapping(data)
-    const bookId = data.ui.currentTimeline
+    const bookId = selectors.currentTimelineSelector(data)
 
     const titlePageSections = options.general.titlePage ? seriesNameSection(data, bookId) : []
     const outlineSections = options.outline.export ? exportOutline(data, names, options) : []
@@ -49,13 +49,13 @@ export default function Exporter(
       console.log('Packed to buffer...')
       const filePath = fileName.includes('.docx') ? fileName : `${fileName}.docx`
       console.log('About to write the file using fs...')
-      fs.writeFileSync(filePath, buffer)
+      return writeFile(filePath, buffer).then(() => {
+        console.log('About to notify user...')
+        notifyUser(filePath, 'word')
+        console.log('Notified user...')
 
-      console.log('About to notify user...')
-      notifyUser(filePath, 'word')
-      console.log('Notified user...')
-
-      return filePath
+        return filePath
+      })
     })
   })
 }

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { cloneDeep } from 'lodash'
 import { dataURLtoFile, filetoDataURL } from 'image-conversion'
 
@@ -108,6 +109,11 @@ export const fileNameIndex = (file) => {
 }
 
 function webpURLToJpeg(url) {
+  if (typeof window === 'undefined') {
+    return axios.get(url).then((response) => {
+      return response.data
+    })
+  }
   return dataURLtoFile(url, 'image/jpeg')
 }
 
@@ -121,7 +127,20 @@ function imageBlobToJpeg(imageBlob) {
   return filetoDataURL(imageBlob).then(webpURLToJpeg)
 }
 
-function imageToWebpDataURL(imageBlob) {
+export function imageToWebpDataURL(imageBlob) {
+  console.log('Converting to webp data url')
+  if (typeof window === 'undefined') {
+    console.log('Using sharp')
+    // For NextJS, so that it doesn't try to import this in-browser.
+    const sharp = require('sharp')
+    return sharp(imageBlob)
+      .toFormat('webp')
+      .toBuffer()
+      .then((buffer) => {
+        return `data:image/webp;base64,${buffer.toString('base64')}`
+      })
+  }
+
   return filetoDataURL(imageBlob)
 }
 
@@ -138,12 +157,19 @@ const fetchAndConvertImages = (
   })
   const downloadedImagesFromFirebase = Promise.all(
     imagesOnFirebase.map(([key, id]) => {
-      return downloadStorageImage(key, fileId, userId).then((image) => {
-        const convertedImage = convertToBlob ? imageBlobToJpeg(image) : imageToWebpDataURL(image)
-        return convertedImage.then((jpeg) => {
-          return [jpeg, id]
+      return downloadStorageImage(key, fileId, userId)
+        .then((image) => {
+          if (typeof image === 'string') {
+            return webpURLToJpeg(image)
+          }
+          return image
         })
-      })
+        .then((image) => {
+          const convertedImage = convertToBlob ? imageBlobToJpeg(image) : imageToWebpDataURL(image)
+          return convertedImage.then((jpeg) => {
+            return [jpeg, id]
+          })
+        })
     })
   )
   const localImages = Object.entries(imageIndex).filter(([key, id]) => {

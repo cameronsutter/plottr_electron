@@ -1,5 +1,3 @@
-import path from 'path'
-import fs from 'fs'
 import xml from 'xml-js'
 import rtf from 'jsrtf'
 import { slate } from 'pltr/v2'
@@ -19,67 +17,78 @@ export default function Exporter(
   isWindows,
   notifyUser,
   log,
-  rm = fs.rm
+  rm,
+  join,
+  writeFile,
+  stat,
+  mkdir,
+  basename
 ) {
   const realPath = exportPath.includes('.scriv') ? exportPath : `${exportPath}.scriv`
 
-  return Promise.resolve()
+  return createProjectStructure(realPath, rm, stat, mkdir, join)
     .then(() => {
-      try {
-        // create the structure of the project package
-        return createProjectStructure(realPath, rm).then(() => {
-          // create the .scrivx
-          let documentContents = createScrivx(state, realPath, options)
-
+      // create the .scrivx
+      return createScrivx(state, realPath, options, basename, join, writeFile).then(
+        (documentContents) => {
           // create the rtf documents for each scene card
-          createRTFDocuments(documentContents, realPath, options, isWindows, log)
-        })
-      } catch (error) {
-        log.error(error)
-        // move anything we've made to the trash
-        return remove(realPath, rm).then(() => {
-          // don't go any further
-          return Promise.reject(error)
-        })
-      }
+          return createRTFDocuments(documentContents, realPath, isWindows, log, join, writeFile)
+        }
+      )
+    })
+    .catch((error) => {
+      log.error(error)
+      // move anything we've made to the trash
+      return remove(realPath, rm).then(() => {
+        // don't go any further
+        return Promise.reject(error)
+      })
     })
     .then(() => {
-      notifyUser(realPath, 'scrivener')
+      return notifyUser(realPath, 'scrivener')
     })
 }
 
-function createProjectStructure(exportPath, rm) {
-  return Promise.resolve()
-    .then(() => {
-      // create package folder
-      try {
-        const stat = fs.statSync(exportPath)
-
-        // if it already exists: overwrite (OS should have already asked)
-        if (stat.isDirectory()) {
-          // delete current
-          return remove(exportPath, rm).then(() => {
-            // and then create new
-            fs.mkdirSync(exportPath)
-          })
-        }
-        return true
-      } catch (error) {
+function createProjectStructure(exportPath, rm, stat, mkdir, join) {
+  // create package folder
+  return stat(exportPath)
+    .then((stats) => {
+      // if it already exists: overwrite (OS should have already asked)
+      const isDirectory =
+        typeof stats.isDirectory === 'function' ? stats.isDirectory() : stats.isDirectory
+      if (isDirectory) {
+        // delete current
+        return remove(exportPath, rm).then(() => {
+          // and then create new
+          return mkdir(exportPath)
+        })
+      }
+      return true
+    })
+    .catch((error) => {
+      if (error.code === 'ENOENT' || (typeof error === 'string' && error.startsWith('ENOENT'))) {
         // doesn't exist, cool keep going
-        fs.mkdirSync(exportPath)
-        return true
+        return mkdir(exportPath)
+      } else {
+        return Promise.reject(error)
       }
     })
     .then(() => {
       // create Files & Files/Docs
-      fs.mkdirSync(path.join(exportPath, 'Files', 'Docs'), { recursive: true })
-
-      // create Settings
-      fs.mkdirSync(path.join(exportPath, 'Settings'))
+      return join(exportPath, 'Files', 'Docs')
+        .then((docsPath) => {
+          return mkdir(docsPath, { recursive: true })
+        })
+        .then(() => {
+          // create Settings
+          return join(exportPath, 'Settings').then((settingsPath) => {
+            return mkdir(settingsPath)
+          })
+        })
     })
 }
 
-function createScrivx(state, basePath, options) {
+function createScrivx(state, basePath, options, basename, join, writeFile) {
   let scrivx = startNewScrivx()
   let documentContents = {}
 
@@ -104,34 +113,60 @@ function createScrivx(state, basePath, options) {
   }
 
   const data = xml.json2xml(scrivx, { compact: true, ignoreComment: true, spaces: 2 })
-  const baseName = path.basename(basePath).replace('.scriv', '')
-  fs.writeFileSync(path.join(basePath, `${baseName}.scrivx`), data)
-
-  return documentContents
+  return basename(basePath)
+    .then((baseName) => {
+      return baseName.replace('.scriv', '')
+    })
+    .then((baseName) => {
+      return join(basePath, `${baseName}.scrivx`)
+        .then((scrivxPath) => {
+          return writeFile(scrivxPath, data)
+        })
+        .then(() => {
+          return documentContents
+        })
+    })
 }
 
-function createRTFDocuments(documentContents, basePath, isWindows, log) {
-  const realBasePath = path.join(basePath, 'Files', 'Docs')
+function createRTFDocuments(documentContents, basePath, isWindows, log, join, writeFile) {
+  return join(basePath, 'Files', 'Docs').then((realBasePath) => {
+    return Promise.all(
+      Object.keys(documentContents).map((docID) => {
+        // documentContents is {notes: <document>, body: <document>, synopsis: <document>}
+        // document is {docTitle: '', description: []}
+        const documents = documentContents[docID]
 
-  Object.keys(documentContents).forEach((docID) => {
-    // documentContents is {notes: <document>, body: <document>, synopsis: <document>}
-    // document is {docTitle: '', description: []}
-    const documents = documentContents[docID]
-    if (documents.notes) {
-      createRTF(docID, documents.notes, realBasePath, true, log)
-    }
+        const createNotes = documents.notes
+          ? createRTF(docID, documents.notes, realBasePath, true, log, join, writeFile)
+          : Promise.resolve()
 
-    if (documents.body) {
-      createRTF(docID, documents.body, realBasePath, false, log)
-    }
+        const createBody = createNotes.then(() => {
+          return documents.body
+            ? createRTF(docID, documents.body, realBasePath, false, log, join, writeFile)
+            : Promise.resolve()
+        })
 
-    if (documents.synopsis) {
-      createSynopsis(docID, documents.synopsis, realBasePath, isWindows, log)
-    }
+        const finalOperation = createBody.then(() => {
+          return documents.synopsis
+            ? createSynopsis(
+                docID,
+                documents.synopsis,
+                realBasePath,
+                isWindows,
+                log,
+                join,
+                writeFile
+              )
+            : Promise.resolve()
+        })
+
+        return finalOperation
+      })
+    )
   })
 }
 
-function createRTF(docID, document, realBasePath, isNotes, log) {
+function createRTF(docID, document, realBasePath, isNotes, log, join, writeFile) {
   let doc = new rtf()
   let data = null
   if (document.docTitle) {
@@ -145,20 +180,36 @@ function createRTF(docID, document, realBasePath, isNotes, log) {
     data = convertUnicode(data)
     data = Buffer.from(data, 'utf8')
     const fileName = isNotes ? `${docID}_notes.rtf` : `${docID}.rtf`
-    fs.writeFileSync(path.join(realBasePath, fileName), data)
+    return join(realBasePath, fileName)
+      .then((filePath) => {
+        return writeFile(filePath, data)
+      })
+      .catch((error) => {
+        log.error(error)
+        // do nothing, just don't blow up
+        return Promise.resolve()
+      })
   } catch (error) {
     log.error(error)
     // do nothing, just don't blow up
+    return Promise.resolve()
   }
 }
 
-function createSynopsis(docID, document, realBasePath, isWindows, log) {
+function createSynopsis(docID, document, realBasePath, isWindows, log, join, writeFile) {
   try {
     const data = serializePlain(document.description, isWindows)
     const fileName = `${docID}_synopsis.txt`
-    fs.writeFileSync(path.join(realBasePath, fileName), data)
+    return join(realBasePath, fileName)
+      .then((synopsisPath) => {
+        return writeFile(synopsisPath, data)
+      })
+      .catch((error) => {
+        log.error(error)
+      })
   } catch (error) {
     log.error(error)
     // do nothing, just don't blow up
+    return Promise.resolve()
   }
 }

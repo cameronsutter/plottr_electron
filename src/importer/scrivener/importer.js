@@ -1,14 +1,11 @@
-import fs from 'fs'
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
-import path from 'path'
-import { cloneDeep, keys, values, findLast, flattenDeep, upperFirst } from 'lodash'
+import { cloneDeep, keys, values, findLast, flattenDeep, upperFirst, camelCase } from 'lodash'
 
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 import { uuidsToIntegerIds } from './uuidsToIntegerIds'
 
 const i18n = t
-const { readFile } = fs.promises
 const { nextColor } = lineColors
 const defaultBook = initialState.book
 const defaultNote = initialState.note
@@ -18,6 +15,7 @@ const defaultCard = initialState.card
 const defaultLine = initialState.line
 const defaultTag = initialState.tag
 const defaultCategory = initialState.category
+const defaultAttribute = initialState.attribute
 
 const { nextId, objectId } = newIds
 const {
@@ -42,106 +40,144 @@ const sectionItemsWithPlotline = [
   i18n('Sub plot'),
 ]
 
+const THREE_DOTS = '...'
+
 // String, Bool, Object -> Promise<Object>
-function ScrivenerImporter(filePath, isNewFile, state, convertRTFToSlate) {
-  const scrivxJSON = getScrivxJson(filePath)
-  const relevantFiles = findRelevantFiles(filePath)
-  const inMemoryFiles = Promise.all(
-    relevantFiles.map((filePath) => {
-      if (path.extname(filePath) === '.txt') {
-        return readFile(filePath).then((contents) => ({
-          filePath,
-          contents: createSlateParagraph(contents.toString()),
-        }))
-      } else if (path.extname(filePath) === '.rtf') {
-        return readFile(filePath).then((contents) => {
-          return convertRTFToSlate(contents).then((slateContent) => {
-            return {
-              filePath,
-              contents: slateContent,
-            }
-          })
+function ScrivenerImporter(
+  filePath,
+  isNewFile,
+  state,
+  convertRTFToSlate,
+  readFile,
+  readdir,
+  stat,
+  extname,
+  basename,
+  join
+) {
+  return Promise.all([
+    getScrivxJson(filePath, readdir, readFile, extname, join),
+    findRelevantFiles(filePath, readdir, readFile, stat, extname, join),
+  ]).then(([scrivxJSON, relevantFiles]) => {
+    const inMemoryFiles = Promise.all(
+      relevantFiles.map((filePath) => {
+        return extname(filePath).then((ext) => {
+          if (ext === '.txt') {
+            return Promise.all([readFile(filePath), basename(filePath), extname(filePath)]).then(
+              ([contents, fileName, extension]) => ({
+                filePath,
+                contents: createSlateParagraph(contents.toString()),
+                fileName,
+                extension,
+              })
+            )
+          } else if (ext === '.rtf') {
+            return Promise.all([readFile(filePath), basename(filePath), extname(filePath)]).then(
+              ([contents, fileName, extension]) => {
+                return convertRTFToSlate(contents).then((slateContent) => {
+                  return {
+                    filePath,
+                    contents: slateContent,
+                    fileName,
+                    extension,
+                  }
+                })
+              }
+            )
+          } else {
+            return Promise.all([readFile(filePath), basename(filePath), extname(filePath)]).then(
+              ([contents, fileName, extension]) => {
+                return {
+                  filePath,
+                  contents,
+                  fileName,
+                  extension,
+                }
+              }
+            )
+          }
         })
-      } else {
-        return readFile(filePath).then((contents) => ({
-          filePath,
-          contents,
-        }))
-      }
-    })
-  )
-  const currentState = cloneDeep(state)
-  // const books
-  // create a new book (if not new file)
-  let bookId = 1
-  if (!isNewFile) {
-    bookId = createNewBook(currentState.books)
-  }
+      })
+    )
+    const currentState = cloneDeep(state)
+    // const books
+    // create a new book (if not new file)
+    let bookId = 1
+    if (!isNewFile) {
+      bookId = createNewBook(currentState.books)
+    }
 
-  const bookTitle = path.basename(filePath, '.scriv')
-
-  // manuscript folder from the scrivener is where we get the beats
-  const manuscript = scrivxJSON['ScrivenerProject']['Binder']['BinderItem'].find(
-    (n) =>
-      n['_attributes']['Type'] == 'DraftFolder' ||
-      (n['Title'] && n['Title']['_text'] && n['Title']['_text'] == 'Manuscript')
-  )
-
-  const sectionsJSON = scrivxJSON['ScrivenerProject']['Binder']['BinderItem'].filter(
-    (n) => n['_attributes']['Type'] != 'DraftFolder' && n['_attributes']['Type'] != 'TrashFolder'
-  )
-
-  const notes = getSection(sectionsJSON, i18n('Notes')).filter((i) => i)
-  const characters = getSection(sectionsJSON, i18n('Characters')).filter((i) => i)
-  const places = getSection(sectionsJSON, i18n('Places')).filter((i) => i)
-
-  return inMemoryFiles
-    .then((files) => {
-      const newJson = withStoryLineIfItExists(
-        manuscript,
-        currentState,
-        bookTitle,
-        bookId,
-        isNewFile,
-        files
+    return basename(filePath, '.scriv').then((bookTitle) => {
+      // manuscript folder from the scrivener is where we get the beats
+      const manuscript = scrivxJSON['ScrivenerProject']['Binder']['BinderItem'].find(
+        (n) =>
+          n['_attributes']['Type'] == 'DraftFolder' ||
+          (n['Title'] && n['Title']['_text'] && n['Title']['_text'] == 'Manuscript')
       )
 
-      if (notes && notes.length && notes[0]['Children'] && notes[0]['Children']['BinderItem']) {
-        const notesBinderItem = Array.isArray(notes[0]['Children']['BinderItem'])
-          ? notes[0]['Children']['BinderItem']
-          : [notes[0]['Children']['BinderItem']]
-        generateNotes(newJson, notesBinderItem, bookId, files, isNewFile)
-      }
+      const sectionsJSON = scrivxJSON['ScrivenerProject']['Binder']['BinderItem'].filter(
+        (n) =>
+          n['_attributes']['Type'] != 'DraftFolder' && n['_attributes']['Type'] != 'TrashFolder'
+      )
 
-      if (places && places.length && places[0]['Children'] && places[0]['Children']['BinderItem']) {
-        const placesBinderItem = Array.isArray(places[0]['Children']['BinderItem'])
-          ? places[0]['Children']['BinderItem']
-          : [places[0]['Children']['BinderItem']]
-        generatePlaces(newJson, placesBinderItem, bookId, files, isNewFile)
-      }
+      const notes = getSection(sectionsJSON, i18n('Notes')).filter((i) => i)
+      const characters = getSection(sectionsJSON, i18n('Characters')).filter((i) => i)
+      const places = getSection(sectionsJSON, i18n('Places')).filter((i) => i)
 
-      if (
-        characters &&
-        characters.length &&
-        characters[0]['Children'] &&
-        characters[0]['Children']['BinderItem']
-      ) {
-        const charactersBinderItem = Array.isArray(characters[0]['Children']['BinderItem'])
-          ? characters[0]['Children']['BinderItem']
-          : [characters[0]['Children']['BinderItem']]
-        generateCharacters(newJson, charactersBinderItem, bookId, files, isNewFile)
-      }
-      return uuidsToIntegerIds({
-        ...newJson,
-        file: {
-          ...newJson.file,
-          lastOpened: new Date(),
-        },
-      })
+      return inMemoryFiles
+        .then((files) => {
+          const newJson = withStoryLineIfItExists(
+            manuscript,
+            currentState,
+            bookTitle,
+            bookId,
+            isNewFile,
+            files
+          )
+
+          if (notes && notes.length && notes[0]['Children'] && notes[0]['Children']['BinderItem']) {
+            const notesBinderItem = Array.isArray(notes[0]['Children']['BinderItem'])
+              ? notes[0]['Children']['BinderItem']
+              : [notes[0]['Children']['BinderItem']]
+            generateNotes(newJson, notesBinderItem, bookId, files, isNewFile)
+          }
+
+          if (
+            places &&
+            places.length &&
+            places[0]['Children'] &&
+            places[0]['Children']['BinderItem']
+          ) {
+            const placesBinderItem = Array.isArray(places[0]['Children']['BinderItem'])
+              ? places[0]['Children']['BinderItem']
+              : [places[0]['Children']['BinderItem']]
+            generatePlaces(newJson, placesBinderItem, bookId, files, isNewFile)
+          }
+
+          if (
+            characters &&
+            characters.length &&
+            characters[0]['Children'] &&
+            characters[0]['Children']['BinderItem']
+          ) {
+            const charactersBinderItem = Array.isArray(characters[0]['Children']['BinderItem'])
+              ? characters[0]['Children']['BinderItem']
+              : [characters[0]['Children']['BinderItem']]
+            generateCharacters(newJson, charactersBinderItem, bookId, files, isNewFile)
+          }
+          return uuidsToIntegerIds({
+            ...newJson,
+            file: {
+              ...newJson.file,
+              lastOpened: new Date(),
+            },
+          })
+        })
+        .catch((error) => {
+          return new Error(error)
+        })
     })
-    .catch((error) => {
-      return new Error(error)
-    })
+  })
 }
 
 export const getSection = (sections, sectionName) => {
@@ -184,80 +220,124 @@ export function withStoryLineIfItExists(manuscript, json, bookTitle, bookId, isN
   }
 }
 
-export function getScrivxJson(filePath) {
-  const filesInScriv = fs.readdirSync(filePath)
-  const scrivFile = filesInScriv.find((file) => path.extname(file) === '.scrivx')
-  const absolute = path.join(filePath, scrivFile)
-  const scrivxContent = fs.readFileSync(absolute, 'utf-8')
-  const json = JSON.parse(xml.xml2json(scrivxContent, { compact: true, spaces: 2 }))
-
-  return json
+export function getScrivxJson(filePath, readdir, readFile, extname, join) {
+  return readdir(filePath).then((filesInScriv) => {
+    return Promise.all(
+      filesInScriv.map((file) => {
+        return extname(file).then((ext) => {
+          return {
+            ext,
+            file,
+          }
+        })
+      })
+    )
+      .then((results) => {
+        return results.find(({ ext }) => ext === '.scrivx')?.file
+      })
+      .then((scrivFile) => {
+        return join(filePath, scrivFile).then((absolute) => {
+          return readFile(absolute, 'utf-8').then((scrivxContent) => {
+            const json = JSON.parse(xml.xml2json(scrivxContent, { compact: true, spaces: 2 }))
+            return json
+          })
+        })
+      })
+  })
 }
 
 // [{ filePath: String, isRelevant: Bool }] -> [String]
 function keepNonSectionRTFFiles(results) {
-  return results.filter(({ isRelevant }) => !isRelevant).map(({ filePath }) => filePath)
+  return results
+    .filter((result) => result)
+    .filter(({ isRelevant }) => !isRelevant)
+    .map(({ filePath }) => filePath)
 }
 
 // [{ filePath: String, isRelevant: Bool }] -> [String]
 function keepSectionRTFFiles(results) {
-  return results.filter(({ isRelevant }) => isRelevant).map(({ filePath }) => filePath)
+  return results
+    .filter((result) => result)
+    .filter(({ isRelevant }) => isRelevant)
+    .map(({ filePath }) => filePath)
 }
 
 // String -> Promise<[String]>
-function findRelevantFiles(directory) {
-  const filesInDirectory = fs.readdirSync(directory)
-  const checkedEntries = filesInDirectory.map((file) => isRelevantFile(directory, file))
-  const folders = keepOnlyFolders(keepNonSectionRTFFiles(checkedEntries))
-  const sectionRTFFiles = keepSectionRTFFiles(checkedEntries)
-  const filesForSubFolders = folders.map(findRelevantFiles)
+function findRelevantFiles(directory, readdir, readFile, stat, extname, join) {
+  return readdir(directory).then((filesInDirectory) => {
+    return Promise.all(
+      filesInDirectory.map((file) => isRelevantFile(directory, file, readFile, stat, extname, join))
+    ).then((checkedEntries) => {
+      return keepOnlyFolders(keepNonSectionRTFFiles(checkedEntries), stat).then((folders) => {
+        const sectionRTFFiles = keepSectionRTFFiles(checkedEntries)
 
-  return sectionRTFFiles.concat(...filesForSubFolders)
+        return Promise.all(
+          folders.map((folder) => findRelevantFiles(folder, readdir, readFile, stat, extname, join))
+        ).then((filesForSubFolders) => {
+          return sectionRTFFiles.concat(...filesForSubFolders)
+        })
+      })
+    })
+  })
 }
 
 // String -> Promise<Bool>
-function isFolder(filePath) {
-  const result = fs.statSync(filePath)
-  return result.isDirectory()
+function isFolder(filePath, stat) {
+  return stat(filePath).then((result) => {
+    if (typeof result.isDirectory === 'function') {
+      return result.isDirectory()
+    }
+    return result.isDirectory
+  })
 }
 
 // [String] -> Promise<[String]>
-function keepOnlyFolders(paths) {
+function keepOnlyFolders(paths, stat) {
   const testedPaths = paths.map((path) => {
-    return {
-      isAFolder: isFolder(path) ? true : false,
-      path,
-    }
+    return isFolder(path, stat).then((isAFolder) => {
+      return {
+        isAFolder,
+        path,
+      }
+    })
   })
-  return testedPaths.filter(({ isAFolder }) => isAFolder).map(({ path }) => path)
+  return Promise.all(testedPaths).then((results) => {
+    return results.filter(({ isAFolder }) => isAFolder).map(({ path }) => path)
+  })
 }
 
 // String, String -> Promise<{filePath: String, isRelevant: Bool}>
-function isRelevantFile(directory, fileName) {
-  const filePath = toFullPath(directory, fileName)
-  const relevantFile = path.extname(fileName) === '.rtf' || path.extname(fileName) === '.txt'
-
-  if (isFolder(filePath)) {
-    return {
-      filePath,
-      isRelevant: relevantFile ? true : false,
-    }
-  } else {
-    const fileContents = fs.readFileSync(filePath)
-    if (fileContents) {
-      return {
-        filePath,
-        isRelevant: relevantFile ? true : false,
-      }
-    } else {
-      return false
-    }
-  }
+function isRelevantFile(directory, fileName, readFile, stat, extname, join) {
+  return Promise.all([extname(fileName), toFullPath(directory, fileName, join)])
+    .then(([ext, filePath]) => {
+      return [ext === '.rtf' || ext === '.txt', filePath]
+    })
+    .then(([relevantFile, filePath]) => {
+      return isFolder(filePath, stat).then((isAFolder) => {
+        if (isAFolder) {
+          return {
+            filePath,
+            isRelevant: relevantFile ? true : false,
+          }
+        } else {
+          return readFile(filePath).then((fileContents) => {
+            if (fileContents) {
+              return {
+                filePath,
+                isRelevant: relevantFile ? true : false,
+              }
+            } else {
+              return false
+            }
+          })
+        }
+      })
+    })
 }
 
 // String, String -> String
-function toFullPath(directory, filePath) {
-  return path.join(directory, filePath)
+function toFullPath(directory, filePath, join) {
+  return join(directory, filePath)
 }
 
 export function createNewBook(currentBooks) {
@@ -418,8 +498,7 @@ export function createSlateParagraph(value) {
 }
 
 // Sting, string -> Bool
-export function getVer_2_7_matchedFiles(file, childId) {
-  const fileName = path.basename(file)
+export function getVer_2_7_matchedFiles(fileName, childId) {
   if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
     return fileName.split('_')[0] == childId
   } else {
@@ -429,8 +508,7 @@ export function getVer_2_7_matchedFiles(file, childId) {
 }
 
 // String -> String
-export function getVer_2_7_matchName(file) {
-  const fileName = path.basename(file)
+export function getVer_2_7_matchName(fileName) {
   if (fileName.endsWith('_synopsis.txt') || fileName.endsWith('_notes.rtf')) {
     return fileName.split('_')[0]
   } else {
@@ -762,14 +840,14 @@ export function extractStoryLines(
 // Object, Array <any>, Object, Int -> Object { txtContent: {}, rtfContent: {} }
 export function mapMatchedFiles(newJson, matchFiles, fileContents, bookId, isSection) {
   matchFiles.forEach((file) => {
-    const isTxt = path.extname(file.filePath) == '.txt'
-    const isRTF = path.extname(file.filePath) == '.rtf'
+    const isTxt = file.extension == '.txt'
+    const isRTF = file.extension == '.rtf'
     const matchedFileId =
       (Array.isArray(file.filePath.match(UUIDFolderRegEx))
         ? file.filePath.match(UUIDFolderRegEx)[0]
-        : file.filePath.match(UUIDFolderRegEx)) || getVer_2_7_matchName(file.filePath)
+        : file.filePath.match(UUIDFolderRegEx)) || getVer_2_7_matchName(file.fileName)
 
-    if (isTxt && path.basename(file.filePath).endsWith('synopsis.txt')) {
+    if (isTxt && file.fileName.endsWith('synopsis.txt')) {
       const synopsisContent = file.contents.children.map((content) => {
         const translatedDescription = i18n('Description')
         // Remove description label in synopsis.txt
@@ -791,7 +869,7 @@ export function mapMatchedFiles(newJson, matchFiles, fileContents, bookId, isSec
       Object.assign(fileContents.txtContent, file.contents)
     }
     if (isRTF) {
-      const isNotesRTF = path.basename(file.filePath).endsWith('notes.rtf')
+      const isNotesRTF = file.fileName.endsWith('notes.rtf')
       const newRTFContent = getRTFContents(
         newJson,
         newJson.lines,
@@ -844,7 +922,7 @@ export function getManuscriptSectionItems(currentJson, RTFContents, bookId) {
         RTFContents[idx + 1].children[0] &&
         RTFContents[idx + 1].children[0].text
           ? RTFContents[idx + 1].children[0].text
-          : '...'
+          : THREE_DOTS
 
       if (isInlineTitle || isBold) {
         const strippedInlineTitleText = isInlineTitle && !isBold ? splittedRTFText : ''
@@ -939,7 +1017,7 @@ export function keepRTFNonSectionItems(RTFContents) {
       return (
         !sectionItemsWithPlotline.includes(allLettersInlineText) &&
         !sectionItemsWithPlotline.includes(prevText) &&
-        strippedText != '...' &&
+        strippedText != THREE_DOTS &&
         !!strippedText
       )
     }
@@ -948,12 +1026,12 @@ export function keepRTFNonSectionItems(RTFContents) {
 }
 
 export function getMatchedRelevantFiles(relevantFiles, childId) {
-  return relevantFiles.filter(({ filePath }) => {
+  return relevantFiles.filter(({ filePath, fileName }) => {
     const isVer_3_UUID = UUIDFolderRegEx.test(filePath)
     if (isVer_3_UUID) {
       return filePath.includes(childId)
     } else {
-      return getVer_2_7_matchedFiles(filePath, childId)
+      return getVer_2_7_matchedFiles(fileName, childId)
     }
   })
 }
@@ -1040,7 +1118,7 @@ export function generatePlaces(currentState, json, bookId, files, isNewFile) {
         // and a value which corresponds to that property's value.
 
         // remove three dots placeholder if key
-        .filter((item) => keys(item)[0] != '...')
+        .filter((item) => keys(item)[0] != THREE_DOTS)
         .map((item) => {
           const attrKey = keys(item)[0]
           const attrValue = values(item)[0]
@@ -1049,7 +1127,13 @@ export function generatePlaces(currentState, json, bookId, files, isNewFile) {
             const tagIds = generateTagIds(currentState, attrValue)
             return { tags: tagIds }
           } else {
-            return strippedDefaultAttributes(currentState, 'places', attrKey, attrValue || '')
+            return strippedDefaultAttributes(
+              currentState,
+              'places',
+              bookId,
+              attrKey,
+              attrValue || ''
+            )
           }
         })
         .reduce((obj, item) => Object.assign(obj, { [keys(item)[0]]: values(item)[0] }), {})
@@ -1065,7 +1149,7 @@ export function generatePlaces(currentState, json, bookId, files, isNewFile) {
         }
       }
       createNewPlace(currentState.places, place)
-      createCustomAttributes(currentState, content, 'places')
+      createCustomAttributes(currentState, content, 'places', bookId)
     } else if (children && children['BinderItem']) {
       // for the manuscript we assign the parent folder of the card as the line
       // we could assign the parent folder as the category
@@ -1093,14 +1177,13 @@ export function generateCharacters(currentState, json, bookId, files, isNewFile)
 
       if (RTFmatch) {
         const content = objectifyRTFContents(RTFmatch, 'character', name)
-
         const characterAttributes = content
           // ASSUMPTION: items from `objectifyRTFContents` are single-key objects with a name
           // that corresponds to an entity's property
           // and a value which corresponds to that property's value.
 
           // remove three dots placeholder if key
-          .filter((item) => keys(item)[0] != '...')
+          .filter((item) => keys(item)[0] != THREE_DOTS)
           .map((item) => {
             const attrKey = keys(item)[0]
             const attrValue = values(item)[0]
@@ -1109,9 +1192,21 @@ export function generateCharacters(currentState, json, bookId, files, isNewFile)
               const tagIds = generateTagIds(currentState, attrValue)
               return { tags: tagIds }
             } else {
-              return strippedDefaultAttributes(currentState, 'characters', attrKey, attrValue || '')
+              return strippedDefaultAttributes(
+                currentState,
+                'characters',
+                bookId,
+                attrKey,
+                attrValue || ''
+              )
             }
           })
+
+        const withoutBaseAttributes = characterAttributes.filter((attr) =>
+          isNotBaseAttribute(keys(attr)[0])
+        )
+        const baseAttributes = characterAttributes
+          .filter((attr) => !isNotBaseAttribute(keys(attr)[0]))
           .reduce((obj, item) => Object.assign(obj, { [keys(item)[0]]: values(item)[0] }), {})
 
         let character = {
@@ -1121,12 +1216,13 @@ export function generateCharacters(currentState, json, bookId, files, isNewFile)
         if (content && content.length) {
           character = {
             ...character,
-            ...characterAttributes,
+            ...baseAttributes,
+            attributes: [...(character.attributes || []), ...withoutBaseAttributes],
           }
         }
 
         createNewCharacter(currentState.characters, character)
-        createCustomAttributes(currentState, content, 'characters')
+        createCustomAttributes(currentState, content, 'characters', bookId)
       }
     } else if (children && children['BinderItem']) {
       const binderItemsArr = Array.isArray(children['BinderItem'])
@@ -1139,8 +1235,30 @@ export function generateCharacters(currentState, json, bookId, files, isNewFile)
 }
 
 // Object, String, String, String -> Object
-export function strippedDefaultAttributes(currentState, section, key, value) {
-  const strippedKey = key.toLowerCase().trim()
+export function strippedDefaultAttributes(currentState, section, bookId, key, value) {
+  const strippedKey = camelCase(key)
+  if (section == 'characters') {
+    // Check if key is not empty after stripping extra characters
+    if (!strippedKey) {
+      return {}
+    }
+    const characterAttributeId = createNewAttribute(currentState.attributes.characters, key, bookId)
+    if (strippedKey == 'category') {
+      const categoryId = createNewCategory(currentState.categories[section], value)
+      return {
+        id: characterAttributeId,
+        // characters will have a default `bookId = all`
+        bookId: 'all',
+        value: String(categoryId),
+      }
+    }
+    return {
+      id: characterAttributeId,
+      // characters will have a default `bookId = all`
+      bookId: 'all',
+      value,
+    }
+  }
   if (strippedKey == 'description') {
     return {
       description: value,
@@ -1153,28 +1271,69 @@ export function strippedDefaultAttributes(currentState, section, key, value) {
     return {
       categoryId: createNewCategory(currentState.categories[section], value),
     }
+  } else {
+    return {
+      [key]: value,
+    }
   }
-  return {
-    [key]: value,
+}
+
+export function getAttributeName(name) {
+  const attributeName = isNotBaseAttribute(name) ? name : camelCase(name)
+  if (attributeName == 'description') {
+    return 'shortDescription'
+  } else if (attributeName == 'notes') {
+    return 'description'
+  } else {
+    return attributeName
+  }
+}
+
+// Object, String, String/Number -> Number
+export function createNewAttribute(currentAtttributes, name, bookId) {
+  // Characters
+  const attributeExists = currentAtttributes.find(
+    (attr) =>
+      (attr.name == 'shortDescription' && camelCase(name) == 'description') ||
+      (attr.name == 'shortDescription' && camelCase(name) == 'shortDescription') ||
+      (attr.name == 'description' && camelCase(name) == 'notes') ||
+      camelCase(attr.name) == camelCase(name)
+  )
+  if (!attributeExists) {
+    const nextAttributeId = nextId(currentAtttributes)
+    const attributeName = getAttributeName(name)
+    const attributeType = isNotBaseAttribute(camelCase(attributeName)) ? 'text' : 'base-attribute'
+    const values = {
+      name: attributeName,
+      type: attributeType,
+    }
+    const newAttribute = Object.assign({}, defaultAttribute, { id: nextAttributeId, ...values })
+    currentAtttributes.push(newAttribute)
+    return nextAttributeId
+  } else {
+    return attributeExists.id
   }
 }
 
 // String -> Bool
-export function isATag(objKey) {
+export function isATag(objKey = '') {
   return upperFirst(objKey.toLowerCase().trim()) == i18n('Tags')
 }
 
 // String -> Bool
-export function isNotExcludedAttribute(attribute) {
+export function isNotBaseAttribute(attribute) {
   const excludedAttributes = [
-    i18n('Tags'),
-    i18n('Description'),
-    i18n('Notes'),
-    i18n('Category'),
-    '...',
+    i18n('tags'),
+    i18n('description'),
+    i18n('notes'),
+    i18n('category'),
+    i18n('categoryId'),
+    i18n('noteIds'),
+    i18n('shortDescription'),
+    THREE_DOTS,
   ]
-  const strippedAttribute = upperFirst(attribute.toLowerCase().trim())
-  return !excludedAttributes.includes(strippedAttribute)
+  const strippedAttribute = camelCase(attribute)
+  return !excludedAttributes.includes(strippedAttribute) && !attribute.includes(THREE_DOTS)
 }
 
 // Object, Object, String -> [Object]
@@ -1188,8 +1347,13 @@ export function objectifyRTFContents(fileContents, section, name) {
         if (i.children && i.children.length) {
           const attributeValue = i.children.filter((child, idx) => {
             const strippedText = child.text.toLowerCase().replace(`${section}:`, '').trim()
+
+            // Title/Name of the note/character/place
             const isNameAttr = strippedText == name.toLowerCase().trim()
-            return !isNameAttr
+
+            // In case the `Attributes` title is fetched by the exporter
+            const isAttributeTitle = strippedText == 'attributes'
+            return !isNameAttr && !isAttributeTitle
           })
 
           return attributeValue[0] && attributeValue[0].text
@@ -1228,7 +1392,6 @@ export function mergePairAttributes(attributesList) {
 // Array -> Array [any]
 export function concatenateValues(arr) {
   return arr.reduce((acc, curr, idx) => {
-    const concatenatedText = []
     const isConsecutiveAttributes = findLast(
       acc,
       (obj) =>
@@ -1239,14 +1402,14 @@ export function concatenateValues(arr) {
         arr[idx - 1].text &&
         !arr[idx - 1].isBold &&
         curr.text.length &&
-        curr.text != '...' &&
+        curr.text != THREE_DOTS &&
         !curr.isBold
     )
     if (!isConsecutiveAttributes) {
       acc.push(curr)
     } else {
-      // Merge 2 consecutive item/attributes text if both attributes is not `isTitle`
-      concatenatedText.push({ type: 'paragraph', children: [curr] })
+      // Merge 2 consecutive item/attributes text if both attributes is not `isBold`
+      isConsecutiveAttributes['text'] = `${isConsecutiveAttributes['text']} \n\n ${curr.text}`
     }
     return acc
   }, [])
@@ -1262,26 +1425,7 @@ export function generateTagIds(currentState, stringOfTags) {
 
 export function createCustomAttributes(currentState, attributes, section) {
   if (attributes && attributes.length) {
-    const mappedAttributes = attributes
-      .map((attributes) => {
-        const newAttr = keys(attributes)[0]
-        const attributeExists = currentState.customAttributes[section].find(
-          (attr) => attr.name.toLowerCase().trim() == newAttr.toLowerCase().trim()
-        )
-
-        if (
-          (!currentState.customAttributes[section].length || !attributeExists) &&
-          isNotExcludedAttribute(newAttr)
-        ) {
-          return { name: newAttr, type: 'text' }
-        }
-      })
-      .filter(Boolean)
-
-    currentState.customAttributes[section] = [
-      ...currentState.customAttributes[section],
-      ...mappedAttributes,
-    ]
+    currentState.customAttributes[section] = []
   }
 }
 

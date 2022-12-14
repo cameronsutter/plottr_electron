@@ -1,8 +1,7 @@
 import xml from 'xml-js'
-import fs from 'fs'
 import { t } from 'plottr_locales'
 const i18n = t
-import { cloneDeep, keyBy, groupBy } from 'lodash'
+import { cloneDeep, groupBy } from 'lodash'
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 
 const { nextColor } = lineColors
@@ -11,6 +10,7 @@ const defaultNote = initialState.note
 const defaultCharacter = initialState.character
 const defaultCard = initialState.card
 const defaultLine = initialState.line
+const defaultAttribute = initialState.attribute
 
 const { nextId, objectId } = newIds
 const {
@@ -18,27 +18,28 @@ const {
   lists: { nextPositionInBook },
 } = helpers
 
-function Importer(path, isNewFile, state) {
-  const importedXML = fs.readFileSync(path, 'utf-8')
-  const currentState = cloneDeep(state)
+function Importer(path, isNewFile, state, readFile) {
+  return readFile(path, 'utf-8').then((importedXML) => {
+    const currentState = cloneDeep(state)
 
-  const json = JSON.parse(xml.xml2json(importedXML, { compact: true, spaces: 2 }))
+    const json = JSON.parse(xml.xml2json(importedXML, { compact: true, spaces: 2 }))
 
-  // create a new book (if not new file)
-  let bookId = 1
-  if (!isNewFile) {
-    bookId = createNewBook(currentState.books)
-  }
+    // create a new book (if not new file)
+    let bookId = 1
+    if (!isNewFile) {
+      bookId = createNewBook(currentState.books)
+    }
 
-  const bookTitle = bookAttributes(currentState.books, json, bookId)
+    const bookTitle = bookAttributes(currentState.books, json, bookId)
 
-  storyLine(currentState, json, bookTitle, bookId, isNewFile)
-  synopsis(currentState, json, bookTitle, bookId, isNewFile)
-  characters(currentState, json, bookId)
+    storyLine(currentState, json, bookTitle, bookId, isNewFile)
+    synopsis(currentState, json, bookTitle, bookId, isNewFile)
+    characters(currentState, json, bookId)
 
-  cards(currentState, json, bookId)
+    cards(currentState, json, bookId)
 
-  return currentState
+    return currentState
+  })
 }
 
 function createNewBook(currentBooks) {
@@ -232,25 +233,42 @@ function characters(currentState, json, bookId) {
     characterListNode['GContainer'] &&
     characterListNode['GContainer'].length
   ) {
-    let newCustomAttrs = []
     characterListNode['GContainer'].forEach((chNode) => {
       if (chNode['GString'] && chNode['GString'].length) {
         let values = chNode['GString'].reduce((acc, attr) => {
           // get the right attr
           const attrName = characterAttrMapping[attr['_attributes']['name']] || 'notes'
           const val = attr['_attributes']['value']
+          const attributeObj = {
+            name: attrName,
+            bookId: 'all',
+          }
           if (attrName == 'name') {
             acc['name'] = val
           } else {
+            const isAttributeExists = currentState.attributes.characters.find(
+              (attr) => attr.name == attrName
+            )
+
+            if (!isAttributeExists) {
+              attributeObj['id'] = createAttribute(currentState.attributes.characters, attributeObj)
+            } else {
+              attributeObj['id'] = isAttributeExists.id
+            }
+
             if (['paragraph', 'synopsis'].includes(attr['_attributes']['name'])) {
               let trimmedText = val.replace(/\n\n/g, '\n').replace(/\t/g, '')
               const parts = trimmedText.split('\n')
-              acc[attrName] = createSlateEditor(parts)
+              attributeObj['value'] = parts
             } else {
-              acc[attrName] = val.replace(/\n/g, ' ')
+              attributeObj['value'] = val.replace(/\n/g, ' ')
             }
-            // also create a custom attribute
-            newCustomAttrs.push(attrName)
+            attributeObj['name'] = undefined
+            if (acc['attributes'] && acc['attributes'].length && Array.isArray(acc['attributes'])) {
+              acc['attributes'].push(attributeObj)
+            } else {
+              acc['attributes'] = [attributeObj]
+            }
           }
           return acc
         }, {})
@@ -258,26 +276,23 @@ function characters(currentState, json, bookId) {
         createNewCharacter(currentState.characters, values)
       }
     })
-    createCustomCharacterAttributes(currentState, newCustomAttrs)
+    createCustomCharacterAttributes(currentState)
   }
 }
 
-function createCustomCharacterAttributes(currentState, newCustomAttrs) {
-  // get names of current ones
-  const currentListByName = keyBy(currentState.customAttributes.characters, 'name')
-  // add new ones if they don't already exist
-  const customAttrs = characterAttrOrder.reduce((acc, attr) => {
-    if (newCustomAttrs.includes(attr)) {
-      let type = 'text'
-      if (['One-Paragraph Summary', 'Character Synopsis'].includes(attr)) type = 'paragraph'
-      if (!currentListByName[attr]) acc.push({ name: attr, type: type })
-    }
-    return acc
-  }, [])
-  currentState.customAttributes.characters = [
-    ...currentState.customAttributes.characters,
-    ...customAttrs,
-  ]
+function createAttribute(currentAtttributes, attr) {
+  const nextAttributeId = nextId(currentAtttributes)
+  const values = {
+    name: attr.name,
+    type: 'text',
+  }
+  const newAttribute = Object.assign({}, defaultAttribute, { id: nextAttributeId, ...values })
+  currentAtttributes.push(newAttribute)
+  return nextAttributeId
+}
+
+function createCustomCharacterAttributes(currentState) {
+  currentState.customAttributes.characters = []
 }
 
 function cards(currentState, json, bookId) {
@@ -503,56 +518,6 @@ const characterAttrMapping = {
   change: 'How character will change',
   synopsis: 'Character Synopsis',
 }
-
-const characterAttrOrder = [
-  'One-Sentence Summary',
-  'Ambition',
-  'Goal',
-  'Values',
-  'Conflict',
-  'Epiphany',
-  'One-Paragraph Summary',
-  'Date of Birth',
-  'Age',
-  'Height',
-  'Weight',
-  'Ethnic Heritage',
-  'Hair Color',
-  'Eye Color',
-  'Physical Description',
-  'Style of Dressing',
-  'Personality Type',
-  'Sense of Humor',
-  'Religion',
-  'Political Party',
-  'Hobbies',
-  'Favorite Music',
-  'Favorite Books',
-  'Favorite Movies',
-  'Favorite Colors',
-  'Contents of purse or wallet',
-  'Description of home',
-  'Educational Background',
-  'Work Experience',
-  'Family',
-  'Best Friend',
-  'Male Friends',
-  'Female Friends',
-  'Enemies',
-  'Best childhood memory',
-  'Worst childhood memory',
-  'One-line characterization',
-  'Strongest character trait',
-  'Weakest character trait',
-  "Character's Paradox",
-  'Greatest Hope',
-  'Deepest Fear',
-  'Philosophy of Life',
-  'How character sees self',
-  'How others see character',
-  'How character will change',
-  'Character Synopsis',
-]
 
 const sceneAttrMapping = {
   paragraph: 'Scene Notes',

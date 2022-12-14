@@ -12,7 +12,8 @@ const { characterCategoriesSelector } = selectors
 
 export default function exportCharacters(state, documentContents, options) {
   const { binderItem } = createFolderBinderItem(i18n('Characters'))
-  const bookToExport = selectors.currentTimelineSelector(state)
+  const showBookTabs = selectors.showBookTabsSelector(state)
+  const bookToExport = !showBookTabs ? 'all' : selectors.currentTimelineSelector(state)
   const characters = selectors.allDisplayedCharactersForCurrentBookSelector(
     state,
     null,

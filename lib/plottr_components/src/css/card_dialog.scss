@@ -352,4 +352,25 @@
       }
     }
   }
+
+  .card-dialog__dropdown-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 5px;
+    align-items: center;
+
+    .card-dialog__details-label {
+      min-width: 85px;
+    }
+
+    div.dropdown.btn-group {
+      button {
+        white-space: break-spaces;
+        align-items: center;
+        width: 100%;
+        display: flex;
+        text-align: left;
+      }
+    }
+  }
 }

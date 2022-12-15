@@ -71,6 +71,10 @@
       border-radius: 0;
     }
 
+    & > li:first-child > a {
+      margin-left: 7px;
+    }
+
     .file-actions-wrapper button {
       margin-right: 5px;
     }

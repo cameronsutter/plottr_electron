@@ -351,6 +351,9 @@ $medium_width: 80px;
       }
     }
   }
+  span:first-child {
+    word-break: break-word;
+  }
 }
 
 .vertical-beat__body.hover {

@@ -8,6 +8,7 @@ const makeKnownFilesModule = (
   fileSystemModule,
   tempFilesModule,
   trashModule,
+  backupModule,
   logger
 ) => {
   const { knownFilesStore } = stores
@@ -15,14 +16,20 @@ const makeKnownFilesModule = (
   const { TEMP_FILES_PATH } = fileSystemModule
   const { removeFromTempFiles } = tempFilesModule
   const { trash } = trashModule
+  const { backupBasePath } = backupModule
 
   const removeFromKnownFiles = (fileURL) => {
     return knownFilesStore.delete(fileURL)
   }
 
   const deleteKnownFile = (fileURL) => {
-    try {
-      const filePath = helpers.file.withoutProtocol(fileURL)
+    const filePath = helpers.file.withoutProtocol(fileURL)
+    // We don't want to delete backup files
+    return backupBasePath().then((backupPath) => {
+      if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
+        logger.info('Refusing delete a known file that is a backup')
+        return Promise.resolve()
+      }
       return removeFromKnownFiles(fileURL)
         .then(() => {
           return trash(filePath)
@@ -33,10 +40,11 @@ const makeKnownFilesModule = (
           }
           return true
         })
-    } catch (error) {
-      logger.warn(error)
-      return Promise.reject(error)
-    }
+        .catch((error) => {
+          logger.warn(error)
+          return Promise.reject(error)
+        })
+    })
   }
 
   const addKnownFileWithFix = (fileURL) => {
@@ -48,17 +56,26 @@ const makeKnownFilesModule = (
       return Promise.resolve()
     }
 
-    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
-    return knownFilesStore
-      .setRawKey(fileURL, {
-        fileURL,
-        fileName,
-        lastOpened: Date.now(),
-      })
-      .catch((error) => {
-        logger.error('Error getting the current store to add a known file', fileURL)
-        return Promise.reject(error)
-      })
+    // We don't want to track recent files when they're backups (we
+    // make a new file instead.)
+    return backupBasePath().then((backupPath) => {
+      if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
+        logger.info('Refusing to add a backup file as a known file')
+        return Promise.resolve()
+      }
+
+      const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
+      return knownFilesStore
+        .setRawKey(fileURL, {
+          fileURL,
+          fileName,
+          lastOpened: Date.now(),
+        })
+        .catch((error) => {
+          logger.error('Error reading the known files store to add a known file', fileURL, error)
+          return Promise.reject(error)
+        })
+    })
   }
 
   const addKnownFile = (fileURL) => {
@@ -67,20 +84,30 @@ const makeKnownFilesModule = (
 
     // We don't want to track recent files when they're offline files.
     if (helpers.file.withoutProtocol(fileURL).startsWith(offlineFilesFilesPath)) {
+      logger.info('Refusing to add an offline file as a known file')
       return Promise.resolve()
     }
 
-    const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
-    return knownFilesStore
-      .setRawKey(fileURL, {
-        fileURL,
-        fileName,
-        lastOpened: Date.now(),
-      })
-      .catch((error) => {
-        logger.error('Error reading the known files store to add a known file', fileURL, error)
-        return Promise.reject(error)
-      })
+    // We don't want to track recent files when they're backups (we
+    // make a new file instead.)
+    return backupBasePath().then((backupPath) => {
+      if (helpers.file.withoutProtocol(fileURL).startsWith(backupPath)) {
+        logger.info('Refusing to add a backup file as a known file')
+        return Promise.resolve()
+      }
+
+      const fileName = basename(helpers.file.withoutProtocol(fileURL), '.pltr')
+      return knownFilesStore
+        .setRawKey(fileURL, {
+          fileURL,
+          fileName,
+          lastOpened: Date.now(),
+        })
+        .catch((error) => {
+          logger.error('Error reading the known files store to add a known file', fileURL, error)
+          return Promise.reject(error)
+        })
+    })
   }
 
   const editKnownFilePath = (oldFileURL, newFileURL) => {
@@ -90,19 +117,28 @@ const makeKnownFilesModule = (
       return Promise.reject(new Error(message))
     }
     const fileRecord = knownFilesStore.getRawKey(oldFileURL)
-    return knownFilesStore
-      .delete(oldFileURL)
-      .then(() => {
-        return knownFilesStore.setRawKey(newFileURL, {
-          ...fileRecord,
-          fileURL: newFileURL,
-          fileName: basename(helpers.file.withoutProtocol(newFileURL), '.pltr'),
+    // We don't want to track recent files when they're backups (we
+    // make a new file instead.)
+    return backupBasePath().then((backupPath) => {
+      if (helpers.file.withoutProtocol(oldFileURL).startsWith(backupPath)) {
+        logger.info('Refusing to rename a backup file')
+        return Promise.resolve()
+      }
+
+      return knownFilesStore
+        .delete(oldFileURL)
+        .then(() => {
+          return knownFilesStore.setRawKey(newFileURL, {
+            ...fileRecord,
+            fileURL: newFileURL,
+            fileName: basename(helpers.file.withoutProtocol(newFileURL), '.pltr'),
+          })
         })
-      })
-      .catch((error) => {
-        logger.error(`Error editing known file path from ${oldFileURL} to ${newFileURL}: `, error)
-        return Promise.reject(error)
-      })
+        .catch((error) => {
+          logger.error(`Error editing known file path from ${oldFileURL} to ${newFileURL}: `, error)
+          return Promise.reject(error)
+        })
+    })
   }
 
   const updateLastOpenedDate = (fileURL) => {

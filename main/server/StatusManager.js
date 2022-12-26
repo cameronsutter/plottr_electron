@@ -23,15 +23,24 @@ class StatusManager {
     this.notifyBusy()
     const thisWorkId = uuid()
     this.tasks.push({ workId: thisWorkId, name })
-    return work.then((result) => {
+    const deregisterThisWork = () => {
       this.tasks = this.tasks.filter(({ workId }) => {
         return workId !== thisWorkId
       })
       if (this.tasks.length === 0) {
         this.notifyDone()
       }
-      return result
-    })
+    }
+    return work
+      .then((result) => {
+        deregisterThisWork()
+        return result
+      })
+      .catch((error) => {
+        deregisterThisWork()
+        this.logger.error(`Error while working on task with id: ${thisWorkId} and name: ${name}`)
+        return Promise.reject(error)
+      })
   }
 
   broadcast(message) {

@@ -133,6 +133,10 @@ $medium_width: 80px;
   &.disabled {
     cursor: not-allowed;
   }
+
+  span:first-child {
+    word-break: break-word;
+  }
 }
 
 .beat-list__item__hover-options {
@@ -346,6 +350,9 @@ $medium_width: 80px;
         padding: 6px 2px;
       }
     }
+  }
+  span:first-child {
+    word-break: break-word;
   }
 }
 

@@ -30,6 +30,25 @@ describe('StatusManager', () => {
         })
         statusManager.registerTask(theTask, 'Example task')
       })
+      describe('and that task throws an error', () => {
+        it('should still broadcast that it is done', (done) => {
+          const statusManager = new StatusManager(CONSOLE_LOGGER)
+          const theTask = new Promise((resolve, reject) => {
+            reject(new Error('It failed!!'))
+          })
+          statusManager.acceptConnection({
+            send: (payload) => {
+              if (JSON.parse(payload).type === BUSY) {
+                return
+              }
+              done()
+            },
+          })
+          statusManager.registerTask(theTask, 'Example task').catch((error) => {
+            return true
+          })
+        })
+      })
     })
     describe('and two tasks', () => {
       describe('that overlap in time', () => {

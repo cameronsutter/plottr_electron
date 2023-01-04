@@ -2,7 +2,7 @@
 
 $title_height: 70px;
 $cell_width: 175px;
-$medium_width: 80px;
+$medium_width: 82px; // +2px to fit two-digit `Chapter` names e.g. Chapter 12
 
 .beat__cell {
   width: $cell_width;

@@ -29,6 +29,8 @@
       cursor: pointer;
       user-select: none;
       padding: 4px 8px;
+      max-width: 250px;
+      overflow-wrap: break-word;
     }
     li:hover {
       background-color: $body-background-color;

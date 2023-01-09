@@ -88,6 +88,7 @@ const {
   onMPQMessage,
   onDownloadStorageImage,
   onMoveFromTemp,
+  restartSocketServer,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -115,7 +116,8 @@ const connectToSocketServer = (port) => {
         window.close()
       })
     },
-    socketServerEventHandlers
+    socketServerEventHandlers,
+    restartSocketServer
   )
 }
 

@@ -440,6 +440,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
       }
     })
 
+    const inBadState = () => {
+      return clientConnection.readyState > 1
+    }
+
     const ping = () => {
       return sendPromise(PING, {})
     }
@@ -812,6 +816,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           stat,
           mkdir,
           close: clientConnection.close.bind(clientConnection),
+          inBadState,
         })
       })
     })
@@ -827,11 +832,20 @@ const instance = () => {
   let resolve = null
   let reject = null
   let logger = null
+  let connectionBroken = null
 
   // See the destructured argument of the connect function for the
   // structure of `eventHandlers`.
-  const createClient = (port, logger, WebSocket, onFailedToConnect, eventHandlers) => {
+  const createClient = (
+    port,
+    logger,
+    WebSocket,
+    onFailedToConnect,
+    eventHandlers,
+    onConnectionBroken = () => {}
+  ) => {
     initialised = true
+    connectionBroken = onConnectionBroken
     connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
         if (client) client.close(1000, 'New client requested')
@@ -850,20 +864,30 @@ const instance = () => {
   const whenClientIsReady = (f) => {
     if (client) {
       return new Promise((resolve, reject) => {
-        defer(() => {
-          const result = f(client)
-          try {
-            if (typeof result.then === 'function') {
-              result.then(resolve, reject)
-            } else {
-              resolve(result)
-            }
-          } catch (error) {
-            if (logger) {
-              logger.error('Error while using client: ', error)
-            }
+        try {
+          if (client.inBadState()) {
+            connectionBroken()
+            reject(new Error('Client connection broken'))
+          } else {
+            defer(() => {
+              try {
+                const result = f(client)
+                if (typeof result.then === 'function') {
+                  result.then(resolve, reject)
+                } else {
+                  resolve(result)
+                }
+              } catch (error) {
+                if (logger) {
+                  logger.error('Error while using client: ', error)
+                }
+                reject(error)
+              }
+            })
           }
-        })
+        } catch (error) {
+          reject(error)
+        }
       })
     }
     if (resolvedPromise) {

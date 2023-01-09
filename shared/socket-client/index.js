@@ -834,7 +834,7 @@ const instance = () => {
     initialised = true
     connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
-        if (client) client.close(0, 'New client requested')
+        if (client) client.close(1000, 'New client requested')
         client = newClient
         if (resolve) resolve(newClient)
       })
@@ -884,13 +884,18 @@ const instance = () => {
     return initialised
   }
 
+  const resetInitialised = () => {
+    initialised = false
+  }
+
   return {
     createClient,
     whenClientIsReady,
     isInitialised,
+    resetInitialised,
   }
 }
 
-const { createClient, isInitialised, whenClientIsReady } = instance()
+const { createClient, isInitialised, whenClientIsReady, resetInitialised } = instance()
 
-export { createClient, isInitialised, whenClientIsReady, setPort, getPort }
+export { createClient, isInitialised, whenClientIsReady, resetInitialised, setPort, getPort }

@@ -407,6 +407,10 @@ const _makeMainProcessClient = () => {
     return subscribeTo('move-from-temp', cb)
   }
 
+  const restartSocketServer = () => {
+    return ask('restart-server')
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -498,6 +502,7 @@ const _makeMainProcessClient = () => {
     onMPQMessage,
     onDownloadStorageImage,
     onMoveFromTemp,
+    restartSocketServer,
   }
 }
 

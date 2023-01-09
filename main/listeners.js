@@ -120,7 +120,15 @@ export function notifyUser(exportPath, type) {
   shell.showItemInFolder(exportPath)
 }
 
-export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExitModule) => {
+// NOTE: restartServerRef contains a mutable reference to the function
+// to call to restart the server.  That function gets updated by
+// itself when it's called
+export const listenOnIPCMain = (
+  getSocketWorkerPort,
+  processSwitches,
+  safelyExitModule,
+  restartServerRef
+) => {
   ipcMain.on('pls-fetch-state', (event, replyChannel, proMode) => {
     lastOpenedFile()
       .catch((error) => {
@@ -690,5 +698,19 @@ export const listenOnIPCMain = (getSocketWorkerPort, processSwitches, safelyExit
         }
       )
     })
+  })
+
+  ipcMain.on('restart-server', (event, replyChannel) => {
+    log.warn('Restarting the socket server after request by client to do so')
+    restartServerRef
+      .restartServer()
+      .then(() => {
+        log.info('Restarted the socket server as per client request')
+        event.sender.send(replyChannel, 'done')
+      })
+      .catch((error) => {
+        log.error('Error restarting the socket server', error)
+        event.sender.send(replyChannel, { error: error.message })
+      })
   })
 }

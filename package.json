@@ -87,7 +87,7 @@
     "jsdom": "^16.7.0",
     "json-schema-traverse": "^1.0.0",
     "jsonfile": "^6.1.0",
-    "luxon": "^2.3.2",
+    "luxon": "^2.5.2",
     "node-fetch-cjs": "^3.2.10",
     "path-exists": "^4.0.0",
     "react-is": "^16.13.1",

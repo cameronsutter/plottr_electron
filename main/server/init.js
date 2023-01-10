@@ -12,6 +12,7 @@ export const startServer = (log, broadcastPortChange, userDataPath, onFatalError
       log.error(`Failed to bind socket server after ${MAX_ATTEMPTS} attempts.`)
       reject(new Error(`Failed to bind socket server after ${MAX_ATTEMPTS} attempts.`))
       onFatalError(`Failed to bind socket server after ${MAX_ATTEMPTS} attempts.`)
+      return
     }
 
     const randomPort = START_PORT + Math.floor(1000 * Math.random())

@@ -25,7 +25,13 @@ import { addToKnown } from './modules/known_files'
 import { TEMP_FILES_PATH } from './modules/files'
 import { startServer } from './server'
 import { listenOnIPCMain } from './listeners'
-import { createClient, isInitialised, setPort, getPort } from '../shared/socket-client'
+import {
+  createClient,
+  isInitialised,
+  resetInitialised,
+  setPort,
+  getPort,
+} from '../shared/socket-client'
 import ProcessSwitches from './modules/processSwitches'
 import makeSafelyExitModule from './modules/safelyExit'
 
@@ -133,21 +139,8 @@ const loadMenuFailureHandler = (error) => {
 }
 
 app.whenReady().then(() => {
-  startServer(log, broadcastPortChange, app.getPath('userData'), (error) => {
-    log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
-    dialog.showErrorBox(
-      'Error',
-      "Plottr ran into a problem and can't start.  Please contact support."
-    )
-    setTimeout(() => {
-      app.quit()
-    }, 5000)
-  })
-    .then((port) => {
-      log.info(`Socket worker started on ${port}`)
-      return port
-    })
-    .catch((error) => {
+  const startSocketServer = () => {
+    return startServer(log, broadcastPortChange, app.getPath('userData'), (error) => {
       log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
       dialog.showErrorBox(
         'Error',
@@ -157,21 +150,62 @@ app.whenReady().then(() => {
         app.quit()
       }, 5000)
     })
-    .then((port) => {
+      .then(({ port, killServer }) => {
+        log.info(`Socket worker started on ${port}`)
+        return { port, killServer }
+      })
+      .catch((error) => {
+        log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
+        dialog.showErrorBox(
+          'Error',
+          "Plottr ran into a problem and can't start.  Please contact support."
+        )
+        setTimeout(() => {
+          app.quit()
+        }, 5000)
+      })
+  }
+
+  startSocketServer()
+    .then(({ port, killServer }) => {
       return loadMenu(safelyExitModule)
         .then(() => {
-          return port
+          return { port, killServer }
         })
         .catch(loadMenuFailureHandler)
     })
-    .then((port) => {
+    .then(({ port, killServer }) => {
       const yargv = parseArguments(process.argv)
       log.info('yargv', yargv)
       const processSwitches = ProcessSwitches(yargv)
       const fileLaunchedOn = fileToLoad(process.argv)
       const fileLaunchedOnURL = helpers.file.filePathToFileURL(fileLaunchedOn)
+      const restartServerRef = {
+        killServer: killServer,
+        restartServer: () => {
+          resetInitialised()
+          return restartServerRef
+            .killServer()
+            .then(() => {
+              return startSocketServer().then(({ port, killServer }) => {
+                setPort(port)
+                restartServerRef.killServer = killServer
+              })
+            })
+            .catch((error) => {
+              log.error('Failed to restart the socket server.  Killing the app.', error)
+              dialog.showErrorBox(
+                'Error',
+                'Plottr ran into a problem and needs to shutdown.  Please contact support.'
+              )
+              setTimeout(() => {
+                app.quit()
+              }, 5000)
+            })
+        },
+      }
 
-      listenOnIPCMain(() => getPort(), processSwitches, safelyExitModule)
+      listenOnIPCMain(() => getPort(), processSwitches, safelyExitModule, restartServerRef)
 
       const importFromScrivener = processSwitches.importFromScrivener()
       if (importFromScrivener) {

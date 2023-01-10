@@ -198,7 +198,9 @@ app.whenReady().then(() => {
                 'Error',
                 'Plottr ran into a problem and needs to shutdown.  Please contact support.'
               )
-              app.quit()
+              setTimeout(() => {
+                app.quit()
+              }, 5000)
             })
         },
       }

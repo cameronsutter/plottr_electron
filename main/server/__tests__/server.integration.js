@@ -60,7 +60,13 @@ describe('startServer', () => {
     const onFatalError = () => {
       fatalErrorOccured = true
     }
-    const port = await startServer(CONSOLE_LOGGER, broadcastPort, userDataDirectory, onFatalError)
+    const { port, killServer } = await startServer(
+      CONSOLE_LOGGER,
+      broadcastPort,
+      userDataDirectory,
+      onFatalError
+    )
+    expect(typeof killServer).toEqual('function')
     expect(port).toBeGreaterThan(0)
     createClient(
       port,

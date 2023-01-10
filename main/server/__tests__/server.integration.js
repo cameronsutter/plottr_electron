@@ -70,7 +70,7 @@ describe('startServer', () => {
       )
       expect(typeof killServer).toEqual('function')
       expect(port).toBeGreaterThan(0)
-      createClient(
+      await createClient(
         port,
         CONSOLE_LOGGER,
         WebSocket,
@@ -172,7 +172,7 @@ describe('startServer', () => {
         userDataDirectory,
         onFatalError
       )
-      createClient(
+      await createClient(
         finalServer.port,
         CONSOLE_LOGGER,
         WebSocket,

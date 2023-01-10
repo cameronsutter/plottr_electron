@@ -846,7 +846,7 @@ const instance = () => {
   ) => {
     initialised = true
     connectionBroken = onConnectionBroken
-    connect(port, logger, WebSocket, eventHandlers)
+    return connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
         if (client) client.close(1000, 'New client requested')
         client = newClient

@@ -268,6 +268,11 @@ const platform = {
     renameFile,
     removeFromKnownFiles,
     saveFile,
+    copyFile: (sourceFileURL, destinationURL) => {
+      return whenClientIsReady(({ copyFile }) => {
+        return copyFile(sourceFileURL, destinationURL)
+      })
+    },
     readFile: (fileURL) => {
       return whenClientIsReady(({ readFile }) => {
         return readFile(fileURL)

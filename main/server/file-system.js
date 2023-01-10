@@ -1,5 +1,7 @@
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
+
 import { sortBy } from 'lodash'
 
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
@@ -402,11 +404,17 @@ const fileSystemModule = (userDataPath) => {
         })
     }
 
-    const copyFile = (sourceFileURL, newFileURL) => {
-      return cp(
-        helpers.file.withoutProtocol(sourceFileURL),
-        helpers.file.withoutProtocol(newFileURL)
-      )
+    const copyFile = async (sourceFileURL, newFileURL) => {
+      const sourceWithoutProtocol = helpers.file.withoutProtocol(sourceFileURL)
+      if (newFileURL == 'desktop') {
+        let destinationFile = path.join(
+          path.join(os.homedir(), 'Desktop'),
+          path.basename(sourceFileURL)
+        )
+        await cp(sourceWithoutProtocol, destinationFile)
+        return destinationFile
+      }
+      return cp(sourceWithoutProtocol, newFileURL)
     }
 
     return {

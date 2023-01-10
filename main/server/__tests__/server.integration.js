@@ -40,6 +40,7 @@ afterAll(async () => {
     })
   } catch (error) {
     console.error('Failed to shut down the server!', error)
+    throw error
   }
 })
 

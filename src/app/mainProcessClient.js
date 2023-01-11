@@ -391,6 +391,10 @@ const _makeMainProcessClient = () => {
     return subscribeTo('wants-to-close', cb)
   }
 
+  const onSaveToDesktop = (cb) => {
+    return subscribeTo('save-to-desktop', cb)
+  }
+
   const askToExport = (defaultPath, fullState, type, options, userId) => {
     return ask('export', defaultPath, fullState, type, options, userId)
   }
@@ -503,6 +507,7 @@ const _makeMainProcessClient = () => {
     onDownloadStorageImage,
     onMoveFromTemp,
     restartSocketServer,
+    onSaveToDesktop,
   }
 }
 

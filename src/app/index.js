@@ -89,6 +89,8 @@ const {
   onDownloadStorageImage,
   onMoveFromTemp,
   restartSocketServer,
+  onSaveToDesktop,
+  showItemInFolder,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -456,6 +458,11 @@ tellMeWhatOSImOn()
         onNewProject(() => {
           store.dispatch(actions.project.startCreatingNewProject())
         })
+
+        onSaveToDesktop((file) => {
+          copyFile(file, 'desktop').then((newFile) => showItemInFolder(newFile))
+        })
+
         onOpenExisting(() => openExistingProj())
         onFromTemplate(() => {
           openDashboard()

@@ -86,6 +86,14 @@ function buildFileMenu(fileURL, getTrialInfo) {
           },
         },
         {
+          label: t('Save to Desktop'),
+          visible: !!fileURL,
+          click: function (event, focusedWindow) {
+            log.info('sending save-to-desktop')
+            focusedWindow.webContents.send('save-to-desktop', fileURL)
+          },
+        },
+        {
           label: t('Close'),
           accelerator: 'CmdOrCtrl+W',
           visible: !!fileURL,

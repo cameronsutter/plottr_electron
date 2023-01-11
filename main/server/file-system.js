@@ -405,16 +405,23 @@ const fileSystemModule = (userDataPath) => {
     }
 
     const copyFile = async (sourceFileURL, newFileURL) => {
-      const sourceWithoutProtocol = helpers.file.withoutProtocol(sourceFileURL)
-      if (newFileURL == 'desktop') {
-        let destinationFile = path.join(
-          path.join(os.homedir(), 'Desktop'),
-          path.basename(sourceFileURL)
-        )
-        await cp(sourceWithoutProtocol, destinationFile)
-        return destinationFile
+      try {
+        const sourceWithoutProtocol = helpers.file.withoutProtocol(sourceFileURL)
+        if (newFileURL == 'desktop') {
+          let destinationFile = path.join(
+            path.join(os.homedir(), 'Desktop'),
+            path.basename(sourceFileURL)
+          )
+          await cp(sourceWithoutProtocol, destinationFile)
+          return destinationFile
+        }
+        return cp(sourceWithoutProtocol, newFileURL)
+      } catch (error) {
+        if (error?.info?.message == 'src and dest cannot be the same') {
+          return error.info.path
+        }
+        logger.error('Error saving file to desktop.', error)
       }
-      return cp(sourceWithoutProtocol, newFileURL)
     }
 
     return {

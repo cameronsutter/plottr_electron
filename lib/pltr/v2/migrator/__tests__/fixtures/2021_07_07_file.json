@@ -7,17 +7,16 @@
   },
   "ui": {
     "currentView": "timeline",
-    "currentTimeline": 1,
+    "currentTimeline": 7,
     "timelineIsExpanded": true,
     "orientation": "horizontal",
     "darkMode": true,
     "characterSort": "name~asc",
     "characterFilter": null,
     "placeSort": "name~asc",
-    "placeFilter": null,
+    "placeFilter": {},
     "noteSort": "title~asc",
     "noteFilter": null,
-    "outlineFilter": null,
     "timelineFilter": null,
     "timelineScrollPosition": {
       "x": 0,
@@ -26,7 +25,17 @@
     "timeline": {
       "size": "large"
     },
-    "attributesDialogIsOpen": false
+    "attributesDialogIsOpen": false,
+    "searchTerms": {
+      "notes": null,
+      "characters": null,
+      "places": null,
+      "tags": null,
+      "outline": null
+    },
+    "customAttributeOrder": {
+      "characters": []
+    }
   },
   "featureFlags": {},
   "series": {

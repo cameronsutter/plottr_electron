@@ -25,8 +25,13 @@ import MainIntegrationContext from '../../mainIntegrationContext'
 import logger from '../../../shared/logger'
 import { makeMainProcessClient } from '../mainProcessClient'
 
-const { onAdvancedExportFileFromMenu, onTurnOnActsHelp, onReload, onWantsToClose } =
-  makeMainProcessClient()
+const {
+  onAdvancedExportFileFromMenu,
+  onTurnOnActsHelp,
+  onReload,
+  onWantsToClose,
+  pleaseReloadMenu,
+} = makeMainProcessClient()
 
 const App = ({
   forceProjectDashboard,
@@ -64,6 +69,10 @@ const App = ({
       if (shouldClose) window.close()
     }
   }
+
+  useEffect(() => {
+    pleaseReloadMenu()
+  })
 
   useEffect(() => {
     if (

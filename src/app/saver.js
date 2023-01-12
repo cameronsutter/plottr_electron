@@ -130,8 +130,9 @@ export const DUMMY_ROLLBAR = {
   warn: () => {},
   error: () => {},
 }
-const DUMMY_SHOW_MESSAGE_BOX = () => {}
-const DUMMY_SHOW_ERROR_BOX = () => {}
+export const DUMMY_SHOW_MESSAGE_BOX = () => {}
+export const DUMMY_SHOW_ERROR_BOX = () => {}
+export const DUMMY_SERVER_IS_BUSY_RESTARTING = () => Promise.resolve(false)
 
 class Saver {
   getState = () => ({})
@@ -177,7 +178,8 @@ class Saver {
     backupIntervalMS = DEFAULT_BACKUP_INTERVAL_MS,
     rollbar = DUMMY_ROLLBAR,
     showMessageBox = DUMMY_SHOW_MESSAGE_BOX,
-    showErrorBox = DUMMY_SHOW_ERROR_BOX
+    showErrorBox = DUMMY_SHOW_ERROR_BOX,
+    serverIsBusyRestarting = DUMMY_SERVER_IS_BUSY_RESTARTING
   ) {
     this.getState = getState
     this.logger = logger
@@ -186,6 +188,7 @@ class Saver {
     this.rollbar = rollbar
     this.showMessageBox = showMessageBox
     this.showErrorBox = showErrorBox
+    this.serverIsBusyRestarting = serverIsBusyRestarting
 
     this.saveRunner = new PressureControlledTaskQueue(
       'Save',

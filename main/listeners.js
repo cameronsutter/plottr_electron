@@ -730,4 +730,12 @@ export const listenOnIPCMain = (
         restartingServerStateRef.restartTask = null
       })
   })
+
+  ipcMain.on('are-we-restarting-socket-server', (event, replyChannel) => {
+    log.info(
+      "Main process queried whether it's restarting.  Restart state:",
+      JSON.stringify(restartingServerStateRef)
+    )
+    event.sender.send(replyChannel, restartingServerStateRef.restarting)
+  })
 }

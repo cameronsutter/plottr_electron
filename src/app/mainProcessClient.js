@@ -411,6 +411,10 @@ const _makeMainProcessClient = () => {
     return ask('restart-server')
   }
 
+  const isRestarting = () => {
+    return ask('are-we-restarting-socket-server')
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -503,6 +507,7 @@ const _makeMainProcessClient = () => {
     onDownloadStorageImage,
     onMoveFromTemp,
     restartSocketServer,
+    isRestarting,
   }
 }
 

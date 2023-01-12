@@ -154,6 +154,7 @@ class Saver {
   onSaveBackupError = (error) => {
     this.serverIsBusyRestarting().then((restarting) => {
       if (restarting) {
+        this.lastStateBackedUp = {}
         this.logger.info(
           "Failed to backup, but the server is restarting, so we're going to ignore this error"
         )
@@ -169,6 +170,7 @@ class Saver {
   onAutoSaveError = (error) => {
     return this.serverIsBusyRestarting().then((restarting) => {
       if (restarting) {
+        this.lastStateSaved = {}
         this.logger.info(
           "Failed to save, but the server is restarting, so we're going to ignore this error"
         )
@@ -241,7 +243,7 @@ class Saver {
         }
       },
       (error) => {
-        this.onAutoSaveError(error.message).then((shouldIgnore) => {
+        this.onAutoSaveError(error).then((shouldIgnore) => {
           if (!shouldIgnore) {
             this.lastAutoSaveFailed = true
           }

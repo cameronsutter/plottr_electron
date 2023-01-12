@@ -700,9 +700,22 @@ export const listenOnIPCMain = (
     })
   })
 
+  const restartingServerStateRef = {
+    restarting: false,
+    restartTask: null,
+  }
   ipcMain.on('restart-server', (event, replyChannel) => {
+    log.warn('Restart request received', JSON.stringify(restartingServerStateRef))
+    if (restartingServerStateRef.restarting) {
+      log.warn("A client requested that the server restart, but it's already doing so.")
+      restartingServerStateRef.restartTask.then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
+      return
+    }
+    restartingServerStateRef.restarting = true
     log.warn('Restarting the socket server after request by client to do so')
-    restartServerRef
+    restartingServerStateRef.restartTask = restartServerRef
       .restartServer()
       .then(() => {
         log.info('Restarted the socket server as per client request')
@@ -711,6 +724,10 @@ export const listenOnIPCMain = (
       .catch((error) => {
         log.error('Error restarting the socket server', error)
         event.sender.send(replyChannel, { error: error.message })
+      })
+      .finally(() => {
+        restartingServerStateRef.restarting = false
+        restartingServerStateRef.restartTask = null
       })
   })
 }

@@ -151,19 +151,37 @@ class Saver {
   showErrorBox = () => {}
   lastStateSaved = {}
   lastStateBackedUp = {}
-  onSaveBackupError = (errorMessage) => {
-    this.rollbar.error({ message: 'BACKUP failed' })
-    this.rollbar.warn(errorMessage)
+  onSaveBackupError = (error) => {
+    this.serverIsBusyRestarting().then((restarting) => {
+      if (restarting) {
+        this.logger.info(
+          "Failed to backup, but the server is restarting, so we're going to ignore this error"
+        )
+        return
+      }
+      this.logger.error('BACKUP failed', error)
+      this.rollbar.warn(error.message)
+    })
   }
   onSaveBackupSuccess = () => {
     this.logger.info('[file save backup]', 'success')
   }
-  onAutoSaveError = (errorMessage) => {
-    this.rollbar.warn(errorMessage)
-    this.showErrorBox(
-      t('Auto-saving failed'),
-      t("Saving your file didn't work. Check where it's stored.")
-    )
+  onAutoSaveError = (error) => {
+    return this.serverIsBusyRestarting().then((restarting) => {
+      if (restarting) {
+        this.logger.info(
+          "Failed to save, but the server is restarting, so we're going to ignore this error"
+        )
+        return restarting
+      }
+      this.logger.warn('Failed to autosave', error)
+      this.rollbar.warn(error.message)
+      this.showErrorBox(
+        t('Auto-saving failed'),
+        t("Saving your file didn't work. Check where it's stored.")
+      )
+      return restarting
+    })
   }
   onAutoSaveWorkedThisTime = () => {
     this.showMessageBox(t('Auto-saving worked'), t('Saving worked this time 🎉'))
@@ -223,9 +241,11 @@ class Saver {
         }
       },
       (error) => {
-        this.lastAutoSaveFailed = true
-        logger.warn('Failed to autosave', error)
-        this.onAutoSaveError(error.message)
+        this.onAutoSaveError(error.message).then((shouldIgnore) => {
+          if (!shouldIgnore) {
+            this.lastAutoSaveFailed = true
+          }
+        })
       }
     )
     this.saveRunner.start()
@@ -260,8 +280,7 @@ class Saver {
         this.onSaveBackupSuccess()
       },
       (error) => {
-        this.logger.warn('[file save backup]', error)
-        this.onSaveBackupError(error.message)
+        this.onSaveBackupError(error)
       }
     )
     this.backupRunner.start()

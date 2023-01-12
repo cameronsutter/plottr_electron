@@ -14,8 +14,9 @@
 }
 
 @media (max-width: 800px) {
-  .plottr-popover {
-    max-width: 70vw;
+  .popover-arrow-container.resize {
+    max-height: 70vh;
+    max-width: calc(70vw - 50px);
   }
 }
 

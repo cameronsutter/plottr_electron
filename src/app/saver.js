@@ -130,8 +130,9 @@ export const DUMMY_ROLLBAR = {
   warn: () => {},
   error: () => {},
 }
-const DUMMY_SHOW_MESSAGE_BOX = () => {}
-const DUMMY_SHOW_ERROR_BOX = () => {}
+export const DUMMY_SHOW_MESSAGE_BOX = () => {}
+export const DUMMY_SHOW_ERROR_BOX = () => {}
+export const DUMMY_SERVER_IS_BUSY_RESTARTING = () => Promise.resolve(false)
 
 class Saver {
   getState = () => ({})
@@ -150,19 +151,39 @@ class Saver {
   showErrorBox = () => {}
   lastStateSaved = {}
   lastStateBackedUp = {}
-  onSaveBackupError = (errorMessage) => {
-    this.rollbar.error({ message: 'BACKUP failed' })
-    this.rollbar.warn(errorMessage)
+  onSaveBackupError = (error) => {
+    this.serverIsBusyRestarting().then((restarting) => {
+      if (restarting) {
+        this.lastStateBackedUp = {}
+        this.logger.info(
+          "Failed to backup, but the server is restarting, so we're going to ignore this error"
+        )
+        return
+      }
+      this.logger.error('BACKUP failed', error)
+      this.rollbar.warn(error.message)
+    })
   }
   onSaveBackupSuccess = () => {
     this.logger.info('[file save backup]', 'success')
   }
-  onAutoSaveError = (errorMessage) => {
-    this.rollbar.warn(errorMessage)
-    this.showErrorBox(
-      t('Auto-saving failed'),
-      t("Saving your file didn't work. Check where it's stored.")
-    )
+  onAutoSaveError = (error) => {
+    return this.serverIsBusyRestarting().then((restarting) => {
+      if (restarting) {
+        this.lastStateSaved = {}
+        this.logger.info(
+          "Failed to save, but the server is restarting, so we're going to ignore this error"
+        )
+        return restarting
+      }
+      this.logger.warn('Failed to autosave', error)
+      this.rollbar.warn(error.message)
+      this.showErrorBox(
+        t('Auto-saving failed'),
+        t("Saving your file didn't work. Check where it's stored.")
+      )
+      return restarting
+    })
   }
   onAutoSaveWorkedThisTime = () => {
     this.showMessageBox(t('Auto-saving worked'), t('Saving worked this time 🎉'))
@@ -177,7 +198,8 @@ class Saver {
     backupIntervalMS = DEFAULT_BACKUP_INTERVAL_MS,
     rollbar = DUMMY_ROLLBAR,
     showMessageBox = DUMMY_SHOW_MESSAGE_BOX,
-    showErrorBox = DUMMY_SHOW_ERROR_BOX
+    showErrorBox = DUMMY_SHOW_ERROR_BOX,
+    serverIsBusyRestarting = DUMMY_SERVER_IS_BUSY_RESTARTING
   ) {
     this.getState = getState
     this.logger = logger
@@ -186,6 +208,7 @@ class Saver {
     this.rollbar = rollbar
     this.showMessageBox = showMessageBox
     this.showErrorBox = showErrorBox
+    this.serverIsBusyRestarting = serverIsBusyRestarting
 
     this.saveRunner = new PressureControlledTaskQueue(
       'Save',
@@ -220,9 +243,11 @@ class Saver {
         }
       },
       (error) => {
-        this.lastAutoSaveFailed = true
-        logger.warn('Failed to autosave', error)
-        this.onAutoSaveError(error.message)
+        this.onAutoSaveError(error).then((shouldIgnore) => {
+          if (!shouldIgnore) {
+            this.lastAutoSaveFailed = true
+          }
+        })
       }
     )
     this.saveRunner.start()
@@ -257,8 +282,7 @@ class Saver {
         this.onSaveBackupSuccess()
       },
       (error) => {
-        this.logger.warn('[file save backup]', error)
-        this.onSaveBackupError(error.message)
+        this.onSaveBackupError(error)
       }
     )
     this.backupRunner.start()

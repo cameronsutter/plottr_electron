@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
 
-import Saver, { DUMMY_ROLLBAR } from '../saver'
+import Saver, { DUMMY_ROLLBAR, DUMMY_SHOW_ERROR_BOX, DUMMY_SHOW_MESSAGE_BOX } from '../saver'
 
 const CONSOLE_LOGGER = {
   info: (...args) => console.log(args),
@@ -315,6 +315,102 @@ describe('Saver', () => {
               2
             )
             saver.cancelAllRemainingRequests()
+          })
+          describe('and a busy restarting function that always reports that it is busy restarting', () => {
+            it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
+              let stateCounter = 1
+              const getState = () => {
+                return {
+                  stateCounter: stateCounter++,
+                }
+              }
+              const saveCalls = []
+              const saveFile = (...args) => {
+                saveCalls.push(args)
+                if (saveCalls.length === 1) {
+                  return Promise.resolve()
+                } else if (saveCalls.length === 2) {
+                  return Promise.reject(new Error('boom!'))
+                } else {
+                  return Promise.resolve()
+                }
+              }
+              const backupFile = () => {
+                return Promise.resolve()
+              }
+              let calledShowErrorBox = 0
+              const showErrorBox = () => {
+                calledShowErrorBox++
+              }
+              let calledShowMessageBox = 0
+              const showMessageBox = () => {
+                calledShowMessageBox++
+              }
+              const alwaysBusyRestarting = () => {
+                return Promise.resolve(true)
+              }
+              const saver = new Saver(
+                getState,
+                saveFile,
+                backupFile,
+                NOP_LOGGER,
+                100,
+                10000,
+                DUMMY_ROLLBAR,
+                showMessageBox,
+                showErrorBox,
+                alwaysBusyRestarting
+              )
+              expect(calledShowErrorBox).toBe(0)
+              expect(calledShowMessageBox).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(calledShowErrorBox).toBe(0)
+              expect(calledShowMessageBox).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(calledShowErrorBox).toBe(0)
+              expect(calledShowMessageBox).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(calledShowErrorBox).toBe(0)
+              expect(calledShowMessageBox).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(calledShowErrorBox).toBe(0)
+              expect(calledShowMessageBox).toBe(0)
+              expect(saveCalls).toMatchArrayLoosely(
+                [
+                  [
+                    {
+                      stateCounter: 1,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 2,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 3,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 4,
+                    },
+                  ],
+                ],
+                2,
+                2
+              )
+              saver.cancelAllRemainingRequests()
+            })
           })
         })
       })
@@ -795,20 +891,20 @@ describe('Saver', () => {
               setTimeout(resolve, 110)
             })
             expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(1)
-            expect(loggedErrors).toBe(0)
+            expect(loggedWarnings).toBe(0)
+            expect(loggedErrors).toBe(1)
             await new Promise((resolve) => {
               setTimeout(resolve, 110)
             })
             expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(1)
-            expect(loggedErrors).toBe(0)
+            expect(loggedWarnings).toBe(0)
+            expect(loggedErrors).toBe(1)
             await new Promise((resolve) => {
               setTimeout(resolve, 110)
             })
             expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(1)
-            expect(loggedErrors).toBe(0)
+            expect(loggedWarnings).toBe(0)
+            expect(loggedErrors).toBe(1)
             expect(backupCalls).toMatchArrayLoosely(
               [
                 [
@@ -836,6 +932,113 @@ describe('Saver', () => {
               1
             )
             saver.cancelAllRemainingRequests()
+          })
+          describe('and a serverIsBusy function that always reports that the server is busy restarting', () => {
+            it('should call the appropriate error and success functions', async () => {
+              let stateCounter = 1
+              const getState = () => {
+                return {
+                  stateCounter: stateCounter++,
+                }
+              }
+              const backupCalls = []
+              const backupFile = (...args) => {
+                backupCalls.push(args)
+                if (backupCalls.length === 1) {
+                  return Promise.resolve()
+                } else if (backupCalls.length === 2) {
+                  return Promise.reject(new Error('boom!'))
+                } else {
+                  return Promise.resolve()
+                }
+              }
+              const saveFile = () => {
+                return Promise.resolve()
+              }
+              let loggedErrors = 0
+              let loggedWarnings = 0
+              let loggedInfos = 0
+              const countingLogger = {
+                info: (...args) => {
+                  loggedInfos++
+                },
+                warn: (...args) => {
+                  loggedWarnings++
+                },
+                error: (...args) => {
+                  loggedErrors++
+                },
+              }
+              const alwaysBusyRestarting = () => {
+                return Promise.resolve(true)
+              }
+              const saver = new Saver(
+                getState,
+                saveFile,
+                backupFile,
+                countingLogger,
+                10000,
+                100,
+                DUMMY_ROLLBAR,
+                DUMMY_SHOW_MESSAGE_BOX,
+                DUMMY_SHOW_ERROR_BOX,
+                alwaysBusyRestarting
+              )
+              expect(loggedInfos).toBeGreaterThan(0)
+              expect(loggedWarnings).toBe(0)
+              expect(loggedErrors).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(loggedInfos).toBeGreaterThan(0)
+              expect(loggedWarnings).toBe(0)
+              expect(loggedErrors).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(loggedInfos).toBeGreaterThan(0)
+              expect(loggedWarnings).toBe(0)
+              expect(loggedErrors).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(loggedInfos).toBeGreaterThan(0)
+              expect(loggedWarnings).toBe(0)
+              expect(loggedErrors).toBe(0)
+              await new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              })
+              expect(loggedInfos).toBeGreaterThan(0)
+              expect(loggedWarnings).toBe(0)
+              expect(loggedErrors).toBe(0)
+              expect(backupCalls).toMatchArrayLoosely(
+                [
+                  [
+                    {
+                      stateCounter: 1,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 2,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 3,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 4,
+                    },
+                  ],
+                ],
+                1,
+                1
+              )
+              saver.cancelAllRemainingRequests()
+            })
           })
         })
       })

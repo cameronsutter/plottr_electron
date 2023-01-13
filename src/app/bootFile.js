@@ -42,6 +42,7 @@ const {
   showMessageBox,
   machineId,
   setMyFilePath,
+  isRestarting,
 } = makeMainProcessClient()
 
 let rollbar
@@ -554,7 +555,8 @@ export function bootFile(
       },
       (title, message) => {
         showErrorBox(title, message)
-      }
+      },
+      isRestarting
     )
   })
 }

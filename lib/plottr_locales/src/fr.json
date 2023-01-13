@@ -78,13 +78,10 @@
     "message": "Créé par"
   },
   "Backups": {
-    "message": "Vos sauvegardes"
+    "message": "Sauvegardes"
   },
   "Settings": {
     "message": "Réglages"
-  },
-  "Backups": {
-    "message": "Sauvegardes"
   },
   "About": {
     "message": "Sur"
@@ -1487,9 +1484,6 @@
   "License": {
     "message": "License"
   },
-  "Links": {
-    "message": "Links"
-  },
   "Long Synopsis": {
     "message": "Long Synopsis"
   },
@@ -2314,5 +2308,653 @@
   },
   "Duplicate": {
     "message": "Dupliquer"
+  },
+  "({ thing }).": {
+    "message": "({ thing })."
+  },
+  "Access all the features": {
+    "message": "Access all the features"
+  },
+  "Advanced": {
+    "message": "Advanced"
+  },
+  "Also save backups on this device": {
+    "message": "Also save backups on this device"
+  },
+  "Are you sure you want to deactivate your license key?": {
+    "message": "Are you sure you want to deactivate your license key?"
+  },
+  "Are you sure you want to delete all chapters and their scene cards in \"{beatTitle}\".": {
+    "message": "Are you sure you want to delete all chapters and their scene cards in \"{beatTitle}\"."
+  },
+  "Are you sure you want to delete all scene cards in \"{beatTitle}\".": {
+    "message": "Are you sure you want to delete all scene cards in \"{beatTitle}\"."
+  },
+  "Are you sure you want to remove the {template} template and all its data?": {
+    "message": "Are you sure you want to remove the {template} template and all its data?"
+  },
+  "At least two levels of hierarchy required to view as tabs": {
+    "message": "At least two levels of hierarchy required to view as tabs"
+  },
+  "Browser": {
+    "message": "Browser"
+  },
+  "Can't move card to empty book": {
+    "message": "Can't move card to empty book"
+  },
+  "Change book": {
+    "message": "Change book"
+  },
+  "Change color": {
+    "message": "Change color"
+  },
+  "Children": {
+    "message": "Children"
+  },
+  "Choose what categories you want to put your places into": {
+    "message": "Choose what categories you want to put your places into"
+  },
+  "Choose what to upload": {
+    "message": "Choose what to upload"
+  },
+  "Choose your Scrivener project": {
+    "message": "Choose your Scrivener project"
+  },
+  "Click here to log in": {
+    "message": "Click here to log in"
+  },
+  "Collaborator": {
+    "message": "Collaborator"
+  },
+  "Configure Pro settings": {
+    "message": "Configure Pro settings"
+  },
+  "Confirm Placement": {
+    "message": "Confirm Placement"
+  },
+  "Continue": {
+    "message": "Continue"
+  },
+  "Continue working when your connection goes down.": {
+    "message": "Continue working when your connection goes down."
+  },
+  "Create unlimited projects": {
+    "message": "Create unlimited projects"
+  },
+  "Deactivate": {
+    "message": "Deactivate"
+  },
+  "Default": {
+    "message": "Default"
+  },
+  "Default Placement": {
+    "message": "Default Placement"
+  },
+  "Delete plotline": {
+    "message": "Delete plotline"
+  },
+  "Disabled": {
+    "message": "Disabled"
+  },
+  "Done!": {
+    "message": "Done!"
+  },
+  "Duplicate plotline": {
+    "message": "Duplicate plotline"
+  },
+  "Edit title": {
+    "message": "Edit title"
+  },
+  "Enabled": {
+    "message": "Enabled"
+  },
+  "Expand or collapse all stacks": {
+    "message": "Expand or collapse all stacks"
+  },
+  "Expand or collapse stacks": {
+    "message": "Expand or collapse stacks"
+  },
+  "Finally, toggle the switch to turn on/off Act Structure.": {
+    "message": "Finally, toggle the switch to turn on/off Act Structure."
+  },
+  "Font Default: Text Editor": {
+    "message": "Font Default: Text Editor"
+  },
+  "From the \"Dashboard\", click \"Settings\" from the side menu.": {
+    "message": "From the \"Dashboard\", click \"Settings\" from the side menu."
+  },
+  "Give Feedback": {
+    "message": "Give Feedback"
+  },
+  "Go!": {
+    "message": "Go!"
+  },
+  "Hides sensitive info for when you are sharing your screen": {
+    "message": "Hides sensitive info for when you are sharing your screen"
+  },
+  "Horror": {
+    "message": "Horror"
+  },
+  "How to turn on Act Structure": {
+    "message": "How to turn on Act Structure"
+  },
+  "I have Plottr Pro": {
+    "message": "I have Plottr Pro"
+  },
+  "I have a<br/>License Key": {
+    "message": "I have a<br/>License Key"
+  },
+  "I'm Done!": {
+    "message": "I'm Done!"
+  },
+  "Import File": {
+    "message": "Import File"
+  },
+  "It doesn't look like you have a pro license.": {
+    "message": "It doesn't look like you have a pro license."
+  },
+  "It looks like you already have an active trial.": {
+    "message": "It looks like you already have an active trial."
+  },
+  "It looks like your version of Plottr is older than this project. Please update Plottr to avoid any issues": {
+    "message": "It looks like your version of Plottr is older than this project. Please update Plottr to avoid any issues"
+  },
+  "Last step": {
+    "message": "Last step"
+  },
+  "Let's set up your Pro account": {
+    "message": "Let's set up your Pro account"
+  },
+  "License Information": {
+    "message": "License Information"
+  },
+  "Log Out": {
+    "message": "Log Out"
+  },
+  "Move card to { bookTitle }": {
+    "message": "Move card to { bookTitle }"
+  },
+  "Move plotline": {
+    "message": "Move plotline"
+  },
+  "Name Your Project:": {
+    "message": "Name Your Project:"
+  },
+  "No Matches": {
+    "message": "No Matches"
+  },
+  "No files found.": {
+    "message": "No files found."
+  },
+  "Not Now": {
+    "message": "Not Now"
+  },
+  "Offline": {
+    "message": "Offline"
+  },
+  "Offline Mode": {
+    "message": "Offline Mode"
+  },
+  "Ok": {
+    "message": "Ok"
+  },
+  "On the \"Settings\" modal, click on the \"Beta\" tab.": {
+    "message": "On the \"Settings\" modal, click on the \"Beta\" tab."
+  },
+  "On the top right corner of the app, click the \"Dashboard\" button.": {
+    "message": "On the top right corner of the app, click the \"Dashboard\" button."
+  },
+  "Open Existing File": {
+    "message": "Open Existing File"
+  },
+  "Owner": {
+    "message": "Owner"
+  },
+  "Place Categories": {
+    "message": "Place Categories"
+  },
+  "Playwriting": {
+    "message": "Playwriting"
+  },
+  "Plottr created a file named {filePath} in your Documents folder": {
+    "message": "Plottr created a file named {filePath} in your Documents folder"
+  },
+  "Plottr ran into a problem and can't start.  Please contact support.": {
+    "message": "Plottr ran into a problem and can't start.  Please contact support."
+  },
+  "Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.": {
+    "message": "Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly."
+  },
+  "Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.": {
+    "message": "Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly."
+  },
+  "Preview:": {
+    "message": "Preview:"
+  },
+  "Product Name": {
+    "message": "Product Name"
+  },
+  "Remove template": {
+    "message": "Remove template"
+  },
+  "Requires you to restart plottr": {
+    "message": "Requires you to restart plottr"
+  },
+  "Restore Default": {
+    "message": "Restore Default"
+  },
+  "Restore Defaults": {
+    "message": "Restore Defaults"
+  },
+  "Save and Open": {
+    "message": "Save and Open"
+  },
+  "Save backups on this device": {
+    "message": "Save backups on this device"
+  },
+  "Save backups to this device as well as in the cloud": {
+    "message": "Save backups to this device as well as in the cloud"
+  },
+  "Saved in the Cloud": {
+    "message": "Saved in the Cloud"
+  },
+  "Scrivener file": {
+    "message": "Scrivener file"
+  },
+  "Search Documentation": {
+    "message": "Search Documentation"
+  },
+  "See? That was painless 😁": {
+    "message": "See? That was painless 😁"
+  },
+  "Short Story": {
+    "message": "Short Story"
+  },
+  "Show File": {
+    "message": "Show File"
+  },
+  "Sign in": {
+    "message": "Sign in"
+  },
+  "Sign in with your my.plottr.com account": {
+    "message": "Sign in with your my.plottr.com account"
+  },
+  "Snowflake Pro": {
+    "message": "Snowflake Pro"
+  },
+  "Spell Check": {
+    "message": "Spell Check"
+  },
+  "Stacked": {
+    "message": "Stacked"
+  },
+  "Start Plottr Pro": {
+    "message": "Start Plottr Pro"
+  },
+  "Start the<br/>Free Trial": {
+    "message": "Start the<br/>Free Trial"
+  },
+  "Step {number}": {
+    "message": "Step {number}"
+  },
+  "Streaming Friendly": {
+    "message": "Streaming Friendly"
+  },
+  "Stress test saving": {
+    "message": "Stress test saving"
+  },
+  "Successfully resumed.": {
+    "message": "Successfully resumed."
+  },
+  "Tabbed": {
+    "message": "Tabbed"
+  },
+  "Take Control": {
+    "message": "Take Control"
+  },
+  "Template": {
+    "message": "Template"
+  },
+  "Testing utilities": {
+    "message": "Testing utilities"
+  },
+  "The cloud file is different from your local copy.  We created a duplicate of your local file and switched to the cloud file.": {
+    "message": "The cloud file is different from your local copy.  We created a duplicate of your local file and switched to the cloud file."
+  },
+  "There was an error doing that. Try again.": {
+    "message": "There was an error doing that. Try again."
+  },
+  "There was an error reconnecting.  Please save the file and restart Plottr.": {
+    "message": "There was an error reconnecting.  Please save the file and restart Plottr."
+  },
+  "There was an error uploading your offline backup. Please exit and start again": {
+    "message": "There was an error uploading your offline backup. Please exit and start again"
+  },
+  "This appears to be a Plottr Pro file.  Please log in.": {
+    "message": "This appears to be a Plottr Pro file.  Please log in."
+  },
+  "This will be quick and painless. There are only 3 steps:": {
+    "message": "This will be quick and painless. There are only 3 steps:"
+  },
+  "Timeline Structure": {
+    "message": "Timeline Structure"
+  },
+  "To use \"{ thing }\" in Plottr Pro, you need to upload it first.": {
+    "message": "To use \"{ thing }\" in Plottr Pro, you need to upload it first."
+  },
+  "Update failed. <b>Try again</b> or <a>install manually</a>": {
+    "message": "Update failed. <b>Try again</b> or <a>install manually</a>"
+  },
+  "Upload": {
+    "message": "Upload"
+  },
+  "Upload ALL projects & templates": {
+    "message": "Upload ALL projects & templates"
+  },
+  "Upload to Plottr Pro?": {
+    "message": "Upload to Plottr Pro?"
+  },
+  "Upload your projects and templates": {
+    "message": "Upload your projects and templates"
+  },
+  "Uploading": {
+    "message": "Uploading"
+  },
+  "Uploading...": {
+    "message": "Uploading..."
+  },
+  "View Backups": {
+    "message": "View Backups"
+  },
+  "View timeline ith tabs for the highest level": {
+    "message": "View timeline ith tabs for the highest level"
+  },
+  "Viewer": {
+    "message": "Viewer"
+  },
+  "We couldn't find a Pro account with that email": {
+    "message": "We couldn't find a Pro account with that email"
+  },
+  "We ran into problems uploading some files": {
+    "message": "We ran into problems uploading some files"
+  },
+  "Welcome to Plottr Pro": {
+    "message": "Welcome to Plottr Pro"
+  },
+  "Woohoo! Scene card duplicated": {
+    "message": "Woohoo! Scene card duplicated"
+  },
+  "Wrong file format": {
+    "message": "Wrong file format"
+  },
+  "You can always change these later": {
+    "message": "You can always change these later"
+  },
+  "You need to update Plottr": {
+    "message": "You need to update Plottr"
+  },
+  "Your changes were uploaded to the cloud.": {
+    "message": "Your changes were uploaded to the cloud."
+  },
+  "but don't panic, you haven't lost anything": {
+    "message": "but don't panic, you haven't lost anything"
+  },
+  "{type} template": {
+    "message": "{type} template"
+  },
+  "********": {
+    "message": "********"
+  },
+  "Add Scene": {
+    "message": "Add Scene"
+  },
+  "Add Another Scene": {
+    "message": "Add Another Scene"
+  },
+  "Congratulations": {
+    "message": "Congratulations"
+  },
+  "Delete Book": {
+    "message": "Delete Book"
+  },
+  "Delete Book {name}?": {
+    "message": "Delete Book {name}?"
+  },
+  "Delete Chapter?": {
+    "message": "Delete Chapter?"
+  },
+  "Do you want to delete tag {name}?": {
+    "message": "Do you want to delete tag {name}?"
+  },
+  "Editor is currently locked by {name}.": {
+    "message": "Editor is currently locked by {name}."
+  },
+  "example@domain.com": {
+    "message": "example@domain.com"
+  },
+  "Error sharing file": {
+    "message": "Error sharing file"
+  },
+  "From File": {
+    "message": "From File"
+  },
+  "From Template": {
+    "message": "From Template"
+  },
+  "Hey, check out my Plottr project \"{project}\"": {
+    "message": "Hey, check out my Plottr project \"{project}\""
+  },
+  "Hold On!": {
+    "message": "Hold On!"
+  },
+  "Let's get you started": {
+    "message": "Let's get you started"
+  },
+  "Manage the Categories you wish to place your characters in.": {
+    "message": "Manage the Categories you wish to place your characters in."
+  },
+  "No Documents Found": {
+    "message": "No Documents Found"
+  },
+  "NOT NOW": {
+    "message": "NOT NOW"
+  },
+  "Please verify your license in {time}": {
+    "message": "Please verify your license in {time}"
+  },
+  "PLOTTR PRO": {
+    "message": "PLOTTR PRO"
+  },
+  "PLOTTR CLASSIC": {
+    "message": "PLOTTR CLASSIC"
+  },
+  "Purchase Pro": {
+    "message": "Purchase Pro"
+  },
+  "Save as\nTemplate": {
+    "message": "Save as\nTemplate"
+  },
+  "See More": {
+    "message": "See More"
+  },
+  "See Less": {
+    "message": "See Less"
+  },
+  "See that was painless": {
+    "message": "See that was painless"
+  },
+  "Start": {
+    "message": "Start"
+  },
+  "Plottr Pro Wizard": {
+    "message": "Plottr Pro Wizard"
+  },
+  "START PLOTTING": {
+    "message": "START PLOTTING"
+  },
+  "There was an error while sharing your file. Try Again.": {
+    "message": "There was an error while sharing your file. Try Again."
+  },
+  "There was an error trying to sign you in. Ensure you password and email are correct.": {
+    "message": "There was an error trying to sign you in. Ensure you password and email are correct."
+  },
+  "This will be quick and painless.": {
+    "message": "This will be quick and painless."
+  },
+  "There are only ": {
+    "message": "There are only "
+  },
+  "{number} steps:": {
+    "message": "{number} steps:"
+  },
+  "Try Plottr Pro today for a seamless cloud experience like you have never imagined.": {
+    "message": "Try Plottr Pro today for a seamless cloud experience like you have never imagined."
+  },
+  "Unknown": {
+    "message": "Unknown"
+  },
+  "Upload projects and templates": {
+    "message": "Upload projects and templates"
+  },
+  "Uploading projects and templates": {
+    "message": "Uploading projects and templates"
+  },
+  "UPLOADING...": {
+    "message": "UPLOADING..."
+  },
+  "Upload Projects": {
+    "message": "Upload Projects"
+  },
+  "Use Book\nTemplate": {
+    "message": "Use Book\nTemplate"
+  },
+  "Use Scene\nTemplate": {
+    "message": "Use Scene\nTemplate"
+  },
+  "Use License Code Login": {
+    "message": "Use License Code Login"
+  },
+  "Use Plottr Pro Login": {
+    "message": "Use Plottr Pro Login"
+  },
+  "You cannot delete the last chapter.": {
+    "message": "You cannot delete the last chapter."
+  },
+  "You cannot delete the last plotline.": {
+    "message": "You cannot delete the last plotline."
+  },
+  "You have no {type}s": {
+    "message": "You have no {type}s"
+  },
+  "You need to have an active Plottr Pro account to continue": {
+    "message": "You need to have an active Plottr Pro account to continue"
+  },
+  "You currently have no available licenses for this email.": {
+    "message": "You currently have no available licenses for this email."
+  },
+  "Your next great plot begins with Plottr.": {
+    "message": "Your next great plot begins with Plottr."
+  },
+  "Character's Categories": {
+    "message": "Character's Categories"
+  },
+  "Checking licenses for {email}": {
+    "message": "Checking licenses for {email}"
+  },
+  "No more {type}s": {
+    "message": "No more {type}s"
+  },
+  "On the top right corner of the app, click the 'Dashboard' button.": {
+    "message": "On the top right corner of the app, click the 'Dashboard' button."
+  },
+  "From the 'Dashboard', click 'Settings' from the side menu.": {
+    "message": "From the 'Dashboard', click 'Settings' from the side menu."
+  },
+  "On the 'Settings' modal, click on the 'Beta tab.": {
+    "message": "On the 'Settings' modal, click on the 'Beta tab."
+  },
+  "Woohoo! Scene card moved to": {
+    "message": "Woohoo! Scene card moved to"
+  },
+  "scenes": {
+    "message": "scenes"
+  },
+  "Main plot": {
+    "message": "Main plot"
+  },
+  "characters": {
+    "message": "characters"
+  },
+  "Download Complete ًںژ‰ (version {version})": {
+    "message": "Download Complete ًںژ‰ (version {version})"
+  },
+  "Guided tours": {
+    "message": "Guided tours"
+  },
+  "Act structure": {
+    "message": "Act structure"
+  },
+  "none": {
+    "message": "none"
+  },
+  "dashed": {
+    "message": "dashed"
+  },
+  "solid": {
+    "message": "solid"
+  },
+  "dotted": {
+    "message": "dotted"
+  },
+  "Saving worked this time": {
+    "message": "Saving worked this time"
+  },
+  "auto": {
+    "message": "auto"
+  },
+  "untitled": {
+    "message": "untitled"
+  },
+  "Update Available (version {version})": {
+    "message": "Update Available (version {version})"
+  },
+  "App Version: { version }": {
+    "message": "App Version: { version }"
+  },
+  "ÜBERSCHREIBEN": {
+    "message": "ÜBERSCHREIBEN"
+  },
+  "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
+    "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"
+  },
+  "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n }": {
+    "message": "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n }"
+  },
+  "{\n count, plural,\n one {1 card}\n other {# card}\n}": {
+    "message": "{\n count, plural,\n one {1 card}\n other {# card}\n}"
+  },
+  "{\n count, plural,\n one {1 note}\n other {# notes}\n}": {
+    "message": "{\n count, plural,\n one {1 note}\n other {# notes}\n}"
+  },
+  "Please contact me with any questions at support@plottr.com": {
+    "message": "Please contact me with any questions at support@plottr.com"
+  },
+  "{\n count, plural,\n one {1 character attached}\n other {# characters attached}\n        }": {
+    "message": "{\n count, plural,\n one {1 character attached}\n other {# characters attached}\n        }"
+  },
+  "{\n      count, plural,\n        one {1 card}\n        other {# card}\n    }": {
+    "message": "{\n      count, plural,\n        one {1 card}\n        other {# card}\n    }"
+  },
+  "{\n count, plural,\n one {1 place attached}\n other {# places attached}\n }": {
+    "message": "{\n count, plural,\n one {1 place attached}\n other {# places attached}\n }"
+  },
+  "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n}": {
+    "message": "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n}"
+  },
+  "Filter by storyline": {
+    "message": "Filter by storyline"
+  },
+  "Could not display the license key. Try again": {
+    "message": "Could not display the license key. Try again"
   }
 }

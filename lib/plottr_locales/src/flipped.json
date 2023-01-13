@@ -606,7 +606,7 @@
     "message": "(╯°□°）╯︵ sʇɔǝɾoɹd ɹnoʎ ʃʃɐ oʇ ssǝɔɔɐ ʇǝ⅁"
   },
   "Links": {
-    "message": "(╯°□°）╯︵ ʞɔɐqpǝǝℲ ǝʌı⅁"
+    "message": "(╯°□°）╯︵ sʞuı⅂"
   },
   "Give this tag a name": {
     "message": "(╯°□°）╯︵ ǝɯɐu ɐ ƃɐʇ sıɥʇ ǝʌı⅁"
@@ -733,9 +733,6 @@
   },
   "License": {
     "message": "(╯°□°）╯︵ ǝsuǝɔı⅂"
-  },
-  "Links": {
-    "message": "(╯°□°）╯︵ sʞuı⅂"
   },
   "Long Synopsis": {
     "message": "(╯°□°）╯︵ sısdouʎS ƃuo⅂"
@@ -1062,7 +1059,7 @@
     "message": "(╯°□°）╯︵ pɐoʃǝᴚ"
   },
   "Deactivate License Key": {
-    "message": "(╯°□°）╯︵ ǝsuǝɔı⅂ ǝʌoɯǝᴚ"
+    "message": "(╯°□°）╯︵ ʎǝ⋊ ǝsuǝɔı⅂ ǝʇɐʌıʇɔɐǝ◖"
   },
   "Remove from this list": {
     "message": "(╯°□°）╯︵ ʇsıʃ sıɥʇ ɯoɹɟ ǝʌoɯǝᴚ"
@@ -1080,7 +1077,7 @@
     "message": "(╯°□°）╯︵ ǝɯɐuǝᴚ"
   },
   "Contact Support": {
-    "message": "(╯°□°）╯︵ ɯǝʃqoɹԀ ɐ ʇɹodǝᴚ"
+    "message": "(╯°□°）╯︵ ʇɹoddnS ʇɔɐʇuoↃ"
   },
   "Request a Feature": {
     "message": "(╯°□°）╯︵ ǝɹnʇɐǝℲ ɐ ʇsǝnbǝᴚ"
@@ -1568,6 +1565,9 @@
   "You have unsaved changes": {
     "message": "(╯°□°）╯︵ ¿ǝʌɐs oʇ ʇuɐʍ noʎ o◖\n˙sǝƃuɐɥɔ pǝʌɐsun ǝʌɐɥ no⅄"
   },
+  "You have no {type}s": {
+    "message": "(╯°□°）╯︵ s{ǝdʎʇ} ou ǝʌɐɥ no⅄"
+  },
   "You may create a new project": {
     "message": "(╯°□°）╯︵ uıƃǝq oʇ ǝʃıɟ ʇɔǝɾoɹd ɐ ʇɔǝʃǝs ɹo\nʇɔǝɾoɹd ʍǝu ɐ ǝʇɐǝɹɔ ʎɐɯ no⅄"
   },
@@ -1576,6 +1576,9 @@
   },
   "Your email didn't verify. Try again or try another email.": {
     "message": "(╯°□°）╯︵ ˙ʃıɐɯǝ ɹǝɥʇouɐ ʎɹʇ ɹo uıɐƃɐ ʎɹ⊥\n˙ʎɟıɹǝʌ ʇ,upıp ʃıɐɯǝ ɹno⅄"
+  },
+  "You currently have no available licenses for this email.": {
+    "message": "(╯°□°）╯︵ ˙ʃıɐɯǝ sıɥʇ ɹoɟ sǝsuǝɔıʃ ǝʃqɐʃıɐʌɐ ou ǝʌɐɥ ʎʃʇuǝɹɹnɔ no⅄"
   },
   "Your selected license failed verification. Try another one.": {
     "message": "(╯°□°）╯︵ ˙ǝuo ɹǝɥʇouɐ ʎɹ⊥ ˙uoıʇɐɔıɟıɹǝʌ pǝʃıɐɟ ǝsuǝɔıʃ pǝʇɔǝʃǝs ɹno⅄"
@@ -1591,9 +1594,6 @@
   },
   "You're on the latest version": {
     "message": "(╯°□°）╯︵ uoısɹǝʌ ʇsǝʇɐʃ ǝɥʇ uo ǝɹ,,no⅄"
-  },
-  "Backups": {
-    "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ɹno⅄"
   },
   "Your Plottr file was exported to a .docx file": {
     "message": "(╯°□°）╯︵ ǝʃıɟ xɔop˙ ɐ oʇ pǝʇɹodxǝ sɐʍ ǝʃıɟ ɹʇʇoʃԀ ɹno⅄"
@@ -1651,6 +1651,9 @@
   },
   "Character's Categories": {
     "message": "(╯°□°）╯︵ sǝıɹoƃǝʇɐↃ s,ɹǝʇɔɐɹɐɥↃ"
+  },
+  "Checking licenses for {email}": {
+    "message": "(╯°□°）╯︵ {ʃıɐɯǝ}\nɹoɟ sǝsuǝɔıʃ ƃuıʞɔǝɥↃ"
   },
   "custom character attribute": {
     "message": "(╯°□°）╯︵ ǝʇnqıɹʇʇɐ ɹǝʇɔɐɹɐɥɔ ɯoʇsnɔ"
@@ -2093,6 +2096,9 @@
   "No updates available": {
     "message": "(╯°□°）╯︵ ǝʃqɐʃıɐʌɐ sǝʇɐpdn oᴎ"
   },
+  "No more {type}s": {
+    "message": "(╯°□°）╯︵ s{ǝdʎʇ} ǝɹoɯ oᴎ"
+  },
   "Open File": {
     "message": "(╯°□°）╯︵ ǝʃıℲ uǝdO"
   },
@@ -2377,5 +2383,578 @@
   },
   "Duplicate": {
     "message": "(╯°□°）╯︵ ǝʇɐɔıʃdn◖"
+  },
+  "({ thing }).": {
+    "message": "(╯°□°）╯︵ ˙({ ƃuıɥʇ })"
+  },
+  "+ Add Template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥ pp∀ +"
+  },
+  "Access all the features": {
+    "message": "(╯°□°）╯︵ sǝɹnʇɐǝɟ ǝɥʇ ʃʃɐ ssǝɔɔ∀"
+  },
+  "Active": {
+    "message": "(╯°□°）╯︵ ǝʌıʇɔ∀"
+  },
+  "Advanced": {
+    "message": "(╯°□°）╯︵ pǝɔuɐʌp∀"
+  },
+  "Also save backups on this device": {
+    "message": "(╯°□°）╯︵ ǝɔıʌǝp sıɥʇ uo sdnʞɔɐq ǝʌɐs osʃ∀"
+  },
+  "Always Open Dashboard First": {
+    "message": "(╯°□°）╯︵ ʇsɹıℲ pɹɐoqɥsɐ◖ uǝdO sʎɐʍʃ∀"
+  },
+  "Are you sure you want to deactivate your license key?": {
+    "message": "(╯°□°）╯︵ ¿ʎǝʞ ǝsuǝɔıʃ ɹnoʎ ǝʇɐʌıʇɔɐǝp oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "Are you sure you want to delete all chapters and their scene cards in \"{beatTitle}\".": {
+    "message": "(╯°□°）╯︵ ˙„{ǝʃʇı⊥ʇɐǝq}„ uı spɹɐɔ ǝuǝɔs ɹıǝɥʇ puɐ sɹǝʇdɐɥɔ ʃʃɐ ǝʇǝʃǝp oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "Are you sure you want to delete all scene cards in \"{beatTitle}\".": {
+    "message": "(╯°□°）╯︵ ˙„{ǝʃʇı⊥ʇɐǝq}„ uı spɹɐɔ ǝuǝɔs ʃʃɐ ǝʇǝʃǝp oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "Are you sure you want to remove the {template} template and all its data?": {
+    "message": "(╯°□°）╯︵ ¿ɐʇɐp sʇı ʃʃɐ puɐ ǝʇɐʃdɯǝʇ {ǝʇɐʃdɯǝʇ} ǝɥʇ ǝʌoɯǝɹ oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "At least two levels of hierarchy required to view as tabs": {
+    "message": "(╯°□°）╯︵ sqɐʇ sɐ ʍǝıʌ oʇ pǝɹınbǝɹ ʎɥɔɹɐɹǝıɥ ɟo sʃǝʌǝʃ oʍʇ ʇsɐǝʃ ʇ∀"
+  },
+  "Browser": {
+    "message": "(╯°□°）╯︵ ɹǝsʍoɹ၁2"
+  },
+  "Can't move card to empty book": {
+    "message": "(╯°□°）╯︵ ʞooq ʎʇdɯǝ oʇ pɹɐɔ ǝʌoɯ ʇ,uɐↃ"
+  },
+  "Change book": {
+    "message": "(╯°□°）╯︵ ʞooq ǝƃuɐɥↃ"
+  },
+  "Change color": {
+    "message": "(╯°□°）╯︵ ɹoʃoɔ ǝƃuɐɥↃ"
+  },
+  "Children": {
+    "message": "(╯°□°）╯︵ uǝɹpʃıɥↃ"
+  },
+  "Choose what categories you want to put your places into": {
+    "message": "(╯°□°）╯︵ oʇuı sǝɔɐʃd ɹnoʎ ʇnd oʇ ʇuɐʍ noʎ sǝıɹoƃǝʇɐɔ ʇɐɥʍ ǝsooɥↃ"
+  },
+  "Choose what to upload": {
+    "message": "(╯°□°）╯︵ pɐoʃdn oʇ ʇɐɥʍ ǝsooɥↃ"
+  },
+  "Choose your Scrivener project": {
+    "message": "(╯°□°）╯︵ ʇɔǝɾoɹd ɹǝuǝʌıɹɔS ɹnoʎ ǝsooɥↃ"
+  },
+  "Clear Timeline": {
+    "message": "(╯°□°）╯︵ ǝuıʃǝɯı⊥ ɹɐǝʃↃ"
+  },
+  "Click here to log in": {
+    "message": "(╯°□°）╯︵ uı ƃoʃ oʇ ǝɹǝɥ ʞɔıʃↃ"
+  },
+  "Collaborator": {
+    "message": "(╯°□°）╯︵ ɹoʇɐɹoqɐʃʃoↃ"
+  },
+  "Configure Pro settings": {
+    "message": "(╯°□°）╯︵ sƃuıʇʇǝs oɹԀ ǝɹnƃıɟuoↃ"
+  },
+  "Confirm Placement": {
+    "message": "(╯°□°）╯︵ ʇuǝɯǝɔɐʃԀ ɯɹıɟuoↃ"
+  },
+  "Continue": {
+    "message": "(╯°□°）╯︵ ǝnuıʇuoↃ"
+  },
+  "Continue working when your connection goes down.": {
+    "message": "(╯°□°）╯︵ ˙uʍop sǝoƃ uoıʇɔǝuuoɔ ɹnoʎ uǝɥʍ ƃuıʞɹoʍ ǝnuıʇuoↃ"
+  },
+  "Create unlimited projects": {
+    "message": "(╯°□°）╯︵ sʇɔǝɾoɹd pǝʇıɯıʃun ǝʇɐǝɹↃ"
+  },
+  "Deactivate": {
+    "message": "(╯°□°）╯︵ ǝʇɐʌıʇɔɐǝ◖"
+  },
+  "Default": {
+    "message": "(╯°□°）╯︵ ʇʃnɐɟǝ◖"
+  },
+  "Default Placement": {
+    "message": "(╯°□°）╯︵ ʇuǝɯǝɔɐʃԀ ʇʃnɐɟǝ◖"
+  },
+  "Delete plotline": {
+    "message": "(╯°□°）╯︵ ǝuıʃʇoʃd ǝʇǝʃǝ◖"
+  },
+  "Disabled": {
+    "message": "(╯°□°）╯︵ pǝʃqɐsı◖"
+  },
+  "Done!": {
+    "message": "(╯°□°）╯︵ ¡ǝuo◖"
+  },
+  "Duplicate plotline": {
+    "message": "(╯°□°）╯︵ ǝuıʃʇoʃd ǝʇɐɔıʃdn◖"
+  },
+  "Edit title": {
+    "message": "(╯°□°）╯︵ ǝʃʇıʇ ʇıpƎ"
+  },
+  "Enabled": {
+    "message": "(╯°□°）╯︵ pǝʃqɐuƎ"
+  },
+  "Expand or collapse all stacks": {
+    "message": "(╯°□°）╯︵ sʞɔɐʇs ʃʃɐ ǝsdɐʃʃoɔ ɹo puɐdxƎ"
+  },
+  "Expand or collapse stacks": {
+    "message": "(╯°□°）╯︵ sʞɔɐʇs ǝsdɐʃʃoɔ ɹo puɐdxƎ"
+  },
+  "Font Default: Text Editor": {
+    "message": "(╯°□°）╯︵ ɹoʇıpƎ ʇxǝ⊥ :ʇʃnɐɟǝ◖ ʇuoℲ"
+  },
+  "From the \"Dashboard\", click \"Settings\" from the side menu.": {
+    "message": "(╯°□°）╯︵ ˙nuǝɯ ǝpıs ǝɥʇ ɯoɹɟ „sƃuıʇʇǝS„ ʞɔıʃɔ '„pɹɐoqɥsɐ◖„ ǝɥʇ ɯoɹℲ"
+  },
+  "Give Feedback": {
+    "message": "(╯°□°）╯︵ ʞɔɐqpǝǝℲ ǝʌı⅁"
+  },
+  "Go!": {
+    "message": "(╯°□°）╯︵ ¡o⅁"
+  },
+  "Hides sensitive info for when you are sharing your screen": {
+    "message": "(╯°□°）╯︵ uǝǝɹɔs ɹnoʎ ƃuıɹɐɥs ǝɹɐ noʎ uǝɥʍ ɹoɟ oɟuı ǝʌıʇısuǝs sǝpıH"
+  },
+  "Horror": {
+    "message": "(╯°□°）╯︵ ɹoɹɹoH"
+  },
+  "I have Plottr Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ɹʇʇoʃԀ ǝʌɐɥ I"
+  },
+  "I have a<br/>License Key": {
+    "message": "(╯°□°）╯︵ ʎǝ⋊ ǝsuǝɔı⅂</ɹq>ɐ ǝʌɐɥ I"
+  },
+  "I'm Done!": {
+    "message": "(╯°□°）╯︵ ¡ǝuo◖ ɯ,I"
+  },
+  "Import File": {
+    "message": "(╯°□°）╯︵ ǝʃıℲ ʇɹodɯI"
+  },
+  "It doesn't look like you have a pro license.": {
+    "message": "(╯°□°）╯︵ ˙ǝsuǝɔıʃ oɹd ɐ ǝʌɐɥ noʎ ǝʞıʃ ʞooʃ ʇ,usǝop ʇI"
+  },
+  "It looks like you already have an active trial.": {
+    "message": "(╯°□°）╯︵ ˙ʃɐıɹʇ ǝʌıʇɔɐ uɐ ǝʌɐɥ ʎpɐǝɹʃɐ noʎ ǝʞıʃ sʞooʃ ʇI"
+  },
+  "It looks like your version of Plottr is older than this project. Please update Plottr to avoid any issues": {
+    "message": "(╯°□°）╯︵ sǝnssı ʎuɐ pıoʌɐ oʇ ɹʇʇoʃԀ ǝʇɐpdn ǝsɐǝʃԀ ˙ʇɔǝɾoɹd sıɥʇ uɐɥʇ ɹǝpʃo sı ɹʇʇoʃԀ ɟo uoısɹǝʌ ɹnoʎ ǝʞıʃ sʞooʃ ʇI"
+  },
+  "Last step": {
+    "message": "(╯°□°）╯︵ dǝʇs ʇsɐ⅂"
+  },
+  "Let's set up your Pro account": {
+    "message": "(╯°□°）╯︵ ʇunoɔɔɐ oɹԀ ɹnoʎ dn ʇǝs s,ʇǝ⅂"
+  },
+  "License Information": {
+    "message": "(╯°□°）╯︵ uoıʇɐɯɹoɟuI ǝsuǝɔı⅂"
+  },
+  "Move card to { bookTitle }": {
+    "message": "(╯°□°）╯︵ { ǝʃʇı⊥ʞooq } oʇ pɹɐɔ ǝʌoW"
+  },
+  "Move plotline": {
+    "message": "(╯°□°）╯︵ ǝuıʃʇoʃd ǝʌoW"
+  },
+  "Name Your Project:": {
+    "message": "(╯°□°）╯︵ :ʇɔǝɾoɹԀ ɹno⅄ ǝɯɐᴎ"
+  },
+  "No Matches": {
+    "message": "(╯°□°）╯︵ sǝɥɔʇɐW oᴎ"
+  },
+  "No files found.": {
+    "message": "(╯°□°）╯︵ ˙punoɟ sǝʃıɟ oᴎ"
+  },
+  "None": {
+    "message": "(╯°□°）╯︵ ǝuoᴎ"
+  },
+  "Not Active": {
+    "message": "(╯°□°）╯︵ ǝʌıʇɔ∀ ʇoᴎ"
+  },
+  "Not Now": {
+    "message": "(╯°□°）╯︵ ʍoᴎ ʇoᴎ"
+  },
+  "Offline": {
+    "message": "(╯°□°）╯︵ ǝuıʃɟɟO"
+  },
+  "Offline Mode": {
+    "message": "(╯°□°）╯︵ ǝpoW ǝuıʃɟɟO"
+  },
+  "Ok": {
+    "message": "(╯°□°）╯︵ ʞO"
+  },
+  "On the \"Settings\" modal, click on the \"Beta\" tab.": {
+    "message": "(╯°□°）╯︵ ˙qɐʇ „ɐʇǝ၁2„ ǝɥʇ uo ʞɔıʃɔ 'ʃɐpoɯ „sƃuıʇʇǝS„ ǝɥʇ uO"
+  },
+  "On the top right corner of the app, click the \"Dashboard\" button.": {
+    "message": "(╯°□°）╯︵ ˙uoʇʇnq „pɹɐoqɥsɐ◖„ ǝɥʇ ʞɔıʃɔ 'ddɐ ǝɥʇ ɟo ɹǝuɹoɔ ʇɥƃıɹ doʇ ǝɥʇ uO"
+  },
+  "Open Existing File": {
+    "message": "(╯°□°）╯︵ ǝʃıℲ ƃuıʇsıxƎ uǝdO"
+  },
+  "Owner": {
+    "message": "(╯°□°）╯︵ ɹǝuʍO"
+  },
+  "Permission": {
+    "message": "(╯°□°）╯︵ uoıssıɯɹǝԀ"
+  },
+  "Place Categories": {
+    "message": "(╯°□°）╯︵ sǝıɹoƃǝʇɐↃ ǝɔɐʃԀ"
+  },
+  "Playwriting": {
+    "message": "(╯°□°）╯︵ ƃuıʇıɹʍʎɐʃԀ"
+  },
+  "Plottr created a file named {filePath} in your Documents folder": {
+    "message": "(╯°□°）╯︵ ɹǝpʃoɟ sʇuǝɯnɔo◖ ɹnoʎ uı {ɥʇɐԀǝʃıɟ} pǝɯɐu ǝʃıɟ ɐ pǝʇɐǝɹɔ ɹʇʇoʃԀ"
+  },
+  "Plottr opens your most recent project at start": {
+    "message": "(╯°□°）╯︵ ʇɹɐʇs ʇɐ ʇɔǝɾoɹd ʇuǝɔǝɹ ʇsoɯ ɹnoʎ suǝdo ɹʇʇoʃԀ"
+  },
+  "Plottr ran into a problem and can't start.  Please contact support.": {
+    "message": "(╯°□°）╯︵ ˙ʇɹoddns ʇɔɐʇuoɔ ǝsɐǝʃԀ  ˙ʇɹɐʇs ʇ,uɐɔ puɐ ɯǝʃqoɹd ɐ oʇuı uɐɹ ɹʇʇoʃԀ"
+  },
+  "Plottr ran into an issue opening your project. Please check your backups or contact support about this project and we will get it running for you quickly.": {
+    "message": "(╯°□°）╯︵ ˙ʎʃʞɔınb noʎ ɹoɟ ƃuıuunɹ ʇı ʇǝƃ ʃʃıʍ ǝʍ puɐ ʇɔǝɾoɹd sıɥʇ ʇnoqɐ ʇɹoddns ʇɔɐʇuoɔ ɹo sdnʞɔɐq ɹnoʎ ʞɔǝɥɔ ǝsɐǝʃԀ ˙ʇɔǝɾoɹd ɹnoʎ ƃuıuǝdo ǝnssı uɐ oʇuı uɐɹ ɹʇʇoʃԀ"
+  },
+  "Plottr ran into an issue opening your project. Please check your backups or contact support with this file and we will get it running for you quickly.": {
+    "message": "(╯°□°）╯︵ ˙ʎʃʞɔınb noʎ ɹoɟ ƃuıuunɹ ʇı ʇǝƃ ʃʃıʍ ǝʍ puɐ ǝʃıɟ sıɥʇ ɥʇıʍ ʇɹoddns ʇɔɐʇuoɔ ɹo sdnʞɔɐq ɹnoʎ ʞɔǝɥɔ ǝsɐǝʃԀ ˙ʇɔǝɾoɹd ɹnoʎ ƃuıuǝdo ǝnssı uɐ oʇuı uɐɹ ɹʇʇoʃԀ"
+  },
+  "Preview:": {
+    "message": "(╯°□°）╯︵ :ʍǝıʌǝɹԀ"
+  },
+  "Pro Subscription": {
+    "message": "(╯°□°）╯︵ uoıʇdıɹɔsqnS oɹԀ"
+  },
+  "Product Name": {
+    "message": "(╯°□°）╯︵ ǝɯɐᴎ ʇɔnpoɹԀ"
+  },
+  "Projects": {
+    "message": "(╯°□°）╯︵ sʇɔǝɾoɹԀ"
+  },
+  "Remove template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝʇ ǝʌoɯǝᴚ"
+  },
+  "Requires you to restart plottr": {
+    "message": "(╯°□°）╯︵ ɹʇʇoʃd ʇɹɐʇsǝɹ oʇ noʎ sǝɹınbǝᴚ"
+  },
+  "Restore Default": {
+    "message": "(╯°□°）╯︵ ʇʃnɐɟǝ◖ ǝɹoʇsǝᴚ"
+  },
+  "Restore Defaults": {
+    "message": "(╯°□°）╯︵ sʇʃnɐɟǝ◖ ǝɹoʇsǝᴚ"
+  },
+  "Save and Open": {
+    "message": "(╯°□°）╯︵ uǝdO puɐ ǝʌɐS"
+  },
+  "Save backups on this device": {
+    "message": "(╯°□°）╯︵ ǝɔıʌǝp sıɥʇ uo sdnʞɔɐq ǝʌɐS"
+  },
+  "Save backups to this device as well as in the cloud": {
+    "message": "(╯°□°）╯︵ pnoʃɔ ǝɥʇ uı sɐ ʃʃǝʍ sɐ ǝɔıʌǝp sıɥʇ oʇ sdnʞɔɐq ǝʌɐS"
+  },
+  "Saved in the Cloud": {
+    "message": "(╯°□°）╯︵ pnoʃↃ ǝɥʇ uı pǝʌɐS"
+  },
+  "Scrivener file": {
+    "message": "(╯°□°）╯︵ ǝʃıɟ ɹǝuǝʌıɹɔS"
+  },
+  "Search Documentation": {
+    "message": "(╯°□°）╯︵ uoıʇɐʇuǝɯnɔo◖ ɥɔɹɐǝS"
+  },
+  "See? That was painless 😁": {
+    "message": "(╯°□°）╯︵ \ude01\ud83d ssǝʃuıɐd sɐʍ ʇɐɥ⊥ ¿ǝǝS"
+  },
+  "Short Story": {
+    "message": "(╯°□°）╯︵ ʎɹoʇS ʇɹoɥS"
+  },
+  "Show File": {
+    "message": "(╯°□°）╯︵ ǝʃıℲ ʍoɥS"
+  },
+  "Sign in": {
+    "message": "(╯°□°）╯︵ uı uƃıS"
+  },
+  "Sign in with your my.plottr.com account": {
+    "message": "(╯°□°）╯︵ ʇunoɔɔɐ ɯoɔ˙ɹʇʇoʃd˙ʎɯ ɹnoʎ ɥʇıʍ uı uƃıS"
+  },
+  "Snowflake Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ǝʞɐʃɟʍouS"
+  },
+  "Spell Check": {
+    "message": "(╯°□°）╯︵ ʞɔǝɥↃ ʃʃǝdS"
+  },
+  "Stacked": {
+    "message": "(╯°□°）╯︵ pǝʞɔɐʇS"
+  },
+  "Start the<br/>Free Trial": {
+    "message": "(╯°□°）╯︵ ʃɐıɹ⊥ ǝǝɹℲ</ɹq>ǝɥʇ ʇɹɐʇS"
+  },
+  "Start with Template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝ⊥ ɥʇıʍ ʇɹɐʇS"
+  },
+  "Status": {
+    "message": "(╯°□°）╯︵ snʇɐʇS"
+  },
+  "Streaming Friendly": {
+    "message": "(╯°□°）╯︵ ʎʃpuǝıɹℲ ƃuıɯɐǝɹʇS"
+  },
+  "Stress test saving": {
+    "message": "(╯°□°）╯︵ ƃuıʌɐs ʇsǝʇ ssǝɹʇS"
+  },
+  "Successfully resumed.": {
+    "message": "(╯°□°）╯︵ ˙pǝɯnsǝɹ ʎʃʃnɟssǝɔɔnS"
+  },
+  "Tabbed": {
+    "message": "(╯°□°）╯︵ pǝqqɐ⊥"
+  },
+  "Take Control": {
+    "message": "(╯°□°）╯︵ ʃoɹʇuoↃ ǝʞɐ⊥"
+  },
+  "Testing utilities": {
+    "message": "(╯°□°）╯︵ sǝıʇıʃıʇn ƃuıʇsǝ⊥"
+  },
+  "The cloud file is different from your local copy.  We created a duplicate of your local file and switched to the cloud file.": {
+    "message": "(╯°□°）╯︵ ˙ǝʃıɟ pnoʃɔ ǝɥʇ oʇ pǝɥɔʇıʍs puɐ ǝʃıɟ ʃɐɔoʃ ɹnoʎ ɟo ǝʇɐɔıʃdnp ɐ pǝʇɐǝɹɔ ǝM  ˙ʎdoɔ ʃɐɔoʃ ɹnoʎ ɯoɹɟ ʇuǝɹǝɟɟıp sı ǝʃıɟ pnoʃɔ ǝɥ⊥"
+  },
+  "There was an error doing that. Try again.": {
+    "message": "(╯°□°）╯︵ ˙uıɐƃɐ ʎɹ⊥ ˙ʇɐɥʇ ƃuıop ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
+  },
+  "There was an error reconnecting.  Please save the file and restart Plottr.": {
+    "message": "(╯°□°）╯︵ ˙ɹʇʇoʃԀ ʇɹɐʇsǝɹ puɐ ǝʃıɟ ǝɥʇ ǝʌɐs ǝsɐǝʃԀ  ˙ƃuıʇɔǝuuoɔǝɹ ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
+  },
+  "There was an error uploading your offline backup. Please exit and start again": {
+    "message": "(╯°□°）╯︵ uıɐƃɐ ʇɹɐʇs puɐ ʇıxǝ ǝsɐǝʃԀ ˙dnʞɔɐq ǝuıʃɟɟo ɹnoʎ ƃuıpɐoʃdn ɹoɹɹǝ uɐ sɐʍ ǝɹǝɥ⊥"
+  },
+  "This appears to be a Plottr Pro file.  Please log in.": {
+    "message": "(╯°□°）╯︵ ˙uı ƃoʃ ǝsɐǝʃԀ  ˙ǝʃıɟ oɹԀ ɹʇʇoʃԀ ɐ ǝq oʇ sɹɐǝddɐ sıɥ⊥"
+  },
+  "This will be quick and painless. There are only 3 steps:": {
+    "message": "(╯°□°）╯︵ :sdǝʇs Ɛ ʎʃuo ǝɹɐ ǝɹǝɥ⊥ ˙ssǝʃuıɐd puɐ ʞɔınb ǝq ʃʃıʍ sıɥ⊥"
+  },
+  "Timeline Structure": {
+    "message": "(╯°□°）╯︵ ǝɹnʇɔnɹʇS ǝuıʃǝɯı⊥"
+  },
+  "To use \"{ thing }\" in Plottr Pro, you need to upload it first.": {
+    "message": "(╯°□°）╯︵ ˙ʇsɹıɟ ʇı pɐoʃdn oʇ pǝǝu noʎ 'oɹԀ ɹʇʇoʃԀ uı „{ ƃuıɥʇ }„ ǝsn o⊥"
+  },
+  "Update failed. <b>Try again</b> or <a>install manually</a>": {
+    "message": "(╯°□°）╯︵ <ɐ/>ʎʃʃɐnuɐɯ ʃʃɐʇsuı<ɐ> ɹo <q/>uıɐƃɐ ʎɹ⊥<q> ˙pǝʃıɐɟ ǝʇɐpd∩"
+  },
+  "Upload": {
+    "message": "(╯°□°）╯︵ pɐoʃd∩"
+  },
+  "Upload ALL projects & templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝʇ ⅋ sʇɔǝɾoɹd ⅂⅂∀ pɐoʃd∩"
+  },
+  "Upload Existing Project": {
+    "message": "(╯°□°）╯︵ ʇɔǝɾoɹԀ ƃuıʇsıxƎ pɐoʃd∩"
+  },
+  "Upload to Plottr Pro?": {
+    "message": "(╯°□°）╯︵ ¿oɹԀ ɹʇʇoʃԀ oʇ pɐoʃd∩"
+  },
+  "Upload your projects and templates": {
+    "message": "(╯°□°）╯︵ sǝʇɐʃdɯǝʇ puɐ sʇɔǝɾoɹd ɹnoʎ pɐoʃd∩"
+  },
+  "Uploading": {
+    "message": "(╯°□°）╯︵ ƃuıpɐoʃd∩"
+  },
+  "Uploading...": {
+    "message": "(╯°□°）╯︵ ˙˙˙ƃuıpɐoʃd∩"
+  },
+  "View Backups": {
+    "message": "(╯°□°）╯︵ sdnʞɔɐ၁2 ʍǝıᴧ"
+  },
+  "View timeline ith tabs for the highest level": {
+    "message": "(╯°□°）╯︵ ʃǝʌǝʃ ʇsǝɥƃıɥ ǝɥʇ ɹoɟ sqɐʇ ɥʇı ǝuıʃǝɯıʇ ʍǝıᴧ"
+  },
+  "Viewer": {
+    "message": "(╯°□°）╯︵ ɹǝʍǝıᴧ"
+  },
+  "We couldn't find a Pro account with that email": {
+    "message": "(╯°□°）╯︵ ʃıɐɯǝ ʇɐɥʇ ɥʇıʍ ʇunoɔɔɐ oɹԀ ɐ puıɟ ʇ,upʃnoɔ ǝM"
+  },
+  "We ran into problems uploading some files": {
+    "message": "(╯°□°）╯︵ sǝʃıɟ ǝɯos ƃuıpɐoʃdn sɯǝʃqoɹd oʇuı uɐɹ ǝM"
+  },
+  "Welcome to Plottr Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ɹʇʇoʃԀ oʇ ǝɯoɔʃǝM"
+  },
+  "When Plottr opens, the first thing you'll see is the dashboard": {
+    "message": "(╯°□°）╯︵ pɹɐoqɥsɐp ǝɥʇ sı ǝǝs ʃʃ,noʎ ƃuıɥʇ ʇsɹıɟ ǝɥʇ 'suǝdo ɹʇʇoʃԀ uǝɥM"
+  },
+  "Wrong file format": {
+    "message": "(╯°□°）╯︵ ʇɐɯɹoɟ ǝʃıɟ ƃuoɹM"
+  },
+  "You can always change these later": {
+    "message": "(╯°□°）╯︵ ɹǝʇɐʃ ǝsǝɥʇ ǝƃuɐɥɔ sʎɐʍʃɐ uɐɔ no⅄"
+  },
+  "You need to update Plottr": {
+    "message": "(╯°□°）╯︵ ɹʇʇoʃԀ ǝʇɐpdn oʇ pǝǝu no⅄"
+  },
+  "Your changes were uploaded to the cloud.": {
+    "message": "(╯°□°）╯︵ ˙pnoʃɔ ǝɥʇ oʇ pǝpɐoʃdn ǝɹǝʍ sǝƃuɐɥɔ ɹno⅄"
+  },
+  "but don't panic, you haven't lost anything": {
+    "message": "(╯°□°）╯︵ ƃuıɥʇʎuɐ ʇsoʃ ʇ,uǝʌɐɥ noʎ 'ɔıuɐd ʇ,uop ʇnq"
+  },
+  "{type} template": {
+    "message": "(╯°□°）╯︵ ǝʇɐʃdɯǝʇ {ǝdʎʇ}"
+  },
+  "Sharing": {
+    "message": "(╯°□°）╯︵ ƃuıɹɐɥS"
+  },
+  "Send Invite": {
+    "message": "(╯°□°）╯︵ ǝʇıʌuI puǝS"
+  },
+  "Email Address": {
+    "message": "(╯°□°）╯︵ ssǝɹpp∀ ʃıɐɯƎ"
+  },
+  "Permissions": {
+    "message": "(╯°□°）╯︵ suoıssıɯɹǝԀ"
+  },
+  "Download": {
+    "message": "(╯°□°）╯︵ pɐoʃuʍo◖"
+  },
+  "Import from Snowflake Pro": {
+    "message": "(╯°□°）╯︵ oɹԀ ǝʞɐʃɟʍouS ɯoɹɟ ʇɹodɯI"
+  },
+  "See What’s New": {
+    "message": "(╯°□°）╯︵ ʍǝᴎ s’ʇɐɥM ǝǝS"
+  },
+  "About": {
+    "message": "(╯°□°）╯︵ ʇnoq∀"
+  },
+  "Beta Information": {
+    "message": "(╯°□°）╯︵ uoıʇɐɯɹoɟuI ɐʇǝ၁2"
+  },
+  "Beta Email": {
+    "message": "(╯°□°）╯︵ ʃıɐɯƎ ɐʇǝ၁2"
+  },
+  "Admin": {
+    "message": "(╯°□°）╯︵ uıɯp∀"
+  },
+  "Remove Pro on this Device": {
+    "message": "(╯°□°）╯︵ ǝɔıʌǝ◖ sıɥʇ uo oɹԀ ǝʌoɯǝᴚ"
+  },
+  "Use this if you logged into Pro by accident": {
+    "message": "(╯°□°）╯︵ ʇuǝpıɔɔɐ ʎq oɹԀ oʇuı pǝƃƃoʃ noʎ ɟı sıɥʇ ǝs∩"
+  },
+  "Are you sure you want to delete {plotline}?": {
+    "message": "(╯°□°）╯︵ ¿{ǝuıʃʇoʃd} ǝʇǝʃǝp oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "Are you sure you want to delete {chapter #}?": {
+    "message": "(╯°□°）╯︵ ¿{# ɹǝʇdɐɥɔ} ǝʇǝʃǝp oʇ ʇuɐʍ noʎ ǝɹns noʎ ǝɹ∀"
+  },
+  "Custom Attributes For Scenes": {
+    "message": "(╯°□°）╯︵ sǝuǝɔS ɹoℲ sǝʇnqıɹʇʇ∀ ɯoʇsnↃ"
+  },
+  "Choose what you want to track about your scenes": {
+    "message": "(╯°□°）╯︵ sǝuǝɔs ɹnoʎ ʇnoqɐ ʞɔɐɹʇ oʇ ʇuɐʍ noʎ ʇɐɥʍ ǝsooɥↃ"
+  },
+  "Edit New Plotline": {
+    "message": "(╯°□°）╯︵ ǝuıʃʇoʃԀ ʍǝᴎ ʇıpƎ"
+  },
+  "Timeline Settings": {
+    "message": "(╯°□°）╯︵ sƃuıʇʇǝS ǝuıʃǝɯı⊥"
+  },
+  "Dashed": {
+    "message": "(╯°□°）╯︵ pǝɥsɐ◖"
+  },
+  "Solid": {
+    "message": "(╯°□°）╯︵ pıʃoS"
+  },
+  "Dotted": {
+    "message": "(╯°□°）╯︵ pǝʇʇo◖"
+  },
+  "Enter some text…": {
+    "message": "(╯°□°）╯︵ …ʇxǝʇ ǝɯos ɹǝʇuƎ"
+  },
+  "Custom Attributes For Characters": {
+    "message": "(╯°□°）╯︵ sɹǝʇɔɐɹɐɥↃ ɹoℲ sǝʇnqıɹʇʇ∀ ɯoʇsnↃ"
+  },
+  "text": {
+    "message": "(╯°□°）╯︵ ʇxǝʇ"
+  },
+  "Custom Attributes For Places": {
+    "message": "(╯°□°）╯︵ sǝɔɐʃԀ ɹoℲ sǝʇnqıɹʇʇ∀ ɯoʇsnↃ"
+  },
+  "scenes": {
+    "message": "(╯°□°）╯︵ sǝuǝɔs"
+  },
+  "Main plot": {
+    "message": "(╯°□°）╯︵ ʇoʃd uıɐW"
+  },
+  "characters": {
+    "message": "(╯°□°）╯︵ sɹǝʇɔɐɹɐɥɔ"
+  },
+  "Download Complete ًںژ‰ (version {version})": {
+    "message": "(╯°□°）╯︵ ({uoısɹǝʌ} uoısɹǝʌ) ‰ژںً ǝʇǝʃdɯoↃ pɐoʃuʍo◖"
+  },
+  "Guided tours": {
+    "message": "(╯°□°）╯︵ sɹnoʇ pǝpın⅁"
+  },
+  "Act structure": {
+    "message": "(╯°□°）╯︵ ǝɹnʇɔnɹʇs ʇɔ∀"
+  },
+  "none": {
+    "message": "(╯°□°）╯︵ ǝuou"
+  },
+  "dashed": {
+    "message": "(╯°□°）╯︵ pǝɥsɐp"
+  },
+  "solid": {
+    "message": "(╯°□°）╯︵ pıʃos"
+  },
+  "dotted": {
+    "message": "(╯°□°）╯︵ pǝʇʇop"
+  },
+  "Saving worked this time": {
+    "message": "(╯°□°）╯︵ ǝɯıʇ sıɥʇ pǝʞɹoʍ ƃuıʌɐS"
+  },
+  "auto": {
+    "message": "(╯°□°）╯︵ oʇnɐ"
+  },
+  "untitled": {
+    "message": "(╯°□°）╯︵ pǝʃʇıʇun"
+  },
+  "Update Available (version {version})": {
+    "message": "(╯°□°）╯︵ ({uoısɹǝʌ} uoısɹǝʌ) ǝʃqɐʃıɐʌ∀ ǝʇɐpd∩"
+  },
+  "App Version: { version }": {
+    "message": "(╯°□°）╯︵ { uoısɹǝʌ } :uoısɹǝᴧ dd∀"
+  },
+  "ÜBERSCHREIBEN": {
+    "message": "(╯°□°）╯︵ ᴎƎ၁2IƎᴚHↃSᴚƎ၁2Ü"
+  },
+  "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
+    "message": "(╯°□°）╯︵ { \n{pǝɥɔɐʇʇɐ sǝɔɐʃd #} ɹǝɥʇo  \n{pǝɥɔɐʇʇɐ ǝɔɐʃd 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n }": {
+    "message": "(╯°□°）╯︵ { \n{pǝɥɔɐʇʇɐ sƃɐʇ #} ɹǝɥʇo \n{pǝɥɔɐʇʇɐ ƃɐʇ 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "{\n count, plural,\n one {1 card}\n other {# card}\n}": {
+    "message": "(╯°□°）╯︵ {\n{pɹɐɔ #} ɹǝɥʇo \n{pɹɐɔ 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "{\n count, plural,\n one {1 note}\n other {# notes}\n}": {
+    "message": "(╯°□°）╯︵ {\n{sǝʇou #} ɹǝɥʇo \n{ǝʇou 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "Please contact me with any questions at support@plottr.com": {
+    "message": "(╯°□°）╯︵ ɯoɔ˙ɹʇʇoʃd@ʇɹoddns ʇɐ suoıʇsǝnb ʎuɐ ɥʇıʍ ǝɯ ʇɔɐʇuoɔ ǝsɐǝʃԀ"
+  },
+  "{\n count, plural,\n one {1 character attached}\n other {# characters attached}\n        }": {
+    "message": "(╯°□°）╯︵ {        \n{pǝɥɔɐʇʇɐ sɹǝʇɔɐɹɐɥɔ #} ɹǝɥʇo \n{pǝɥɔɐʇʇɐ ɹǝʇɔɐɹɐɥɔ 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "{\n      count, plural,\n        one {1 card}\n        other {# card}\n    }": {
+    "message": "(╯°□°）╯︵ {    \n{pɹɐɔ #} ɹǝɥʇo        \n{pɹɐɔ 1} ǝuo        \n'ʃɐɹnʃd 'ʇunoɔ      \n}"
+  },
+  "{\n count, plural,\n one {1 place attached}\n other {# places attached}\n }": {
+    "message": "(╯°□°）╯︵ { \n{pǝɥɔɐʇʇɐ sǝɔɐʃd #} ɹǝɥʇo \n{pǝɥɔɐʇʇɐ ǝɔɐʃd 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "{\n count, plural,\n one {1 tag attached}\n other {# tags attached}\n}": {
+    "message": "(╯°□°）╯︵ {\n{pǝɥɔɐʇʇɐ sƃɐʇ #} ɹǝɥʇo \n{pǝɥɔɐʇʇɐ ƃɐʇ 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"
+  },
+  "Filter by storyline": {
+    "message": "(╯°□°）╯︵ ǝuıʃʎɹoʇs ʎq ɹǝʇʃıℲ"
+  },
+  "Could not display the license key. Try again": {
+    "message": "(╯°□°）╯︵ uıɐƃɐ ʎɹ⊥ ˙ʎǝʞ ǝsuǝɔıʃ ǝɥʇ ʎɐʃdsıp ʇou pʃnoↃ"
   }
 }

@@ -86,11 +86,11 @@ function buildFileMenu(fileURL, getTrialInfo) {
           },
         },
         {
-          label: t('Save to Desktop'),
+          label: t('Create Desktop Shortcut'),
           visible: !!fileURL,
           click: function (event, focusedWindow) {
-            log.info('sending save-to-desktop')
-            focusedWindow.webContents.send('save-to-desktop', fileURL)
+            log.info('sending create-file-shortcut')
+            focusedWindow.webContents.send('create-file-shortcut', fileURL, 'desktop')
           },
         },
         {

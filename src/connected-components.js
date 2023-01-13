@@ -268,9 +268,9 @@ const platform = {
     renameFile,
     removeFromKnownFiles,
     saveFile,
-    copyFile: (sourceFileURL, destinationURL) => {
-      return whenClientIsReady(({ copyFile }) => {
-        return copyFile(sourceFileURL, destinationURL)
+    createFileShortcut: (sourceFileURL, destinationURL) => {
+      return whenClientIsReady(({ createFileShortcut }) => {
+        return createFileShortcut(sourceFileURL, destinationURL)
       })
     },
     readFile: (fileURL) => {

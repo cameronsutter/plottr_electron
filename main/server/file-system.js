@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
+import { spawn } from 'child_process'
 
 import { sortBy } from 'lodash'
 
@@ -404,24 +405,78 @@ const fileSystemModule = (userDataPath) => {
         })
     }
 
-    const copyFile = async (sourceFileURL, newFileURL) => {
-      try {
-        const sourceWithoutProtocol = helpers.file.withoutProtocol(sourceFileURL)
-        if (newFileURL == 'desktop') {
-          let destinationFile = path.join(
-            path.join(os.homedir(), 'Desktop'),
-            path.basename(sourceFileURL)
-          )
-          await cp(sourceWithoutProtocol, destinationFile)
-          return destinationFile
+    const copyFile = (sourceFileURL, newFileURL) => {
+      return cp(
+        helpers.file.withoutProtocol(sourceFileURL),
+        helpers.file.withoutProtocol(newFileURL)
+      )
+    }
+
+    const checkForDuplicateFilesWithNumberSuffix = (destinationURL, match) => {
+      let duplicateFound = false
+      fs.readdirSync(destinationURL).forEach((file) => {
+        if (match.test(file)) {
+          duplicateFound = true
         }
-        return cp(sourceWithoutProtocol, newFileURL)
-      } catch (error) {
-        if (error?.info?.message == 'src and dest cannot be the same') {
-          return error.info.path
-        }
-        logger.error('Error saving file to desktop.', error)
+      })
+      return duplicateFound
+    }
+
+    const createFileShortcut = (sourceFileURL, destinationURL) => {
+      let shortcutDestination = helpers.file.withoutProtocol(destinationURL)
+      const sourceURL = helpers.file.withoutProtocol(sourceFileURL)
+      let command, args
+      const userOS = process.platform
+      const shortcutPrefix = 'Shortcut - '
+      const shortCutExt = os != 'darwin' ? '.lnk' : '.sh'
+
+      if (destinationURL == 'desktop') {
+        shortcutDestination = path.join(path.join(os.homedir(), 'Desktop'))
       }
+
+      let newShortcutPath = path.join(
+        shortcutDestination,
+        shortcutPrefix + path.basename(sourceFileURL, path.extname(sourceFileURL)) + shortCutExt
+      )
+
+      let counter = 0
+      const fileName = path.basename(newShortcutPath)
+      const match = new RegExp(`^${shortcutPrefix} ${fileName} (\\d+)\\.${shortCutExt}$`)
+
+      while (
+        fs.existsSync(newShortcutPath) ||
+        checkForDuplicateFilesWithNumberSuffix(shortcutDestination, match)
+      ) {
+        counter++
+        newShortcutPath = path.join(
+          shortcutDestination,
+          shortcutPrefix +
+            path.basename(sourceFileURL, path.extname(sourceFileURL)) +
+            ' ' +
+            counter +
+            shortCutExt
+        )
+      }
+
+      if (userOS === 'win32') {
+        command = 'cmd'
+        args = ['/c', 'mklink', '/H', newShortcutPath.replace(/\//g, '\\'), sourceURL]
+      } else if (userOS === 'darwin' || userOS === 'linux') {
+        command = 'ln'
+        args = ['-s', sourceURL, newShortcutPath]
+      }
+
+      const link = spawn(command, args)
+
+      link.on('error', (error) => {
+        console.log(`Error creating shortcut: ${error}`)
+        return
+      })
+
+      if (userOS == 'win32') {
+        return newShortcutPath.replace(/\//g, '\\')
+      }
+      return newShortcutPath
     }
 
     return {
@@ -460,6 +515,7 @@ const fileSystemModule = (userDataPath) => {
       lastOpenedFile,
       setLastOpenedFilePath,
       copyFile,
+      createFileShortcut,
     }
   }
 }

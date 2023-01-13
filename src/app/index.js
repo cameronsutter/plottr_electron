@@ -89,7 +89,7 @@ const {
   onDownloadStorageImage,
   onMoveFromTemp,
   restartSocketServer,
-  onSaveToDesktop,
+  onCreateFileShortcut,
   showItemInFolder,
 } = makeMainProcessClient()
 
@@ -156,7 +156,7 @@ tellMeWhatOSImOn()
     })
   })
   .then(() => {
-    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile } =
+    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile, createFileShortcut } =
       makeFileModule(whenClientIsReady)
 
     const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
@@ -459,8 +459,10 @@ tellMeWhatOSImOn()
           store.dispatch(actions.project.startCreatingNewProject())
         })
 
-        onSaveToDesktop((file) => {
-          copyFile(file, 'desktop').then((newFile) => showItemInFolder(newFile))
+        onCreateFileShortcut((sourceFile, destinationURL) => {
+          createFileShortcut(sourceFile, destinationURL).then((shortcut) =>
+            showItemInFolder(shortcut)
+          )
         })
 
         onOpenExisting(() => openExistingProj())

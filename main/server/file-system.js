@@ -1,6 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
+import { spawn } from 'child_process'
 
 import { sortBy } from 'lodash'
 
@@ -424,8 +425,10 @@ const fileSystemModule = (userDataPath) => {
     const createFileShortcut = (sourceFileURL, destinationURL) => {
       let shortcutDestination = helpers.file.withoutProtocol(destinationURL)
       const sourceURL = helpers.file.withoutProtocol(sourceFileURL)
+      let command, args
+      const userOS = process.platform
       const shortcutPrefix = 'Shortcut - '
-      const shortCutExt = os.platform() != 'linux' ? '.lnk' : '.sh'
+      const shortCutExt = os != 'darwin' ? '.lnk' : '.sh'
 
       if (destinationURL == 'desktop') {
         shortcutDestination = path.join(path.join(os.homedir(), 'Desktop'))
@@ -455,13 +458,25 @@ const fileSystemModule = (userDataPath) => {
         )
       }
 
-      if (os.platform() == 'win32') {
-        fs.symlinkSync(sourceURL, newShortcutPath, 'junction')
-        return newShortcutPath.replace(/\//g, '\\')
-      } else {
-        fs.symlinkSync(sourceURL, newShortcutPath)
-        return newShortcutPath
+      if (userOS === 'win32') {
+        command = 'cmd'
+        args = ['/c', 'mklink', '/H', newShortcutPath.replace(/\//g, '\\'), sourceURL]
+      } else if (userOS === 'darwin' || userOS === 'linux') {
+        command = 'ln'
+        args = ['-s', sourceURL, newShortcutPath]
       }
+
+      const link = spawn(command, args)
+
+      link.on('error', (error) => {
+        console.log(`Error creating shortcut: ${error}`)
+        return
+      })
+
+      if (userOS == 'win32') {
+        return newShortcutPath.replace(/\//g, '\\')
+      }
+      return newShortcutPath
     }
 
     return {

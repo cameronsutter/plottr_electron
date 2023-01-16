@@ -307,10 +307,8 @@ app.whenReady().then(() => {
         })
 
         app.on('window-all-closed', () => {
-          if (lastClosedWasDashboard()) {
+          if (!is.macos) {
             safelyExitModule.quitWhenDone()
-          } else {
-            openProjectWindow(null)
           }
         })
 

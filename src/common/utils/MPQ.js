@@ -67,7 +67,7 @@ class MixpanelQueue {
   push(event, attrs = {}) {
     if (!event || process.env.NODE_ENV == 'development') return
     this.fileSystemAPIs.currentUserSettings().then((user) => {
-      if (!user.get('payment_id')) return
+      if (!user['payment_id']) return
 
       // TODO: save to localStorage
       let allAttrs = {

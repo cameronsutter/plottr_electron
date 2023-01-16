@@ -16,6 +16,7 @@
     "watch:dup-sass": "sass --watch src/css/components.scss src/css/components.css",
     "watch:copy-fonts": "node bin/copy-files.js",
     "clean": "rimraf dist",
+    "webpack": "webpack",
     "compile": "npm run clean && npm-run-all --parallel sub-compile:*",
     "sub-compile:components": "cross-env NODE_ENV=production babel src/components --out-dir dist/components --ignore **/__tests__,**/__fixtures__",
     "sub-compile:utils": "cross-env NODE_ENV=production babel src/utils --out-dir dist/utils --ignore **/__tests__,**/__fixtures__",
@@ -60,7 +61,8 @@
     "rollbar": "^2.19.4",
     "sass": "^1.25.0",
     "tls": "0.0.1",
-    "web-vitals": "^1.0.1"
+    "web-vitals": "^1.0.1",
+    "webpack": "^5.75.0"
   },
   "dependencies": {
     "animated-scroll-to": "^2.3.0",

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { Buffer } from 'buffer/'
+import isBuffer from 'is-buffer'
 
 import {
   PING,
@@ -582,7 +582,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
     }
 
     const writeFile = (path, file) => {
-      if (Buffer.isBuffer(file)) {
+      if (isBuffer(file)) {
         const base64 = file.toString('base64')
         return sendPromise(WRITE_FILE, { path, base64 })
       }

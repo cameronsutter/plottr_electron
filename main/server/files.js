@@ -295,6 +295,7 @@ const fileModule = (userDataPath) => {
     }
 
     const _writeFile = (filePath, data) => {
+      console.log('data', data)
       return writeFile(filePath, data)
     }
 

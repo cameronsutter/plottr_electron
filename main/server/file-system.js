@@ -428,7 +428,7 @@ const fileSystemModule = (userDataPath) => {
       let command, args
       const userOS = process.platform
       const shortcutPrefix = 'Shortcut - '
-      const shortCutExt = os != 'darwin' ? '.lnk' : '.sh'
+      const shortCutExt = userOS != 'linux' ? '.lnk' : '.sh'
 
       if (destinationURL == 'desktop') {
         shortcutDestination = path.join(path.join(os.homedir(), 'Desktop'))

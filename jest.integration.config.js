@@ -66,9 +66,7 @@ module.exports = {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: [
-  //   "node_modules"
-  // ],
+  // moduleDirectories: ['node_modules'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -82,16 +80,9 @@ module.exports = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '^app(.*)$': '<rootDir>/src/app/$1',
-    '^dashboard(.*)$': '<rootDir>/src/dashboard/$1',
-    '^store(.*)$': '<rootDir>/src/app/store/$1',
-    '^test(.*)$': '<rootDir>/test/$1',
     '^connected-components$': '<rootDir>/src/connected-components.js',
     '^wired-up-firebase$': '<rootDir>/src/wired-up-firebase.js',
-    '^plottr_components$': '<rootDir>/lib/plottr_components/dist/components',
-    '^react($|/.+)': '<rootDir>/node_modules/react$1',
-    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
-    '^react-test-renderer($|/.+)': '<rootDir>/node_modules/react-test-renderer$1',
+    '^plottr_components$': '<rootDir>/lib/plottr_components/src$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -230,6 +230,7 @@ const rendererConfig = {
       crypto: require.resolve('crypto-browserify'),
       url: require.resolve('url/'),
       events: require.resolve('events/'),
+      string_decoder: require.resolve('string_decoder/'),
     },
   },
   target: 'web',

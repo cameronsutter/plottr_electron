@@ -89,6 +89,9 @@ const {
   onDownloadStorageImage,
   onMoveFromTemp,
   restartSocketServer,
+  onCreateFileShortcut,
+  showItemInFolder,
+  userDesktopPath,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -154,7 +157,7 @@ tellMeWhatOSImOn()
     })
   })
   .then(() => {
-    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile } =
+    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile, createFileShortcut } =
       makeFileModule(whenClientIsReady)
 
     const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
@@ -456,6 +459,21 @@ tellMeWhatOSImOn()
         onNewProject(() => {
           store.dispatch(actions.project.startCreatingNewProject())
         })
+
+        onCreateFileShortcut((sourceFile, destinationURL) => {
+          if (destinationURL == 'desktop') {
+            userDesktopPath().then((desktopPath) => {
+              createFileShortcut(sourceFile, desktopPath).then((shortcut) =>
+                showItemInFolder(shortcut)
+              )
+            })
+          } else {
+            createFileShortcut(sourceFile, destinationURL).then((shortcut) =>
+              showItemInFolder(shortcut)
+            )
+          }
+        })
+
         onOpenExisting(() => openExistingProj())
         onFromTemplate(() => {
           openDashboard()

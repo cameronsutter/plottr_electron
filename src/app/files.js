@@ -41,6 +41,12 @@ const makeFileModule = (whenClientIsReady) => {
     })
   }
 
+  const createFileShortcut = (sourceFileURL, newFileURL) => {
+    return whenClientIsReady(({ createFileShortcut }) => {
+      return createFileShortcut(sourceFileURL, newFileURL)
+    })
+  }
+
   const basename = (fileURL) => {
     return whenClientIsReady(({ basename }) => {
       return basename(fileURL)
@@ -56,6 +62,7 @@ const makeFileModule = (whenClientIsReady) => {
     saveAsTempFile,
     copyFile,
     basename,
+    createFileShortcut,
   }
 }
 

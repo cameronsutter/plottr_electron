@@ -613,6 +613,15 @@ export const listenOnIPCMain = (
     }
   })
 
+  ipcMain.on('user-desktop-path', (event, replyChannel) => {
+    try {
+      event.sender.send(replyChannel, app.getPath('desktop'))
+    } catch (error) {
+      log.error(`Error getting the user desktop path`, error)
+      event.sender.send(replyChannel, { error: error.message })
+    }
+  })
+
   ipcMain.on('user-documents-path', (event, replyChannel) => {
     try {
       event.sender.send(replyChannel, app.getPath('documents'))

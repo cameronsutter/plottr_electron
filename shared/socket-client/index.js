@@ -141,6 +141,8 @@ import {
   STAT_ERROR_REPLY,
   MKDIR,
   MKDIR_ERROR_REPLY,
+  CREATE_SHORTCUT,
+  CREATE_SHORTCUT_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -263,6 +265,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           }
           // Normal replies
           case COPY_FILE:
+          case CREATE_SHORTCUT:
           case REMOVE_FROM_TEMP_FILES:
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
@@ -364,6 +367,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
           case COPY_FILE_ERROR_REPLY:
+          case CREATE_SHORTCUT_ERROR_REPLY:
           case BACKUP_BASE_PATH_ERROR_REPLY:
           case CURRENT_TRIAL_ERROR_REPLY:
           case START_TRIAL_ERROR_REPLY:
@@ -699,6 +703,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
       return sendPromise(COPY_FILE, { sourceFileURL, newFileURL })
     }
 
+    const createFileShortcut = (sourceFileURL, newFileURL) => {
+      return sendPromise(CREATE_SHORTCUT, { sourceFileURL, newFileURL })
+    }
+
     // Subscriptions
     const listenToTrialChanges = (cb) => {
       return registerCallback(LISTEN_TO_TRIAL_CHANGES, {}, cb)
@@ -764,6 +772,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           offlineFileBasePath,
           customTemplatesPath,
           copyFile,
+          createFileShortcut,
           attemptToFetchTemplates,
           saveAsTempFile,
           removeFromKnownFiles,

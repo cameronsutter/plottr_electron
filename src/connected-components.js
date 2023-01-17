@@ -90,6 +90,7 @@ const {
   pleaseTellMeWhatPlatformIAmOn,
   showErrorBox,
   askToExport,
+  userDesktopPath,
 } = makeMainProcessClient()
 
 export const rmRF = (path, ...args) => {
@@ -268,6 +269,19 @@ const platform = {
     renameFile,
     removeFromKnownFiles,
     saveFile,
+    createFileShortcut: (sourceFileURL, destinationURL) => {
+      if (destinationURL == 'desktop') {
+        return userDesktopPath().then((userDesktopPath) => {
+          return whenClientIsReady(({ createFileShortcut }) => {
+            return createFileShortcut(sourceFileURL, userDesktopPath)
+          })
+        })
+      } else {
+        return whenClientIsReady(({ createFileShortcut }) => {
+          return createFileShortcut(sourceFileURL, destinationURL)
+        })
+      }
+    },
     readFile: (fileURL) => {
       return whenClientIsReady(({ readFile }) => {
         return readFile(fileURL)

@@ -1,12 +1,15 @@
 import path from 'path'
 import fs from 'fs'
+import os from 'os'
+import { spawn } from 'child_process'
+
 import { sortBy } from 'lodash'
 
 import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
 
 import { helpers } from 'pltr/v2'
 
-const { readdir, mkdir, lstat, cp } = fs.promises
+const { readdir, mkdir, lstat, cp, symlink } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -409,6 +412,42 @@ const fileSystemModule = (userDataPath) => {
       )
     }
 
+    const createFileShortcut = async (sourceFileURL, destinationURL, counter = 0) => {
+      let shortcutDestination = helpers.file.withoutProtocol(destinationURL)
+      const sourceURL = helpers.file.withoutProtocol(sourceFileURL)
+      const shortcutSuffix = ' - Shortcut'
+      const shortCutExt = os.platform() != 'linux' ? '.lnk' : '.sh'
+
+      let newShortcutPath = path.join(
+        shortcutDestination,
+        shortcutSuffix + path.basename(sourceFileURL, path.extname(sourceFileURL)) + shortCutExt
+      )
+      newShortcutPath = path.join(
+        shortcutDestination,
+        path.basename(sourceFileURL, path.extname(sourceFileURL)) +
+          shortcutSuffix +
+          (counter ? ' ' + counter : '') +
+          shortCutExt
+      )
+      if (os.platform() == 'win32') {
+        return symlink(sourceURL, newShortcutPath, 'file')
+          .then(() => newShortcutPath.replace(/\//g, '\\'))
+          .catch((error) => {
+            if (error.code == 'EEXIST') {
+              return createFileShortcut(sourceFileURL, destinationURL, counter + 1)
+            }
+          })
+      } else {
+        return symlink(sourceURL, newShortcutPath)
+          .then(() => newShortcutPath)
+          .catch((error) => {
+            if (error.code == 'EEXIST') {
+              return createFileShortcut(sourceFileURL, destinationURL, counter + 1)
+            }
+          })
+      }
+    }
+
     return {
       TEMP_FILES_PATH,
       setTemplate,
@@ -445,6 +484,7 @@ const fileSystemModule = (userDataPath) => {
       lastOpenedFile,
       setLastOpenedFilePath,
       copyFile,
+      createFileShortcut,
     }
   }
 }

@@ -85,6 +85,7 @@ import {
   READDIR,
   STAT,
   MKDIR,
+  CREATE_SHORTCUT,
 } from '../../shared/socket-server-message-types'
 import { makeLogger } from './logger'
 import wireupFileModule from './files'
@@ -213,6 +214,7 @@ const setupListeners = (port, userDataPath) => {
       lastOpenedFile,
       setLastOpenedFilePath,
       copyFile,
+      createFileShortcut,
     } = fileSystemModule
     const trashModule = makeTrashModule(userDataPath, logger)
     const { trashByURL } = trashModule
@@ -721,6 +723,14 @@ const setupListeners = (port, userDataPath) => {
               () => `Copying file from ${sourceFileURL} to ${newFileURL}`,
               () => copyFile(sourceFileURL, newFileURL),
               () => `Error copying file from ${sourceFileURL} to ${newFileURL}`
+            )
+          }
+          case CREATE_SHORTCUT: {
+            const { sourceFileURL, newFileURL } = payload
+            return handlePromise(
+              () => `Creating Shortcut from ${sourceFileURL} to ${newFileURL}`,
+              () => createFileShortcut(sourceFileURL, newFileURL),
+              () => `Error creating Shortcut from ${sourceFileURL} to ${newFileURL}`
             )
           }
           case BACKUP_BASE_PATH: {

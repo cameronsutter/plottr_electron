@@ -9,7 +9,7 @@
 @import 'error_boundary';
 @import 'login';
 
-@import 'plottr_components/components';
+@import '../../lib/plottr_components/src/css/components.scss';
 @import 'dashboard/dashboard';
 
 @import 'busy_block';

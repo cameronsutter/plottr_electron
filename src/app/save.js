@@ -1,6 +1,6 @@
 import { difference } from 'lodash'
 
-import exportToSelfContainedPlottrFile from 'plottr_import_export/src/exporter/plottr'
+import exportToSelfContainedPlottrFile from 'plottr_import_export/exporter/plottr'
 import { helpers, selectors, SYSTEM_REDUCER_KEYS, emptyFile } from 'pltr/v2'
 
 const emptyFileState = emptyFile('DummyFile', '2022.11.2')

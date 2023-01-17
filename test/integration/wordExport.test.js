@@ -4,7 +4,7 @@ import fs from 'fs'
 import { xml2json } from 'xml-js'
 import undoable from 'redux-undo'
 
-import default_config from 'plottr_import_export/src/exporter/default_config'
+import default_config from 'plottr_import_export/exporter/default_config'
 import { wordExporter } from 'plottr_import_export'
 import { helpers, actions, rootReducer } from 'pltr/v2'
 

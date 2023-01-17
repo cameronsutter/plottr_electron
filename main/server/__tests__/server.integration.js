@@ -4,7 +4,7 @@ import { createClient, whenClientIsReady } from '../../../shared/socket-client/i
 
 import { startServer } from '../init'
 import defaultSettings from '../../../shared/default_settings'
-import export_config from 'plottr_import_export/src/exporter/default_config'
+import export_config from 'plottr_import_export/exporter/default_config'
 
 const NOP_LOGGER = {
   info: () => {},

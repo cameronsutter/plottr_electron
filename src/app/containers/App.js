@@ -6,8 +6,8 @@ import { t } from 'plottr_locales'
 import { selectors, actions } from 'pltr/v2'
 
 import log from '../../../shared/logger'
-import Navigation from 'containers/Navigation'
-import Body from 'containers/Body'
+import Navigation from './Navigation'
+import Body from './Body'
 import Spinner from '../components/Spinner'
 import {
   AskToSaveModal,

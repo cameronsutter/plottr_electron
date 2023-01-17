@@ -1,6 +1,6 @@
 import { basename } from 'path'
 
-import export_config from 'plottr_import_export/src/exporter/default_config'
+import export_config from 'plottr_import_export/exporter/default_config'
 
 import { helpers } from 'pltr/v2'
 

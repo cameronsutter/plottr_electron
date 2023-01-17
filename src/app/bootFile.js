@@ -13,7 +13,7 @@ import {
   overwriteAllKeys,
   saveBackup as saveBackupOnFirebase,
 } from 'wired-up-firebase'
-import exportToSelfContainedPlottrFile from 'plottr_import_export/src/exporter/plottr'
+import exportToSelfContainedPlottrFile from 'plottr_import_export/exporter/plottr'
 
 import { makeFileSystemAPIs } from '../api'
 import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
@@ -21,7 +21,7 @@ import { offlineFileURLFromFile } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { resumeDirective } from '../resume'
 import logger from '../../shared/logger'
-import { store } from 'store'
+import { store } from './store'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import { makeFileModule } from './files'

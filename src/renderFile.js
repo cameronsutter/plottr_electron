@@ -6,7 +6,7 @@ import { selectors } from 'pltr/v2'
 
 import { saveBackup as saveBackupOnFirebase } from 'wired-up-firebase'
 
-import Main from 'containers/Main'
+import Main from './app/containers/Main'
 import Listener from './app/components/listener'
 import Renamer from './app/components/Renamer'
 import SaveAs from './app/components/SaveAs'

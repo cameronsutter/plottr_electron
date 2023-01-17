@@ -134,17 +134,21 @@ function main() {
     .then((results) => {
       console.log('Sub tree dependencies', results)
       console.log('Installing dependencies:')
-      Object.entries(results.dependencies).map(([packageName, version]) => {
-        const args = ['npm', 'i', '--save', `${packageName}@${version}`]
-        console.log(`> ${args.join(' ')}`)
-        childProcess.execFileSync(...args)
+      const dependencies = Object.entries(results.dependencies).map(([packageName, version]) => {
+        return `${packageName}@${version}`
       })
+      const args = ['i', '--save', ...dependencies]
+      console.log(`> npm ${args.join(' ')}`)
+      childProcess.execFileSync('npm', args)
       console.log('Installing dev dependencies:')
-      Object.entries(results.devDependencies).map(([packageName, version]) => {
-        const args = ['npm', 'i', '--save-dev', `${packageName}@${version}`]
-        console.log(`> ${args.join(' ')}`)
-        childProcess.execFileSync(...args)
-      })
+      const devDependencies = Object.entries(results.devDependencies).map(
+        ([packageName, version]) => {
+          return `${packageName}@${version}`
+        }
+      )
+      const argsDev = ['i', '--save-dev', ...devDependencies]
+      console.log(`> npm ${argsDev.join(' ')}`)
+      childProcess.execFileSync('npm', argsDev)
     })
 }
 

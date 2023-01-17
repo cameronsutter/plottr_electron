@@ -1,11 +1,7 @@
 const isTest = process.env.NODE_ENV
 
 // had to do it this way because the windows build (Appveyor) blows up if there is an undefined in the plugins
-let plugins = [
-  'lodash',
-  '@babel/plugin-proposal-class-properties',
-  '@babel/plugin-transform-modules-commonjs',
-]
+let plugins = ['lodash', '@babel/plugin-proposal-class-properties']
 
 // this is done in webpack for the builds, so this is only
 // required for test

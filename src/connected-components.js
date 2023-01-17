@@ -2,22 +2,15 @@ import { ActionCreators } from 'redux-undo'
 
 import { t } from 'plottr_locales'
 import { connections } from 'plottr_components'
-import export_config from 'plottr_import_export/src/exporter/default_config'
+import export_config from 'plottr_import_export/exporter/default_config'
 import { actions, selectors, helpers } from 'pltr/v2'
 import {
-  publishRCEOperations,
-  fetchRCEOperations,
-  listenForChangesToEditor,
-  deleteChangeSignal,
-  deleteOldChanges,
   backupPublicURL,
   imagePublicURL,
   isStorageURL,
   saveImageToStorageBlob as saveImageToStorageBlobInFirebase,
   saveImageToStorageFromURL as saveImageToStorageFromURLInFirebase,
   deleteFile,
-  startUI,
-  firebaseUI,
   onSessionChange,
   fetchFiles,
   logOut,
@@ -440,19 +433,12 @@ const platform = {
   rootElementSelectors: ['#react-root', '#dashboard__react__root'],
   templatesDisabled: false,
   exportDisabled: false,
-  publishRCEOperations,
-  fetchRCEOperations,
-  listenForChangesToEditor,
-  deleteChangeSignal,
-  deleteOldChanges,
   listenForRCELock,
   lockRCE,
   releaseRCELock,
   machineId,
   extractImages,
   firebase: {
-    startUI,
-    firebaseUI,
     onSessionChange,
     currentUser,
     fetchFiles,

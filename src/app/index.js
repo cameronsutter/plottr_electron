@@ -11,16 +11,15 @@
 
 import { setupI18n, t } from 'plottr_locales'
 
-import { store } from 'store'
-
 import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
 import { askToExport, imageToWebpDataURL } from 'plottr_import_export'
-import exportConfig from 'plottr_import_export/src/exporter/default_config'
+import exportConfig from 'plottr_import_export/exporter/default_config'
 import world from 'world-api'
 
+import { store } from './store'
 import MPQ from '../common/utils/MPQ'
 import setupRollbar from '../common/utils/rollbar'
 import initMixpanel from '../common/utils/mixpanel'

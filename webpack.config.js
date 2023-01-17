@@ -362,4 +362,4 @@ const socketServerConfig = {
   },
 }
 
-module.exports = [rendererConfig, mainConfig, preloadConfig , loginPopupConfig, socketServerConfig]
+module.exports = [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig]

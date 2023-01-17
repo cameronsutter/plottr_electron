@@ -88,8 +88,8 @@ const aggregateSubTreePackages = (base) => (subTreeDirectories) => {
           return Object.entries(next[name]).reduce((accIter, [key, value]) => {
             if (
               semver.valid(accIter[name][key]) &&
-                semver.valid(value) &&
-                semver.gt(semver.coerce(accIter[name][key]), semver.coerce(value))
+              semver.valid(value) &&
+              semver.gt(semver.coerce(accIter[name][key]), semver.coerce(value))
             ) {
               console.warn(`Two sub trees depend on ${key}.  Taking the higher version: ${value}`)
               return {

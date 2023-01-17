@@ -91,6 +91,7 @@ const {
   restartSocketServer,
   onCreateFileShortcut,
   showItemInFolder,
+  userDesktopPath,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -460,9 +461,17 @@ tellMeWhatOSImOn()
         })
 
         onCreateFileShortcut((sourceFile, destinationURL) => {
-          createFileShortcut(sourceFile, destinationURL).then((shortcut) =>
-            showItemInFolder(shortcut)
-          )
+          if (destinationURL == 'desktop') {
+            userDesktopPath().then((desktopPath) => {
+              createFileShortcut(sourceFile, desktopPath).then((shortcut) =>
+                showItemInFolder(shortcut)
+              )
+            })
+          } else {
+            createFileShortcut(sourceFile, destinationURL).then((shortcut) =>
+              showItemInFolder(shortcut)
+            )
+          }
         })
 
         onOpenExisting(() => openExistingProj())

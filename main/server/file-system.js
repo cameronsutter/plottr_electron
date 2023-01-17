@@ -9,7 +9,7 @@ import { BACKUP_BASE_PATH, CUSTOM_TEMPLATES_PATH } from './stores'
 
 import { helpers } from 'pltr/v2'
 
-const { readdir, mkdir, lstat, cp } = fs.promises
+const { readdir, mkdir, lstat, cp, symlink } = fs.promises
 
 const TRIAL_LENGTH = 30
 const EXTENSIONS = 2
@@ -412,71 +412,40 @@ const fileSystemModule = (userDataPath) => {
       )
     }
 
-    const checkForDuplicateFilesWithNumberSuffix = (destinationURL, match) => {
-      let duplicateFound = false
-      fs.readdirSync(destinationURL).forEach((file) => {
-        if (match.test(file)) {
-          duplicateFound = true
-        }
-      })
-      return duplicateFound
-    }
-
-    const createFileShortcut = (sourceFileURL, destinationURL) => {
+    const createFileShortcut = async (sourceFileURL, destinationURL, counter = 0) => {
       let shortcutDestination = helpers.file.withoutProtocol(destinationURL)
       const sourceURL = helpers.file.withoutProtocol(sourceFileURL)
-      let command, args
-      const userOS = process.platform
-      const shortcutPrefix = 'Shortcut - '
-      const shortCutExt = userOS != 'linux' ? '.lnk' : '.sh'
-
-      if (destinationURL == 'desktop') {
-        shortcutDestination = path.join(path.join(os.homedir(), 'Desktop'))
-      }
+      const shortcutSuffix = ' - Shortcut'
+      const shortCutExt = os.platform() != 'linux' ? '.lnk' : '.sh'
 
       let newShortcutPath = path.join(
         shortcutDestination,
-        shortcutPrefix + path.basename(sourceFileURL, path.extname(sourceFileURL)) + shortCutExt
+        shortcutSuffix + path.basename(sourceFileURL, path.extname(sourceFileURL)) + shortCutExt
       )
-
-      let counter = 0
-      const fileName = path.basename(newShortcutPath)
-      const match = new RegExp(`^${shortcutPrefix} ${fileName} (\\d+)\\.${shortCutExt}$`)
-
-      while (
-        fs.existsSync(newShortcutPath) ||
-        checkForDuplicateFilesWithNumberSuffix(shortcutDestination, match)
-      ) {
-        counter++
-        newShortcutPath = path.join(
-          shortcutDestination,
-          shortcutPrefix +
-            path.basename(sourceFileURL, path.extname(sourceFileURL)) +
-            ' ' +
-            counter +
-            shortCutExt
-        )
+      newShortcutPath = path.join(
+        shortcutDestination,
+        path.basename(sourceFileURL, path.extname(sourceFileURL)) +
+          shortcutSuffix +
+          (counter ? ' ' + counter : '') +
+          shortCutExt
+      )
+      if (os.platform() == 'win32') {
+        return symlink(sourceURL, newShortcutPath, 'file')
+          .then(() => newShortcutPath.replace(/\//g, '\\'))
+          .catch((error) => {
+            if (error.code == 'EEXIST') {
+              return createFileShortcut(sourceFileURL, destinationURL, counter + 1)
+            }
+          })
+      } else {
+        return symlink(sourceURL, newShortcutPath)
+          .then(() => newShortcutPath)
+          .catch((error) => {
+            if (error.code == 'EEXIST') {
+              return createFileShortcut(sourceFileURL, destinationURL, counter + 1)
+            }
+          })
       }
-
-      if (userOS === 'win32') {
-        command = 'cmd'
-        args = ['/c', 'mklink', '/H', newShortcutPath.replace(/\//g, '\\'), sourceURL]
-      } else if (userOS === 'darwin' || userOS === 'linux') {
-        command = 'ln'
-        args = ['-s', sourceURL, newShortcutPath]
-      }
-
-      const link = spawn(command, args)
-
-      link.on('error', (error) => {
-        console.log(`Error creating shortcut: ${error}`)
-        return
-      })
-
-      if (userOS == 'win32') {
-        return newShortcutPath.replace(/\//g, '\\')
-      }
-      return newShortcutPath
     }
 
     return {

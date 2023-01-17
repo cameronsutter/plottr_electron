@@ -727,7 +727,7 @@ const setupListeners = (port, userDataPath) => {
           }
           case CREATE_SHORTCUT: {
             const { sourceFileURL, newFileURL } = payload
-            return handleSync(
+            return handlePromise(
               () => `Creating Shortcut from ${sourceFileURL} to ${newFileURL}`,
               () => createFileShortcut(sourceFileURL, newFileURL),
               () => `Error creating Shortcut from ${sourceFileURL} to ${newFileURL}`

@@ -87,6 +87,10 @@ const _makeMainProcessClient = () => {
     return ask('user-documents-path')
   }
 
+  const userDesktopPath = () => {
+    return ask('user-desktop-path')
+  }
+
   const logsPath = () => {
     return ask('user-logs-path')
   }
@@ -430,6 +434,7 @@ const _makeMainProcessClient = () => {
     setFileURL,
     userDataPath,
     userDocumentsPath,
+    userDesktopPath,
     logsPath,
     showOpenDialog,
     hostLocale,

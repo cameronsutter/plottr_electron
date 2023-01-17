@@ -27,7 +27,6 @@
     "image-conversion": "^2.1.1",
     "jsrtf": "0.0.3",
     "lodash": "^4.17.19",
-    "plottr_locales": "file:../plottr_locales",
     "pltr": "file:../pltr",
     "sharp": "^0.31.2",
     "xml-js": "^1.6.11"

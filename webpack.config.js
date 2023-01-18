@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const packageJSON = require('./package.json')
@@ -156,15 +157,11 @@ const appCircularDependencyChecker = new CircularDependencyPlugin({
   cwd: process.cwd(),
 })
 
-const rtfJS = {
-  entry: {
-    rtfjs: path.resolve('.', 'node_modules', 'rtf.js', 'dist', 'RTFJS.bundle.js'),
-  },
-  output: {
-    path: path.resolve(__dirname, 'bin'),
-    filename: 'RTFJS.bundle.js',
-  },
-}
+console.log('> Copying RTFJS to the bin folder.')
+fs.cpSync(
+  path.resolve('.', 'node_modules', 'rtf.js', 'dist', 'RTFJS.bundle.js'),
+  path.resolve(__dirname, 'bin', 'RTFJS.bundle.js')
+)
 
 const rendererConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
@@ -274,6 +271,7 @@ const rendererConfig = {
   plugins: [duplicateDependencyChecker, ...plugins],
   externals: {
     sharp: 'sharp',
+    'rtf.js': 'RTFJS',
   },
 }
 
@@ -392,6 +390,6 @@ const socketServerConfig = {
 const stagedExports =
   process.env.TARGETS === 'server'
     ? [socketServerConfig]
-    : [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig, rtfJS]
+    : [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig]
 
 module.exports = stagedExports

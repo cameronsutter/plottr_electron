@@ -66,7 +66,7 @@ module.exports = {
   // maxWorkers: "50%",
 
   // An array of directory names to be searched recursively up from the requiring module's location
-  // moduleDirectories: ['node_modules'],
+  moduleDirectories: ['node_modules'],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
@@ -83,6 +83,14 @@ module.exports = {
     '^connected-components$': '<rootDir>/src/connected-components.js',
     '^wired-up-firebase$': '<rootDir>/src/wired-up-firebase.js',
     '^plottr_components$': '<rootDir>/lib/plottr_components/src$1',
+    '^plottr_import_export/exporter/default_config':
+      '<rootDir>/lib/plottr_import_export/src/exporter/default_config.js',
+    '^plottr_import_export/exporter/plottr$':
+      '<rootDir>/lib/plottr_import_export/src/exporter/plottr/index.js',
+    '^pltr/v2$': '<rootDir>/lib/pltr/v2/index.js',
+    '^react($|/.+)': '<rootDir>/node_modules/react$1',
+    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
+    '^react-test-renderer($|/.+)': '<rootDir>/node_modules/react-test-renderer$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -156,7 +164,7 @@ module.exports = {
   testMatch: ['**/__tests__/**/*.integration.[jt]s?(x)'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
-  testPathIgnorePatterns: ['/node_modules/', 'lib/plottr_locales/lib'],
+  testPathIgnorePatterns: ['lib/plottr_locales/lib'],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
   // testRegex: [],
@@ -178,7 +186,7 @@ module.exports = {
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   transformIgnorePatterns: [
-    'node_modules/(?!(pltr)/)',
+    'node_modules/(?!(axios)/)',
     //   "\\.pnp\\.[^\\/]+$"
   ],
 

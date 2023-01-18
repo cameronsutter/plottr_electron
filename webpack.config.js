@@ -19,10 +19,8 @@ const defineConfig = [
   },
 ]
 
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-// if (process.env.NODE_ENV == 'dev') {
-//   plugins.push(new BundleAnalyzerPlugin())
-// }
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+plugins.push(new BundleAnalyzerPlugin())
 
 defineConfig.LOGGER = JSON.stringify('false')
 

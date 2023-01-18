@@ -83,7 +83,14 @@ module.exports = {
     '^connected-components$': '<rootDir>/src/connected-components.js',
     '^wired-up-firebase$': '<rootDir>/src/wired-up-firebase.js',
     '^plottr_components$': '<rootDir>/lib/plottr_components/src$1',
-    '^plottr_import_export/exporter/default_config': '<rootDir>/lib/plottr_import_export/src/exporter/default_config.js',
+    '^plottr_import_export/exporter/default_config':
+      '<rootDir>/lib/plottr_import_export/src/exporter/default_config.js',
+    '^plottr_import_export/exporter/plottr$':
+      '<rootDir>/lib/plottr_import_export/src/exporter/plottr/index.js',
+    '^pltr/v2$': '<rootDir>/lib/pltr/v2/index.js',
+    '^react($|/.+)': '<rootDir>/node_modules/react$1',
+    '^react-dom($|/.+)': '<rootDir>/node_modules/react-dom$1',
+    '^react-test-renderer($|/.+)': '<rootDir>/node_modules/react-test-renderer$1',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

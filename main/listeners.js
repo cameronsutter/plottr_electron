@@ -679,7 +679,7 @@ export const listenOnIPCMain = (
   })
 
   ipcMain.on('export', (event, replyChannel, defaultPath, fullState, type, options, userId) => {
-    whenClientIsReady(({ rmRf, writeFile, join, stat, mkdir, basename }) => {
+    whenClientIsReady(({ rmRf, join, stat, mkdir, basename }) => {
       return askToExport(
         defaultPath,
         fullState,
@@ -693,7 +693,7 @@ export const listenOnIPCMain = (
         rmRf,
         userId,
         makeDownloadStorageImage(event.sender),
-        writeFile,
+        fs.promises.writeFile,
         join,
         stat,
         mkdir,

@@ -119,7 +119,14 @@ const Listener = ({
 
   // Handle session changes.
   useEffect(() => {
-    if (checkedSession && isLoggedIn && !hasPro && !checkingProSubscription) {
+    if (
+      checkedSession &&
+      emailAddress &&
+      userId &&
+      isLoggedIn &&
+      !hasPro &&
+      !checkingProSubscription
+    ) {
       startLoadingALicenseType('proSubscription')
       getIdTokenResult().then((token) => {
         if (token.claims.beta || token.claims.admin || token.claims.lifetime) {

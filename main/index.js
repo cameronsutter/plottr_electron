@@ -61,7 +61,6 @@ const ENV_FILE_PATH = path.resolve('.env')
 import { config } from 'dotenv'
 import { broadcastToAllWindows } from './modules/broadcast'
 import { setDarkMode } from './modules/theme'
-import { lastClosedWasDashboard } from './modules/windows/index'
 config({ path: ENV_FILE_PATH })
 
 let rollbar = {

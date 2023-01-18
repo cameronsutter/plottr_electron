@@ -106,6 +106,7 @@ const mainConfig = {
   },
   externals: {
     sharp: 'commonjs sharp',
+    'rtf.js': 'rtf.js',
   },
 }
 
@@ -235,6 +236,7 @@ const rendererConfig = {
   plugins: [duplicateDependencyChecker, ...plugins],
   externals: {
     sharp: 'sharp',
+    'rtf.js': 'rtf.js',
   },
 }
 
@@ -297,6 +299,7 @@ const loginPopupConfig = {
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
   externals: {
     sharp: 'sharp',
+    'rtf.js': 'rtf.js',
   },
 }
 

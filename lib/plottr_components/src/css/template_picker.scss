@@ -11,7 +11,7 @@
   @include application-text;
   height: 100%;
   display: grid;
-  grid-template-areas: 'header' 'body' 'footer'; // for some reason you need the 's
+  grid-template-areas: 'header' 'body' 'footer'; // for some reason you need the ''s
   grid-template-rows: auto 1fr auto;
 
   .template-picker__confirmation__header {
@@ -30,17 +30,10 @@
       font-size: larger;
     }
     .template-picker__confirmation__row {
-      // display: flex;
-      // flex-direction: row;
-      // align-items: baseline;
       margin: 48px 0;
       .form-group {
         max-width: 40%;
-        // margin-right: 8px;
         margin-bottom: 4px;
-        select {
-          // padding-left: 4px;
-        }
       }
     }
   }

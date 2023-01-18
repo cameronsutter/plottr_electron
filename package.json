@@ -228,6 +228,7 @@
     "files": [
       "!*/**",
       "bin/*.js",
+      "bin/*.html",
       "bin/fonts/*"
     ],
     "copyright": "Copyright © 2022 Fictional Devices",

@@ -156,6 +156,16 @@ const appCircularDependencyChecker = new CircularDependencyPlugin({
   cwd: process.cwd(),
 })
 
+const rtfJS = {
+  entry: {
+    rtfjs: path.resolve('.', 'node_modules', 'rtf.js', 'dist', 'RTFJS.bundle.js'),
+  },
+  output: {
+    path: path.resolve(__dirname, 'bin'),
+    filename: 'RTFJS.bundle.js',
+  },
+}
+
 const rendererConfig = {
   mode: process.env.NODE_ENV === 'dev' ? 'development' : 'production',
   watch: process.env.NODE_ENV === 'dev',
@@ -220,6 +230,35 @@ const rendererConfig = {
       plottr_locales: path.resolve(__dirname, 'lib', 'plottr_locales', 'src'),
       plottr_world: path.resolve(__dirname, 'lib', 'plottr_world', 'src'),
       pltr: path.resolve(__dirname, 'lib', 'pltr'),
+      // Avoid duplicate react in libs problem (see
+      // https://medium.com/@penx/managing-dependencies-in-a-node-package-so-that-they-are-compatible-with-npm-link-61befa5aaca7)
+      // If a better solution arose since this was written then feel
+      // free to replace this! :)
+      react: path.resolve('./node_modules/react'),
+      'react-dom': path.resolve('./node_modules/react-dom'),
+      'react-redux': path.resolve('./node_modules/react-redux'),
+      redux: path.resolve('./node_modules/redux'),
+      // Force firebase to use the browser builds rather than node builds
+      '@firebase/auth/internal': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/internal.js'
+      ),
+      '@firebase/auth': path.resolve(
+        __dirname,
+        'node_modules/@firebase/auth/dist/esm2017/index.js'
+      ),
+      '@firebase/app': path.resolve(
+        __dirname,
+        'node_modules/@firebase/app/dist/esm/index.esm2017.js'
+      ),
+      '@firebase/firestore': path.resolve(
+        __dirname,
+        'node_modules/@firebase/firestore/dist/index.esm2017.js'
+      ),
+      '@firebase/storage': path.resolve(
+        __dirname,
+        'node_modules/@firebase/storage/dist/index.esm2017.js'
+      ),
     },
     fallback: {
       stream: require.resolve('stream-browserify'),
@@ -353,6 +392,6 @@ const socketServerConfig = {
 const stagedExports =
   process.env.TARGETS === 'server'
     ? [socketServerConfig]
-    : [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig]
+    : [rendererConfig, mainConfig, preloadConfig, loginPopupConfig, socketServerConfig, rtfJS]
 
 module.exports = stagedExports

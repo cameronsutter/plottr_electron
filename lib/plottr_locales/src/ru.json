@@ -1577,9 +1577,6 @@
   "{wordCount,number} words": {
     "message": "{ wordCount, number } слов"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(В противном случае свяжитесь со мной @ <a>support@plottr.com</a> или @StoryPlottr в Twitter.)"
-  },
   "Add attributes": {
     "message": "Добавить свойства"
   },
@@ -1612,9 +1609,6 @@
   },
   "Contact": {
     "message": "Связаться"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Создано в горах Юты"
   },
   "Create a new file": {
     "message": "Создать новый файл"
@@ -1876,9 +1870,6 @@
   },
   "Could not display license key. Try again": {
     "message": "Не удалось отобразить лицензионный ключ. Попробуйте снова"
-  },
-  "Crafted in the Mountains of Utah": {
-    "message": "Изготовлено в горах Юты"
   },
   "Create an error report": {
     "message": "Создать отчет об ошибке"
@@ -2612,9 +2603,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2920,9 +2908,6 @@
   },
   "Update Available (version {version})": {
     "message": "Update Available (version {version})"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

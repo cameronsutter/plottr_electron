@@ -368,9 +368,6 @@
   "Tag Name": {
     "message": "Nom de la balise"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(Si ce n''est pas le cas merci de m''écrire à me @ <a>support@plottr.com</a> ou @StoryPlottr on Twitter)"
-  },
   "About Plottr": {
     "message": "A propos de Plottr"
   },
@@ -460,9 +457,6 @@
   },
   "Copy": {
     "message": "Copier"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Cisellé dans les montagnes de l''Utah par"
   },
   "Create a new file": {
     "message": "Créer un nouveau fichier."
@@ -2702,9 +2696,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2920,9 +2911,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

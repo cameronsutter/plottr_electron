@@ -5,9 +5,6 @@
   "(Logout)": {
     "message": "(Logout)"
   },
-  "********": {
-    "message": "********"
-  },
   "A verification code was sent to:": {
     "message": "A verification code was sent to:"
   },
@@ -1748,9 +1745,6 @@
   "{wordCount,number} words": {
     "message": "{ wordCount, number } words"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)"
-  },
   "Add attributes": {
     "message": "Add attributes"
   },
@@ -1783,9 +1777,6 @@
   },
   "Contact": {
     "message": "Contact"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Crafted in the Mountains of Utah by"
   },
   "Create a new file": {
     "message": "Create a new file"
@@ -2920,9 +2911,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

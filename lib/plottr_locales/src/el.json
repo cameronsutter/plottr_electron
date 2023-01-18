@@ -1574,9 +1574,6 @@
   "{wordCount,number} words": {
     "message": "{wordCount, number} λέξεις"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(Εάν όχι, παρακαλώ επικοινωνήστε μαζί μου @ <a>support@plottr.com</a> ή @StoryPlottr στο Twitter)"
-  },
   "Add attributes": {
     "message": "Προσθήκη χαρακτηριστικών"
   },
@@ -1609,9 +1606,6 @@
   },
   "Contact": {
     "message": "Επικοινωνία"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Κατασκευασμένο στα βουνά της Γιούτα από"
   },
   "Create a new file": {
     "message": "Δημιουργήστε ένα νέο αρχείο"
@@ -2624,9 +2618,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2926,9 +2917,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

@@ -1574,9 +1574,6 @@
   "{wordCount,number} words": {
     "message": "{wordCount,number} palavras"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(Caso contrário, entre em contato com @ <a>support@plottr.com</a> ou @StoryPlottr no Twitter)"
-  },
   "Add attributes": {
     "message": "Adicionar atributos"
   },
@@ -1609,9 +1606,6 @@
   },
   "Contact": {
     "message": "Contato"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "Criado nas montanhas de Utah por"
   },
   "Create a new file": {
     "message": "Criar um novo arquivo"
@@ -2624,9 +2618,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2944,9 +2935,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

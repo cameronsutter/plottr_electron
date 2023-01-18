@@ -5,9 +5,6 @@
   "(Logout)": {
     "message": "(╯°□°）╯︵ (ʇnoƃo⅂)"
   },
-  "********": {
-    "message": "(╯°□°）╯︵ ********"
-  },
   "A verification code was sent to:": {
     "message": "(╯°□°）╯︵ :oʇ ʇuǝs sɐʍ ǝpoɔ uoıʇɐɔıɟıɹǝʌ ∀"
   },
@@ -1748,9 +1745,6 @@
   "{wordCount,number} words": {
     "message": "(╯°□°）╯︵ spɹoʍ { ɹǝqɯnu 'ʇunoↃpɹoʍ }"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(╯°□°）╯︵ (ɹǝʇʇıʍ⊥ uo ɹʇʇoʃԀʎɹoʇS@ ɹo <ɐ/>ɯoɔ˙ɹʇʇoʃd@ʇɹoddns<ɐ> @ ǝɯ ʇɔɐʇuoɔ ǝsɐǝʃd 'ʇou ɟI)"
-  },
   "Add attributes": {
     "message": "(╯°□°）╯︵ sǝʇnqıɹʇʇɐ pp∀"
   },
@@ -1783,9 +1777,6 @@
   },
   "Contact": {
     "message": "(╯°□°）╯︵ ʇɔɐʇuoↃ"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "(╯°□°）╯︵ ʎq ɥɐʇ∩ ɟo suıɐʇunoW ǝɥʇ uı pǝʇɟɐɹↃ"
   },
   "Create a new file": {
     "message": "(╯°□°）╯︵ ǝʃıɟ ʍǝu ɐ ǝʇɐǝɹↃ"
@@ -2920,9 +2911,6 @@
   },
   "App Version: { version }": {
     "message": "(╯°□°）╯︵ { uoısɹǝʌ } :uoısɹǝᴧ dd∀"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "(╯°□°）╯︵ ᴎƎ၁2IƎᴚHↃSᴚƎ၁2Ü"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "(╯°□°）╯︵ { \n{pǝɥɔɐʇʇɐ sǝɔɐʃd #} ɹǝɥʇo  \n{pǝɥɔɐʇʇɐ ǝɔɐʃd 1} ǝuo \n'ʃɐɹnʃd 'ʇunoɔ \n}"

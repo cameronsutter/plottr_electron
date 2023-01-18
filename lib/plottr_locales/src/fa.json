@@ -1667,9 +1667,6 @@
   "{wordCount,number} words": {
     "message": "{wordCount, number} کلمه"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(در غیر این صورت، با من به نشانی زیر @ <a>support@plottr.com</a> یا @StoryPlottr در Twitter تماس بگیرید)"
-  },
   "Add attributes": {
     "message": "افزودن ویژگی‌ها"
   },
@@ -1702,9 +1699,6 @@
   },
   "Contact": {
     "message": "تماس"
-  },
-  "Crafted in the Mountains of Utah by": {
-    "message": "ساخته شده در کوه‌های یوتا توسط"
   },
   "Create a new file": {
     "message": "ایجاد یک فایل جدید"
@@ -2657,9 +2651,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2920,9 +2911,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

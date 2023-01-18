@@ -167,9 +167,6 @@
   "Could not display license key. Try again": {
     "message": "No se puede mostrar la clave de licencia. Inténtalo de nuevo"
   },
-  "Crafted in the Mountains of Utah": {
-    "message": "Hecho a mano en las montañas de Utah"
-  },
   "Create a new file": {
     "message": "Crear un nuevo archivo"
   },
@@ -1817,9 +1814,6 @@
   "{wordCount,number} words": {
     "message": "{wordCount,number} palabras"
   },
-  "(If not, please contact me @ <a>support@plottr.com</a> or @StoryPlottr on Twitter)": {
-    "message": "(Si no es así por favor contáctanos al correo <a>support@plottr.com</a> o @StoryPlottr en Twitter)"
-  },
   "Attached to": {
     "message": "Adjunto a"
   },
@@ -2615,9 +2609,6 @@
   "{type} template": {
     "message": "{type} template"
   },
-  "********": {
-    "message": "********"
-  },
   "Add Scene": {
     "message": "Add Scene"
   },
@@ -2920,9 +2911,6 @@
   },
   "App Version: { version }": {
     "message": "App Version: { version }"
-  },
-  "ÜBERSCHREIBEN": {
-    "message": "ÜBERSCHREIBEN"
   },
   "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }": {
     "message": "{\n count, plural,\n one {1 place attached}\n  other {# places attached}\n }"

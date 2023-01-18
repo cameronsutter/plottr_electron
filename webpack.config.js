@@ -19,8 +19,8 @@ const defineConfig = [
   },
 ]
 
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-plugins.push(new BundleAnalyzerPlugin())
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// plugins.push(new BundleAnalyzerPlugin())
 
 defineConfig.LOGGER = JSON.stringify('false')
 
@@ -85,8 +85,8 @@ const mainConfig = {
     filename: 'electron_main.js',
   },
   resolve: {
-    extensions: ['.js', '.json'],
-    modules: ['node_modules', 'main'],
+    extensions: ['.esm.js', '.mjs', '.js', '.json'],
+    modules: ['node_modules'],
     alias: {
       // ===Git Subtree Modules===
       'plottr_check-prop-types': path.resolve(__dirname, 'lib', 'plottr_check-prop-types'),
@@ -121,9 +121,9 @@ const preloadConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.resolve(__dirname, 'lib', 'pltr'),
+        include: path.resolve(__dirname, 'lib'),
         exclude: /node_modules/,
-      },
+     },
     ],
   },
   output: {
@@ -131,8 +131,8 @@ const preloadConfig = {
     filename: 'preload.js',
   },
   resolve: {
-    extensions: ['.js', '.json'],
-    modules: ['node_modules', 'main'],
+    extensions: ['.esm.js', '.mjs', '.js', '.json'],
+    modules: ['node_modules'],
   },
   target: 'electron-main',
   plugins: [...plugins, duplicateDependencyChecker, mainCircularDependencyChecker],
@@ -233,8 +233,6 @@ const rendererConfig = {
   },
   target: 'web',
   plugins: [duplicateDependencyChecker, ...plugins],
-  devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
-  optimization: { splitChunks: false },
   externals: {
     sharp: 'sharp',
   },
@@ -257,13 +255,6 @@ const loginPopupConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.resolve(__dirname, 'lib', 'pltr'),
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
       },
       {
@@ -282,8 +273,8 @@ const loginPopupConfig = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
-    modules: ['node_modules', 'src/app', 'test'],
+    extensions: ['.esm.js', '.mjs', '.js', '.jsx', '.css', '.scss', '.json', '.jpg'],
+    modules: ['node_modules'],
     alias: {
       app: path.resolve(__dirname, 'src', 'app'),
       css: path.resolve(__dirname, 'src', 'css'),
@@ -304,7 +295,6 @@ const loginPopupConfig = {
   target: 'web',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
-  optimization: { splitChunks: false },
   externals: {
     sharp: 'sharp',
   },
@@ -326,20 +316,20 @@ const socketServerConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.resolve(__dirname, 'lib', 'pltr'),
         exclude: /node_modules/,
+        include: path.resolve(__dirname, 'lib'),
       },
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
+        include: path.resolve(__dirname, 'src'),
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.json'],
-    modules: ['main', 'node_modules'],
+    extensions: ['.esm.js', '.mjs', '.js', '.json'],
+    modules: ['node_modules'],
     alias: {
       docx: path.resolve('./node_modules/docx'),
       // ===Git Subtree Modules===
@@ -355,7 +345,6 @@ const socketServerConfig = {
   target: 'node',
   plugins: [appCircularDependencyChecker, duplicateDependencyChecker, ...plugins],
   devtool: process.env.NODE_ENV === 'dev' ? 'eval' : false,
-  optimization: { splitChunks: false },
   externals: {
     sharp: 'sharp',
   },

@@ -123,7 +123,7 @@ const preloadConfig = {
         loader: 'babel-loader',
         include: path.resolve(__dirname, 'lib'),
         exclude: /node_modules/,
-     },
+      },
     ],
   },
   output: {

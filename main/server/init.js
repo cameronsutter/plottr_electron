@@ -20,16 +20,9 @@ export const startServer = (log, broadcastPortChange, userDataPath, onFatalError
 
     const serverScriptPath =
       process.env.NODE_ENV === 'test'
-        ? join(__dirname, './server.js')
+        ? join(__dirname, '../../bin/socketServer.bundle.js')
         : join(__dirname, './socketServer.bundle.js')
-    const server =
-      process.env.NODE_ENV === 'test'
-        ? fork('node_modules/@babel/node/bin/babel-node.js', [
-            serverScriptPath,
-            randomPort,
-            userDataPath,
-          ])
-        : fork(serverScriptPath, [randomPort, userDataPath])
+    const server = fork(serverScriptPath, [randomPort, userDataPath])
     let weInstructedServerToDie = false
     server.on('close', (code) => {
       if (weInstructedServerToDie) {

@@ -92,23 +92,25 @@ describe('startServer', () => {
       expect(fatalErrorOccured).toBeFalsy()
 
       // ==========Check the Stores==========
-      const configFile = await fs.promises.readFile(path.join(userDataDirectory, 'config.json'))
+      const configFile = await fs.promises.readFile(path.join(userDataDirectory, 'config_dev.json'))
       const customTemplates = await fs.promises.readFile(
-        path.join(userDataDirectory, 'custom_templates.json')
+        path.join(userDataDirectory, 'custom_templates_dev.json')
       )
       const exportConfig = await fs.promises.readFile(
-        path.join(userDataDirectory, 'export_config.json')
+        path.join(userDataDirectory, 'export_config_dev.json')
       )
       const knownFiles = await fs.promises.readFile(
-        path.join(userDataDirectory, 'known_files.json')
+        path.join(userDataDirectory, 'known_files_dev.json')
       )
       const lastOpened = await fs.promises.readFile(
-        path.join(userDataDirectory, 'last_opened.json')
+        path.join(userDataDirectory, 'last_opened_dev.json')
       )
       const licenseInfo = await fs.promises.readFile(
         path.join(userDataDirectory, 'license_info.json')
       )
-      const templates = await fs.promises.readFile(path.join(userDataDirectory, 'templates.json'))
+      const templates = await fs.promises.readFile(
+        path.join(userDataDirectory, 'templates_dev.json')
+      )
       const trialInfo = await fs.promises.readFile(path.join(userDataDirectory, 'trial_info.json'))
       const parsedConfigFile = JSON.parse(configFile)
       expect(typeof parsedConfigFile).toEqual('object')
@@ -140,7 +142,7 @@ describe('startServer', () => {
         return setLastOpenedFilePath('device:///dummy-path.pltr')
       })
       const lastOpenedSet = await fs.promises.readFile(
-        path.join(userDataDirectory, 'last_opened.json')
+        path.join(userDataDirectory, 'last_opened_dev.json')
       )
       const parsedLastOpenedSet = JSON.parse(lastOpenedSet)
       expect(parsedLastOpenedSet).toMatchObject({
@@ -153,7 +155,7 @@ describe('startServer', () => {
       // to disk.
       await new Promise((resolve) => setTimeout(resolve, 1000))
       const lastOpenedAfter = await fs.promises.readFile(
-        path.join(userDataDirectory, 'last_opened.json')
+        path.join(userDataDirectory, 'last_opened_dev.json')
       )
       const parsedLastOpenedAfter = JSON.parse(lastOpenedAfter)
       expect(parsedLastOpenedAfter).toMatchObject({})

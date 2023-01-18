@@ -12,6 +12,7 @@ install:
   - npm ci
 build_script:
   - npm run validate
+  - npm run test:server
   - npm run dist:windows
 test: off
 branches:

@@ -3,8 +3,8 @@
     "fileName": "/Users/edwardsteere/wip/plottr_electron/examples/Zelda.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.7.20",
-    "appliedMigrations": ["m2021_4_13", "m2021_6_9"],
+    "version": "2023.1.10",
+    "appliedMigrations": ["m2021_4_13", "m2021_6_9", "*m2023_1_7"],
     "initialVersion": "2021.2.24"
   },
   "ui": {

@@ -397,7 +397,7 @@ describe('saveFile', () => {
           })
         })
         describe('and offline mode is enabled', () => {
-          it('should not call saveFile, but instead it should call soveOfflineFile', async () => {
+          it('should not call saveFile, but instead it should call saveOfflineFile', async () => {
             const state = offlineWithOfflineEnabledState()
             let calledSaveFile = false
             const _saveFile = () => {

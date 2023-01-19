@@ -15,6 +15,11 @@ ipcMain.on('open-buy-window', (event, replyChannel) => {
 })
 
 let windows = []
+let lastClosed = null
+
+function lastClosedWasDashboard() {
+  return lastClosed && !lastClosed.fileURL
+}
 
 function hasWindows() {
   return !!windows.length
@@ -99,6 +104,9 @@ function reloadAllWindows() {
 
 function dereferenceWindow(winObj) {
   const index = windows.findIndex((win) => win.id === winObj.id)
+  if (index >= 0) {
+    lastClosed = windows[index]
+  }
   windows.splice(index, 1)
 }
 
@@ -121,4 +129,5 @@ export {
   editWindowPath,
   reloadAllWindows,
   setFilePathForWindowWithId,
+  lastClosedWasDashboard,
 }

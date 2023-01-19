@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2023.1.7",
+  "version": "2023.1.10-alpha.2",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -72,6 +72,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.3",
     "axios": "^0.22.0",
+    "buffer": "^6.0.3",
     "bufferutil": "^4.0.6",
     "docx": "^7.3.0",
     "dom-helpers": "^3.4.0",

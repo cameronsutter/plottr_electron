@@ -306,7 +306,9 @@ app.whenReady().then(() => {
         })
 
         app.on('window-all-closed', () => {
-          safelyExitModule.quitWhenDone()
+          if (!is.macos) {
+            safelyExitModule.quitWhenDone()
+          }
         })
 
         app.on('will-quit', () => {

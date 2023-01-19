@@ -87,6 +87,10 @@ const _makeMainProcessClient = () => {
     return ask('user-documents-path')
   }
 
+  const userDesktopPath = () => {
+    return ask('user-desktop-path')
+  }
+
   const logsPath = () => {
     return ask('user-logs-path')
   }
@@ -391,6 +395,10 @@ const _makeMainProcessClient = () => {
     return subscribeTo('wants-to-close', cb)
   }
 
+  const onCreateFileShortcut = (cb) => {
+    return subscribeTo('create-file-shortcut', cb)
+  }
+
   const askToExport = (defaultPath, fullState, type, options, userId) => {
     return ask('export', defaultPath, fullState, type, options, userId)
   }
@@ -411,6 +419,10 @@ const _makeMainProcessClient = () => {
     return ask('restart-server')
   }
 
+  const isRestarting = () => {
+    return ask('are-we-restarting-socket-server')
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -422,6 +434,7 @@ const _makeMainProcessClient = () => {
     setFileURL,
     userDataPath,
     userDocumentsPath,
+    userDesktopPath,
     logsPath,
     showOpenDialog,
     hostLocale,
@@ -503,6 +516,8 @@ const _makeMainProcessClient = () => {
     onDownloadStorageImage,
     onMoveFromTemp,
     restartSocketServer,
+    isRestarting,
+    onCreateFileShortcut,
   }
 }
 

@@ -613,6 +613,15 @@ export const listenOnIPCMain = (
     }
   })
 
+  ipcMain.on('user-desktop-path', (event, replyChannel) => {
+    try {
+      event.sender.send(replyChannel, app.getPath('desktop'))
+    } catch (error) {
+      log.error(`Error getting the user desktop path`, error)
+      event.sender.send(replyChannel, { error: error.message })
+    }
+  })
+
   ipcMain.on('user-documents-path', (event, replyChannel) => {
     try {
       event.sender.send(replyChannel, app.getPath('documents'))
@@ -670,7 +679,7 @@ export const listenOnIPCMain = (
   })
 
   ipcMain.on('export', (event, replyChannel, defaultPath, fullState, type, options, userId) => {
-    whenClientIsReady(({ rmRf, writeFile, join, stat, mkdir, basename }) => {
+    whenClientIsReady(({ rmRf, join, stat, mkdir, basename }) => {
       return askToExport(
         defaultPath,
         fullState,
@@ -684,7 +693,7 @@ export const listenOnIPCMain = (
         rmRf,
         userId,
         makeDownloadStorageImage(event.sender),
-        writeFile,
+        fs.promises.writeFile,
         join,
         stat,
         mkdir,
@@ -700,9 +709,22 @@ export const listenOnIPCMain = (
     })
   })
 
+  const restartingServerStateRef = {
+    restarting: false,
+    restartTask: null,
+  }
   ipcMain.on('restart-server', (event, replyChannel) => {
+    log.warn('Restart request received', JSON.stringify(restartingServerStateRef))
+    if (restartingServerStateRef.restarting) {
+      log.warn("A client requested that the server restart, but it's already doing so.")
+      restartingServerStateRef.restartTask.then(() => {
+        event.sender.send(replyChannel, 'done')
+      })
+      return
+    }
+    restartingServerStateRef.restarting = true
     log.warn('Restarting the socket server after request by client to do so')
-    restartServerRef
+    restartingServerStateRef.restartTask = restartServerRef
       .restartServer()
       .then(() => {
         log.info('Restarted the socket server as per client request')
@@ -712,5 +734,17 @@ export const listenOnIPCMain = (
         log.error('Error restarting the socket server', error)
         event.sender.send(replyChannel, { error: error.message })
       })
+      .finally(() => {
+        restartingServerStateRef.restarting = false
+        restartingServerStateRef.restartTask = null
+      })
+  })
+
+  ipcMain.on('are-we-restarting-socket-server', (event, replyChannel) => {
+    log.info(
+      "Main process queried whether it's restarting.  Restart state:",
+      JSON.stringify(restartingServerStateRef)
+    )
+    event.sender.send(replyChannel, restartingServerStateRef.restarting)
   })
 }

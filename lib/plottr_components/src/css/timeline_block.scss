@@ -62,6 +62,15 @@
         vertical-align: top !important;
       }
     }
+
+    .sticky-table-cell:has(.card-pinned) {
+      z-index: 3;
+
+      &:hover {
+        z-index: 5;
+      }
+    }
+
     .sticky-table-row:first-child {
       .sticky-table-cell:after {
         content: '';
@@ -380,5 +389,12 @@
         }
       }
     }
+  }
+}
+
+#timelineview__root .isPinned.sticky-table-row > .sticky-table-cell:has(.blank-card__body) {
+  z-index: 3 !important;
+  &:hover {
+    z-index: 6 !important;
   }
 }

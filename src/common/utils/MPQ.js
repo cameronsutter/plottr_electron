@@ -4,6 +4,9 @@ import { helpers } from 'pltr/v2'
 import log from '../../../shared/logger'
 import { whenClientIsReady } from '../../../shared/socket-client/index'
 import makeFileSystemAPIs from '../../api/file-system-apis'
+import { makeMainProcessClient } from '../../app/mainProcessClient'
+
+const { pleaseTellMeWhatPlatformIAmOn } = makeMainProcessClient()
 
 const {
   beats: { reduce },
@@ -86,20 +89,22 @@ class MixpanelQueue {
   flush() {
     if (process.env.NODE_ENV == 'development') return
 
-    const superProps = { platform: process.platform }
+    pleaseTellMeWhatPlatformIAmOn().then((platform) => {
+      const superProps = { platform }
 
-    // TODO: read from localStorage
-    do {
-      let event = this.queue.shift()
-      if (event) {
-        const attrs = Object.assign({}, event.attributes, superProps)
-        try {
-          mixpanel.track(event.title, attrs)
-        } catch (error) {
-          log.error(error)
+      // TODO: read from localStorage
+      do {
+        let event = this.queue.shift()
+        if (event) {
+          const attrs = Object.assign({}, event.attributes, superProps)
+          try {
+            mixpanel.track(event.title, attrs)
+          } catch (error) {
+            log.error(error)
+          }
         }
-      }
-    } while (this.queue.length > 0)
+      } while (this.queue.length > 0)
+    })
   }
 }
 

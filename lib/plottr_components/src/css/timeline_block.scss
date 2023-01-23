@@ -377,4 +377,10 @@
       }
     }
   }
+
+  .timeline__tab {
+    width: 100vw;
+    height: 80vh;
+    overflow:auto;
+  }
 }

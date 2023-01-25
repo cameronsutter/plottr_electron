@@ -38,6 +38,9 @@
       "outline": null,
       "timeline": null
 	},
+    "templateModal": {
+      "expanded": false
+    },
 	"attributeTabs": {
       "characters": null
 	},

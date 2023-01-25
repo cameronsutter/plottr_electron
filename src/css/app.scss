@@ -118,6 +118,17 @@
   }
 }
 
+.project-nav__saving-indicator {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $green-4;
+}
+
+.project-nav__saving-indicator--invisible {
+  display: none;
+}
+
 body {
   @include body-text-font;
   background-color: $gray-9;

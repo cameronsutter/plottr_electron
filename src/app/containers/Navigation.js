@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { FaRegUser, FaKey } from 'react-icons/fa'
+import { FaRegUser, FaKey, FaSave } from 'react-icons/fa'
+import cx from 'classnames'
+
 import DashboardModal from './DashboardModal'
 import OfflineBanner from '../components/OfflineBanner'
 
@@ -15,7 +17,14 @@ const isDev = process.env.NODE_ENV == 'development'
 
 const { openBuyWindow } = makeMainProcessClient()
 
-const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, clickOnDom }) => {
+const Navigation = ({
+  isInTrialMode,
+  darkMode,
+  currentView,
+  changeCurrentView,
+  clickOnDom,
+  appIsBusyWithWork,
+}) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -91,6 +100,14 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, c
           ) : null}
         </Nav>
         <Navbar.Form pullRight className="dashboard__navbar-form">
+          <span
+            className={cx('project-nav__saving-indicator', {
+              busy: appIsBusyWithWork,
+              'project-nav__saving-indicator--invisible': !appIsBusyWithWork,
+            })}
+          >
+            {t('Saving')}...
+          </span>
           <TrialLinks />
           <Button onClick={openDashboard}>
             <FaRegUser /> {t('Dashboard')}
@@ -108,6 +125,7 @@ Navigation.propTypes = {
   darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  appIsBusyWithWork: PropTypes.bool,
   clickOnDom: PropTypes.func.isRequired,
 }
 
@@ -116,6 +134,7 @@ function mapStateToProps(state) {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
+    appIsBusyWithWork: selectors.busyWithWorkThatPreventsQuittingSelector(state.present),
   }
 }
 

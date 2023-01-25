@@ -96,12 +96,19 @@ const {
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
+  let doneTimeout = null
   const socketServerEventHandlers = {
     onBusy: () => {
       store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
     },
     onDone: () => {
-      store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+      if (doneTimeout) {
+        clearTimeout(doneTimeout)
+        doneTimeout = null
+      }
+      doneTimeout = setTimeout(() => {
+        store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+      }, 2000)
     },
   }
   createClient(

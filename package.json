@@ -195,7 +195,7 @@
     "dmg-license": "^1.0.11"
   },
   "build": {
-    "electronVersion": "18.3.0",
+    "electronVersion": "22.0.0",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "npmRebuild": false,

@@ -63,11 +63,12 @@
       }
     }
 
+    .sticky-table-cell.card-pinned :not(:has(.card__body-wrapper, .card__cell__overview-cell)),
     .sticky-table-cell:has(.card-pinned) {
-      z-index: 3;
+      z-index: 2 !important;
 
       &:hover {
-        z-index: 5;
+        z-index: 5 !important;
       }
     }
 
@@ -392,9 +393,9 @@
   }
 }
 
-#timelineview__root .isPinned.sticky-table-row > .sticky-table-cell:has(.blank-card__body) {
-  z-index: 3 !important;
+#timelineview__root .isPinned .sticky-table-cell:not(:first-child):not(:nth-child(2)):not(:has(.card__body-wrapper, .card__cell__overview-cell)) {
+  z-index: 3;
   &:hover {
-    z-index: 6 !important;
+    z-index: 5;
   }
 }

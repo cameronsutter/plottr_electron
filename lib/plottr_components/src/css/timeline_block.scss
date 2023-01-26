@@ -4,7 +4,7 @@
   display: flex;
 }
 
-.nav-with-cross {
+.nav-with-cross, .nav-context-button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -411,6 +411,15 @@
 
     .nav-pills {
       & > li {
+        svg {
+          opacity: 0;
+        }
+
+        &:hover {
+          svg {
+            opacity: 1;
+          }
+        }
         outline: none;
         margin: 10px;
       }
@@ -422,6 +431,9 @@
       }
       & > li {
         &.active {
+          svg {
+            opacity: 1;
+          }
           a {
             outline: 2px solid rgba(22, 34, 45, 0.7) !important;
           }

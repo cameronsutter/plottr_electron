@@ -65,6 +65,9 @@
 .acts-modal__select-line {
   margin-left: 5px !important;
   @include user-text;
+  button {
+    text-transform: capitalize;
+  }
 }
 
 .acts-modal__timeline-view-dropdown {

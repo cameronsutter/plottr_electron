@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2022.12.29",
+  "version": "2023.2.7-alpha.1",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -72,6 +72,7 @@
   "dependencies": {
     "@babel/runtime": "^7.18.3",
     "axios": "^0.22.0",
+    "buffer": "^6.0.3",
     "bufferutil": "^4.0.6",
     "docx": "^7.3.0",
     "dom-helpers": "^3.4.0",
@@ -87,7 +88,7 @@
     "jsdom": "^16.7.0",
     "json-schema-traverse": "^1.0.0",
     "jsonfile": "^6.1.0",
-    "luxon": "^2.3.2",
+    "luxon": "^2.5.2",
     "node-fetch-cjs": "^3.2.10",
     "path-exists": "^4.0.0",
     "react-is": "^16.13.1",
@@ -194,7 +195,7 @@
     "dmg-license": "^1.0.11"
   },
   "build": {
-    "electronVersion": "18.3.0",
+    "electronVersion": "22.0.0",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
     "npmRebuild": false,

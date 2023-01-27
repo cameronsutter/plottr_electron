@@ -104,15 +104,15 @@ ${rendererLogContents}
 }
 
 function notifyUser(filePath) {
-  whenClientIsReady(({ basename }) => {
-    basename(filePath).then((basenamedFilePath) => {
+  return whenClientIsReady(({ basename }) => {
+    return basename(filePath).then((basenamedFilePath) => {
       notify(
         t('Error Report created'),
         t('Plottr created a file named {filePath} in your Documents folder', {
           filePath: basenamedFilePath,
         })
       )
+      return showItemInFolder(filePath)
     })
   })
-  showItemInFolder(filePath)
 }

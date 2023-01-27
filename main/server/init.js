@@ -51,7 +51,14 @@ export const startServer = (log, broadcastPortChange, userDataPath, onFatalError
       if (message === 'ready') {
         log.info(`Received "${message}" from socket worker.`)
         log.info('Started socket server!')
-        resolve(randomPort)
+        const killServer = () => {
+          weInstructedServerToDie = true
+          if (server.kill()) {
+            return Promise.resolve()
+          }
+          return Promise.reject('Failed to kill the socket server')
+        }
+        resolve({ port: randomPort, killServer })
         broadcastPortChange(randomPort)
       } else if (message === 'shutdown') {
         log.info(`Received "${message}" from socket worker.`)

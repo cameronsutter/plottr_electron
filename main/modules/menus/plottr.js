@@ -111,7 +111,7 @@ function buildPlottrMenu(loadMenu, safelyExit) {
     })
     .catch((error) => {
       log.error('Could not read current settings when trying to build plottr menu', error)
-      return Promise.rejec(error)
+      return Promise.reject(error)
     })
 }
 

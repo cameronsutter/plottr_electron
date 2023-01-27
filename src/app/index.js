@@ -17,7 +17,7 @@ import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
-import { askToExport, imageToWebpDataURL } from 'plottr_import_export'
+import { imageToWebpDataURL } from 'plottr_import_export'
 import exportConfig from 'plottr_import_export/src/exporter/default_config'
 import world from 'world-api'
 
@@ -88,6 +88,11 @@ const {
   onMPQMessage,
   onDownloadStorageImage,
   onMoveFromTemp,
+  restartSocketServer,
+  onCreateFileShortcut,
+  showItemInFolder,
+  userDesktopPath,
+  askToExport,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
@@ -115,7 +120,8 @@ const connectToSocketServer = (port) => {
         window.close()
       })
     },
-    socketServerEventHandlers
+    socketServerEventHandlers,
+    restartSocketServer
   )
 }
 
@@ -152,7 +158,7 @@ tellMeWhatOSImOn()
     })
   })
   .then(() => {
-    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile } =
+    const { saveOfflineFile, saveFile, isTempFile, basename, copyFile, createFileShortcut } =
       makeFileModule(whenClientIsReady)
 
     const fileSystemAPIs = makeFileSystemAPIs(whenClientIsReady)
@@ -454,6 +460,21 @@ tellMeWhatOSImOn()
         onNewProject(() => {
           store.dispatch(actions.project.startCreatingNewProject())
         })
+
+        onCreateFileShortcut((sourceFile, destinationURL) => {
+          if (destinationURL == 'desktop') {
+            userDesktopPath().then((desktopPath) => {
+              createFileShortcut(sourceFile, desktopPath).then((shortcut) =>
+                showItemInFolder(shortcut)
+              )
+            })
+          } else {
+            createFileShortcut(sourceFile, destinationURL).then((shortcut) =>
+              showItemInFolder(shortcut)
+            )
+          }
+        })
+
         onOpenExisting(() => openExistingProj())
         onFromTemplate(() => {
           openDashboard()

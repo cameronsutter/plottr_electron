@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
+import { Buffer } from 'buffer/'
 
 import {
   PING,
@@ -140,6 +141,8 @@ import {
   STAT_ERROR_REPLY,
   MKDIR,
   MKDIR_ERROR_REPLY,
+  CREATE_SHORTCUT,
+  CREATE_SHORTCUT_ERROR_REPLY,
 } from '../socket-server-message-types'
 import { setPort, getPort } from './workerPort'
 
@@ -262,6 +265,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           }
           // Normal replies
           case COPY_FILE:
+          case CREATE_SHORTCUT:
           case REMOVE_FROM_TEMP_FILES:
           case REMOVE_FROM_KNOWN_FILES:
           case SAVE_TO_TEMP_FILE:
@@ -363,6 +367,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           case SET_TEMPLATE_ERROR_REPLY:
           case CUSTOM_TEMPLATES_PATH_ERROR_REPLY:
           case COPY_FILE_ERROR_REPLY:
+          case CREATE_SHORTCUT_ERROR_REPLY:
           case BACKUP_BASE_PATH_ERROR_REPLY:
           case CURRENT_TRIAL_ERROR_REPLY:
           case START_TRIAL_ERROR_REPLY:
@@ -439,6 +444,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
         logger.error('Error while replying: ', error.message)
       }
     })
+
+    const inBadState = () => {
+      return clientConnection.readyState > 1
+    }
 
     const ping = () => {
       return sendPromise(PING, {})
@@ -694,6 +703,10 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
       return sendPromise(COPY_FILE, { sourceFileURL, newFileURL })
     }
 
+    const createFileShortcut = (sourceFileURL, newFileURL) => {
+      return sendPromise(CREATE_SHORTCUT, { sourceFileURL, newFileURL })
+    }
+
     // Subscriptions
     const listenToTrialChanges = (cb) => {
       return registerCallback(LISTEN_TO_TRIAL_CHANGES, {}, cb)
@@ -759,6 +772,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           offlineFileBasePath,
           customTemplatesPath,
           copyFile,
+          createFileShortcut,
           attemptToFetchTemplates,
           saveAsTempFile,
           removeFromKnownFiles,
@@ -812,6 +826,7 @@ const connect = (port, logger, WebSocket, { onBusy, onDone }) => {
           stat,
           mkdir,
           close: clientConnection.close.bind(clientConnection),
+          inBadState,
         })
       })
     })
@@ -827,14 +842,23 @@ const instance = () => {
   let resolve = null
   let reject = null
   let logger = null
+  let connectionBroken = null
 
   // See the destructured argument of the connect function for the
   // structure of `eventHandlers`.
-  const createClient = (port, logger, WebSocket, onFailedToConnect, eventHandlers) => {
+  const createClient = (
+    port,
+    logger,
+    WebSocket,
+    onFailedToConnect,
+    eventHandlers,
+    onConnectionBroken = () => {}
+  ) => {
     initialised = true
-    connect(port, logger, WebSocket, eventHandlers)
+    connectionBroken = onConnectionBroken
+    return connect(port, logger, WebSocket, eventHandlers)
       .then((newClient) => {
-        if (client) client.close(0, 'New client requested')
+        if (client) client.close(1000, 'New client requested')
         client = newClient
         if (resolve) resolve(newClient)
       })
@@ -850,20 +874,30 @@ const instance = () => {
   const whenClientIsReady = (f) => {
     if (client) {
       return new Promise((resolve, reject) => {
-        defer(() => {
-          const result = f(client)
-          try {
-            if (typeof result.then === 'function') {
-              result.then(resolve, reject)
-            } else {
-              resolve(result)
-            }
-          } catch (error) {
-            if (logger) {
-              logger.error('Error while using client: ', error)
-            }
+        try {
+          if (client.inBadState()) {
+            connectionBroken()
+            reject(new Error('Client connection broken'))
+          } else {
+            defer(() => {
+              try {
+                const result = f(client)
+                if (typeof result.then === 'function') {
+                  result.then(resolve, reject)
+                } else {
+                  resolve(result)
+                }
+              } catch (error) {
+                if (logger) {
+                  logger.error('Error while using client: ', error)
+                }
+                reject(error)
+              }
+            })
           }
-        })
+        } catch (error) {
+          reject(error)
+        }
       })
     }
     if (resolvedPromise) {
@@ -884,13 +918,18 @@ const instance = () => {
     return initialised
   }
 
+  const resetInitialised = () => {
+    initialised = false
+  }
+
   return {
     createClient,
     whenClientIsReady,
     isInitialised,
+    resetInitialised,
   }
 }
 
-const { createClient, isInitialised, whenClientIsReady } = instance()
+const { createClient, isInitialised, whenClientIsReady, resetInitialised } = instance()
 
-export { createClient, isInitialised, whenClientIsReady, setPort, getPort }
+export { createClient, isInitialised, whenClientIsReady, resetInitialised, setPort, getPort }

@@ -87,6 +87,10 @@ const _makeMainProcessClient = () => {
     return ask('user-documents-path')
   }
 
+  const userDesktopPath = () => {
+    return ask('user-desktop-path')
+  }
+
   const logsPath = () => {
     return ask('user-logs-path')
   }
@@ -348,19 +352,19 @@ const _makeMainProcessClient = () => {
   }
 
   const onUpdaterUpdateAvailable = (cb) => {
-    return subscribeTo('update-available', cb)
+    return subscribeTo('updater-update-available', cb)
   }
 
   const onUpdaterUpdateNotAvailable = (cb) => {
-    return subscribeTo('update-not-available', cb)
+    return subscribeTo('updater-update-not-available', cb)
   }
 
   const onUpdaterDownloadProgress = (cb) => {
-    return subscribeTo('download-progress', cb)
+    return subscribeTo('updater-download-progress', cb)
   }
 
   const onUpdaterUpdateDownloaded = (cb) => {
-    return subscribeTo('update-downloaded', cb)
+    return subscribeTo('updater-update-downloaded', cb)
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {
@@ -391,6 +395,10 @@ const _makeMainProcessClient = () => {
     return subscribeTo('wants-to-close', cb)
   }
 
+  const onCreateFileShortcut = (cb) => {
+    return subscribeTo('create-file-shortcut', cb)
+  }
+
   const askToExport = (defaultPath, fullState, type, options, userId) => {
     return ask('export', defaultPath, fullState, type, options, userId)
   }
@@ -407,6 +415,14 @@ const _makeMainProcessClient = () => {
     return subscribeTo('move-from-temp', cb)
   }
 
+  const restartSocketServer = () => {
+    return ask('restart-server')
+  }
+
+  const isRestarting = () => {
+    return ask('are-we-restarting-socket-server')
+  }
+
   return {
     setWindowTitle,
     setRepresentedFileName,
@@ -418,6 +434,7 @@ const _makeMainProcessClient = () => {
     setFileURL,
     userDataPath,
     userDocumentsPath,
+    userDesktopPath,
     logsPath,
     showOpenDialog,
     hostLocale,
@@ -498,6 +515,9 @@ const _makeMainProcessClient = () => {
     onMPQMessage,
     onDownloadStorageImage,
     onMoveFromTemp,
+    restartSocketServer,
+    isRestarting,
+    onCreateFileShortcut,
   }
 }
 

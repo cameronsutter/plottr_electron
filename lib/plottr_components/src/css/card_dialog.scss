@@ -301,7 +301,6 @@
 
 .card-dialog__details-label {
   @include application-text;
-  min-width: 150px;
 }
 
 .editor-toolbar {
@@ -359,5 +358,19 @@
 
   li a {
     word-break: break-all;
+  }
+}
+
+.card-dialog__left-side .card-dialog__select-line.dropdown.btn-group:has(#select-book) {
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.card-dialog__left-side .dropdown.btn-group {
+  button {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }

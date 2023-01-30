@@ -535,16 +535,23 @@ export function bootFile(
     if (saver) {
       saver.cancelAllRemainingRequests()
     }
+    const postSaveHook = () => {
+      store.dispatch(actions.ui.fileSaved())
+    }
+    const postBackupHook = () => {
+      // NOP
+    }
     saver = new Saver(
       () => {
         return store.getState().present
       },
-      saveFile(whenClientIsReady, logger),
+      saveFile(whenClientIsReady, logger, postSaveHook),
       backupFile(
         whenClientIsReady,
         saveBackupOnFirebase,
         cachedDowloadStorageImage.downloadStorageImage,
-        logger
+        logger,
+        postBackupHook
       ),
       logger,
       SAVE_INTERVAL_MS,

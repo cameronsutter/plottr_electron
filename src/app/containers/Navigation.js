@@ -24,6 +24,7 @@ const Navigation = ({
   changeCurrentView,
   clickOnDom,
   appIsBusyWithWork,
+  unsavedChanges,
 }) => {
   const [dashboardView, setDashboardView] = useState(null)
 
@@ -66,6 +67,18 @@ const Navigation = ({
     setDashboardView(view)
   }
 
+  const renderSaveIndicator = () => {
+    if (appIsBusyWithWork) {
+      return <span className={'project-nav__saving-indicator--busy busy'}>{t('Saving')}...</span>
+    } else if (unsavedChanges) {
+      return (
+        <span className={'project-nav__saving-indicator--unsaved'}>{t('Unsaved Changes')}</span>
+      )
+    } else {
+      return <span className={'project-nav__saving-indicator--saved'}>{t('Saved')}</span>
+    }
+  }
+
   return (
     <>
       {dashboardView ? (
@@ -100,14 +113,7 @@ const Navigation = ({
           ) : null}
         </Nav>
         <Navbar.Form pullRight className="dashboard__navbar-form">
-          <span
-            className={cx('project-nav__saving-indicator', {
-              busy: appIsBusyWithWork,
-              'project-nav__saving-indicator--invisible': !appIsBusyWithWork,
-            })}
-          >
-            {t('Saving')}...
-          </span>
+          {renderSaveIndicator()}
           <TrialLinks />
           <Button onClick={openDashboard}>
             <FaRegUser /> {t('Dashboard')}
@@ -127,6 +133,7 @@ Navigation.propTypes = {
   forceProjectDashboard: PropTypes.bool,
   appIsBusyWithWork: PropTypes.bool,
   clickOnDom: PropTypes.func.isRequired,
+  unsavedChanges: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -135,6 +142,7 @@ function mapStateToProps(state) {
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
     appIsBusyWithWork: selectors.busyWithWorkThatPreventsQuittingSelector(state.present),
+    unsavedChanges: selectors.unsavedChangesSelector(state.present),
   }
 }
 

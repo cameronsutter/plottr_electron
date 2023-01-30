@@ -118,15 +118,26 @@
   }
 }
 
-.project-nav__saving-indicator {
+.project-nav__saving-indicator--busy {
   margin-right: 16px;
   cursor: default;
   @include application-text;
   color: $green-4;
 }
 
-.project-nav__saving-indicator--invisible {
-  display: none;
+.project-nav__saving-indicator--unsaved {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $blue-5;
+}
+
+.project-nav__saving-indicator--saved {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $blue-5;
+  opacity: 0.8;
 }
 
 body {

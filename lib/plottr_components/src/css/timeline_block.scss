@@ -137,6 +137,25 @@
   }
 }
 
+.view-selector__select-line {
+  @include user-text;
+  button {
+    font-size: 14px;
+    height: 33px;
+    padding: 7px;
+    text-transform: capitalize;
+  }
+}
+
+.view-selector__timeline-view-selector {
+  display: flex;
+  align-items: center;
+  svg {
+    margin-right: 5px;
+    color: $yellow-5;
+  }
+}
+
 // important that this is here (not nested)
 // if not, it breaks the sticky columns/rows in the timeline
 .sticky-table-cell {

@@ -353,3 +353,11 @@
     }
   }
 }
+
+.card-dialog__left-side .dropdown .dropdown-menu {
+  max-width: 100%;
+
+  li a {
+    word-break: break-all;
+  }
+}

@@ -115,6 +115,13 @@
           }
         }
       }
+      &.context-menu-open {
+        div {
+          svg {
+            opacity: 1 !important;
+          }
+        }
+      }
     }
   }
 }

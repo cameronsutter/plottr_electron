@@ -94,11 +94,24 @@
           flex-direction: row;
           justify-content: space-between;
           align-items: center;
+          svg {
+            opacity: 0;
+          }
+          &:hover {
+            svg {
+              opacity: 1;
+            }
+          }
         }
       }
       &.active {
         a {
           color: $link-color !important;
+        }
+        div {
+          svg {
+            opacity: 1;
+          }
         }
       }
     }

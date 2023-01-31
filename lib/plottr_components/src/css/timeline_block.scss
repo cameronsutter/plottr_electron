@@ -86,6 +86,7 @@
     overflow-x: auto;
     li {
       a {
+        outline: none !important;
         color: $text-color;
         width: 145px;
         div {

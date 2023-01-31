@@ -414,7 +414,7 @@ export function bootFile(
             })
           })
           .then((json) => {
-            getVersion().then((version) => {
+            return getVersion().then((version) => {
               return new Promise((resolve, reject) => {
                 migrateIfNeeded(
                   version,
@@ -519,7 +519,7 @@ export function bootFile(
             logger.error(error)
             rollbar.error(error)
             store.dispatch(
-              actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
+              actions.applicationState.errorLoadingFile(error === 'Need to update Plottr')
             )
           })
       } catch (error) {

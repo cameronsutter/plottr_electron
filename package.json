@@ -162,7 +162,7 @@
     "react": "^16.8.6",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.8.6",
-    "react-icons": "^4.4.0",
+    "react-icons": "^4.7.1",
     "react-image-file-resizer": "^0.4.8",
     "react-json-view": "^1.21.3",
     "react-modal": "^3.8.1",

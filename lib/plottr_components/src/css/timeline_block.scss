@@ -89,6 +89,8 @@
         font-size: 13px;
       }
       a {
+        border-radius: 0;
+        border-top: none;
         outline: none !important;
         color: $text-color;
         width: 145px;

@@ -85,6 +85,7 @@
     flex-direction: row;
     overflow-x: auto;
     li {
+      max-height: 44px;
       span.glyphicon {
         font-size: 13px;
       }
@@ -93,7 +94,7 @@
         border-top: none;
         outline: none !important;
         color: $text-color;
-        width: 145px;
+        min-width: 145px;
         div {
           width: 100%;
           display: flex;

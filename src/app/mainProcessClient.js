@@ -187,14 +187,6 @@ const _makeMainProcessClient = () => {
   }
   const hostLocale = getLocale
 
-  const onSetBeatHierarchy = (cb) => {
-    return subscribeTo('set-beat-hierarchy', cb)
-  }
-
-  const onUnsetBeatHierachy = (cb) => {
-    return subscribeTo('unset-beat-hierarchy', cb)
-  }
-
   const onExportFileFromMenu = (cb) => {
     return subscribeTo('export-file-from-menu', cb)
   }
@@ -371,10 +363,6 @@ const _makeMainProcessClient = () => {
     return ask('pls-update-language', newLanguage)
   }
 
-  const updateBeatHierarchy = (newValue) => {
-    return ask('pls-update-beat-hierarchy-flag', newValue)
-  }
-
   const downloadFileAndShow = (fileURL) => {
     return ask('download-file-and-show', fileURL)
   }
@@ -459,8 +447,6 @@ const _makeMainProcessClient = () => {
     tellMeWhatOSImOn,
     pleaseTellMeTheSocketServerPort,
     getLocale,
-    onSetBeatHierarchy,
-    onUnsetBeatHierachy,
     onExportFileFromMenu,
     onSave,
     onSaveAs,
@@ -505,7 +491,6 @@ const _makeMainProcessClient = () => {
     onUpdaterDownloadProgress,
     onUpdaterUpdateDownloaded,
     pleaseUpdateLanguage,
-    updateBeatHierarchy,
     downloadFileAndShow,
     pleaseOpenLoginPopup,
     pleaseTellMeWhatPlatformIAmOn,

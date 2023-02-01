@@ -56,8 +56,6 @@ const {
   tellMeWhatOSImOn,
   pleaseTellMeTheSocketServerPort,
   getLocale,
-  onSetBeatHierarchy,
-  onUnsetBeatHierachy,
   onExportFileFromMenu,
   onSave,
   onSaveAs,
@@ -203,13 +201,6 @@ tellMeWhatOSImOn()
         window.specialDelivery = (action) => {
           store.dispatch(action)
         }
-
-        onSetBeatHierarchy(() => {
-          store.dispatch(actions.featureFlags.setBeatHierarchy())
-        })
-        onUnsetBeatHierachy(() => {
-          store.dispatch(actions.featureFlags.unsetBeatHierarchy())
-        })
 
         document.addEventListener('save-custom-template', (event) => {
           const currentState = store.getState()

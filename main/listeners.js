@@ -19,11 +19,7 @@ import { loadMenu } from './modules/menus'
 import { getWindowById, numberOfWindows } from './modules/windows'
 import { setDarkMode } from './modules/theme'
 import { addToKnownFiles } from './modules/known_files'
-import {
-  broadcastSetBeatHierarchy,
-  broadcastUnsetBeatHierarchy,
-  featureFlags,
-} from './modules/feature_flags'
+import { featureFlags } from './modules/feature_flags'
 import { reloadAllWindows } from './modules/windows'
 import { openLoginPopupWindow } from './modules/windows/login'
 import { broadcastToAllWindows } from './modules/broadcast'
@@ -190,20 +186,6 @@ export const listenOnIPCMain = (
         log.error('Failed to set dark mode setting from main listener', error)
         event.sender.send(replyChannel, { error: error.message })
       })
-  })
-
-  ipcMain.on('pls-update-beat-hierarchy-flag', (event, replyChannel, newValue) => {
-    try {
-      if (newValue) {
-        broadcastSetBeatHierarchy()
-      } else {
-        broadcastUnsetBeatHierarchy()
-      }
-      event.sender.send(replyChannel, newValue)
-    } catch (error) {
-      log.error('Error updating the beat hierarchy flag', error)
-      event.sender.send(replyChannel, { error: error.mesasge })
-    }
   })
 
   ipcMain.on('pls-update-language', (event, replyChannel, newLanguage) => {

@@ -85,6 +85,9 @@
     flex-direction: row;
     overflow-x: auto;
     li {
+      span.glyphicon {
+        font-size: 13px;
+      }
       a {
         outline: none !important;
         color: $text-color;

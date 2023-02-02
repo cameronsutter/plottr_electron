@@ -20,17 +20,43 @@
       margin-top: 0;
     }
     hr {
-      margin-top: 8px;
+      margin: 8px 0;
     }
   }
 
   .template-picker__confirmation__body {
     grid-area: body;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     strong {
       font-size: larger;
     }
+
     .template-picker__confirmation__row {
-      margin: 48px 0;
+      margin: 16px 0;
+      display: flex;
+      justify-content: center;
+      .template-picker__confirmation__option {
+        cursor: pointer;
+        height: 123.5px;
+        width: 200px;
+        border: 1px solid $gray-1;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-right: 16px;
+
+        &.selected {
+          background-color: $blue-7;
+          color: white;
+        }
+        h3 {
+          margin-top: 12px;
+        }
+      }
       .form-group {
         max-width: 40%;
         margin-bottom: 4px;

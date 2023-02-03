@@ -29,8 +29,9 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    strong {
-      text-transform: lowercase;
+
+    .text-larger {
+      font-size: larger;
     }
 
     .template-picker__confirmation__row {
@@ -39,27 +40,29 @@
       justify-content: center;
       .template-picker__confirmation__option {
         cursor: pointer;
-        height: 123.5px;
-        width: 200px;
+        height: 108.15px;
+        width: 175px;
         border: 1px solid $gray-1;
         border-radius: 8px;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         margin-right: 16px;
+        padding: 6px;
 
         &.selected {
           background-color: $blue-7;
           color: white;
+          justify-content: space-around;
+          padding: 0;
+          h3,p {
+            margin: 0;
+          }
         }
         h3 {
-          margin-top: 12px;
+          margin-top: 0;
         }
-      }
-      .form-group {
-        max-width: 40%;
-        margin-bottom: 4px;
       }
     }
   }

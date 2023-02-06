@@ -503,6 +503,26 @@ describe('saveFile', () => {
         await saveFile(whenClientIsReady, CONSOLE_LOGGER)(state)
         expect(called).toBeTruthy()
       })
+      describe('and we supply a post-save hook', () => {
+        it('should call the post-save hook', async () => {
+          const state = stateForDeviceFile()
+          let called = false
+          const _saveFile = () => {
+            return Promise.resolve()
+          }
+          const postSaveHook = () => {
+            called = true
+            return true
+          }
+          const whenClientIsReady = (f) => {
+            return f({
+              saveFile: _saveFile,
+            })
+          }
+          await saveFile(whenClientIsReady, CONSOLE_LOGGER, postSaveHook)(state)
+          expect(called).toBeTruthy()
+        })
+      })
       describe('and Plottr is offline', () => {
         describe('and offline mode is disabled', () => {
           it('should call the dummy saveFile', async () => {
@@ -894,6 +914,38 @@ describe('backupFile', () => {
           )(state)
           expect(called).toBeTruthy()
           expect(savedOnFirebase).toBeFalsy()
+        })
+        describe('and we supply a post-backup hook', () => {
+          it('should call the post-backup hook', async () => {
+            const state = localFileWithBackupsEnabled()
+            let called = false
+            const _backupFile = () => {
+              return Promise.resolve()
+            }
+            const postBackupHook = () => {
+              called = true
+              return true
+            }
+            let savedOnFirebase = false
+            const backupOnFirebase = () => {
+              return Promise.resolve()
+            }
+            const whenClientIsReady = (f) => {
+              return f({
+                saveBackup: _backupFile,
+                offlineFileBasePath: () => Promise.resolve('/offline/'),
+              })
+            }
+            await backupFile(
+              whenClientIsReady,
+              backupOnFirebase,
+              DUMMY_DOWNLOAD_IMAGE_FROM_STORAGE,
+              CONSOLE_LOGGER,
+              postBackupHook
+            )(state)
+            expect(called).toBeTruthy()
+            expect(savedOnFirebase).toBeFalsy()
+          })
         })
       })
     })

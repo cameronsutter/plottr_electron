@@ -352,19 +352,19 @@ const _makeMainProcessClient = () => {
   }
 
   const onUpdaterUpdateAvailable = (cb) => {
-    return subscribeTo('update-available', cb)
+    return subscribeTo('updater-update-available', cb)
   }
 
   const onUpdaterUpdateNotAvailable = (cb) => {
-    return subscribeTo('update-not-available', cb)
+    return subscribeTo('updater-update-not-available', cb)
   }
 
   const onUpdaterDownloadProgress = (cb) => {
-    return subscribeTo('download-progress', cb)
+    return subscribeTo('updater-download-progress', cb)
   }
 
   const onUpdaterUpdateDownloaded = (cb) => {
-    return subscribeTo('update-downloaded', cb)
+    return subscribeTo('updater-update-downloaded', cb)
   }
 
   const pleaseUpdateLanguage = (newLanguage) => {

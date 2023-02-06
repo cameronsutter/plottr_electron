@@ -391,6 +391,12 @@
       }
     }
   }
+
+  .timeline__tab {
+    width: 100vw;
+    height: 80vh;
+    overflow:auto;
+  }
 }
 
 #timelineview__root .isPinned .sticky-table-cell:not(:first-child):not(:nth-child(2)):not(:has(.card__body-wrapper, .card__cell__overview-cell)) {

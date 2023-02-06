@@ -116,6 +116,7 @@
 .tag-list__tag-normal {
   cursor: pointer;
   word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .tag-list__color-edit-container {

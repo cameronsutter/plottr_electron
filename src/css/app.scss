@@ -118,6 +118,28 @@
   }
 }
 
+.project-nav__saving-indicator--busy {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $green-4;
+}
+
+.project-nav__saving-indicator--unsaved {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $blue-5;
+}
+
+.project-nav__saving-indicator--saved {
+  margin-right: 16px;
+  cursor: default;
+  @include application-text;
+  color: $blue-5;
+  opacity: 0.8;
+}
+
 body {
   @include body-text-font;
   background-color: $gray-9;
@@ -245,6 +267,9 @@ input[type='file'] {
   }
 }
 .plottr-popover {
+  .popover-content:has(.card__popover-wrapper) {
+    max-height: 70vh;
+  }
   .popover-content {
     // 35 is the height of the popover title
     max-height: calc(80vh - 35px);
@@ -264,12 +289,12 @@ input[type='file'] {
   }
 }
 
-#filter.plottr-popover {
-  .popover-content {
-    max-height: 70vh;
-    overflow: auto;
-  }
-}
+// #filter.plottr-popover {
+//   .popover-content {
+//     // max-height: 70vh;
+//     // overflow: auto;
+//   }
+// }
 
 #beamer-bell {
   .beamer_icon {

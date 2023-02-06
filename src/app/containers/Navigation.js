@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { FaRegUser, FaKey } from 'react-icons/fa'
+import { FaRegUser, FaKey, FaSave } from 'react-icons/fa'
+import cx from 'classnames'
+
 import DashboardModal from './DashboardModal'
 import OfflineBanner from '../components/OfflineBanner'
 
@@ -15,7 +17,15 @@ const isDev = process.env.NODE_ENV == 'development'
 
 const { openBuyWindow } = makeMainProcessClient()
 
-const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, clickOnDom }) => {
+const Navigation = ({
+  isInTrialMode,
+  darkMode,
+  currentView,
+  changeCurrentView,
+  clickOnDom,
+  appIsBusyWithWork,
+  unsavedChanges,
+}) => {
   const [dashboardView, setDashboardView] = useState(null)
 
   useEffect(() => {
@@ -57,6 +67,18 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, c
     setDashboardView(view)
   }
 
+  const renderSaveIndicator = () => {
+    if (appIsBusyWithWork) {
+      return <span className={'project-nav__saving-indicator--busy busy'}>{t('Saving')}...</span>
+    } else if (unsavedChanges) {
+      return (
+        <span className={'project-nav__saving-indicator--unsaved'}>{t('Unsaved Changes')}</span>
+      )
+    } else {
+      return <span className={'project-nav__saving-indicator--saved'}>{t('Saved')}</span>
+    }
+  }
+
   return (
     <>
       {dashboardView ? (
@@ -91,6 +113,7 @@ const Navigation = ({ isInTrialMode, darkMode, currentView, changeCurrentView, c
           ) : null}
         </Nav>
         <Navbar.Form pullRight className="dashboard__navbar-form">
+          {renderSaveIndicator()}
           <TrialLinks />
           <Button onClick={openDashboard}>
             <FaRegUser /> {t('Dashboard')}
@@ -108,7 +131,9 @@ Navigation.propTypes = {
   darkMode: PropTypes.bool,
   changeCurrentView: PropTypes.func.isRequired,
   forceProjectDashboard: PropTypes.bool,
+  appIsBusyWithWork: PropTypes.bool,
   clickOnDom: PropTypes.func.isRequired,
+  unsavedChanges: PropTypes.bool,
 }
 
 function mapStateToProps(state) {
@@ -116,6 +141,8 @@ function mapStateToProps(state) {
     isInTrialMode: selectors.isInTrialModeSelector(state.present),
     currentView: selectors.currentViewSelector(state.present),
     darkMode: selectors.isDarkModeSelector(state.present),
+    appIsBusyWithWork: selectors.busyWithWorkThatPreventsQuittingSelector(state.present),
+    unsavedChanges: selectors.unsavedChangesSelector(state.present),
   }
 }
 

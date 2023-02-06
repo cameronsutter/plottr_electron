@@ -17,7 +17,7 @@ import { helpers, actions, selectors, SYSTEM_REDUCER_KEYS } from 'pltr/v2'
 
 import { rtfToHTML } from 'pltr/v2/slate_serializers/to_html'
 import { convertHTMLNodeList } from 'pltr/v2/slate_serializers/from_html'
-import { askToExport, imageToWebpDataURL } from 'plottr_import_export'
+import { imageToWebpDataURL } from 'plottr_import_export'
 import exportConfig from 'plottr_import_export/src/exporter/default_config'
 import world from 'world-api'
 
@@ -92,15 +92,23 @@ const {
   onCreateFileShortcut,
   showItemInFolder,
   userDesktopPath,
+  askToExport,
 } = makeMainProcessClient()
 
 const connectToSocketServer = (port) => {
+  let doneTimeout = null
   const socketServerEventHandlers = {
     onBusy: () => {
       store.dispatch(actions.applicationState.startWorkThatPreventsQuitting())
     },
     onDone: () => {
-      store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+      if (doneTimeout) {
+        clearTimeout(doneTimeout)
+        doneTimeout = null
+      }
+      doneTimeout = setTimeout(() => {
+        store.dispatch(actions.applicationState.finishWorkThatPreventsQuitting())
+      }, 2000)
     },
   }
   createClient(
@@ -243,9 +251,13 @@ tellMeWhatOSImOn()
           const isOfflineModeEnabled = selectors.offlineModeEnabledSelector(present)
           const isCloudFile = selectors.isCloudFileSelector(present)
           if (isCloudFile && isOffline && isOfflineModeEnabled) {
-            saveOfflineFile(present)
+            saveOfflineFile(present).then(() => {
+              store.dispatch(actions.ui.fileSaved())
+            })
           } else if (!isCloudFile) {
-            saveFile(present.project.fileURL, present)
+            saveFile(present.project.fileURL, present).then(() => {
+              store.dispatch(actions.ui.fileSaved())
+            })
           }
         })
 
@@ -270,6 +282,7 @@ tellMeWhatOSImOn()
                   const newFileURL = helpers.file.filePathToFileURL(newFilePath)
                   saveFile(newFileURL, present).then(() => {
                     pleaseOpenWindow(newFileURL, true)
+                    store.dispatch(actions.ui.fileSaved())
                   })
                 }
               })
@@ -302,7 +315,9 @@ tellMeWhatOSImOn()
               return
             }
             if (!isTemp) {
-              saveFile(oldFileURL, present)
+              saveFile(oldFileURL, present).then(() => {
+                store.dispatch(actions.ui.fileSaved())
+              })
               return
             }
             const filters = [{ name: 'Plottr file', extensions: ['pltr'] }]

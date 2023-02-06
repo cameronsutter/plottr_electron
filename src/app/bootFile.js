@@ -414,7 +414,7 @@ export function bootFile(
             })
           })
           .then((json) => {
-            getVersion().then((version) => {
+            return getVersion().then((version) => {
               return new Promise((resolve, reject) => {
                 migrateIfNeeded(
                   version,
@@ -519,7 +519,7 @@ export function bootFile(
             logger.error(error)
             rollbar.error(error)
             store.dispatch(
-              actions.applicationState.errorLoadingFile(error.message === 'Need to update Plottr')
+              actions.applicationState.errorLoadingFile(error === 'Need to update Plottr')
             )
           })
       } catch (error) {
@@ -535,16 +535,23 @@ export function bootFile(
     if (saver) {
       saver.cancelAllRemainingRequests()
     }
+    const postSaveHook = () => {
+      store.dispatch(actions.ui.fileSaved())
+    }
+    const postBackupHook = () => {
+      // NOP
+    }
     saver = new Saver(
       () => {
         return store.getState().present
       },
-      saveFile(whenClientIsReady, logger),
+      saveFile(whenClientIsReady, logger, postSaveHook),
       backupFile(
         whenClientIsReady,
         saveBackupOnFirebase,
         cachedDowloadStorageImage.downloadStorageImage,
-        logger
+        logger,
+        postBackupHook
       ),
       logger,
       SAVE_INTERVAL_MS,

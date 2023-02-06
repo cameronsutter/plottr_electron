@@ -52,17 +52,17 @@ export function verifyLicense(license, callback) {
   // this is going to fire all 3 requests no matter what
   Promise.allSettled(
     productIds().map((id) => axios.get(licenseURL('activate_license', id, license)))
-  ).then(({ data }) => {
+  ).then((results) => {
     // find the product that this key belongs to
     let productForKey = null
-    data.some((res, index) => {
+    results.some((res, index) => {
       const productID = productIds()[index]
       if (process.env.NODE_ENV === 'development') {
         log.info(productID, res)
       }
       if (res.status == 'fulfilled') {
-        const isProductForKey = licenseIsForProduct(res.value)
-        if (isProductForKey) productForKey = { productID, value: res.value }
+        const isProductForKey = licenseIsForProduct(res.value.data)
+        if (isProductForKey) productForKey = { productID, value: res.value.data }
         return isProductForKey
       } else {
         log.info('license check request failed', productID)

@@ -301,7 +301,6 @@
 
 .card-dialog__details-label {
   @include application-text;
-  min-width: 150px;
 }
 
 .editor-toolbar {
@@ -352,25 +351,26 @@
       }
     }
   }
+}
 
-  .card-dialog__dropdown-wrapper {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 5px;
-    align-items: center;
+.card-dialog__left-side .dropdown .dropdown-menu {
+  max-width: 100%;
 
-    .card-dialog__details-label {
-      min-width: 85px;
-    }
+  li a {
+    word-break: break-all;
+  }
+}
 
-    div.dropdown.btn-group {
-      button {
-        white-space: break-spaces;
-        align-items: center;
-        width: 100%;
-        display: flex;
-        text-align: left;
-      }
-    }
+.card-dialog__left-side .card-dialog__select-line.dropdown.btn-group:has(#select-book) {
+  max-width: 100%;
+  text-overflow: ellipsis;
+}
+
+.card-dialog__left-side .dropdown.btn-group {
+  button {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }

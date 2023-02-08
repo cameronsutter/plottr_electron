@@ -31,37 +31,49 @@
     justify-content: space-between;
 
     .text-larger {
-      font-size: larger;
+      font-size: 18px;
     }
 
     .template-picker__confirmation__row {
-      margin: 16px 0;
+      // $top-margin: 16px + 1px; // because of the <p>'s bottom margin above it
+      margin: 13px 0 24px 0;
       display: flex;
-      justify-content: center;
+      justify-content: space-evenly;
       .template-picker__confirmation__option {
         cursor: pointer;
-        height: 108.15px;
+        height: 120px;
         width: 175px;
-        border: 1px solid $gray-1;
+        border: 1px solid $gray-6;
         border-radius: 8px;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
-        margin-right: 16px;
-        padding: 6px;
+        padding: 12px;
+        h3,p {
+          margin: 0;
+        }
 
-        &.selected {
-          background-color: $blue-7;
-          color: white;
+        p.small {
+          font-size: smaller;
+        }
+
+        p.caps {
+          text-transform: uppercase;
+          margin-bottom: 12px;
+        }
+
+        &.recommended {
           justify-content: space-around;
-          padding: 0;
-          h3,p {
+          p.caps {
             margin: 0;
           }
         }
-        h3 {
-          margin-top: 0;
+
+        &.selected {
+          background-color: $blue-6;
+          border-color: $blue-7;
+          color: white;
         }
       }
     }

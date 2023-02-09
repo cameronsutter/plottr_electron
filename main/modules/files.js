@@ -59,13 +59,13 @@ const makeFileModule = () => {
 
   function newFileFromTemplate(template, name) {
     if (!name) {
-      return template
+      return template.templateData
     }
 
     return {
-      ...template,
+      ...template.templateData,
       series: {
-        ...template.series,
+        ...template.templateData.series,
         name,
       },
     }

@@ -20,7 +20,6 @@ module.exports = {
     backupType: 'never-delete',
     localBackups: false,
     openDashboardFirst: true,
-    beatHierarchy: false,
     enableOfflineMode: false,
     streamFriendly: false,
     useSpellcheck: true,

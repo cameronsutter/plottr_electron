@@ -306,7 +306,7 @@ export function bootFile(
     })
   }
 
-  const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
+  const bootWithUser = (fileId, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
     return Promise.all([getVersion(), machineId()]).then(([version, clientId]) => {
@@ -340,7 +340,7 @@ export function bootFile(
     })
   }
 
-  function bootCloudFile(fileURL, beatHierarchy, saveBackup) {
+  function bootCloudFile(fileURL, saveBackup) {
     const fileId = fileURL.split('plottr://')[1]
     if (!fileId) {
       return handleNoFileId(fileId, fileURL)
@@ -348,11 +348,11 @@ export function bootFile(
 
     return waitForUser()
       .then(handleEroneousUserStates(fileURL))
-      .then(bootWithUser(fileId, beatHierarchy, saveBackup))
+      .then(bootWithUser(fileId, saveBackup))
       .catch(handleErrorBootingFile(fileId))
   }
 
-  function bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup) {
+  function bootLocalFile(fileURL, numOpenFiles, saveBackup) {
     return setWindowTitle('Plottr')
       .then(() => {
         return setRepresentedFileName(helpers.file.withoutProtocol(fileURL))
@@ -473,14 +473,13 @@ export function bootFile(
     // tell the main process.
     return setMyFilePath(fileURL).then(() => {
       // And then boot the file.
-      const { beatHierarchy } = options
       const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
       try {
         return (
           isCloudFile
-            ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
-            : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
+            ? bootCloudFile(fileURL, saveBackup)
+            : bootLocalFile(fileURL, numOpenFiles, saveBackup)
         )
           .then(() => {
             store.dispatch(actions.applicationState.finishLoadingFile())

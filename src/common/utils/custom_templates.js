@@ -84,6 +84,10 @@ function createPlotlineTemplate(pltrData, { name, description, link, bias }) {
 
       template.templateData.cards = cards
     }
+
+    const hierarchyLevels = selectors.hierarchyLevelsSelector(pltrData)
+    template.templateData.hierarchyLevels = { 1: hierarchyLevels }
+
     return template
   })
 }

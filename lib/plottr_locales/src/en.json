@@ -2162,8 +2162,8 @@
   "Appearance: Dark/Light": {
     "message": "Appearance: Dark/Light"
   },
-  "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project).": {
-    "message": "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards (from all books across the project)."
+  "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards.": {
+    "message": "Are you sure? Removing a level will delete the timeline cards directly under this level's heading cards."
   },
   "Auto Number": {
     "message": "Auto Number"

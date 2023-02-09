@@ -129,6 +129,16 @@
   }
 }
 
+.toolbar__selecet_view {
+  button {
+    height: 33px;
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  .toolbar__timeline-view-selector {
+  }
+}
+
 @media (max-width: 767px) {
   .navbar-nav .open .dropdown-menu {
     position: absolute;

@@ -126,7 +126,7 @@ body.darkmode {
     background-color: $darkmode-background !important;
   }
 
-  .item-list__book-tabs-wrapper {
+  .item-list__book-tabs-wrapper, timeline__tabs-wrapper {
     .nav-pills {
       & > li {
         & > a {

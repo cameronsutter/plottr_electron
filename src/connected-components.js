@@ -82,7 +82,6 @@ const {
   onUpdaterDownloadProgress,
   onUpdaterUpdateDownloaded,
   pleaseUpdateLanguage,
-  updateBeatHierarchy,
   pleaseReloadMenu,
   showItemInFolder,
   downloadFileAndShow,
@@ -361,9 +360,6 @@ const platform = {
   },
   updateLanguage: (newLanguage) => {
     return pleaseUpdateLanguage(newLanguage)
-  },
-  updateBeatHierarchyFlag: (newValue) => {
-    return updateBeatHierarchy(newValue)
   },
   license: {
     checkForActiveLicense: licenseServerAPIs.checkForActiveLicense,

@@ -25,6 +25,17 @@ $medium_width: 82px; // +2px to fit two-digit `Chapter` names e.g. Chapter 12
   }
 }
 
+.beat__heading-drag-handle {
+  float: left;
+  opacity: 0;
+  cursor: grab;
+  font-size: 16px;
+  margin-right: -14px;
+  &.hovering {
+    opacity: 1;
+  }
+}
+
 .beat__heading-spacer {
   opacity: 0;
 }
@@ -283,7 +294,6 @@ $medium_width: 82px; // +2px to fit two-digit `Chapter` names e.g. Chapter 12
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-missing-beat-wrapper.insert-beat {
-    margin-left: 3px;
     border: none;
   }
 }

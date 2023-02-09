@@ -1,11 +1,4 @@
-import {
-  helpers,
-  SYSTEM_REDUCER_KEYS,
-  actions,
-  migrateIfNeeded,
-  featureFlags,
-  emptyFile,
-} from 'pltr/v2'
+import { helpers, SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, emptyFile } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import {
   currentUser,
@@ -16,7 +9,6 @@ import {
 import exportToSelfContainedPlottrFile from 'plottr_import_export/src/exporter/plottr'
 
 import { makeFileSystemAPIs } from '../api'
-import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import { offlineFileURLFromFile } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { resumeDirective } from '../resume'
@@ -314,19 +306,7 @@ export function bootFile(
     })
   }
 
-  const makeFlagsConsistent = (beatHierarchy) => (json) => {
-    const withDispatch = dispatchingToStore(store.dispatch)
-    makeFlagConsistent(
-      json,
-      beatHierarchy,
-      featureFlags.BEAT_HIERARCHY_FLAG,
-      withDispatch(actions.featureFlags.setBeatHierarchy),
-      withDispatch(actions.featureFlags.unsetBeatHierarchy)
-    )
-    return json
-  }
-
-  const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
+  const bootWithUser = (fileId, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
     return Promise.all([getVersion(), machineId()]).then(([version, clientId]) => {
@@ -334,7 +314,6 @@ export function bootFile(
         .then((fetchedFile) => {
           return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
             .then(migrate(fetchedFile, fileId))
-            .then(makeFlagsConsistent(beatHierarchy))
             .then(afterLoading(userId, saveBackup))
         })
         .catch((error) => {
@@ -361,7 +340,7 @@ export function bootFile(
     })
   }
 
-  function bootCloudFile(fileURL, beatHierarchy, saveBackup) {
+  function bootCloudFile(fileURL, saveBackup) {
     const fileId = fileURL.split('plottr://')[1]
     if (!fileId) {
       return handleNoFileId(fileId, fileURL)
@@ -369,11 +348,11 @@ export function bootFile(
 
     return waitForUser()
       .then(handleEroneousUserStates(fileURL))
-      .then(bootWithUser(fileId, beatHierarchy, saveBackup))
+      .then(bootWithUser(fileId, saveBackup))
       .catch(handleErrorBootingFile(fileId))
   }
 
-  function bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup) {
+  function bootLocalFile(fileURL, numOpenFiles, saveBackup) {
     return setWindowTitle('Plottr')
       .then(() => {
         return setRepresentedFileName(helpers.file.withoutProtocol(fileURL))
@@ -464,15 +443,6 @@ export function bootFile(
                       state
                     )
 
-                    const withDispatch = dispatchingToStore(store.dispatch)
-                    makeFlagConsistent(
-                      state,
-                      beatHierarchy,
-                      featureFlags.BEAT_HIERARCHY_FLAG,
-                      withDispatch(actions.featureFlags.setBeatHierarchy),
-                      withDispatch(actions.featureFlags.unsetBeatHierarchy)
-                    )
-
                     if (state && state.tour && state.tour.showTour)
                       store.dispatch(actions.ui.changeOrientation('horizontal'))
 
@@ -503,14 +473,13 @@ export function bootFile(
     // tell the main process.
     return setMyFilePath(fileURL).then(() => {
       // And then boot the file.
-      const { beatHierarchy } = options
       const isCloudFile = isPlottrCloudFile(fileURL) && !bootingOfflineFile
 
       try {
         return (
           isCloudFile
-            ? bootCloudFile(fileURL, beatHierarchy, saveBackup)
-            : bootLocalFile(fileURL, numOpenFiles, beatHierarchy, saveBackup)
+            ? bootCloudFile(fileURL, saveBackup)
+            : bootLocalFile(fileURL, numOpenFiles, saveBackup)
         )
           .then(() => {
             store.dispatch(actions.applicationState.finishLoadingFile())

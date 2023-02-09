@@ -35,7 +35,7 @@ export function addNewCustomTemplate(pltrData, { type, data }) {
   })
 }
 
-function createPlotlineTemplate(pltrData, { name, description, link }) {
+function createPlotlineTemplate(pltrData, { name, description, link, bias }) {
   const data = cloneDeep(pltrData)
   const id = makeNewId('pl')
   const bookId = selectors.currentTimelineSelector(data)
@@ -48,6 +48,7 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
       name: name,
       description: description,
       link: link,
+      mergeBias: bias,
       templateData: {},
     }
 
@@ -83,6 +84,10 @@ function createPlotlineTemplate(pltrData, { name, description, link }) {
 
       template.templateData.cards = cards
     }
+
+    const hierarchyLevels = selectors.hierarchyLevelsSelector(pltrData)
+    template.templateData.hierarchyLevels = { 1: hierarchyLevels }
+
     return template
   })
 }

@@ -48,6 +48,9 @@
       "outline": null,
       "timeline": null
 	},
+    "templateModal": {
+      "expanded": false
+    },
 	"attributeTabs": {
       "characters": null
 	},
@@ -68,7 +71,10 @@
       "isOpen": false,
       "bookId": null
 	},
-	"outlineScrollPosition": 0
+	"outlineScrollPosition": 0,
+    "actConfigModal": {
+      "open": false
+    }
   },
   "featureFlags": {
     "BEAT_HIERARCHY": true

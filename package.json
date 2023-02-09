@@ -93,7 +93,6 @@
     "path-exists": "^4.0.0",
     "rc-tooltip": "^5.2.2",
     "react-is": "^16.13.1",
-    "react-tooltip": "^4.5.1",
     "redux-thunk": "^2.3.0",
     "rollbar": "^2.19.4",
     "rtf.js": "^3.0.7",

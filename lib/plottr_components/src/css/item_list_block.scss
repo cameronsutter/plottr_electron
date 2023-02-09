@@ -8,6 +8,7 @@
 
   .nav-pills {
     & > li > a {
+      outline: none !important;
       background: none !important;
       color: rgba(22, 34, 45, 0.7) !important;
     }

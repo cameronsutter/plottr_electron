@@ -1,11 +1,4 @@
-import {
-  helpers,
-  SYSTEM_REDUCER_KEYS,
-  actions,
-  migrateIfNeeded,
-  featureFlags,
-  emptyFile,
-} from 'pltr/v2'
+import { helpers, SYSTEM_REDUCER_KEYS, actions, migrateIfNeeded, emptyFile } from 'pltr/v2'
 import { t } from 'plottr_locales'
 import {
   currentUser,
@@ -16,7 +9,6 @@ import {
 import exportToSelfContainedPlottrFile from 'plottr_import_export/src/exporter/plottr'
 
 import { makeFileSystemAPIs } from '../api'
-import { dispatchingToStore, makeFlagConsistent } from './makeFlagConsistent'
 import { offlineFileURLFromFile } from '../files'
 import { uploadProject } from '../common/utils/upload_project'
 import { resumeDirective } from '../resume'
@@ -314,18 +306,6 @@ export function bootFile(
     })
   }
 
-  const makeFlagsConsistent = (beatHierarchy) => (json) => {
-    const withDispatch = dispatchingToStore(store.dispatch)
-    makeFlagConsistent(
-      json,
-      beatHierarchy,
-      featureFlags.BEAT_HIERARCHY_FLAG,
-      withDispatch(actions.featureFlags.setBeatHierarchy),
-      withDispatch(actions.featureFlags.unsetBeatHierarchy)
-    )
-    return json
-  }
-
   const bootWithUser = (fileId, beatHierarchy, saveBackup) => (user) => {
     const userId = user.uid
     const email = user.email
@@ -334,7 +314,6 @@ export function bootFile(
         .then((fetchedFile) => {
           return computeAndHandleResumeDirectives(fileId, email, userId, fetchedFile)
             .then(migrate(fetchedFile, fileId))
-            .then(makeFlagsConsistent(beatHierarchy))
             .then(afterLoading(userId, saveBackup))
         })
         .catch((error) => {
@@ -462,15 +441,6 @@ export function bootFile(
                         number_open: numOpenFiles,
                       },
                       state
-                    )
-
-                    const withDispatch = dispatchingToStore(store.dispatch)
-                    makeFlagConsistent(
-                      state,
-                      beatHierarchy,
-                      featureFlags.BEAT_HIERARCHY_FLAG,
-                      withDispatch(actions.featureFlags.setBeatHierarchy),
-                      withDispatch(actions.featureFlags.unsetBeatHierarchy)
                     )
 
                     if (state && state.tour && state.tour.showTour)

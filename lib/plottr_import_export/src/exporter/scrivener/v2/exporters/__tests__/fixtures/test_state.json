@@ -565,15 +565,17 @@
     "tags": []
   },
   "hierarchyLevels": {
-    "0": {
-      "name": "Chapter",
-      "level": 0,
-      "autoNumber": true,
-      "textColor": "#e5554f",
-      "textSize": 24,
-      "borderColor": "#e5554f",
-      "borderStyle": "SOLID",
-      "backgroundColor": "#f1f5f8"
+    "1": {
+      "0": {
+        "name": "Chapter",
+        "level": 0,
+        "autoNumber": true,
+        "textColor": "#e5554f",
+        "textSize": 24,
+        "borderColor": "#e5554f",
+        "borderStyle": "SOLID",
+        "backgroundColor": "#f1f5f8"
+      }
     }
   },
   "images": {},

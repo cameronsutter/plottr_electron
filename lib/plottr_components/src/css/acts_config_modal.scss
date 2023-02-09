@@ -49,8 +49,8 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-end;
-  margin-right: 20px;
+  align-items: center;
+  margin-right: 32px;
 }
 
 .acts-modal__timeline-view-selector {
@@ -65,6 +65,9 @@
 .acts-modal__select-line {
   margin-left: 5px !important;
   @include user-text;
+  button {
+    text-transform: capitalize;
+  }
 }
 
 .acts-modal__timeline-view-dropdown {
@@ -75,7 +78,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
-  margin-left: 20px;
+  margin-left: 8px;
 }
 
 .acts-modal__hierarchy-count {

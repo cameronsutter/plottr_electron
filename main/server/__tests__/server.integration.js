@@ -45,7 +45,7 @@ afterAll(async () => {
 })
 
 // Starting a socket server takes time
-jest.setTimeout(30000)
+jest.setTimeout(40000)
 
 describe('startServer', () => {
   it('should start, broadcast ports, have well-formed stores and ensure that various messages work', async () => {

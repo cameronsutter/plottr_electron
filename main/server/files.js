@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 
-import { emptyFile, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'
+import { checkFileIntegrity, SYSTEM_REDUCER_KEYS, helpers } from 'pltr/v2'
 
 const { readFile, lstat, writeFile, open, unlink, readdir, mkdir } = fs.promises
 
@@ -67,23 +67,6 @@ const fileModule = (userDataPath) => {
       })
     }
 
-    const checkForMinimalSetOfKeys = (file, filePath) => {
-      const BLANK_FILE = emptyFile()
-
-      const hasMinimalSetOfKeys = Object.keys(BLANK_FILE).every((key) => key in file)
-      if (!hasMinimalSetOfKeys) {
-        const missingKeys = Object.keys(BLANK_FILE).reduce((acc, key) => {
-          if (key in file) return acc
-          else return [key, ...acc]
-        }, [])
-        const errorMessage = `Tried to save file at ${filePath} but after removing system keys it lacks the following expected keys: ${missingKeys}`
-        logger.error(errorMessage)
-        return Promise.reject(new Error(errorMessage))
-      }
-
-      return Promise.resolve(file)
-    }
-
     function saveFile(fileURL, jsonData) {
       const isDeviceFile = helpers.file.isDeviceFileURL(fileURL)
       if (!isDeviceFile) {
@@ -99,7 +82,7 @@ const fileModule = (userDataPath) => {
           return Promise.reject(message)
         }
         const withoutSystemKeys = removeSystemKeys(jsonData)
-        return checkForMinimalSetOfKeys(withoutSystemKeys, filePath).then(() => {
+        return checkFileIntegrity(withoutSystemKeys, filePath).then(() => {
           const payload =
             process.env.NODE_ENV == 'development'
               ? JSON.stringify(withoutSystemKeys, null, 2)

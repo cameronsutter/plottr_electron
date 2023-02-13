@@ -693,6 +693,79 @@ describe('Saver', () => {
         })
       })
     })
+    describe('a state that doesnt change', () => {
+      describe('and given  a save function that always fails', () => {
+        it('should report failure once', async () => {
+          const THE_STATE = {
+            a: 'haha',
+          }
+          const getState = () => {
+            return THE_STATE
+          }
+          const backupFile = (...args) => {
+            return Promise.resolve()
+          }
+          const saveFile = () => {
+            return Promise.reject(new Error('Boom'))
+          }
+          let loggedErrors = 0
+          let loggedWarnings = 0
+          let loggedInfos = 0
+          const countingLogger = {
+            info: (...args) => {
+              loggedInfos++
+            },
+            warn: (...args) => {
+              loggedWarnings++
+            },
+            error: (...args) => {
+              loggedErrors++
+            },
+          }
+          let notifierCount = 0
+          const trackingErrorNotifier = () => {
+            notifierCount++
+          }
+          const saver = new Saver(
+            getState,
+            saveFile,
+            backupFile,
+            countingLogger,
+            100,
+            10000,
+            DUMMY_ROLLBAR,
+            DUMMY_SHOW_MESSAGE_BOX,
+            trackingErrorNotifier
+          )
+          expect(loggedInfos).toBeGreaterThan(0)
+          expect(loggedWarnings).toBe(0)
+          expect(loggedErrors).toBe(0)
+          expect(notifierCount).toBe(0)
+          await new Promise((resolve) => {
+            setTimeout(resolve, 110)
+          })
+          expect(loggedInfos).toBeGreaterThan(0)
+          expect(loggedWarnings).toBe(1)
+          expect(loggedErrors).toBe(0)
+          expect(notifierCount).toBe(1)
+          await new Promise((resolve) => {
+            setTimeout(resolve, 110)
+          })
+          expect(loggedInfos).toBeGreaterThan(0)
+          expect(loggedWarnings).toBe(1)
+          expect(loggedErrors).toBe(0)
+          expect(notifierCount).toBe(1)
+          await new Promise((resolve) => {
+            setTimeout(resolve, 110)
+          })
+          expect(loggedInfos).toBeGreaterThan(0)
+          expect(loggedWarnings).toBe(1)
+          expect(loggedErrors).toBe(0)
+          expect(notifierCount).toBe(1)
+          saver.cancelAllRemainingRequests()
+        })
+      })
+    })
   })
   describe('backup', () => {
     describe('given a dummy getState function', () => {

@@ -56,8 +56,8 @@ class PressureControlledTaskQueue {
     const nextJob = this.pendingJobBuffer[0]
     this.logger.info('Dequeueing a job...')
     nextJob()
-      .then(() => {
-        this.onJobSuccess()
+      .then((result) => {
+        this.onJobSuccess(result)
       })
       .catch((error) => {
         this.onJobFailure(error)
@@ -133,6 +133,8 @@ export const DUMMY_ROLLBAR = {
 export const DUMMY_SHOW_MESSAGE_BOX = () => {}
 export const DUMMY_SHOW_ERROR_BOX = () => {}
 export const DUMMY_SERVER_IS_BUSY_RESTARTING = () => Promise.resolve(false)
+
+const IGNORE = 'IGNORE'
 
 class Saver {
   getState = () => ({})
@@ -225,7 +227,7 @@ class Saver {
         if (stateDidNotChange) {
           this.logger.info('State did not change.  Next save will not actually save')
           return () => {
-            return Promise.resolve()
+            return Promise.resolve(IGNORE)
           }
         }
         this.lastStateSaved = currentWithoutSystemKeys
@@ -236,7 +238,11 @@ class Saver {
       logger,
       MAX_SAVE_JOBS,
       saveIntervalMS,
-      () => {
+      (result) => {
+        // This might happen if we're not saving this time.
+        if (result === IGNORE) {
+          return
+        }
         if (this.lastAutoSaveFailed) {
           this.lastAutoSaveFailed = false
           this.onAutoSaveWorkedThisTime()

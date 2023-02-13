@@ -68,15 +68,8 @@ const Navigation = ({
   }
 
   const renderSaveIndicator = () => {
-    if (appIsBusyWithWork) {
-      return <span className={'project-nav__saving-indicator--busy busy'}>{t('Saving')}...</span>
-    } else if (unsavedChanges) {
-      return (
-        <span className={'project-nav__saving-indicator--unsaved'}>{t('Unsaved Changes')}</span>
-      )
-    } else {
-      return <span className={'project-nav__saving-indicator--saved'}>{t('Saved')}</span>
-    }
+    // Removed because it's too distracting as it stands.
+    return null
   }
 
   return (

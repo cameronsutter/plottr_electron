@@ -426,7 +426,7 @@ export function bootFile(
                       rollbar.error(err)
                       logger.error(err)
                       if (err === 'Plottr behind file') {
-                        return reject('Need to update Plottr')
+                        return reject(new Error('Need to update Plottr'))
                       }
                       return reject(`bootLocalFile002: migration (${fileURL})`)
                     }

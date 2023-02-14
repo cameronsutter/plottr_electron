@@ -9,7 +9,7 @@ import { TEMP_FILES_PATH } from './stores'
 
 const { lstat, mkdir } = fs.promises
 
-const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 10
+const MAX_ATTEMPTS_TO_FIND_TEMP_FILE_NAME = 50
 
 const makeTempFilesModule = (userDataPath, stores, fileModule, trashModule, logger) => {
   const { tempFilesStore } = stores
@@ -34,7 +34,7 @@ const makeTempFilesModule = (userDataPath, stores, fileModule, trashModule, logg
       return fileExists(filePath).then((exists) => {
         if (exists) {
           logger.warn(`Temp file exists at ${filePath}.  Attempting to create a new name`)
-          const tempName = `${fileName}-${uuidv4()}.pltr`
+          const tempName = `${fileName}-${counter + 1}.pltr`
           return iter(counter + 1, path.join(tempFilesFullPath, tempName))
         }
 

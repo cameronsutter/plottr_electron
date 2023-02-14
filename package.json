@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2023.3.29-alpha.6",
+  "version": "2023.3.29-alpha.7",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -247,7 +247,13 @@
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
-      "darkModeSupport": true
+      "darkModeSupport": true,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": "universal"
+        }
+      ]
     },
     "dmg": {
       "backgroundColor": "#ebf2f9",

@@ -12,8 +12,6 @@ import { Navbar, NavItem, Nav, Beamer, BookChooser, Button } from 'connected-com
 import { selectors, actions } from 'pltr/v2'
 import { makeMainProcessClient } from '../mainProcessClient'
 
-const isDev = process.env.NODE_ENV == 'development'
-
 const { openBuyWindow } = makeMainProcessClient()
 
 const Navigation = ({
@@ -67,15 +65,8 @@ const Navigation = ({
   }
 
   const renderSaveIndicator = () => {
-    if (appIsBusyWithWork) {
-      return <span className={'project-nav__saving-indicator--busy busy'}>{t('Saving')}...</span>
-    } else if (unsavedChanges) {
-      return (
-        <span className={'project-nav__saving-indicator--unsaved'}>{t('Unsaved Changes')}</span>
-      )
-    } else {
-      return <span className={'project-nav__saving-indicator--saved'}>{t('Saved')}</span>
-    }
+    // Removed because it's too distracting as it stands.
+    return null
   }
 
   return (
@@ -105,11 +96,6 @@ const Navigation = ({
           <NavItem eventKey="characters">{t('Characters')}</NavItem>
           <NavItem eventKey="places">{t('Places')}</NavItem>
           <NavItem eventKey="tags">{t('Tags')}</NavItem>
-          {isDev ? (
-            <NavItem eventKey="analyzer">
-              Analyzer<sup>(DEV)</sup>
-            </NavItem>
-          ) : null}
         </Nav>
         <Navbar.Form pullRight className="dashboard__navbar-form">
           {renderSaveIndicator()}

@@ -1,6 +1,6 @@
 {
   "name": "plottr",
-  "version": "2023.3.29-alpha.7",
+  "version": "2023.3.29-alpha.8",
   "description": "A visual story-planning tool",
   "repository": "https://github.com/cameronsutter/plottr_electron.git",
   "homepage": "plottr.com",
@@ -80,7 +80,7 @@
     "dotenv-stringify": "^2.0.6",
     "electron-context-menu": "^2.0.1",
     "electron-log": "^4.3.2",
-    "electron-updater": "4.3.9",
+    "electron-updater": "^5.3.0",
     "electron-util": "^0.17.2",
     "electron-window-state": "^5.0.3",
     "is-lite": "^0.8.0",
@@ -242,18 +242,20 @@
     "afterSign": "build/notarize.js",
     "mac": {
       "category": "public.app-category.productivity",
-      "target": "default",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
       "hardenedRuntime": true,
       "gatekeeperAssess": false,
       "entitlements": "build/entitlements.mac.plist",
       "entitlementsInherit": "build/entitlements.mac.plist",
-      "darkModeSupport": true,
-      "target": [
-        {
-          "target": "dmg",
-          "arch": "universal"
-        }
-      ]
+      "darkModeSupport": true
     },
     "dmg": {
       "backgroundColor": "#ebf2f9",

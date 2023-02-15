@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { v4 as uuidv4 } from 'uuid'
 
 import { t } from 'plottr_locales'
 import { helpers } from 'pltr/v2'

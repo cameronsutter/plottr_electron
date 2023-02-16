@@ -17,19 +17,8 @@ export const CUSTOM_TEMPLATES_PATH = 'custom_templates'
 export const TMP_PATH = 'tmp'
 export const EXPORT_CONFIG_PATH = 'export_config'
 export const TEMP_FILES_PATH = 'tmp'
-
-const tempPath = process.env.NODE_ENV == 'development' ? `${TMP_PATH}_dev` : TMP_PATH
-const knownFilesPath =
-  process.env.NODE_ENV == 'development' ? `${KNOWN_FILES_PATH}_dev` : KNOWN_FILES_PATH
-const templatesPath =
-  process.env.NODE_ENV == 'development' ? `${TEMPLATES_PATH}_dev` : TEMPLATES_PATH
-const customTemplatesPath =
-  process.env.NODE_ENV == 'development' ? `${CUSTOM_TEMPLATES_PATH}_dev` : CUSTOM_TEMPLATES_PATH
-const manifestPath =
-  process.env.NODE_ENV == 'development' ? `${TEMPLATES_MANIFEST_PATH}_dev` : TEMPLATES_MANIFEST_PATH
-const exportPath =
-  process.env.NODE_ENV == 'development' ? `${EXPORT_CONFIG_PATH}_dev` : EXPORT_CONFIG_PATH
-const LAST_OPENED_NAME = process.env.NODE_ENV == 'development' ? 'last_opened_dev' : 'last_opened'
+export const LAST_OPENED_PATH = 'last_opened'
+export const CONFIG_STORE_PATH = 'config'
 
 export const migrateKnownFilesStoreObject = (knownFiles) => {
   return Object.entries(knownFiles).reduce((acc, [key, value]) => {
@@ -73,7 +62,17 @@ export const migrateTempFilesStoreObject = (tempFiles) => {
   }, {})
 }
 
-const makeStores = (userDataPath, logger) => {
+const makeStores = (userDataPath, logger, isAlphaOrBeta = false) => {
+  const isDevelopment = process.env.NODE_ENV == 'development'
+  const suffix = isDevelopment ? '_dev' : isAlphaOrBeta ? '_test' : ''
+  const tempPath = `${TMP_PATH}${suffix}`
+  const knownFilesPath = `${KNOWN_FILES_PATH}${suffix}`
+  const templatesPath = `${TEMPLATES_PATH}${suffix}`
+  const customTemplatesPath = `${CUSTOM_TEMPLATES_PATH}${suffix}`
+  const manifestPath = `${TEMPLATES_MANIFEST_PATH}${suffix}`
+  const exportPath = `${EXPORT_CONFIG_PATH}${suffix}`
+  const LAST_OPENED_NAME = `${LAST_OPENED_PATH}${suffix}`
+
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
   const knownFilesStore = new Store(userDataPath, logger, { name: knownFilesPath, watch: true })
@@ -110,7 +109,7 @@ const makeStores = (userDataPath, logger) => {
     })
   }
 
-  const settingsStorePath = process.env.NODE_ENV == 'development' ? 'config_dev' : 'config'
+  const settingsStorePath = `${CONFIG_STORE_PATH}${suffix}`
   const SETTINGS = new Store(userDataPath, logger, {
     defaults: defaultSettings,
     name: settingsStorePath,

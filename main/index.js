@@ -140,16 +140,22 @@ const loadMenuFailureHandler = (error) => {
 
 app.whenReady().then(() => {
   const startSocketServer = () => {
-    return startServer(log, broadcastPortChange, app.getPath('userData'), (error) => {
-      log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
-      dialog.showErrorBox(
-        'Error',
-        "Plottr ran into a problem and can't start.  Please contact support."
-      )
-      setTimeout(() => {
-        app.quit()
-      }, 5000)
-    })
+    return startServer(
+      log,
+      broadcastPortChange,
+      app.getPath('userData'),
+      (error) => {
+        log.error('FATAL ERROR: Failed to start the socket server.  Killing the app.', error)
+        dialog.showErrorBox(
+          'Error',
+          "Plottr ran into a problem and can't start.  Please contact support."
+        )
+        setTimeout(() => {
+          app.quit()
+        }, 5000)
+      },
+      app.getVersion()
+    )
       .then(({ port, killServer }) => {
         log.info(`Socket worker started on ${port}`)
         return { port, killServer }

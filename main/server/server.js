@@ -103,6 +103,7 @@ const parseArgs = () => {
   return {
     port: process.argv[2],
     userDataPath: process.argv[3],
+    isBetaOrAlpha: process.argv[4] === 'isBetaOrAlpha',
   }
 }
 
@@ -120,7 +121,7 @@ const startupTasks = (userDataPath, stores, logInfo) => {
 
 const ONE_GIGABYTE = 1073741824
 
-const setupListeners = (port, userDataPath) => {
+const setupListeners = (port, userDataPath, isBetaOrAlpha) => {
   process.send(`Starting server on port: ${port}`)
   const webSocketServer = new WebSocketServer({ host: 'localhost', port, maxPayload: ONE_GIGABYTE })
   const unsubscribeFunctions = new Map()
@@ -134,7 +135,7 @@ const setupListeners = (port, userDataPath) => {
     error: logInfo,
   }
 
-  const stores = makeStores(userDataPath, basicLogger)
+  const stores = makeStores(userDataPath, basicLogger, isBetaOrAlpha)
   const settings = makeSettingsModule(stores)
 
   const makeFileModule = wireupFileModule(userDataPath)
@@ -1062,9 +1063,9 @@ const setupListeners = (port, userDataPath) => {
 }
 
 const startServer = () => {
-  const { port, userDataPath } = parseArgs()
+  const { port, userDataPath, isBetaOrAlpha } = parseArgs()
   process.send(`args: ${process.argv}`)
-  setupListeners(port, userDataPath)
+  setupListeners(port, userDataPath, isBetaOrAlpha)
 }
 
 startServer()

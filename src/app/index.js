@@ -152,7 +152,8 @@ tellMeWhatOSImOn()
   })
   .then(() => {
     const _unsubscribeToMPQMessage = onMPQMessage((args) => {
-      MPQ.push(...args)
+      const finalisedArgs = typeof args === 'string' ? [args] : args
+      MPQ.push(...finalisedArgs)
     })
   })
   .then(() => {

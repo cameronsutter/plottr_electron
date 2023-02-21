@@ -53,7 +53,7 @@ $medium_width: 82px; // +2px to fit two-digit `Chapter` names e.g. Chapter 12
   text-align: center;
   transition: all 0.4s $cubic;
   border: 3px dashed transparent;
-  background-color: $body-background-color !important;
+  background-color: $body-background-color;
   outline: 5px solid $body-background-color;
 
   &.darkmode {

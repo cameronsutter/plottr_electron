@@ -101,6 +101,7 @@ module.exports = {
     '__tests__/fixtures/.*',
     'lib/plottr_check-prop-types/.*',
     'lib/tree-changes/.*',
+    'main/server/__test__/server.integration.*',
   ],
 
   // Activates notifications for test results

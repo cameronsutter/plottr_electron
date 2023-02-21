@@ -73,7 +73,20 @@ export const migrateTempFilesStoreObject = (tempFiles) => {
   }, {})
 }
 
-const makeStores = (userDataPath, logger) => {
+const makeStores = (userDataPath, logger, isAlphaOrBeta = false) => {
+  // This hack bypasess a the define plugin for node_env that forced
+  // it to development when in test.
+  const NODE_ENV = JSON.parse(JSON.stringify(process.env)).NODE_ENV
+  const isDevelopment = NODE_ENV == 'development'
+  const suffix = isDevelopment ? '_dev' : isAlphaOrBeta ? '_test' : ''
+  const tempPath = `${TMP_PATH}${suffix}`
+  const knownFilesPath = `${KNOWN_FILES_PATH}${suffix}`
+  const templatesPath = `${TEMPLATES_PATH}${suffix}`
+  const customTemplatesPath = `${CUSTOM_TEMPLATES_PATH}${suffix}`
+  const manifestPath = `${TEMPLATES_MANIFEST_PATH}${suffix}`
+  const exportPath = `${EXPORT_CONFIG_PATH}${suffix}`
+  const LAST_OPENED_NAME = `${LAST_OPENED_PATH}${suffix}`
+
   const trialStore = new Store(userDataPath, logger, { name: TRIAL_INFO_PATH, watch: true })
   const licenseStore = new Store(userDataPath, logger, { name: USER_INFO_PATH, watch: true })
   const knownFilesStore = new Store(userDataPath, logger, { name: knownFilesPath, watch: true })

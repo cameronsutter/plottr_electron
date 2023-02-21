@@ -118,7 +118,13 @@ class Store {
                 this.logger.warn(
                   `User data path doesn't exist at: ${this.userDataPath}.  Attempting to create it.`
                 )
-                return mkdir(this.userDataPath, { recursive: true }).then(createStore)
+                return mkdir(this.userDataPath, { recursive: true })
+                  .then(() => {
+                    return new Promise((resolve) => {
+                      setTimeout(resolve, Math.random(1000) + 1000)
+                    })
+                  })
+                  .then(createStore)
               }
               return Promise.reject(dataDirError)
             })

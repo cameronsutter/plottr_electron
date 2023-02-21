@@ -106,7 +106,7 @@ const parseArgs = () => {
   }
 }
 
-const { rm } = fs.promises
+const { rm, mkdir, lstat } = fs.promises
 
 const startupTasks = (userDataPath, stores, logInfo) => {
   return wireupTemplateFetcher(userDataPath)(stores, logInfo).then((templateFetcher) => {
@@ -141,6 +141,19 @@ const setupListeners = (port, userDataPath) => {
   const makeBackupModule = wireupBackupModule(userDataPath)
   const makeFileSystemModule = wireupFileSystemModule(userDataPath)
   const makeTemplateFetcher = wireupTemplateFetcher(userDataPath)
+
+  const ensureUserDataFolderExists = () => {
+    return lstat(userDataPath).catch((error) => {
+      if (error.code === 'ENOENT') {
+        return mkdir(userDataPath, { recursive: true }).then(() => {
+          return new Promise((resolve) => {
+            setTimeout(resolve, 1000)
+          })
+        })
+      }
+      return Promise.resolve()
+    })
+  }
 
   const testModules = () => {
     const backupModule = makeBackupModule(settings, basicLogger)
@@ -1054,11 +1067,13 @@ const setupListeners = (port, userDataPath) => {
     })
   })
 
-  testModules().then(() => {
-    startupTasks(userDataPath, stores, logInfo).then(() => {
-      process.send('ready')
+  ensureUserDataFolderExists()
+    .then(testModules)
+    .then(() => {
+      startupTasks(userDataPath, stores, logInfo).then(() => {
+        process.send('ready')
+      })
     })
-  })
 }
 
 const startServer = () => {

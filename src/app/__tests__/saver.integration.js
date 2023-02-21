@@ -1,4 +1,5 @@
 import { isEqual } from 'lodash'
+import { assertEqual, assertGreaterThan, describe } from '../../../test/simpleIntegrationTest'
 
 import Saver, { DUMMY_ROLLBAR, DUMMY_SHOW_ERROR_BOX, DUMMY_SHOW_MESSAGE_BOX } from '../saver'
 
@@ -14,10 +15,10 @@ const NOP_LOGGER = {
   error: (...args) => {},
 }
 
-function toMatchArrayLoosely(received, expected, allowedMissing = 1, allowedAdditional = 1) {
+function expectToMatchArrayLoosely(received, expected, allowedMissing = 1, allowedAdditional = 1) {
   if (!Array.isArray(expected)) {
     throw new Error(
-      `toMatchArrayLoosely: expected an array as the first argument, got ${typeof expected}`
+      `expectToMatchArrayLoosely: expected an array as the first argument, got ${typeof expected}`
     )
   }
   if (typeof allowedMissing !== 'number' || typeof allowedAdditional !== 'number') {
@@ -27,10 +28,7 @@ function toMatchArrayLoosely(received, expected, allowedMissing = 1, allowedAddi
   }
 
   if (!Array.isArray(received)) {
-    return {
-      message: () => `expected ${this.utils.printReceived(received)} to be an array`,
-      pass: false,
-    }
+    throw new Error(`expected ${JSON.stringify(received, null, 2)} to be an array`)
   }
 
   let matched = []
@@ -43,45 +41,35 @@ function toMatchArrayLoosely(received, expected, allowedMissing = 1, allowedAddi
   }
 
   if (received.length > expected.length + allowedAdditional) {
-    return {
-      message: () =>
-        `expected ${this.utils.printReceived(received)} to match ${this.utils.printExpected(
-          expected
-        )}, but it has too many additional elements ${JSON.stringify(
-          received.slice(matched.length),
-          null,
-          2
-        )}`,
-      pass: false,
-    }
+    throw new Error(
+      `expected ${JSON.stringify(received, null, 2)} to match ${JSON.stringify(
+        expected,
+        null,
+        2
+      )}, but it has too many additional elements ${JSON.stringify(
+        received.slice(matched.length),
+        null,
+        2
+      )}`
+    )
   } else if (Math.abs(matched.length - expected.length) <= allowedMissing) {
-    return {
-      message: () =>
-        `expected ${this.utils.printReceived(received)} to match ${this.utils.printExpected(
-          expected
-        )}`,
-      pass: true,
-    }
+    return true
   } else {
-    return {
-      message: () =>
-        `expected ${this.utils.printReceived(received)} to match ${this.utils.printExpected(
-          expected
-        )}, but it only had ${JSON.stringify(matched, null, 2)}`,
-      pass: false,
-    }
+    return new Error(
+      `expected ${JSON.stringify(received, null, 2)} to match ${JSON.stringify(
+        expected,
+        null,
+        2
+      )}, but it only had ${JSON.stringify(matched, null, 2)}`
+    )
   }
 }
 
-expect.extend({
-  toMatchArrayLoosely,
-})
-
-describe('Saver', () => {
-  describe('save', () => {
-    describe('given a dummy getState function', () => {
-      describe('and a 100ms interval', () => {
-        it('should attempt to save the same thing 10 times in one second', async () => {
+describe('Saver', (describe, it) => {
+  describe('save', (describe, it) => {
+    describe('given a dummy getState function', (describe, it) => {
+      describe('and a 100ms interval', (describe, it) => {
+        it('should attempt to save the same thing 10 times in one second', () => {
           let stateCounter = 1
           const getState = () => {
             return {
@@ -97,96 +85,11 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
-          })
-          expect(saveCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  stateCounter: 1,
-                },
-              ],
-              [
-                {
-                  stateCounter: 2,
-                },
-              ],
-              [
-                {
-                  stateCounter: 3,
-                },
-              ],
-              [
-                {
-                  stateCounter: 4,
-                },
-              ],
-              [
-                {
-                  stateCounter: 5,
-                },
-              ],
-              [
-                {
-                  stateCounter: 6,
-                },
-              ],
-              [
-                {
-                  stateCounter: 7,
-                },
-              ],
-              [
-                {
-                  stateCounter: 8,
-                },
-              ],
-              [
-                {
-                  stateCounter: 9,
-                },
-              ],
-              [
-                {
-                  stateCounter: 10,
-                },
-              ],
-            ],
-            3,
-            3
-          )
-          saver.cancelAllRemainingRequests()
-        })
-        describe('and the get state function returns the same state as its previous call every other time', () => {
-          it('should attempt to save the same thing *6* times in one second', async () => {
-            let getStateCounter = 0
-            let stateCounter = 1
-            const getState = () => {
-              getStateCounter++
-              if (getStateCounter % 2 === 0) {
-                return {
-                  stateCounter,
-                }
-              }
-
-              return {
-                stateCounter: stateCounter++,
-              }
-            }
-            const saveCalls = []
-            const saveFile = (...args) => {
-              saveCalls.push(args)
-              return Promise.resolve()
-            }
-            const backupFile = () => {
-              return Promise.resolve()
-            }
-            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 1100)
-            })
-            expect(saveCalls).toMatchArrayLoosely(
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              saveCalls,
               [
                 [
                   {
@@ -218,15 +121,104 @@ describe('Saver', () => {
                     stateCounter: 6,
                   },
                 ],
+                [
+                  {
+                    stateCounter: 7,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 8,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 9,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 10,
+                  },
+                ],
               ],
-              2,
-              2
+              3,
+              3
             )
             saver.cancelAllRemainingRequests()
           })
         })
-        describe('given  a saveFile function that succeeds, fails and then succeeds', () => {
-          it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
+        describe('and the get state function returns the same state as its previous call every other time', (describe, it) => {
+          it('should attempt to save the same thing *6* times in one second', () => {
+            let getStateCounter = 0
+            let stateCounter = 1
+            const getState = () => {
+              getStateCounter++
+              if (getStateCounter % 2 === 0) {
+                return {
+                  stateCounter,
+                }
+              }
+
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
+            const saveCalls = []
+            const saveFile = (...args) => {
+              saveCalls.push(args)
+              return Promise.resolve()
+            }
+            const backupFile = () => {
+              return Promise.resolve()
+            }
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
+            new Promise((resolve) => {
+              setTimeout(resolve, 1100)
+            }).then(() => {
+              expectToMatchArrayLoosely(
+                saveCalls,
+                [
+                  [
+                    {
+                      stateCounter: 1,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 2,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 3,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 4,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 5,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 6,
+                    },
+                  ],
+                ],
+                2,
+                2
+              )
+              saver.cancelAllRemainingRequests()
+            })
+          })
+        })
+        describe('given  a saveFile function that succeeds, fails and then succeeds', (describe, it) => {
+          it('should show an error box once and then show a message box to indicate failure and subsequent success', () => {
             let stateCounter = 1
             const getState = () => {
               return {
@@ -266,58 +258,63 @@ describe('Saver', () => {
               showMessageBox,
               showErrorBox
             )
-            expect(calledShowErrorBox).toBe(0)
-            expect(calledShowMessageBox).toBe(0)
-            await new Promise((resolve) => {
+            assertEqual(calledShowErrorBox, 0)
+            assertEqual(calledShowMessageBox, 0)
+            new Promise((resolve) => {
               setTimeout(resolve, 110)
+            }).then(() => {
+              assertEqual(calledShowErrorBox, 0)
+              assertEqual(calledShowMessageBox, 0)
+              new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              }).then(() => {
+                assertEqual(calledShowErrorBox, 1)
+                assertEqual(calledShowMessageBox, 0)
+                new Promise((resolve) => {
+                  setTimeout(resolve, 110)
+                }).then(() => {
+                  assertEqual(calledShowErrorBox, 1)
+                  assertEqual(calledShowMessageBox, 1)
+                  new Promise((resolve) => {
+                    setTimeout(resolve, 110)
+                  }).then(() => {
+                    assertEqual(calledShowErrorBox, 1)
+                    assertEqual(calledShowMessageBox, 1)
+                    expectToMatchArrayLoosely(
+                      saveCalls,
+                      [
+                        [
+                          {
+                            stateCounter: 1,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 2,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 3,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 4,
+                          },
+                        ],
+                      ],
+                      2,
+                      2
+                    )
+                    saver.cancelAllRemainingRequests()
+                  })
+                })
+              })
             })
-            expect(calledShowErrorBox).toBe(0)
-            expect(calledShowMessageBox).toBe(0)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(calledShowErrorBox).toBe(1)
-            expect(calledShowMessageBox).toBe(0)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(calledShowErrorBox).toBe(1)
-            expect(calledShowMessageBox).toBe(1)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(calledShowErrorBox).toBe(1)
-            expect(calledShowMessageBox).toBe(1)
-            expect(saveCalls).toMatchArrayLoosely(
-              [
-                [
-                  {
-                    stateCounter: 1,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 2,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 3,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 4,
-                  },
-                ],
-              ],
-              2,
-              2
-            )
-            saver.cancelAllRemainingRequests()
           })
-          describe('and a busy restarting function that always reports that it is busy restarting', () => {
-            it('should show an error box once and then show a message box to indicate failure and subsequent success', async () => {
+          describe('and a busy restarting function that always reports that it is busy restarting', (describe, it) => {
+            it('should show an error box once and then show a message box to indicate failure and subsequent success', () => {
               let stateCounter = 1
               const getState = () => {
                 return {
@@ -361,61 +358,66 @@ describe('Saver', () => {
                 showErrorBox,
                 alwaysBusyRestarting
               )
-              expect(calledShowErrorBox).toBe(0)
-              expect(calledShowMessageBox).toBe(0)
-              await new Promise((resolve) => {
+              assertEqual(calledShowErrorBox, 0)
+              assertEqual(calledShowMessageBox, 0)
+              new Promise((resolve) => {
                 setTimeout(resolve, 110)
+              }).then(() => {
+                assertEqual(calledShowErrorBox, 0)
+                assertEqual(calledShowMessageBox, 0)
+                new Promise((resolve) => {
+                  setTimeout(resolve, 110)
+                }).then(() => {
+                  assertEqual(calledShowErrorBox, 0)
+                  assertEqual(calledShowMessageBox, 0)
+                  new Promise((resolve) => {
+                    setTimeout(resolve, 110)
+                  }).then(() => {
+                    assertEqual(calledShowErrorBox, 0)
+                    assertEqual(calledShowMessageBox, 0)
+                    new Promise((resolve) => {
+                      setTimeout(resolve, 110)
+                    }).then(() => {
+                      assertEqual(calledShowErrorBox, 0)
+                      assertEqual(calledShowMessageBox, 0)
+                      expectToMatchArrayLoosely(
+                        saveCalls,
+                        [
+                          [
+                            {
+                              stateCounter: 1,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 2,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 3,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 4,
+                            },
+                          ],
+                        ],
+                        2,
+                        2
+                      )
+                      saver.cancelAllRemainingRequests()
+                    })
+                  })
+                })
               })
-              expect(calledShowErrorBox).toBe(0)
-              expect(calledShowMessageBox).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(calledShowErrorBox).toBe(0)
-              expect(calledShowMessageBox).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(calledShowErrorBox).toBe(0)
-              expect(calledShowMessageBox).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(calledShowErrorBox).toBe(0)
-              expect(calledShowMessageBox).toBe(0)
-              expect(saveCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      stateCounter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 4,
-                    },
-                  ],
-                ],
-                2,
-                2
-              )
-              saver.cancelAllRemainingRequests()
             })
           })
         })
       })
-      describe('and a 500ms interval', () => {
-        it('should attempt to save the same thing 2 times in one second', async () => {
+      describe('and a 500ms interval', (desrcibe, it) => {
+        it('should attempt to save the same thing 2 times in one second', () => {
           let stateCounter = 1
           const getState = () => {
             return {
@@ -431,32 +433,34 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              saveCalls,
+              [
+                [
+                  {
+                    stateCounter: 1,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 2,
+                  },
+                ],
+              ],
+              1,
+              1
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(saveCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  stateCounter: 1,
-                },
-              ],
-              [
-                {
-                  stateCounter: 2,
-                },
-              ],
-            ],
-            1,
-            1
-          )
-          saver.cancelAllRemainingRequests()
         })
       })
     })
-    describe('given a getState function that produces a sequence of values', () => {
-      describe('and a 100ms interval', () => {
-        it('should attempt to save ten different items in the right order', async () => {
+    describe('given a getState function that produces a sequence of values', (describe, it) => {
+      describe('and a 100ms interval', (desrcribe, it) => {
+        it('should attempt to save ten different items in the right order', () => {
           let counter = 0
           const getState = () => {
             counter++
@@ -473,70 +477,72 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              saveCalls,
+              [
+                [
+                  {
+                    counter: 1,
+                  },
+                ],
+                [
+                  {
+                    counter: 2,
+                  },
+                ],
+                [
+                  {
+                    counter: 3,
+                  },
+                ],
+                [
+                  {
+                    counter: 4,
+                  },
+                ],
+                [
+                  {
+                    counter: 5,
+                  },
+                ],
+                [
+                  {
+                    counter: 6,
+                  },
+                ],
+                [
+                  {
+                    counter: 7,
+                  },
+                ],
+                [
+                  {
+                    counter: 8,
+                  },
+                ],
+                [
+                  {
+                    counter: 9,
+                  },
+                ],
+                [
+                  {
+                    counter: 10,
+                  },
+                ],
+              ],
+              3,
+              3
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(saveCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  counter: 1,
-                },
-              ],
-              [
-                {
-                  counter: 2,
-                },
-              ],
-              [
-                {
-                  counter: 3,
-                },
-              ],
-              [
-                {
-                  counter: 4,
-                },
-              ],
-              [
-                {
-                  counter: 5,
-                },
-              ],
-              [
-                {
-                  counter: 6,
-                },
-              ],
-              [
-                {
-                  counter: 7,
-                },
-              ],
-              [
-                {
-                  counter: 8,
-                },
-              ],
-              [
-                {
-                  counter: 9,
-                },
-              ],
-              [
-                {
-                  counter: 10,
-                },
-              ],
-            ],
-            3,
-            3
-          )
-          saver.cancelAllRemainingRequests()
         })
-        describe('and a save function that takes 200ms to complete', () => {
-          describe('and we cancel saving after 1 second', () => {
-            it('should only save 5 times in 1 second (because it waits for prior instances to complete)', async () => {
+        describe('and a save function that takes 200ms to complete', (describe, it) => {
+          describe('and we cancel saving after 1 second', (describe, it) => {
+            it('should only save 5 times in 1 second (because it waits for prior instances to complete)', () => {
               let counter = 0
               const getState = () => {
                 counter++
@@ -555,43 +561,45 @@ describe('Saver', () => {
                 return Promise.resolve()
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
-              await new Promise((resolve) => {
+              new Promise((resolve) => {
                 setTimeout(resolve, 1050)
+              }).then(() => {
+                saver.cancelAllRemainingRequests()
+                expectToMatchArrayLoosely(
+                  saveCalls,
+                  [
+                    [
+                      {
+                        counter: 1,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 2,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 3,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 4,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 5,
+                      },
+                    ],
+                  ],
+                  2,
+                  2
+                )
               })
-              saver.cancelAllRemainingRequests()
-              expect(saveCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      counter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 4,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 5,
-                    },
-                  ],
-                ],
-                2,
-                2
-              )
             })
-            it('should not save after cancel is called', async () => {
+            it('should not save after cancel is called', (desrcibe, it) => {
               let counter = 0
               const getState = () => {
                 counter++
@@ -610,50 +618,53 @@ describe('Saver', () => {
                 return Promise.resolve()
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100)
-              await new Promise((resolve) => {
+              new Promise((resolve) => {
                 setTimeout(resolve, 1050)
+              }).then(() => {
+                saver.cancelAllRemainingRequests()
+                new Promise((resolve) => {
+                  setTimeout(resolve, 1050)
+                }).then(() => {
+                  expectToMatchArrayLoosely(
+                    saveCalls,
+                    [
+                      [
+                        {
+                          counter: 1,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 2,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 3,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 4,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 5,
+                        },
+                      ],
+                    ],
+                    2,
+                    2
+                  )
+                })
               })
-              saver.cancelAllRemainingRequests()
-              await new Promise((resolve) => {
-                setTimeout(resolve, 1050)
-              })
-              expect(saveCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      counter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 4,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 5,
-                    },
-                  ],
-                ],
-                2,
-                2
-              )
             })
           })
         })
       })
-      describe('and a 500ms interval', () => {
-        it('should attempt to save values in the correct order 2 times in one second', async () => {
+      describe('and a 500ms interval', (describe, it) => {
+        it('should attempt to save values in the correct order 2 times in one second', () => {
           let counter = 0
           const getState = () => {
             counter++
@@ -670,32 +681,34 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 500)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              saveCalls,
+              [
+                [
+                  {
+                    counter: 1,
+                  },
+                ],
+                [
+                  {
+                    counter: 2,
+                  },
+                ],
+              ],
+              1,
+              1
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(saveCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  counter: 1,
-                },
-              ],
-              [
-                {
-                  counter: 2,
-                },
-              ],
-            ],
-            1,
-            1
-          )
-          saver.cancelAllRemainingRequests()
         })
       })
     })
-    describe('a state that doesnt change', () => {
-      describe('and given  a save function that always fails', () => {
-        it('should report failure once', async () => {
+    describe('a state that doesnt change', (describe, it) => {
+      describe('and given  a save function that always fails', (describe, it) => {
+        it('should report failure once', () => {
           const THE_STATE = {
             a: 'haha',
           }
@@ -737,40 +750,43 @@ describe('Saver', () => {
             DUMMY_SHOW_MESSAGE_BOX,
             trackingErrorNotifier
           )
-          expect(loggedInfos).toBeGreaterThan(0)
-          expect(loggedWarnings).toBe(0)
-          expect(loggedErrors).toBe(0)
-          expect(notifierCount).toBe(0)
-          await new Promise((resolve) => {
+          assertGreaterThan(loggedInfos, 0)
+          assertEqual(loggedWarnings, 0)
+          assertEqual(loggedErrors, 0)
+          assertEqual(notifierCount, 0)
+          new Promise((resolve) => {
             setTimeout(resolve, 110)
+          }).then(() => {
+            assertGreaterThan(loggedInfos, 0)
+            assertEqual(loggedWarnings, 1)
+            assertEqual(loggedErrors, 0)
+            assertEqual(notifierCount, 1)
+            new Promise((resolve) => {
+              setTimeout(resolve, 110)
+            }).then(() => {
+              assertGreaterThan(loggedInfos, 0)
+              assertEqual(loggedWarnings, 1)
+              assertEqual(loggedErrors, 0)
+              assertEqual(notifierCount, 1)
+              new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              }).then(() => {
+                assertGreaterThan(loggedInfos, 0)
+                assertEqual(loggedWarnings, 1)
+                assertEqual(loggedErrors, 0)
+                assertEqual(notifierCount, 1)
+                saver.cancelAllRemainingRequests()
+              })
+            })
           })
-          expect(loggedInfos).toBeGreaterThan(0)
-          expect(loggedWarnings).toBe(1)
-          expect(loggedErrors).toBe(0)
-          expect(notifierCount).toBe(1)
-          await new Promise((resolve) => {
-            setTimeout(resolve, 110)
-          })
-          expect(loggedInfos).toBeGreaterThan(0)
-          expect(loggedWarnings).toBe(1)
-          expect(loggedErrors).toBe(0)
-          expect(notifierCount).toBe(1)
-          await new Promise((resolve) => {
-            setTimeout(resolve, 110)
-          })
-          expect(loggedInfos).toBeGreaterThan(0)
-          expect(loggedWarnings).toBe(1)
-          expect(loggedErrors).toBe(0)
-          expect(notifierCount).toBe(1)
-          saver.cancelAllRemainingRequests()
         })
       })
     })
   })
-  describe('backup', () => {
-    describe('given a dummy getState function', () => {
-      describe('and a 100ms interval', () => {
-        it('should attempt to backup the same thing 10 times in one second', async () => {
+  describe('backup', (describe, it) => {
+    describe('given a dummy getState function', (describe, it) => {
+      describe('and a 100ms interval', (describe, it) => {
+        it('should attempt to backup the same thing 10 times in one second', () => {
           let stateCounter = 1
           const getState = () => {
             return {
@@ -786,96 +802,11 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 100000, 100)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
-          })
-          expect(backupCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  stateCounter: 1,
-                },
-              ],
-              [
-                {
-                  stateCounter: 2,
-                },
-              ],
-              [
-                {
-                  stateCounter: 3,
-                },
-              ],
-              [
-                {
-                  stateCounter: 4,
-                },
-              ],
-              [
-                {
-                  stateCounter: 5,
-                },
-              ],
-              [
-                {
-                  stateCounter: 6,
-                },
-              ],
-              [
-                {
-                  stateCounter: 7,
-                },
-              ],
-              [
-                {
-                  stateCounter: 8,
-                },
-              ],
-              [
-                {
-                  stateCounter: 9,
-                },
-              ],
-              [
-                {
-                  stateCounter: 10,
-                },
-              ],
-            ],
-            3,
-            3
-          )
-          saver.cancelAllRemainingRequests()
-        })
-        describe('and the get state function returns the same state every other time', () => {
-          it('should attempt to backup the same thing *6* times in one second', async () => {
-            let getStateCounter = 0
-            let stateCounter = 1
-            const getState = () => {
-              getStateCounter++
-              if (getStateCounter % 2 === 0) {
-                return {
-                  stateCounter,
-                }
-              }
-
-              return {
-                stateCounter: stateCounter++,
-              }
-            }
-            const backupCalls = []
-            const backupFile = (...args) => {
-              backupCalls.push(args)
-              return Promise.resolve()
-            }
-            const saveFile = () => {
-              return Promise.resolve()
-            }
-            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 1100)
-            })
-            expect(backupCalls).toMatchArrayLoosely(
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              backupCalls,
               [
                 [
                   {
@@ -907,15 +838,104 @@ describe('Saver', () => {
                     stateCounter: 6,
                   },
                 ],
+                [
+                  {
+                    stateCounter: 7,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 8,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 9,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 10,
+                  },
+                ],
               ],
-              2,
-              2
+              3,
+              3
             )
             saver.cancelAllRemainingRequests()
           })
         })
-        describe('given  a saveBackup function that succeeds, fails and then succeeds', () => {
-          it('should call the appropriate error and success functions', async () => {
+        describe('and the get state function returns the same state every other time', (describe, it) => {
+          it('should attempt to backup the same thing *6* times in one second', () => {
+            let getStateCounter = 0
+            let stateCounter = 1
+            const getState = () => {
+              getStateCounter++
+              if (getStateCounter % 2 === 0) {
+                return {
+                  stateCounter,
+                }
+              }
+
+              return {
+                stateCounter: stateCounter++,
+              }
+            }
+            const backupCalls = []
+            const backupFile = (...args) => {
+              backupCalls.push(args)
+              return Promise.resolve()
+            }
+            const saveFile = () => {
+              return Promise.resolve()
+            }
+            const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
+            new Promise((resolve) => {
+              setTimeout(resolve, 1100)
+            }).then(() => {
+              expectToMatchArrayLoosely(
+                backupCalls,
+                [
+                  [
+                    {
+                      stateCounter: 1,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 2,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 3,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 4,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 5,
+                    },
+                  ],
+                  [
+                    {
+                      stateCounter: 6,
+                    },
+                  ],
+                ],
+                2,
+                2
+              )
+              saver.cancelAllRemainingRequests()
+            })
+          })
+        })
+        describe('given  a saveBackup function that succeeds, fails and then succeeds', (describe, it) => {
+          it('should call the appropriate error and success functions', () => {
             let stateCounter = 1
             const getState = () => {
               return {
@@ -951,63 +971,68 @@ describe('Saver', () => {
               },
             }
             const saver = new Saver(getState, saveFile, backupFile, countingLogger, 10000, 100)
-            expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(0)
-            expect(loggedErrors).toBe(0)
-            await new Promise((resolve) => {
+            assertGreaterThan(loggedInfos, 0)
+            assertEqual(loggedWarnings, 0)
+            assertEqual(loggedErrors, 0)
+            new Promise((resolve) => {
               setTimeout(resolve, 110)
+            }).then(() => {
+              assertGreaterThan(loggedInfos, 0)
+              assertEqual(loggedWarnings, 0)
+              assertEqual(loggedErrors, 0)
+              new Promise((resolve) => {
+                setTimeout(resolve, 110)
+              }).then(() => {
+                assertGreaterThan(loggedInfos, 0)
+                assertEqual(loggedWarnings, 0)
+                assertEqual(loggedErrors, 1)
+                new Promise((resolve) => {
+                  setTimeout(resolve, 110)
+                }).then(() => {
+                  assertGreaterThan(loggedInfos, 0)
+                  assertEqual(loggedWarnings, 0)
+                  assertEqual(loggedErrors, 1)
+                  new Promise((resolve) => {
+                    setTimeout(resolve, 110)
+                  }).then(() => {
+                    assertGreaterThan(loggedInfos, 0)
+                    assertEqual(loggedWarnings, 0)
+                    assertEqual(loggedErrors, 1)
+                    expectToMatchArrayLoosely(
+                      backupCalls,
+                      [
+                        [
+                          {
+                            stateCounter: 1,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 2,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 3,
+                          },
+                        ],
+                        [
+                          {
+                            stateCounter: 4,
+                          },
+                        ],
+                      ],
+                      1,
+                      1
+                    )
+                    saver.cancelAllRemainingRequests()
+                  })
+                })
+              })
             })
-            expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(0)
-            expect(loggedErrors).toBe(0)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(0)
-            expect(loggedErrors).toBe(1)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(0)
-            expect(loggedErrors).toBe(1)
-            await new Promise((resolve) => {
-              setTimeout(resolve, 110)
-            })
-            expect(loggedInfos).toBeGreaterThan(0)
-            expect(loggedWarnings).toBe(0)
-            expect(loggedErrors).toBe(1)
-            expect(backupCalls).toMatchArrayLoosely(
-              [
-                [
-                  {
-                    stateCounter: 1,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 2,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 3,
-                  },
-                ],
-                [
-                  {
-                    stateCounter: 4,
-                  },
-                ],
-              ],
-              1,
-              1
-            )
-            saver.cancelAllRemainingRequests()
           })
-          describe('and a serverIsBusy function that always reports that the server is busy restarting', () => {
-            it('should call the appropriate error and success functions', async () => {
+          describe('and a serverIsBusy function that always reports that the server is busy restarting', (describe, it) => {
+            it('should call the appropriate error and success functions', () => {
               let stateCounter = 1
               const getState = () => {
                 return {
@@ -1057,66 +1082,71 @@ describe('Saver', () => {
                 DUMMY_SHOW_ERROR_BOX,
                 alwaysBusyRestarting
               )
-              expect(loggedInfos).toBeGreaterThan(0)
-              expect(loggedWarnings).toBe(0)
-              expect(loggedErrors).toBe(0)
-              await new Promise((resolve) => {
+              assertGreaterThan(loggedInfos, 0)
+              assertEqual(loggedWarnings, 0)
+              assertEqual(loggedErrors, 0)
+              new Promise((resolve) => {
                 setTimeout(resolve, 110)
+              }).then(() => {
+                assertGreaterThan(loggedInfos, 0)
+                assertEqual(loggedWarnings, 0)
+                assertEqual(loggedErrors, 0)
+                new Promise((resolve) => {
+                  setTimeout(resolve, 110)
+                }).then(() => {
+                  assertGreaterThan(loggedInfos, 0)
+                  assertEqual(loggedWarnings, 0)
+                  assertEqual(loggedErrors, 0)
+                  new Promise((resolve) => {
+                    setTimeout(resolve, 110)
+                  }).then(() => {
+                    assertGreaterThan(loggedInfos, 0)
+                    assertEqual(loggedWarnings, 0)
+                    assertEqual(loggedErrors, 0)
+                    new Promise((resolve) => {
+                      setTimeout(resolve, 110)
+                    }).then(() => {
+                      assertGreaterThan(loggedInfos, 0)
+                      assertEqual(loggedWarnings, 0)
+                      assertEqual(loggedErrors, 0)
+                      expectToMatchArrayLoosely(
+                        backupCalls,
+                        [
+                          [
+                            {
+                              stateCounter: 1,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 2,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 3,
+                            },
+                          ],
+                          [
+                            {
+                              stateCounter: 4,
+                            },
+                          ],
+                        ],
+                        1,
+                        1
+                      )
+                      saver.cancelAllRemainingRequests()
+                    })
+                  })
+                })
               })
-              expect(loggedInfos).toBeGreaterThan(0)
-              expect(loggedWarnings).toBe(0)
-              expect(loggedErrors).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(loggedInfos).toBeGreaterThan(0)
-              expect(loggedWarnings).toBe(0)
-              expect(loggedErrors).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(loggedInfos).toBeGreaterThan(0)
-              expect(loggedWarnings).toBe(0)
-              expect(loggedErrors).toBe(0)
-              await new Promise((resolve) => {
-                setTimeout(resolve, 110)
-              })
-              expect(loggedInfos).toBeGreaterThan(0)
-              expect(loggedWarnings).toBe(0)
-              expect(loggedErrors).toBe(0)
-              expect(backupCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      stateCounter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      stateCounter: 4,
-                    },
-                  ],
-                ],
-                1,
-                1
-              )
-              saver.cancelAllRemainingRequests()
             })
           })
         })
       })
-      describe('and a 500ms interval', () => {
-        it('should attempt to backup the same thing 2 times in one second', async () => {
+      describe('and a 500ms interval', (describe, it) => {
+        it('should attempt to backup the same thing 2 times in one second', () => {
           let stateCounter = 1
           const getState = () => {
             return {
@@ -1132,32 +1162,34 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              backupCalls,
+              [
+                [
+                  {
+                    stateCounter: 1,
+                  },
+                ],
+                [
+                  {
+                    stateCounter: 2,
+                  },
+                ],
+              ],
+              1,
+              1
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(backupCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  stateCounter: 1,
-                },
-              ],
-              [
-                {
-                  stateCounter: 2,
-                },
-              ],
-            ],
-            1,
-            1
-          )
-          saver.cancelAllRemainingRequests()
         })
       })
     })
-    describe('given a getState function that produces a sequence of values', () => {
-      describe('and a 100ms interval', () => {
-        it('should attempt to backup ten different items in the right order', async () => {
+    describe('given a getState function that produces a sequence of values', (describe, it) => {
+      describe('and a 100ms interval', (describe, it) => {
+        it('should attempt to backup ten different items in the right order', () => {
           let counter = 0
           const getState = () => {
             counter++
@@ -1174,70 +1206,72 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              backupCalls,
+              [
+                [
+                  {
+                    counter: 1,
+                  },
+                ],
+                [
+                  {
+                    counter: 2,
+                  },
+                ],
+                [
+                  {
+                    counter: 3,
+                  },
+                ],
+                [
+                  {
+                    counter: 4,
+                  },
+                ],
+                [
+                  {
+                    counter: 5,
+                  },
+                ],
+                [
+                  {
+                    counter: 6,
+                  },
+                ],
+                [
+                  {
+                    counter: 7,
+                  },
+                ],
+                [
+                  {
+                    counter: 8,
+                  },
+                ],
+                [
+                  {
+                    counter: 9,
+                  },
+                ],
+                [
+                  {
+                    counter: 10,
+                  },
+                ],
+              ],
+              3,
+              3
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(backupCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  counter: 1,
-                },
-              ],
-              [
-                {
-                  counter: 2,
-                },
-              ],
-              [
-                {
-                  counter: 3,
-                },
-              ],
-              [
-                {
-                  counter: 4,
-                },
-              ],
-              [
-                {
-                  counter: 5,
-                },
-              ],
-              [
-                {
-                  counter: 6,
-                },
-              ],
-              [
-                {
-                  counter: 7,
-                },
-              ],
-              [
-                {
-                  counter: 8,
-                },
-              ],
-              [
-                {
-                  counter: 9,
-                },
-              ],
-              [
-                {
-                  counter: 10,
-                },
-              ],
-            ],
-            3,
-            3
-          )
-          saver.cancelAllRemainingRequests()
         })
-        describe('and a backup function that takes 200ms to complete', () => {
-          describe('and we cancel saving after 1 second', () => {
-            it('should only backup 5 times in 1 second (because it waits for prior instances to complete)', async () => {
+        describe('and a backup function that takes 200ms to complete', (describe, it) => {
+          describe('and we cancel saving after 1 second', (describe, it) => {
+            it('should only backup 5 times in 1 second (because it waits for prior instances to complete)', () => {
               let counter = 0
               const getState = () => {
                 counter++
@@ -1256,43 +1290,45 @@ describe('Saver', () => {
                 })
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
-              await new Promise((resolve) => {
+              new Promise((resolve) => {
                 setTimeout(resolve, 1050)
+              }).then(() => {
+                saver.cancelAllRemainingRequests()
+                expectToMatchArrayLoosely(
+                  backupCalls,
+                  [
+                    [
+                      {
+                        counter: 1,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 2,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 3,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 4,
+                      },
+                    ],
+                    [
+                      {
+                        counter: 5,
+                      },
+                    ],
+                  ],
+                  2,
+                  2
+                )
               })
-              saver.cancelAllRemainingRequests()
-              expect(backupCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      counter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 4,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 5,
-                    },
-                  ],
-                ],
-                2,
-                2
-              )
             })
-            it('should not backup after cancel is called', async () => {
+            it('should not backup after cancel is called', () => {
               let counter = 0
               const getState = () => {
                 counter++
@@ -1311,50 +1347,53 @@ describe('Saver', () => {
                 })
               }
               const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 100)
-              await new Promise((resolve) => {
+              new Promise((resolve) => {
                 setTimeout(resolve, 1050)
+              }).then(() => {
+                saver.cancelAllRemainingRequests()
+                new Promise((resolve) => {
+                  setTimeout(resolve, 1050)
+                }).then(() => {
+                  expectToMatchArrayLoosely(
+                    backupCalls,
+                    [
+                      [
+                        {
+                          counter: 1,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 2,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 3,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 4,
+                        },
+                      ],
+                      [
+                        {
+                          counter: 5,
+                        },
+                      ],
+                    ],
+                    2,
+                    2
+                  )
+                })
               })
-              saver.cancelAllRemainingRequests()
-              await new Promise((resolve) => {
-                setTimeout(resolve, 1050)
-              })
-              expect(backupCalls).toMatchArrayLoosely(
-                [
-                  [
-                    {
-                      counter: 1,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 2,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 3,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 4,
-                    },
-                  ],
-                  [
-                    {
-                      counter: 5,
-                    },
-                  ],
-                ],
-                2,
-                2
-              )
             })
           })
         })
       })
-      describe('and a 500ms interval', () => {
-        it('should attempt to backup values in the correct order 2 times in one second', async () => {
+      describe('and a 500ms interval', (describe, it) => {
+        it('should attempt to backup values in the correct order 2 times in one second', () => {
           let counter = 0
           const getState = () => {
             counter++
@@ -1371,26 +1410,28 @@ describe('Saver', () => {
             return Promise.resolve()
           }
           const saver = new Saver(getState, saveFile, backupFile, NOP_LOGGER, 10000, 500)
-          await new Promise((resolve) => {
+          new Promise((resolve) => {
             setTimeout(resolve, 1100)
+          }).then(() => {
+            expectToMatchArrayLoosely(
+              backupCalls,
+              [
+                [
+                  {
+                    counter: 1,
+                  },
+                ],
+                [
+                  {
+                    counter: 2,
+                  },
+                ],
+              ],
+              1,
+              1
+            )
+            saver.cancelAllRemainingRequests()
           })
-          expect(backupCalls).toMatchArrayLoosely(
-            [
-              [
-                {
-                  counter: 1,
-                },
-              ],
-              [
-                {
-                  counter: 2,
-                },
-              ],
-            ],
-            1,
-            1
-          )
-          saver.cancelAllRemainingRequests()
         })
       })
     })

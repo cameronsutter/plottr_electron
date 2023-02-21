@@ -1,3 +1,4 @@
+import { describe } from '../../../test/simpleIntegrationTest'
 import { BUSY } from '../../../shared/socket-server-message-types'
 import StatusManager from '../StatusManager'
 
@@ -7,10 +8,10 @@ const CONSOLE_LOGGER = {
   error: (...args) => console.error(...args),
 }
 
-describe('StatusManager', () => {
-  describe('given one connection', () => {
-    describe('and one task', () => {
-      it('should notify that connection that work is done when the task completes', (done) => {
+describe('StatusManager', (describe, it) => {
+  describe('given one connection', (describe, it) => {
+    describe('and one task', (describe, it) => {
+      it('should notify that connection that work is done when the task completes', () => {
         const statusManager = new StatusManager(CONSOLE_LOGGER)
         const theTask = new Promise((resolve) => {
           setTimeout(resolve, 500)
@@ -25,13 +26,12 @@ describe('StatusManager', () => {
             if (busyMessageCount !== 1) {
               throw new Error(`Received incorrect number of busy messages ${busyMessageCount}`)
             }
-            done()
           },
         })
         statusManager.registerTask(theTask, 'Example task')
       })
-      describe('and that task throws an error', () => {
-        it('should still broadcast that it is done', (done) => {
+      describe('and that task throws an error', (describe, it) => {
+        it('should still broadcast that it is done', () => {
           const statusManager = new StatusManager(CONSOLE_LOGGER)
           const theTask = new Promise((resolve, reject) => {
             reject(new Error('It failed!!'))
@@ -41,7 +41,6 @@ describe('StatusManager', () => {
               if (JSON.parse(payload).type === BUSY) {
                 return
               }
-              done()
             },
           })
           statusManager.registerTask(theTask, 'Example task').catch((error) => {
@@ -50,9 +49,9 @@ describe('StatusManager', () => {
         })
       })
     })
-    describe('and two tasks', () => {
-      describe('that overlap in time', () => {
-        it('should notify that connection that work is done when both tasks complete but not in between', (done) => {
+    describe('and two tasks', (describe, it) => {
+      describe('that overlap in time', (describe, it) => {
+        it('should notify that connection that work is done when both tasks complete but not in between', () => {
           const statusManager = new StatusManager(CONSOLE_LOGGER)
           let firstIsDone = false
           let secondIsDone = false
@@ -82,15 +81,14 @@ describe('StatusManager', () => {
               if (busyMessageCount !== 2) {
                 throw new Error('Did not receive two busy messages before work completed')
               }
-              done()
             },
           })
           statusManager.registerTask(theFirstTask, 'The first task')
           statusManager.registerTask(theSecondTask, 'The second task')
         })
       })
-      describe('that do not overlap in time', () => {
-        it('should notify that connection that work is done when each task completes', (done) => {
+      describe('that do not overlap in time', (describe, it) => {
+        it('should notify that connection that work is done when each task completes', (success) => {
           const statusManager = new StatusManager(CONSOLE_LOGGER)
           const theFirstTask = new Promise((resolve) => {
             setTimeout(resolve, 500)
@@ -106,7 +104,7 @@ describe('StatusManager', () => {
               }
               messagesSent++
               if (messagesSent === 2) {
-                done()
+                success()
               }
             },
           })
@@ -118,9 +116,9 @@ describe('StatusManager', () => {
       })
     })
   })
-  describe('given two connections', () => {
-    describe('and one task', () => {
-      it('should notify both connections that work is done when the task completes', (done) => {
+  describe('given two connections', (describe, it) => {
+    describe('and one task', (describe, it) => {
+      it('should notify both connections that work is done when the task completes', (success) => {
         const statusManager = new StatusManager(CONSOLE_LOGGER)
         const theTask = new Promise((resolve) => {
           setTimeout(resolve, 500)
@@ -139,7 +137,7 @@ describe('StatusManager', () => {
             }
             repliedToFirstConnection = true
             if (repliedToSecondConnection) {
-              done()
+              success()
             }
           },
         })
@@ -155,16 +153,16 @@ describe('StatusManager', () => {
             }
             repliedToSecondConnection = true
             if (repliedToFirstConnection) {
-              done()
+              success()
             }
           },
         })
         statusManager.registerTask(theTask, 'Example task')
       })
     })
-    describe('and two tasks', () => {
-      describe('that overlap in time', () => {
-        it('should notify both connections that work is done when both tasks complete but not in between', (done) => {
+    describe('and two tasks', (describe, it) => {
+      describe('that overlap in time', (describe, it) => {
+        it('should notify both connections that work is done when both tasks complete but not in between', (success) => {
           const statusManager = new StatusManager(CONSOLE_LOGGER)
           let firstIsDone = false
           let secondIsDone = false
@@ -197,7 +195,7 @@ describe('StatusManager', () => {
               }
               repliedToFirstConnection = true
               if (repliedToSecondConnection) {
-                done()
+                success()
               }
             },
           })
@@ -216,7 +214,7 @@ describe('StatusManager', () => {
               }
               repliedToSecondConnection = true
               if (repliedToFirstConnection) {
-                done()
+                success()
               }
             },
           })
@@ -224,8 +222,8 @@ describe('StatusManager', () => {
           statusManager.registerTask(theSecondTask, 'The second task')
         })
       })
-      describe('that do not overlap in time', () => {
-        it('should notify both connections that work is done when each task completes', (done) => {
+      describe('that do not overlap in time', (describe, it) => {
+        it('should notify both connections that work is done when each task completes', (success) => {
           const statusManager = new StatusManager(CONSOLE_LOGGER)
           const theFirstTask = new Promise((resolve) => {
             setTimeout(resolve, 500)
@@ -242,7 +240,7 @@ describe('StatusManager', () => {
               }
               repliedToFirstConnection++
               if (repliedToFirstConnection === 2 && repliedToSecondConnection === 2) {
-                done()
+                success()
               }
             },
           })
@@ -253,7 +251,7 @@ describe('StatusManager', () => {
               }
               repliedToSecondConnection++
               if (repliedToFirstConnection === 2 && repliedToSecondConnection === 2) {
-                done()
+                success()
               }
             },
           })
@@ -264,7 +262,7 @@ describe('StatusManager', () => {
         })
       })
     })
-    describe('where one connection errors out all the time', () => {
+    describe('where one connection errors out all the time', (describe, it) => {
       it('should stop sending messages to the bad connection', () => {
         const statusManager = new StatusManager(CONSOLE_LOGGER)
         const theFirstTask = new Promise((resolve) => {

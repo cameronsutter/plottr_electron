@@ -63,7 +63,10 @@ export const migrateTempFilesStoreObject = (tempFiles) => {
 }
 
 const makeStores = (userDataPath, logger, isAlphaOrBeta = false) => {
-  const isDevelopment = process.env.NODE_ENV == 'development'
+  // This hack bypasess a the define plugin for node_env that forced
+  // it to development when in test.
+  const NODE_ENV = JSON.parse(JSON.stringify(process.env)).NODE_ENV
+  const isDevelopment = NODE_ENV == 'development'
   const suffix = isDevelopment ? '_dev' : isAlphaOrBeta ? '_test' : ''
   const tempPath = `${TMP_PATH}${suffix}`
   const knownFilesPath = `${KNOWN_FILES_PATH}${suffix}`

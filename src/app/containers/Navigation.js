@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import PropTypes from 'react-proptypes'
 import { connect } from 'react-redux'
-import { FaRegUser, FaKey, FaSave } from 'react-icons/fa'
-import cx from 'classnames'
+import { FaRegUser, FaKey } from 'react-icons/fa'
 
 import DashboardModal from './DashboardModal'
 import OfflineBanner from '../components/OfflineBanner'

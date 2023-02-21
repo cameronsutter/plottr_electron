@@ -1,7 +1,6 @@
 import path from 'path'
 import fs from 'fs'
 import os from 'os'
-import { spawn } from 'child_process'
 
 import { sortBy } from 'lodash'
 

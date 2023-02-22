@@ -320,6 +320,10 @@ const Main = ({
     openExternal('https://plottr.com/support/')
   }
 
+  const goToDownloads = () => {
+    openExternal('https://my.plottr.com/file-downloads/')
+  }
+
   const viewBackups = () => {
     setFirstTimeBooting(false)
     setOpenDashboardTo('backups')
@@ -438,8 +442,8 @@ const Main = ({
           </div>
           {errorIsUpdateError ? (
             <div className="error-boundary__options" style={{ width: '50%' }}>
-              <Button bsSize="lg" onClick={goToSupport}>
-                {t('Contact Support')}
+              <Button bsSize="lg" onClick={goToDownloads}>
+                {t('Download Plottr')}
               </Button>
             </div>
           ) : (

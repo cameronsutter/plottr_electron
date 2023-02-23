@@ -22,13 +22,13 @@ const AddLineColumnConnector = (connector) => {
   const templatesDisabled = connector.platform.templatesDisabled
   checkDependencies({ templatesDisabled })
 
-  const AddLineColumn = ({ actions, currentTimeline, hierarchyEnabled, isSmall, isMedium }) => {
+  const AddLineColumn = ({ actions, templateActions, currentTimeline, isSmall, isMedium }) => {
     const [hovering, setHovering] = useState(false)
     const [showTemplatePicker, setShowTemplatePicker] = useState(false)
     const [askingForInput, setAskingForInput] = useState(false)
 
-    const handleChooseTemplate = (template) => {
-      actions.addLinesFromTemplate(template)
+    const handleChooseTemplate = (template, selectedIndex) => {
+      templateActions.applyTimelineTemplate(currentTimeline, template, selectedIndex)
       setShowTemplatePicker(false)
     }
 
@@ -82,12 +82,10 @@ const AddLineColumnConnector = (connector) => {
             <div className={orientedClassName('line-list__append-line__double', 'vertical')}>
               <div
                 onClick={() => {
-                  if (hierarchyEnabled) return
                   setShowTemplatePicker(true)
                   setHovering(false)
                 }}
-                title={hierarchyEnabled ? 'Templates are disabled when Act Structure is on' : null}
-                className={cx('template', { disabled: hierarchyEnabled || templatesDisabled })}
+                className={cx('template', { disabled: templatesDisabled })}
               >
                 {isMedium ? t('Templates') : t('Use Template')}
               </div>
@@ -138,8 +136,8 @@ const AddLineColumnConnector = (connector) => {
 
   AddLineColumn.propTypes = {
     actions: PropTypes.object.isRequired,
+    templateActions: PropTypes.object.isRequired,
     currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    hierarchyEnabled: PropTypes.bool.isRequired,
     isSmall: PropTypes.bool,
     isMedium: PropTypes.bool,
   }
@@ -155,12 +153,12 @@ const AddLineColumnConnector = (connector) => {
     return connect(
       (state) => ({
         currentTimeline: selectors.currentTimelineSelector(state.present),
-        hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
         isSmall: selectors.isSmallSelector(state.present),
         isMedium: selectors.isMediumSelector(state.present),
       }),
       (dispatch) => ({
         actions: bindActionCreators(actions.line, dispatch),
+        templateActions: bindActionCreators(actions.templates, dispatch),
       })
     )(AddLineColumn)
   }

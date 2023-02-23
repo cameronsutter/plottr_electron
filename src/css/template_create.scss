@@ -1,0 +1,18 @@
+@import 'vars';
+
+.template-create__expand-caret {
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.template-create__expand-label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.template-create__bias-label {
+  @include application-text;
+  font-weight: normal;
+}

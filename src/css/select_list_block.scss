@@ -4,9 +4,12 @@
   list-style-type: none;
   padding-left: 10px;
   margin-bottom: 0;
+  max-width: 60vw;
   li {
     user-select: none;
     cursor: pointer;
+    white-space: break-spaces;
+    word-break: break-all;
     padding: 5px;
     span.colored {
       display: inline-block;
@@ -116,6 +119,7 @@
     visibility: hidden;
     margin-left: 4px;
     cursor: pointer;
+    align-self: center;
   }
 
   &:hover {

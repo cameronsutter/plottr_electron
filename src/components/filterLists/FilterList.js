@@ -138,20 +138,24 @@ const FilterListConnector = (connector) => {
     const { connect } = redux
     const {
       pltr: {
-        selectors: { charactersSortedAtoZSelector, placesSortedAtoZSelector, sortedTagsSelector },
+        selectors: {
+          charactersFilterItemsSelector,
+          placesFilterItemsSelector,
+          tagsFilterItemsSelector,
+        },
       },
     } = connector
     checkDependencies({
-      charactersSortedAtoZSelector,
-      placesSortedAtoZSelector,
-      sortedTagsSelector,
+      charactersFilterItemsSelector,
+      placesFilterItemsSelector,
+      tagsFilterItemsSelector,
     })
 
     return connect((state) => {
       return {
-        characters: charactersSortedAtoZSelector(state.present),
-        places: placesSortedAtoZSelector(state.present),
-        tags: sortedTagsSelector(state.present),
+        characters: charactersFilterItemsSelector(state.present),
+        places: placesFilterItemsSelector(state.present),
+        tags: tagsFilterItemsSelector(state.present),
         books: state.present.books,
       }
     })(FilterList)

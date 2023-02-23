@@ -7,6 +7,88 @@
   justify-content: space-between;
 }
 
+.template-picker__confirmation__dialog-wrapper {
+  @include application-text;
+  height: 100%;
+  display: grid;
+  grid-template-areas: 'header' 'body' 'footer'; // for some reason you need the ''s
+  grid-template-rows: auto 1fr auto;
+
+  .template-picker__confirmation__header {
+    grid-area: header;
+    h3 {
+      margin-top: 0;
+    }
+    hr {
+      margin: 8px 0;
+    }
+  }
+
+  .template-picker__confirmation__body {
+    grid-area: body;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .text-larger {
+      font-size: 18px;
+    }
+
+    .template-picker__confirmation__row {
+      // $top-margin: 16px + 1px; // because of the <p>'s bottom margin above it
+      margin: 13px 0 24px 0;
+      display: flex;
+      justify-content: space-evenly;
+      .template-picker__confirmation__option {
+        cursor: pointer;
+        height: 120px;
+        width: 175px;
+        border: 1px solid $gray-6;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 12px;
+        h3,
+        p {
+          margin: 0;
+        }
+
+        p.small {
+          font-size: smaller;
+        }
+
+        p.caps {
+          text-transform: uppercase;
+          margin-bottom: 12px;
+        }
+
+        &.recommended {
+          justify-content: space-around;
+          p.caps {
+            margin: 0;
+          }
+        }
+
+        &.selected {
+          background-color: $blue-6;
+          border-color: $blue-7;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .card-dialog__button-bar {
+    grid-area: footer;
+  }
+}
+
+.template-picker__description {
+  @include application-text;
+}
+
 .template-picker__wrapper {
   display: flex;
   justify-content: space-between;

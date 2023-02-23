@@ -23,9 +23,11 @@ export const useEditState = (
 
   // Handle undo
   useEffect(() => {
-    if (undoId || isEqual(initialValue, value)) return
+    if (isEqual(initialValue, value)) return
 
     const newValue = useTextConverter(initialValue)
+    editor.children = newValue
+    editor.selection = initialSelection
 
     setValue(newValue)
   }, [undoId])
@@ -64,7 +66,7 @@ export const useEditState = (
     // To ensure that the RCE has a selection, make sure that the on
     // change handlers create actions that add `editorMetadata`.
     // See the `editors` reducer for schema.
-    if (initialSelection && event.key === 'z' && (event.ctrlKey || event.metaKey)) {
+    if (event.key === 'z' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       if (event.shiftKey) {
         redo()

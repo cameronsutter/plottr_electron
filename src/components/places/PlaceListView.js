@@ -247,6 +247,7 @@ const PlaceListViewConnector = (connector) => {
           startEdit={editSelected}
           stopEdit={stopEditing}
           select={() => setPlaceDetailId(pl.id)}
+          editing={editingSelected}
         />
       ))
     }
@@ -309,7 +310,7 @@ const PlaceListViewConnector = (connector) => {
         {renderCategoriesModal()}
         <Grid fluid className="tab-body">
           <Row>
-            <Col sm={3}>
+            <Col sm={3} onDoubleClick={stopEditing}>
               <h1 className={klasses}>
                 {i18n('Places')}{' '}
                 <Button onClick={handleCreateNewPlace}>

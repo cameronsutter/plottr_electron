@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Cell } from 'react-sticky-table'
+import { FaGripLinesVertical } from 'react-icons/fa'
 import cx from 'classnames'
 
 import { t } from 'plottr_locales'
@@ -31,10 +32,8 @@ const BeatHeadingCellConnector = (connector) => {
     beatTitle,
     isMedium,
     hierarchyLevel,
-    inDropZone,
     darkMode,
     timelineSize,
-    featureFlags,
     readOnly,
     beats,
     hierarchyLevelName,
@@ -45,11 +44,20 @@ const BeatHeadingCellConnector = (connector) => {
     hierarchyLevels,
     deleteBeat,
     lastClick,
+    reorderBeats,
+    expandBeat,
+    dropBeat,
+    droppedBeat,
+    collectBeat,
   }) => {
     const [width, setWidth] = useState(null)
+    const [spacerCellWidth, setSpacerCellWidth] = useState(null)
     const [headingCellWidth, setHeadingCellWidth] = useState(null)
     const [editing, setEditing] = useState(false)
     const [deleting, setDeleting] = useState(false)
+    const [dragging, setDragging] = useState(false)
+    const [dropDepth, setDropDepth] = useState(0)
+    const [inDropZone, setInDropZone] = useState(false)
 
     const container = useRef(null)
     const bottomButtons = useRef(null)
@@ -63,9 +71,25 @@ const BeatHeadingCellConnector = (connector) => {
     }, [lastClick])
 
     useEffect(() => {
+      if (!droppedBeat || !droppedBeat.id) return
+
+      const droppedInThisContainer = headingContains(droppedBeat.coord)
+      if (droppedInThisContainer) {
+        collectBeat()
+        if (!beat.expanded) {
+          expandBeat(beat.id, currentTimeline)
+        }
+        handleReorder(beat.id, droppedBeat.id)
+      }
+    }, [droppedBeat])
+
+    useEffect(() => {
       const aBeatTitleCell = document.querySelector('.beat-table-cell')
       if (aBeatTitleCell) {
         const aSpacerCell = document.querySelector('.beat__heading-spacer')
+        if (aSpacerCell) {
+          setSpacerCellWidth(aSpacerCell.getBoundingClientRect().width)
+        }
         if (isMedium) {
           const thisHeadingCellWidth = aBeatTitleCell
             .querySelector('.beat__cell')
@@ -83,8 +107,24 @@ const BeatHeadingCellConnector = (connector) => {
       }
     }, [setWidth, setHeadingCellWidth, beats])
 
-    const handleDrop = (_event) => {
-      // TODO
+    const handleReorder = (droppedPositionId, originalPositionId) => {
+      reorderBeats(originalPositionId, droppedPositionId, currentTimeline)
+    }
+
+    const handleDrop = (e) => {
+      e.stopPropagation()
+      setInDropZone(false)
+      setDropDepth(0)
+
+      var json = e.dataTransfer.getData('text/json')
+      var droppedBeat = JSON.parse(json)
+      if (droppedBeat.id == null) return
+      if (droppedBeat.id == beat.id) return
+
+      if (!beat.expanded) {
+        expandBeat(beat.id, currentTimeline)
+      }
+      handleReorder(beat.id, droppedBeat.id)
     }
 
     const startEditing = (event) => {
@@ -108,24 +148,34 @@ const BeatHeadingCellConnector = (connector) => {
       setDeleting(false)
     }
 
-    const handleDragEnd = (_event) => {
-      // TODO
+    const handleDragStart = (e) => {
+      e.dataTransfer.effectAllowed = 'move'
+      e.dataTransfer.setData('text/json', JSON.stringify(beat))
+      setDragging(true)
     }
 
-    const handleDragStart = (_event) => {
-      // TODO
+    const handleDragEnd = (event) => {
+      dropBeat(beatId, { x: event.clientX, y: event.clientY })
+      setDragging(false)
     }
 
-    const handleDragEnter = (_event) => {
-      // TODO
+    const handleDragEnter = (e) => {
+      if (!dragging) setDropDepth(dropDepth + 1)
     }
 
-    const handleDragOver = (_event) => {
-      // TODO
+    const handleDragOver = (e) => {
+      e.preventDefault()
+      if (!dragging) setInDropZone(true)
     }
 
-    const handleDragLeave = (_event) => {
-      // TODO
+    const handleDragLeave = (e) => {
+      if (!dragging) {
+        let newDropDepth = dropDepth
+        --newDropDepth
+        setDropDepth(newDropDepth)
+        if (newDropDepth > 0) return
+        setInDropZone(false)
+      }
     }
 
     const deleteThisBeat = (event) => {
@@ -293,12 +343,20 @@ const BeatHeadingCellConnector = (connector) => {
       }
     }
 
+    const bottomControlsPosition = () => {
+      const controlWidth = 71
+      const { bottom, left } = container.current.getBoundingClientRect()
+      return {
+        top: bottom - 4,
+        left: left + (width - (isMedium ? 0 : spacerCellWidth)) / 2 - controlWidth / 2,
+      }
+    }
+
     return (
       <>
         {renderDelete()}
         <MousePositionContext.Consumer>
           {(mouseCoord) => {
-            // TODO: postiion the buttons at the right edge
             const hovering =
               container.current && mouseCoord.x !== null && mouseCoord.y !== null
                 ? headingContains(mouseCoord) ||
@@ -335,6 +393,12 @@ const BeatHeadingCellConnector = (connector) => {
                       open={hovering}
                       placement="bottom"
                       align="start"
+                      contentLocation={() => {
+                        if (container.current) {
+                          return bottomControlsPosition()
+                        }
+                        return { top: 0, left: 0 }
+                      }}
                       component={renderControls}
                     >
                       <div
@@ -344,8 +408,7 @@ const BeatHeadingCellConnector = (connector) => {
                             timelineSize,
                             hovering === beatId || inDropZone,
                             darkMode === true ? hierarchyLevel.dark : hierarchyLevel.light,
-                            darkMode,
-                            featureFlags
+                            darkMode
                           ),
                           ...(isMedium ? {} : { padding: '10px 10px' }),
                           ...(width
@@ -366,6 +429,9 @@ const BeatHeadingCellConnector = (connector) => {
                         onDragOver={handleDragOver}
                         onDragLeave={handleDragLeave}
                       >
+                        <div className={cx('beat__heading-drag-handle', { hovering })}>
+                          <FaGripLinesVertical />
+                        </div>
                         {renderTitle()}
                       </div>
                     </Floater>
@@ -385,10 +451,8 @@ const BeatHeadingCellConnector = (connector) => {
     beatTitle: PropTypes.string.isRequired,
     isMedium: PropTypes.bool,
     hierarchyLevel: PropTypes.object.isRequired,
-    inDropZone: PropTypes.bool,
     darkMode: PropTypes.bool,
     timelineSize: PropTypes.string.isRequired,
-    featureFlags: PropTypes.object.isRequired,
     readOnly: PropTypes.bool,
     beats: PropTypes.array.isRequired,
     hierarchyLevelName: PropTypes.string.isRequired,
@@ -399,6 +463,11 @@ const BeatHeadingCellConnector = (connector) => {
     hierarchyLevels: PropTypes.array.isRequired,
     deleteBeat: PropTypes.func.isRequired,
     lastClick: PropTypes.object,
+    reorderBeats: PropTypes.func.isRequired,
+    expandBeat: PropTypes.func.isRequired,
+    dropBeat: PropTypes.func.isRequired,
+    droppedBeat: PropTypes.object,
+    collectBeat: PropTypes.func.isRequired,
   }
 
   const {
@@ -420,7 +489,6 @@ const BeatHeadingCellConnector = (connector) => {
           hierarchyLevel: selectors.hierarchyLevelSelector(state.present, ownProps.beatId),
           darkMode: selectors.isDarkModeSelector(state.present),
           timelineSize: selectors.timelineSizeSelector(state.present),
-          featureFlags: selectors.featureFlags(state.present),
           readOnly: !selectors.canWriteSelector(state.present),
           beats: selectors.visibleSortedBeatsForTimelineByBookSelector(state.present),
           hierarchyLevelName: selectors.beatInsertControlHierarchyLevelNameSelector(
@@ -431,12 +499,17 @@ const BeatHeadingCellConnector = (connector) => {
           beat: uniqueBeatsSelector(state.present, ownProps.beatId),
           hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
           lastClick: selectors.lastClickSelector(state.present),
+          droppedBeat: selectors.droppedBeatSelector(state.present),
         }
       },
       {
         insertBeat: actions.beat.insertBeat,
         editBeatTitle: actions.beat.editBeatTitle,
         deleteBeat: actions.beat.deleteBeat,
+        reorderBeats: actions.beat.reorderBeats,
+        expandBeat: actions.beat.expandBeat,
+        dropBeat: actions.domEvents.dropBeat,
+        collectBeat: actions.domEvents.collectBeat,
       }
     )(BeatHeadingCell)
   }

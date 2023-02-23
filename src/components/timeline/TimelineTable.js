@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
 import cx from 'classnames'
-import { isEqual } from 'lodash'
 
 import { t } from 'plottr_locales'
 import { Row, Cell } from 'react-sticky-table'
@@ -20,7 +19,6 @@ const { card } = initialState
 
 const {
   beats: { nextId },
-  lists: { reorderList },
 } = helpers
 
 const TimelineTableConnector = (connector) => {
@@ -38,7 +36,6 @@ const TimelineTableConnector = (connector) => {
 
       this.state = {
         tableLength: 0,
-        mouseXY: { x: null, y: null },
       }
 
       this.lastMoveTimeout = null
@@ -91,35 +88,6 @@ const TimelineTableConnector = (connector) => {
         this.setLength()
       }, 50)
 
-      const { timelineViewIsStacked } = this.props
-
-      if (timelineViewIsStacked) {
-        if (this.mouseMoveListener) {
-          document.removeEventListener('mousemove', this.mouseMoveListener)
-        }
-        if (this.lastMoveTimeout) {
-          clearTimeout(this.lastMoveTimeout)
-        }
-
-        this.lastMoveTimeout = null
-        this.mouseMoveListener = document.addEventListener('mousemove', (event) => {
-          if (this.lastMoveTimeout) {
-            clearTimeout(this.lastMoveTimeout)
-          }
-          this.lastMoveTimeout = setTimeout(() => {
-            const newMouseXY = {
-              x: event.pageX,
-              y: event.pageY,
-            }
-            if (!isEqual(newMouseXY, this.state.mouseXY)) {
-              this.setState({
-                mouseXY: newMouseXY,
-              })
-            }
-          }, 10)
-        })
-      }
-
       const { visible } = this.props.toast
 
       if (visible) {
@@ -137,9 +105,13 @@ const TimelineTableConnector = (connector) => {
       )
     }
 
-    handleReorderLines = (originalPosition, droppedPosition) => {
-      const lines = reorderList(originalPosition, droppedPosition, this.props.lines)
-      this.props.lineActions.reorderLines(lines, this.props.currentTimeline)
+    handleReorderLines = (droppedPosition, originalPosition) => {
+      this.props.lineActions.reorderLines(droppedPosition, originalPosition)
+    }
+
+    handleTogglePinPlotline = (line) => {
+      const { lineActions } = this.props
+      lineActions.togglePinPlotline(line)
     }
 
     // TODO: this should be a selector
@@ -185,11 +157,13 @@ const TimelineTableConnector = (connector) => {
             line={line}
             handleReorder={this.handleReorderLines}
             bookId={currentTimeline}
+            togglePinPlotline={this.handleTogglePinPlotline}
             // This needs to be here to prevent the move book dialog
             // from overlapping with the plotline beneath this one.
             zIndex={100 - index}
           />
         )
+
         const cards = this.renderHorizontalCards(line, beatMapping, beatMapKeys)
         howManyCells = cards.length
         if (isSmall) {
@@ -204,7 +178,7 @@ const TimelineTableConnector = (connector) => {
           // Note the z-index.  It's needed to stack controls from the
           // top row onto the next row.
           return (
-            <Row key={`lineId-${line.id}`}>
+            <Row key={`lineId-${line.id}`} className={cx({ isPinned: line.isPinned })}>
               {lineTitle}
               {cards}
             </Row>
@@ -247,6 +221,8 @@ const TimelineTableConnector = (connector) => {
                 color={line.color}
                 showLine={beatPosition == 0}
                 tableLength={this.state.tableLength}
+                className={cx({ isPinned: line.isPinned })}
+                isPinned={line.isPinned}
               />
             )
           })
@@ -450,10 +426,21 @@ const TimelineTableConnector = (connector) => {
               beatPosition={beatPosition}
               linePosition={linePosition}
               color={line.color}
+              className={cx({ 'card-pinned': line.isPinned })}
+              isPinned={line.isPinned}
             />
           )
         } else {
-          cells.push(<BlankCard beatId={beat.id} lineId={line.id} key={key} color={line.color} />)
+          cells.push(
+            <BlankCard
+              className={cx({ 'card-pinned': line.isPinned })}
+              beatId={beat.id}
+              lineId={line.id}
+              key={key}
+              color={line.color}
+              isPinned={line.isPinned}
+            />
+          )
         }
         return cells
       })
@@ -526,6 +513,7 @@ const TimelineTableConnector = (connector) => {
     activeTab: PropTypes.number.isRequired,
     timelineViewIsTabbed: PropTypes.bool,
     timelineViewIsStacked: PropTypes.bool,
+    pinnedPlotlines: PropTypes.number,
   }
 
   const {
@@ -559,6 +547,7 @@ const TimelineTableConnector = (connector) => {
           message: selectors.messageSelector(state.present),
           timelineViewIsTabbed: selectors.timelineViewIsTabbedSelector(state.present),
           timelineViewIsStacked: selectors.timelineViewIsStackedSelector(state.present),
+          pinnedPlotlines: selectors.pinnedPlotlinesSelector(state.present),
         }
       },
       (dispatch) => {

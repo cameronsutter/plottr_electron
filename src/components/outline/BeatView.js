@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'react-proptypes'
-import { t as i18n } from 'plottr_locales'
+import { FaCircle } from 'react-icons/fa'
 import cx from 'classnames'
+
+import { helpers } from 'pltr/v2'
+import { t as i18n } from 'plottr_locales'
 
 import Glyphicon from '../Glyphicon'
 import UnconnectedCardView from './CardView'
-import { helpers } from 'pltr/v2'
-import { FaCircle } from 'react-icons/fa'
 import { checkDependencies } from '../checkDependencies'
 
 const {
@@ -185,8 +186,6 @@ const BeatViewConnector = (connector) => {
         cards,
         activeFilter,
         positionOffset,
-        hierarchyEnabled,
-        isSeries,
         beatIndex,
       } = this.props
       if (activeFilter && !cards.length) return null
@@ -202,15 +201,7 @@ const BeatViewConnector = (connector) => {
           ref={this.beatRef}
         >
           <h3 id={`beat-${beat.id}`} className={klasses} ref={this.titleRef}>
-            {beatTitle(
-              beatIndex,
-              beats,
-              beat,
-              hierarchyLevels,
-              positionOffset,
-              hierarchyEnabled,
-              isSeries
-            )}
+            {beatTitle(beatIndex, beats, beat, hierarchyLevels, positionOffset)}
             {this.renderDropZone()}
             {this.renderManualSort()}
           </h3>
@@ -233,8 +224,6 @@ const BeatViewConnector = (connector) => {
     positionOffset: PropTypes.number.isRequired,
     beatActions: PropTypes.object,
     actions: PropTypes.object,
-    hierarchyEnabled: PropTypes.bool,
-    isSeries: PropTypes.bool,
   }
 
   const {
@@ -265,8 +254,6 @@ const BeatViewConnector = (connector) => {
           hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
           lines: selectors.sortedLinesByBookSelector(state.present),
           positionOffset: selectors.positionOffsetSelector(state.present),
-          hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
-          isSeries: selectors.isSeriesSelector(state.present),
           currentTimeline: selectors.currentTimelineSelector(state.present),
         }
       },

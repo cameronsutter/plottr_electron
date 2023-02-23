@@ -10,8 +10,17 @@
   background-clip: padding-box;
   border-radius: $border-radius-large;
   @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+}
 
-  &.no-max-width {
+@media (max-width: 800px) {
+  .popover-arrow-container.resize {
+    max-height: 70vh;
+    max-width: calc(70vw - 50px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .plottr-popover.no-max-width {
     max-width: none;
   }
 }

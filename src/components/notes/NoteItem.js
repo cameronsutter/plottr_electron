@@ -28,10 +28,6 @@ const NoteItemConnector = (connector) => {
       this.scrollIntoView()
     }
 
-    componentDidUpdate() {
-      this.scrollIntoView()
-    }
-
     scrollIntoView = () => {
       if (this.props.selected) {
         const node = this.ref.current
@@ -74,8 +70,12 @@ const NoteItemConnector = (connector) => {
 
     startEditing = (e) => {
       e.stopPropagation()
-      this.props.select(this.props.note.id)
-      this.props.startEdit()
+      if (this.props.editing) {
+        this.props.stopEdit()
+      } else {
+        this.props.select(this.props.note.id)
+        this.props.startEdit()
+      }
     }
 
     handleDuplicate = () => {
@@ -151,6 +151,7 @@ const NoteItemConnector = (connector) => {
     }
 
     static propTypes = {
+      editing: PropTypes.bool.isRequired,
       note: PropTypes.object.isRequired,
       selected: PropTypes.bool.isRequired,
       select: PropTypes.func.isRequired,

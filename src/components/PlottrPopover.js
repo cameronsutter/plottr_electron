@@ -2,11 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
 
-const PlottrPopover = ({ children, id, title, noMaxWidth }) => {
+const PlottrPopover = ({ children, id, title, noMaxWidth, contentStyleOverride }) => {
   return (
     <div id={id} role="tooltip" className={cx('plottr-popover', { 'no-max-width': noMaxWidth })}>
       {title ? <h3 className="popover-title">{title}</h3> : null}
-      <div className="popover-content">{children}</div>
+      <div
+        style={{ ...(contentStyleOverride ? contentStyleOverride : {}) }}
+        className="popover-content"
+      >
+        {children}
+      </div>
     </div>
   )
 }
@@ -16,6 +21,7 @@ PlottrPopover.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string,
   noMaxWidth: PropTypes.bool,
+  contentStyleOverride: PropTypes.object,
 }
 
 export default PlottrPopover

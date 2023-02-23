@@ -2,7 +2,7 @@
 
 $title_height: 70px;
 $cell_width: 175px;
-$medium_width: 80px;
+$medium_width: 82px; // +2px to fit two-digit `Chapter` names e.g. Chapter 12
 
 .beat__cell {
   width: $cell_width;
@@ -25,6 +25,17 @@ $medium_width: 80px;
   }
 }
 
+.beat__heading-drag-handle {
+  float: left;
+  opacity: 0;
+  cursor: grab;
+  font-size: 16px;
+  margin-right: -14px;
+  &.hovering {
+    opacity: 1;
+  }
+}
+
 .beat__heading-spacer {
   opacity: 0;
 }
@@ -42,7 +53,7 @@ $medium_width: 80px;
   text-align: center;
   transition: all 0.4s $cubic;
   border: 3px dashed transparent;
-  background-color: $body-background-color !important;
+  background-color: $body-background-color;
   outline: 5px solid $body-background-color;
 
   &.darkmode {
@@ -132,6 +143,10 @@ $medium_width: 80px;
   }
   &.disabled {
     cursor: not-allowed;
+  }
+
+  span:first-child {
+    word-break: break-word;
   }
 }
 
@@ -279,7 +294,6 @@ $medium_width: 80px;
 .beat-list__insert:hover {
   color: $blue-5;
   .insert-missing-beat-wrapper.insert-beat {
-    margin-left: 3px;
     border: none;
   }
 }
@@ -346,6 +360,9 @@ $medium_width: 80px;
         padding: 6px 2px;
       }
     }
+  }
+  span:first-child {
+    word-break: break-word;
   }
 }
 

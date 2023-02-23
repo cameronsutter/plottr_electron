@@ -16,7 +16,6 @@ import { isEqual } from 'lodash'
 
 const {
   beats: { nextId, hasChildren },
-  lists: { reorderList },
   orientedClassName: { orientedClassName },
 } = helpers
 
@@ -28,6 +27,17 @@ const TopRowConnector = (connector) => {
   const AddLineColumn = UnconnectedAddLineColumn(connector)
 
   const TopRow = (props) => {
+    const {
+      orientation,
+      isSmall,
+      timelineViewIsStacked,
+      topTierBeats,
+      secondTierBeats,
+      hierarchyLevels,
+      leavesPerBeat,
+      isMedium,
+    } = props
+
     const [mouseXY, setMouseXY] = useState({ x: null, y: null })
 
     const firstCell = useRef(null)
@@ -57,17 +67,22 @@ const TopRowConnector = (connector) => {
           clearTimeout(lastMoveTimeout)
         }
       }
-    }, [])
+      return () => {}
+    }, [timelineViewIsStacked])
 
     const handleReorderBeats = (droppedPositionId, originalPositionId) => {
       const { currentTimeline, beatActions } = props
       beatActions.reorderBeats(originalPositionId, droppedPositionId, currentTimeline)
     }
 
-    const handleReorderLines = (originalPosition, droppedPosition) => {
-      const { currentTimeline, lineActions, lines } = props
-      const newLines = reorderList(originalPosition, droppedPosition, lines)
-      lineActions.reorderLines(newLines, currentTimeline)
+    const handleReorderLines = (droppedPosition, originalPosition) => {
+      const { lineActions } = props
+      lineActions.reorderLines(droppedPosition, originalPosition)
+    }
+
+    const handleTogglePinPlotline = (line) => {
+      const { lineActions } = props
+      lineActions.togglePinPlotline(line)
     }
 
     const handleInsertNewBeat = (peerBeatId) => {
@@ -111,6 +126,10 @@ const TopRowConnector = (connector) => {
     }
 
     const renderLastInsertBeatCell = () => {
+      if (timelineViewIsStacked) {
+        return null
+      }
+
       return (
         <BeatInsertCell
           key="last-insert"
@@ -128,7 +147,7 @@ const TopRowConnector = (connector) => {
         const lastBeat = beats[idx - 1]
         const cells = []
         if (beat.isInsertChildCell) {
-          cells.push(
+          cells.push([
             <BeatInsertCell
               key={`beatId-${beat.id}-insert-child`}
               isInBeatList={true}
@@ -136,8 +155,9 @@ const TopRowConnector = (connector) => {
               handleInsert={handleInsertChildBeat}
               beatToLeft={beat}
               orientation={orientation}
-            />
-          )
+            />,
+            <Cell key={`beatId-${beat.id}-insert-child-peer-dummy-cell`} />,
+          ])
         } else {
           cells.push(
             <BeatTitleCell
@@ -192,6 +212,7 @@ const TopRowConnector = (connector) => {
           key={`line-${line.id}`}
           line={line}
           handleReorder={handleReorderLines}
+          togglePinPlotline={handleTogglePinPlotline}
           bookId={currentTimeline}
           zIndex={100 - index}
         />
@@ -263,16 +284,6 @@ const TopRowConnector = (connector) => {
       ]
     }
 
-    const {
-      orientation,
-      isSmall,
-      timelineViewIsStacked,
-      topTierBeats,
-      secondTierBeats,
-      hierarchyLevels,
-      leavesPerBeat,
-      isMedium,
-    } = props
     let body = null
     if (orientation === 'horizontal') body = renderBeats()
     else body = renderLines()
@@ -337,6 +348,7 @@ const TopRowConnector = (connector) => {
     leavesPerBeat: PropTypes.object.isRequired,
     timelineViewIsTabbed: PropTypes.bool,
     activeTab: PropTypes.number.isRequired,
+    pinnedPlotlines: PropTypes.number,
   }
 
   const {
@@ -392,6 +404,7 @@ const TopRowConnector = (connector) => {
           leavesPerBeat: leavesPerBeatSelector(state.present),
           timelineViewIsTabbed: timelineViewIsTabbedSelector(state.present),
           activeTab: timelineActiveTabSelector(state.present),
+          pinnedPlotlines: selectors.pinnedPlotlinesSelector(state.present),
         }
       },
       (dispatch) => {

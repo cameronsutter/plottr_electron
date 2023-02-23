@@ -110,12 +110,8 @@ const UnconnectedToolBar = (connector) => {
             <BlockButton format="block-quote" icon={<FaQuoteLeft />} editor={editor} logger={log} />
             <BlockButton format="numbered-list" icon={<FaListOl />} editor={editor} logger={log} />
             <BlockButton format="bulleted-list" icon={<FaListUl />} editor={editor} logger={log} />
-            {isDevelopment ? (
-              <>
-                <IndentParagraphButton editor={editor} logger={log} />
-                <DedentParagraphButton editor={editor} logger={log} />
-              </>
-            ) : null}
+            <IndentParagraphButton editor={editor} logger={log} />
+            <DedentParagraphButton editor={editor} logger={log} />
             <LinkButton editor={editor} logger={log} />
             <ImagesButton editor={editor} />
           </ButtonGroup>

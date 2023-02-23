@@ -16,21 +16,8 @@ const BeatItemTitleConnector = (connector) => {
     beat,
     hierarchyLevels,
     positionOffset,
-    hierarchyEnabled,
     isSeries,
-  }) =>
-    truncateTitle(
-      beatTitle(
-        beatIndex,
-        beatTree,
-        beat,
-        hierarchyLevels,
-        positionOffset,
-        hierarchyEnabled,
-        isSeries
-      ),
-      40
-    )
+  }) => truncateTitle(beatTitle(beatIndex, beatTree, beat, hierarchyLevels, positionOffset), 40)
 
   BeatItemTitle.propTypes = {
     isSeries: PropTypes.bool.isRequired,
@@ -39,7 +26,6 @@ const BeatItemTitleConnector = (connector) => {
     beatTree: PropTypes.object.isRequired,
     beat: PropTypes.object.isRequired,
     hierarchyLevels: PropTypes.array.isRequired,
-    hierarchyEnabled: PropTypes.bool,
   }
 
   const {
@@ -57,7 +43,6 @@ const BeatItemTitleConnector = (connector) => {
       beatIndex: selectors.beatIndexSelector(state.present, ownProps.beat.id),
       beatTree: selectors.beatsByBookSelector(state.present),
       hierarchyLevels: selectors.sortedHierarchyLevels(state.present),
-      hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
     }))(BeatItemTitle)
   }
 

@@ -4,6 +4,8 @@ import { Cell } from 'react-sticky-table'
 import cx from 'classnames'
 import { FaBook, FaExpandAlt, FaCompressAlt } from 'react-icons/fa'
 import { FiCopy } from 'react-icons/fi'
+import { BsPinFill } from 'react-icons/bs'
+import { TbPinnedOff } from 'react-icons/tb'
 
 import { helpers } from 'pltr/v2'
 import { t } from 'plottr_locales'
@@ -20,6 +22,7 @@ import Button from '../Button'
 import UnconnectedColorPicker from '../ColorPicker'
 import DeleteConfirmModal from '../dialogs/DeleteConfirmModal'
 import InputModal from '../dialogs/InputModal'
+import ToolTip from '../ToolTip'
 import { checkDependencies } from '../checkDependencies'
 
 const {
@@ -47,7 +50,9 @@ const LineTitleCellConnector = (connector) => {
     notifications,
     books,
     zIndex,
-    actStructureEnabled,
+    allHierarchyLevels,
+    currentTimeline,
+    togglePinPlotline,
   }) => {
     const [hovering, setHovering] = useState(false)
     const [editing, setEditing] = useState(line.title === '')
@@ -179,6 +184,10 @@ const LineTitleCellConnector = (connector) => {
       handleReorder(line.position, droppedLine.position)
     }
 
+    const handlePinPlotLine = () => {
+      togglePinPlotline(line)
+    }
+
     const handleEsc = (event) => {
       if (event.which === 27) {
         setEditing(false)
@@ -307,6 +316,14 @@ const LineTitleCellConnector = (connector) => {
             <Button title={t('Change color')} block bsSize="small" onClick={openColorPicker}>
               <Glyphicon glyph="tint" />
             </Button>
+            <Button
+              title={line?.isPinned ? t('Unpin Plotline') : t('Pin this Plotline')}
+              block
+              bsSize="small"
+              onClick={handlePinPlotLine}
+            >
+              {line?.isPinned ? <TbPinnedOff /> : <BsPinFill />}
+            </Button>
             {isSmall ? null : (
               <>
                 <Button
@@ -333,16 +350,9 @@ const LineTitleCellConnector = (connector) => {
                 >
                   <FiCopy />
                 </Button>
-                {actStructureEnabled ? null : (
-                  <Button
-                    title={t('Move plotline')}
-                    block
-                    bsSize="small"
-                    onClick={toggleMovingLine}
-                  >
-                    <FaBook />
-                  </Button>
-                )}
+                <Button title={t('Move plotline')} block bsSize="small" onClick={toggleMovingLine}>
+                  <FaBook />
+                </Button>
               </>
             )}
             <Button title={t('Delete plotline')} block bsSize="small" onClick={handleDelete}>
@@ -359,6 +369,13 @@ const LineTitleCellConnector = (connector) => {
               </Button>
               <Button title={t('Change color')} bsSize="small" onClick={openColorPicker}>
                 <Glyphicon glyph="tint" />
+              </Button>
+              <Button
+                title={line?.isPinned ? t('Unpin Plotline') : t('Pin this Plotline')}
+                bsSize="small"
+                onClick={handlePinPlotLine}
+              >
+                {line?.isPinned ? <TbPinnedOff /> : <BsPinFill />}
               </Button>
               {isSmall ? null : (
                 <>
@@ -383,11 +400,9 @@ const LineTitleCellConnector = (connector) => {
                   >
                     <FiCopy />
                   </Button>
-                  {actStructureEnabled ? null : (
-                    <Button title={t('Move plotline')} bsSize="small" onClick={toggleMovingLine}>
-                      <FaBook />
-                    </Button>
-                  )}
+                  <Button title={t('Move plotline')} bsSize="small" onClick={toggleMovingLine}>
+                    <FaBook />
+                  </Button>
                 </>
               )}
               <Button title={t('Delete plotline')} bsSize="small" onClick={handleDelete}>
@@ -420,6 +435,26 @@ const LineTitleCellConnector = (connector) => {
             if (Array.isArray(book)) return null
             if (bookId === book.id) return null
 
+            const mismatchInLevelCount =
+              Object.values(allHierarchyLevels[book.id]).length !==
+              Object.values(allHierarchyLevels[currentTimeline]).length
+
+            if (mismatchInLevelCount) {
+              return (
+                <ToolTip
+                  id={`move-book-${book.id}-tooltip`}
+                  placement="right"
+                  text={t(
+                    'You can only move plotlines to books with the same number of structure levels'
+                  )}
+                >
+                  <MenuItem className="disabled" key={book.id} eventKey={book.id}>
+                    {book.title || t('Untitled')}
+                  </MenuItem>
+                </ToolTip>
+              )
+            }
+
             return (
               <MenuItem key={book.id} eventKey={book.id} onClick={() => moveToBook(book.id)}>
                 {book.title || t('Untitled')}
@@ -434,7 +469,16 @@ const LineTitleCellConnector = (connector) => {
       if (movingLine) {
         return renderBookOptions()
       }
-      if (!editing) return truncateTitle(t(line.title), 50)
+      if (!editing) {
+        return line?.isPinned ? (
+          <span>
+            <BsPinFill />
+            {truncateTitle(t(line.title), 50)}
+          </span>
+        ) : (
+          truncateTitle(t(line.title), 50)
+        )
+      }
       return (
         <FormGroup>
           <ControlLabel className={cx({ darkmode: darkMode })}>{t('Plotline name')}</ControlLabel>
@@ -485,7 +529,16 @@ const LineTitleCellConnector = (connector) => {
               offset={isHorizontal ? 0 : 1}
               styles={{ wrapper: { cursor: 'move' } }}
             >
-              <span>{truncateTitle(line.title, 50)}</span>
+              <span>
+                {line?.isPinned ? (
+                  <>
+                    <BsPinFill />
+                    {truncateTitle(t(line.title), 50)}
+                  </>
+                ) : (
+                  truncateTitle(t(line.title), 50)
+                )}
+              </span>
             </Floater>
           </div>
         </th>
@@ -559,7 +612,9 @@ const LineTitleCellConnector = (connector) => {
     notifications: PropTypes.object.isRequired,
     books: PropTypes.object.isRequired,
     zIndex: PropTypes.number,
-    actStructureEnabled: PropTypes.bool,
+    currentTimeline: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    allHierarchyLevels: PropTypes.object.isRequired,
+    togglePinPlotline: PropTypes.func,
   }
 
   const {
@@ -594,7 +649,8 @@ const LineTitleCellConnector = (connector) => {
           isLarge: isLargeSelector(state.present),
           lineIsExpanded: lineIsExpandedSelector(state.present)[ownProps.line.id],
           books: allBooksSelector(state.present),
-          actStructureEnabled: selectors.beatHierarchyIsOn(state.present),
+          currentTimeline: selectors.currentTimelineSelector(state.present),
+          allHierarchyLevels: selectors.allHierarchyLevelsSelector(state.present),
         }
       },
       (dispatch, ownProps) => {

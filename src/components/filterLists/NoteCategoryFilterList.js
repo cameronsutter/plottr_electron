@@ -6,19 +6,13 @@ import GenericFilterList from './GenericFilterList'
 import { checkDependencies } from '../checkDependencies'
 
 const CharacterNoteCategoryFilterListConnector = (connector) => {
-  const uncategorized = {
-    id: null,
-    name: 'Uncategorized',
-    position: -1,
-    type: 'text',
-  }
   class CharacterNoteCategoryFilterList extends Component {
     updateItems = (ids) => {
       this.props.updateItems('noteCategory', ids)
     }
 
     render() {
-      const categoryFilterItems = [...this.props.categories, uncategorized]
+      const categoryFilterItems = [...this.props.categories]
       return (
         <GenericFilterList
           items={categoryFilterItems}
@@ -40,17 +34,17 @@ const CharacterNoteCategoryFilterListConnector = (connector) => {
   const {
     redux,
     pltr: {
-      selectors: { sortedNoteCategoriesSelector },
+      selectors: { categoriesFilterItems },
     },
   } = connector
-  checkDependencies({ redux, sortedNoteCategoriesSelector })
+  checkDependencies({ redux, categoriesFilterItems })
 
   if (redux) {
     const { connect } = redux
 
     return connect((state) => {
       return {
-        categories: sortedNoteCategoriesSelector(state.present),
+        categories: categoriesFilterItems(state.present),
       }
     })(CharacterNoteCategoryFilterList)
   }

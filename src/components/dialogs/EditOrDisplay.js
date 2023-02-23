@@ -188,7 +188,6 @@ const EditOrDisplayConnector = (connector) => {
     options: PropTypes.array,
     hideArrow: PropTypes.bool,
     addSpacer: PropTypes.bool,
-    featureFlags: PropTypes.object.isRequired,
   }
 
   const {
@@ -202,7 +201,6 @@ const EditOrDisplayConnector = (connector) => {
 
     return connect((state) => ({
       isDarkMode: selectors.isDarkModeSelector(state.present),
-      featureFlags: selectors.featureFlags(state.present),
     }))(EditOrDisplay)
   }
 

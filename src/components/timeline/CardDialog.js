@@ -105,7 +105,13 @@ const CardDialogConnector = (connector) => {
       previousClick.current = click
     }, [click])
 
-    const { templates, id, title, color } = cardMetaData
+    const saveEdit = () => {
+      if (!titleInputRef.current) {
+        return
+      }
+      var newTitle = titleInputRef.current.value
+      actions.editCardAttributes(cardId, { title: newTitle })
+    }
 
     useEffect(() => {
       window.SCROLLWITHKEYS = false
@@ -114,6 +120,12 @@ const CardDialogConnector = (connector) => {
         window.SCROLLWITHKEYS = true
       }
     }, [])
+
+    if (!cardMetaData) {
+      return null
+    }
+
+    const { templates, id, title, color } = cardMetaData
 
     const deleteCard = (e) => {
       e.stopPropagation()
@@ -181,11 +193,6 @@ const CardDialogConnector = (connector) => {
         return
       }
       actions.editCardTemplateAttribute(cardId, templateId, name, value, editorPath, selection)
-    }
-
-    const saveEdit = () => {
-      var newTitle = titleInputRef.current.value
-      actions.editCardAttributes(cardId, { title: newTitle })
     }
 
     const handleEnter = (event) => {
@@ -409,6 +416,8 @@ const CardDialogConnector = (connector) => {
 
     const renderBooks = (onSelect = changeBook) => {
       return ['series', ...books.allIds].map((id) => {
+        if (id === currentTimeline) return null
+
         const destinationLine = destinationLineId(id)
         const destinationBeat = destinationBeatId(id)
         const noDestination = !destinationLine || !destinationBeat
@@ -508,7 +517,8 @@ const CardDialogConnector = (connector) => {
       const darkened = color || color === null ? tinycolor(color).darken().toHslString() : null
       const borderColor = color || color === null ? darkened : 'hsl(211, 27%, 70%)' // $gray-6
 
-      const DropDownTitle = <BeatItemTitle beat={beats.find(({ id }) => beatId === id)} />
+      const beat = beats.find(({ id }) => beatId === id)
+      const DropDownTitle = beat ? <BeatItemTitle beat={beat} /> : t('Chapter')
 
       return (
         <div className="card-dialog__left-side">
@@ -516,26 +526,26 @@ const CardDialogConnector = (connector) => {
           <div className="card-dialog__dropdown-wrapper">
             <label className="card-dialog__details-label" htmlFor={lineDropdownID}>
               {t('Plotline')}:
-              <DropdownButton
-                id={lineDropdownID}
-                className="card-dialog__select-line"
-                title={truncateTitle(getCurrentLine().title, 35)}
-              >
-                {renderLineItems()}
-              </DropdownButton>
             </label>
+            <DropdownButton
+              id={lineDropdownID}
+              className="card-dialog__select-line"
+              title={truncateTitle(getCurrentLine()?.title, 35)}
+            >
+              {renderLineItems()}
+            </DropdownButton>
           </div>
           <div className="card-dialog__dropdown-wrapper">
             <label className="card-dialog__details-label" htmlFor={beatDropdownID}>
               {labelText}:
-              <DropdownButton
-                id={beatDropdownID}
-                className="card-dialog__select-card"
-                title={DropDownTitle}
-              >
-                {renderBeatItems()}
-              </DropdownButton>
             </label>
+            <DropdownButton
+              id={beatDropdownID}
+              className="card-dialog__select-card"
+              title={DropDownTitle}
+            >
+              {renderBeatItems()}
+            </DropdownButton>
           </div>
           <SelectList
             parentId={cardId}

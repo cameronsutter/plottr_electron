@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FiXCircle } from 'react-icons/fi'
+import { AiOutlineMenu } from 'react-icons/ai'
 
 import SafeAnchor from './SafeAnchor'
 import createChainedFunction from './utils/createChainedFunction'
@@ -17,6 +18,9 @@ const propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
   onClose: PropTypes.func,
+  onContextMenu: PropTypes.func,
+  onDragOver: PropTypes.func,
+  tabClasses: PropTypes.func,
 }
 
 const defaultProps = {
@@ -44,9 +48,19 @@ class NavItem extends React.Component {
   }
 
   render() {
-    const { onClose, active, disabled, onClick, className, style, ...props } = this.props
+    const {
+      onContextMenu,
+      onClose,
+      active,
+      disabled,
+      onClick,
+      className,
+      style,
+      onDragOver,
+      ...props
+    } = this.props
 
-    const key = props.activeKey
+    const extraClasses = this.props.tabClasses ? this.props.tabClasses(this.props.eventKey) : {}
 
     delete props.onSelect
     delete props.eventKey
@@ -64,20 +78,46 @@ class NavItem extends React.Component {
     }
 
     return (
-      <li role="presentation" className={classNames(className, { active, disabled })} style={style}>
+      <li
+        role="presentation"
+        className={classNames(className, {
+          ...{ active, disabled },
+          ...extraClasses,
+        })}
+        style={style}
+        onDragOver={
+          onDragOver
+            ? (event) => {
+                event.stopPropagation()
+                onDragOver(this.props.eventKey)
+              }
+            : undefined
+        }
+      >
         <SafeAnchor
           {...props}
           draggable={props.draggable}
           disabled={disabled}
           onClick={createChainedFunction(onClick, this.handleClick)}
         >
-          {onClose && active ? (
+          {onContextMenu ? (
+            <div className="nav-context-button">
+              {props.children}
+              &nbsp;
+              <AiOutlineMenu
+                onClick={(event) => {
+                  event.stopPropagation()
+                  onContextMenu(this.props.eventKey, event.target)
+                }}
+              />
+            </div>
+          ) : onClose && active ? (
             <div className="nav-with-cross">
               {props.children}
               &nbsp;
               <FiXCircle
                 onClick={() => {
-                  onClose(key)
+                  onClose(this.props.eventKey)
                 }}
               />
             </div>

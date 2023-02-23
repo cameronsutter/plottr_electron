@@ -69,6 +69,12 @@ const propTypes = {
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.array]),
 
   onCloseTab: PropTypes.func,
+
+  onContextMenu: PropTypes.func,
+
+  onDragOver: PropTypes.func,
+
+  tabClasses: PropTypes.func,
 }
 
 const defaultProps = {
@@ -97,9 +103,22 @@ class Tabs extends React.Component {
   }
 
   renderTab(child) {
-    const { title, eventKey, disabled, tabClassName } = child.props
+    const { title, eventKey, disabled, tabClassName, noHandlers } = child.props
     if (title == null) {
       return null
+    }
+
+    if (noHandlers) {
+      return (
+        <NavItem
+          onSelect={this.props.onSelect}
+          eventKey={eventKey}
+          disabled={disabled}
+          className={tabClassName}
+        >
+          {title}
+        </NavItem>
+      )
     }
 
     return (
@@ -109,6 +128,9 @@ class Tabs extends React.Component {
         disabled={disabled}
         className={tabClassName}
         onClose={this.props.onCloseTab}
+        onContextMenu={this.props.onContextMenu}
+        onDragOver={this.props.onDragOver}
+        tabClasses={this.props.tabClasses}
       >
         {title}
       </NavItem>

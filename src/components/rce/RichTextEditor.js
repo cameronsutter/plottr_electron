@@ -33,7 +33,6 @@ const RichTextEditorConnector = (connector) => {
       openExternal,
       undo,
       redo,
-      isDevelopment,
     },
   } = connector
   checkDependencies({
@@ -43,7 +42,6 @@ const RichTextEditorConnector = (connector) => {
     openExternal,
     undo,
     redo,
-    isDevelopment,
   })
 
   const ToolBar = UnconnectedToolBar(connector)
@@ -135,7 +133,7 @@ const RichTextEditorConnector = (connector) => {
     )
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Tab' && isDevelopment) {
+      if (event.key === 'Tab') {
         if (event.shiftKey) {
           if (Editor.isInList(editor, editor.selection)) {
             handleList(editor, null, log)

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import PropTypes from 'react-proptypes'
-import { IoOpenOutline } from 'react-icons/io5'
 
 import { t } from 'plottr_locales'
 
@@ -15,7 +14,7 @@ import Button from '../../Button'
 const FileActionsConnector = (connector) => {
   const {
     platform: {
-      file: { deleteKnownFile, removeFromKnownFiles, renameFile },
+      file: { deleteKnownFile, removeFromKnownFiles, renameFile, createFileShortcut },
       isMacOS,
       showItemInFolder,
       os,
@@ -76,6 +75,10 @@ const FileActionsConnector = (connector) => {
       openFile(fileURL)
     }
 
+    const handleCreateDesktopShortcut = (fileURL) => {
+      createFileShortcut(fileURL, 'desktop').then((shortcut) => showItemInFolder(shortcut))
+    }
+
     const doTheThing = (eventKey) => {
       switch (eventKey) {
         case 'open': {
@@ -93,6 +96,9 @@ const FileActionsConnector = (connector) => {
           break
         case 'delete':
           setDeleting(true)
+          break
+        case 'create-file-shortcut':
+          handleCreateDesktopShortcut(fileURL)
           break
       }
     }
@@ -132,6 +138,11 @@ const FileActionsConnector = (connector) => {
               <Dropdown.Menu>
                 {isCloudFile || osIsUnknown || missing ? null : (
                   <MenuItem eventKey="show">{showInMessage}</MenuItem>
+                )}
+                {isCloudFile || osIsUnknown || missing || isTemp ? null : (
+                  <MenuItem eventKey="create-file-shortcut">
+                    {t('Create Desktop Shortcut')}
+                  </MenuItem>
                 )}
                 {isCloudFile || osIsUnknown ? null : (
                   <MenuItem eventKey="remove">{t('Remove from this list')}</MenuItem>

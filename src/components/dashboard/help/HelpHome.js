@@ -52,7 +52,7 @@ const HelpHomeConnector = (connector) => {
     return (
       <div className="dashboard__help">
         <div style={{ flex: 0.16 }}>
-          <h1>{t('Give Feedback')}</h1>
+          <h1>{t('Help')}</h1>
           <div className="dashboard__help__item links">
             <Button bsSize="large" bsStyle="link" onClick={l('youtube.com/c/Plottr')}>
               {t('Tutorials')}
@@ -89,9 +89,9 @@ const HelpHomeConnector = (connector) => {
         <div style={{ flex: 0.16 }}>
           <h1>{t('Actions')}</h1>
           <div className="dashboard__help__item actions">
-            <Button onClick={l('feedback.getplottr.com')}>{t('Give Feedback')}</Button>
-            <Button onClick={l('plottr.com/support')}>{t('Report a Problem')}</Button>
+            <Button onClick={l('plottr.com/support')}>{t('Contact Support')}</Button>
             <Button onClick={handleCreateErrorReport}>{t('Create an Error Report')}</Button>
+            <Button onClick={l('feedback.getplottr.com')}>{t('Give Feedback')}</Button>
             <div>
               <FormGroup controlId="customerServiceCode">
                 <FormControl

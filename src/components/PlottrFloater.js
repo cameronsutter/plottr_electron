@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { Popover, ArrowContainer } from 'react-tiny-popover'
+import cx from 'classnames'
 
 const PORTAL_ID = 'plottr-floater-portal'
 
@@ -19,11 +20,12 @@ const PlottrFloaterConnector = (connector) => {
     hideArrow,
     zIndex,
     darkMode,
+    positionLeftMost,
   }) => {
     const SuppliedComponent = component
 
     const Component = useCallback(
-      ({ position, childRect, popoverRect }) => {
+      ({ position, childRect, popoverRect, boundaryRect }) => {
         return hideArrow ? (
           <SuppliedComponent />
         ) : (
@@ -34,7 +36,17 @@ const PlottrFloaterConnector = (connector) => {
             arrowColor={darkMode ? '#555' : 'white'}
             arrowSize={10}
             arrowStyle={{}}
-            className="popover-arrow-container"
+            className={cx('popover-arrow-container', {
+              resize:
+                (boundaryRect.height == boundaryRect.bottom &&
+                  boundaryRect.width == boundaryRect.right) ||
+                (boundaryRect.height == boundaryRect.top &&
+                  boundaryRect.width == boundaryRect.right) ||
+                (boundaryRect.height == boundaryRect.bottom &&
+                  boundaryRect.width == boundaryRect.left) ||
+                (boundaryRect.height == boundaryRect.top &&
+                  boundaryRect.width == boundaryRect.left),
+            })}
             arrowClassName="popover-arrow"
           >
             <SuppliedComponent />
@@ -44,11 +56,21 @@ const PlottrFloaterConnector = (connector) => {
       [component]
     )
 
+    const getPositions = () => {
+      if (positionLeftMost) {
+        return ['bottom']
+      } else if (placement) {
+        return [placement, ...['left', 'right', 'bottom', 'top']]
+      } else {
+        return ['left', 'right', 'bottom', 'top']
+      }
+    }
+
     return (
       <Popover
         isOpen={open}
-        positions={[placement, ...['left', 'right', 'bottom', 'top']]}
-        align={align}
+        positions={getPositions()}
+        align={positionLeftMost ? 'start' : align || 'center'}
         contentLocation={contentLocation}
         padding={containerPadding}
         // FIXME: Root close on SelectLists is a bit finicky
@@ -76,6 +98,7 @@ const PlottrFloaterConnector = (connector) => {
     hideArrow: PropTypes.bool,
     zIndex: PropTypes.number,
     darkMode: PropTypes.bool,
+    positionLeftMost: PropTypes.bool,
   }
 
   const {

@@ -135,6 +135,7 @@ const NoteListViewConnector = (connector) => {
 
       return visibleNotesByCategory[categoryId].map((n) => (
         <NoteItem
+          editing={editingSelected}
           key={n.id}
           note={n}
           selected={n.id == noteDetailId}
@@ -307,7 +308,7 @@ const NoteListViewConnector = (connector) => {
         {renderCategoriesModal()}
         <Grid fluid className="tab-body">
           <Row>
-            <Col sm={3}>
+            <Col sm={3} onDoubleClick={stopEditing}>
               <h1 className={cx('secondary-text', { darkmode: darkMode })}>
                 {i18n('Notes')}{' '}
                 <Button onClick={handleCreateNewNote}>

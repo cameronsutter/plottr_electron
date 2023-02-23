@@ -47,16 +47,15 @@ const BeatTitleCellConnector = (connector) => {
     isSmall,
     isMedium,
     isLarge,
-    hierarchyEnabled,
     isSeries,
     readOnly,
-    featureFlags,
     timelineViewIsStacked,
     timelineViewIsTabbed,
     atMaximumDepth,
     hierarchyLevelName,
     hierarchyChildLevelName,
     timelineViewIsDefault,
+    domEvents,
   }) => {
     const [hovering, setHovering] = useState(false)
     const [editing, setEditing] = useState(beat.title == '')
@@ -149,7 +148,8 @@ const BeatTitleCellConnector = (connector) => {
       setDragging(true)
     }
 
-    const handleDragEnd = () => {
+    const handleDragEnd = (event) => {
+      domEvents.dropBeat(beatId, { x: event.clientX, y: event.clientY })
       setDragging(false)
     }
 
@@ -385,15 +385,7 @@ const BeatTitleCellConnector = (connector) => {
       return (
         <FormGroup>
           <ControlLabel className={cx({ darkmode: darkMode })}>
-            {editingBeatLabel(
-              beatIndex,
-              beats,
-              beat,
-              hierarchyLevels,
-              positionOffset,
-              hierarchyEnabled,
-              isSeries
-            )}
+            {editingBeatLabel(beatIndex, beats, beat, hierarchyLevels)}
           </ControlLabel>
           <FormControl
             type="text"
@@ -562,8 +554,7 @@ const BeatTitleCellConnector = (connector) => {
                 timelineSize,
                 hovering || inDropZone,
                 darkMode === true ? hierarchyLevel.dark : hierarchyLevel.light,
-                darkMode,
-                featureFlags
+                darkMode
               )}
               className={innerKlass}
               onClick={startEditing}
@@ -656,16 +647,15 @@ const BeatTitleCellConnector = (connector) => {
     isSmall: PropTypes.bool.isRequired,
     isMedium: PropTypes.bool.isRequired,
     isLarge: PropTypes.bool.isRequired,
-    hierarchyEnabled: PropTypes.bool.isRequired,
     isSeries: PropTypes.bool.isRequired,
     readOnly: PropTypes.bool,
-    featureFlags: PropTypes.object.isRequired,
     timelineViewIsStacked: PropTypes.bool,
     timelineViewIsTabbed: PropTypes.bool,
     atMaximumDepth: PropTypes.bool,
     hierarchyLevelName: PropTypes.string,
     hierarchyChildLevelName: PropTypes.string,
     timelineViewIsDefault: PropTypes.bool,
+    domEvents: PropTypes.object.isRequired,
   }
 
   const {
@@ -697,10 +687,8 @@ const BeatTitleCellConnector = (connector) => {
           isSmall: selectors.isSmallSelector(state.present),
           isMedium: selectors.isMediumSelector(state.present),
           isLarge: selectors.isLargeSelector(state.present),
-          hierarchyEnabled: selectors.beatHierarchyIsOn(state.present),
           isSeries: selectors.isSeriesSelector(state.present),
           readOnly: !selectors.canWriteSelector(state.present),
-          featureFlags: selectors.featureFlags(state.present),
           timelineViewIsStacked: selectors.timelineViewIsStackedSelector(state.present),
           timelineViewIsTabbed: selectors.timelineViewIsTabbedSelector(state.present),
           timelineViewIsDefault: selectors.timelineViewIsDefaultSelector(state.present),
@@ -720,6 +708,7 @@ const BeatTitleCellConnector = (connector) => {
     const mapDispatchToProps = (dispatch) => {
       return {
         actions: bindActionCreators(actions.beat, dispatch),
+        domEvents: bindActionCreators(actions.domEvents, dispatch),
       }
     }
 

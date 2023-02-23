@@ -4,7 +4,8 @@
   display: flex;
 }
 
-.nav-with-cross, .nav-context-button {
+.nav-with-cross,
+.nav-context-button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -63,7 +64,7 @@
       }
     }
 
-    .sticky-table-cell:has(.card-pinned ) {
+    .sticky-table-cell:has(.card-pinned) {
       z-index: 3;
 
       > .vertical-line-title__line-line {
@@ -149,11 +150,10 @@
     z-index: 10 !important;
   }
 
-  .sticky-table-cell.card-pinned:has(.vertical-insert-beat-wrapper:not(.transparent)){
+  .sticky-table-cell.card-pinned:has(.vertical-insert-beat-wrapper:not(.transparent)) {
     z-index: 10 !important;
   }
 }
-
 
 .tab-dropdown-menu {
   min-width: 160px;
@@ -166,7 +166,7 @@
   border: 1px solid $dropdown-fallback-border; // IE8 fallback
   border: 1px solid $dropdown-border;
   border-radius: $border-radius-base;
-  @include box-shadow(0 6px 12px rgba(0,0,0,.175));
+  @include box-shadow(0 6px 12px rgba(0, 0, 0, 0.175));
   background-clip: padding-box;
 
   // Links within the dropdown menu
@@ -511,7 +511,7 @@
   .timeline__tab {
     width: 100vw;
     height: 78vh;
-    overflow:auto;
+    overflow: auto;
   }
 
   .timeline__tabs-wrapper {
@@ -554,7 +554,18 @@
   }
 }
 
-#timelineview__root .isPinned .sticky-table-cell:not(:first-child):not(:nth-child(2)):not(:has(.card__body-wrapper, .card__cell__overview-cell)) {
+#timelineview__root
+  .isPinned
+  .sticky-table-cell:not(:first-child):not(:nth-child(2)):not(:has(.card__body-wrapper, .card__cell__overview-cell)) {
+  z-index: 3;
+  &:hover {
+    z-index: 5;
+  }
+}
+
+#timelineview__root
+  .isPinned
+  .sticky-table-cell:not(:first-child):not(:nth-child(2)):not(:has(.card__body-wrapper, .card__cell__overview-cell)) {
   z-index: 3;
   &:hover {
     z-index: 5;

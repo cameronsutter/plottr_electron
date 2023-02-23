@@ -90,8 +90,8 @@ function saveDialog(windowId, filters, title, defaultPath) {
 }
 
 const makeSaveDialog = (sender) => {
-  return (filters, title, defaultPath) => {
-    return saveDialog(sender.getOwnerBrowserWindow().id, filters, title, defaultPath).then(
+  return (defaultPath) => {
+    return saveDialog(sender.getOwnerBrowserWindow().id, null, 'Export as', defaultPath).then(
       (result) => {
         return result.filePath
       }

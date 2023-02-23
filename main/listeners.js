@@ -81,8 +81,8 @@ const makeMPQ = (sender) => {
   }
 }
 
-function saveDialog(windowId, filters, title, defaultPath) {
-  return dialog.showSaveDialog(windowId, {
+function saveDialog(window, filters, title, defaultPath) {
+  return dialog.showSaveDialog(window, {
     filters,
     title,
     defaultPath,
@@ -91,7 +91,7 @@ function saveDialog(windowId, filters, title, defaultPath) {
 
 const makeSaveDialog = (sender) => {
   return (defaultPath) => {
-    return saveDialog(sender.getOwnerBrowserWindow().id, null, 'Export as', defaultPath).then(
+    return saveDialog(sender.getOwnerBrowserWindow(), null, 'Export as', defaultPath).then(
       (result) => {
         return result.filePath
       }

@@ -60,19 +60,14 @@
       "timelineTemplates": [],
       "imageId": null
     },
-    "allIds": [
-      1
-    ]
+    "allIds": [1]
   },
   "beats": {
     "1": {
       "children": {
         "2": [],
         "3": [],
-        "null": [
-          2,
-          3
-        ]
+        "null": [2, 3]
       },
       "heap": {
         "2": null,
@@ -104,9 +99,7 @@
     "series": {
       "children": {
         "1": [],
-        "null": [
-          1
-        ]
+        "null": [1]
       },
       "heap": {
         "1": null

@@ -8,60 +8,60 @@
     "initialVersion": "2021.2.24"
   },
   "ui": {
-	"currentView": "timeline",
-	"currentTimeline": 1,
-	"timelineIsExpanded": true,
-	"orientation": "horizontal",
-	"darkMode": false,
-	"characterSort": "name~asc",
-	"characterFilter": null,
-	"placeSort": "name~asc",
-	"placeFilter": null,
-	"noteSort": "title~asc",
-	"noteFilter": null,
-	"outlineFilter": null,
-	"timelineFilter": null,
-	"timelineScrollPosition": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
       "x": 0,
       "y": 0
-	},
-	"timeline": {
+    },
+    "timeline": {
       "size": "large",
       "view": "default",
       "actTab": 0
-	},
-	"searchTerms": {
+    },
+    "searchTerms": {
       "notes": null,
       "characters": null,
       "places": null,
       "tags": null,
       "outline": null,
       "timeline": null
-	},
+    },
     "templateModal": {
       "expanded": false
     },
-	"attributeTabs": {
+    "attributeTabs": {
       "characters": null
-	},
-	"characterTab": {
+    },
+    "characterTab": {
       "selectedCharacter": null
-	},
-	"customAttributeOrder": {
+    },
+    "customAttributeOrder": {
       "characters": []
-	},
-	"cardDialog": {
+    },
+    "cardDialog": {
       "isOpen": false,
       "cardId": null,
       "lineId": null,
       "beatId": null
-	},
-	"collaborators": {},
-	"bookDialog": {
+    },
+    "collaborators": {},
+    "bookDialog": {
       "isOpen": false,
       "bookId": null
-	},
-	"outlineScrollPosition": 0,
+    },
+    "outlineScrollPosition": 0,
     "actConfigModal": {
       "open": false
     }

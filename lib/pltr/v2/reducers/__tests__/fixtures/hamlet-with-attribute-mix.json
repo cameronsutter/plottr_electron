@@ -54,9 +54,7 @@
       "templates": [],
       "imageId": null
     },
-    "allIds": [
-      1
-    ]
+    "allIds": [1]
   },
   "characters": [
     {
@@ -73,46 +71,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        4,
-        5,
-        7,
-        8,
-        9,
-        10,
-        14,
-        16,
-        17,
-        18,
-        23,
-        25,
-        12,
-        11,
-        24,
-        13
-      ],
-      "noteIds": [
-        3,
-        4
-      ],
+      "cards": [2, 4, 5, 7, 8, 9, 10, 14, 16, 17, 18, 23, 25, 12, 11, 24, 13],
+      "noteIds": [3, 4],
       "templates": [],
-      "tags": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        7,
-        9,
-        10,
-        8
-      ],
+      "tags": [1, 2, 3, 4, 5, 7, 9, 10, 8],
       "categoryId": "1",
       "imageId": "1",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Protagonist",
       "Motivation": [
         {
@@ -145,44 +110,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        7,
-        8,
-        9,
-        10,
-        15,
-        17,
-        19,
-        21,
-        23,
-        25,
-        12,
-        11,
-        24,
-        13,
-        22
-      ],
-      "noteIds": [
-        3,
-        4
-      ],
+      "cards": [2, 7, 8, 9, 10, 15, 17, 19, 21, 23, 25, 12, 11, 24, 13, 22],
+      "noteIds": [3, 4],
       "templates": [],
-      "tags": [
-        8,
-        1,
-        2,
-        3,
-        4,
-        5,
-        11,
-        12
-      ],
+      "tags": [8, 1, 2, 3, 4, 5, 11, 12],
       "categoryId": "1",
       "imageId": "4",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Antagonist",
       "Motivation": [
         {
@@ -215,40 +149,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        7,
-        9,
-        14,
-        15,
-        19,
-        21,
-        23,
-        25,
-        12,
-        11,
-        24,
-        13,
-        22
-      ],
-      "noteIds": [
-        3,
-        4
-      ],
+      "cards": [2, 7, 9, 14, 15, 19, 21, 23, 25, 12, 11, 24, 13, 22],
+      "noteIds": [3, 4],
       "templates": [],
-      "tags": [
-        8,
-        2,
-        3,
-        1,
-        4,
-        12
-      ],
+      "tags": [8, 2, 3, 1, 4, 12],
       "categoryId": "1",
       "imageId": "3",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "",
       "Motivation": [
         {
@@ -281,37 +188,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        3,
-        6,
-        7,
-        8,
-        9,
-        14,
-        12,
-        11,
-        24,
-        13
-      ],
-      "noteIds": [
-        3
-      ],
+      "cards": [2, 3, 6, 7, 8, 9, 14, 12, 11, 24, 13],
+      "noteIds": [3],
       "templates": [],
-      "tags": [
-        1,
-        2,
-        3,
-        8,
-        12,
-        10,
-        6
-      ],
+      "tags": [1, 2, 3, 8, 12, 10, 6],
       "categoryId": "2",
       "imageId": "15",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Supporting",
       "Motivation": [
         {
@@ -344,34 +227,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        4,
-        5,
-        9,
-        20,
-        23,
-        25,
-        12,
-        11,
-        24,
-        22
-      ],
+      "cards": [1, 4, 5, 9, 20, 23, 25, 12, 11, 24, 22],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        7
-      ],
+      "tags": [1, 2, 3, 4, 5, 7],
       "categoryId": "2",
       "imageId": "11",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Supporting character",
       "Motivation": [
         {
@@ -404,38 +266,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        3,
-        6,
-        8,
-        9,
-        19,
-        23,
-        12,
-        11,
-        24,
-        13,
-        22
-      ],
-      "noteIds": [
-        3,
-        4
-      ],
+      "cards": [3, 6, 8, 9, 19, 23, 12, 11, 24, 13, 22],
+      "noteIds": [3, 4],
       "templates": [],
-      "tags": [
-        7,
-        10,
-        8,
-        1,
-        2,
-        3,
-        9
-      ],
+      "tags": [7, 10, 8, 1, 2, 3, 9],
       "categoryId": "2",
       "imageId": "2",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "",
       "Motivation": [
         {
@@ -468,35 +305,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        3,
-        19,
-        21,
-        23,
-        25,
-        12,
-        24,
-        22
-      ],
-      "noteIds": [
-        3
-      ],
+      "cards": [2, 3, 19, 21, 23, 25, 12, 24, 22],
+      "noteIds": [3],
       "templates": [],
-      "tags": [
-        1,
-        3,
-        4,
-        5,
-        6,
-        9,
-        8
-      ],
+      "tags": [1, 3, 4, 5, 6, 9, 8],
       "categoryId": "1",
       "imageId": "12",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Antagonist",
       "Motivation": [
         {
@@ -529,27 +344,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        18,
-        25,
-        12,
-        24,
-        22
-      ],
+      "cards": [18, 25, 12, 24, 22],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        6,
-        2,
-        5,
-        9,
-        13
-      ],
+      "tags": [6, 2, 5, 9, 13],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Antagonist",
       "Motivation": [
         {
@@ -582,31 +383,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        4,
-        5,
-        14,
-        12
-      ],
+      "cards": [1, 4, 5, 14, 12],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1,
-        4,
-        6,
-        7,
-        9,
-        11,
-        12,
-        13,
-        8
-      ],
+      "tags": [1, 4, 6, 7, 9, 11, 12, 13, 8],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Protagonist's Father",
       "Motivation": [
         {
@@ -639,34 +422,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        7,
-        8,
-        9,
-        10,
-        15,
-        16,
-        17,
-        18,
-        11,
-        24,
-        13,
-        22
-      ],
+      "cards": [7, 8, 9, 10, 15, 16, 17, 18, 11, 24, 13, 22],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2,
-        3,
-        4,
-        8,
-        12
-      ],
+      "tags": [2, 3, 4, 8, 12],
       "categoryId": "2",
       "imageId": "14",
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Antagonists",
       "Motivation": [
         {
@@ -699,23 +461,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        25,
-        24
-      ],
+      "cards": [25, 24],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        5,
-        7,
-        10,
-        12
-      ],
+      "tags": [5, 7, 10, 12],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "",
       "Motivation": [
         {
@@ -748,24 +500,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        2,
-        7,
-        13
-      ],
+      "cards": [2, 7, 13],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2,
-        1,
-        13,
-        6
-      ],
+      "tags": [2, 1, 13, 6],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extras",
       "Motivation": [
         {
@@ -798,26 +539,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        4,
-        5,
-        12,
-        24
-      ],
+      "cards": [1, 4, 5, 12, 24],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1,
-        2,
-        10,
-        13
-      ],
+      "tags": [1, 2, 10, 13],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extra",
       "Motivation": [
         {
@@ -850,17 +578,10 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        12
-      ],
+      "cards": [1, 12],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1,
-        6,
-        10
-      ],
+      "tags": [1, 6, 10],
       "categoryId": "3",
       "imageId": null,
       "bookIds": [],
@@ -896,25 +617,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        6,
-        12,
-        11,
-        13
-      ],
+      "cards": [6, 12, 11, 13],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2,
-        6,
-        12,
-        13
-      ],
+      "tags": [2, 6, 12, 13],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extra",
       "Motivation": [
         {
@@ -947,24 +656,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        12
-      ],
+      "cards": [1, 12],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        1,
-        2,
-        6,
-        10,
-        13
-      ],
+      "tags": [1, 2, 6, 10, 13],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extra",
       "Motivation": [
         {
@@ -997,27 +695,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        7,
-        9,
-        11,
-        13
-      ],
+      "cards": [7, 9, 11, 13],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        2,
-        3,
-        6,
-        7,
-        9,
-        12
-      ],
+      "tags": [2, 3, 6, 7, 9, 12],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extras",
       "Motivation": [
         {
@@ -1050,18 +734,10 @@
         }
       ],
       "color": null,
-      "cards": [
-        20,
-        24,
-        22
-      ],
+      "cards": [20, 24, 22],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        4,
-        6,
-        9
-      ],
+      "tags": [4, 6, 9],
       "categoryId": "3",
       "imageId": null,
       "bookIds": [],
@@ -1097,23 +773,13 @@
         }
       ],
       "color": null,
-      "cards": [
-        23,
-        24
-      ],
+      "cards": [23, 24],
       "noteIds": [],
       "templates": [],
-      "tags": [
-        5,
-        6,
-        7,
-        11
-      ],
+      "tags": [5, 6, 7, 11],
       "categoryId": "3",
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "Role": "Extras",
       "Motivation": [
         {
@@ -1217,27 +883,9 @@
           ]
         }
       ],
-      "tags": [
-        5,
-        7,
-        8,
-        13,
-        12,
-        9,
-        10
-      ],
-      "characters": [
-        1,
-        5,
-        11,
-        2,
-        3,
-        7,
-        8
-      ],
-      "places": [
-        1
-      ],
+      "tags": [5, 7, 8, 13, 12, 9, 10],
+      "characters": [1, 5, 11, 2, 3, 7, 8],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
@@ -1261,33 +909,9 @@
           ]
         }
       ],
-      "tags": [
-        3,
-        7,
-        8,
-        10,
-        12,
-        13,
-        9
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        10,
-        13,
-        19,
-        18,
-        11
-      ],
-      "places": [
-        1
-      ],
+      "tags": [3, 7, 8, 10, 12, 13, 9],
+      "characters": [1, 2, 3, 4, 5, 6, 7, 8, 10, 13, 19, 18, 11],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1325,26 +949,9 @@
           ]
         }
       ],
-      "tags": [
-        4,
-        7,
-        6,
-        12,
-        11,
-        9
-      ],
-      "characters": [
-        1,
-        5,
-        2,
-        3,
-        7,
-        6,
-        19
-      ],
-      "places": [
-        5
-      ],
+      "tags": [4, 7, 6, 12, 11, 9],
+      "characters": [1, 5, 2, 3, 7, 6, 19],
+      "places": [5],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1368,30 +975,9 @@
           ]
         }
       ],
-      "tags": [
-        12,
-        13,
-        9,
-        6,
-        3,
-        10,
-        2,
-        7
-      ],
-      "characters": [
-        3,
-        2,
-        10,
-        8,
-        7,
-        6,
-        5,
-        18
-      ],
-      "places": [
-        1,
-        4
-      ],
+      "tags": [12, 13, 9, 6, 3, 10, 2, 7],
+      "characters": [3, 2, 10, 8, 7, 6, 5, 18],
+      "places": [1, 4],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1436,21 +1022,9 @@
           ]
         }
       ],
-      "tags": [
-        10,
-        12,
-        9,
-        3,
-        8
-      ],
-      "characters": [
-        2,
-        7,
-        3
-      ],
-      "places": [
-        1
-      ],
+      "tags": [10, 12, 9, 3, 8],
+      "characters": [2, 7, 3],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 6,
@@ -1474,19 +1048,9 @@
           ]
         }
       ],
-      "tags": [
-        3,
-        6,
-        7,
-        12
-      ],
-      "characters": [
-        5,
-        18
-      ],
-      "places": [
-        1
-      ],
+      "tags": [3, 6, 7, 12],
+      "characters": [5, 18],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 5,
@@ -1517,21 +1081,9 @@
           ]
         }
       ],
-      "tags": [
-        3,
-        9,
-        10,
-        12
-      ],
-      "characters": [
-        3,
-        2,
-        6,
-        7
-      ],
-      "places": [
-        1
-      ],
+      "tags": [3, 9, 10, 12],
+      "characters": [3, 2, 6, 7],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 4,
@@ -1562,21 +1114,9 @@
           ]
         }
       ],
-      "tags": [
-        3,
-        6,
-        13,
-        9,
-        7
-      ],
-      "characters": [
-        1,
-        8,
-        10
-      ],
-      "places": [
-        4
-      ],
+      "tags": [3, 6, 13, 9, 7],
+      "characters": [1, 8, 10],
+      "places": [4],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 3,
@@ -1607,21 +1147,9 @@
           ]
         }
       ],
-      "tags": [
-        6,
-        10,
-        12,
-        13,
-        3
-      ],
-      "characters": [
-        2,
-        1,
-        10
-      ],
-      "places": [
-        1
-      ],
+      "tags": [6, 10, 12, 13, 3],
+      "characters": [2, 1, 10],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 2,
@@ -1645,22 +1173,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        6,
-        3,
-        10,
-        12,
-        13,
-        9
-      ],
-      "characters": [
-        1,
-        10
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 6, 3, 10, 12, 13, 9],
+      "characters": [1, 10],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
@@ -1684,21 +1199,9 @@
           ]
         }
       ],
-      "tags": [
-        9,
-        6,
-        3,
-        12,
-        13
-      ],
-      "characters": [
-        3,
-        2,
-        10
-      ],
-      "places": [
-        1
-      ],
+      "tags": [9, 6, 3, 12, 13],
+      "characters": [3, 2, 10],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1743,24 +1246,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        3,
-        7,
-        8,
-        9,
-        10,
-        12
-      ],
-      "characters": [
-        1,
-        3,
-        4,
-        9
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 3, 7, 8, 9, 10, 12],
+      "characters": [1, 3, 4, 9],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 3,
@@ -1784,28 +1272,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        6,
-        7,
-        12,
-        13,
-        10
-      ],
-      "characters": [
-        6,
-        4,
-        15,
-        2,
-        3,
-        10,
-        12,
-        1,
-        17
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 6, 7, 12, 13, 10],
+      "characters": [6, 4, 15, 2, 3, 10, 12, 1, 17],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1829,33 +1298,9 @@
           ]
         }
       ],
-      "tags": [
-        1,
-        6,
-        7,
-        9,
-        10,
-        12,
-        13
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        13,
-        16,
-        14,
-        15
-      ],
-      "places": [
-        1
-      ],
+      "tags": [1, 6, 7, 9, 10, 12, 13],
+      "characters": [1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 16, 14, 15],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1879,29 +1324,9 @@
           ]
         }
       ],
-      "tags": [
-        10,
-        9,
-        8,
-        7,
-        12,
-        6,
-        2
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        10,
-        15,
-        17
-      ],
-      "places": [
-        1
-      ],
+      "tags": [10, 9, 8, 7, 12, 6, 2],
+      "characters": [1, 2, 3, 4, 5, 6, 10, 15, 17],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -1932,22 +1357,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        6,
-        7,
-        11,
-        12,
-        10
-      ],
-      "characters": [
-        2,
-        1,
-        10
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 6, 7, 11, 12, 10],
+      "characters": [2, 1, 10],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 2,
@@ -1999,26 +1411,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        6,
-        7,
-        10,
-        12
-      ],
-      "characters": [
-        1,
-        6,
-        2,
-        3,
-        5,
-        4,
-        10,
-        17
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 6, 7, 10, 12],
+      "characters": [1, 6, 2, 3, 5, 4, 10, 17],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
@@ -2056,24 +1451,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        7,
-        6,
-        10,
-        9,
-        12
-      ],
-      "characters": [
-        1,
-        2,
-        6,
-        4,
-        10
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 7, 6, 10, 9, 12],
+      "characters": [1, 2, 6, 4, 10],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -2160,25 +1540,9 @@
           ]
         }
       ],
-      "tags": [
-        2,
-        10,
-        12,
-        13,
-        6
-      ],
-      "characters": [
-        3,
-        2,
-        10,
-        12,
-        4,
-        1,
-        17
-      ],
-      "places": [
-        1
-      ],
+      "tags": [2, 10, 12, 13, 6],
+      "characters": [3, 2, 10, 12, 4, 1, 17],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
@@ -2209,20 +1573,9 @@
           ]
         }
       ],
-      "tags": [
-        12,
-        1,
-        6,
-        10
-      ],
-      "characters": [
-        6,
-        4,
-        15
-      ],
-      "places": [
-        1
-      ],
+      "tags": [12, 1, 6, 10],
+      "characters": [6, 4, 15],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -2260,22 +1613,9 @@
           ]
         }
       ],
-      "tags": [
-        1,
-        6,
-        7,
-        8,
-        9
-      ],
-      "characters": [
-        1,
-        9,
-        13,
-        5
-      ],
-      "places": [
-        1
-      ],
+      "tags": [1, 6, 7, 8, 9],
+      "characters": [1, 9, 13, 5],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 4,
@@ -2313,22 +1653,9 @@
           ]
         }
       ],
-      "tags": [
-        1,
-        6,
-        8,
-        10,
-        9
-      ],
-      "characters": [
-        1,
-        9,
-        13,
-        5
-      ],
-      "places": [
-        1
-      ],
+      "tags": [1, 6, 8, 10, 9],
+      "characters": [1, 9, 13, 5],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 3,
@@ -2366,22 +1693,9 @@
           ]
         }
       ],
-      "tags": [
-        1,
-        12,
-        13,
-        6,
-        7
-      ],
-      "characters": [
-        4,
-        7,
-        6
-      ],
-      "places": [
-        3,
-        1
-      ],
+      "tags": [1, 12, 13, 6, 7],
+      "characters": [4, 7, 6],
+      "places": [3, 1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 2,
@@ -2426,24 +1740,9 @@
           ]
         }
       ],
-      "tags": [
-        13,
-        1,
-        12,
-        7,
-        6
-      ],
-      "characters": [
-        2,
-        3,
-        1,
-        4,
-        7,
-        12
-      ],
-      "places": [
-        1
-      ],
+      "tags": [13, 1, 12, 7, 6],
+      "characters": [2, 3, 1, 4, 7, 12],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 1,
@@ -2481,21 +1780,9 @@
           ]
         }
       ],
-      "tags": [
-        13,
-        6,
-        1
-      ],
-      "characters": [
-        13,
-        5,
-        9,
-        14,
-        16
-      ],
-      "places": [
-        1
-      ],
+      "tags": [13, 6, 1],
+      "characters": [13, 5, 9, 14, 16],
+      "places": [1],
       "templates": [],
       "imageId": null,
       "positionWithinLine": 0,
@@ -2586,41 +1873,12 @@
         }
       ],
       "color": null,
-      "cards": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        9,
-        10,
-        15,
-        16,
-        17,
-        19,
-        20,
-        21,
-        25,
-        12,
-        8,
-        14,
-        11,
-        24,
-        13,
-        22
-      ],
-      "noteIds": [
-        3,
-        4
-      ],
+      "cards": [1, 2, 3, 4, 5, 6, 7, 9, 10, 15, 16, 17, 19, 20, 21, 25, 12, 8, 14, 11, 24, 13, 22],
+      "noteIds": [3, 4],
       "templates": [],
       "tags": [],
       "imageId": "9",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 2,
@@ -2641,9 +1899,7 @@
       "templates": [],
       "tags": [],
       "imageId": "6",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 3,
@@ -2659,16 +1915,12 @@
         }
       ],
       "color": null,
-      "cards": [
-        3
-      ],
+      "cards": [3],
       "noteIds": [],
       "templates": [],
       "tags": [],
       "imageId": "7",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 4,
@@ -2684,17 +1936,12 @@
         }
       ],
       "color": null,
-      "cards": [
-        18,
-        22
-      ],
+      "cards": [18, 22],
       "noteIds": [],
       "templates": [],
       "tags": [],
       "imageId": "8",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 5,
@@ -2710,18 +1957,12 @@
         }
       ],
       "color": null,
-      "cards": [
-        23
-      ],
-      "noteIds": [
-        3
-      ],
+      "cards": [23],
+      "noteIds": [3],
       "templates": [],
       "tags": [],
       "imageId": "10",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     }
   ],
   "tags": [
@@ -2817,45 +2058,13 @@
           ]
         }
       ],
-      "tags": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19
-      ],
-      "places": [
-        1,
-        4,
-        5
-      ],
+      "tags": [1, 2, 3, 4, 5],
+      "characters": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+      "places": [1, 4, 5],
       "lastEdited": 1597170551136,
       "templates": [],
       "imageId": "16",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 4,
@@ -2888,25 +2097,9 @@
           ]
         }
       ],
-      "tags": [
-        7,
-        8,
-        6,
-        10,
-        12
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        6,
-        7
-      ],
-      "places": [
-        1,
-        5
-      ],
+      "tags": [7, 8, 6, 10, 12],
+      "characters": [1, 2, 3, 4, 6, 7],
+      "places": [1, 5],
       "lastEdited": 1597205299947,
       "templates": [],
       "imageId": "17",
@@ -3047,35 +2240,13 @@
           "type": "paragraph"
         }
       ],
-      "tags": [
-        6,
-        7,
-        9,
-        10,
-        11,
-        12,
-        13
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7
-      ],
-      "places": [
-        1,
-        5,
-        4
-      ],
+      "tags": [6, 7, 9, 10, 11, 12, 13],
+      "characters": [1, 2, 3, 4, 5, 6, 7],
+      "places": [1, 5, 4],
       "lastEdited": 1597170549012,
       "templates": [],
       "imageId": "18",
-      "bookIds": [
-        1
-      ]
+      "bookIds": [1]
     },
     {
       "id": 6,
@@ -3102,23 +2273,9 @@
           ]
         }
       ],
-      "tags": [
-        8,
-        6,
-        7,
-        9,
-        12
-      ],
-      "characters": [
-        1,
-        2,
-        3,
-        6,
-        9
-      ],
-      "places": [
-        1
-      ],
+      "tags": [8, 6, 7, 9, 12],
+      "characters": [1, 2, 3, 6, 9],
+      "places": [1],
       "lastEdited": 1597170539271,
       "templates": [],
       "imageId": "19",

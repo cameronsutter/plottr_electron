@@ -1,6 +1,15 @@
 import xml from 'xml-js'
 import { t } from 'plottr_locales'
-import { cloneDeep, keys, values, findLast, flattenDeep, upperFirst, camelCase } from 'lodash'
+import {
+  isEmpty,
+  cloneDeep,
+  keys,
+  values,
+  findLast,
+  flattenDeep,
+  upperFirst,
+  camelCase,
+} from 'lodash'
 
 import { newIds, helpers, lineColors, initialState, tree } from 'pltr/v2'
 import { uuidsToIntegerIds } from './uuidsToIntegerIds'
@@ -1200,6 +1209,9 @@ export function generateCharacters(currentState, json, bookId, files, isNewFile)
                 attrValue || ''
               )
             }
+          })
+          .filter((attribute) => {
+            return !isEmpty(attribute)
           })
 
         const withoutBaseAttributes = characterAttributes.filter((attr) =>

@@ -97,18 +97,13 @@
       "timelineTemplates": [],
       "imageId": null
     },
-    "allIds": [
-      1,
-      2
-    ]
+    "allIds": [1, 2]
   },
   "beats": {
     "1": {
       "children": {
         "2": [],
-        "null": [
-          2
-        ]
+        "null": [2]
       },
       "heap": {
         "2": null
@@ -130,9 +125,7 @@
     "2": {
       "children": {
         "3": [],
-        "null": [
-          3
-        ]
+        "null": [3]
       },
       "heap": {
         "3": null
@@ -153,9 +146,7 @@
     "series": {
       "children": {
         "1": [],
-        "null": [
-          1
-        ]
+        "null": [1]
       },
       "heap": {
         "1": null
@@ -269,9 +260,7 @@
       "tags": [],
       "categoryId": null,
       "imageId": null,
-      "bookIds": [
-        2
-      ],
+      "bookIds": [2],
       "attributes": [
         {
           "bookId": "all",
@@ -409,9 +398,7 @@
       "tags": [],
       "categoryId": null,
       "imageId": null,
-      "bookIds": [
-        1
-      ],
+      "bookIds": [1],
       "attributes": [
         {
           "bookId": "all",

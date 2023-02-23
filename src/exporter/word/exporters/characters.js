@@ -13,6 +13,13 @@ export default function exportCharacters(state, options) {
   return [{ children: interpret(directives, images) }]
 }
 
+const seriesToAll = (timelineName) => {
+  if (timelineName === 'series') {
+    return 'all'
+  }
+  return timelineName
+}
+
 export function characterDataExportDirectives(state, options) {
   if (!options.characters.export) {
     return []
@@ -22,7 +29,7 @@ export function characterDataExportDirectives(state, options) {
   let paragraphs = []
 
   const showBookTabs = selectors.showBookTabsSelector(state)
-  const bookToExport = !showBookTabs ? 'all' : selectors.currentTimelineSelector(state)
+  const bookToExport = !showBookTabs ? 'all' : seriesToAll(selectors.currentTimelineSelector(state))
   const allCharacters = selectors.allDisplayedCharactersForCurrentBookSelector(
     state,
     null,
@@ -131,7 +138,7 @@ function exportAttributes(attributes, headingLevel) {
   return (attributes || []).flatMap((ca) => {
     let paragraphs = []
     paragraphs.push(new Paragraph({ text: ca.name, heading: headingLevel }))
-    if (ca.type == 'paragraph') {
+    if (ca.type == 'paragraph' && Array.isArray(ca.value)) {
       const attrParagraphs = serialize(ca.value)
       paragraphs = [...paragraphs, ...attrParagraphs]
     } else {

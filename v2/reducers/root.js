@@ -24,31 +24,35 @@ import {
   EDIT_CHARACTER_CATEGORY,
   DELETE_CHARACTER_CATEGORY,
   ADD_CHARACTER,
+  APPLY_TIMELINE_TEMPLATE,
+  SET_HIERARCHY_LEVELS,
+  ATTACH_CHARACTER_TO_CARD,
+  DELETE_TAG,
 } from '../constants/ActionTypes'
-import { selectedCharacterAttributeTabSelector, isSeriesSelector } from '../selectors/ui'
+import {
+  selectedCharacterAttributeTabSelector,
+  isSeriesSelector,
+  timelineViewIsTabbedSelector,
+  currentTimelineSelector,
+  firstLineForBookSelector,
+  firstVisibleBeatForBookSelector,
+  timelineTabBeatIdsSelector,
+  timelineActiveTabSelector,
+  characterAttributesForBookSelector,
+  characterAttributsForBookByIdSelector,
+  permissionSelector,
+  userIdSelector,
+  shouldBeInProSelector,
+  hierarchyLevelCount,
+} from '../selectors'
 import { reduce, beatsByPosition, nextId as nextBeatId } from '../helpers/beats'
 import { nextId, objectId } from '../store/newIds'
 import * as tree from './tree'
 import { beat as defaultBeat } from '../store/initialState'
 import { cloneDeep } from 'lodash'
-import { firstLineForBookSelector } from '../selectors/lines'
-import { timelineViewIsTabbedSelector, currentTimelineSelector } from '../selectors/ui'
-import {
-  sortedBeatsForAnotherBookSelector,
-  firstVisibleBeatForBookSelector,
-  timelineTabBeatIdsSelector,
-  timelineActiveTabSelector,
-} from '../selectors/beats'
-import { addBeat } from '../actions/beats'
 import { setTimelineView } from '../actions/ui'
-import {
-  characterAttributesForBookSelector,
-  characterAttributsForBookByIdSelector,
-} from '../selectors/attributes'
-import { permissionSelector } from '../selectors/permission'
-import { ATTACH_CHARACTER_TO_CARD, DELETE_TAG } from '../../v1/constants/ActionTypes'
-import { userIdSelector } from '../selectors/client'
-import { shouldBeInProSelector } from '../selectors/shouldBeInPro'
+import { deleteLine } from '../actions/lines'
+import { applyTemplate, moveLineActions } from '../helpers/templates'
 
 const addCharacterAttributeDataForModifyingBaseAttribute = (baseAttributeName, state, action) => {
   const currentBookId = selectedCharacterAttributeTabSelector(state)
@@ -96,6 +100,10 @@ const root = (dataRepairers) => (state, action) => {
   const isSeries = action.type.includes('@@') ? false : isSeriesSelector(state)
   const mainReducer = addPermission(unrepairedMainReducer(dataRepairers))
   switch (action.type) {
+    case APPLY_TIMELINE_TEMPLATE: {
+      return applyTemplate(state, action.bookId, action.template, action.selectedIndex)
+    }
+
     case ATTACH_CHARACTER_TO_CARD: {
       const currentTimeline = currentTimelineSelector(state)
       return mainReducer(state, {
@@ -260,13 +268,12 @@ const root = (dataRepairers) => (state, action) => {
 
       return mainReducer(state, {
         ...action,
-        bookId: bookId,
+        bookId,
         nextLineId: nextId(state.lines),
-        nextBeatId: ++nextIdForBeats,
         nextCardId: nextId(state.cards),
-        createdNewBeats: createdNewBeats,
+        createdNewBeats,
         newTree: beatTree,
-        cardToBeatIdMap: cardToBeatIdMap,
+        cardToBeatIdMap,
       })
     }
 
@@ -338,78 +345,51 @@ const root = (dataRepairers) => (state, action) => {
     }
 
     case MOVE_LINE: {
-      const sourceLine = state.lines.find(({ id }) => {
-        return id === action.id
+      const line = state.lines.find((line) => {
+        return line.id === action.id
       })
-
-      if (!sourceLine || sourceLine.bookId === action.destinationBookId) {
+      // No such line or book
+      if (!line || typeof state.books[action.destinationBookId] === 'undefined') {
         return state
       }
 
-      const sourceCards = state.cards.filter(({ lineId }) => {
-        return lineId === action.id
-      })
-      const beatsForLine = sourceCards.map(({ beatId }) => {
-        return beatId
-      })
-
-      const positionOfBeat = (beatId, beatIds) => {
-        return beatIds.indexOf(beatId)
+      const sourceBookId = line.bookId
+      if (typeof state.books[line.bookId] === 'undefined') {
+        return state
       }
 
-      const beatsInSourceBook = sortedBeatsForAnotherBookSelector(state, sourceLine.bookId)
-      const beatIdsInSourceBook = beatsInSourceBook.map(({ id }) => id)
-      const cardToPositionMapping = sourceCards.reduce((acc, nextCard) => {
-        return {
-          ...acc,
-          [nextCard.id]: positionOfBeat(nextCard.beatId, beatIdsInSourceBook),
-        }
-      }, {})
-      const beatsInDestinationBook = sortedBeatsForAnotherBookSelector(
+      if (sourceBookId === action.destinationBookId) {
+        return state
+      }
+
+      const sourceLevelsOfHierarchy = Object.values(state.hierarchyLevels[sourceBookId]).length
+      const destinationLevelsOfHierarchy = Object.values(
+        state.hierarchyLevels[action.destinationBookId]
+      ).length
+      // We don't move lines between books with different levels of hierarchy.
+      if (sourceLevelsOfHierarchy !== destinationLevelsOfHierarchy) {
+        return state
+      }
+
+      const createLineBeatsAndCardsActions = moveLineActions(
         state,
+        action.id,
         action.destinationBookId
       )
-      const requiredNumberOfBeats = beatsForLine.reduce((furthestPosition, nextBeat) => {
-        const positionOfCardsBeat = beatIdsInSourceBook.indexOf(nextBeat) + 1
-        return Math.max(positionOfCardsBeat, furthestPosition)
-      }, 0)
-      const numberOfBeatsAtDestination = beatsInDestinationBook.length
 
-      if (numberOfBeatsAtDestination < requiredNumberOfBeats) {
-        let stateWithEnoughBeats = state
-        for (let i = 0; i < requiredNumberOfBeats - numberOfBeatsAtDestination; ++i) {
-          stateWithEnoughBeats = mainReducer(
-            stateWithEnoughBeats,
-            addBeat(action.destinationBookId, null)
-          )
-        }
-        const beatsInDestinationBook = sortedBeatsForAnotherBookSelector(
-          stateWithEnoughBeats,
-          action.destinationBookId
-        )
-        const beatIdsInDestinationBook = beatsInDestinationBook.map(({ id }) => id)
-        const cardToBeatIdMapping = sourceCards.reduce((acc, nextCard) => {
-          return {
-            ...acc,
-            [nextCard.id]: beatIdsInDestinationBook[cardToPositionMapping[nextCard.id]],
-          }
-        }, {})
-        return mainReducer(stateWithEnoughBeats, {
-          ...action,
-          cardToBeatIdMapping,
-        })
-      }
+      // Add the new line
+      const withNewLine = createLineBeatsAndCardsActions.reduce((accState, nextAction) => {
+        return mainReducer(accState, nextAction)
+      }, state)
 
-      const beatIdsInDestinationBook = beatsInDestinationBook.map(({ id }) => id)
-      const cardToBeatIdMapping = sourceCards.reduce((acc, nextCard) => {
-        return {
-          ...acc,
-          [nextCard.id]: beatIdsInDestinationBook[cardToPositionMapping[nextCard.id]],
-        }
-      }, {})
+      // Remove the old line & cards
+      return mainReducer(withNewLine, deleteLine(action.id))
+    }
+
+    case SET_HIERARCHY_LEVELS: {
       return mainReducer(state, {
         ...action,
-        cardToBeatIdMapping,
+        existingHierarchyLevelCount: hierarchyLevelCount(state),
       })
     }
 

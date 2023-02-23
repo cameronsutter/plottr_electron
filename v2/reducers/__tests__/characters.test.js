@@ -21,7 +21,9 @@ import {
   characterAttributesSelector,
   displayedSingleCharacterSelector,
   singleCharacterSelector,
-} from '../../selectors/characters'
+  allCharacterAttributesSelector,
+  characterCustomAttributesSelector,
+} from '../../selectors'
 import { addBook } from '../../actions/books'
 import { addTag } from '../../actions/tags'
 import { deleteBook } from '../../actions/books'
@@ -29,8 +31,6 @@ import { deleteCharacterCategory } from '../../actions/categories'
 import { deleteTag } from '../../actions/tags'
 import { deleteCharacterAttribute, editCharacterAttributeMetadata } from '../../actions/attributes'
 import { addCharacter as addCharacterToCard } from '../../actions/cards'
-import { allCharacterAttributesSelector } from '../../selectors/attributes'
-import { characterCustomAttributesSelector } from '../../selectors/customAttributes'
 
 const EMPTY_FILE = emptyFile('Test file')
 const initialStore = () => {
@@ -54,6 +54,10 @@ const ignoringChangesWeDontCareAbout = (state) => {
       ...state.file,
       dirty: null,
       versionStamp: null,
+    },
+    project: {
+      ...state.project,
+      unsavedChanges: null,
     },
   }
 }

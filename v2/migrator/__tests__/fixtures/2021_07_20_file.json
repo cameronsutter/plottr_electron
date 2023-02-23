@@ -3,31 +3,68 @@
     "fileName": "/Users/edwardsteere/wip/plottr_electron/examples/Zelda.pltr",
     "loaded": true,
     "dirty": true,
-    "version": "2021.7.20",
-    "appliedMigrations": ["m2021_4_13", "m2021_6_9"],
+    "version": "2023.1.10",
+    "appliedMigrations": ["m2021_4_13", "m2021_6_9", "*m2023_1_7"],
     "initialVersion": "2021.2.24"
   },
   "ui": {
     "currentView": "timeline",
-    "currentTimeline": 7,
+    "currentTimeline": 1,
     "timelineIsExpanded": true,
     "orientation": "horizontal",
-    "darkMode": true,
+    "darkMode": false,
     "characterSort": "name~asc",
     "characterFilter": null,
     "placeSort": "name~asc",
-    "placeFilter": {},
+    "placeFilter": null,
     "noteSort": "title~asc",
     "noteFilter": null,
+    "outlineFilter": null,
     "timelineFilter": null,
     "timelineScrollPosition": {
       "x": 0,
       "y": 0
     },
     "timeline": {
-      "size": "large"
+      "size": "large",
+      "view": "default",
+      "actTab": 0
     },
-    "attributesDialogIsOpen": false
+    "searchTerms": {
+      "notes": null,
+      "characters": null,
+      "places": null,
+      "tags": null,
+      "outline": null,
+      "timeline": null
+    },
+    "templateModal": {
+      "expanded": false
+    },
+    "attributeTabs": {
+      "characters": null
+    },
+    "characterTab": {
+      "selectedCharacter": null
+    },
+    "customAttributeOrder": {
+      "characters": []
+    },
+    "cardDialog": {
+      "isOpen": false,
+      "cardId": null,
+      "lineId": null,
+      "beatId": null
+    },
+    "collaborators": {},
+    "bookDialog": {
+      "isOpen": false,
+      "bookId": null
+    },
+    "outlineScrollPosition": 0,
+    "actConfigModal": {
+      "open": false
+    }
   },
   "featureFlags": {
     "BEAT_HIERARCHY": true

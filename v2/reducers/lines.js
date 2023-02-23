@@ -24,6 +24,8 @@ import {
   ADD_BOOK,
   DUPLICATE_LINE,
   MOVE_LINE,
+  PIN_PLOTLINE,
+  UNPIN_PLOTLINE,
 } from '../constants/ActionTypes'
 import { line } from '../store/initialState'
 import { newFileLines, newFileSeriesLines } from '../store/newFileState'
@@ -85,10 +87,10 @@ const lines =
           .filter(({ bookId }) => bookId !== 'series') // this is to protect against a bad template that unnecessarily had a series line
           .map((l, index) => {
             const newLine = cloneDeep(l)
-            newLine.id = newLine.id + action.nextLineId // give it a new id
+            newLine.id = action.nextLineId + newLine.id // give it a new id
             newLine.bookId = actionBookId // add it to the new/current book
             newLine.position = nextPosition + newLine.position // put it in the right position
-            newLine.fromTemplateId = action.templateData.id
+            newLine.fromTemplateId = action.id || action.templateData.id
             if (!newLine.color || newLine.color == nextColor(0)) {
               newLine.color = nextColor(linesInBook.length + index)
             }
@@ -119,6 +121,20 @@ const lines =
 
       case DELETE_LINE:
         return state.filter((l) => l.id !== action.id)
+
+      case PIN_PLOTLINE: {
+        const bookLines = action.lines.map((l) =>
+          l.id === action.lineId ? Object.assign({}, l, { isPinned: true }) : l
+        )
+        return [...state.filter((l) => l && l.bookId != actionBookId), ...positionReset(bookLines)]
+      }
+
+      case UNPIN_PLOTLINE: {
+        const bookLines = action.lines.map((l) =>
+          l.id === action.lineId ? Object.assign({}, l, { isPinned: false }) : l
+        )
+        return [...state.filter((l) => l && l.bookId != actionBookId), ...positionReset(bookLines)]
+      }
 
       case REORDER_LINES:
         return [

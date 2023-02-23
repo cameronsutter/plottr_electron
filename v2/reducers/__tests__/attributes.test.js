@@ -9,7 +9,7 @@ import {
 } from '../../actions/attributes'
 import { removeSystemKeys } from '../systemReducers'
 import { addCharacter, createCharacterAttribute } from '../../actions/characters'
-import { characterAttributesSelector } from '../../selectors/characters'
+import { characterAttributesSelector } from '../../selectors'
 
 const EMPTY_FILE = emptyFile('Test file')
 const initialStore = () => {

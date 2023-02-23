@@ -8,6 +8,14 @@ import file_2022_01_11_title_is_object_with_title_and_description from './2022_0
 import file_2022_01_11_title_object_without_description from './2022_01_11_title_object_without_description.json'
 import file_2022_01_11_title_is_object_with_non_string_title from './2022_01_11_title_is_object_with_non_string_title.json'
 import file_2022_01_11_title_is_object_with_non_array_description from './2022_01_11_title_is_object_with_non_array_description.json'
+import file_with_minimal_ui_state from './file_with_minimal_ui_state.json'
+import file_with_empty_ui_state from './file_with_empty_ui_state.json'
+import file_with_no_ui_state from './file_with_no_ui_state.json'
+import file_with_missing_ui_keys from './file_with_missing_ui_keys.json'
+import file_2023_01_7_fix_applies from './2023_01_7_fix_applies.json'
+import file_2023_01_7_fix_does_not_apply from './2023_01_7_fix_does_not_apply.json'
+import file_2023_01_7_no_migrations_collection from './2023_01_07_no_migrations_collection.json'
+import file_2022_5_18 from './2022_5_18.json'
 
 export {
   file_2021_07_20,
@@ -20,4 +28,12 @@ export {
   file_2022_01_11_title_object_without_description,
   file_2022_01_11_title_is_object_with_non_string_title,
   file_2022_01_11_title_is_object_with_non_array_description,
+  file_with_minimal_ui_state,
+  file_with_empty_ui_state,
+  file_with_no_ui_state,
+  file_with_missing_ui_keys,
+  file_2023_01_7_fix_applies,
+  file_2023_01_7_fix_does_not_apply,
+  file_2023_01_7_no_migrations_collection,
+  file_2022_5_18,
 }

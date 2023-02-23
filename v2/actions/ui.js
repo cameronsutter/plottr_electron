@@ -15,7 +15,7 @@ import {
   SET_TIMELINE_FILTER,
   SET_PLACE_FILTER,
   RESET_TIMELINE,
-  RECORD_SCROLL_POSITION,
+  RECORD_TIMELINE_SCROLL_POSITION,
   EDIT_FILENAME,
   SET_TIMELINE_SIZE,
   OPEN_ATTRIBUTES_DIALOG,
@@ -41,9 +41,14 @@ import {
   OPEN_NEW_BOOK_DIALOG,
   OPEN_EDIT_BOOK_DIALOG,
   CLOSE_BOOK_DIALOG,
+  RECORD_OUTLINE_SCROLL_POSITION,
+  TOGGLE_ADVANCED_SAVE_TEMPLATE_PANEL,
+  SET_FOCUSSED_TIMELINE_TAB_BEAT,
+  SET_TIMELINE_TAB_BEAT_TO_DELETE,
+  SET_ACT_CONFIG_MODAL_OPEN,
+  SET_EDITING_BEAT_ID,
 } from '../constants/ActionTypes'
-import { allCardsSelector } from '../selectors/cards'
-import { fileURLSelector } from '../selectors/project'
+import { allCardsSelector, fileURLSelector } from '../selectors'
 
 export function changeCurrentView(view) {
   return { type: CHANGE_CURRENT_VIEW, view }
@@ -125,8 +130,12 @@ export function resetTimeline(bookId) {
   return { type: RESET_TIMELINE, bookId }
 }
 
-export function recordScrollPosition({ x, y }) {
-  return { type: RECORD_SCROLL_POSITION, x, y }
+export function recordTimelineScrollPosition({ x, y }) {
+  return { type: RECORD_TIMELINE_SCROLL_POSITION, x, y }
+}
+
+export function recordOutlineScrollPosition(position) {
+  return { type: RECORD_OUTLINE_SCROLL_POSITION, position }
 }
 
 export const editFileName = (persistFileNameChange, newName) => (dispatch, getState) => {
@@ -229,6 +238,26 @@ export function openEditBookDialog(bookId) {
 
 export function closeBookDialog() {
   return { type: CLOSE_BOOK_DIALOG }
+}
+
+export function toggleAdvancedSaveTemplatePanel() {
+  return { type: TOGGLE_ADVANCED_SAVE_TEMPLATE_PANEL }
+}
+
+export function setFocussedTimelineTabBeat(beatId) {
+  return { type: SET_FOCUSSED_TIMELINE_TAB_BEAT, beatId }
+}
+
+export function setTimelineTabBeatToDelete(beatId) {
+  return { type: SET_TIMELINE_TAB_BEAT_TO_DELETE, beatId }
+}
+
+export function setActConfigIsOpen(open) {
+  return { type: SET_ACT_CONFIG_MODAL_OPEN, open }
+}
+
+export function setEditingBeatTitleId(id) {
+  return { type: SET_EDITING_BEAT_ID, id }
 }
 
 export function load(patching, ui) {

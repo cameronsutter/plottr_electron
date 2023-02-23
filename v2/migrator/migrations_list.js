@@ -29,6 +29,8 @@ const list = [
   'm2021_8_1',
   'm2022_5_17',
   'm2022_5_17_1',
+  '*m2023_1_7',
+  '*m2023_3_5',
 ]
 
 export default list.sort((thisVersion, thatVersion) =>

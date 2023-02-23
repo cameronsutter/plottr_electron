@@ -72,6 +72,27 @@ function sortedBeatCards(sortedLines, beatId, card2Dmap, currentLine) {
 }
 
 export function truncateTitle(title, maxLength) {
+  if (!title) return ''
   if (title.length < maxLength) return title
   return title.substr(0, maxLength) + '...'
+}
+
+export const richContentIsNonEmpty = (children) => {
+  if (typeof children === 'undefined' || children === null) {
+    return false
+  }
+
+  if (typeof children === 'string') {
+    return children.length !== 0
+  }
+
+  return (
+    children.length > 1 ||
+    children.some((element) => {
+      return (
+        (element.text && element.text !== '') ||
+        (Array.isArray(element.children) && richContentIsNonEmpty(element.children))
+      )
+    })
+  )
 }

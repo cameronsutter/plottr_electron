@@ -15,8 +15,10 @@ import {
   FINISH_CREATING_NEW_PROJECT,
   EDIT_FILENAME,
   FILE_LOADED,
+  FILE_SAVED,
 } from '../constants/ActionTypes'
 import { urlPointsToPlottrCloud } from '../helpers/file'
+import { SYSTEM_REDUCER_ACTION_TYPES } from '../reducers/systemReducers'
 
 const INITIAL_STATE = {
   selectedFile: null,
@@ -30,6 +32,7 @@ const INITIAL_STATE = {
   overwritingCloudWithBackup: false,
   showResumeMessageDialog: false,
   backingUpOfflineFile: false,
+  unsavedChanges: false,
 }
 
 const NEW_FILE = { fileName: 'New file', id: -1 }
@@ -57,12 +60,14 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         fileLoaded: true,
+        unsavedChanges: false,
       }
     case UNSET_FILE_LOADED:
       return {
         ...state,
         fileURL: null,
         fileLoaded: false,
+        unsavedChanges: false,
       }
     case SHOW_LOADER:
       return {
@@ -131,6 +136,7 @@ const projectReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         fileURL: action.fileURL,
+        unsavedChanges: false,
       }
     }
     case EDIT_FILENAME: {
@@ -142,8 +148,22 @@ const projectReducer = (state = INITIAL_STATE, action) => {
         },
       }
     }
-    default:
+    case FILE_SAVED: {
+      return {
+        ...state,
+        unsavedChanges: false,
+      }
+    }
+    default: {
+      if (SYSTEM_REDUCER_ACTION_TYPES.indexOf(action.type) === -1) {
+        return {
+          ...state,
+          unsavedChanges: true,
+        }
+      }
+
       return state
+    }
   }
 }
 

@@ -64,7 +64,8 @@ export const newFileCategories = Object.assign({}, categories, {
   tags: newFileTagCategories,
 })
 
-export const newFileHierarchies = { 0: hierarchyLevel }
+// Book 1 has one level by default
+export const newFileHierarchies = { 1: { 0: hierarchyLevel }, series: { 0: hierarchyLevel } }
 
 export function emptyFile(name, version) {
   const books = {

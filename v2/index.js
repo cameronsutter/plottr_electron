@@ -49,44 +49,13 @@ import * as editorHelpers from './helpers/editors'
 import * as timeHelpers from './helpers/time'
 import * as dateHelpers from './helpers/date'
 import * as fileHelpers from './helpers/file'
+import * as templatesHelpers from './helpers/templates'
 
 import * as template from './template'
 
 import migrateIfNeeded from './migrator/migration_manager'
 
-import * as bookSelectors from './selectors/books'
-import * as cardSelectors from './selectors/cards'
-import * as categorySelectors from './selectors/categories'
-import * as beatSelectors from './selectors/beats'
-import * as characterSelectors from './selectors/characters'
-import * as customAttributeSelectors from './selectors/customAttributes'
-import * as fileSelectors from './selectors/file'
-import * as lineSelectors from './selectors/lines'
-import * as notesSelectors from './selectors/notes'
-import * as placeSelectors from './selectors/places'
-import * as tagSelectors from './selectors/tags'
-import * as uiSelectors from './selectors/ui'
-import * as hierarchySelectors from './selectors/hierarchy'
-import * as hierarchyLevelSelectors from './selectors/hierarchyLevel'
-import * as featureFlagSelectors from './selectors/featureFlags'
-import * as errorSelectors from './selectors/error'
-import * as permissionSelectors from './selectors/permission'
-import * as projectSelectors from './selectors/project'
-import * as clientSelectors from './selectors/client'
-import * as actionSelectors from './selectors/actions'
-import * as editorsSelectors from './selectors/editors'
-import * as imageSelectors from './selectors/images'
-import * as licenseSelectors from './selectors/license'
-import * as knownFilesSelectors from './selectors/knownFiles'
-import * as templatesSelectors from './selectors/templates'
-import * as settingsSelectors from './selectors/settings'
-import * as backupsSelectors from './selectors/backups'
-import * as applicationStateSelectors from './selectors/applicationState'
-import * as imageCacheSelectors from './selectors/imageCache'
-import * as notificationSelectors from './selectors/notifications'
-import * as domEventsSelectors from './selectors/domEvents'
-import * as testingAndDiagnosisSelectors from './selectors/testingAndDiagnosis'
-import * as attributesSelectors from './selectors/attributes'
+import * as selectors from './selectors'
 
 import rootReducer from './reducers/root'
 import mainReducer from './reducers/main'
@@ -142,6 +111,8 @@ import * as tree from './reducers/tree'
 import serializeToRTF from './slate_serializers/to_rtf'
 import { serialize as serializeToPlain } from './slate_serializers/to_plain_text'
 
+import checkFileIntegrity from './store/checkFileIntegrity'
+
 const reducers = {
   customAttributes: customAttributesReducer,
   lines: linesReducer,
@@ -173,42 +144,6 @@ const reducers = {
   notifications: notificationsReducer,
   domEvents: domEventsReducer,
   testingAndDiagnosis: testingAndDiagnosisReducer,
-}
-
-const selectors = {
-  ...beatSelectors,
-  ...bookSelectors,
-  ...cardSelectors,
-  ...categorySelectors,
-  ...characterSelectors,
-  ...customAttributeSelectors,
-  ...fileSelectors,
-  ...lineSelectors,
-  ...notesSelectors,
-  ...placeSelectors,
-  ...tagSelectors,
-  ...uiSelectors,
-  ...hierarchySelectors,
-  ...hierarchyLevelSelectors,
-  ...featureFlagSelectors,
-  ...errorSelectors,
-  ...permissionSelectors,
-  ...projectSelectors,
-  ...clientSelectors,
-  ...actionSelectors,
-  ...editorsSelectors,
-  ...imageSelectors,
-  ...licenseSelectors,
-  ...knownFilesSelectors,
-  ...templatesSelectors,
-  ...settingsSelectors,
-  ...backupsSelectors,
-  ...applicationStateSelectors,
-  ...imageCacheSelectors,
-  ...notificationSelectors,
-  ...domEventsSelectors,
-  ...testingAndDiagnosisSelectors,
-  ...attributesSelectors,
 }
 
 const actions = {
@@ -260,6 +195,7 @@ const helpers = {
   time: timeHelpers,
   date: dateHelpers,
   file: fileHelpers,
+  template: templatesHelpers,
 }
 
 const slate = {
@@ -297,4 +233,5 @@ export {
   slate,
   middlewares,
   ARRAY_KEYS,
+  checkFileIntegrity,
 }

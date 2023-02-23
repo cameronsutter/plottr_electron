@@ -1,5 +1,6 @@
+import { richContentIsNonEmpty } from '../../helpers/cards'
 import { newTree } from '../../reducers/tree'
-import { collapsedBeatSelector } from '../cards'
+import { collapsedBeatSelector } from '../index'
 
 describe('collapsedBeatSelector', () => {
   describe('given an empty beat tree', () => {
@@ -1111,6 +1112,146 @@ describe('collapsedBeatSelector', () => {
         expect(collapsedBeats.get(4)).toEqual(4)
         expect(collapsedBeats.get(5)).toEqual(4)
         expect(collapsedBeats.get(6)).toEqual(4)
+      })
+    })
+  })
+})
+
+describe('richContentIsNonEmpty', () => {
+  describe('given an empty array', () => {
+    it('should produce false', () => {
+      expect(richContentIsNonEmpty([])).toBeFalsy()
+    })
+  })
+  describe('given an empty string', () => {
+    it('should produce false', () => {
+      expect(richContentIsNonEmpty('')).toBeFalsy()
+    })
+  })
+  describe('given a non-empty string', () => {
+    it('should produce true', () => {
+      expect(richContentIsNonEmpty('test')).toBeTruthy()
+    })
+  })
+  describe('given an array with one entry', () => {
+    describe('that is an empty string', () => {
+      it('should produce false', () => {
+        expect(richContentIsNonEmpty([''])).toBeFalsy()
+      })
+    })
+    describe('that is a paragraph with an empty string', () => {
+      it('should produce false', () => {
+        expect(
+          richContentIsNonEmpty([
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  text: '',
+                },
+              ],
+            },
+          ])
+        ).toBeFalsy()
+      })
+    })
+    describe('that is a paragraph with an non-empty string', () => {
+      it('should produce true', () => {
+        expect(
+          richContentIsNonEmpty([
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  text: 'blah',
+                },
+              ],
+            },
+          ])
+        ).toBeTruthy()
+      })
+    })
+  })
+  describe('given an array with two entries', () => {
+    describe('that is are both empty strings', () => {
+      it('should produce false', () => {
+        expect(richContentIsNonEmpty(['', ''])).toBeTruthy()
+      })
+    })
+    describe('where both are paragraphs with an empty string', () => {
+      it('should produce false', () => {
+        expect(
+          richContentIsNonEmpty([
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  text: '',
+                },
+              ],
+            },
+            {
+              type: 'paragraph',
+              children: [
+                {
+                  text: '',
+                },
+              ],
+            },
+          ])
+        ).toBeTruthy()
+      })
+    })
+    describe('where the first is a paragraph with an non-empty string', () => {
+      describe('and the second is an empty paragraph', () => {
+        it('should produce true', () => {
+          expect(
+            richContentIsNonEmpty([
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    text: 'blah',
+                  },
+                ],
+              },
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+              },
+            ])
+          ).toBeTruthy()
+        })
+      })
+    })
+    describe('where the second is a paragraph with an non-empty string', () => {
+      describe('and the first is an empty paragraph', () => {
+        it('should produce true', () => {
+          expect(
+            richContentIsNonEmpty([
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    text: '',
+                  },
+                ],
+              },
+              {
+                type: 'paragraph',
+                children: [
+                  {
+                    text: 'blah',
+                  },
+                ],
+              },
+            ])
+          ).toBeTruthy()
+        })
       })
     })
   })

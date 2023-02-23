@@ -1,10 +1,7 @@
 import { configureStore } from './fixtures/testStore'
 import { emptyFile } from '../../store/newFileState'
 import { loadFile } from '../../actions/ui'
-import {
-  allBooksWithCharactersInThemSelector,
-  characterBookCategoriesSelector,
-} from '../characters'
+import { allBooksWithCharactersInThemSelector, characterBookCategoriesSelector } from '../index'
 import { addCharacter } from '../../actions/characters'
 import { addBook } from '../../actions/books'
 import { addBook as addBookToCharacter } from '../../actions/characters'
@@ -148,7 +145,7 @@ describe('allBooksWithCharactersInThemSelector', () => {
   describe('given a file with two books', () => {
     it('should produce an object containing both books', () => {
       const store = initialStore()
-      store.dispatch(addBook())
+      store.dispatch(addBook('', '', '', ''))
       const state = store.getState().present
       expect(allBooksWithCharactersInThemSelector(state)).toEqual({
         1: {

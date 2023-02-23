@@ -133,7 +133,8 @@ const attributesReducer =
       }
 
       case EDIT_CHARACTER_CATEGORY: {
-        const attributeExists = state.characters.some((attribute) => {
+        const characterAttributes = state.characters || []
+        const attributeExists = characterAttributes.some((attribute) => {
           return attribute.id === action.attributeId
         })
         if (attributeExists) {
@@ -143,7 +144,7 @@ const attributesReducer =
         return {
           ...state,
           characters: [
-            ...state.characters,
+            ...characterAttributes,
             {
               name: 'category',
               type: 'base-attribute',

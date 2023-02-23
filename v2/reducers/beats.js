@@ -116,15 +116,25 @@ const beats =
 
       case SET_HIERARCHY_LEVELS: {
         const { hierarchyLevels } = action
+        if (
+          hierarchyLevels.length === action.existingHierarchyLevelCount ||
+          hierarchyLevels.length > 3 ||
+          hierarchyLevels < 1
+        ) {
+          return state
+        }
+
         const targetHierarchyDepth = hierarchyLevels.length - 1
         const adjustHierarchy = adjustHierarchyLevels(targetHierarchyDepth)
 
-        return Object.keys(state).reduce((newState, bookId) => {
-          return {
-            ...newState,
-            [bookId]: adjustHierarchy(newState[bookId], nextId(state), bookId),
-          }
-        }, state)
+        return {
+          ...state,
+          [action.timeline]: adjustHierarchy(
+            state[action.timeline],
+            nextId(state),
+            action.timeline
+          ),
+        }
       }
 
       case EDIT_BEAT_TITLE:

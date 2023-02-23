@@ -1,3 +1,5 @@
+import { difference } from 'lodash'
+
 import {
   file_2021_07_20,
   file_2021_07_20_missing_templates_on_cards,
@@ -13,8 +15,17 @@ import {
 import applyAllFixes, {
   handle2021_07_07,
   handleMissingTemplatesFieldOnCards,
+  handleMissingUIState,
   handleObjectTitlesOnCards,
+  MINIMAL_SET_OF_UI_KEYS,
 } from '../handleSpecialCases'
+import { uiState } from '../../store/initialState'
+import {
+  file_with_empty_ui_state,
+  file_with_minimal_ui_state,
+  file_with_missing_ui_keys,
+  file_with_no_ui_state,
+} from './fixtures/index'
 
 describe('handle2021_07_07', () => {
   describe('given a file with a different version', () => {
@@ -141,6 +152,49 @@ describe('applyAllFixes', () => {
         expect(level.dark.textColor).toBeDefined()
       }
       expect(fixed.file.appliedMigrations).toEqual(expect.arrayContaining(['m2021_7_7']))
+    })
+  })
+})
+
+describe('handleMissingUIState', () => {
+  describe('given a file with minimal UI state', () => {
+    const fileWithMinimalUiState = file_with_minimal_ui_state
+    const fixedFile = handleMissingUIState(fileWithMinimalUiState)
+    it('should leave the file unchanged', () => {
+      expect(fixedFile).toBe(fileWithMinimalUiState)
+    })
+  })
+  describe('given a file an empty UI state', () => {
+    const fileWithEmptyUiState = file_with_empty_ui_state
+    const fixedFile = handleMissingUIState(fileWithEmptyUiState)
+    it('should add the missing ui state', () => {
+      for (const key of MINIMAL_SET_OF_UI_KEYS) {
+        expect(fixedFile.ui[key]).toEqual(uiState[key])
+      }
+    })
+  })
+  describe('given a file an no UI state', () => {
+    const fileWithNoUiState = file_with_no_ui_state
+    const fixedFile = handleMissingUIState(fileWithNoUiState)
+    it('should add the missing ui state', () => {
+      expect(fixedFile.ui).toBeDefined()
+      for (const key of MINIMAL_SET_OF_UI_KEYS) {
+        expect(fixedFile.ui[key]).toEqual(uiState[key])
+      }
+    })
+  })
+  describe('given a file missing some UI state', () => {
+    const fileWithMissingUiKeys = file_with_missing_ui_keys
+    const fixedFile = handleMissingUIState(fileWithMissingUiKeys)
+    it('should add the missing ui state', () => {
+      for (const key of difference(MINIMAL_SET_OF_UI_KEYS, Object.keys(fixedFile.ui))) {
+        expect(fixedFile.ui[key]).toBe(uiState[key])
+      }
+    })
+    it('should not modify any of the existing keys', () => {
+      for (const key of Object.keys(fileWithMissingUiKeys.ui)) {
+        expect(fixedFile.ui[key]).toBe(fileWithMissingUiKeys.ui[key])
+      }
     })
   })
 })

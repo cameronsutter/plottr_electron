@@ -1,0 +1,745 @@
+{
+  "file": {
+    "fileName": "file-with-three-levels.pltr",
+    "loaded": true,
+    "dirty": true,
+    "version": "2022.12.7-beta.2",
+    "id": null,
+    "appliedMigrations": [],
+    "initialVersion": "2022.12.7-beta.2",
+    "isCloudFile": false
+  },
+  "ui": {
+    "currentView": "timeline",
+    "currentTimeline": 1,
+    "timelineIsExpanded": true,
+    "orientation": "horizontal",
+    "darkMode": false,
+    "characterSort": "name~asc",
+    "characterFilter": null,
+    "placeSort": "name~asc",
+    "placeFilter": null,
+    "noteSort": "title~asc",
+    "noteFilter": null,
+    "outlineFilter": null,
+    "timelineFilter": null,
+    "timelineScrollPosition": {
+      "x": 0,
+      "y": 0
+    },
+    "timeline": {
+      "size": "large",
+      "view": "default",
+      "actTab": 0
+    },
+    "searchTerms": {
+      "notes": null,
+      "characters": null,
+      "places": null,
+      "tags": null,
+      "outline": null,
+      "timeline": null
+    },
+    "attributeTabs": {
+      "characters": null
+    },
+    "characterTab": {
+      "selectedCharacter": null
+    },
+    "customAttributeOrder": {
+      "characters": []
+    },
+    "cardDialog": {
+      "isOpen": false,
+      "cardId": null,
+      "lineId": null,
+      "beatId": null
+    },
+    "collaborators": {
+      "collaborators": [],
+      "viewers": []
+    },
+    "bookDialog": {
+      "isOpen": false,
+      "bookId": null
+    }
+  },
+  "featureFlags": {
+    "BEAT_HIERARCHY": true
+  },
+  "series": {
+    "name": "A New Project",
+    "premise": "",
+    "genre": "",
+    "theme": "",
+    "templates": []
+  },
+  "books": {
+    "1": {
+      "id": 1,
+      "title": "A New Project",
+      "premise": "",
+      "genre": "",
+      "theme": "",
+      "templates": [],
+      "timelineTemplates": [],
+      "imageId": null
+    },
+    "allIds": [1]
+  },
+  "beats": {
+    "1": {
+      "children": {
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [2, 3, 4, 5],
+        "7": [6],
+        "8": [9],
+        "9": [10, 11, 12, 13],
+        "10": [],
+        "11": [],
+        "12": [],
+        "13": [],
+        "null": [7, 8]
+      },
+      "heap": {
+        "2": 6,
+        "3": 6,
+        "4": 6,
+        "5": 6,
+        "6": 7,
+        "7": null,
+        "8": null,
+        "9": 8,
+        "10": 9,
+        "11": 9,
+        "12": 9,
+        "13": 9
+      },
+      "index": {
+        "2": {
+          "id": 2,
+          "bookId": 1,
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "3": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 3,
+          "position": 1,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "4": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 4,
+          "position": 2,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "5": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 5,
+          "position": 3,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "6": {
+          "id": 6,
+          "bookId": "1",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "7": {
+          "id": 7,
+          "bookId": "1",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "8": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 8,
+          "position": 1,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "9": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 9,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "10": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 10,
+          "position": 0,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "11": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 11,
+          "position": 1,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "12": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 12,
+          "position": 2,
+          "time": 0,
+          "title": "auto",
+          "expanded": true
+        },
+        "13": {
+          "autoOutlineSort": true,
+          "bookId": 1,
+          "fromTemplateId": null,
+          "id": 13,
+          "position": 3,
+          "time": 0,
+          "title": "auto"
+        }
+      }
+    },
+    "series": {
+      "index": {
+        "1": {
+          "id": 1,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "6": {
+          "id": 6,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        },
+        "7": {
+          "id": 7,
+          "bookId": "series",
+          "position": 0,
+          "title": "auto",
+          "time": 0,
+          "templates": [],
+          "autoOutlineSort": true,
+          "fromTemplateId": null,
+          "expanded": true
+        }
+      },
+      "heap": {
+        "1": 6,
+        "6": 7,
+        "7": null
+      },
+      "children": {
+        "1": [],
+        "6": [1],
+        "7": [6],
+        "null": [7]
+      }
+    }
+  },
+  "cards": [
+    {
+      "id": 12,
+      "lineId": 3,
+      "beatId": 13,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 12",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 11,
+      "lineId": 1,
+      "beatId": 12,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 11",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 10,
+      "lineId": 3,
+      "beatId": 11,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 10",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 9,
+      "lineId": 1,
+      "beatId": 10,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 9",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 8,
+      "lineId": 3,
+      "beatId": 9,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 8",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 7,
+      "lineId": 1,
+      "beatId": 8,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 7",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 6,
+      "lineId": 3,
+      "beatId": 5,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 6",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 5,
+      "lineId": 1,
+      "beatId": 4,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 5",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 4,
+      "lineId": 3,
+      "beatId": 3,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 4",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 3,
+      "lineId": 1,
+      "beatId": 2,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 3",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 2,
+      "lineId": 3,
+      "beatId": 6,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 2",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    },
+    {
+      "id": 1,
+      "lineId": 1,
+      "beatId": 7,
+      "bookId": null,
+      "positionWithinLine": 0,
+      "positionInBeat": 0,
+      "title": "Card 1",
+      "description": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "tags": [],
+      "characters": [],
+      "places": [],
+      "templates": [],
+      "imageId": null,
+      "fromTemplateId": null,
+      "color": null
+    }
+  ],
+  "categories": {
+    "characters": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      },
+      {
+        "id": 2,
+        "name": "Supporting",
+        "position": 1
+      },
+      {
+        "id": 3,
+        "name": "Other",
+        "position": 2
+      }
+    ],
+    "places": [],
+    "notes": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ],
+    "tags": [
+      {
+        "id": 1,
+        "name": "Main",
+        "position": 0
+      }
+    ]
+  },
+  "characters": [],
+  "customAttributes": {
+    "characters": [],
+    "places": [],
+    "scenes": [],
+    "lines": [],
+    "notes": []
+  },
+  "attributes": {
+    "characters": []
+  },
+  "lines": [
+    {
+      "id": 3,
+      "bookId": 1,
+      "title": "Another Plot",
+      "color": "#78be20",
+      "position": 1,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 1,
+      "bookId": 1,
+      "color": "#6cace4",
+      "title": "The First PLot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    },
+    {
+      "id": 2,
+      "bookId": "series",
+      "color": "#6cace4",
+      "title": "Main Plot",
+      "position": 0,
+      "characterId": null,
+      "expanded": null,
+      "fromTemplateId": null
+    }
+  ],
+  "notes": [],
+  "places": [],
+  "tags": [],
+  "hierarchyLevels": {
+    "0": {
+      "name": "Act",
+      "level": 0,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "SOLID",
+      "backgroundColor": "none",
+      "textColor": "#e5554f",
+      "borderColor": "#e5554f",
+      "dark": {
+        "textColor": "#ffb8b5",
+        "borderColor": "#ffb8b5"
+      },
+      "light": {
+        "textColor": "#e5554f",
+        "borderColor": "#e5554f"
+      }
+    },
+    "1": {
+      "name": "Chapter",
+      "level": 1,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "DASHED",
+      "backgroundColor": "none",
+      "textColor": "#78be20",
+      "borderColor": "#78be20",
+      "dark": {
+        "textColor": "#baed79",
+        "borderColor": "#baed79"
+      },
+      "light": {
+        "textColor": "#78be20",
+        "borderColor": "#78be20"
+      }
+    },
+    "2": {
+      "name": "Chapter",
+      "level": 2,
+      "autoNumber": true,
+      "textSize": 24,
+      "borderStyle": "NONE",
+      "backgroundColor": "none",
+      "textColor": "#0b1117",
+      "borderColor": "#6cace4",
+      "dark": {
+        "borderColor": "#c9e6ff",
+        "textColor": "#c9e6ff"
+      },
+      "light": {
+        "borderColor": "#6cace4",
+        "textColor": "#0b1117"
+      }
+    }
+  },
+  "images": {}
+}

@@ -199,7 +199,7 @@
     "electronVersion": "22.0.1",
     "appId": "com.plottr.app",
     "artifactName": "${productName}-${os}-installer-latest.${ext}",
-    "npmRebuild": true,
+    "npmRebuild": false,
     "publish": [
       "github"
     ],

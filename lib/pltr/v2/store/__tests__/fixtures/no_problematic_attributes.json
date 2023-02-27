@@ -1434,6 +1434,11 @@
           "bookId": "all"
         },
         {
+          "id": 1,
+          "value": "blah",
+          "bookId": "1"
+        },
+        {
           "id": 2,
           "value": "",
           "bookId": "all"

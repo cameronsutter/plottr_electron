@@ -1,0 +1,21 @@
+image: Visual Studio 2017
+platform:
+  - x64
+cache:
+  - node_modules
+  - '%USERPROFILE%\.electron'
+init:
+  - git config --global core.autocrlf input
+install:
+  - ps: Install-Product node 16 x64
+  - npm i -g npm@8.8.0
+  - npm ci
+build_script:
+  - npm run validate
+  - npm run dist:windows
+test: off
+branches:
+  only:
+    - master
+    - prod
+    - build

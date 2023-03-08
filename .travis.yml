@@ -1,0 +1,20 @@
+osx_image: xcode10.2
+os: osx
+language: node_js
+node_js: '16'
+before_install:
+  - npm i -g npm@8.8.0
+env:
+  - ELECTRON_CACHE=$HOME/.electron
+cache:
+  directories:
+    - node_modules
+    - $HOME/.cache/electron
+    - $HOME/.cache/electron-builder
+script:
+  - npm run validate && npm run dist
+branches:
+  only:
+    - master
+    - prod
+    - build

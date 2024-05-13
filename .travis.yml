@@ -6,11 +6,6 @@ before_install:
   - npm i -g npm@8.8.0
 env:
   - ELECTRON_CACHE=$HOME/.electron
-cache:
-  directories:
-    - node_modules
-    - $HOME/.cache/electron
-    - $HOME/.cache/electron-builder
 script:
   - npm run validate && npm run dist:macos-and-linux && npm run upload-sourcemaps
 branches:
